@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.medihelper.mainapp.medickit.MedicineDetailsViewModel" />
+
+        <variable
+            name="handler"
+            type="com.example.medihelper.mainapp.medickit.MedicineDetailsFragment" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        android:fitsSystemWindows="true"
+        tools:context=".mainapp.medickit.MedicineDetailsFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="265dp"
+            android:background="@color/colorPrimary"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+                app:contentScrim="@color/colorPrimary"
+                app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed"
+                app:titleEnabled="false">
+
+                <ImageView
+                    android:id="@+id/img_medicine_picture"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    android:transitionName="@string/shared_image_photo"
+                    app:layout_collapseMode="parallax" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    app:layout_collapseMode="parallax">
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:behavior_overlapTop="40dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="8dp">
+
+                            <TextView
+                                android:id="@+id/txv_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.nameLive, default=Nazwa}"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                                android:textColor="@android:color/black"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/label_expire_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:text="Lek ważny do:"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                android:textColor="@android:color/tertiary_text_dark"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/txv_name" />
+
+                            <TextView
+                                android:id="@+id/txv_expire_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="@{viewModel.expireDateLive, default=data}"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                android:textColor="@android:color/tertiary_text_dark"
+                                app:layout_constraintBottom_toBottomOf="@id/label_expire_date"
+                                app:layout_constraintStart_toEndOf="@id/label_expire_date"
+                                app:layout_constraintTop_toTopOf="@id/label_expire_date" />
+
+                            <TextView
+                                android:id="@+id/label_days_remain"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Pozostało:"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                android:textColor="@android:color/tertiary_text_dark"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/label_expire_date" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="@{viewModel.daysRemainsLive, default=dni}"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                android:textColor="@android:color/tertiary_text_dark"
+                                app:layout_constraintBottom_toBottomOf="@id/label_days_remain"
+                                app:layout_constraintStart_toEndOf="@id/label_days_remain"
+                                app:layout_constraintTop_toTopOf="@id/label_days_remain" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageButton
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingBottom="8dp"
+                                android:paddingTop="8dp"
+                                android:src="@drawable/round_edit_black_36"
+                                android:background="?selectableItemBackground"
+                                android:onClick="@{handler::onClickEdit}"/>
+
+                            <ImageButton
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingBottom="8dp"
+                                android:paddingTop="8dp"
+                                android:src="@drawable/round_delete_black_36"
+                                android:background="?selectableItemBackground"
+                                android:onClick="@{handler::onClickDelete}"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp">
+
+                            <TextView
+                                android:id="@+id/title_curr_state"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Aktualny stan"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                                android:textSize="18sp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/txv_curr_state_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.stateTextLive, default=Stan}"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                android:textColor="@color/colorStateGood"
+                                app:layout_constraintBottom_toBottomOf="@id/title_curr_state"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/title_curr_state" />
+
+                            <LinearLayout
+                                android:id="@+id/lay_curr_state_line"
+                                android:layout_width="0dp"
+                                android:layout_height="12dp"
+                                android:layout_marginTop="20dp"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/title_curr_state">
+
+                                <View
+                                    android:id="@+id/line_state"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="7.2"
+                                    android:background="@android:color/holo_green_light" />
+
+                                <View
+                                    android:id="@+id/line_empty"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="3.1"
+                                    android:background="@color/colorBackground" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/lay_curr_state"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:orientation="horizontal"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@id/lay_curr_state_line"
+                                app:layout_constraintStart_toStartOf="@id/lay_curr_state_line"
+                                app:layout_constraintTop_toBottomOf="@id/lay_curr_state_line">
+
+                                <TextView
+                                    android:id="@+id/txv_curr_state_number"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="4dp"
+                                    android:text="@{viewModel.stateNumberStringLive, default=stan}"
+                                    android:textAlignment="viewEnd"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                    android:textColor="@android:color/tertiary_text_dark" />
+
+
+                                <TextView
+                                    android:id="@+id/txv_type"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="4dp"
+                                    android:text="@{viewModel.medicineTypeLive.typeName, default=typ}"
+                                    android:textAlignment="viewStart"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                    android:textColor="@android:color/tertiary_text_dark" />
+                            </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/label_extra_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Dodatkowe informacje"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/txv_extra_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Brak"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            android:textColor="@android:color/tertiary_text_dark"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/label_extra_info" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+            android:layout_marginBottom="8dp"
+            android:text="Zażyj lek"
+            android:textColor="@android:color/white"
+            app:icon="@drawable/cross_icon"
+            app:iconTint="@android:color/white"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_gravity="bottom|center_horizontal" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

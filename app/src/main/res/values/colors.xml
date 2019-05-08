@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f44336</color>
+    <color name="colorPrimaryDark">#f44336</color>
+    <color name="colorAccent">@android:color/white</color>
+
+    <color name="colorBackground">#e0e0e0</color>
+
+    <color name="mtrl_textinput_default_box_stroke_color">#fff</color>
+
+    <color name="colorStateGood">@android:color/holo_green_dark</color>
+    <color name="colorStateMedium">@android:color/holo_orange_dark</color>
+    <color name="colorStateSmall">@android:color/holo_red_dark</color>
+</resources>
