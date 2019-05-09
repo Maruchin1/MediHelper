@@ -43,6 +43,8 @@ object Repository {
 
     fun getMedicineTypeByIdLive(medicineTypeId: Int) = medicineTypeDao.getByIdLive(medicineTypeId)
 
+    fun deleteMedicine(medicine: Medicine) = AsyncTask.execute { medicineDao.delete(medicine) }
+
     fun insertMedicine(medicine: Medicine) {
         Log.d(TAG, "insertMedicine")
         AsyncTask.execute { medicineDao.insertSingle(medicine) }

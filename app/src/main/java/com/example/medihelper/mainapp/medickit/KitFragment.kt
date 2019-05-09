@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
@@ -49,18 +50,15 @@ class KitFragment : Fragment() {
         activity?.let {
             (it as MainActivity).showBottomNav()
         }
-        setupStatusBar()
-        setupMainFab()
+        setupMainActivity()
         setupRecyclerView()
-        observeMedicineTypesList()
-        observeMedicinesList()
-        setupButtons()
+        observeViewModel()
     }
 
-    fun openMedicineDetailsFragment(medicineID: Int, imageView: ImageView) {
-        val extras = FragmentNavigatorExtras(
-            imageView to getString(R.string.shared_image_photo)
-        )
+    fun openMedicineDetailsFragment(medicineID: Int) {
+//        val extras = FragmentNavigatorExtras(
+//            imageView to getString(R.string.shared_image_photo)
+//        )
         val action = KitFragmentDirections.actionKitDestinationToMedicineDetailsFragment(medicineID)
         findNavController().navigate(action)
     }
@@ -79,48 +77,37 @@ class KitFragment : Fragment() {
         return binding.root
     }
 
-    private fun setupStatusBar() {
+    private fun setupMainActivity() {
         activity?.let {
-            (it as MainActivity).setTransparentStatusBar(false)
-        }
-    }
-
-    private fun setupMainFab() {
-        activity?.apply {
-            val activity = (this as MainActivity)
-            activity.setFabIcon(R.drawable.round_add_white_48)
-            activity.findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
-                ?.setOnClickListener { openAddMedicineFragment() }
+            (it as MainActivity).run {
+                setTransparentStatusBar(false)
+                val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
+                fab.apply {
+                    shrink()
+                    setIconResource(R.drawable.round_add_white_48)
+                    text = ""
+                    setOnClickListener { openAddMedicineFragment() }
+                }
+            }
         }
     }
 
     private fun setupRecyclerView() {
         context?.let { context ->
             with(recycler_view) {
-                //                layoutManager = StaggeredGridLayoutManager(2, 1)
-                layoutManager = LinearLayoutManager(context)
+                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                 adapter = KitAdapter(context, this@KitFragment)
+//                addItemDecoration(DividerItemDecoration(this.context, LinearLayoutManager.VERTICAL))
             }
         }
     }
 
-    private fun setupButtons() {
-//        btn_menu.setOnClickListener { openMenuDialogFragment() }
-    }
-
-    private fun observeMedicinesList() {
+    private fun observeViewModel() {
         viewModel.medicinesListLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                (recycler_view.adapter as KitAdapter).setMedicinesList(it)
-            }
+            if (it != null) (recycler_view.adapter as KitAdapter).setMedicinesList(it)
         })
-    }
-
-    private fun observeMedicineTypesList() {
         viewModel.medicineTypesListLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                (recycler_view.adapter as KitAdapter).setMedicineTypesList(it)
-            }
+            if (it != null) (recycler_view.adapter as KitAdapter).setMedicineTypesList(it)
         })
     }
 

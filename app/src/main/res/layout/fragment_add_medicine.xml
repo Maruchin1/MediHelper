@@ -62,250 +62,256 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.Toolbar>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/content_frame"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:background="@drawable/round_top_bg"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_basic_info"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/content_frame"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@android:color/transparent"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:strokeColor="@android:color/darker_gray"
-                    app:strokeWidth="2dp">
+                    android:layout_height="0dp"
+                    android:background="@drawable/round_top_bg"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp">
 
-                    <LinearLayout
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_basic_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:orientation="vertical">
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeColor="@android:color/darker_gray"
+                        app:strokeWidth="2dp">
 
                         <LinearLayout
-                            android:id="@+id/lay_medicine_name"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:orientation="vertical">
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="8dp"
-                                android:src="@drawable/round_local_offer_black_24"
-                                android:tint="@android:color/darker_gray" />
+                            <LinearLayout
+                                android:id="@+id/lay_medicine_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etx_medicine_name"
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="8dp"
+                                    android:src="@drawable/round_local_offer_black_24"
+                                    android:tint="@android:color/darker_gray" />
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etx_medicine_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Nazwa leku"
+                                    android:text="@={viewModel.medicineNameLive}" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/lay_type"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Nazwa leku"
-                                android:text="@={viewModel.medicineNameLive}" />
-                        </LinearLayout>
+                                android:layout_marginTop="16dp">
 
-                        <LinearLayout
-                            android:id="@+id/lay_type"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="8dp"
+                                    android:src="@drawable/round_local_offer_black_24"
+                                    android:tint="@android:color/darker_gray" />
 
-                            <ImageView
-                                android:layout_width="wrap_content"
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="8dp"
+                                    android:text="Jednostka:"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                                <Spinner
+                                    android:id="@+id/spin_medicine_type"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/lay_size"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="8dp"
-                                android:src="@drawable/round_local_offer_black_24"
-                                android:tint="@android:color/darker_gray" />
+                                android:layout_marginTop="16dp">
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="8dp"
+                                    android:src="@drawable/round_local_offer_black_24"
+                                    android:tint="@android:color/darker_gray" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="8dp"
+                                    android:text="Rozmiar opakowania:"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etx_capacity"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:inputType="number"
+                                    android:text="@={viewModel.medicineCapacityLive}" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/lay_curr_state"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="8dp"
-                                android:text="Jednostka:"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                                android:layout_marginTop="16dp"
+                                android:orientation="horizontal">
 
-                            <Spinner
-                                android:id="@+id/spin_medicine_type"
-                                android:layout_width="wrap_content"
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="8dp"
+                                    android:src="@drawable/round_local_offer_black_24"
+                                    android:tint="@android:color/darker_gray" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="8dp"
+                                    android:text="Aktualny stan:"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etx_curr_state"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:inputType="number"
+                                    android:text="@={viewModel.medicineCurrStateLive}" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/lay_expire_date"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="1" />
-                        </LinearLayout>
+                                android:layout_marginTop="16dp">
 
-                        <LinearLayout
-                            android:id="@+id/lay_size"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="8dp"
+                                    android:src="@drawable/round_local_offer_black_24"
+                                    android:tint="@android:color/darker_gray" />
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="8dp"
-                                android:src="@drawable/round_local_offer_black_24"
-                                android:tint="@android:color/darker_gray" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="8dp"
+                                    android:text="Ważny do:"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:text="Rozmiar opakowania:"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:clickable="true"
+                                    android:focusable="false"
+                                    android:inputType="date"
+                                    android:onClick="@{handler::onClickExpireDate}"
+                                    android:text="@{viewModel.medicineExpireDate}" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etx_capacity"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:inputType="number"
-                                android:text="@={viewModel.medicineCapacityLive}" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/lay_curr_state"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="8dp"
-                                android:src="@drawable/round_local_offer_black_24"
-                                android:tint="@android:color/darker_gray" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:text="Aktualny stan:"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etx_curr_state"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:inputType="number"
-                                android:text="@={viewModel.medicineCurrStateLive}" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/lay_expire_date"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="8dp"
-                                android:src="@drawable/round_local_offer_black_24"
-                                android:tint="@android:color/darker_gray" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:text="Ważny do:"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:clickable="true"
-                                android:focusable="false"
-                                android:inputType="date"
-                                android:onClick="@{handler::onClickExpireDate}"
-                                android:text="@{viewModel.medicineExpireDate}" />
+                            </LinearLayout>
 
                         </LinearLayout>
 
-                    </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_extra_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:cardBackgroundColor="@color/colorBackground"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintTop_toBottomOf="@id/card_basic_info"
-                    app:strokeColor="@android:color/darker_gray"
-                    app:strokeWidth="2dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_extra_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="8dp">
+                        android:layout_marginTop="8dp"
+                        app:cardBackgroundColor="@color/colorBackground"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintTop_toBottomOf="@id/card_basic_info"
+                        app:strokeColor="@android:color/darker_gray"
+                        app:strokeWidth="2dp">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Dodatkowy opis"
-                            android:inputType="textMultiLine"
-                            android:minLines="3"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:padding="8dp">
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Dodatkowy opis"
+                                android:inputType="textMultiLine"
+                                android:minLines="3"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                </com.google.android.material.card.MaterialCardView>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/lay_photo"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="8dp"
-                    app:layout_constraintDimensionRatio="4:3"
-                    app:layout_constraintEnd_toStartOf="@id/ver_guideline"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_extra_info"
-                    app:strokeColor="@android:color/darker_gray"
-                    app:strokeWidth="2dp">
+                    </com.google.android.material.card.MaterialCardView>
 
-                    <ImageView
-                        android:id="@+id/img_photo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/colorBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:onClick="@{handler::onClickPhoto}"
-                        android:src="@drawable/baseline_add_a_photo_white_48" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/lay_photo"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:layout_constraintDimensionRatio="4:3"
+                        app:layout_constraintEnd_toStartOf="@id/ver_guideline"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/card_extra_info"
+                        app:strokeColor="@android:color/darker_gray"
+                        app:strokeWidth="2dp">
 
-                </com.google.android.material.card.MaterialCardView>
+                        <ImageView
+                            android:id="@+id/img_photo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:onClick="@{handler::onClickPhoto}"
+                            android:src="@drawable/baseline_add_a_photo_white_48" />
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/ver_guideline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.5" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/ver_guideline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </ScrollView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

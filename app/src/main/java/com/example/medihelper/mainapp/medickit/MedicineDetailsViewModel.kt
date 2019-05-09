@@ -63,6 +63,8 @@ class MedicineDetailsViewModel : ViewModel() {
         }
     }
 
+    fun deleteMedicine() = selectedMedicine.value?.let { Repository.deleteMedicine(it) }
+
     private fun stateWeight(medicine: Medicine) = medicine.currState.div(medicine.packageSize)
 
     private fun stateNumberString(medicine: Medicine): String {

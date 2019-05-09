@@ -325,18 +325,6 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
-            android:layout_marginBottom="8dp"
-            android:text="Zażyj lek"
-            android:textColor="@android:color/white"
-            app:icon="@drawable/cross_icon"
-            app:iconTint="@android:color/white"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_gravity="bottom|center_horizontal" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

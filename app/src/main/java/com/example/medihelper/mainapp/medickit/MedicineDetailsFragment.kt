@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -20,6 +21,7 @@ import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
 import com.example.medihelper.mainapp.MainActivity
 import com.example.medihelper.mainapp.TransitionHelper
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import java.io.File
 
@@ -34,7 +36,6 @@ class MedicineDetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         activity?.run {
             viewModel = ViewModelProviders.of(this).get(MedicineDetailsViewModel::class.java)
-            (this as MainActivity).hideBottomNav()
         }
 //        setupTransition()
     }
@@ -48,27 +49,20 @@ class MedicineDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.let {
-            (it as MainActivity).hideBottomNav()
-        }
-        setupStatusBar()
+        setupMainActivity()
         setupToolbar()
         observeViewModel()
         loadSelectedMedicine()
     }
 
     fun onClickEdit(view: View) {
-//        Toast.makeText(context!!, "Edytuj", Toast.LENGTH_SHORT).show()
         val dialog = TestDialogFragment()
         dialog.show(childFragmentManager, TestDialogFragment.TAG)
     }
 
     fun onClickDelete(view: View) {
-        Toast.makeText(context!!, "Usuń", Toast.LENGTH_SHORT).show()
-    }
-
-    fun onClickTake(view: View) {
-        Toast.makeText(context!!, "Weź", Toast.LENGTH_SHORT).show()
+        viewModel.deleteMedicine()
+        findNavController().popBackStack()
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -91,11 +85,23 @@ class MedicineDetailsFragment : Fragment() {
         collapsing_toolbar.setupWithNavController(toolbar, navController, appBarConfiguration)
     }
 
-
-    private fun setupStatusBar() {
+    private fun setupMainActivity() {
         activity?.let {
-            (it as MainActivity).setTransparentStatusBar(true)
+            (it as MainActivity).run {
+                setTransparentStatusBar(true)
+                val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
+                fab.apply {
+                    setIconResource(R.drawable.cross_icon)
+                    text = "Zażyj lek"
+                    extend()
+                    setOnClickListener { takeMedicine() }
+                }
+            }
         }
+    }
+
+    private fun takeMedicine() {
+        Toast.makeText(context!!, "Zażyj lej", Toast.LENGTH_SHORT).show()
     }
 
     private fun observeViewModel() {
@@ -107,6 +113,20 @@ class MedicineDetailsFragment : Fragment() {
         viewModel.stateColorResIdLive.observe(viewLifecycleOwner, Observer {
             if (it != null) setStateColor(it)
         })
+        viewModel.stateWeightLive.observe(viewLifecycleOwner, Observer {
+            if (it != null) setViewWeight(line_state, it)
+        })
+        viewModel.emptyWeightLive.observe(viewLifecycleOwner, Observer {
+            if (it != null) setViewWeight(line_empty, it)
+        })
+    }
+
+    private fun setViewWeight(view: View, weight: Float) {
+        view.layoutParams = LinearLayout.LayoutParams(
+            0,
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            weight
+        )
     }
 
     private fun setMedicinePicture(photoFile: File) {

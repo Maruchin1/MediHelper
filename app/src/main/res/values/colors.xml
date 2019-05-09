@@ -2,9 +2,9 @@
 <resources>
     <color name="colorPrimary">#f44336</color>
     <color name="colorPrimaryDark">#f44336</color>
-    <color name="colorAccent">@android:color/white</color>
+    <color name="colorAccent">#82b1ff</color>
 
-    <color name="colorBackground">#e0e0e0</color>
+    <color name="colorBackground">#f0f0f0</color>
 
     <color name="mtrl_textinput_default_box_stroke_color">#fff</color>
 

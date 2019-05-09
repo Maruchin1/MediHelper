@@ -23,7 +23,6 @@ import com.example.medihelper.databinding.FragmentAddMedicineBinding
 import com.example.medihelper.localdatabase.entities.MedicineType
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_add_medicine.*
 
 
@@ -51,7 +50,7 @@ class AddMedicineFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupMainFab()
+        setupMainActivity()
         observeMedicineTypeList()
         observeTmpFile()
         setupSpinMedicineType()
@@ -92,13 +91,16 @@ class AddMedicineFragment : Fragment() {
         return binding.root
     }
 
-    private fun setupMainFab() {
-        activity?.apply {
-            val activity = (this as MainActivity)
-            activity.findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)?.apply {
-                extend()
-                setIconResource(R.drawable.round_save_white_48)
-                setOnClickListener { saveNewMedicine() }
+    private fun setupMainActivity() {
+        activity?.let {
+            (it as MainActivity).run {
+                val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
+                fab.apply {
+                    setIconResource(R.drawable.round_save_white_48)
+                    text = "Zapisz"
+                    extend()
+                    setOnClickListener { saveNewMedicine() }
+                }
             }
         }
     }

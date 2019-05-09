@@ -114,8 +114,9 @@ class AddMedicineViewModel : ViewModel() {
             context,
             R.style.DateDialogPicker,
             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                val correctMonth = month + 1
                 val selectedDay = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
-                val selectedMonth = if (month < 10) "0$month" else "$month"
+                val selectedMonth = if (correctMonth < 10) "0$correctMonth" else "$correctMonth"
                 medicineExpireDate.value = "$selectedDay-$selectedMonth-$year"
             },
             currYear,
