@@ -40,17 +40,17 @@ class KitAdapter(private val context: Context, private val kitFragment: KitFragm
         }
 
         viewHolder.apply {
-//            Glide.with(context)
-//                .load(File(medicine.photoFilePath))
-//                .centerCrop()
-//                .into(imgPhoto)
+            Glide.with(context)
+                .load(File(medicine.photoFilePath))
+                .centerCrop()
+                .into(imgPhoto)
             txvMedicineName.text = medicine.name
             txvState.text = stateString
             txvType.text = medicineType?.typeName ?: "brak typu"
             setLayoutWeight(state, lineState)
             setLayoutWeight(empty, lineEmpty)
             lineState.setBackgroundResource(stateColorResId(state))
-            txvExpireDate.text = medicine.expireDate
+//            txvExpireDate.text = medicine.expireDate
             layClick.setOnClickListener {
                 kitFragment.openMedicineDetailsFragment(medicine.medicineID!!)
             }
@@ -95,7 +95,8 @@ class KitAdapter(private val context: Context, private val kitFragment: KitFragm
         val lineEmpty: View = itemView.findViewById(R.id.line_empty)
         val txvState: TextView = itemView.findViewById(R.id.txv_state)
         val txvType: TextView = itemView.findViewById(R.id.txv_type)
-        val txvExpireDate: TextView = itemView.findViewById(R.id.txv_expire_date)
+//        val txvExpireDate: TextView = itemView.findViewById(R.id.txv_expire_date)
         val layClick: FrameLayout = itemView.findViewById(R.id.lay_click)
+        val imgPhoto: ImageView = itemView.findViewById(R.id.img_photo)
     }
 }

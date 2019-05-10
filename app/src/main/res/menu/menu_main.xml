@@ -9,7 +9,7 @@
     <item
         android:id="@+id/kit_destination"
         android:title="Apteczka"
-        android:icon="@drawable/baseline_healing_black_48"/>
+        android:icon="@drawable/round_healing_black_48"/>
 
     <item
         android:id="@+id/menu_destination"
