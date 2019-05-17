@@ -9,7 +9,7 @@ import com.example.medihelper.localdatabase.dao.MedicineTypeDAO
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 
-@Database(entities = [Medicine::class, MedicineType::class], version = 2, exportSchema = false)
+@Database(entities = [Medicine::class, MedicineType::class], version = 3, exportSchema = false)
 abstract class LocalDatabase : RoomDatabase() {
 
     abstract fun medicineDao(): MedicineDAO

@@ -26,6 +26,7 @@ class MedicineDetailsViewModel : ViewModel() {
     val medicineTypeLive: LiveData<MedicineType>
     val expireDateLive: LiveData<String>
     val daysRemainsLive: LiveData<String>
+    val comments: LiveData<String>
 
     init {
         selectedMedicine = Transformations.switchMap(selectedMedicineID) { medicineID ->
@@ -48,6 +49,9 @@ class MedicineDetailsViewModel : ViewModel() {
         }
         daysRemainsLive = Transformations.map(selectedMedicine) {
             daysRemainsString(it)
+        }
+        comments = Transformations.map(selectedMedicine) {
+            it.comments
         }
         stateWeightLive = Transformations.map(selectedMedicine) {
             stateWeight(it)

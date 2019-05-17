@@ -27,11 +27,12 @@ class AddMedicineViewModel : ViewModel() {
     val medicineTypesListLive = Repository.getMedicineTypesLive()
     val tmpPhotoFileLive = MutableLiveData<File>()
 
-    val medicineNameLive = MutableLiveData<String>()
+    val nameLive = MutableLiveData<String>()
     val medicineTypeLive = MutableLiveData<MedicineType>()
-    val medicineCapacityLive = MutableLiveData<String>()
-    val medicineCurrStateLive = MutableLiveData<String>()
-    val medicineExpireDate = MutableLiveData<String>()
+    val capacityLive = MutableLiveData<String>()
+    val currStateLive = MutableLiveData<String>()
+    val expireDateLive = MutableLiveData<String>()
+    val commentsLive = MutableLiveData<String>()
 
     init {
         defaultMedicineLive = Transformations.switchMap(defaultMedicineIdLive) {
@@ -45,11 +46,11 @@ class AddMedicineViewModel : ViewModel() {
             if (it != null) {
                 val medicineType = medicineTypesListLive.value?.find { medicineType ->
                     medicineType.medicineTypeID == it.medicineTypeID }
-                medicineNameLive.value = it.name
+                nameLive.value = it.name
                 medicineTypeLive.value = medicineType
-                medicineCapacityLive.value = it.packageSize.toString()
-                medicineCurrStateLive.value = it.currState.toString()
-                medicineExpireDate.value = it.expireDate
+                capacityLive.value = it.packageSize.toString()
+                currStateLive.value = it.currState.toString()
+                expireDateLive.value = it.expireDate
                 tmpPhotoFileLive.value = File(it.photoFilePath)
             }
         }
@@ -63,16 +64,17 @@ class AddMedicineViewModel : ViewModel() {
 
     fun saveNewMedicine(context: Context): Boolean {
         Log.d(TAG, "onClickSaveNewMedicine")
-        val name = medicineNameLive.value
+        val name = nameLive.value
         val type = medicineTypeLive.value
-        val capacity = medicineCapacityLive.value
-        val currState = medicineCurrStateLive.value
+        val capacity = capacityLive.value
+        val currState = currStateLive.value
         val photoFilePath = tmpPhotoFileLive.value?.let {
             Repository.createPhotoFileFromTemp(it).absolutePath
         } ?: ""
-        val expireDate = medicineExpireDate.value
+        val expireDate = expireDateLive.value
+        val comments = commentsLive.value
 
-        val attributes = arrayOf(name, type, capacity, currState, expireDate)
+        val attributes = arrayOf(name, type, capacity, currState, expireDate, comments)
         if (attributes.all { attribute -> attribute != null }) {
             val medicine = Medicine(
                 name = name!!,
@@ -80,7 +82,8 @@ class AddMedicineViewModel : ViewModel() {
                 packageSize = capacity!!.toFloat(),
                 currState = currState!!.toFloat(),
                 photoFilePath = photoFilePath,
-                expireDate = expireDate!!
+                expireDate = expireDate!!,
+                comments = comments!!
             )
             Repository.insertMedicine(medicine)
             return true
@@ -117,7 +120,7 @@ class AddMedicineViewModel : ViewModel() {
                 val correctMonth = month + 1
                 val selectedDay = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
                 val selectedMonth = if (correctMonth < 10) "0$correctMonth" else "$correctMonth"
-                medicineExpireDate.value = "$selectedDay-$selectedMonth-$year"
+                expireDateLive.value = "$selectedDay-$selectedMonth-$year"
             },
             currYear,
             currMonth,
@@ -127,11 +130,11 @@ class AddMedicineViewModel : ViewModel() {
 
     fun resetViewModel() {
         val fieldsLive = arrayOf(
-            medicineNameLive,
+            nameLive,
             medicineTypeLive,
-            medicineCapacityLive,
-            medicineCurrStateLive,
-            medicineExpireDate
+            capacityLive,
+            currStateLive,
+            expireDateLive
         )
         fieldsLive.forEach { field ->
             field.value = null

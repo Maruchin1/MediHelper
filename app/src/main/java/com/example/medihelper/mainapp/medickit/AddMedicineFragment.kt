@@ -12,10 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageButton
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import androidx.transition.*
 import com.bumptech.glide.Glide
 
 import com.example.medihelper.R
@@ -50,7 +54,10 @@ class AddMedicineFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.resetViewModel()
+        initialColapsCards()
         setupMainActivity()
+        setupToolbar()
         observeMedicineTypeList()
         observeTmpFile()
         setupSpinMedicineType()
@@ -66,10 +73,6 @@ class AddMedicineFragment : Fragment() {
         }
     }
 
-    fun onClickBack(view: View) {
-        findNavController().popBackStack()
-    }
-
     fun onClickPhoto(view: View) {
         activity?.let {
             val intent = viewModel.takePhotoIntent(it)
@@ -83,12 +86,27 @@ class AddMedicineFragment : Fragment() {
         }
     }
 
+    fun onClickExpandCard(btnView: View) {
+        when (btnView) {
+            btn_expand_collaps_package -> animateExpandCollapsCard(btnView, lay_package)
+            btn_expand_collaps_comment -> animateExpandCollapsCard(btnView, etx_comment)
+            btn_expand_collaps_image -> animateExpandCollapsCard(btnView, lay_image)
+        }
+    }
+
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: FragmentAddMedicineBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_medicine, container, false)
+        val binding: FragmentAddMedicineBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_medicine, container, false)
         binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
+    }
+
+    private fun setupToolbar() {
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     private fun setupMainActivity() {
@@ -105,6 +123,44 @@ class AddMedicineFragment : Fragment() {
         }
     }
 
+    private fun initialColapsCards() {
+        val iconExpandRes = R.drawable.round_keyboard_arrow_down_black_36
+        arrayOf(
+            lay_package,
+            etx_comment,
+            lay_image
+        ).forEach {
+            it.visibility = View.GONE
+        }
+        arrayOf(
+            btn_expand_collaps_package,
+            btn_expand_collaps_comment,
+            btn_expand_collaps_image
+        ).forEach {
+            it.setImageResource(iconExpandRes)
+        }
+    }
+
+    private fun animateExpandCollapsCard(btnView: View, contentView: View) {
+        val iconExpandRes = R.drawable.round_keyboard_arrow_down_black_36
+        val iconCollapsRes = R.drawable.round_keyboard_arrow_up_black_36
+        TransitionManager.beginDelayedTransition(items_root, AutoTransition())
+        var btnIconRes = -1
+        when (contentView.visibility) {
+            View.GONE -> {
+                contentView.visibility = View.VISIBLE
+                btnIconRes = iconCollapsRes
+            }
+            View.VISIBLE -> {
+                contentView.visibility = View.GONE
+                btnIconRes = iconExpandRes
+            }
+        }
+        if (btnView is ImageButton) {
+            btnView.setImageResource(btnIconRes)
+        }
+    }
+
     private fun saveNewMedicine() {
         context?.let {
             val medicineAdded = viewModel.saveNewMedicine(it)
@@ -116,17 +172,17 @@ class AddMedicineFragment : Fragment() {
     }
 
     private fun observeDefMedicineId() {
-        viewModel.defaultMedicineIdLive.observe(viewLifecycleOwner, Observer {  })
+        viewModel.defaultMedicineIdLive.observe(viewLifecycleOwner, Observer { })
     }
 
     private fun observeTmpFile() {
-        viewModel.tmpPhotoFileLive.observe(viewLifecycleOwner, Observer {  })
+        viewModel.tmpPhotoFileLive.observe(viewLifecycleOwner, Observer { })
     }
 
     private fun setupSpinMedicineType() {
         spin_medicine_type.adapter = medicineTypeAdapter
         spin_medicine_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) { }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
 
             override fun onItemSelected(
                 parent: AdapterView<*>?,

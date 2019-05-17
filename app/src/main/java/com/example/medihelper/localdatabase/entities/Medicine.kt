@@ -32,5 +32,7 @@ data class Medicine(
     var photoFilePath: String,
 
     @ColumnInfo(name = "expire_date")
-    var expireDate: String
+    var expireDate: String,
+
+    var comments: String
 )

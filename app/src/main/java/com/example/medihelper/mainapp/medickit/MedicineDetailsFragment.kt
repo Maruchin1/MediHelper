@@ -56,8 +56,9 @@ class MedicineDetailsFragment : Fragment() {
     }
 
     fun onClickEdit(view: View) {
-        val dialog = TestDialogFragment()
-        dialog.show(childFragmentManager, TestDialogFragment.TAG)
+        findNavController().navigate(MedicineDetailsFragmentDirections.actionMedicineDetailsDestinationToAddMedicineDestination())
+//        val dialog = TestDialogFragment()
+//        dialog.show(childFragmentManager, TestDialogFragment.TAG)
     }
 
     fun onClickDelete(view: View) {
@@ -81,7 +82,7 @@ class MedicineDetailsFragment : Fragment() {
 
     private fun setupToolbar() {
         val navController = findNavController()
-        val appBarConfiguration =  AppBarConfiguration(navController.graph)
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
         collapsing_toolbar.setupWithNavController(toolbar, navController, appBarConfiguration)
     }
 
@@ -105,8 +106,8 @@ class MedicineDetailsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.selectedMedicineID.observe(viewLifecycleOwner, Observer {  })
-        viewModel.selectedMedicine.observe(viewLifecycleOwner, Observer {  })
+        viewModel.selectedMedicineID.observe(viewLifecycleOwner, Observer { })
+        viewModel.selectedMedicine.observe(viewLifecycleOwner, Observer { })
         viewModel.photoLive.observe(viewLifecycleOwner, Observer {
             if (it != null) setMedicinePicture(it)
         })
