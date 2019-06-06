@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -55,7 +56,7 @@ class AddMedicineFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.resetViewModel()
-        initialColapsCards()
+        initialCollapsCards()
         setupMainActivity()
         setupToolbar()
         observeMedicineTypeList()
@@ -86,11 +87,11 @@ class AddMedicineFragment : Fragment() {
         }
     }
 
-    fun onClickExpandCard(btnView: View) {
-        when (btnView) {
-            btn_expand_collaps_package -> animateExpandCollapsCard(btnView, lay_package)
-            btn_expand_collaps_comment -> animateExpandCollapsCard(btnView, etx_comment)
-            btn_expand_collaps_image -> animateExpandCollapsCard(btnView, lay_image)
+    fun onClickExpandCard(headerView: View) {
+        when (headerView) {
+            lay_package_header -> animateExpandCollapsCard(img_package_card_indicator, lay_package)
+            lay_comment_header -> animateExpandCollapsCard(img_comment_card_indicator, etx_comment)
+            lay_photo_header -> animateExpandCollapsCard(img_photo_card_indicator, lay_image)
         }
     }
 
@@ -123,7 +124,7 @@ class AddMedicineFragment : Fragment() {
         }
     }
 
-    private fun initialColapsCards() {
+    private fun initialCollapsCards() {
         val iconExpandRes = R.drawable.round_keyboard_arrow_down_black_36
         arrayOf(
             lay_package,
@@ -133,15 +134,15 @@ class AddMedicineFragment : Fragment() {
             it.visibility = View.GONE
         }
         arrayOf(
-            btn_expand_collaps_package,
-            btn_expand_collaps_comment,
-            btn_expand_collaps_image
+            img_package_card_indicator,
+            img_comment_card_indicator,
+            img_photo_card_indicator
         ).forEach {
             it.setImageResource(iconExpandRes)
         }
     }
 
-    private fun animateExpandCollapsCard(btnView: View, contentView: View) {
+    private fun animateExpandCollapsCard(indicatorView: View, contentView: View) {
         val iconExpandRes = R.drawable.round_keyboard_arrow_down_black_36
         val iconCollapsRes = R.drawable.round_keyboard_arrow_up_black_36
         TransitionManager.beginDelayedTransition(items_root, AutoTransition())
@@ -156,8 +157,8 @@ class AddMedicineFragment : Fragment() {
                 btnIconRes = iconExpandRes
             }
         }
-        if (btnView is ImageButton) {
-            btnView.setImageResource(btnIconRes)
+        if (indicatorView is ImageView) {
+            indicatorView.setImageResource(btnIconRes)
         }
     }
 

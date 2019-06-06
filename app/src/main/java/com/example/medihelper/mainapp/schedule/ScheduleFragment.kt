@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
@@ -44,7 +45,7 @@ class ScheduleFragment : Fragment() {
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
         val binding: FragmentScheduleBinding =
-                DataBindingUtil.inflate(inflater, R.layout.fragment_schedule, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule, container, false)
         binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
@@ -60,7 +61,7 @@ class ScheduleFragment : Fragment() {
                     shrink()
                     setIconResource(R.drawable.round_add_alert_white_48)
                     text = ""
-                    setOnClickListener {  }
+                    setOnClickListener { openAddToScheduleFragment() }
                 }
             }
         }
@@ -72,5 +73,11 @@ class ScheduleFragment : Fragment() {
         dates_view_pager.adapter = adapter
         dates_tab_lay.setupWithViewPager(dates_view_pager)
         dates_view_pager.currentItem = DaySchedulePagerAdapter.TODAY_INDEX
+    }
+
+    private fun openAddToScheduleFragment() {
+        findNavController().navigate(
+            ScheduleFragmentDirections.actionScheduleDestinationToAddToScheduleDestination()
+        )
     }
 }

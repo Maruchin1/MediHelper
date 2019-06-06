@@ -129,14 +129,14 @@ class AddMedicineViewModel : ViewModel() {
     }
 
     fun resetViewModel() {
-        val fieldsLive = arrayOf(
+        arrayOf(
             nameLive,
             medicineTypeLive,
             capacityLive,
             currStateLive,
-            expireDateLive
-        )
-        fieldsLive.forEach { field ->
+            expireDateLive,
+            commentsLive
+        ).forEach { field ->
             field.value = null
         }
     }
