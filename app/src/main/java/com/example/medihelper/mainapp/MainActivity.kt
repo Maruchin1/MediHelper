@@ -18,10 +18,6 @@ class MainActivity : AppCompatActivity() {
         setupNavigation()
     }
 
-    fun setFabIcon(resId: Int) {
-        btn_floating_action.setIconResource(resId)
-    }
-
     fun setTransparentStatusBar(isTransparent: Boolean) {
         when(isTransparent) {
             true -> window.statusBarColor = Color.TRANSPARENT
