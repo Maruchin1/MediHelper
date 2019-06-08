@@ -8,8 +8,7 @@
     <fragment
         android:id="@+id/schedule_destination"
         android:name="com.example.medihelper.mainapp.schedule.ScheduleFragment"
-        android:label="Dzisiaj"
-        tools:layout="@layout/fragment_schedule" >
+        tools:layout="@layout/fragment_schedule">
         <action
             android:id="@+id/action_schedule_destination_to_add_to_schedule_destination"
             app:destination="@id/add_to_schedule_destination"
@@ -21,8 +20,7 @@
     <fragment
         android:id="@+id/kit_destination"
         android:name="com.example.medihelper.mainapp.medickit.KitFragment"
-        android:label="Apteczka"
-        tools:layout="@layout/fragment_kit" >
+        tools:layout="@layout/fragment_kit">
         <action
             android:id="@+id/action_kit_destination_to_addMedicineFragment"
             app:destination="@+id/add_medicine_destination"

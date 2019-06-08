@@ -35,4 +35,6 @@ data class Medicine(
     var expireDate: String,
 
     var comments: String
-)
+) {
+    fun calcMedicineState() = currState.div(packageSize)
+}

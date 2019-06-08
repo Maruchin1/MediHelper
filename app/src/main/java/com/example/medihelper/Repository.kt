@@ -8,8 +8,10 @@ import androidx.lifecycle.LiveData
 import com.example.medihelper.localdatabase.LocalDatabase
 import com.example.medihelper.localdatabase.dao.MedicineDAO
 import com.example.medihelper.localdatabase.dao.MedicineTypeDAO
+import com.example.medihelper.localdatabase.dao.ScheduledMedicineDAO
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
+import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,6 +21,7 @@ object Repository {
 
     private lateinit var medicineDao: MedicineDAO
     private lateinit var medicineTypeDao: MedicineTypeDAO
+    private lateinit var scheduledMedicineDao: ScheduledMedicineDAO
     private var photosDir: File? = null
 
     private lateinit var medicinesLive: LiveData<List<Medicine>>
@@ -29,6 +32,7 @@ object Repository {
         val database = LocalDatabase.getInstance(app.applicationContext)
         medicineDao = database.medicineDao()
         medicineTypeDao = database.medicineTypeDao()
+        scheduledMedicineDao = database.scheduledMedicineDao()
         initDatabaseData()
         photosDir = app.applicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
@@ -43,6 +47,8 @@ object Repository {
 
     fun getMedicineTypeByIdLive(medicineTypeId: Int) = medicineTypeDao.getByIdLive(medicineTypeId)
 
+    fun getScheduledMedicinesByDateLive(date: String) = scheduledMedicineDao.getByDate(date)
+
     fun deleteMedicine(medicine: Medicine) = AsyncTask.execute { medicineDao.delete(medicine) }
 
     fun insertMedicine(medicine: Medicine) {
@@ -52,6 +58,10 @@ object Repository {
 
     fun insertMedicineType(medicineType: MedicineType) {
         AsyncTask.execute { medicineTypeDao.insertSingle(medicineType) }
+    }
+
+    fun insertAllScheduledMedicines(list: List<ScheduledMedicine>) {
+        AsyncTask.execute { scheduledMedicineDao.insertAll(list) }
     }
 
     fun createTempPhotoFile(): File {

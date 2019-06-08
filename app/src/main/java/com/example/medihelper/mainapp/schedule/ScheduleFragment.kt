@@ -58,8 +58,12 @@ class ScheduleFragment : Fragment() {
                 setTransparentStatusBar(false)
                 val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
                 fab.apply {
+                    show(true)
+//                    if (isHidden) {
+//                        show()
+//                    }
                     shrink()
-                    setIconResource(R.drawable.round_add_alert_white_48)
+                    setIconResource(R.drawable.round_add_white_48)
                     text = ""
                     setOnClickListener { openAddToScheduleFragment() }
                 }

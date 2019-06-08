@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginBottom="8dp"
+    android:gravity="center">
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.Chip.Action"
+        android:text="00:00"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etx_number"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="1"
+        android:inputType="numberDecimal"
+        android:textAlignment="viewEnd"/>
+
+    <TextView
+        android:id="@+id/txv_medicine_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="typ leku"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:textColor="@android:color/tertiary_text_dark"/>
+
+</LinearLayout>

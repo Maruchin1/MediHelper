@@ -22,7 +22,7 @@ class KitAdapter(private val context: Context, private val kitFragment: KitFragm
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): KitViewHolder {
         val itemView =
-            LayoutInflater.from(context).inflate(R.layout.recyler_item_kit, viewGroup, false)
+            LayoutInflater.from(context).inflate(R.layout.recycler_item_kit, viewGroup, false)
         return KitViewHolder(itemView)
     }
 
@@ -32,7 +32,7 @@ class KitAdapter(private val context: Context, private val kitFragment: KitFragm
 
     override fun onBindViewHolder(viewHolder: KitViewHolder, position: Int) {
         val medicine = medicinesList[position]
-        val state = medicine.currState.div(medicine.packageSize)
+        val state = medicine.calcMedicineState()
         val empty = 1 - state
         val stateString = "${medicine.currState}/${medicine.packageSize}"
         val medicineType = medicineTypesList.find { medicineType ->

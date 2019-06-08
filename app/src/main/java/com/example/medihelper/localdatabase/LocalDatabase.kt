@@ -6,14 +6,17 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.medihelper.localdatabase.dao.MedicineDAO
 import com.example.medihelper.localdatabase.dao.MedicineTypeDAO
+import com.example.medihelper.localdatabase.dao.ScheduledMedicineDAO
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
+import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 
-@Database(entities = [Medicine::class, MedicineType::class], version = 3, exportSchema = false)
+@Database(entities = [Medicine::class, MedicineType::class, ScheduledMedicine::class], version = 4, exportSchema = false)
 abstract class LocalDatabase : RoomDatabase() {
 
     abstract fun medicineDao(): MedicineDAO
     abstract fun medicineTypeDao(): MedicineTypeDAO
+    abstract fun scheduledMedicineDao(): ScheduledMedicineDAO
 
     companion object {
         private const val DATABASE_NAME = "local-database"

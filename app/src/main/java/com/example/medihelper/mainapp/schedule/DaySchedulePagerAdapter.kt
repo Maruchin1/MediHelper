@@ -15,7 +15,7 @@ class DaySchedulePagerAdapter(fragmentManager: FragmentManager) :
     val dayScheduleFragment = DayScheduleFragment()
 
     override fun getItem(position: Int): Fragment {
-        return DayScheduleFragment()
+        return DayScheduleFragment.getInstance(datesList[position])
     }
 
     override fun getCount(): Int {
