@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    tools:context=".mainapp.schedule.DayScheduleFragment">
+    tools:context=".mainapp.schedule.ScheduleDayFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/recycler_item_schedule"/>
+        tools:listitem="@layout/recycler_item_schedule_medicine"/>
 
 </FrameLayout>

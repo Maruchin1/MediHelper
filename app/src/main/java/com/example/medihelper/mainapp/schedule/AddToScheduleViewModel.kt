@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.medihelper.DateUtil
 import com.example.medihelper.R
 import com.example.medihelper.Repository
 import com.example.medihelper.localdatabase.entities.Medicine
@@ -31,7 +32,7 @@ class AddToScheduleViewModel : ViewModel() {
             it.name
         }
         selectedMedicineStateLive = Transformations.map(selectedMedicineLive) {
-            val state = it.calcMedicineState()
+            val state = "${it.currState}/${it.packageSize}"
             val type = findMedicineTypeName(it.medicineTypeID)
             "Aktualny stan: $state $type"
         }
@@ -57,7 +58,7 @@ class AddToScheduleViewModel : ViewModel() {
             for (doseHour in doseHours) {
                 ScheduledMedicine(
                     medicineID = medicine.medicineID!!,
-                    date = day,
+                    date = DateUtil.stringToDate(day),
                     time = doseHour.hour,
                     doseSize = doseHour.doseSize
                 ).let {

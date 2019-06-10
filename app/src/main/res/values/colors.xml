@@ -5,7 +5,7 @@
     <color name="colorAccent">#f44336</color>
     <color name="colorPrimaryLight">#ff7961</color>
 
-    <color name="colorBackground">#f0f0f0</color>
+    <color name="colorBackground">#f5f5f5</color>
 
     <color name="mtrl_textinput_default_box_stroke_color">#fff</color>
 
@@ -14,5 +14,8 @@
     <color name="colorStateSmall">@android:color/holo_red_dark</color>
 
     <color name="colorDivider">#000000</color>
+
+    <color name="textColorSecondary">#99ffffff</color>
+    <color name="textColorDisabled">#66ffffff</color>
 
 </resources>

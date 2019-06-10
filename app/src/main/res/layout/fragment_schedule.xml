@@ -24,75 +24,105 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:elevation="0dp">
+            android:background="@color/colorPrimary">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-                app:titleEnabled="false">
+                app:layout_scrollFlags="noScroll">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="?actionBarSize"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    app:layout_collapseMode="parallax">
+                    app:layout_collapseMode="none">
 
                     <ImageView
-                        android:id="@+id/img_person"
+                        android:id="@+id/img_logo"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginStart="120dp"
-                        android:layout_marginEnd="120dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:src="@drawable/cross_icon"
+                        android:tint="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_title"
                         app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/txv_title" />
+
+                    <TextView
+                        android:id="@+id/txv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Plan"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                        android:textColor="@android:color/white"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/label_scheduled_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Leków na dzień:"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txv_title" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="0"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="@id/label_scheduled_count"
+                        app:layout_constraintStart_toEndOf="@id/label_scheduled_count"
+                        app:layout_constraintTop_toTopOf="@id/label_scheduled_count" />
+
+                    <TextView
+                        android:id="@+id/label_taken_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Przyjęto:"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintBottom_toTopOf="@id/tab_lay_dates"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/label_scheduled_count" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="0"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="@id/label_taken_count"
+                        app:layout_constraintStart_toEndOf="@id/label_taken_count"
+                        app:layout_constraintTop_toTopOf="@id/label_taken_count" />
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tab_lay_dates"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:tabIndicatorColor="@android:color/white"
+                        app:tabMode="scrollable"
+                        app:tabSelectedTextColor="@android:color/white"
+                        app:tabTextColor="@color/textColorDisabled" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.appcompat.widget.Toolbar
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@drawable/appbar_round_bg"
-                    app:layout_collapseMode="pin">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="18dp">
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:src="@drawable/cross_icon"
-                            android:tint="@android:color/white"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintDimensionRatio="1:1"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Harmonogram"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                            android:textColor="@android:color/white"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.appcompat.widget.Toolbar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -100,46 +130,14 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/round_top_bg"
-            android:elevation="8dp"
+            android:background="@color/colorBackground"
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="1dp"
-                        android:background="@android:color/darker_gray"
-                        app:layout_constraintBottom_toBottomOf="@id/dates_tab_lay"/>
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/dates_tab_lay"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        app:tabMode="scrollable"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:tabIndicatorHeight="3dp"/>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/dates_view_pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </androidx.viewpager.widget.ViewPager>
-            </LinearLayout>
+                android:layout_height="match_parent" />
 
         </androidx.core.widget.NestedScrollView>
 

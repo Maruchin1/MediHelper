@@ -47,7 +47,7 @@ object Repository {
 
     fun getMedicineTypeByIdLive(medicineTypeId: Int) = medicineTypeDao.getByIdLive(medicineTypeId)
 
-    fun getScheduledMedicinesByDateLive(date: String) = scheduledMedicineDao.getByDate(date)
+    fun getScheduledMedicinesByDateLive(date: Date) = scheduledMedicineDao.getByDate(date)
 
     fun deleteMedicine(medicine: Medicine) = AsyncTask.execute { medicineDao.delete(medicine) }
 

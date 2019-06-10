@@ -80,6 +80,7 @@ class KitFragment : Fragment() {
                 setTransparentStatusBar(false)
                 val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
                 fab.apply {
+                    show()
                     shrink()
                     setIconResource(R.drawable.round_add_white_48)
                     text = ""

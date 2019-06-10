@@ -68,14 +68,12 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
-                    android:layout_marginEnd="16dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    android:layout_marginEnd="16dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -137,14 +135,12 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
-                    android:layout_marginEnd="16dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    android:layout_marginEnd="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -213,15 +209,13 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="12dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    android:layout_marginBottom="12dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -263,17 +257,17 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="16dp"
                             android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
                             android:layout_marginEnd="16dp"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/round_alarm_black_24"
-                                android:tint="@android:color/tertiary_text_dark"/>
+                                android:tint="@android:color/tertiary_text_dark" />
 
                             <TextView
                                 android:id="@+id/txv_before_number"
@@ -282,7 +276,7 @@
                                 android:layout_marginStart="16dp"
                                 android:text="Co"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:textColor="@android:color/tertiary_text_dark"/>
+                                android:textColor="@android:color/tertiary_text_dark" />
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etx_number"
@@ -290,7 +284,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:inputType="numberDecimal"
-                                android:textAlignment="viewEnd"/>
+                                android:textAlignment="viewEnd" />
 
                             <TextView
                                 android:id="@+id/txv_after_number"
@@ -299,7 +293,7 @@
                                 android:layout_marginStart="16dp"
                                 android:text="godzin"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:textColor="@android:color/tertiary_text_dark"/>
+                                android:textColor="@android:color/tertiary_text_dark" />
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -307,7 +301,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="16dp"
-                            tools:listitem="@layout/recycler_item_dose_hour"/>
+                            tools:listitem="@layout/recycler_item_dose_hour" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

@@ -2,19 +2,23 @@ package com.example.medihelper.mainapp.schedule
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.medihelper.DateUtil
 
 import com.example.medihelper.R
 import kotlinx.android.synthetic.main.fragment_schedule_list.*
+import java.util.*
 
 
-class DayScheduleFragment : Fragment() {
+class ScheduleDayFragment : Fragment() {
 
     private lateinit var viewModel: ScheduleViewModel
 
@@ -36,32 +40,33 @@ class DayScheduleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         arguments?.let { args ->
-            args.getString(ARG_DATE)?.let { date ->
-                observeViewModel(date)
+            args.getString(ARG_DATE)?.let { dateString ->
+                observeViewModel(DateUtil.stringToDate(dateString))
             }
         }
     }
 
-    private fun observeViewModel(date: String) {
+    private fun observeViewModel(date: Date) {
         viewModel.getScheduledMedicinesByDateLive(date).observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                (recycler_view.adapter as DayScheduleAdapter).setScheduledMedicinesList(it)
+                (recycler_view.adapter as ScheduleMedicineAdapter).setScheduledMedicinesList(it)
             }
         })
     }
 
     private fun setupRecyclerView() {
         context?.run {
-            recycler_view.adapter = DayScheduleAdapter(this)
+            recycler_view.adapter = ScheduleMedicineAdapter(this, viewModel)
             recycler_view.layoutManager = LinearLayoutManager(this)
+            recycler_view.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         }
     }
 
     companion object {
         val ARG_DATE = "arg-date"
 
-        fun getInstance(date: String): DayScheduleFragment {
-            val instance = DayScheduleFragment()
+        fun getInstance(date: String): ScheduleDayFragment {
+            val instance = ScheduleDayFragment()
             val args = Bundle()
             args.putString(ARG_DATE, date)
             instance.arguments = args

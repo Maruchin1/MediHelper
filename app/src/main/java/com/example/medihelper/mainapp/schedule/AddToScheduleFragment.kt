@@ -139,7 +139,7 @@ class AddToScheduleFragment : Fragment() {
                 R.id.chip_interval -> changeDoseTimeFragment(intervalFragment)
             }
         }
-        chip_group_dose_days.check(R.id.chip_everyday)
+        chip_group_dose_days.check(R.id.chip_single)
     }
 
     private fun setupDoseHourChipGroup() {

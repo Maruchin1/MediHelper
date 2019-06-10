@@ -7,15 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
 
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_schedule.*
-import java.util.*
 
 
 class ScheduleFragment : Fragment() {
@@ -41,6 +43,7 @@ class ScheduleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupMainActivity()
         setupDatesViewPager()
+        observeViewModel()
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -63,7 +66,7 @@ class ScheduleFragment : Fragment() {
 //                        show()
 //                    }
                     shrink()
-                    setIconResource(R.drawable.round_add_white_48)
+                    setIconResource(R.drawable.baseline_add_alert_black_48)
                     text = ""
                     setOnClickListener { openAddToScheduleFragment() }
                 }
@@ -72,16 +75,36 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun setupDatesViewPager() {
-        val adapter = DaySchedulePagerAdapter(childFragmentManager)
-        dates_view_pager.offscreenPageLimit = 1
-        dates_view_pager.adapter = adapter
-        dates_tab_lay.setupWithViewPager(dates_view_pager)
-        dates_view_pager.currentItem = DaySchedulePagerAdapter.TODAY_INDEX
+        val adapter = ScheduleDayAdapter(childFragmentManager, viewModel)
+        view_pager.offscreenPageLimit = 1
+        view_pager.adapter = adapter
+        view_pager.currentItem = ScheduleDayAdapter.TODAY_INDEX
+        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {}
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {}
+
+            override fun onPageSelected(position: Int) {
+                (view_pager.adapter as ScheduleDayAdapter).datesList[position].let { date ->
+                    viewModel.currDateLive.value = date
+                }
+            }
+        })
+        tab_lay_dates.setupWithViewPager(view_pager)
     }
 
     private fun openAddToScheduleFragment() {
         findNavController().navigate(
             ScheduleFragmentDirections.actionScheduleDestinationToAddToScheduleDestination()
         )
+    }
+
+    private fun observeViewModel() {
+        viewModel.medicinesListLive.observe(viewLifecycleOwner, Observer { })
+        viewModel.medicinesTypesListLive.observe(viewLifecycleOwner, Observer { })
     }
 }

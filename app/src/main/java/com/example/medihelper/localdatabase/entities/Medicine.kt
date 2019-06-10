@@ -1,6 +1,8 @@
 package com.example.medihelper.localdatabase.entities
 
 import androidx.room.*
+import java.time.LocalDate
+import java.util.*
 
 @Entity(
     tableName = "medicines",
@@ -32,7 +34,7 @@ data class Medicine(
     var photoFilePath: String,
 
     @ColumnInfo(name = "expire_date")
-    var expireDate: String,
+    var expireDate: Date,
 
     var comments: String
 ) {

@@ -73,8 +73,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    style="@style/Widget.CardView">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -180,8 +179,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    style="@style/Widget.CardView">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -285,8 +283,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    style="@style/Widget.CardView">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"

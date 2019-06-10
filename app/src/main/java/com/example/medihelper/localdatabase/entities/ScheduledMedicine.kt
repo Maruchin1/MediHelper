@@ -1,6 +1,7 @@
 package com.example.medihelper.localdatabase.entities
 
 import androidx.room.*
+import java.util.*
 
 @Entity(
     tableName = "scheduled_medicines",
@@ -19,7 +20,7 @@ data class ScheduledMedicine (
     @ColumnInfo(name = "medicine_id")
     var medicineID: Int,
 
-    var date: String,
+    var date: Date,
 
     var time: String,
 

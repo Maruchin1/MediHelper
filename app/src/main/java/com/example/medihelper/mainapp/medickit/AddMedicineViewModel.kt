@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.medihelper.DateUtil
 import com.example.medihelper.R
 import com.example.medihelper.Repository
 import com.example.medihelper.localdatabase.entities.Medicine
@@ -50,10 +51,11 @@ class AddMedicineViewModel : ViewModel() {
                 medicineTypeLive.value = medicineType
                 capacityLive.value = it.packageSize.toString()
                 currStateLive.value = it.currState.toString()
-                expireDateLive.value = it.expireDate
+                expireDateLive.value = DateUtil.dateToString(it.expireDate)
                 tmpPhotoFileLive.value = File(it.photoFilePath)
             }
         }
+        expireDateLive.value = NOT_SELECTED
     }
 
     fun setMedicineType(position: Int) {
@@ -82,7 +84,7 @@ class AddMedicineViewModel : ViewModel() {
                 packageSize = capacity!!.toFloat(),
                 currState = currState!!.toFloat(),
                 photoFilePath = photoFilePath,
-                expireDate = expireDate!!,
+                expireDate = DateUtil.stringToDate(expireDate!!),
                 comments = comments!!
             )
             Repository.insertMedicine(medicine)
@@ -139,5 +141,9 @@ class AddMedicineViewModel : ViewModel() {
         ).forEach { field ->
             field.value = null
         }
+    }
+
+    companion object {
+        const val NOT_SELECTED = "Nie okreslono"
     }
 }

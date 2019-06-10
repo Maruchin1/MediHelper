@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
+import java.util.*
 
 @Dao
 interface ScheduledMedicineDAO {
@@ -15,5 +16,5 @@ interface ScheduledMedicineDAO {
     fun insertAll(list: List<ScheduledMedicine>)
 
     @Query("SELECT * FROM scheduled_medicines WHERE date = :date ORDER BY time ASC")
-    fun getByDate(date: String): LiveData<List<ScheduledMedicine>>
+    fun getByDate(date: Date): LiveData<List<ScheduledMedicine>>
 }

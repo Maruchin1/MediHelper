@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.medihelper.localdatabase.dao.MedicineDAO
 import com.example.medihelper.localdatabase.dao.MedicineTypeDAO
 import com.example.medihelper.localdatabase.dao.ScheduledMedicineDAO
@@ -11,7 +12,8 @@ import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 
-@Database(entities = [Medicine::class, MedicineType::class, ScheduledMedicine::class], version = 4, exportSchema = false)
+@Database(entities = [Medicine::class, MedicineType::class, ScheduledMedicine::class], version = 5, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {
 
     abstract fun medicineDao(): MedicineDAO
