@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Nazwa leku"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
 
     <TextView
         android:id="@+id/txv_medicine_state"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Stan leku"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         android:textColor="@android:color/tertiary_text_dark"/>
 
 </LinearLayout>

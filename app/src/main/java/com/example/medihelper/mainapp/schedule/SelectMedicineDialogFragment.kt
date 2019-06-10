@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavDestination
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,11 +39,17 @@ class SelectMedicineDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+        setupAddMedicineButton()
         observeViewModel()
     }
 
     private fun setSelectedMedicine(medicine: Medicine) {
         viewModel.selectedMedicineLive.value = medicine
+        findNavController().run {
+            if (currentDestination?.id == R.id.schedule_destination) {
+                navigate(ScheduleFragmentDirections.actionScheduleDestinationToAddToScheduleDestination())
+            }
+        }
         dismiss()
     }
 
@@ -54,6 +62,21 @@ class SelectMedicineDialogFragment : BottomSheetDialogFragment() {
                     this@SelectMedicineDialogFragment::setSelectedMedicine
                 )
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            }
+        }
+    }
+
+    private fun setupAddMedicineButton() {
+        btn_add_medicine.setOnClickListener {
+            findNavController().run {
+                val direction = when (currentDestination?.id) {
+                    R.id.schedule_destination -> ScheduleFragmentDirections.actionScheduleDestinationToAddMedicineDestination()
+                    R.id.add_to_schedule_destination -> AddToScheduleFragmentDirections.actionAddToScheduleDestinationToAddMedicineDestination()
+                    else -> null
+                }
+                direction?.let {
+                    navigate(it)
+                }
             }
         }
     }

@@ -108,11 +108,4 @@ class KitFragment : Fragment() {
             if (it != null) (recycler_view.adapter as KitAdapter).setMedicineTypesList(it)
         })
     }
-
-    private fun openMenuDialogFragment() {
-        activity?.let { activity ->
-            val dialog = MenuDialogFragment()
-            dialog.show(activity.supportFragmentManager, MenuDialogFragment.TAG)
-        }
-    }
 }

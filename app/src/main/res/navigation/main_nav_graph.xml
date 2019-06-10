@@ -16,6 +16,9 @@
             app:exitAnim="@anim/slide_out_start"
             app:popEnterAnim="@anim/slide_in_start"
             app:popExitAnim="@anim/slide_out_end" />
+        <action
+            android:id="@+id/action_schedule_destination_to_add_medicine_destination"
+            app:destination="@id/add_medicine_destination" />
     </fragment>
     <fragment
         android:id="@+id/kit_destination"
@@ -40,7 +43,7 @@
         android:id="@+id/menu_destination"
         android:name="com.example.medihelper.mainapp.menu.MenuDialogFragment"
         android:label="Menu"
-        tools:layout="@layout/dialog_fragment_menu" />
+        tools:layout="@layout/fragment_menu" />
     <fragment
         android:id="@+id/add_medicine_destination"
         android:name="com.example.medihelper.mainapp.medickit.AddMedicineFragment"
@@ -61,5 +64,9 @@
     </fragment>
     <fragment
         android:id="@+id/add_to_schedule_destination"
-        android:name="com.example.medihelper.mainapp.schedule.AddToScheduleFragment" />
+        android:name="com.example.medihelper.mainapp.schedule.AddToScheduleFragment" >
+        <action
+            android:id="@+id/action_add_to_schedule_destination_to_add_medicine_destination"
+            app:destination="@id/add_medicine_destination" />
+    </fragment>
 </navigation>

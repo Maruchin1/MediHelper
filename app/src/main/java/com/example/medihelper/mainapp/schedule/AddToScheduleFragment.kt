@@ -78,7 +78,10 @@ class AddToScheduleFragment : Fragment() {
             (it as MainActivity).run {
                 val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
                 fab.apply {
-                    hide(true)
+                    setIconResource(R.drawable.round_save_white_48)
+                    text = "Zapisz"
+                    extend()
+                    setOnClickListener { saveScheduledMedicine() }
                 }
             }
         }
@@ -88,18 +91,14 @@ class AddToScheduleFragment : Fragment() {
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         toolbar.setupWithNavController(navController, appBarConfiguration)
-        toolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.option_confirm) {
-                viewModel.saveToSchedule(
-                    chip_group_dose_days.checkedChipId,
-                    chip_group_dose_hours.checkedChipId
-                )
-                navController.popBackStack()
-                true
-            } else {
-                false
-            }
-        }
+    }
+
+    private fun saveScheduledMedicine() {
+        viewModel.saveToSchedule(
+            chip_group_dose_days.checkedChipId,
+            chip_group_dose_hours.checkedChipId
+        )
+        findNavController().popBackStack()
     }
 
     private fun observeViewModel() {

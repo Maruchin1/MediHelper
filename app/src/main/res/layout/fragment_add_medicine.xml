@@ -23,8 +23,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            app:elevation="0dp">
+            android:layout_height="?actionBarSize">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -57,8 +56,7 @@
             android:id="@+id/items_root"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/round_top_bg"
-            android:elevation="8dp"
+            android:background="@color/colorBackground"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <LinearLayout

@@ -7,12 +7,17 @@
         android:icon="@drawable/round_event_white_48"/>
 
     <item
+        android:id="@+id/blank"
+        android:title="blank"
+        android:checkable="false"/>
+
+    <item
         android:id="@+id/kit_destination"
         android:title="Apteczka"
         android:icon="@drawable/round_healing_black_48"/>
 
-    <item
-        android:id="@+id/menu_destination"
-        android:title="Menu"
-        android:icon="@drawable/round_format_list_bulleted_white_48"/>
+<!--    <item-->
+<!--        android:id="@+id/menu_destination"-->
+<!--        android:title="Menu"-->
+<!--        android:icon="@drawable/round_format_list_bulleted_white_48"/>-->
 </menu>
