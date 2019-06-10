@@ -62,9 +62,6 @@ class ScheduleFragment : Fragment() {
                 val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
                 fab.apply {
                     show(true)
-//                    if (isHidden) {
-//                        show()
-//                    }
                     shrink()
                     setIconResource(R.drawable.baseline_add_alert_black_48)
                     text = ""
@@ -89,8 +86,8 @@ class ScheduleFragment : Fragment() {
             ) {}
 
             override fun onPageSelected(position: Int) {
-                (view_pager.adapter as ScheduleDayAdapter).datesList[position].let { date ->
-                    viewModel.currDateLive.value = date
+                (view_pager.adapter as ScheduleDayAdapter).getItem(position).let {
+
                 }
             }
         })

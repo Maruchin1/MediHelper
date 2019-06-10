@@ -38,7 +38,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorAccent"
         android:text="Zapisz"
         android:textColor="@android:color/white"
         app:icon="@drawable/round_add_white_48"

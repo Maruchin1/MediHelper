@@ -8,7 +8,7 @@ import com.example.medihelper.DateUtil
 import com.example.medihelper.Repository
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
-import java.text.SimpleDateFormat
+import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 import java.util.*
 
 class ScheduleViewModel : ViewModel() {
@@ -16,21 +16,16 @@ class ScheduleViewModel : ViewModel() {
     val medicinesListLive = Repository.getMedicinesLive()
     val medicinesTypesListLive = Repository.getMedicineTypesLive()
 
-    val currDateLive = MutableLiveData<Date>()
-    val currDayMonthLive: LiveData<String>
-    val currWeekDayLive: LiveData<String>
+    val dayScheduledMedicinesCountLive = MutableLiveData<String>()
+    val dayTakenMedicinesCountLive = MutableLiveData<String>()
 
-    init {
-        currDayMonthLive = Transformations.map(currDateLive) {
-            DateUtil.dayAndMonthName(it)
-        }
-        currWeekDayLive = Transformations.map(currDateLive) {
-            DateUtil.weekDayName(it)
+    fun getScheduledMedicinesByDateLive(date: Date): LiveData<List<ScheduledMedicine>> {
+        return Transformations.map(Repository.getScheduledMedicinesByDateLive(date)) {
+            it.sortedBy { scheduledMedicine ->
+                scheduledMedicine.date
+            }
         }
     }
-
-    fun getScheduledMedicinesByDateLive(date: Date) =
-        Repository.getScheduledMedicinesByDateLive(date)
 
     fun findMedicineById(medicineID: Int): Medicine? {
         return medicinesListLive.value?.find { medicine ->

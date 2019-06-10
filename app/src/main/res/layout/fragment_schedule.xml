@@ -31,12 +31,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                app:layout_scrollFlags="noScroll">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_collapseMode="none">
+                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/img_logo"
@@ -96,7 +95,7 @@
                         android:text="Przyjęto:"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                         android:textColor="@android:color/white"
-                        app:layout_constraintBottom_toTopOf="@id/tab_lay_dates"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/label_scheduled_count" />
 
@@ -111,20 +110,21 @@
                         app:layout_constraintStart_toEndOf="@id/label_taken_count"
                         app:layout_constraintTop_toTopOf="@id/label_taken_count" />
 
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tab_lay_dates"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:tabIndicatorColor="@android:color/white"
-                        app:tabMode="scrollable"
-                        app:tabSelectedTextColor="@android:color/white"
-                        app:tabTextColor="@color/textColorDisabled" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_lay_dates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:tabIndicatorColor="@android:color/white"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="@android:color/white"
+                app:tabTextColor="@color/textColorDisabled"
+                android:layout_gravity="bottom" />
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
