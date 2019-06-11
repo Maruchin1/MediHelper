@@ -97,9 +97,6 @@ class ScheduleFragment : Fragment() {
     private fun openAddToScheduleFragment() {
         val dialog = SelectMedicineDialogFragment()
         dialog.show(childFragmentManager, SelectMedicineDialogFragment.TAG)
-//        findNavController().navigate(
-//            ScheduleFragmentDirections.actionScheduleDestinationToAddToScheduleDestination()
-//        )
     }
 
     private fun observeViewModel() {
