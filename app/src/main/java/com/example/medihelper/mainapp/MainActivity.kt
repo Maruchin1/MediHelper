@@ -13,7 +13,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupNavigation()
     }
 
     fun setTransparentStatusBar(isTransparent: Boolean) {
@@ -21,11 +20,5 @@ class MainActivity : AppCompatActivity() {
             true -> window.statusBarColor = Color.TRANSPARENT
             false -> window.statusBarColor = resources.getColor(R.color.colorPrimary)
         }
-    }
-
-    private fun setupNavigation() {
-        val navController = findNavController(R.id.nav_host_fragment)
-        findViewById<BottomNavigationView>(R.id.bottom_nav_view)
-            .setupWithNavController(navController)
     }
 }
