@@ -10,6 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.example.medihelper.R
@@ -43,18 +45,16 @@ class KitFragment : Fragment() {
         setupMainActivity()
         setupRecyclerView()
         observeViewModel()
+        setupToolbar()
     }
 
     fun openMedicineDetailsFragment(medicineID: Int) {
-//        val extras = FragmentNavigatorExtras(
-//            imageView to getString(R.string.shared_image_photo)
-//        )
         val action = KitFragmentDirections.actionKitDestinationToMedicineDetailsFragment(medicineID)
         findNavController().navigate(action)
     }
 
     private fun openAddMedicineFragment() {
-        val action = KitFragmentDirections.actionKitDestinationToAddMedicineFragment()
+        val action = KitFragmentDirections.actionKitDestinationToAddMedicineFragment(-1)
         findNavController().navigate(action)
     }
 
@@ -81,6 +81,12 @@ class KitFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setupToolbar() {
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     private fun setupRecyclerView() {

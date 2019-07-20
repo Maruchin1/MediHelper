@@ -1,10 +1,7 @@
 package com.example.medihelper.localdatabase.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.medihelper.localdatabase.entities.Medicine
 
 @Dao
@@ -24,4 +21,7 @@ interface MedicineDAO {
 
     @Delete
     fun delete(medicine: Medicine)
+
+    @Update
+    fun update(medicine: Medicine)
 }

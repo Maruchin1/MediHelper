@@ -42,8 +42,7 @@
     <fragment
         android:id="@+id/menu_destination"
         android:name="com.example.medihelper.mainapp.menu.MenuFragment"
-        android:label="Menu"
-        tools:layout="@layout/fragment_menu" >
+        tools:layout="@layout/fragment_menu">
         <action
             android:id="@+id/action_menu_destination_to_schedule_destination"
             app:destination="@id/schedule_destination"
@@ -62,7 +61,11 @@
     <fragment
         android:id="@+id/add_medicine_destination"
         android:name="com.example.medihelper.mainapp.medickit.AddMedicineFragment"
-        tools:layout="@layout/fragment_add_medicine" />
+        tools:layout="@layout/fragment_add_medicine" >
+        <argument
+            android:name="medicineId"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/medicine_details_destination"
         android:name="com.example.medihelper.mainapp.medickit.MedicineDetailsFragment">

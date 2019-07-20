@@ -23,8 +23,8 @@ import java.util.*
 class AddMedicineViewModel : ViewModel() {
     private val TAG = AddMedicineViewModel::class.simpleName
 
-    val defaultMedicineIdLive = MutableLiveData<Int>()
-    val defaultMedicineLive: LiveData<Medicine>
+    val selectedMedicineIdLive = MutableLiveData<Int>()
+    val selectedMedicineLive: LiveData<Medicine>
     val medicineTypesListLive = Repository.getMedicineTypesLive()
     val tmpPhotoFileLive = MutableLiveData<File>()
 
@@ -36,26 +36,25 @@ class AddMedicineViewModel : ViewModel() {
     val commentsLive = MutableLiveData<String>()
 
     init {
-        defaultMedicineLive = Transformations.switchMap(defaultMedicineIdLive) {
-            if (it != -1) {
-                Repository.getMedicineByIdLive(it)
-            } else {
-                null
+        selectedMedicineLive = Transformations.switchMap(selectedMedicineIdLive) { medicineId ->
+            Repository.getMedicineByIdLive(medicineId)
+        }
+        selectedMedicineLive.observeForever { medicine ->
+            if (medicine != null) {
+                nameLive.value = medicine.name
+                medicineTypesListLive.value?.let { typesList ->
+                    typesList.find { medicineType ->
+                        medicineType.medicineTypeID == medicine.medicineTypeID
+                    }
+                }
+                capacityLive.value = medicine.packageSize?.toString()
+                currStateLive.value = medicine.currState?.toString()
+                medicine.expireDate?.let { expireDate ->
+                    expireDateLive.value = DateUtil.dateToString(expireDate)
+                }
+                commentsLive.value = medicine.comments
             }
         }
-        defaultMedicineLive.observeForever {
-            if (it != null) {
-                val medicineType = medicineTypesListLive.value?.find { medicineType ->
-                    medicineType.medicineTypeID == it.medicineTypeID }
-                nameLive.value = it.name
-                medicineTypeLive.value = medicineType
-                capacityLive.value = it.packageSize.toString()
-                currStateLive.value = it.currState.toString()
-                expireDateLive.value = DateUtil.dateToString(it.expireDate)
-                tmpPhotoFileLive.value = File(it.photoFilePath)
-            }
-        }
-        expireDateLive.value = NOT_SELECTED
     }
 
     fun setMedicineType(position: Int) {
@@ -64,35 +63,49 @@ class AddMedicineViewModel : ViewModel() {
         }
     }
 
-    fun saveNewMedicine(context: Context): Boolean {
+    fun saveMedicine(context: Context): Boolean {
         Log.d(TAG, "onClickSaveNewMedicine")
         val name = nameLive.value
         val type = medicineTypeLive.value
         val capacity = capacityLive.value
         val currState = currStateLive.value
-        val photoFilePath = tmpPhotoFileLive.value?.let {
-            Repository.createPhotoFileFromTemp(it).absolutePath
-        } ?: ""
+        val photoFilePath = tmpPhotoFileLive.value?.let { photoFile ->
+            Repository.createPhotoFileFromTemp(photoFile).absolutePath
+        }
         val expireDate = expireDateLive.value
         val comments = commentsLive.value
 
-        val attributes = arrayOf(name, type, capacity, currState, expireDate, comments)
-        if (attributes.all { attribute -> attribute != null }) {
-            val medicine = Medicine(
-                name = name!!,
-                medicineTypeID = type!!.medicineTypeID!!,
-                packageSize = capacity!!.toFloat(),
-                currState = currState!!.toFloat(),
-                photoFilePath = photoFilePath,
-                expireDate = DateUtil.stringToDate(expireDate!!),
-                comments = comments!!
-            )
-            Repository.insertMedicine(medicine)
-            return true
-        } else {
-            Toast.makeText(context, "Some atributes are null", Toast.LENGTH_LONG).show()
+        if (name == null) {
+            //todo zamienić to na jakiś snackbar lub zaznaczenie pola tekstowego na czerwono
+            Toast.makeText(context, "Podanie nazwy jest wymagane", Toast.LENGTH_LONG).show()
             return false
         }
+
+        selectedMedicineLive.value?.let { medicineToUpdate ->
+            medicineToUpdate.apply {
+                this.name = name
+                this.medicineTypeID = type?.medicineTypeID
+                this.packageSize = capacity?.toFloat()
+                this.currState = currState?.toFloat()
+                this.photoFilePath = photoFilePath
+                this.expireDate = expireDate?.let { DateUtil.stringToDate(it) }
+                this.comments = comments
+            }
+            Repository.updateMedicine(medicineToUpdate)
+            return true
+        }
+
+        val newMedicine = Medicine(
+            name = name,
+            medicineTypeID = type?.medicineTypeID,
+            packageSize = capacity?.toFloat(),
+            currState = currState?.toFloat(),
+            photoFilePath = photoFilePath,
+            expireDate = expireDate?.let { DateUtil.stringToDate(it) },
+            comments = comments
+        )
+        Repository.insertMedicine(newMedicine)
+        return true
     }
 
     fun takePhotoIntent(activity: FragmentActivity): Intent {
@@ -141,9 +154,5 @@ class AddMedicineViewModel : ViewModel() {
         ).forEach { field ->
             field.value = null
         }
-    }
-
-    companion object {
-        const val NOT_SELECTED = "Nie okreslono"
     }
 }

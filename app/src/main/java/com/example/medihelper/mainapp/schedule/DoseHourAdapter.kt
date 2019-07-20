@@ -31,8 +31,10 @@ class DoseHourAdapter(
     override fun onBindViewHolder(holder: DoseHourViewHolder, position: Int) {
         val doseHour = doseHoursList[position]
         holder.chipHour.text = doseHour.hour
-        viewModel.selectedMedicineLive.value?.let {
-            holder.txvMedicineType.text = viewModel.findMedicineTypeName(it.medicineTypeID)
+        viewModel.selectedMedicineLive.value?.let { medicine ->
+            medicine.medicineTypeID?.let { medicineTypeID ->
+                holder.txvMedicineType.text = viewModel.findMedicineTypeName(medicineTypeID)
+            }
         }
     }
 

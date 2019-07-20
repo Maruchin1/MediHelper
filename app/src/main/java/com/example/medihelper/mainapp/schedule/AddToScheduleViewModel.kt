@@ -28,12 +28,14 @@ class AddToScheduleViewModel : ViewModel() {
     val doseHoursListLive = MutableLiveData<List<DoseHour>>()
 
     init {
-        selectedMedicineNameLive = Transformations.map(selectedMedicineLive) {
-            it.name
+        selectedMedicineNameLive = Transformations.map(selectedMedicineLive) { medicine ->
+            medicine.name
         }
-        selectedMedicineStateLive = Transformations.map(selectedMedicineLive) {
-            val state = "${it.currState}/${it.packageSize}"
-            val type = findMedicineTypeName(it.medicineTypeID)
+        selectedMedicineStateLive = Transformations.map(selectedMedicineLive) { medicine ->
+            val state = "${medicine.currState}/${medicine.packageSize}"
+            val type = medicine.medicineTypeID?.let { medicineTypeID ->
+                findMedicineTypeName(medicineTypeID)
+            }
             "Aktualny stan: $state $type"
         }
         startDateLive.value = getCurrDateString()

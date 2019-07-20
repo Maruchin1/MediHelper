@@ -22,21 +22,27 @@ data class Medicine(
     var name: String,
 
     @ColumnInfo(name = "medicine_type_id")
-    var medicineTypeID: Int,
+    var medicineTypeID: Int? = null,
 
     @ColumnInfo(name = "package_size")
-    var packageSize: Float,
+    var packageSize: Float? = null,
 
     @ColumnInfo(name = "curr_state")
-    var currState: Float,
+    var currState: Float? = null,
 
     @ColumnInfo(name = "photo_file_path")
-    var photoFilePath: String,
+    var photoFilePath: String? = null,
 
     @ColumnInfo(name = "expire_date")
-    var expireDate: Date,
+    var expireDate: Date? = null,
 
-    var comments: String
+    var comments: String? = null
 ) {
-    fun calcMedicineState() = currState.div(packageSize)
+    fun calcMedicineState(): Float? {
+        return if (packageSize != null && currState != null) {
+            currState?.div(packageSize!!)
+        } else {
+            null
+        }
+    }
 }

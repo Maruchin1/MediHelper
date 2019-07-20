@@ -15,7 +15,8 @@ import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 import java.io.File
 
-class KitAdapter(private val context: Context, private val kitFragment: KitFragment) : RecyclerView.Adapter<KitAdapter.KitViewHolder>() {
+class KitAdapter(private val context: Context, private val kitFragment: KitFragment) :
+    RecyclerView.Adapter<KitAdapter.KitViewHolder>() {
 
     private var medicinesList = ArrayList<Medicine>()
     private var medicineTypesList = ArrayList<MedicineType>()
@@ -32,28 +33,39 @@ class KitAdapter(private val context: Context, private val kitFragment: KitFragm
 
     override fun onBindViewHolder(viewHolder: KitViewHolder, position: Int) {
         val medicine = medicinesList[position]
+        viewHolder.txvMedicineName.text = medicine.name
+
         val state = medicine.calcMedicineState()
-        val empty = 1 - state
-        val stateString = "${medicine.currState}/${medicine.packageSize}"
-        val medicineType = medicineTypesList.find { medicineType ->
-            medicineType.medicineTypeID == medicine.medicineTypeID
+        if (state != null) {
+            val empty = 1 - state
+            val stateString = "${medicine.currState}/${medicine.packageSize}"
+            val medicineType = medicineTypesList.find { medicineType ->
+                medicineType.medicineTypeID == medicine.medicineTypeID
+            }
+            viewHolder.apply {
+                txvState.text = stateString
+                txvType.text = medicineType?.typeName ?: "brak typu"
+                setLayoutWeight(state, lineState)
+                setLayoutWeight(empty, lineEmpty)
+                lineState.setBackgroundResource(stateColorResId(state))
+            }
+        } else {
+            viewHolder.apply {
+                val gone = View.GONE
+                layCurrStateLine.visibility = gone
+                layCurrStateText.visibility = gone
+            }
         }
 
-        viewHolder.apply {
+        medicine.photoFilePath?.let { photoFilePath ->
             Glide.with(context)
-                .load(File(medicine.photoFilePath))
+                .load(File(photoFilePath))
                 .centerCrop()
-                .into(imgPhoto)
-            txvMedicineName.text = medicine.name
-            txvState.text = stateString
-            txvType.text = medicineType?.typeName ?: "brak typu"
-            setLayoutWeight(state, lineState)
-            setLayoutWeight(empty, lineEmpty)
-            lineState.setBackgroundResource(stateColorResId(state))
-//            txvExpireDate.text = medicine.expireDateLive
-            layClick.setOnClickListener {
-                kitFragment.openMedicineDetailsFragment(medicine.medicineID!!)
-            }
+                .into(viewHolder.imgPhoto)
+        }
+
+        viewHolder.layClick.setOnClickListener {
+            kitFragment.openMedicineDetailsFragment(medicine.medicineID!!)
         }
     }
 
@@ -70,7 +82,6 @@ class KitAdapter(private val context: Context, private val kitFragment: KitFragm
     }
 
     private fun stateColorResId(state: Float): Int {
-        //todo wyodrębnić te limity gdzieś do jakis ogolnych stalych
         val stateGoodLimit = KitViewModel.STATE_GOOD_LIMIT
         val stateMediumLimit = KitViewModel.STATE_MEDIUM_LIMIT
         return when {
@@ -95,8 +106,9 @@ class KitAdapter(private val context: Context, private val kitFragment: KitFragm
         val lineEmpty: View = itemView.findViewById(R.id.line_empty)
         val txvState: TextView = itemView.findViewById(R.id.txv_state)
         val txvType: TextView = itemView.findViewById(R.id.txv_type)
-//        val txvExpireDate: TextView = itemView.findViewById(R.id.txv_expire_date)
         val layClick: FrameLayout = itemView.findViewById(R.id.lay_click)
         val imgPhoto: ImageView = itemView.findViewById(R.id.img_photo)
+        val layCurrStateLine: LinearLayout = itemView.findViewById(R.id.lay_curr_state_line)
+        val layCurrStateText: LinearLayout = itemView.findViewById(R.id.lay_curr_state_text)
     }
 }

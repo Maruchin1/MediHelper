@@ -96,9 +96,9 @@
             android:id="@+id/img_photo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:src="@drawable/baseline_add_a_photo_white_48"
+            android:src="@drawable/ic_pill_grey600_48dp"
             app:layout_constraintDimensionRatio="4:3"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

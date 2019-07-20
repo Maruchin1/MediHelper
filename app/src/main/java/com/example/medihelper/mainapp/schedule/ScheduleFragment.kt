@@ -61,11 +61,7 @@ class ScheduleFragment : Fragment() {
                 setTransparentStatusBar(false)
                 val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
                 fab.apply {
-                    show(true)
-                    shrink()
-                    setIconResource(R.drawable.baseline_add_alert_black_48)
-                    text = ""
-                    setOnClickListener { openAddToScheduleFragment() }
+                    hide()
                 }
             }
         }
@@ -91,7 +87,7 @@ class ScheduleFragment : Fragment() {
                 }
             }
         })
-        tab_lay_dates.setupWithViewPager(view_pager)
+//        tab_lay_dates.setupWithViewPager(view_pager)
     }
 
     private fun openAddToScheduleFragment() {

@@ -64,6 +64,10 @@ object Repository {
         AsyncTask.execute { scheduledMedicineDao.insertAll(list) }
     }
 
+    fun updateMedicine(medicine: Medicine) {
+        AsyncTask.execute { medicineDao.update(medicine) }
+    }
+
     fun createTempPhotoFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         return File.createTempFile(

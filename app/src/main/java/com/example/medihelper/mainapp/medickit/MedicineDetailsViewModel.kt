@@ -17,6 +17,9 @@ class MedicineDetailsViewModel : ViewModel() {
     val selectedMedicineID = MutableLiveData<Int>()
     val selectedMedicine: LiveData<Medicine>
 
+    val stateAvailableLive: LiveData<Boolean>
+    val commentAvailableLive: LiveData<Boolean>
+
     val photoLive: LiveData<File>
     val nameLive: LiveData<String>
     val stateWeightLive: LiveData<Float>
@@ -33,8 +36,18 @@ class MedicineDetailsViewModel : ViewModel() {
         selectedMedicine = Transformations.switchMap(selectedMedicineID) { medicineID ->
             Repository.getMedicineByIdLive(medicineID)
         }
+        stateAvailableLive = Transformations.map(selectedMedicine) { medicine ->
+            medicine.packageSize != null || medicine.currState != null
+        }
+        commentAvailableLive = Transformations.map(selectedMedicine) { medicine ->
+            medicine.comments != null
+        }
         photoLive = Transformations.map(selectedMedicine) { medicine ->
-            File(medicine.photoFilePath)
+            if (medicine.photoFilePath.isNullOrEmpty()) {
+                null
+            } else {
+                File(medicine.photoFilePath)
+            }
         }
         nameLive = Transformations.map(selectedMedicine) { medicine ->
             medicine.name
@@ -42,35 +55,45 @@ class MedicineDetailsViewModel : ViewModel() {
         stateNumberStringLive = Transformations.map(selectedMedicine) { medicine ->
             stateNumberString(medicine)
         }
-        medicineTypeLive = Transformations.switchMap(selectedMedicine) {
-            Repository.getMedicineTypeByIdLive(it.medicineTypeID)
+        medicineTypeLive = Transformations.switchMap(selectedMedicine) { medicine ->
+            medicine.medicineTypeID?.let { medicineTypeID ->
+                Repository.getMedicineTypeByIdLive(medicineTypeID)
+            }
         }
-        expireDateLive = Transformations.map(selectedMedicine) {
-            DateUtil.dateToString(it.expireDate)
+        expireDateLive = Transformations.map(selectedMedicine) { medicine ->
+            medicine.expireDate?.let { expireDate ->
+                DateUtil.dateToString(expireDate)
+            }
         }
-        daysRemainsLive = Transformations.map(selectedMedicine) {
-            daysRemainsString(it)
+        daysRemainsLive = Transformations.map(selectedMedicine) { medicine ->
+            daysRemainsString(medicine)
         }
-        comments = Transformations.map(selectedMedicine) {
-            it.comments
+        comments = Transformations.map(selectedMedicine) { medicine ->
+            medicine.comments
         }
-        stateWeightLive = Transformations.map(selectedMedicine) {
-            stateWeight(it)
+        stateWeightLive = Transformations.map(selectedMedicine) { medicine ->
+            stateWeight(medicine)
         }
-        emptyWeightLive = Transformations.map(stateWeightLive) {
-            1 - it
+        emptyWeightLive = Transformations.map(stateWeightLive) { state ->
+            state?.let { 1 - it }
         }
-        stateTextLive = Transformations.map(stateWeightLive) {
-            stateText(it)
+        stateTextLive = Transformations.map(stateWeightLive) { state ->
+            state?.let { stateText(it) }
         }
-        stateColorResIdLive = Transformations.map(stateWeightLive) {
-            stateColorResId(it)
+        stateColorResIdLive = Transformations.map(stateWeightLive) { state ->
+            state?.let { stateColorResId(it) }
         }
     }
 
     fun deleteMedicine() = selectedMedicine.value?.let { Repository.deleteMedicine(it) }
 
-    private fun stateWeight(medicine: Medicine) = medicine.currState.div(medicine.packageSize)
+    private fun stateWeight(medicine: Medicine): Float? {
+        return medicine.currState?.let { currState ->
+            medicine.packageSize?.let { packageSize ->
+                return currState.div(packageSize)
+            }
+        }
+    }
 
     private fun stateNumberString(medicine: Medicine): String {
         return "${medicine.currState}/${medicine.packageSize}"
@@ -96,14 +119,16 @@ class MedicineDetailsViewModel : ViewModel() {
         }
     }
 
-    private fun daysRemainsString(medicine: Medicine): String {
-        val currCalendar = Calendar.getInstance()
-        val calendar = Calendar.getInstance().apply {
-            time = medicine.expireDate
-        }
+    private fun daysRemainsString(medicine: Medicine): String? {
+        return medicine.expireDate?.let { expireDate ->
+            val currCalendar = Calendar.getInstance()
+            val calendar = Calendar.getInstance().apply {
+                time = expireDate
+            }
 
-        val daysBetween = daysBetween(currCalendar.time, calendar.time)
-        return "$daysBetween dni"
+            val daysBetween = daysBetween(currCalendar.time, calendar.time)
+            "$daysBetween dni"
+        }
     }
 
     private fun daysBetween(date1: Date, date2: Date): Int {

@@ -1,6 +1,7 @@
 package com.example.medihelper.mainapp.medickit
 
 
+import android.graphics.PorterDuff
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -37,7 +38,6 @@ class MedicineDetailsFragment : Fragment() {
         activity?.run {
             viewModel = ViewModelProviders.of(this).get(MedicineDetailsViewModel::class.java)
         }
-//        setupTransition()
     }
 
     override fun onCreateView(
@@ -56,14 +56,17 @@ class MedicineDetailsFragment : Fragment() {
     }
 
     fun onClickEdit(view: View) {
-        findNavController().navigate(MedicineDetailsFragmentDirections.actionMedicineDetailsDestinationToAddMedicineDestination())
-//        val dialog = TestDialogFragment()
-//        dialog.show(childFragmentManager, TestDialogFragment.TAG)
+        viewModel.selectedMedicineID.value?.let { medicineId ->
+            val action = MedicineDetailsFragmentDirections.actionMedicineDetailsDestinationToAddMedicineDestination(medicineId)
+            findNavController().navigate(action)
+        }
     }
 
     fun onClickDelete(view: View) {
-        viewModel.deleteMedicine()
-        findNavController().popBackStack()
+        val dialog = DeleteMedicineDialogFragment()
+        dialog.show(childFragmentManager, DeleteMedicineDialogFragment.TAG)
+//        viewModel.deleteMedicine()
+//        findNavController().popBackStack()
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -135,23 +138,11 @@ class MedicineDetailsFragment : Fragment() {
             .load(photoFile)
             .centerCrop()
             .into(img_medicine_picture)
+        img_medicine_picture.setColorFilter(null)
     }
 
     private fun setStateColor(colorResId: Int) {
         txv_curr_state_text.setTextColor(resources.getColor(colorResId))
         line_state.setBackgroundResource(colorResId)
-    }
-
-    private fun setupTransition() {
-        context?.let {
-            val transHelper = TransitionHelper()
-            sharedElementEnterTransition = transHelper.sharedElementEnterTransition(it)
-        }
-        enterTransition = Fade().apply {
-            startDelay = 300L
-        }
-        returnTransition = Fade().apply {
-            duration = 0L
-        }
     }
 }

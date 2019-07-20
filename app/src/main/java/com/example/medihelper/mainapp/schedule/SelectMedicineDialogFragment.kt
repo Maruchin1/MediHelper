@@ -1,17 +1,14 @@
 package com.example.medihelper.mainapp.schedule
 
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -70,8 +67,8 @@ class SelectMedicineDialogFragment : BottomSheetDialogFragment() {
         btn_add_medicine.setOnClickListener {
             findNavController().run {
                 val direction = when (currentDestination?.id) {
-                    R.id.schedule_destination -> ScheduleFragmentDirections.actionScheduleDestinationToAddMedicineDestination()
-                    R.id.add_to_schedule_destination -> AddToScheduleFragmentDirections.actionAddToScheduleDestinationToAddMedicineDestination()
+                    R.id.schedule_destination -> ScheduleFragmentDirections.actionScheduleDestinationToAddMedicineDestination(-1)
+                    R.id.add_to_schedule_destination -> AddToScheduleFragmentDirections.actionAddToScheduleDestinationToAddMedicineDestination(-1)
                     else -> null
                 }
                 direction?.let {

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.example.medihelper.mainapp.medickit.MedicineDetailsViewModel" />
@@ -43,7 +44,8 @@
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     android:transitionName="@string/shared_image_photo"
-                    app:layout_collapseMode="parallax" />
+                    app:layout_collapseMode="parallax"
+                    android:src="@drawable/pill" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -157,7 +159,7 @@
                                 android:paddingTop="8dp"
                                 android:src="@drawable/round_edit_black_36"
                                 android:background="?selectableItemBackground"
-                                android:onClick="@{handler::onClickEdit}"/>
+                                android:onClick="@{handler::onClickEdit}" />
 
                             <ImageButton
                                 android:layout_width="0dp"
@@ -167,7 +169,7 @@
                                 android:paddingTop="8dp"
                                 android:src="@drawable/round_delete_black_36"
                                 android:background="?selectableItemBackground"
-                                android:onClick="@{handler::onClickDelete}"/>
+                                android:onClick="@{handler::onClickDelete}" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -205,6 +207,17 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
+                                android:id="@+id/txv_state_not_available"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Brak informacji"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                android:textColor="@android:color/tertiary_text_dark"
+                                app:layout_constraintTop_toBottomOf="@id/title_curr_state"
+                                android:visibility="@{viewModel.stateAvailableLive ? View.GONE : View.VISIBLE}"/>
+
+                            <TextView
                                 android:id="@+id/txv_curr_state_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -223,7 +236,8 @@
                                 android:orientation="horizontal"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/title_curr_state">
+                                app:layout_constraintTop_toBottomOf="@id/title_curr_state"
+                                android:visibility="@{viewModel.stateAvailableLive ? View.VISIBLE : View.GONE}">
 
                                 <View
                                     android:id="@+id/line_state"
@@ -249,7 +263,8 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="@id/lay_curr_state_line"
                                 app:layout_constraintStart_toStartOf="@id/lay_curr_state_line"
-                                app:layout_constraintTop_toBottomOf="@id/lay_curr_state_line">
+                                app:layout_constraintTop_toBottomOf="@id/lay_curr_state_line"
+                                android:visibility="@{viewModel.stateAvailableLive ? View.VISIBLE : View.GONE}">
 
                                 <TextView
                                     android:id="@+id/txv_curr_state_number"
@@ -308,7 +323,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="@{viewModel.comments, default=Brak}"
+                            android:text='@{viewModel.comments ?? "Brak informacji", default="Brak informacji"}'
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                             android:textColor="@android:color/tertiary_text_dark"
                             app:layout_constraintBottom_toBottomOf="parent"
