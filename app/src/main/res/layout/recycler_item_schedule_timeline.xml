@@ -6,37 +6,43 @@
     android:orientation="vertical"
     android:gravity="center">
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        app:cardCornerRadius="24dp"
+        android:clickable="true"
+        android:focusable="true">
 
-        <TextView
-            android:id="@+id/txv_day"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="21 lip"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp">
 
-        <!--            <TextView-->
-        <!--                android:id="@+id/txv_month_year"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:text="lip 2019"-->
-        <!--                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"/>-->
+            <TextView
+                android:id="@+id/txv_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="21 lip"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/colorTextSecondary"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="niedz"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/txv_day_of_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="niedz"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:textColor="@color/colorTextSecondary"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </FrameLayout>

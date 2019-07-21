@@ -1,6 +1,5 @@
 package com.example.medihelper.mainapp.schedule
 
-
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,10 +17,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
+import com.example.medihelper.CenterLayoutManager
 import com.example.medihelper.DateUtil
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
 import com.example.medihelper.mainapp.MainActivity
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
@@ -86,21 +88,40 @@ class ScheduleFragment : Fragment() {
         toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
+
     private fun setupDatesViewPager() {
-        view_pager_dates.adapter = ScheduleDayPagerAdapter(childFragmentManager)
-        view_pager_dates.setCurrentItem(TIMELINE_DAYS_COUNT / 2, false)
-        view_pager_dates.post {
-            view_pager_dates.setCurrentItem(TIMELINE_DAYS_COUNT / 2, false)
+        view_pager_dates.apply {
+            val currItemPosition = TIMELINE_DAYS_COUNT / 2
+            adapter = ScheduleDayPagerAdapter(childFragmentManager)
+            setCurrentItem(currItemPosition, false)
+            adapter?.notifyDataSetChanged()
+            offscreenPageLimit = 1
+            addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) {
+                }
+
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                }
+
+                override fun onPageSelected(position: Int) {
+                    viewModel.selectedDatePositionLive.value = position
+                }
+            })
         }
-        view_pager_dates.adapter?.notifyDataSetChanged()
-        view_pager_dates.offscreenPageLimit = 1
     }
 
     private fun setupTimelineRecyclerView() {
-        recycler_view_timeline.adapter = ScheduleTimelineAdapter()
-        recycler_view_timeline.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recycler_view_timeline.scrollToPosition(TIMELINE_DAYS_COUNT / 2)
+        val currDatePosition = TIMELINE_DAYS_COUNT / 2
+        recycler_view_timeline.apply {
+            adapter = ScheduleTimelineAdapter()
+            layoutManager = CenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            scrollToPosition(currDatePosition)
+        }
+        viewModel.selectedDatePositionLive.value = currDatePosition
     }
 
 
@@ -110,15 +131,36 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.medicinesListLive.observe(viewLifecycleOwner, Observer { })
-        viewModel.medicinesTypesListLive.observe(viewLifecycleOwner, Observer { })
+        viewModel.run {
+            medicinesListLive.observe(viewLifecycleOwner, Observer { })
+            medicinesTypesListLive.observe(viewLifecycleOwner, Observer { })
+            selectedDatePositionLive.observe(viewLifecycleOwner, Observer { selectedDatePosition ->
+                if (selectedDatePosition != null) {
+                    val timelineAdapter = (recycler_view_timeline.adapter as ScheduleTimelineAdapter)
+                    timelineAdapter.selectDate(selectedDatePosition)
+                    view_pager_dates.currentItem = selectedDatePosition
+                }
+            })
+        }
     }
 
-    private fun getDateString(position: Int): String {
+    private fun getCalendarForPosition(position: Int): Calendar {
         val calendar = DateUtil.getCurrCalendar()
         calendar.add(Calendar.DAY_OF_YEAR, position - (TIMELINE_DAYS_COUNT / 2))
-        return DateUtil.dateToString(calendar.time)
+        return calendar
     }
+
+//    private fun getDateString(position: Int): String {
+//        val calendar = DateUtil.getCurrCalendar()
+//        calendar.add(Calendar.DAY_OF_YEAR, position - (TIMELINE_DAYS_COUNT / 2))
+//        return DateUtil.dateToString(calendar.time)
+//    }
+//
+//    private fun getDayMonthString(position: Int): String {
+//        val calendar = DateUtil.getCurrCalendar()
+//        calendar.add(Calendar.DAY_OF_YEAR, position - (TIMELINE_DAYS_COUNT / 2))
+//        return DateUtil.dateToStringDayMonth(calendar.time)
+//    }
 
     inner class ScheduleDayPagerAdapter(fragmentManager: FragmentManager) :
         FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -132,16 +174,24 @@ class ScheduleFragment : Fragment() {
         }
 
         override fun getItem(position: Int): Fragment {
-            return ScheduleDayFragment.getInstance(getDateString(position))
-        }
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return getDateString(position)
+            val calendar = getCalendarForPosition(position)
+            val dateString = DateUtil.dateToString(calendar.time)
+            return ScheduleDayFragment.getInstance(dateString)
         }
     }
 
     inner class ScheduleTimelineAdapter :
         RecyclerView.Adapter<ScheduleTimelineAdapter.ScheduleTimelineViewHolder>() {
+
+        private var selectedPosition = -1
+
+        fun selectDate(position: Int) {
+            val prevSelectedPosition = selectedPosition
+            selectedPosition = position
+            notifyItemChanged(prevSelectedPosition)
+            notifyItemChanged(position)
+        }
+
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -156,13 +206,31 @@ class ScheduleFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ScheduleTimelineViewHolder, position: Int) {
-            val dateString = getDateString(position)
-            holder.txvDay.text = dateString
+            val selectedDatePosition = viewModel.selectedDatePositionLive.value
+            val calendar = getCalendarForPosition(position)
+            var cardBgColorID = R.color.colorWhite
+            var textColorID = R.color.colorTextSecondary
+            if (selectedDatePosition == position) {
+                cardBgColorID = R.color.colorDarkerGray
+                textColorID = R.color.colorWhite
+                recycler_view_timeline.smoothScrollToPosition(selectedDatePosition)
+            }
+            holder.apply {
+                txvDay.text = DateUtil.dayMonthString(calendar.time)
+                txvDayOfWeek.text = DateUtil.dayOfWeekString(calendar.time)
+                txvDay.setTextColor(resources.getColor(textColorID))
+                txvDayOfWeek.setTextColor(resources.getColor(textColorID))
+                cardView.setCardBackgroundColor(resources.getColor(cardBgColorID))
+                cardView.setOnClickListener {
+                    viewModel.selectedDatePositionLive.value = position
+                }
+            }
         }
-
 
         inner class ScheduleTimelineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val txvDay: TextView = itemView.findViewById(R.id.txv_day)
+            val txvDayOfWeek: TextView = itemView.findViewById(R.id.txv_day_of_week)
+            val cardView: MaterialCardView = itemView.findViewById(R.id.card_view)
         }
     }
 

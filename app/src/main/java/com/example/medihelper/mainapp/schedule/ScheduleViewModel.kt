@@ -16,6 +16,7 @@ class ScheduleViewModel : ViewModel() {
     val medicinesListLive = Repository.getMedicinesLive()
     val medicinesTypesListLive = Repository.getMedicineTypesLive()
 
+    val selectedDatePositionLive = MutableLiveData<Int>()
 
     fun getScheduledMedicinesByDateLive(date: Date): LiveData<List<ScheduledMedicine>> {
         return Transformations.map(Repository.getScheduledMedicinesByDateLive(date)) {

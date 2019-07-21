@@ -11,6 +11,16 @@ object DateUtil {
 
     fun stringToDate(string: String): Date = dateFormat().parse(string)
 
+    fun dayMonthString(date: Date): String {
+        val dateFormat = SimpleDateFormat("dd MMM", Locale.getDefault())
+        return dateFormat.format(date)
+    }
+
+    fun dayOfWeekString(date: Date): String {
+        val dateFormat = SimpleDateFormat("EEE", Locale.getDefault())
+        return dateFormat.format(date)
+    }
+
     fun makeDate(day: Int, month: Int, year: Int): Date {
         val calendar = Calendar.getInstance()
         calendar.set(year, month, day)

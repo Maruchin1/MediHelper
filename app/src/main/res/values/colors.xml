@@ -7,15 +7,15 @@
 
     <color name="colorBackground">#eeeeee</color>
 
-    <color name="mtrl_textinput_default_box_stroke_color">#fff</color>
-
     <color name="colorStateGood">@android:color/holo_green_dark</color>
     <color name="colorStateMedium">@android:color/holo_orange_dark</color>
     <color name="colorStateSmall">@android:color/holo_red_dark</color>
 
-    <color name="colorDivider">#000000</color>
+    <color name="colorTextPrimary">@android:color/primary_text_light</color>
+    <color name="colorTextSecondary">@android:color/secondary_text_light</color>
+    <color name="colorTextTertiary">@android:color/tertiary_text_light</color>
 
-    <color name="textColorSecondary">#99ffffff</color>
-    <color name="textColorDisabled">#66ffffff</color>
+    <color name="colorWhite">@android:color/white</color>
+    <color name="colorDarkerGray">@android:color/darker_gray</color>
 
 </resources>

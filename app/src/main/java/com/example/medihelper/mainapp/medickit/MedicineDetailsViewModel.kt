@@ -16,7 +16,6 @@ class MedicineDetailsViewModel : ViewModel() {
     val selectedMedicine: LiveData<Medicine>
 
     val stateAvailableLive: LiveData<Boolean>
-    val commentAvailableLive: LiveData<Boolean>
 
     val photoLive: LiveData<File>
     val nameLive: LiveData<String>
@@ -36,9 +35,6 @@ class MedicineDetailsViewModel : ViewModel() {
         }
         stateAvailableLive = Transformations.map(selectedMedicine) { medicine ->
             medicine.packageSize != null || medicine.currState != null
-        }
-        commentAvailableLive = Transformations.map(selectedMedicine) { medicine ->
-            medicine.comments != null
         }
         photoLive = Transformations.map(selectedMedicine) { medicine ->
             if (medicine.photoFilePath.isNullOrEmpty()) {
