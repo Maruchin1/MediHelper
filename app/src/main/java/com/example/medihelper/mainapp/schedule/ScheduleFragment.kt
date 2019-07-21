@@ -12,6 +12,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.DateUtil
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
@@ -45,6 +48,7 @@ class ScheduleFragment : Fragment() {
         setupMainActivity()
         setupDatesViewPager()
         observeViewModel()
+        setupToolbar()
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -62,10 +66,20 @@ class ScheduleFragment : Fragment() {
                 setTransparentStatusBar(false)
                 val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
                 fab.apply {
-                    hide()
+                    show()
+                    shrink()
+                    setIconResource(R.drawable.round_add_alert_white_48)
+                    text = ""
+                    setOnClickListener { openSelectMedicineDialog() }
                 }
             }
         }
+    }
+
+    private fun setupToolbar() {
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     private fun setupDatesViewPager() {
@@ -78,7 +92,7 @@ class ScheduleFragment : Fragment() {
         view_pager.offscreenPageLimit = 0
     }
 
-    private fun openAddToScheduleFragment() {
+    private fun openSelectMedicineDialog() {
         val dialog = SelectMedicineDialogFragment()
         dialog.show(childFragmentManager, SelectMedicineDialogFragment.TAG)
     }

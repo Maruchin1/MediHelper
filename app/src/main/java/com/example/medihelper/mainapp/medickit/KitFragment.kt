@@ -94,7 +94,6 @@ class KitFragment : Fragment() {
             with(recycler_view) {
                 layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                 adapter = KitAdapter(context, this@KitFragment)
-//                addItemDecoration(DividerItemDecoration(this.context, LinearLayoutManager.VERTICAL))
             }
         }
     }

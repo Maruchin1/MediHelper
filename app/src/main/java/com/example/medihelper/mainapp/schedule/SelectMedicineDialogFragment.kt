@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.dialog_fragment_select_medicine.*
+import kotlinx.android.synthetic.main.dialog_select_medicine.*
 
 class SelectMedicineDialogFragment : BottomSheetDialogFragment() {
 
@@ -30,11 +30,12 @@ class SelectMedicineDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dialog_fragment_select_medicine, container, false)
+        return inflater.inflate(R.layout.dialog_select_medicine, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        btn_close.setOnClickListener { dismiss() }
         setupRecyclerView()
         setupAddMedicineButton()
         observeViewModel()
