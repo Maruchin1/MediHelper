@@ -26,7 +26,6 @@ class AddMedicineViewModel : ViewModel() {
     val selectedMedicineIdLive = MutableLiveData<Int>()
     val selectedMedicineLive: LiveData<Medicine>
     val medicineTypesListLive = Repository.getMedicineTypesLive()
-    val tmpPhotoFileLive = MutableLiveData<File>()
 
     val nameLive = MutableLiveData<String>()
     val medicineTypeLive = MutableLiveData<MedicineType>()
@@ -34,6 +33,7 @@ class AddMedicineViewModel : ViewModel() {
     val currStateLive = MutableLiveData<String>()
     val expireDateLive = MutableLiveData<String>()
     val commentsLive = MutableLiveData<String>()
+    val photoFileLive = MutableLiveData<File>()
 
     init {
         selectedMedicineLive = Transformations.switchMap(selectedMedicineIdLive) { medicineId ->
@@ -49,10 +49,13 @@ class AddMedicineViewModel : ViewModel() {
                 }
                 capacityLive.value = medicine.packageSize?.toString()
                 currStateLive.value = medicine.currState?.toString()
-                medicine.expireDate?.let { expireDate ->
-                    expireDateLive.value = DateUtil.dateToString(expireDate)
+                expireDateLive.value = medicine.expireDate?.let { expireDate ->
+                    DateUtil.dateToString(expireDate)
                 }
                 commentsLive.value = medicine.comments
+                photoFileLive.value = medicine.photoFilePath?.let { photoFilePath ->
+                    File(photoFilePath)
+                }
             }
         }
     }
@@ -63,21 +66,19 @@ class AddMedicineViewModel : ViewModel() {
         }
     }
 
-    fun saveMedicine(context: Context): Boolean {
+    fun saveMedicine(): Boolean {
         Log.d(TAG, "onClickSaveNewMedicine")
         val name = nameLive.value
         val type = medicineTypeLive.value
         val capacity = capacityLive.value
         val currState = currStateLive.value
-        val photoFilePath = tmpPhotoFileLive.value?.let { photoFile ->
+        val photoFilePath = photoFileLive.value?.let { photoFile ->
             Repository.createPhotoFileFromTemp(photoFile).absolutePath
         }
         val expireDate = expireDateLive.value
         val comments = commentsLive.value
 
         if (name == null) {
-            //todo zamienić to na jakiś snackbar lub zaznaczenie pola tekstowego na czerwono
-            Toast.makeText(context, "Podanie nazwy jest wymagane", Toast.LENGTH_LONG).show()
             return false
         }
 
@@ -112,7 +113,7 @@ class AddMedicineViewModel : ViewModel() {
         return Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(activity.packageManager)?.also {
                 val photoFile = Repository.createTempPhotoFile()
-                tmpPhotoFileLive.value = photoFile
+                photoFileLive.value = photoFile
                 val photoURI = FileProvider.getUriForFile(
                     activity,
                     "com.example.medihelper.fileprovider",
@@ -132,10 +133,8 @@ class AddMedicineViewModel : ViewModel() {
             context,
             R.style.DateDialogPicker,
             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                val correctMonth = month + 1
-                val selectedDay = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
-                val selectedMonth = if (correctMonth < 10) "0$correctMonth" else "$correctMonth"
-                expireDateLive.value = "$selectedDay-$selectedMonth-$year"
+                val selectedDate = DateUtil.makeDate(dayOfMonth, month, year)
+                expireDateLive.value = DateUtil.dateToString(selectedDate)
             },
             currYear,
             currMonth,

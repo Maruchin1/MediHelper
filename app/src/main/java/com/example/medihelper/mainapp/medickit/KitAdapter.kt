@@ -48,12 +48,13 @@ class KitAdapter(private val context: Context, private val kitFragment: KitFragm
                 setLayoutWeight(state, lineState)
                 setLayoutWeight(empty, lineEmpty)
                 lineState.setBackgroundResource(stateColorResId(state))
+                layCurrStateLine.visibility = View.VISIBLE
+                layCurrStateText.visibility = View.VISIBLE
             }
         } else {
             viewHolder.apply {
-                val gone = View.GONE
-                layCurrStateLine.visibility = gone
-                layCurrStateText.visibility = gone
+                layCurrStateLine.visibility = View.GONE
+                layCurrStateText.visibility = View.GONE
             }
         }
 

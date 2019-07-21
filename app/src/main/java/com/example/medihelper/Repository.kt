@@ -72,7 +72,7 @@ object Repository {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         return File.createTempFile(
                 "TMP_JPEG_${timeStamp}_",
-                ".png",
+                ".jpg",
                 photosDir
         ).apply {
             deleteOnExit()

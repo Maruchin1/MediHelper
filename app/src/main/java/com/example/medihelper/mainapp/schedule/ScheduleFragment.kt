@@ -7,17 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager.widget.ViewPager
-
+import com.example.medihelper.DateUtil
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import java.util.*
 
 
 class ScheduleFragment : Fragment() {
@@ -68,26 +69,13 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun setupDatesViewPager() {
-        val adapter = ScheduleDayAdapter(childFragmentManager, viewModel)
-        view_pager.offscreenPageLimit = 1
-        view_pager.adapter = adapter
-        view_pager.currentItem = ScheduleDayAdapter.TODAY_INDEX
-        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {}
-
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {}
-
-            override fun onPageSelected(position: Int) {
-                (view_pager.adapter as ScheduleDayAdapter).getItem(position).let {
-
-                }
-            }
-        })
-//        tab_lay_dates.setupWithViewPager(view_pager)
+        view_pager.adapter = ScheduleDayPagerAdapter(childFragmentManager)
+        view_pager.setCurrentItem(5000, false)
+        view_pager.post {
+            view_pager.setCurrentItem(5000, false)
+        }
+        view_pager.adapter?.notifyDataSetChanged()
+        view_pager.offscreenPageLimit = 0
     }
 
     private fun openAddToScheduleFragment() {
@@ -98,5 +86,24 @@ class ScheduleFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.medicinesListLive.observe(viewLifecycleOwner, Observer { })
         viewModel.medicinesTypesListLive.observe(viewLifecycleOwner, Observer { })
+    }
+
+    inner class ScheduleDayPagerAdapter(fragmentManager: FragmentManager) :
+        FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
+        override fun getCount(): Int {
+            return 10000
+        }
+
+        override fun getItemPosition(`object`: Any): Int {
+            return FragmentStatePagerAdapter.POSITION_NONE
+        }
+
+        override fun getItem(position: Int): Fragment {
+            val calendar = Calendar.getInstance(TimeZone.getDefault())
+            calendar.add(Calendar.DAY_OF_YEAR, position - 5000)
+            val dateString = DateUtil.dateToString(calendar.time)
+            return ScheduleDayFragment.getInstance(dateString)
+        }
     }
 }

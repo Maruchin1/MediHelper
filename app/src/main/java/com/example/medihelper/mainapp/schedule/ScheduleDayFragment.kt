@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.DateUtil
 
 import com.example.medihelper.R
-import kotlinx.android.synthetic.main.fragment_schedule_list.*
+import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import java.util.*
 
 
@@ -33,17 +33,22 @@ class ScheduleDayFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_schedule_list, container, false)
+        return inflater.inflate(R.layout.fragment_schedule_day, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
         arguments?.let { args ->
-            args.getString(ARG_DATE)?.let { dateString ->
-                observeViewModel(DateUtil.stringToDate(dateString))
-            }
+            val date = args.getString(ARG_DATE, "Brak")
+            txv_date.text = date
         }
+
+//        setupRecyclerView()
+//        arguments?.let { args ->
+//            args.getString(ARG_DATE)?.let { dateString ->
+//                observeViewModel(DateTime(dateString))
+//            }
+//        }
     }
 
     private fun observeViewModel(date: Date) {

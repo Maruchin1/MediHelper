@@ -65,8 +65,6 @@ class MedicineDetailsFragment : Fragment() {
     fun onClickDelete(view: View) {
         val dialog = DeleteMedicineDialogFragment()
         dialog.show(childFragmentManager, DeleteMedicineDialogFragment.TAG)
-//        viewModel.deleteMedicine()
-//        findNavController().popBackStack()
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -112,7 +110,11 @@ class MedicineDetailsFragment : Fragment() {
         viewModel.selectedMedicineID.observe(viewLifecycleOwner, Observer { })
         viewModel.selectedMedicine.observe(viewLifecycleOwner, Observer { })
         viewModel.photoLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) setMedicinePicture(it)
+            if (it != null) {
+                setMedicinePicture(it)
+            } else {
+                setMedicinePictureEmpty()
+            }
         })
         viewModel.stateColorResIdLive.observe(viewLifecycleOwner, Observer {
             if (it != null) setStateColor(it)
@@ -138,7 +140,12 @@ class MedicineDetailsFragment : Fragment() {
             .load(photoFile)
             .centerCrop()
             .into(img_medicine_picture)
-        img_medicine_picture.setColorFilter(null)
+    }
+
+    private fun setMedicinePictureEmpty() {
+        Glide.with(this)
+            .load(R.drawable.ic_pill_white_48dp)
+            .into(img_medicine_picture)
     }
 
     private fun setStateColor(colorResId: Int) {

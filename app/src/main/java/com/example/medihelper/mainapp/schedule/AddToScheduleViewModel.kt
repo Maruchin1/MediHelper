@@ -54,23 +54,6 @@ class AddToScheduleViewModel : ViewModel() {
         }
     }
 
-    private fun saveToSchedule(days: List<String>, doseHours: List<DoseHour>, medicine: Medicine) {
-        val scheduledMedicinesList = ArrayList<ScheduledMedicine>()
-        for (day in days) {
-            for (doseHour in doseHours) {
-                ScheduledMedicine(
-                    medicineID = medicine.medicineID!!,
-                    date = DateUtil.stringToDate(day),
-                    time = doseHour.hour,
-                    doseSize = doseHour.doseSize
-                ).let {
-                    scheduledMedicinesList.add(it)
-                }
-            }
-        }
-        Repository.insertAllScheduledMedicines(scheduledMedicinesList)
-    }
-
     fun showSelectDateDialogFragment(context: Context, selectedDateMethod: (date: String) -> Unit) {
         val calendar = Calendar.getInstance()
         val currYear = calendar.get(Calendar.YEAR)
@@ -122,6 +105,23 @@ class AddToScheduleViewModel : ViewModel() {
         return medicinesTypesListLive.value?.find { medicineType ->
             medicineType.medicineTypeID == medicineTypeID
         }?.typeName ?: "brak typu"
+    }
+
+    private fun saveToSchedule(days: List<String>, doseHours: List<DoseHour>, medicine: Medicine) {
+        val scheduledMedicinesList = ArrayList<ScheduledMedicine>()
+        for (day in days) {
+            for (doseHour in doseHours) {
+                ScheduledMedicine(
+                    medicineID = medicine.medicineID!!,
+                    date = DateUtil.stringToDate(day),
+                    time = doseHour.hour,
+                    doseSize = doseHour.doseSize
+                ).let {
+                    scheduledMedicinesList.add(it)
+                }
+            }
+        }
+        Repository.insertAllScheduledMedicines(scheduledMedicinesList)
     }
 
     private fun getCurrDateString(): String {

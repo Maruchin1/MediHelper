@@ -106,10 +106,12 @@
                                 android:tint="@android:color/darker_gray" />
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etx_medicine_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Nazwa leku"
                                 android:text="@={viewModel.nameLive}" />
+
                         </LinearLayout>
 
                         <LinearLayout

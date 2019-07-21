@@ -1,7 +1,6 @@
 package com.example.medihelper.localdatabase.entities
 
 import androidx.room.*
-import java.time.LocalDate
 import java.util.*
 
 @Entity(

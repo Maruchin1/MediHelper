@@ -7,6 +7,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,5 +22,9 @@ class MainActivity : AppCompatActivity() {
             true -> window.statusBarColor = Color.TRANSPARENT
             false -> window.statusBarColor = resources.getColor(R.color.colorPrimary)
         }
+    }
+
+    fun showSnackBar(message: String) {
+        Snackbar.make(root_lay, message, Snackbar.LENGTH_LONG).show()
     }
 }

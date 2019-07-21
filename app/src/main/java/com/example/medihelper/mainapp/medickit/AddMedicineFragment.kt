@@ -1,8 +1,6 @@
 package com.example.medihelper.mainapp.medickit
 
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +22,7 @@ import com.example.medihelper.localdatabase.entities.MedicineType
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_add_medicine.*
+import java.io.File
 
 
 class AddMedicineFragment : Fragment() {
@@ -59,16 +58,6 @@ class AddMedicineFragment : Fragment() {
         loadSelectedMedicineData()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val photoFile = viewModel.tmpPhotoFileLive.value
-            Glide.with(this)
-                .load(photoFile)
-                .centerCrop()
-                .into(img_photo)
-        }
-    }
-
     fun onClickPhoto(view: View) {
         activity?.let {
             val intent = viewModel.takePhotoIntent(it)
@@ -93,12 +82,28 @@ class AddMedicineFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.run {
-            tmpPhotoFileLive.observe(viewLifecycleOwner, Observer {  })
+            photoFileLive.observe(viewLifecycleOwner, Observer { photoFile ->
+                setPhotoImage(photoFile)
+            })
             medicineTypesListLive.observe(viewLifecycleOwner, Observer { list ->
                 if (list != null) {
                     setMedicineTypeSpinnerItems(list)
                 }
             })
+        }
+    }
+
+    private fun setPhotoImage(photoFile: File?) {
+        if (photoFile != null) {
+            Glide.with(this)
+                .load(photoFile)
+                .centerCrop()
+                .into(img_photo)
+        } else {
+            Glide.with(this)
+                .load(R.drawable.baseline_add_a_photo_black_48)
+                .centerCrop()
+                .into(img_photo)
         }
     }
 
@@ -132,12 +137,17 @@ class AddMedicineFragment : Fragment() {
             }
         }
     }
+
     private fun saveNewMedicine() {
-        context?.let {
-            val medicineAdded = viewModel.saveMedicine(it)
-            if (medicineAdded) {
-                findNavController().popBackStack()
-                viewModel.resetViewModel()
+        val medicineSaved = viewModel.saveMedicine()
+        if (medicineSaved) {
+            findNavController().popBackStack()
+            viewModel.resetViewModel()
+        } else {
+            val errorMessage = "Podanie nazwy leku jest wymagane"
+            etx_medicine_name.error = errorMessage
+            activity?.run {
+                (this as MainActivity).showSnackBar(errorMessage)
             }
         }
     }

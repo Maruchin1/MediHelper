@@ -115,7 +115,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
-                                android:text="@{viewModel.expireDateLive, default=data}"
+                                android:text='@{viewModel.expireDateLive ?? "--", default=data}'
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                                 android:textColor="@android:color/tertiary_text_dark"
                                 app:layout_constraintBottom_toBottomOf="@id/label_expire_date"
@@ -137,7 +137,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
-                                android:text="@{viewModel.daysRemainsLive, default=dni}"
+                                android:text='@{viewModel.daysRemainsLive ?? "--", default=dni}'
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                                 android:textColor="@android:color/tertiary_text_dark"
                                 app:layout_constraintBottom_toBottomOf="@id/label_days_remain"

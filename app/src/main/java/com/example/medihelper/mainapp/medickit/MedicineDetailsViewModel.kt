@@ -121,18 +121,10 @@ class MedicineDetailsViewModel : ViewModel() {
 
     private fun daysRemainsString(medicine: Medicine): String? {
         return medicine.expireDate?.let { expireDate ->
-            val currCalendar = Calendar.getInstance()
-            val calendar = Calendar.getInstance().apply {
-                time = expireDate
-            }
-
-            val daysBetween = daysBetween(currCalendar.time, calendar.time)
+            val currDate = DateUtil.getCurrDate()
+            val daysBetween = DateUtil.daysBetween(currDate, expireDate)
             "$daysBetween dni"
         }
-    }
-
-    private fun daysBetween(date1: Date, date2: Date): Int {
-        return ((date2.time - date1.time) / (1000 * 60 * 60 * 24)).toInt()
     }
 
     companion object {
