@@ -10,8 +10,6 @@ import com.example.medihelper.Repository
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MedicineDetailsViewModel : ViewModel() {
     val selectedMedicineID = MutableLiveData<Int>()
@@ -121,7 +119,7 @@ class MedicineDetailsViewModel : ViewModel() {
 
     private fun daysRemainsString(medicine: Medicine): String? {
         return medicine.expireDate?.let { expireDate ->
-            val currDate = DateUtil.getCurrDate()
+            val currDate = DateUtil.getCurrCalendar().time
             val daysBetween = DateUtil.daysBetween(currDate, expireDate)
             "$daysBetween dni"
         }

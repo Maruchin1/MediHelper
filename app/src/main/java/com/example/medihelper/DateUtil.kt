@@ -5,7 +5,7 @@ import java.util.*
 
 object DateUtil {
 
-    fun getCurrDate(): Date = Calendar.getInstance().time
+    fun getCurrCalendar(): Calendar = Calendar.getInstance()
 
     fun dateToString(date: Date): String = dateFormat().format(date)
 

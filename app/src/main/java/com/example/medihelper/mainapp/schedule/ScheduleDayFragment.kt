@@ -51,21 +51,21 @@ class ScheduleDayFragment : Fragment() {
 //        }
     }
 
-    private fun observeViewModel(date: Date) {
-        viewModel.getScheduledMedicinesByDateLive(date).observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                (recycler_view.adapter as ScheduleMedicineAdapter).setScheduledMedicinesList(it)
-            }
-        })
-    }
-
-    private fun setupRecyclerView() {
-        context?.run {
-            recycler_view.adapter = ScheduleMedicineAdapter(this, viewModel)
-            recycler_view.layoutManager = LinearLayoutManager(this)
-            recycler_view.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        }
-    }
+//    private fun observeViewModel(date: Date) {
+//        viewModel.getScheduledMedicinesByDateLive(date).observe(viewLifecycleOwner, Observer {
+//            if (it != null) {
+//                (recycler_view.adapter as ScheduleMedicineAdapter).setScheduledMedicinesList(it)
+//            }
+//        })
+//    }
+//
+//    private fun setupRecyclerView() {
+//        context?.run {
+//            recycler_view.adapter = ScheduleMedicineAdapter(this, viewModel)
+//            recycler_view.layoutManager = LinearLayoutManager(this)
+//            recycler_view.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+//        }
+//    }
 
     companion object {
         val ARG_DATE = "arg-date"

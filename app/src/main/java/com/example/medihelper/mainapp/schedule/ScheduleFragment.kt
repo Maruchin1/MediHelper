@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -15,6 +16,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.medihelper.DateUtil
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
@@ -49,6 +52,7 @@ class ScheduleFragment : Fragment() {
         setupDatesViewPager()
         observeViewModel()
         setupToolbar()
+        setupTimelineRecyclerView()
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -83,14 +87,22 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun setupDatesViewPager() {
-        view_pager.adapter = ScheduleDayPagerAdapter(childFragmentManager)
-        view_pager.setCurrentItem(5000, false)
-        view_pager.post {
-            view_pager.setCurrentItem(5000, false)
+        view_pager_dates.adapter = ScheduleDayPagerAdapter(childFragmentManager)
+        view_pager_dates.setCurrentItem(TIMELINE_DAYS_COUNT / 2, false)
+        view_pager_dates.post {
+            view_pager_dates.setCurrentItem(TIMELINE_DAYS_COUNT / 2, false)
         }
-        view_pager.adapter?.notifyDataSetChanged()
-        view_pager.offscreenPageLimit = 0
+        view_pager_dates.adapter?.notifyDataSetChanged()
+        view_pager_dates.offscreenPageLimit = 1
     }
+
+    private fun setupTimelineRecyclerView() {
+        recycler_view_timeline.adapter = ScheduleTimelineAdapter()
+        recycler_view_timeline.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recycler_view_timeline.scrollToPosition(TIMELINE_DAYS_COUNT / 2)
+    }
+
 
     private fun openSelectMedicineDialog() {
         val dialog = SelectMedicineDialogFragment()
@@ -102,11 +114,17 @@ class ScheduleFragment : Fragment() {
         viewModel.medicinesTypesListLive.observe(viewLifecycleOwner, Observer { })
     }
 
+    private fun getDateString(position: Int): String {
+        val calendar = DateUtil.getCurrCalendar()
+        calendar.add(Calendar.DAY_OF_YEAR, position - (TIMELINE_DAYS_COUNT / 2))
+        return DateUtil.dateToString(calendar.time)
+    }
+
     inner class ScheduleDayPagerAdapter(fragmentManager: FragmentManager) :
         FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getCount(): Int {
-            return 10000
+            return TIMELINE_DAYS_COUNT
         }
 
         override fun getItemPosition(`object`: Any): Int {
@@ -114,10 +132,41 @@ class ScheduleFragment : Fragment() {
         }
 
         override fun getItem(position: Int): Fragment {
-            val calendar = Calendar.getInstance(TimeZone.getDefault())
-            calendar.add(Calendar.DAY_OF_YEAR, position - 5000)
-            val dateString = DateUtil.dateToString(calendar.time)
-            return ScheduleDayFragment.getInstance(dateString)
+            return ScheduleDayFragment.getInstance(getDateString(position))
         }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return getDateString(position)
+        }
+    }
+
+    inner class ScheduleTimelineAdapter :
+        RecyclerView.Adapter<ScheduleTimelineAdapter.ScheduleTimelineViewHolder>() {
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+        ): ScheduleTimelineViewHolder {
+            val itemView = LayoutInflater.from(context)
+                .inflate(R.layout.recycler_item_schedule_timeline, parent, false)
+            return ScheduleTimelineViewHolder(itemView)
+        }
+
+        override fun getItemCount(): Int {
+            return TIMELINE_DAYS_COUNT
+        }
+
+        override fun onBindViewHolder(holder: ScheduleTimelineViewHolder, position: Int) {
+            val dateString = getDateString(position)
+            holder.txvDay.text = dateString
+        }
+
+
+        inner class ScheduleTimelineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val txvDay: TextView = itemView.findViewById(R.id.txv_day)
+        }
+    }
+
+    companion object {
+        private const val TIMELINE_DAYS_COUNT = 10000
     }
 }
