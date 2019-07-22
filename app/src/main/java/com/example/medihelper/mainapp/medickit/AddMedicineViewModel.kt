@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
@@ -31,7 +30,7 @@ class AddMedicineViewModel : ViewModel() {
     val medicineTypeLive = MutableLiveData<MedicineType>()
     val capacityLive = MutableLiveData<String>()
     val currStateLive = MutableLiveData<String>()
-    val expireDateLive = MutableLiveData<String>()
+    val expireDateStringLive = MutableLiveData<String>()
     val commentsLive = MutableLiveData<String>()
     val photoFileLive = MutableLiveData<File>()
 
@@ -49,7 +48,7 @@ class AddMedicineViewModel : ViewModel() {
                 }
                 capacityLive.value = medicine.packageSize?.toString()
                 currStateLive.value = medicine.currState?.toString()
-                expireDateLive.value = medicine.expireDate?.let { expireDate ->
+                expireDateStringLive.value = medicine.expireDate?.let { expireDate ->
                     DateUtil.dateToString(expireDate)
                 }
                 commentsLive.value = medicine.comments
@@ -75,7 +74,7 @@ class AddMedicineViewModel : ViewModel() {
         val photoFilePath = photoFileLive.value?.let { photoFile ->
             Repository.createPhotoFileFromTemp(photoFile).absolutePath
         }
-        val expireDate = expireDateLive.value
+        val expireDateString = expireDateStringLive.value
         val comments = commentsLive.value
 
         if (name == null) {
@@ -89,7 +88,7 @@ class AddMedicineViewModel : ViewModel() {
                 this.packageSize = capacity?.toFloat()
                 this.currState = currState?.toFloat()
                 this.photoFilePath = photoFilePath
-                this.expireDate = expireDate?.let { DateUtil.stringToDate(it) }
+                this.expireDate = expireDateString?.let { DateUtil.stringToDate(it) }
                 this.comments = comments
             }
             Repository.updateMedicine(medicineToUpdate)
@@ -102,7 +101,7 @@ class AddMedicineViewModel : ViewModel() {
             packageSize = capacity?.toFloat(),
             currState = currState?.toFloat(),
             photoFilePath = photoFilePath,
-            expireDate = expireDate?.let { DateUtil.stringToDate(it) },
+            expireDate = expireDateString?.let { DateUtil.stringToDate(it) },
             comments = comments
         )
         Repository.insertMedicine(newMedicine)
@@ -124,31 +123,13 @@ class AddMedicineViewModel : ViewModel() {
         }
     }
 
-    fun showExpireDateDialogPicker(context: Context) {
-        val calendar = Calendar.getInstance()
-        val currYear = calendar.get(Calendar.YEAR)
-        val currMonth = calendar.get(Calendar.MONTH)
-        val currDay = calendar.get(Calendar.DAY_OF_MONTH)
-        DatePickerDialog(
-            context,
-            R.style.DateDialogPicker,
-            DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                val selectedDate = DateUtil.makeDate(dayOfMonth, month, year)
-                expireDateLive.value = DateUtil.dateToString(selectedDate)
-            },
-            currYear,
-            currMonth,
-            currDay
-        ).show()
-    }
-
     fun resetViewModel() {
         arrayOf(
             nameLive,
             medicineTypeLive,
             capacityLive,
             currStateLive,
-            expireDateLive,
+            expireDateStringLive,
             commentsLive,
             photoFileLive
         ).forEach { field ->

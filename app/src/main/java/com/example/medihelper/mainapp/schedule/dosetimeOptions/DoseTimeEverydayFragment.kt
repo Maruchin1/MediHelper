@@ -38,7 +38,7 @@ class DoseTimeEverydayFragment : Fragment() {
                 R.id.txv_start -> this::onStartDateSelected
                 else -> this::onEndDateSelected
             }
-            viewModel.showSelectDateDialogFragment(it, onDateSelectedMethod)
+//            viewModel.showSelectDateDialogFragment(it, onDateSelectedMethod)
         }
     }
 

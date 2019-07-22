@@ -17,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.medihelper.R
+import com.example.medihelper.SelectDateDialogFragment
 import com.example.medihelper.databinding.FragmentAddMedicineBinding
 import com.example.medihelper.localdatabase.entities.MedicineType
 import com.example.medihelper.mainapp.MainActivity
@@ -66,9 +67,9 @@ class AddMedicineFragment : Fragment() {
     }
 
     fun onClickExpireDate(view: View) {
-        context?.let {
-            viewModel.showExpireDateDialogPicker(it)
-        }
+        val dialog = SelectDateDialogFragment()
+        dialog.resultSelectedDateStringLive = viewModel.expireDateStringLive
+        dialog.show(childFragmentManager, SelectDateDialogFragment.TAG)
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {

@@ -17,9 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_pill_black_48dp"
-            android:tint="@color/colorPrimary"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:tint="@color/colorPrimary" />
 
         <TextView
             android:layout_width="0dp"
@@ -28,10 +26,7 @@
             android:layout_weight="1"
             android:text="Zaplanuj lek"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="@id/img_icon_delete"
-            app:layout_constraintStart_toEndOf="@id/img_icon_delete"
-            app:layout_constraintTop_toTopOf="@id/img_icon_delete" />
+            android:textColor="@color/colorPrimary" />
 
         <ImageButton
             android:id="@+id/btn_close"
