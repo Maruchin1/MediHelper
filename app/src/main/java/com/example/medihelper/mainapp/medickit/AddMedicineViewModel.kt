@@ -149,7 +149,8 @@ class AddMedicineViewModel : ViewModel() {
             capacityLive,
             currStateLive,
             expireDateLive,
-            commentsLive
+            commentsLive,
+            photoFileLive
         ).forEach { field ->
             field.value = null
         }

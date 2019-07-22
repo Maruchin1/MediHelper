@@ -1,10 +1,13 @@
 package com.example.medihelper.mainapp.schedule
 
+import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
@@ -23,7 +26,6 @@ import com.example.medihelper.DateUtil
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
 import com.example.medihelper.mainapp.MainActivity
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
@@ -50,11 +52,12 @@ class ScheduleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        btn_back_to_menu.setOnClickListener { findNavController().popBackStack() }
         setupMainActivity()
-        setupDatesViewPager()
         observeViewModel()
-        setupToolbar()
         setupTimelineRecyclerView()
+        setupDatesViewPager()
+        setCurrDate()
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -82,19 +85,9 @@ class ScheduleFragment : Fragment() {
         }
     }
 
-    private fun setupToolbar() {
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.setupWithNavController(navController, appBarConfiguration)
-    }
-
-
     private fun setupDatesViewPager() {
         view_pager_dates.apply {
-            val currItemPosition = TIMELINE_DAYS_COUNT / 2
             adapter = ScheduleDayPagerAdapter(childFragmentManager)
-            setCurrentItem(currItemPosition, false)
-            adapter?.notifyDataSetChanged()
             offscreenPageLimit = 1
             addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
@@ -108,22 +101,23 @@ class ScheduleFragment : Fragment() {
                 }
 
                 override fun onPageSelected(position: Int) {
-                    viewModel.selectedDatePositionLive.value = position
+                    viewModel.selectedDatePositionLive.postValue(position)
                 }
             })
         }
     }
 
     private fun setupTimelineRecyclerView() {
-        val currDatePosition = TIMELINE_DAYS_COUNT / 2
         recycler_view_timeline.apply {
             adapter = ScheduleTimelineAdapter()
             layoutManager = CenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            scrollToPosition(currDatePosition)
         }
-        viewModel.selectedDatePositionLive.value = currDatePosition
     }
 
+    private fun setCurrDate() {
+        val currDatePosition = TIMELINE_DAYS_COUNT / 2
+        viewModel.selectedDatePositionLive.value = currDatePosition
+    }
 
     private fun openSelectMedicineDialog() {
         val dialog = SelectMedicineDialogFragment()
@@ -149,18 +143,6 @@ class ScheduleFragment : Fragment() {
         calendar.add(Calendar.DAY_OF_YEAR, position - (TIMELINE_DAYS_COUNT / 2))
         return calendar
     }
-
-//    private fun getDateString(position: Int): String {
-//        val calendar = DateUtil.getCurrCalendar()
-//        calendar.add(Calendar.DAY_OF_YEAR, position - (TIMELINE_DAYS_COUNT / 2))
-//        return DateUtil.dateToString(calendar.time)
-//    }
-//
-//    private fun getDayMonthString(position: Int): String {
-//        val calendar = DateUtil.getCurrCalendar()
-//        calendar.add(Calendar.DAY_OF_YEAR, position - (TIMELINE_DAYS_COUNT / 2))
-//        return DateUtil.dateToStringDayMonth(calendar.time)
-//    }
 
     inner class ScheduleDayPagerAdapter(fragmentManager: FragmentManager) :
         FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -190,6 +172,7 @@ class ScheduleFragment : Fragment() {
             selectedPosition = position
             notifyItemChanged(prevSelectedPosition)
             notifyItemChanged(position)
+            recycler_view_timeline.scrollToPosition(position)
         }
 
         override fun onCreateViewHolder(
@@ -208,20 +191,26 @@ class ScheduleFragment : Fragment() {
         override fun onBindViewHolder(holder: ScheduleTimelineViewHolder, position: Int) {
             val selectedDatePosition = viewModel.selectedDatePositionLive.value
             val calendar = getCalendarForPosition(position)
-            var cardBgColorID = R.color.colorWhite
-            var textColorID = R.color.colorTextSecondary
+            var textColorID = R.color.colorTextTertiary
+            var selectedIndicatorVisibility = View.INVISIBLE
+
             if (selectedDatePosition == position) {
-                cardBgColorID = R.color.colorDarkerGray
-                textColorID = R.color.colorWhite
-                recycler_view_timeline.smoothScrollToPosition(selectedDatePosition)
+                textColorID = R.color.colorPrimary
+                selectedIndicatorVisibility = View.VISIBLE
+                recycler_view_timeline.smoothScrollToPosition(position)
             }
+
             holder.apply {
-                txvDay.text = DateUtil.dayMonthString(calendar.time)
-                txvDayOfWeek.text = DateUtil.dayOfWeekString(calendar.time)
-                txvDay.setTextColor(resources.getColor(textColorID))
-                txvDayOfWeek.setTextColor(resources.getColor(textColorID))
-                cardView.setCardBackgroundColor(resources.getColor(cardBgColorID))
-                cardView.setOnClickListener {
+                txvDay.apply {
+                    text = DateUtil.dayMonthString(calendar.time)
+                    setTextColor(resources.getColor(textColorID))
+                }
+                txvDayOfWeek.apply {
+                    text = DateUtil.dayOfWeekString(calendar.time)
+                    setTextColor(resources.getColor(textColorID))
+                }
+                viewSelectedIndicator.visibility = selectedIndicatorVisibility
+                layCLick.setOnClickListener {
                     viewModel.selectedDatePositionLive.value = position
                 }
             }
@@ -230,7 +219,8 @@ class ScheduleFragment : Fragment() {
         inner class ScheduleTimelineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val txvDay: TextView = itemView.findViewById(R.id.txv_day)
             val txvDayOfWeek: TextView = itemView.findViewById(R.id.txv_day_of_week)
-            val cardView: MaterialCardView = itemView.findViewById(R.id.card_view)
+            val viewSelectedIndicator: View = itemView.findViewById(R.id.view_selected_indicator)
+            val layCLick: LinearLayout = itemView.findViewById(R.id.lay_click)
         }
     }
 

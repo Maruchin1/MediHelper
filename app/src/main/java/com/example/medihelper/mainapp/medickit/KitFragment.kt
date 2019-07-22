@@ -10,8 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.example.medihelper.R
@@ -19,6 +17,7 @@ import com.example.medihelper.databinding.FragmentKitBinding
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_kit.*
+import kotlinx.android.synthetic.main.fragment_kit.btn_back_to_menu
 
 
 class KitFragment : Fragment() {
@@ -42,10 +41,10 @@ class KitFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        btn_back_to_menu.setOnClickListener { findNavController().popBackStack() }
         setupMainActivity()
         setupRecyclerView()
         observeViewModel()
-        setupToolbar()
     }
 
     fun openMedicineDetailsFragment(medicineID: Int) {
@@ -81,12 +80,6 @@ class KitFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun setupToolbar() {
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     private fun setupRecyclerView() {
