@@ -1,6 +1,5 @@
 package com.example.medihelper.mainapp.schedule
 
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,8 +15,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -52,12 +49,13 @@ class ScheduleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "onViewCreated")
         btn_back_to_menu.setOnClickListener { findNavController().popBackStack() }
         setupMainActivity()
         observeViewModel()
         setupTimelineRecyclerView()
         setupDatesViewPager()
-        setCurrDate()
+        setInitialDate()
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -101,7 +99,7 @@ class ScheduleFragment : Fragment() {
                 }
 
                 override fun onPageSelected(position: Int) {
-                    viewModel.selectedDatePositionLive.postValue(position)
+                    (recycler_view_timeline.adapter as ScheduleTimelineAdapter).selectDate(position)
                 }
             })
         }
@@ -114,9 +112,10 @@ class ScheduleFragment : Fragment() {
         }
     }
 
-    private fun setCurrDate() {
+    private fun setInitialDate() {
         val currDatePosition = TIMELINE_DAYS_COUNT / 2
-        viewModel.selectedDatePositionLive.value = currDatePosition
+        (recycler_view_timeline.adapter as ScheduleTimelineAdapter).setInitialDate(currDatePosition)
+        view_pager_dates.currentItem = currDatePosition
     }
 
     private fun openSelectMedicineDialog() {
@@ -128,13 +127,6 @@ class ScheduleFragment : Fragment() {
         viewModel.run {
             medicinesListLive.observe(viewLifecycleOwner, Observer { })
             medicinesTypesListLive.observe(viewLifecycleOwner, Observer { })
-            selectedDatePositionLive.observe(viewLifecycleOwner, Observer { selectedDatePosition ->
-                if (selectedDatePosition != null) {
-                    val timelineAdapter = (recycler_view_timeline.adapter as ScheduleTimelineAdapter)
-                    timelineAdapter.selectDate(selectedDatePosition)
-                    view_pager_dates.currentItem = selectedDatePosition
-                }
-            })
         }
     }
 
@@ -167,12 +159,17 @@ class ScheduleFragment : Fragment() {
 
         private var selectedPosition = -1
 
+        fun setInitialDate(position: Int) {
+            selectedPosition = position
+            recycler_view_timeline.scrollToPosition(position)
+            notifyItemChanged(position)
+        }
+
         fun selectDate(position: Int) {
             val prevSelectedPosition = selectedPosition
             selectedPosition = position
             notifyItemChanged(prevSelectedPosition)
             notifyItemChanged(position)
-            recycler_view_timeline.scrollToPosition(position)
         }
 
         override fun onCreateViewHolder(
@@ -189,12 +186,11 @@ class ScheduleFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ScheduleTimelineViewHolder, position: Int) {
-            val selectedDatePosition = viewModel.selectedDatePositionLive.value
             val calendar = getCalendarForPosition(position)
             var textColorID = R.color.colorTextTertiary
             var selectedIndicatorVisibility = View.INVISIBLE
 
-            if (selectedDatePosition == position) {
+            if (selectedPosition == position) {
                 textColorID = R.color.colorPrimary
                 selectedIndicatorVisibility = View.VISIBLE
                 recycler_view_timeline.smoothScrollToPosition(position)
@@ -211,7 +207,8 @@ class ScheduleFragment : Fragment() {
                 }
                 viewSelectedIndicator.visibility = selectedIndicatorVisibility
                 layCLick.setOnClickListener {
-                    viewModel.selectedDatePositionLive.value = position
+                    selectDate(position)
+                    view_pager_dates.currentItem = position
                 }
             }
         }

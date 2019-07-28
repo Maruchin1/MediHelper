@@ -15,6 +15,6 @@ interface ScheduledMedicineDAO {
     @Insert
     fun insertAll(list: List<ScheduledMedicine>)
 
-    @Query("SELECT * FROM scheduled_medicines WHERE date = :date")
-    fun getByDate(date: Date): LiveData<List<ScheduledMedicine>>
+//    @Query("SELECT * FROM scheduled_medicines WHERE date = :date")
+//    fun getByDate(date: Date): LiveData<List<ScheduledMedicine>>
 }

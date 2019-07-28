@@ -16,15 +16,13 @@ class ScheduleViewModel : ViewModel() {
     val medicinesListLive = Repository.getMedicinesLive()
     val medicinesTypesListLive = Repository.getMedicineTypesLive()
 
-    val selectedDatePositionLive = MutableLiveData<Int>()
-
-    fun getScheduledMedicinesByDateLive(date: Date): LiveData<List<ScheduledMedicine>> {
-        return Transformations.map(Repository.getScheduledMedicinesByDateLive(date)) {
-            it.sortedBy { scheduledMedicine ->
-                scheduledMedicine.date
-            }
-        }
-    }
+//    fun getScheduledMedicinesByDateLive(date: Date): LiveData<List<ScheduledMedicine>> {
+//        return Transformations.map(Repository.getScheduledMedicinesByDateLive(date)) {
+//            it.sortedBy { scheduledMedicine ->
+//                scheduledMedicine.date
+//            }
+//        }
+//    }
 
     fun findMedicineById(medicineID: Int): Medicine? {
         return medicinesListLive.value?.find { medicine ->

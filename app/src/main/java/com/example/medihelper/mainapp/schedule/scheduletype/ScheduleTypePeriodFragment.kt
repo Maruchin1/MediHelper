@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule.dosetimeOptions
+package com.example.medihelper.mainapp.schedule.scheduletype
 
 
 import android.os.Bundle
@@ -10,11 +10,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 
 import com.example.medihelper.R
-import com.example.medihelper.databinding.FragmentDoseTimeEverydayBinding
+import com.example.medihelper.SelectDateDialogFragment
+import com.example.medihelper.databinding.FragmentScheduleTypePeriodBinding
 import com.example.medihelper.mainapp.schedule.AddToScheduleViewModel
 
-
-class DoseTimeEverydayFragment : Fragment() {
+class ScheduleTypePeriodFragment : Fragment() {
+    private val TAG = ScheduleTypePeriodFragment::class.simpleName
 
     private lateinit var viewModel: AddToScheduleViewModel
 
@@ -22,7 +23,7 @@ class DoseTimeEverydayFragment : Fragment() {
         super.onCreate(savedInstanceState)
         activity?.run {
             viewModel = ViewModelProviders.of(this).get(AddToScheduleViewModel::class.java)
-        }
+        } ?: throw Exception("Invalid Activity")
     }
 
     override fun onCreateView(
@@ -33,33 +34,20 @@ class DoseTimeEverydayFragment : Fragment() {
     }
 
     fun onClickSelectDate(view: View) {
-        context?.let {
-            val onDateSelectedMethod = when (view.id) {
-                R.id.txv_start -> this::onStartDateSelected
-                else -> this::onEndDateSelected
-            }
-//            viewModel.showSelectDateDialogFragment(it, onDateSelectedMethod)
+        val dialog = SelectDateDialogFragment()
+        when (view.id) {
+            R.id.etx_start_date -> dialog.resultSelectedDateStringLive = viewModel.startDateStringLive
+            R.id.etx_end_date -> dialog.resultSelectedDateStringLive = viewModel.endDateStringLive
         }
+        dialog.show(childFragmentManager, SelectDateDialogFragment.TAG)
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: FragmentDoseTimeEverydayBinding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_dose_time_everyday,
-            container,
-            false
-        )
+        val binding: FragmentScheduleTypePeriodBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_type_period, container, false)
         binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
-    }
-
-    private fun onStartDateSelected(date: String) {
-        viewModel.startDateLive.value = date
-    }
-
-    private fun onEndDateSelected(date: String) {
-        viewModel.endDateLive.value = date
     }
 }

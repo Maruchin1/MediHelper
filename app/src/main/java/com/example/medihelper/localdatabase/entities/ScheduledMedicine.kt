@@ -20,10 +20,35 @@ data class ScheduledMedicine (
     @ColumnInfo(name = "medicine_id")
     var medicineID: Int,
 
-    var date: Date,
+    var startDate: Date,
 
-    var time: String,
+    var endDate: Date? = null,
 
-    @ColumnInfo(name = "dose_size")
-    var doseSize: Int
-)
+    var scheduleType: ScheduleType,
+
+    @Embedded
+    var daysOfWeek: DaysOfWeek? = null,
+
+    var intervalOfDays: Int? = null
+
+//    var date: Date,
+//
+//    var time: String,
+//
+//    @ColumnInfo(name = "dose_size")
+//    var doseSize: Int
+) {
+    enum class ScheduleType {
+        ONCE, PERIOD, CONTINUOUS
+    }
+
+    class DaysOfWeek(
+        var monday: Boolean = false,
+        var tuesday: Boolean = false,
+        var wednesday: Boolean = false,
+        var thursday: Boolean = false,
+        var friday: Boolean = false,
+        var saturday: Boolean = false,
+        var sunday: Boolean = false
+    )
+}

@@ -25,18 +25,18 @@ class ScheduleMedicineAdapter (private val context: Context, private val viewMod
 
     override fun onBindViewHolder(holder: DayScheduleViewHolder, position: Int) {
         val scheduleMedicine = scheduledMedicinesList[position]
-        viewModel.findMedicineById(scheduleMedicine.medicineID)?.let { medicine ->
-            medicine.medicineTypeID?.let { medicineTypeID ->
-                viewModel.findMedicineTypeById(medicineTypeID)?.let { medicineType ->
-                    holder.apply {
-                        txvTime.text = scheduleMedicine.time
-                        txvMedicineName.text = medicine.name
-                        val doseString = "${scheduleMedicine.doseSize} ${medicineType.typeName}"
-                        txvMedicneDose.text = doseString
-                    }
-                }
-            }
-        }
+//        viewModel.findMedicineById(scheduleMedicine.medicineID)?.let { medicine ->
+//            medicine.medicineTypeID?.let { medicineTypeID ->
+//                viewModel.findMedicineTypeById(medicineTypeID)?.let { medicineType ->
+//                    holder.apply {
+//                        txvTime.text = scheduleMedicine.time
+//                        txvMedicineName.text = medicine.name
+//                        val doseString = "${scheduleMedicine.doseSize} ${medicineType.typeName}"
+//                        txvMedicneDose.text = doseString
+//                    }
+//                }
+//            }
+//        }
     }
 
     fun setScheduledMedicinesList(list: List<ScheduledMedicine>) {

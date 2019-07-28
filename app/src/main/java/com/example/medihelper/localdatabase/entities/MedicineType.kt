@@ -6,10 +6,10 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-tableName = "medicine_types",
-indices = [Index(value = ["type_name"], unique = true)]
+    tableName = "medicine_types",
+    indices = [Index(value = ["type_name"], unique = true)]
 )
-data class MedicineType (
+data class MedicineType(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "medicine_type_id")
     val medicineTypeID: Int? = null,

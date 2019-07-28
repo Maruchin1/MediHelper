@@ -2,29 +2,25 @@ package com.example.medihelper.mainapp.schedule
 
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.medihelper.R
+import com.example.medihelper.SelectDateDialogFragment
 import com.example.medihelper.databinding.FragmentAddToScheduleBinding
+import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 import com.example.medihelper.mainapp.MainActivity
-import com.example.medihelper.mainapp.schedule.dosetimeOptions.DoseTimeEverydayFragment
-import com.example.medihelper.mainapp.schedule.dosetimeOptions.DoseTimeIntervalFragment
-import com.example.medihelper.mainapp.schedule.dosetimeOptions.DoseTimeSingleFragment
-import com.example.medihelper.mainapp.schedule.dosetimeOptions.DoseTimeWeekDaysFragment
+import com.example.medihelper.mainapp.schedule.scheduletype.ScheduleTypeContinuousFragment
+import com.example.medihelper.mainapp.schedule.scheduletype.ScheduleTypePeriodFragment
+import com.example.medihelper.mainapp.schedule.scheduletype.ScheduleTypeOnceFragment
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_add_to_schedule.*
 
@@ -52,10 +48,8 @@ class AddToScheduleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
         setupMainActivity()
-        setupDoseTimeChipGroup()
-        setupDoseHourChipGroup()
-        setupDoseHourRecyclerView()
-        setupDoseHourEditText()
+        setupScheduleTypeChipGroup()
+//        setupDoseTimeChipGroup()
         observeViewModel()
     }
 
@@ -81,7 +75,7 @@ class AddToScheduleFragment : Fragment() {
                     setIconResource(R.drawable.round_save_white_48)
                     text = "Zapisz"
                     extend()
-                    setOnClickListener { saveScheduledMedicine() }
+                    setOnClickListener { }
                 }
             }
         }
@@ -91,14 +85,6 @@ class AddToScheduleFragment : Fragment() {
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         toolbar.setupWithNavController(navController, appBarConfiguration)
-    }
-
-    private fun saveScheduledMedicine() {
-        viewModel.saveToSchedule(
-            chip_group_dose_days.checkedChipId,
-            chip_group_dose_hours.checkedChipId
-        )
-        findNavController().popBackStack()
     }
 
     private fun observeViewModel() {
@@ -111,75 +97,53 @@ class AddToScheduleFragment : Fragment() {
                 lay_selected_medicine.visibility = View.VISIBLE
             }
         })
-        viewModel.doseHoursListLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                (recycler_view_dose_hours.adapter as DoseHourAdapter).setDoseHoursList(it)
-            }
-        })
-    }
-
-    private fun setupDoseHourRecyclerView() {
-        context?.run {
-            recycler_view_dose_hours.adapter = DoseHourAdapter(this, viewModel)
-            recycler_view_dose_hours.layoutManager = LinearLayoutManager(this)
-        }
-    }
-
-    private fun setupDoseTimeChipGroup() {
-        val singleFragment = DoseTimeSingleFragment()
-        val everydayFragment = DoseTimeEverydayFragment()
-        val weekDaysFragment = DoseTimeWeekDaysFragment()
-        val intervalFragment = DoseTimeIntervalFragment()
-        chip_group_dose_days.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.chip_single -> changeDoseTimeFragment(singleFragment)
-                R.id.chip_everyday -> changeDoseTimeFragment(everydayFragment)
-                R.id.chip_week_days -> changeDoseTimeFragment(weekDaysFragment)
-                R.id.chip_interval -> changeDoseTimeFragment(intervalFragment)
-            }
-        }
-        chip_group_dose_days.check(R.id.chip_single)
-    }
-
-    private fun setupDoseHourChipGroup() {
-        chip_group_dose_hours.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.chip_several_times -> {
-                    txv_before_number.visibility = View.GONE
-                    txv_after_number.text = "razy dziennie"
-                }
-                R.id.chip_hours_interval -> {
-                    txv_before_number.visibility = View.VISIBLE
-                    txv_after_number.text = "godzin"
-                }
-            }
-        }
-        chip_group_dose_hours.check(R.id.chip_several_times)
-    }
-
-    private fun setupDoseHourEditText() {
-        etx_number.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.d(TAG, "onTextChanged")
-                var number = 0
-                try {
-                    number = s.toString().toInt()
-                } catch (e: Exception) {
-                    Toast.makeText(context, "Zła wartość", Toast.LENGTH_LONG).show()
-                }
-                when (chip_group_dose_hours.checkedChipId) {
-                    R.id.chip_several_times -> viewModel.changeDoseHoursListSeveralTimes(number)
-                    R.id.chip_hours_interval -> viewModel.changeDoseHoursListHoursInterval(
-                        number
-                    )
+        val onceFragment = ScheduleTypeOnceFragment()
+        val periodFragment = ScheduleTypePeriodFragment()
+        val continuousFragment = ScheduleTypeContinuousFragment()
+        viewModel.scheduleTypeLive.observe(viewLifecycleOwner, Observer { scheduleType ->
+            if (scheduleType != null) {
+                when (scheduleType) {
+                    ScheduledMedicine.ScheduleType.ONCE -> changeScheduleTypeFragment(onceFragment)
+                    ScheduledMedicine.ScheduleType.PERIOD -> changeScheduleTypeFragment(periodFragment)
+                    ScheduledMedicine.ScheduleType.CONTINUOUS -> changeScheduleTypeFragment(continuousFragment)
                 }
             }
         })
     }
+
+    private fun setupScheduleTypeChipGroup() {
+        chip_group_schedule_type.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.chip_once -> viewModel.scheduleTypeLive.value = ScheduledMedicine.ScheduleType.ONCE
+                R.id.chip_period -> viewModel.scheduleTypeLive.value = ScheduledMedicine.ScheduleType.PERIOD
+                R.id.chip_continuous -> viewModel.scheduleTypeLive.value = ScheduledMedicine.ScheduleType.CONTINUOUS
+            }
+        }
+        chip_group_schedule_type.check(R.id.chip_once)
+    }
+
+    private fun changeScheduleTypeFragment(fragment: Fragment) {
+        childFragmentManager.beginTransaction()
+            .replace(R.id.frame_schedule_type, fragment)
+            .commit()
+    }
+
+//    private fun setupDoseTimeChipGroup() {
+//        val singleFragment = DoseTimeSingleFragment()
+//        val everydayFragment = DoseTimeEverydayFragment()
+//        val weekDaysFragment = DoseTimeWeekDaysFragment()
+//        val intervalFragment = DoseTimeIntervalFragment()
+//        chip_group_dose_days.setOnCheckedChangeListener { group, checkedId ->
+//            when (checkedId) {
+//                R.id.chip_single -> changeDoseTimeFragment(singleFragment)
+//                R.id.chip_everyday -> changeDoseTimeFragment(everydayFragment)
+//                R.id.chip_week_days -> changeDoseTimeFragment(weekDaysFragment)
+//                R.id.chip_interval -> changeDoseTimeFragment(intervalFragment)
+//            }
+//        }
+//        chip_group_dose_days.check(R.id.chip_single)
+//    }
+
 
     private fun changeDoseTimeFragment(fragment: Fragment) {
         childFragmentManager.beginTransaction()
