@@ -12,6 +12,9 @@
         <variable
             name="handler"
             type="com.example.medihelper.mainapp.schedule.scheduletype.ScheduleTypeContinuousFragment" />
+        <variable
+            name="appDateTimeUtil"
+            type="com.example.medihelper.AppDateTimeUtil" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,10 +51,10 @@
             android:layout_height="wrap_content"
             android:focusable="false"
             android:hint="wybierz datę"
-            android:onClick="@{handler::onClickSelectDate}"
+            android:onClick="@{() -> handler.onClickSelectDate()}"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="@{viewModel.startDateStringLive}"
+            android:text='@{viewModel.startDateLive != null ? appDateTimeUtil.dateToString(viewModel.startDateLive) : ""}'
             app:layout_constraintBottom_toBottomOf="@id/label_start_date"
             app:layout_constraintStart_toStartOf="@id/ver_guideline"
             app:layout_constraintTop_toTopOf="@id/label_start_date" />

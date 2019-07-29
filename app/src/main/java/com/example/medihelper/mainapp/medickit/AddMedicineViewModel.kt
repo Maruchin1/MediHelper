@@ -14,6 +14,7 @@ import com.example.medihelper.Repository
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 import java.io.File
+import java.util.*
 
 class AddMedicineViewModel : ViewModel() {
     private val TAG = AddMedicineViewModel::class.simpleName
@@ -26,7 +27,7 @@ class AddMedicineViewModel : ViewModel() {
     val medicineTypeLive = MutableLiveData<MedicineType>()
     val capacityLive = MutableLiveData<String>()
     val currStateLive = MutableLiveData<String>()
-    val expireDateStringLive = MutableLiveData<String>()
+    val expireDateLive = MutableLiveData<Date>()
     val commentsLive = MutableLiveData<String>()
     val photoFileLive = MutableLiveData<File>()
 
@@ -44,9 +45,7 @@ class AddMedicineViewModel : ViewModel() {
                 }
                 capacityLive.value = medicine.packageSize?.toString()
                 currStateLive.value = medicine.currState?.toString()
-                expireDateStringLive.value = medicine.expireDate?.let { expireDate ->
-                    AppDateTimeUtil.dateToString(expireDate)
-                }
+                expireDateLive.value = medicine.expireDate
                 commentsLive.value = medicine.comments
                 photoFileLive.value = medicine.photoFilePath?.let { photoFilePath ->
                     File(photoFilePath)
@@ -70,7 +69,7 @@ class AddMedicineViewModel : ViewModel() {
         val photoFilePath = photoFileLive.value?.let { photoFile ->
             Repository.createPhotoFileFromTemp(photoFile).absolutePath
         }
-        val expireDateString = expireDateStringLive.value
+        val expireDate = expireDateLive.value
         val comments = commentsLive.value
 
         if (name == null) {
@@ -84,7 +83,7 @@ class AddMedicineViewModel : ViewModel() {
                 this.packageSize = capacity?.toFloat()
                 this.currState = currState?.toFloat()
                 this.photoFilePath = photoFilePath
-                this.expireDate = expireDateString?.let { AppDateTimeUtil.stringToDate(it) }
+                this.expireDate = expireDate
                 this.comments = comments
             }
             Repository.updateMedicine(medicineToUpdate)
@@ -97,7 +96,7 @@ class AddMedicineViewModel : ViewModel() {
             packageSize = capacity?.toFloat(),
             currState = currState?.toFloat(),
             photoFilePath = photoFilePath,
-            expireDate = expireDateString?.let { AppDateTimeUtil.stringToDate(it) },
+            expireDate = expireDate,
             comments = comments
         )
         Repository.insertMedicine(newMedicine)
@@ -125,7 +124,7 @@ class AddMedicineViewModel : ViewModel() {
             medicineTypeLive,
             capacityLive,
             currStateLive,
-            expireDateStringLive,
+            expireDateLive,
             commentsLive,
             photoFileLive
         ).forEach { field ->

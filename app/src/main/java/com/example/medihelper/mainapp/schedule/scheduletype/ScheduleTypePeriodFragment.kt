@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import com.example.medihelper.AppDateTimeUtil
 
 import com.example.medihelper.R
 import com.example.medihelper.SelectDateDialog
@@ -34,10 +35,15 @@ class ScheduleTypePeriodFragment : Fragment() {
     }
 
     fun onClickSelectDate(view: View) {
+        val selectedDateLive = when (view.id) {
+            R.id.etx_start_date -> viewModel.startDateLive
+            R.id.etx_end_date -> viewModel.endDateLive
+            else -> null
+        }
         val dialog = SelectDateDialog()
-        when (view.id) {
-            R.id.etx_start_date -> dialog.resultSelectedDateStringLive = viewModel.startDateStringLive
-            R.id.etx_end_date -> dialog.resultSelectedDateStringLive = viewModel.endDateStringLive
+        selectedDateLive?.let { dialog.selectedDate = it.value }
+        dialog.setDateSelectedListener { date ->
+            selectedDateLive?.value = date
         }
         dialog.show(childFragmentManager, SelectDateDialog.TAG)
     }
@@ -47,6 +53,7 @@ class ScheduleTypePeriodFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_type_period, container, false)
         binding.viewModel = viewModel
         binding.handler = this
+        binding.appDateTimeUtil = AppDateTimeUtil
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }

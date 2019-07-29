@@ -12,6 +12,10 @@
         <variable
             name="handler"
             type="com.example.medihelper.mainapp.medickit.AddMedicineFragment" />
+
+        <variable
+            name="appDateTimeUtil"
+            type="com.example.medihelper.AppDateTimeUtil" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -36,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
                     android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txv_title"
@@ -143,7 +147,7 @@
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:onClick="@{handler::onClickExpireDate}"
-                                android:text='@{viewModel.expireDateStringLive ?? "Nie określono"}'
+                                android:text='@{viewModel.expireDateLive != null ? appDateTimeUtil.dateToString(viewModel.expireDateLive) : "Nie określono"}'
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
                         </LinearLayout>
                     </LinearLayout>

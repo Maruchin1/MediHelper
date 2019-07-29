@@ -4,59 +4,52 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.databinding.DataBindingUtil
+import com.example.medihelper.databinding.DialogSelectDateBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_date.*
+import java.util.*
 
 class SelectDateDialog : BottomSheetDialogFragment() {
 
-    var resultSelectedDateStringLive: MutableLiveData<String>? = null
-    private var selectedDateStringLive = MutableLiveData<String>()
+    var selectedDate: Date? = null
+    private var dateSelectedListener: ((date: Date) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_select_date, container, false)
+        return bindLayout(inflater, container)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeSelectedDate()
         setupCalendar()
-        setupButtons()
     }
 
-    private fun observeSelectedDate() {
-        selectedDateStringLive.observe(viewLifecycleOwner, Observer { selectedDate ->
-            if (selectedDate != null) {
-                txv_selected_date.text = selectedDate
-            } else {
-                txv_selected_date.text = "Nie określono"
-            }
-        })
+    fun onClickCancel() = dismiss()
+
+    fun onClickConfirm() {
+        selectedDate?.let { dateSelectedListener?.invoke(it) }
+        dismiss()
+    }
+
+    fun setDateSelectedListener(listener: (date: Date) -> Unit) {
+        dateSelectedListener = listener
+    }
+
+    private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
+        val binding: DialogSelectDateBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_select_date, container, false)
+        binding.handler = this
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     private fun setupCalendar() {
         calendar_view.setOnDateChangeListener { _, year, month, day ->
-            val selectedDate = AppDateTimeUtil.makeDate(day, month, year)
-            selectedDateStringLive.value = AppDateTimeUtil.dateToString(selectedDate)
+            selectedDate = AppDateTimeUtil.makeDate(day, month, year)
         }
-        val selectedDateString = resultSelectedDateStringLive?.value
-        if (selectedDateString != null) {
-            calendar_view.date = AppDateTimeUtil.stringToDate(selectedDateString).time
-            selectedDateStringLive.value = selectedDateString
-        } else {
-            val currDate = AppDateTimeUtil.getCurrCalendar().time
-            calendar_view.date = currDate.time
-            selectedDateStringLive.value = AppDateTimeUtil.dateToString(currDate)
+        if (selectedDate == null) {
+            selectedDate = AppDateTimeUtil.getCurrCalendar().time
         }
-    }
-
-    private fun setupButtons() {
-        btn_confirm.setOnClickListener {
-            resultSelectedDateStringLive?.value = selectedDateStringLive.value
-            dismiss()
-        }
-        btn_cancel.setOnClickListener { dismiss() }
+        calendar_view.date = selectedDate!!.time
     }
 
     companion object {

@@ -9,6 +9,8 @@ import com.example.medihelper.Repository
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddToScheduleViewModel : ViewModel() {
     private val TAG = AddToScheduleViewModel::class.simpleName
@@ -22,8 +24,8 @@ class AddToScheduleViewModel : ViewModel() {
     val selectedMedicineStateLive: LiveData<String>
 
     val scheduleTypeLive = MutableLiveData<ScheduledMedicine.ScheduleType>()
-    val startDateStringLive = MutableLiveData<String>()
-    val endDateStringLive = MutableLiveData<String>()
+    val startDateLive = MutableLiveData<Date>()
+    val endDateLive = MutableLiveData<Date>()
 
     val scheduleDaysLive = MutableLiveData<ScheduledMedicine.ScheduleDays>()
     val daysOfWeekLive = FieldMutableLiveData<ScheduledMedicine.DaysOfWeek>()
