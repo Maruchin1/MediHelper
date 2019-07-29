@@ -1,15 +1,9 @@
 package com.example.medihelper.mainapp.schedule
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.DateUtil
 import com.example.medihelper.Repository
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
-import com.example.medihelper.localdatabase.entities.ScheduledMedicine
-import java.util.*
 
 class ScheduleViewModel : ViewModel() {
 

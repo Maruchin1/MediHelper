@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.medihelper.FieldMutableLiveData
 import com.example.medihelper.Repository
 import com.example.medihelper.localdatabase.entities.Medicine
+import com.example.medihelper.localdatabase.entities.MedicineType
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 
 class AddToScheduleViewModel : ViewModel() {
@@ -17,6 +18,7 @@ class AddToScheduleViewModel : ViewModel() {
 
     val selectedMedicineLive = MutableLiveData<Medicine>()
     val selectedMedicineNameLive: LiveData<String>
+    val selectedMedicineTypeLive: LiveData<MedicineType>
     val selectedMedicineStateLive: LiveData<String>
 
     val scheduleTypeLive = MutableLiveData<ScheduledMedicine.ScheduleType>()
@@ -27,19 +29,23 @@ class AddToScheduleViewModel : ViewModel() {
     val daysOfWeekLive = FieldMutableLiveData<ScheduledMedicine.DaysOfWeek>()
     val intervalOfDaysLive = MutableLiveData<Int>()
 
+    val doseHourListLive = MutableLiveData<ArrayList<ScheduledMedicine.DoseHour>>()
+
     init {
         selectedMedicineNameLive = Transformations.map(selectedMedicineLive) { medicine ->
             medicine.name
         }
-        selectedMedicineStateLive = Transformations.map(selectedMedicineLive) { medicine ->
-            val state = "${medicine.currState}/${medicine.packageSize}"
-            val type = medicine.medicineTypeID?.let { medicineTypeID ->
-                findMedicineTypeName(medicineTypeID)
+        selectedMedicineTypeLive = Transformations.map(selectedMedicineLive) { medicine ->
+            medicine?.medicineTypeID?.let { medicineTypeID ->
+                findMedicineType(medicineTypeID)
             }
-            "Aktualny stan: $state $type"
+        }
+        selectedMedicineStateLive = Transformations.map(selectedMedicineLive) { medicine ->
+            "${medicine.currState}/${medicine.packageSize}"
         }
         daysOfWeekLive.value = ScheduledMedicine.DaysOfWeek()
         intervalOfDaysLive.value = 0
+        doseHourListLive.value = arrayListOf(ScheduledMedicine.DoseHour())
     }
 
     fun incrementIntervalOfDays() {
@@ -58,9 +64,9 @@ class AddToScheduleViewModel : ViewModel() {
         }
     }
 
-    fun findMedicineTypeName(medicineTypeID: Int): String {
+    private fun findMedicineType(medicineTypeID: Int): MedicineType? {
         return medicinesTypesListLive.value?.find { medicineType ->
             medicineType.medicineTypeID == medicineTypeID
-        }?.typeName ?: "brak typu"
+        }
     }
 }

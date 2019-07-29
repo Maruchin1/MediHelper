@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 
 import com.example.medihelper.R
-import com.example.medihelper.SelectDateDialogFragment
+import com.example.medihelper.SelectDateDialog
 import com.example.medihelper.databinding.FragmentScheduleTypePeriodBinding
 import com.example.medihelper.mainapp.schedule.AddToScheduleViewModel
 
@@ -34,12 +34,12 @@ class ScheduleTypePeriodFragment : Fragment() {
     }
 
     fun onClickSelectDate(view: View) {
-        val dialog = SelectDateDialogFragment()
+        val dialog = SelectDateDialog()
         when (view.id) {
             R.id.etx_start_date -> dialog.resultSelectedDateStringLive = viewModel.startDateStringLive
             R.id.etx_end_date -> dialog.resultSelectedDateStringLive = viewModel.endDateStringLive
         }
-        dialog.show(childFragmentManager, SelectDateDialogFragment.TAG)
+        dialog.show(childFragmentManager, SelectDateDialog.TAG)
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {

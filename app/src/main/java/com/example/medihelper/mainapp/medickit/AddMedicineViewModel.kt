@@ -1,7 +1,5 @@
 package com.example.medihelper.mainapp.medickit
 
-import android.app.DatePickerDialog
-import android.content.Context
 import android.content.Intent
 import android.provider.MediaStore
 import android.util.Log
@@ -11,13 +9,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.DateUtil
-import com.example.medihelper.R
+import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.Repository
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 import java.io.File
-import java.util.*
 
 class AddMedicineViewModel : ViewModel() {
     private val TAG = AddMedicineViewModel::class.simpleName
@@ -49,7 +45,7 @@ class AddMedicineViewModel : ViewModel() {
                 capacityLive.value = medicine.packageSize?.toString()
                 currStateLive.value = medicine.currState?.toString()
                 expireDateStringLive.value = medicine.expireDate?.let { expireDate ->
-                    DateUtil.dateToString(expireDate)
+                    AppDateTimeUtil.dateToString(expireDate)
                 }
                 commentsLive.value = medicine.comments
                 photoFileLive.value = medicine.photoFilePath?.let { photoFilePath ->
@@ -88,7 +84,7 @@ class AddMedicineViewModel : ViewModel() {
                 this.packageSize = capacity?.toFloat()
                 this.currState = currState?.toFloat()
                 this.photoFilePath = photoFilePath
-                this.expireDate = expireDateString?.let { DateUtil.stringToDate(it) }
+                this.expireDate = expireDateString?.let { AppDateTimeUtil.stringToDate(it) }
                 this.comments = comments
             }
             Repository.updateMedicine(medicineToUpdate)
@@ -101,7 +97,7 @@ class AddMedicineViewModel : ViewModel() {
             packageSize = capacity?.toFloat(),
             currState = currState?.toFloat(),
             photoFilePath = photoFilePath,
-            expireDate = expireDateString?.let { DateUtil.stringToDate(it) },
+            expireDate = expireDateString?.let { AppDateTimeUtil.stringToDate(it) },
             comments = comments
         )
         Repository.insertMedicine(newMedicine)

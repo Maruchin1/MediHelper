@@ -4,6 +4,8 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.room.*
+import java.sql.Time
+import java.time.LocalTime
 import java.util.*
 
 @Entity(
@@ -39,7 +41,10 @@ data class ScheduledMedicine (
     var intervalOfDays: Int? = null,
 
     @ColumnInfo(name = "schedule_days")
-    var scheduleDays: ScheduleDays
+    var scheduleDays: ScheduleDays,
+
+    @ColumnInfo(name = "dose_hour")
+    var doseHourList: List<DoseHour>
 ) {
     enum class ScheduleType {
         ONCE, PERIOD, CONTINUOUS
@@ -99,4 +104,9 @@ data class ScheduledMedicine (
             notifyPropertyChanged(BR.sunday)
         }
     }
+
+    data class DoseHour(
+        var doseSize: Int = 1,
+        var time: Time = Time(8, 0, 0)
+    )
 }

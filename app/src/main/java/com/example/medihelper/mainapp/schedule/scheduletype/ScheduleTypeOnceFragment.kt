@@ -8,14 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
 import com.example.medihelper.R
-import com.example.medihelper.SelectDateDialogFragment
+import com.example.medihelper.SelectDateDialog
 import com.example.medihelper.databinding.FragmentScheduleTypeOnceBinding
 import com.example.medihelper.mainapp.schedule.AddToScheduleViewModel
-import kotlinx.android.synthetic.main.fragment_schedule_type_once.*
 
 
 class ScheduleTypeOnceFragment : Fragment() {
@@ -39,9 +37,9 @@ class ScheduleTypeOnceFragment : Fragment() {
 
     fun onClickSelectDate(view: View) {
         Log.d(TAG, "onClickSelectDate")
-        val dialog = SelectDateDialogFragment()
+        val dialog = SelectDateDialog()
         dialog.resultSelectedDateStringLive = viewModel.startDateStringLive
-        dialog.show(childFragmentManager, SelectDateDialogFragment.TAG)
+        dialog.show(childFragmentManager, SelectDateDialog.TAG)
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {

@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.medihelper.CenterLayoutManager
-import com.example.medihelper.DateUtil
+import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
 import com.example.medihelper.mainapp.MainActivity
@@ -131,7 +131,7 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun getCalendarForPosition(position: Int): Calendar {
-        val calendar = DateUtil.getCurrCalendar()
+        val calendar = AppDateTimeUtil.getCurrCalendar()
         calendar.add(Calendar.DAY_OF_YEAR, position - (TIMELINE_DAYS_COUNT / 2))
         return calendar
     }
@@ -149,7 +149,7 @@ class ScheduleFragment : Fragment() {
 
         override fun getItem(position: Int): Fragment {
             val calendar = getCalendarForPosition(position)
-            val dateString = DateUtil.dateToString(calendar.time)
+            val dateString = AppDateTimeUtil.dateToString(calendar.time)
             return ScheduleDayFragment.getInstance(dateString)
         }
     }
@@ -198,11 +198,11 @@ class ScheduleFragment : Fragment() {
 
             holder.apply {
                 txvDay.apply {
-                    text = DateUtil.dayMonthString(calendar.time)
+                    text = AppDateTimeUtil.dayMonthString(calendar.time)
                     setTextColor(resources.getColor(textColorID))
                 }
                 txvDayOfWeek.apply {
-                    text = DateUtil.dayOfWeekString(calendar.time)
+                    text = AppDateTimeUtil.dayOfWeekString(calendar.time)
                     setTextColor(resources.getColor(textColorID))
                 }
                 viewSelectedIndicator.visibility = selectedIndicatorVisibility

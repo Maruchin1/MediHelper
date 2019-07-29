@@ -123,7 +123,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text='@{viewModel.selectedMedicineStateLive, default="Stan leku"}'
+                                android:text='@{"Aktualny stan: " + viewModel.selectedMedicineStateLive + " " + viewModel.selectedMedicineTypeLive.typeName, default="Stan leku"}'
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                                 android:textColor="@android:color/tertiary_text_dark" />
                         </LinearLayout>
@@ -295,94 +295,39 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="12dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="128dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
                         android:orientation="vertical">
 
-                        <com.google.android.material.chip.ChipGroup
-                            android:id="@+id/chip_group_dose_hours"
-                            style="@style/Widget.MaterialComponents.ChipGroup"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="24dp"
-                            app:chipSpacingHorizontal="16dp"
-                            app:singleSelection="true">
-
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chip_several_times"
-                                style="@style/Widget.MaterialComponents.Chip.Choice"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Kilka razy"
-                                app:chipBackgroundColor="@color/chip_single_select_bg"
-                                app:chipStrokeColor="@android:color/darker_gray"
-                                app:chipStrokeWidth="2dp" />
-
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chip_hours_interval"
-                                style="@style/Widget.MaterialComponents.Chip.Choice"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Co kilka godzin"
-                                app:chipBackgroundColor="@color/chip_single_select_bg"
-                                app:chipStrokeColor="@android:color/darker_gray"
-                                app:chipStrokeWidth="2dp" />
-                        </com.google.android.material.chip.ChipGroup>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/round_alarm_black_24"
-                                android:tint="@android:color/tertiary_text_dark" />
-
-                            <TextView
-                                android:id="@+id/txv_before_number"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:text="Co"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:textColor="@android:color/tertiary_text_dark" />
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etx_number"
-                                android:layout_width="70dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:inputType="numberDecimal"
-                                android:textAlignment="viewEnd" />
-
-                            <TextView
-                                android:id="@+id/txv_after_number"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:text="godzin"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:textColor="@android:color/tertiary_text_dark" />
-                        </LinearLayout>
+                            android:text="Godziny przyjmowania"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                            android:textColor="@color/colorPrimary" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_view_dose_hours"
+                            android:id="@+id/recycler_view_schedule_hours"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            tools:listitem="@layout/recycler_item_dose_hour" />
+                            android:layout_marginTop="16dp"/>
 
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/round_add_white_36"
+                            android:tint="@color/colorPrimary"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="8dp"
+                            android:onClick="@{() -> handler.onClickAddDoseHour()}"
+                            android:background="?selectableItemBackgroundBorderless"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

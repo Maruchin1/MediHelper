@@ -9,16 +9,12 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_date.*
 
-class SelectDateDialogFragment : BottomSheetDialogFragment() {
+class SelectDateDialog : BottomSheetDialogFragment() {
 
     var resultSelectedDateStringLive: MutableLiveData<String>? = null
     private var selectedDateStringLive = MutableLiveData<String>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_select_date, container, false)
     }
 
@@ -41,17 +37,17 @@ class SelectDateDialogFragment : BottomSheetDialogFragment() {
 
     private fun setupCalendar() {
         calendar_view.setOnDateChangeListener { _, year, month, day ->
-            val selectedDate = DateUtil.makeDate(day, month, year)
-            selectedDateStringLive.value = DateUtil.dateToString(selectedDate)
+            val selectedDate = AppDateTimeUtil.makeDate(day, month, year)
+            selectedDateStringLive.value = AppDateTimeUtil.dateToString(selectedDate)
         }
         val selectedDateString = resultSelectedDateStringLive?.value
         if (selectedDateString != null) {
-            calendar_view.date = DateUtil.stringToDate(selectedDateString).time
+            calendar_view.date = AppDateTimeUtil.stringToDate(selectedDateString).time
             selectedDateStringLive.value = selectedDateString
         } else {
-            val currDate = DateUtil.getCurrCalendar().time
+            val currDate = AppDateTimeUtil.getCurrCalendar().time
             calendar_view.date = currDate.time
-            selectedDateStringLive.value = DateUtil.dateToString(currDate)
+            selectedDateStringLive.value = AppDateTimeUtil.dateToString(currDate)
         }
     }
 
@@ -64,6 +60,6 @@ class SelectDateDialogFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        val TAG = SelectDateDialogFragment::class.simpleName
+        val TAG = SelectDateDialog::class.simpleName
     }
 }
