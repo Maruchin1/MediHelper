@@ -25,4 +25,14 @@ class Converters {
     fun stringToScheduleType(string: String): ScheduledMedicine.ScheduleType {
         return ScheduledMedicine.ScheduleType.valueOf(string)
     }
+
+    @TypeConverter
+    fun scheduleDaysToString(scheduleDays: ScheduledMedicine.ScheduleDays): String {
+        return scheduleDays.toString()
+    }
+
+    @TypeConverter
+    fun stringToScheduleDays(string: String): ScheduledMedicine.ScheduleDays {
+        return ScheduledMedicine.ScheduleDays.valueOf(string)
+    }
 }

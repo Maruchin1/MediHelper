@@ -1,18 +1,13 @@
 package com.example.medihelper.mainapp.schedule
 
-import android.app.DatePickerDialog
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.DateUtil
-import com.example.medihelper.R
+import com.example.medihelper.FieldMutableLiveData
 import com.example.medihelper.Repository
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
-import java.util.*
-import kotlin.collections.ArrayList
 
 class AddToScheduleViewModel : ViewModel() {
     private val TAG = AddToScheduleViewModel::class.simpleName
@@ -28,6 +23,10 @@ class AddToScheduleViewModel : ViewModel() {
     val startDateStringLive = MutableLiveData<String>()
     val endDateStringLive = MutableLiveData<String>()
 
+    val scheduleDaysLive = MutableLiveData<ScheduledMedicine.ScheduleDays>()
+    val daysOfWeekLive = FieldMutableLiveData<ScheduledMedicine.DaysOfWeek>()
+    val intervalOfDaysLive = MutableLiveData<Int>()
+
     init {
         selectedMedicineNameLive = Transformations.map(selectedMedicineLive) { medicine ->
             medicine.name
@@ -39,7 +38,26 @@ class AddToScheduleViewModel : ViewModel() {
             }
             "Aktualny stan: $state $type"
         }
+        daysOfWeekLive.value = ScheduledMedicine.DaysOfWeek()
+        intervalOfDaysLive.value = 0
     }
+
+    fun incrementIntervalOfDays() {
+        intervalOfDaysLive.value = intervalOfDaysLive.value?.let { currInterval ->
+            currInterval + 1
+        }
+    }
+
+    fun decrementIntervalOfDays() {
+        intervalOfDaysLive.value = intervalOfDaysLive.value?.let { currInterval ->
+            var newInterval = currInterval - 1
+            if (newInterval < 0) {
+                newInterval = 0
+            }
+            newInterval
+        }
+    }
+
     fun findMedicineTypeName(medicineTypeID: Int): String {
         return medicinesTypesListLive.value?.find { medicineType ->
             medicineType.medicineTypeID == medicineTypeID
