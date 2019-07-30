@@ -2,8 +2,6 @@ package com.example.medihelper.mainapp.schedule
 
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -23,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.medihelper.AppDateTimeUtil
 
 import com.example.medihelper.R
+import com.example.medihelper.SelectNumberDialog
 import com.example.medihelper.SelectTimeDialog
 import com.example.medihelper.databinding.FragmentAddToScheduleBinding
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
@@ -32,13 +30,10 @@ import com.example.medihelper.mainapp.schedule.scheduledays.IntervalOfDaysFragme
 import com.example.medihelper.mainapp.schedule.scheduletype.ScheduleTypeContinuousFragment
 import com.example.medihelper.mainapp.schedule.scheduletype.ScheduleTypePeriodFragment
 import com.example.medihelper.mainapp.schedule.scheduletype.ScheduleTypeOnceFragment
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_add_to_schedule.*
-import java.sql.Time
-import java.text.SimpleDateFormat
+import kotlinx.android.synthetic.main.recycler_item_dose_hour.view.*
 
 
 class AddToScheduleFragment : Fragment() {
@@ -73,11 +68,6 @@ class AddToScheduleFragment : Fragment() {
     fun onClickSelectMedicine() {
         val dialog = SelectMedicineDialogFragment()
         dialog.show(childFragmentManager, SelectMedicineDialogFragment.TAG)
-    }
-
-    fun onClickAddDoseHour() {
-        val adapter = recycler_view_schedule_hours.adapter as DoseHourAdapter
-        adapter.addDoseHour()
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -144,6 +134,8 @@ class AddToScheduleFragment : Fragment() {
         })
         viewModel.doseHourListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
             Log.d(TAG, "doseHourList change = $doseHourList")
+            val adapter = recycler_view_schedule_hours.adapter as DoseHourAdapter
+            adapter.setDoseHourList(doseHourList)
         })
     }
 
@@ -216,81 +208,54 @@ class AddToScheduleFragment : Fragment() {
             val doseHour = doseHourList[position]
             holder.apply {
                 chipHour.text = AppDateTimeUtil.timeToString(doseHour.time)
-                chipHour.setOnClickListener {
-                    openSelectTimeDialog(holder, doseHour)
-                }
-
+                txvDoseSize.text = doseHour.doseSize.toString()
                 txvMedicineType.text = viewModel.selectedMedicineTypeLive.value?.typeName ?: "brak typu"
 
-                if (position == 0) {
-                    btnDelete.visibility = View.GONE
-                } else {
-                    btnDelete.setOnClickListener {
-                        removeDoseHour(position)
-                    }
+                chipHour.setOnClickListener {
+                    openSelectTimeDialog(position, doseHour)
                 }
-
-                etxNumber.addTextChangedListener { editable ->
-                    editable?.let { updateDoseSize(position, it) }
+                layDoseSize.setOnClickListener {
+                    openSelectNumberDialog(position, doseHour)
                 }
-                etxNumber.setOnFocusChangeListener { view, focused ->
-                    if (!focused) {
-                        val doseSizeString = etxNumber.text.toString()
-                        if (doseSizeString.isEmpty() || doseSizeString.isBlank()) {
-                            etxNumber.setText("1")
-                        }
-                    }
+                btnDelete.setOnClickListener {
+                    viewModel.removeDoseHour(doseHour)
                 }
             }
         }
 
-        fun setDoseHourList(list: List<ScheduledMedicine.DoseHour>) {
+        fun setDoseHourList(list: List<ScheduledMedicine.DoseHour>?) {
             doseHourList.clear()
-            doseHourList.addAll(list)
+            if (list != null) {
+                doseHourList.addAll(list)
+            }
             notifyDataSetChanged()
         }
 
-        fun addDoseHour() {
-            doseHourList.add(itemCount, ScheduledMedicine.DoseHour())
-            notifyItemInserted(itemCount)
-            notifyViewModel()
-        }
-
-        private fun openSelectTimeDialog(holder: DoseHourViewHolder, doseHour: ScheduledMedicine.DoseHour) {
+        private fun openSelectTimeDialog(position: Int, doseHour: ScheduledMedicine.DoseHour) {
             val dialog = SelectTimeDialog()
+            dialog.defaultTime = doseHour.time
             dialog.setTimeSelectedListener { time ->
-                holder.chipHour.text = AppDateTimeUtil.timeToString(time)
-                doseHour.time = time
-                notifyViewModel()
+                viewModel.updateDoseHour(position, doseHour.copy(time = time))
             }
-            dialog.selectedTime = doseHour.time
             dialog.show(childFragmentManager, SelectTimeDialog.TAG)
         }
 
-        private fun removeDoseHour(position: Int) {
-            doseHourList.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, itemCount)
-            notifyViewModel()
-        }
-
-        private fun updateDoseSize(position: Int, editable: Editable) {
-            val doseSizeString = editable.toString()
-            if (doseSizeString.isNotBlank() && doseSizeString.isNotEmpty()) {
-                doseHourList[position].doseSize = doseSizeString.toInt()
-                notifyViewModel()
+        private fun openSelectNumberDialog(position: Int, doseHour: ScheduledMedicine.DoseHour) {
+            val dialog = SelectNumberDialog()
+            dialog.defaultNumber = doseHour.doseSize
+            dialog.setNumberSelectedListener { number ->
+                Log.d(TAG, "numberSelected")
+                viewModel.updateDoseHour(position, doseHour.copy(doseSize = number))
             }
-        }
-
-        private fun notifyViewModel() {
-            viewModel.doseHourListLive.value = doseHourList
+            dialog.show(childFragmentManager, SelectNumberDialog.TAG)
         }
 
         inner class DoseHourViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val chipHour: Chip = itemView.findViewById(R.id.chip_hour)
-            val etxNumber: TextInputEditText = itemView.findViewById(R.id.etx_number)
-            val txvMedicineType: TextView = itemView.findViewById(R.id.txv_medicine_type)
-            val btnDelete: ImageButton = itemView.findViewById(R.id.btn_delete)
+            val chipHour: Chip = itemView.chip_hour
+            val layDoseSize: View = itemView.lay_dose_size
+            val txvDoseSize: TextView = itemView.txv_dose_size
+            val txvMedicineType: TextView = itemView.txv_medicine_type
+            val btnDelete: ImageButton = itemView.btn_delete
         }
     }
 }

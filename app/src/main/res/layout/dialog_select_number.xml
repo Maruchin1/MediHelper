@@ -6,8 +6,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.SelectTimeDialog" />
-        
+            type="com.example.medihelper.SelectNumberDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,8 +36,8 @@
             app:layout_constraintStart_toEndOf="@id/img_icon"
             app:layout_constraintTop_toTopOf="@id/img_icon" />
 
-        <TimePicker
-            android:id="@+id/time_picker"
+        <NumberPicker
+            android:id="@+id/number_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:timePickerMode="spinner"
@@ -57,7 +56,7 @@
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/time_picker" />
+            app:layout_constraintTop_toBottomOf="@id/number_picker" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_cancel"
@@ -73,4 +72,5 @@
             app:layout_constraintTop_toTopOf="@id/btn_confirm" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

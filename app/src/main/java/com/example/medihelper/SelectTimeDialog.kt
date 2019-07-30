@@ -1,7 +1,6 @@
 package com.example.medihelper
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import java.sql.Time
 
 class SelectTimeDialog : BottomSheetDialogFragment() {
 
-    var selectedTime: Time? = null
+    var defaultTime: Time? = null
     private var timeSelectedListener: ((time: Time) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,7 +31,8 @@ class SelectTimeDialog : BottomSheetDialogFragment() {
     fun onClickCancel() = dismiss()
 
     fun onClickConfirm() {
-        selectedTime?.let { timeSelectedListener?.invoke(it) }
+        val selectedTime = Time(time_picker.currentHour, time_picker.currentMinute, 0)
+        timeSelectedListener?.invoke(selectedTime)
         dismiss()
     }
 
@@ -45,13 +45,8 @@ class SelectTimeDialog : BottomSheetDialogFragment() {
 
     private fun setupTimePicker() {
         time_picker.setIs24HourView(true)
-        time_picker.setOnTimeChangedListener { timePicker, hour, minute ->
-            val selectedTime = Time(hour, minute, 0)
-            Log.d(TAG, "time changed = $selectedTime")
-            this.selectedTime = selectedTime
-        }
-        selectedTime?.hours?.let { time_picker.currentHour = it }
-        selectedTime?.minutes?.let { time_picker.currentMinute = it }
+        defaultTime?.hours?.let { time_picker.currentHour = it }
+        defaultTime?.minutes?.let { time_picker.currentMinute = it }
     }
 
     companion object {

@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 
 import com.example.medihelper.R
+import com.example.medihelper.SelectNumberDialog
 import com.example.medihelper.databinding.FragmentIntervalOfDaysBinding
 import com.example.medihelper.mainapp.schedule.AddToScheduleViewModel
 
@@ -32,10 +33,20 @@ class IntervalOfDaysFragment : Fragment() {
         return bindLayout(inflater, container)
     }
 
+    fun onClickSelectInterval() {
+        val dialog = SelectNumberDialog()
+        dialog.defaultNumber = viewModel.intervalOfDaysLive.value
+        dialog.setNumberSelectedListener { number ->
+            viewModel.intervalOfDaysLive.value = number
+        }
+        dialog.show(childFragmentManager, SelectNumberDialog.TAG)
+    }
+
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
         val binding: FragmentIntervalOfDaysBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_interval_of_days, container, false)
         binding.viewModel = viewModel
+        binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }

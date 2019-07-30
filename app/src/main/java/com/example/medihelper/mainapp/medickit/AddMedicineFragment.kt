@@ -69,7 +69,7 @@ class AddMedicineFragment : Fragment() {
 
     fun onClickExpireDate(view: View) {
         val dialog = SelectDateDialog()
-        dialog.selectedDate = viewModel.expireDateLive.value
+        dialog.defaultDate = viewModel.expireDateLive.value
         dialog.setDateSelectedListener { date ->
             viewModel.expireDateLive.value = date
         }

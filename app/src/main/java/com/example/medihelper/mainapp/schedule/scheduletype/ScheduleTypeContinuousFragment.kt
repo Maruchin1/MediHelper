@@ -36,7 +36,7 @@ class ScheduleTypeContinuousFragment : Fragment() {
 
     fun onClickSelectDate() {
         val dialog = SelectDateDialog()
-        dialog.selectedDate = viewModel.startDateLive.value
+        dialog.defaultDate = viewModel.startDateLive.value
         dialog.setDateSelectedListener { date ->
             viewModel.startDateLive.value = date
         }

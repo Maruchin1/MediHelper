@@ -12,6 +12,7 @@
         <variable
             name="handler"
             type="com.example.medihelper.mainapp.schedule.scheduletype.ScheduleTypeOnceFragment" />
+
         <variable
             name="appDateTimeUtil"
             type="com.example.medihelper.AppDateTimeUtil" />
@@ -22,50 +23,45 @@
         android:layout_height="wrap_content"
         tools:context=".mainapp.schedule.scheduletype.ScheduleTypeOnceFragment">
 
-        <ImageView
-            android:id="@+id/img_icon_calendar"
+        <LinearLayout
+            android:id="@+id/lay_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/round_event_white_36"
-            android:tint="@color/colorDarkerGray"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/label_start_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            android:text="Data"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/img_icon_calendar"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etx_start_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:hint="wybierz datę"
-            android:inputType="date"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:onClick="@{() -> handler.onClickSelectDate()}"
+            android:orientation="horizontal"
             android:paddingStart="16dp"
+            android:paddingTop="4dp"
             android:paddingEnd="16dp"
-            android:text='@{viewModel.startDateLive != null ? appDateTimeUtil.dateToString(viewModel.startDateLive) : ""}'
-            app:layout_constraintBottom_toBottomOf="@id/label_start_date"
-            app:layout_constraintStart_toEndOf="@id/ver_guideline"
-            app:layout_constraintTop_toTopOf="@id/label_start_date" />
+            android:paddingBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/ver_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data przyjęcia:"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text='@{viewModel.startDateLive != null ? appDateTimeUtil.dateToString(viewModel.startDateLive) : "nie wybrano", default="nie wybrano"}'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="@id/lay_date"
+            app:layout_constraintStart_toStartOf="@id/lay_date"
+            app:layout_constraintTop_toBottomOf="@id/lay_date" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -12,7 +12,7 @@ import java.util.*
 
 class SelectDateDialog : BottomSheetDialogFragment() {
 
-    var selectedDate: Date? = null
+    var defaultDate: Date? = null
     private var dateSelectedListener: ((date: Date) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -27,7 +27,8 @@ class SelectDateDialog : BottomSheetDialogFragment() {
     fun onClickCancel() = dismiss()
 
     fun onClickConfirm() {
-        selectedDate?.let { dateSelectedListener?.invoke(it) }
+        val selectedDate = Date(calendar_view.date)
+        dateSelectedListener?.invoke(selectedDate)
         dismiss()
     }
 
@@ -43,13 +44,10 @@ class SelectDateDialog : BottomSheetDialogFragment() {
     }
 
     private fun setupCalendar() {
+        defaultDate?.let { calendar_view.date = it.time }
         calendar_view.setOnDateChangeListener { _, year, month, day ->
-            selectedDate = AppDateTimeUtil.makeDate(day, month, year)
+            calendar_view.date = AppDateTimeUtil.makeDate(day, month, year).time
         }
-        if (selectedDate == null) {
-            selectedDate = AppDateTimeUtil.getCurrCalendar().time
-        }
-        calendar_view.date = selectedDate!!.time
     }
 
     companion object {

@@ -66,6 +66,27 @@ class AddToScheduleViewModel : ViewModel() {
         }
     }
 
+    fun addDoseHour() {
+        doseHourListLive.value?.let { doseHourList ->
+            doseHourList.add(ScheduledMedicine.DoseHour())
+            doseHourListLive.value = doseHourListLive.value
+        }
+    }
+
+    fun removeDoseHour(doseHour: ScheduledMedicine.DoseHour) {
+        doseHourListLive.value?.let { doseHourList ->
+            doseHourList.remove(doseHour)
+            doseHourListLive.value = doseHourListLive.value
+        }
+    }
+
+    fun updateDoseHour(position: Int, doseHour: ScheduledMedicine.DoseHour) {
+        doseHourListLive.value?.let { doseHourList ->
+            doseHourList[position] = doseHour
+            doseHourListLive.value = doseHourListLive.value
+        }
+    }
+
     private fun findMedicineType(medicineTypeID: Int): MedicineType? {
         return medicinesTypesListLive.value?.find { medicineType ->
             medicineType.medicineTypeID == medicineTypeID

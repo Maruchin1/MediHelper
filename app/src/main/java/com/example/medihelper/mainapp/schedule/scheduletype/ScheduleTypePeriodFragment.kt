@@ -36,12 +36,12 @@ class ScheduleTypePeriodFragment : Fragment() {
 
     fun onClickSelectDate(view: View) {
         val selectedDateLive = when (view.id) {
-            R.id.etx_start_date -> viewModel.startDateLive
-            R.id.etx_end_date -> viewModel.endDateLive
+            R.id.lay_start_date -> viewModel.startDateLive
+            R.id.lay_end_date -> viewModel.endDateLive
             else -> null
         }
         val dialog = SelectDateDialog()
-        selectedDateLive?.let { dialog.selectedDate = it.value }
+        selectedDateLive?.let { dialog.defaultDate = it.value }
         dialog.setDateSelectedListener { date ->
             selectedDateLive?.value = date
         }
