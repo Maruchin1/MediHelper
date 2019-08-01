@@ -2,6 +2,7 @@ package com.example.medihelper.mainapp.schedule
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ import kotlin.collections.ArrayList
 
 
 class ScheduleDayFragment : Fragment() {
+    private val TAG = ScheduleDayFragment::class.simpleName
 
     var date: Date? = null
     private lateinit var viewModel: ScheduleViewModel
@@ -46,6 +48,7 @@ class ScheduleDayFragment : Fragment() {
     private fun observeViewModel() {
         date?.let {
             viewModel.getScheduledMedicinesByDate(it).observe(viewLifecycleOwner, Observer { scheduledMedicineList ->
+                Log.d(TAG, "date = $date, scheduledMedicinesList change = $scheduledMedicineList")
                 val adapter = recycler_view_scheduled_medicine_for_day.adapter as ScheduledMedicineForDayAdapter
                 adapter.setScheduledMedicineForDayList(viewModel.getScheduledMedicinesForDay(scheduledMedicineList))
             })

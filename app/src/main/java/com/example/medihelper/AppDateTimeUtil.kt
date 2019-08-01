@@ -8,7 +8,13 @@ import java.util.concurrent.TimeUnit
 object AppDateTimeUtil {
 
     // Date
-    fun getCurrCalendar(): Calendar = Calendar.getInstance()
+    fun getCurrCalendar(): Calendar {
+        return Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+    }
 
     fun dateToString(date: Date): String = dateFormat().format(date)
 
@@ -24,9 +30,20 @@ object AppDateTimeUtil {
         return dateFormat.format(date)
     }
 
+    fun makeDate(time: Long): Date {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = time
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+        return calendar.time
+    }
+
     fun makeDate(day: Int, month: Int, year: Int): Date {
-        val calendar = Calendar.getInstance()
-        calendar.set(year, month, day)
+        val calendar = Calendar.getInstance().apply {
+            set(year, month, day, 0, 0, 0)
+        }
         return calendar.time
     }
 
@@ -35,18 +52,30 @@ object AppDateTimeUtil {
         return TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS).toInt()
     }
 
-    fun areDatesEqual(date1: Date, date2: Date): Boolean {
+    fun compareDates(date1: Date, date2: Date): Int {
         val calendar1 = Calendar.getInstance().apply {
             time = date1
         }
         val calendar2 = Calendar.getInstance().apply {
             time = date2
         }
-        val yearEquals = calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR)
-        val monthEquals = calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH)
-        val dayEquals = calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH)
+        val year1 = calendar1.get(Calendar.YEAR)
+        val month1 = calendar1.get(Calendar.MONTH)
+        val day1 = calendar1.get(Calendar.DAY_OF_MONTH)
 
-        return yearEquals && monthEquals && dayEquals
+        val year2 = calendar2.get(Calendar.YEAR)
+        val month2 = calendar2.get(Calendar.MONTH)
+        val day2 = calendar2.get(Calendar.DAY_OF_MONTH)
+
+        return when {
+            year1 > year2 -> 1
+            year2 > year1 -> 2
+            month1 > month2 -> 1
+            month2 > month1 -> 2
+            day1 > day2 -> 1
+            day2 > day1 -> 2
+            else -> 0
+        }
     }
 
     // Time

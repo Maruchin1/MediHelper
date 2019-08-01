@@ -22,12 +22,12 @@ import java.io.File
 
 class SelectMedicineDialog : BottomSheetDialogFragment() {
 
-    private lateinit var viewModel: AddToScheduleViewModel
+    private lateinit var viewModel: AddScheduledMedicineViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
-            viewModel = ViewModelProviders.of(this).get(AddToScheduleViewModel::class.java)
+            viewModel = ViewModelProviders.of(this).get(AddScheduledMedicineViewModel::class.java)
         }
     }
 
@@ -72,7 +72,7 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
             findNavController().run {
                 val direction = when (currentDestination?.id) {
                     R.id.schedule_destination -> ScheduleFragmentDirections.actionScheduleDestinationToAddMedicineDestination(-1)
-                    R.id.add_to_schedule_destination -> AddToScheduleFragmentDirections.actionAddToScheduleDestinationToAddMedicineDestination(-1)
+                    R.id.add_to_schedule_destination -> AddScheduledMedicineFragmentDirections.actionAddToScheduleDestinationToAddMedicineDestination(-1)
                     else -> null
                 }
                 direction?.let {

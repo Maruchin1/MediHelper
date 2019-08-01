@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.schedule.AddToScheduleViewModel" />
+            type="com.example.medihelper.mainapp.schedule.AddScheduledMedicineViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.schedule.scheduletype.ScheduleTypeOnceFragment" />
+            type="com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypeOnceFragment" />
 
         <variable
             name="appDateTimeUtil"
@@ -21,7 +21,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".mainapp.schedule.scheduletype.ScheduleTypeOnceFragment">
+        tools:context=".mainapp.schedule.durationtype.ScheduleTypeOnceFragment">
 
         <LinearLayout
             android:id="@+id/lay_date"

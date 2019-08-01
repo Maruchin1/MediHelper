@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule.scheduletype
+package com.example.medihelper.mainapp.schedule.durationtype
 
 
 import android.os.Bundle
@@ -13,17 +13,17 @@ import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.R
 import com.example.medihelper.SelectDateDialog
 import com.example.medihelper.databinding.FragmentScheduleTypePeriodBinding
-import com.example.medihelper.mainapp.schedule.AddToScheduleViewModel
+import com.example.medihelper.mainapp.schedule.AddScheduledMedicineViewModel
 
 class ScheduleTypePeriodFragment : Fragment() {
     private val TAG = ScheduleTypePeriodFragment::class.simpleName
 
-    private lateinit var viewModel: AddToScheduleViewModel
+    private lateinit var viewModel: AddScheduledMedicineViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
-            viewModel = ViewModelProviders.of(this).get(AddToScheduleViewModel::class.java)
+            viewModel = ViewModelProviders.of(this).get(AddScheduledMedicineViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 

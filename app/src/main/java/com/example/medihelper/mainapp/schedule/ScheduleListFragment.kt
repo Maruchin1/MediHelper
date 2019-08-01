@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedulelist
+package com.example.medihelper.mainapp.schedule
 
 
 import android.os.Bundle
@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,16 +20,17 @@ import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleListBinding
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 import kotlinx.android.synthetic.main.fragment_schedule_list.*
-import kotlinx.android.synthetic.main.recycler_item_schedule_list.view.*
+import kotlinx.android.synthetic.main.recycler_item_scheduled_medicine.view.*
 
 class ScheduleListFragment : Fragment() {
+    private val TAG = ScheduleListFragment::class.simpleName
 
-    private lateinit var viewModel: ScheduleListViewModel
+    private lateinit var viewModel: ScheduleViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
-            viewModel = ViewModelProviders.of(this).get(ScheduleListViewModel::class.java)
+            viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
         }
     }
 
@@ -39,19 +43,20 @@ class ScheduleListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
         setupRecyclerView()
         observeViewModel()
     }
 
     private fun setupRecyclerView() {
-        recycler_view_scheduled_medicine_for_day.adapter = ScheduleListAdapter()
-        recycler_view_scheduled_medicine_for_day.layoutManager = LinearLayoutManager(context)
-        recycler_view_scheduled_medicine_for_day.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        recycler_view_scheduled_medicine.adapter = ScheduledMedicineAdapter()
+        recycler_view_scheduled_medicine.layoutManager = LinearLayoutManager(context)
+        recycler_view_scheduled_medicine.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
     }
 
     private fun observeViewModel() {
         viewModel.scheduledMedicineListLive.observe(viewLifecycleOwner, Observer { scheduledMedicineList ->
-            val adapter = recycler_view_scheduled_medicine_for_day.adapter as ScheduleListAdapter
+            val adapter = recycler_view_scheduled_medicine.adapter as ScheduledMedicineAdapter
             adapter.setScheduledMedicineList(scheduledMedicineList)
         })
     }
@@ -64,20 +69,27 @@ class ScheduleListFragment : Fragment() {
         return binding.root
     }
 
-    inner class ScheduleListAdapter : RecyclerView.Adapter<ScheduleListAdapter.ScheduleListViewHolder>() {
+    private fun setupToolbar() {
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
+    }
+
+    // Inner classes
+    inner class ScheduledMedicineAdapter : RecyclerView.Adapter<ScheduledMedicineAdapter.ScheduledMedicineViewHolder>() {
 
         private val scheduledMedicineList = ArrayList<ScheduledMedicine>()
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleListViewHolder {
-            val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_schedule_list, parent, false)
-            return ScheduleListViewHolder(itemView)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduledMedicineViewHolder {
+            val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_scheduled_medicine, parent, false)
+            return ScheduledMedicineViewHolder(itemView)
         }
 
         override fun getItemCount(): Int {
             return scheduledMedicineList.size
         }
 
-        override fun onBindViewHolder(holder: ScheduleListViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: ScheduledMedicineViewHolder, position: Int) {
             val scheduledMedicine = scheduledMedicineList[position]
             holder.view.run {
                 txv_medicine_id.text = scheduledMedicine.medicineID.toString()
@@ -99,7 +111,7 @@ class ScheduleListFragment : Fragment() {
             notifyDataSetChanged()
         }
 
-        inner class ScheduleListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        inner class ScheduledMedicineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val view = itemView
         }
     }

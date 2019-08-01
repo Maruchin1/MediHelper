@@ -2,6 +2,7 @@ package com.example.medihelper.mainapp.medickit
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -60,7 +61,7 @@ class AddMedicineFragment : Fragment() {
         loadSelectedMedicineData()
     }
 
-    fun onClickPhoto(view: View) {
+    fun onClickTakePhoto() {
         activity?.let {
             val intent = viewModel.takePhotoIntent(it)
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
@@ -89,6 +90,7 @@ class AddMedicineFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.run {
             photoFileLive.observe(viewLifecycleOwner, Observer { photoFile ->
+                Log.d(TAG, "photoFile change = $photoFile")
                 setPhotoImage(photoFile)
             })
             medicineTypesListLive.observe(viewLifecycleOwner, Observer { list ->
@@ -103,11 +105,6 @@ class AddMedicineFragment : Fragment() {
         if (photoFile != null) {
             Glide.with(this)
                 .load(photoFile)
-                .centerCrop()
-                .into(img_photo)
-        } else {
-            Glide.with(this)
-                .load(R.drawable.baseline_add_a_photo_black_48)
                 .centerCrop()
                 .into(img_photo)
         }

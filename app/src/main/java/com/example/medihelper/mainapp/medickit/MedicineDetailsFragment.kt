@@ -1,7 +1,6 @@
 package com.example.medihelper.mainapp.medickit
 
 
-import android.graphics.PorterDuff
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,12 +15,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import androidx.transition.Fade
 import com.bumptech.glide.Glide
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
 import com.example.medihelper.mainapp.MainActivity
-import com.example.medihelper.mainapp.TransitionHelper
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import java.io.File

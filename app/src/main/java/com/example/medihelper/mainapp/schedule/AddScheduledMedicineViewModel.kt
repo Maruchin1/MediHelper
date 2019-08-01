@@ -13,8 +13,8 @@ import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddToScheduleViewModel : ViewModel() {
-    private val TAG = AddToScheduleViewModel::class.simpleName
+class AddScheduledMedicineViewModel : ViewModel() {
+    private val TAG = AddScheduledMedicineViewModel::class.simpleName
 
     val medicinesListLive = AppRepository.getMedicinesLive()
     val medicinesTypesListLive = AppRepository.getMedicineTypesLive()

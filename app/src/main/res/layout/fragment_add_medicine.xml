@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.example.medihelper.mainapp.medickit.AddMedicineViewModel" />
@@ -309,10 +311,21 @@
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                             android:textColor="@color/colorPrimary" />
 
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:onClick="@{() -> handler.onClickTakePhoto()}"
+                            android:src="@drawable/baseline_add_a_photo_black_36"
+                            android:tint="@color/colorDarkerGray"
+                            android:visibility="@{viewModel.photoFileLive == null ? View.VISIBLE : View.GONE}" />
+
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/lay_image"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="@{viewModel.photoFileLive == null ? View.GONE : View.VISIBLE}">
 
                             <ImageView
                                 android:id="@+id/img_photo"
@@ -320,7 +333,7 @@
                                 android:layout_height="0dp"
                                 android:clickable="true"
                                 android:focusable="true"
-                                android:onClick="@{handler::onClickPhoto}"
+                                android:onClick="@{() -> handler.onClickTakePhoto()}"
                                 android:src="@drawable/baseline_add_a_photo_black_48"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintDimensionRatio="4:3"

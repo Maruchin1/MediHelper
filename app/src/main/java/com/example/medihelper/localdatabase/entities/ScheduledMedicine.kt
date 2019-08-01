@@ -49,18 +49,19 @@ data class ScheduledMedicine(
     var timeOfTakingList: List<TimeOfTaking>
 ) {
     fun isScheduledForDate(date: Date): Boolean {
-        return if (date.before(startDate)) {
-            false
-        } else {
+        val laterDate = AppDateTimeUtil.compareDates(startDate, date)
+        return if (laterDate == 2 || laterDate == 0) {
             when (durationType) {
                 DurationType.ONCE -> checkDateForOnce(date)
                 DurationType.PERIOD -> checkDateForPeriod(date)
                 DurationType.CONTINUOUS -> checkDateForContinuous(date)
             }
+        } else {
+            false
         }
     }
 
-    private fun checkDateForOnce(date: Date) = AppDateTimeUtil.areDatesEqual(startDate, date)
+    private fun checkDateForOnce(date: Date) = AppDateTimeUtil.compareDates(startDate, date) == 0
 
     private fun checkDateForPeriod(date: Date): Boolean {
         return if (date.after(endDate)) {

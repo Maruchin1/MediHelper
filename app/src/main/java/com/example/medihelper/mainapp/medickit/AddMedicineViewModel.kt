@@ -7,6 +7,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppRepository
@@ -30,12 +31,13 @@ class AddMedicineViewModel : ViewModel() {
     val commentsLive = MutableLiveData<String>()
     val photoFileLive = MutableLiveData<File>()
 
+    private val selectedMedicineObserver: Observer<Medicine>
+
     init {
         selectedMedicineLive = Transformations.switchMap(selectedMedicineIdLive) { medicineId ->
             AppRepository.getMedicineByIdLive(medicineId)
         }
-        //todo nie robić tego na live tylko normalnie przekazać obiekt
-        selectedMedicineLive.observeForever { medicine ->
+        selectedMedicineObserver = Observer { medicine ->
             if (medicine != null) {
                 nameLive.value = medicine.name
                 medicineTypesListLive.value?.let { typesList ->
@@ -52,6 +54,12 @@ class AddMedicineViewModel : ViewModel() {
                 }
             }
         }
+        selectedMedicineLive.observeForever(selectedMedicineObserver)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        selectedMedicineLive.removeObserver(selectedMedicineObserver)
     }
 
     fun setMedicineType(position: Int) {

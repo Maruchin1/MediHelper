@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule.scheduledays
+package com.example.medihelper.mainapp.schedule.daystype
 
 
 import android.os.Bundle
@@ -13,17 +13,17 @@ import androidx.lifecycle.ViewModelProviders
 
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentDaysOfWeekBinding
-import com.example.medihelper.mainapp.schedule.AddToScheduleViewModel
+import com.example.medihelper.mainapp.schedule.AddScheduledMedicineViewModel
 
 class DaysOfWeekFragment : Fragment() {
     private val TAG = DaysOfWeekFragment::class.simpleName
 
-    private lateinit var viewModel: AddToScheduleViewModel
+    private lateinit var viewModel: AddScheduledMedicineViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
-            viewModel = ViewModelProviders.of(this).get(AddToScheduleViewModel::class.java)
+            viewModel = ViewModelProviders.of(this).get(AddScheduledMedicineViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 

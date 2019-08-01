@@ -25,6 +25,7 @@ import com.example.medihelper.databinding.FragmentScheduleBinding
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import kotlinx.android.synthetic.main.recycler_item_schedule_timeline.view.*
 import java.util.*
 
 
@@ -126,9 +127,8 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun setInitialDate() {
-        val currDatePosition = TIMELINE_DAYS_COUNT / 2
-        (recycler_view_timeline.adapter as ScheduleTimelineAdapter).setInitialDate(currDatePosition)
-        view_pager_dates.currentItem = currDatePosition
+        (recycler_view_timeline.adapter as ScheduleTimelineAdapter).setInitialDate(viewModel.initialDatePosition)
+        view_pager_dates.currentItem = viewModel.initialDatePosition
     }
 
     private fun openSelectMedicineDialog() {
@@ -136,17 +136,11 @@ class ScheduleFragment : Fragment() {
         dialog.show(childFragmentManager, SelectMedicineDialog.TAG)
     }
 
-    private fun getDateForPosition(position: Int): Date {
-        val calendar = AppDateTimeUtil.getCurrCalendar()
-        calendar.add(Calendar.DAY_OF_YEAR, position - (TIMELINE_DAYS_COUNT / 2))
-        return calendar.time
-    }
-
     inner class ScheduleDayPagerAdapter(fragmentManager: FragmentManager) :
         FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getCount(): Int {
-            return TIMELINE_DAYS_COUNT
+            return viewModel.timelineDaysCount
         }
 
         override fun getItemPosition(`object`: Any): Int {
@@ -155,7 +149,7 @@ class ScheduleFragment : Fragment() {
 
         override fun getItem(position: Int): Fragment {
             val fragment = ScheduleDayFragment()
-            fragment.date = getDateForPosition(position)
+            fragment.date = viewModel.getDateForPosition(position)
             return fragment
         }
     }
@@ -188,11 +182,11 @@ class ScheduleFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return TIMELINE_DAYS_COUNT
+            return viewModel.timelineDaysCount
         }
 
         override fun onBindViewHolder(holder: ScheduleTimelineViewHolder, position: Int) {
-            val date = getDateForPosition(position)
+            val date = viewModel.getDateForPosition(position)
             var textColorID = R.color.colorTextTertiary
             var selectedIndicatorVisibility = View.INVISIBLE
 
@@ -202,17 +196,17 @@ class ScheduleFragment : Fragment() {
                 recycler_view_timeline.smoothScrollToPosition(position)
             }
 
-            holder.apply {
-                txvDay.apply {
+            holder.view.apply {
+                txv_day.apply {
                     text = AppDateTimeUtil.dayMonthString(date)
                     setTextColor(resources.getColor(textColorID))
                 }
-                txvDayOfWeek.apply {
+                txv_day_of_week.apply {
                     text = AppDateTimeUtil.dayOfWeekString(date)
                     setTextColor(resources.getColor(textColorID))
                 }
-                viewSelectedIndicator.visibility = selectedIndicatorVisibility
-                layCLick.setOnClickListener {
+                view_selected_indicator.visibility = selectedIndicatorVisibility
+                lay_click.setOnClickListener {
                     selectDate(position)
                     view_pager_dates.currentItem = position
                 }
@@ -220,14 +214,7 @@ class ScheduleFragment : Fragment() {
         }
 
         inner class ScheduleTimelineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val txvDay: TextView = itemView.findViewById(R.id.txv_day)
-            val txvDayOfWeek: TextView = itemView.findViewById(R.id.txv_day_of_week)
-            val viewSelectedIndicator: View = itemView.findViewById(R.id.view_selected_indicator)
-            val layCLick: LinearLayout = itemView.findViewById(R.id.lay_click)
+            val view = itemView
         }
-    }
-
-    companion object {
-        private const val TIMELINE_DAYS_COUNT = 10000
     }
 }

@@ -27,7 +27,7 @@ class SelectDateDialog : BottomSheetDialogFragment() {
     fun onClickCancel() = dismiss()
 
     fun onClickConfirm() {
-        val selectedDate = Date(calendar_view.date)
+        val selectedDate = AppDateTimeUtil.makeDate(calendar_view.date)
         dateSelectedListener?.invoke(selectedDate)
         dismiss()
     }

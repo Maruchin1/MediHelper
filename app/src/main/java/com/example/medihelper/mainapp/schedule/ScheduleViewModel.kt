@@ -3,6 +3,7 @@ package com.example.medihelper.mainapp.schedule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
@@ -11,9 +12,18 @@ import java.util.*
 
 class ScheduleViewModel : ViewModel() {
 
+    val timelineDaysCount = 10000
+    val initialDatePosition = timelineDaysCount / 2
+
     val medicineListLive = AppRepository.getMedicinesLive()
     val medicineTypeListLive = AppRepository.getMedicineTypesLive()
     val scheduledMedicineListLive = AppRepository.getScheduledMedicinesLive()
+
+    fun getDateForPosition(position: Int): Date {
+        val calendar = AppDateTimeUtil.getCurrCalendar()
+        calendar.add(Calendar.DAY_OF_YEAR, position - (timelineDaysCount / 2))
+        return calendar.time
+    }
 
     fun getScheduledMedicinesByDate(date: Date): LiveData<List<ScheduledMedicine>> {
         return Transformations.map(scheduledMedicineListLive) { scheduledMedicineList ->
