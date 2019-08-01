@@ -136,7 +136,6 @@ class AddToScheduleFragment : Fragment() {
             }
         })
         viewModel.doseHourListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
-            Log.d(TAG, "timeOfTakingList change = $doseHourList")
             val adapter = recycler_view_schedule_hours.adapter as DoseHourAdapter
             adapter.setDoseHourList(doseHourList)
         })
@@ -165,9 +164,20 @@ class AddToScheduleFragment : Fragment() {
     private fun setupScheduleTypeChipGroup() {
         chip_group_schedule_type.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.chip_once -> viewModel.durationTypeLive.value = ScheduledMedicine.DurationType.ONCE
-                R.id.chip_period -> viewModel.durationTypeLive.value = ScheduledMedicine.DurationType.PERIOD
-                R.id.chip_continuous -> viewModel.durationTypeLive.value = ScheduledMedicine.DurationType.CONTINUOUS
+                R.id.chip_once -> {
+                    viewModel.durationTypeLive.value = ScheduledMedicine.DurationType.ONCE
+                    viewModel.daysTypeLive.value = ScheduledMedicine.DaysType.NONE
+                }
+                R.id.chip_period -> {
+                    viewModel.durationTypeLive.value = ScheduledMedicine.DurationType.PERIOD
+                    viewModel.daysTypeLive.value = ScheduledMedicine.DaysType.EVERYDAY
+                    chip_group_schedule_days.check(R.id.chip_everyday)
+                }
+                R.id.chip_continuous -> {
+                    viewModel.durationTypeLive.value = ScheduledMedicine.DurationType.CONTINUOUS
+                    viewModel.daysTypeLive.value = ScheduledMedicine.DaysType.EVERYDAY
+                    chip_group_schedule_days.check(R.id.chip_everyday)
+                }
             }
         }
         chip_group_schedule_type.check(R.id.chip_once)
@@ -181,7 +191,6 @@ class AddToScheduleFragment : Fragment() {
                 R.id.chip_interval_of_days -> viewModel.daysTypeLive.value = ScheduledMedicine.DaysType.INTERVAL_OF_DAYS
             }
         }
-        chip_group_schedule_days.check(R.id.chip_everyday)
     }
 
     private fun setupDoseHourRecyclerView() {
