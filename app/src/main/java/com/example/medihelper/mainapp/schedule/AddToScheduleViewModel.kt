@@ -2,6 +2,7 @@ package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.FieldMutableLiveData
@@ -23,19 +24,21 @@ class AddToScheduleViewModel : ViewModel() {
     val selectedMedicineTypeLive: LiveData<MedicineType>
     val selectedMedicineStateLive: LiveData<String>
 
-    val scheduleTypeLive = MutableLiveData<ScheduledMedicine.DurationType>()
+    val durationTypeLive = MutableLiveData<ScheduledMedicine.DurationType>()
     val startDateLive = MutableLiveData<Date>()
     val endDateLive = MutableLiveData<Date>()
 
-    val scheduleDaysLive = MutableLiveData<ScheduledMedicine.DaysType>()
+    val daysTypeLive = MutableLiveData<ScheduledMedicine.DaysType>()
     val daysOfWeekLive = FieldMutableLiveData<ScheduledMedicine.DaysOfWeek>()
     val intervalOfDaysLive = MutableLiveData<Int>()
 
     val doseHourListLive = MutableLiveData<ArrayList<ScheduledMedicine.TimeOfTaking>>()
 
+    private val selectedMedicineObserver = Observer<Medicine> { resetViewModel() }
+
     init {
         selectedMedicineNameLive = Transformations.map(selectedMedicineLive) { medicine ->
-            medicine.name
+            medicine?.name
         }
         selectedMedicineTypeLive = Transformations.map(selectedMedicineLive) { medicine ->
             medicine?.medicineTypeID?.let { medicineTypeID ->
@@ -43,11 +46,14 @@ class AddToScheduleViewModel : ViewModel() {
             }
         }
         selectedMedicineStateLive = Transformations.map(selectedMedicineLive) { medicine ->
-            "${medicine.currState}/${medicine.packageSize}"
+            "${medicine?.currState}/${medicine?.packageSize}"
         }
-        daysOfWeekLive.value = ScheduledMedicine.DaysOfWeek()
-        intervalOfDaysLive.value = 0
-        doseHourListLive.value = arrayListOf(ScheduledMedicine.TimeOfTaking())
+        selectedMedicineLive.observeForever(selectedMedicineObserver)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        selectedMedicineLive.removeObserver(selectedMedicineObserver)
     }
 
     fun saveScheduledMedicine() {
@@ -55,14 +61,14 @@ class AddToScheduleViewModel : ViewModel() {
         val scheduledMedicine = ScheduledMedicine(
             medicineID = selectedMedicineLive.value!!.medicineID,
             startDate = startDateLive.value!!,
-            durationType = scheduleTypeLive.value!!,
-            daysType = scheduleDaysLive.value!!,
+            durationType = durationTypeLive.value!!,
+            daysType = daysTypeLive.value!!,
             timeOfTakingList = doseHourListLive.value!!.toList()
         )
-        if (scheduleTypeLive.value == ScheduledMedicine.DurationType.PERIOD) {
+        if (durationTypeLive.value == ScheduledMedicine.DurationType.PERIOD) {
             scheduledMedicine.endDate = endDateLive.value
         }
-        when (scheduleDaysLive.value) {
+        when (daysTypeLive.value) {
             ScheduledMedicine.DaysType.DAYS_OF_WEEK -> scheduledMedicine.daysOfWeek = daysOfWeekLive.value
             ScheduledMedicine.DaysType.INTERVAL_OF_DAYS -> scheduledMedicine.intervalOfDays = intervalOfDaysLive.value
         }
@@ -88,6 +94,20 @@ class AddToScheduleViewModel : ViewModel() {
             doseHourList[position] = timeOfTaking
             doseHourListLive.value = doseHourListLive.value
         }
+    }
+
+    fun resetViewModel() {
+        arrayOf(
+            durationTypeLive,
+            startDateLive,
+            endDateLive,
+            daysTypeLive
+        ).forEach { field ->
+            field.value = null
+        }
+        daysOfWeekLive.value = ScheduledMedicine.DaysOfWeek()
+        intervalOfDaysLive.value = 0
+        doseHourListLive.value = arrayListOf(ScheduledMedicine.TimeOfTaking())
     }
 
     private fun findMedicineType(medicineTypeID: Int): MedicineType? {

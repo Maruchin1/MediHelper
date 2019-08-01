@@ -20,7 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_medicine.*
 import java.io.File
 
-class SelectMedicineDialogFragment : BottomSheetDialogFragment() {
+class SelectMedicineDialog : BottomSheetDialogFragment() {
 
     private lateinit var viewModel: AddToScheduleViewModel
 
@@ -96,7 +96,7 @@ class SelectMedicineDialogFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        val TAG = SelectMedicineDialogFragment::class.simpleName
+        val TAG = SelectMedicineDialog::class.simpleName
     }
 
     // Inner classes -------------------------------------------------------------------------------

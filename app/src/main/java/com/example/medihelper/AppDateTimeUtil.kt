@@ -3,6 +3,7 @@ package com.example.medihelper
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 object AppDateTimeUtil {
 
@@ -30,7 +31,14 @@ object AppDateTimeUtil {
     }
 
     fun daysBetween(date1: Date, date2: Date): Int {
-        return ((date2.time - date1.time) / (1000 * 60 * 60 * 24)).toInt() + 1
+        val timeDiff = date2.time - date1.time
+        return TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS).toInt()
+    }
+
+    fun areDatesEqual(date1: Date, date2: Date): Boolean {
+        return date1.year == date2.year &&
+                date1.month == date2.month &&
+                date1.day == date2.day
     }
 
     // Time

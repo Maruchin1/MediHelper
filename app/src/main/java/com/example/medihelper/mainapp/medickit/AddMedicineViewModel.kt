@@ -34,6 +34,7 @@ class AddMedicineViewModel : ViewModel() {
         selectedMedicineLive = Transformations.switchMap(selectedMedicineIdLive) { medicineId ->
             AppRepository.getMedicineByIdLive(medicineId)
         }
+        //todo nie robić tego na live tylko normalnie przekazać obiekt
         selectedMedicineLive.observeForever { medicine ->
             if (medicine != null) {
                 nameLive.value = medicine.name

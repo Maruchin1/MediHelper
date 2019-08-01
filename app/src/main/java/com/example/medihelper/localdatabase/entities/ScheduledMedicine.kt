@@ -4,6 +4,7 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.room.*
+import com.example.medihelper.AppDateTimeUtil
 import java.sql.Time
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -58,13 +59,14 @@ data class ScheduledMedicine(
         }
     }
 
-    private fun checkDateForOnce(date: Date) = date == startDate
+    private fun checkDateForOnce(date: Date) = AppDateTimeUtil.areDatesEqual(startDate, date)
 
     private fun checkDateForPeriod(date: Date): Boolean {
         return if (date.after(endDate)) {
             false
         } else {
             when (daysType) {
+                DaysType.NONE -> true
                 DaysType.EVERYDAY -> true
                 DaysType.DAYS_OF_WEEK -> checkDateForDaysOfWeek(date)
                 DaysType.INTERVAL_OF_DAYS -> checkDateForIntervalOfDays(date)
@@ -74,6 +76,7 @@ data class ScheduledMedicine(
 
     private fun checkDateForContinuous(date: Date): Boolean {
         return when (daysType) {
+            DaysType.NONE -> true
             DaysType.EVERYDAY -> true
             DaysType.DAYS_OF_WEEK -> checkDateForDaysOfWeek(date)
             DaysType.INTERVAL_OF_DAYS -> checkDateForIntervalOfDays(date)
@@ -90,9 +93,8 @@ data class ScheduledMedicine(
     }
 
     private fun checkDateForIntervalOfDays(date: Date): Boolean {
-        val timeDiff = date.time - startDate.time
-        val daysDiff = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS)
-        return daysDiff.rem(intervalOfDays!!.toLong()) == 0L
+        val daysDiff = AppDateTimeUtil.daysBetween(startDate, date)
+        return daysDiff.rem(intervalOfDays!!) == 0
     }
 
     enum class DurationType {
@@ -100,7 +102,7 @@ data class ScheduledMedicine(
     }
 
     enum class DaysType {
-        EVERYDAY, DAYS_OF_WEEK, INTERVAL_OF_DAYS
+        NONE, EVERYDAY, DAYS_OF_WEEK, INTERVAL_OF_DAYS
     }
 
     class DaysOfWeek : BaseObservable() {
@@ -154,8 +156,6 @@ data class ScheduledMedicine(
             }
 
         fun isDaySelectedByNumber(numberOfDay: Int): Boolean {
-//            val isDaySelected = daysNumbersMap[numberOfDay]
-//            return daysNumbersMap[numberOfDay] ?: throw Exception("Incorrect number of day")
             return when(numberOfDay) {
                 2 -> monday
                 3 -> tuesday

@@ -132,8 +132,8 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun openSelectMedicineDialog() {
-        val dialog = SelectMedicineDialogFragment()
-        dialog.show(childFragmentManager, SelectMedicineDialogFragment.TAG)
+        val dialog = SelectMedicineDialog()
+        dialog.show(childFragmentManager, SelectMedicineDialog.TAG)
     }
 
     private fun getDateForPosition(position: Int): Date {

@@ -66,8 +66,8 @@ class AddToScheduleFragment : Fragment() {
     }
 
     fun onClickSelectMedicine() {
-        val dialog = SelectMedicineDialogFragment()
-        dialog.show(childFragmentManager, SelectMedicineDialogFragment.TAG)
+        val dialog = SelectMedicineDialog()
+        dialog.show(childFragmentManager, SelectMedicineDialog.TAG)
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -115,7 +115,7 @@ class AddToScheduleFragment : Fragment() {
         val onceFragment = ScheduleTypeOnceFragment()
         val periodFragment = ScheduleTypePeriodFragment()
         val continuousFragment = ScheduleTypeContinuousFragment()
-        viewModel.scheduleTypeLive.observe(viewLifecycleOwner, Observer { scheduleType ->
+        viewModel.durationTypeLive.observe(viewLifecycleOwner, Observer { scheduleType ->
             if (scheduleType != null) {
                 when (scheduleType) {
                     ScheduledMedicine.DurationType.ONCE -> changeScheduleTypeFragment(onceFragment)
@@ -126,7 +126,7 @@ class AddToScheduleFragment : Fragment() {
         })
         val daysOfWeekFragment = DaysOfWeekFragment()
         val intervalOfDaysFragment = IntervalOfDaysFragment()
-        viewModel.scheduleDaysLive.observe(viewLifecycleOwner, Observer { scheduleDays ->
+        viewModel.daysTypeLive.observe(viewLifecycleOwner, Observer { scheduleDays ->
             if (scheduleDays != null) {
                 when (scheduleDays) {
                     ScheduledMedicine.DaysType.EVERYDAY -> changeScheduleDaysFragment(null)
@@ -165,9 +165,9 @@ class AddToScheduleFragment : Fragment() {
     private fun setupScheduleTypeChipGroup() {
         chip_group_schedule_type.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.chip_once -> viewModel.scheduleTypeLive.value = ScheduledMedicine.DurationType.ONCE
-                R.id.chip_period -> viewModel.scheduleTypeLive.value = ScheduledMedicine.DurationType.PERIOD
-                R.id.chip_continuous -> viewModel.scheduleTypeLive.value = ScheduledMedicine.DurationType.CONTINUOUS
+                R.id.chip_once -> viewModel.durationTypeLive.value = ScheduledMedicine.DurationType.ONCE
+                R.id.chip_period -> viewModel.durationTypeLive.value = ScheduledMedicine.DurationType.PERIOD
+                R.id.chip_continuous -> viewModel.durationTypeLive.value = ScheduledMedicine.DurationType.CONTINUOUS
             }
         }
         chip_group_schedule_type.check(R.id.chip_once)
@@ -176,21 +176,16 @@ class AddToScheduleFragment : Fragment() {
     private fun setupScheduleDaysChipGroup() {
         chip_group_schedule_days.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.chip_everyday -> viewModel.scheduleDaysLive.value = ScheduledMedicine.DaysType.EVERYDAY
-                R.id.chip_days_of_week -> viewModel.scheduleDaysLive.value = ScheduledMedicine.DaysType.DAYS_OF_WEEK
-                R.id.chip_interval_of_days -> viewModel.scheduleDaysLive.value = ScheduledMedicine.DaysType.INTERVAL_OF_DAYS
+                R.id.chip_everyday -> viewModel.daysTypeLive.value = ScheduledMedicine.DaysType.EVERYDAY
+                R.id.chip_days_of_week -> viewModel.daysTypeLive.value = ScheduledMedicine.DaysType.DAYS_OF_WEEK
+                R.id.chip_interval_of_days -> viewModel.daysTypeLive.value = ScheduledMedicine.DaysType.INTERVAL_OF_DAYS
             }
         }
         chip_group_schedule_days.check(R.id.chip_everyday)
     }
 
     private fun setupDoseHourRecyclerView() {
-        //todo tutaj chyba niepotrzebnie ustawiamy wartość listy na start jak jest observer
-        recycler_view_schedule_hours.adapter = DoseHourAdapter().apply {
-            viewModel.doseHourListLive.value?.let { doseHoursList ->
-                setDoseHourList(doseHoursList)
-            }
-        }
+        recycler_view_schedule_hours.adapter = DoseHourAdapter()
         recycler_view_schedule_hours.layoutManager = LinearLayoutManager(context)
     }
 
@@ -210,18 +205,18 @@ class AddToScheduleFragment : Fragment() {
 
         override fun onBindViewHolder(holder: DoseHourViewHolder, position: Int) {
             val doseHour = doseHourList[position]
-            holder.apply {
-                chipHour.text = AppDateTimeUtil.timeToString(doseHour.time)
-                txvDoseSize.text = doseHour.doseSize.toString()
-                txvMedicineType.text = viewModel.selectedMedicineTypeLive.value?.typeName ?: "brak typu"
+            holder.view.apply {
+                chip_hour.text = AppDateTimeUtil.timeToString(doseHour.time)
+                txv_dose_size.text = doseHour.doseSize.toString()
+                txv_medicine_type.text = viewModel.selectedMedicineTypeLive.value?.typeName ?: "brak typu"
 
-                chipHour.setOnClickListener {
+                chip_hour.setOnClickListener {
                     openSelectTimeDialog(position, doseHour)
                 }
-                layDoseSize.setOnClickListener {
+                lay_dose_size.setOnClickListener {
                     openSelectNumberDialog(position, doseHour)
                 }
-                btnDelete.setOnClickListener {
+                btn_delete.setOnClickListener {
                     viewModel.removeDoseHour(doseHour)
                 }
             }
@@ -255,11 +250,7 @@ class AddToScheduleFragment : Fragment() {
         }
 
         inner class DoseHourViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val chipHour: Chip = itemView.chip_hour
-            val layDoseSize: View = itemView.lay_dose_size
-            val txvDoseSize: TextView = itemView.txv_dose_size
-            val txvMedicineType: TextView = itemView.txv_medicine_type
-            val btnDelete: ImageButton = itemView.btn_delete
+            val view = itemView
         }
     }
 }
