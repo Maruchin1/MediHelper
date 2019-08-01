@@ -84,7 +84,7 @@ class KitFragment : Fragment() {
 
     private fun setupRecyclerView() {
         context?.let { context ->
-            with(recycler_view) {
+            with(recycler_view_scheduled_medicine_for_day) {
                 layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                 adapter = KitAdapter(context, this@KitFragment)
             }
@@ -93,10 +93,10 @@ class KitFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.medicinesListLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) (recycler_view.adapter as KitAdapter).setMedicinesList(it)
+            if (it != null) (recycler_view_scheduled_medicine_for_day.adapter as KitAdapter).setMedicinesList(it)
         })
         viewModel.medicineTypesListLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) (recycler_view.adapter as KitAdapter).setMedicineTypesList(it)
+            if (it != null) (recycler_view_scheduled_medicine_for_day.adapter as KitAdapter).setMedicineTypesList(it)
         })
     }
 }

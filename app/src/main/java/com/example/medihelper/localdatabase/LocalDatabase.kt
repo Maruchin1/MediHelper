@@ -12,7 +12,7 @@ import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 
-@Database(entities = [Medicine::class, MedicineType::class, ScheduledMedicine::class], version = 11, exportSchema = false)
+@Database(entities = [Medicine::class, MedicineType::class, ScheduledMedicine::class], version = 12, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {
 

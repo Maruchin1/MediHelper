@@ -73,7 +73,11 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.scheduledMedicineListLive.observe(viewLifecycleOwner, Observer {  })
+        viewModel.run {
+            medicineListLive.observe(viewLifecycleOwner, Observer {  })
+            medicineTypeListLive.observe(viewLifecycleOwner, Observer {  })
+            scheduledMedicineListLive.observe(viewLifecycleOwner, Observer {  })
+        }
     }
 
     private fun setupMainActivity() {

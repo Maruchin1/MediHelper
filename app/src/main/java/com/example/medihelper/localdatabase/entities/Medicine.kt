@@ -16,7 +16,7 @@ data class Medicine(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "medicine_id")
-    val medicineID: Int? = null,
+    val medicineID: Int = 0,
 
     var name: String,
 

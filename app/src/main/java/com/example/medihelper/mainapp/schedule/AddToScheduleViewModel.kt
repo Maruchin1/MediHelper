@@ -23,11 +23,11 @@ class AddToScheduleViewModel : ViewModel() {
     val selectedMedicineTypeLive: LiveData<MedicineType>
     val selectedMedicineStateLive: LiveData<String>
 
-    val scheduleTypeLive = MutableLiveData<ScheduledMedicine.ScheduleType>()
+    val scheduleTypeLive = MutableLiveData<ScheduledMedicine.DurationType>()
     val startDateLive = MutableLiveData<Date>()
     val endDateLive = MutableLiveData<Date>()
 
-    val scheduleDaysLive = MutableLiveData<ScheduledMedicine.ScheduleDays>()
+    val scheduleDaysLive = MutableLiveData<ScheduledMedicine.DaysType>()
     val daysOfWeekLive = FieldMutableLiveData<ScheduledMedicine.DaysOfWeek>()
     val intervalOfDaysLive = MutableLiveData<Int>()
 
@@ -45,28 +45,26 @@ class AddToScheduleViewModel : ViewModel() {
         selectedMedicineStateLive = Transformations.map(selectedMedicineLive) { medicine ->
             "${medicine.currState}/${medicine.packageSize}"
         }
-        Transformations.map(selectedMedicineLive) { medicine ->
-            daysOfWeekLive.value = ScheduledMedicine.DaysOfWeek()
-            intervalOfDaysLive.value = 0
-            doseHourListLive.value = arrayListOf(ScheduledMedicine.TimeOfTaking())
-        }
+        daysOfWeekLive.value = ScheduledMedicine.DaysOfWeek()
+        intervalOfDaysLive.value = 0
+        doseHourListLive.value = arrayListOf(ScheduledMedicine.TimeOfTaking())
     }
 
     fun saveScheduledMedicine() {
         //todo zrobić to porządniej i z walidacją danych
         val scheduledMedicine = ScheduledMedicine(
-            medicineID = selectedMedicineLive.value!!.medicineID!!,
+            medicineID = selectedMedicineLive.value!!.medicineID,
             startDate = startDateLive.value!!,
-            scheduleType = scheduleTypeLive.value!!,
-            scheduleDays = scheduleDaysLive.value!!,
+            durationType = scheduleTypeLive.value!!,
+            daysType = scheduleDaysLive.value!!,
             timeOfTakingList = doseHourListLive.value!!.toList()
         )
-        if (scheduleTypeLive.value == ScheduledMedicine.ScheduleType.PERIOD) {
+        if (scheduleTypeLive.value == ScheduledMedicine.DurationType.PERIOD) {
             scheduledMedicine.endDate = endDateLive.value
         }
         when (scheduleDaysLive.value) {
-            ScheduledMedicine.ScheduleDays.DAYS_OF_WEEK -> scheduledMedicine.daysOfWeek = daysOfWeekLive.value
-            ScheduledMedicine.ScheduleDays.INTERVAL_OF_DAYS -> scheduledMedicine.intervalOfDays = intervalOfDaysLive.value
+            ScheduledMedicine.DaysType.DAYS_OF_WEEK -> scheduledMedicine.daysOfWeek = daysOfWeekLive.value
+            ScheduledMedicine.DaysType.INTERVAL_OF_DAYS -> scheduledMedicine.intervalOfDays = intervalOfDaysLive.value
         }
         AppRepository.insertScheduledMedicie(scheduledMedicine)
     }

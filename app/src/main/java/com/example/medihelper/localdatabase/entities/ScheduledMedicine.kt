@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit
 data class ScheduledMedicine(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "scheduled_medicine_id")
-    val scheduledMedicineID: Int? = null,
+    val scheduledMedicineID: Int = 0,
 
     @ColumnInfo(name = "medicine_id")
     var medicineID: Int,
@@ -32,7 +32,7 @@ data class ScheduledMedicine(
     var endDate: Date? = null,
 
     @ColumnInfo(name = "schedule_type")
-    var scheduleType: ScheduleType,
+    var durationType: DurationType,
 
     @Embedded
     var daysOfWeek: DaysOfWeek? = null,
@@ -41,7 +41,7 @@ data class ScheduledMedicine(
     var intervalOfDays: Int? = null,
 
     @ColumnInfo(name = "schedule_days")
-    var scheduleDays: ScheduleDays,
+    var daysType: DaysType,
 
     @ColumnInfo(name = "dose_hour")
     var timeOfTakingList: List<TimeOfTaking>
@@ -50,10 +50,10 @@ data class ScheduledMedicine(
         return if (date.before(startDate)) {
             false
         } else {
-            when (scheduleType) {
-                ScheduleType.ONCE -> checkDateForOnce(date)
-                ScheduleType.PERIOD -> checkDateForPeriod(date)
-                ScheduleType.CONTINUOUS -> checkDateForContinuous(date)
+            when (durationType) {
+                DurationType.ONCE -> checkDateForOnce(date)
+                DurationType.PERIOD -> checkDateForPeriod(date)
+                DurationType.CONTINUOUS -> checkDateForContinuous(date)
             }
         }
     }
@@ -64,19 +64,19 @@ data class ScheduledMedicine(
         return if (date.after(endDate)) {
             false
         } else {
-            when (scheduleDays) {
-                ScheduleDays.EVERYDAY -> true
-                ScheduleDays.DAYS_OF_WEEK -> checkDateForDaysOfWeek(date)
-                ScheduleDays.INTERVAL_OF_DAYS -> checkDateForIntervalOfDays(date)
+            when (daysType) {
+                DaysType.EVERYDAY -> true
+                DaysType.DAYS_OF_WEEK -> checkDateForDaysOfWeek(date)
+                DaysType.INTERVAL_OF_DAYS -> checkDateForIntervalOfDays(date)
             }
         }
     }
 
     private fun checkDateForContinuous(date: Date): Boolean {
-        return when (scheduleDays) {
-            ScheduleDays.EVERYDAY -> true
-            ScheduleDays.DAYS_OF_WEEK -> checkDateForDaysOfWeek(date)
-            ScheduleDays.INTERVAL_OF_DAYS -> checkDateForIntervalOfDays(date)
+        return when (daysType) {
+            DaysType.EVERYDAY -> true
+            DaysType.DAYS_OF_WEEK -> checkDateForDaysOfWeek(date)
+            DaysType.INTERVAL_OF_DAYS -> checkDateForIntervalOfDays(date)
         }
     }
 
@@ -85,7 +85,8 @@ data class ScheduledMedicine(
             time = date
         }
         val dayOfWeekNumber = calendar.get(Calendar.DAY_OF_WEEK)
-        return daysOfWeek!!.isDaySelectedByNumber(dayOfWeekNumber)
+        val isDaySelected = daysOfWeek!!.isDaySelectedByNumber(dayOfWeekNumber)
+        return isDaySelected
     }
 
     private fun checkDateForIntervalOfDays(date: Date): Boolean {
@@ -94,11 +95,11 @@ data class ScheduledMedicine(
         return daysDiff.rem(intervalOfDays!!.toLong()) == 0L
     }
 
-    enum class ScheduleType {
+    enum class DurationType {
         ONCE, PERIOD, CONTINUOUS
     }
 
-    enum class ScheduleDays {
+    enum class DaysType {
         EVERYDAY, DAYS_OF_WEEK, INTERVAL_OF_DAYS
     }
 
@@ -152,19 +153,23 @@ data class ScheduledMedicine(
                 notifyPropertyChanged(BR.sunday)
             }
 
-        @Ignore
-        private val daysNumbersMap = mapOf(
-            1 to monday,
-            2 to tuesday,
-            3 to wednesday,
-            4 to thursday,
-            5 to friday,
-            6 to saturday,
-            7 to sunday
-        )
-
         fun isDaySelectedByNumber(numberOfDay: Int): Boolean {
-            return daysNumbersMap[numberOfDay] ?: throw Exception("Incorrect number of day")
+//            val isDaySelected = daysNumbersMap[numberOfDay]
+//            return daysNumbersMap[numberOfDay] ?: throw Exception("Incorrect number of day")
+            return when(numberOfDay) {
+                2 -> monday
+                3 -> tuesday
+                4 -> wednesday
+                5 -> thursday
+                6 -> friday
+                7 -> saturday
+                1 -> sunday
+                else -> throw Exception("Incorrect number of day")
+            }
+        }
+
+        override fun toString(): String {
+            return "modnay:$monday, tuesday:$tuesday, wednesday:$wednesday, thursday:$thursday, friday:$friday, saturday:$saturday, sunday:$sunday"
         }
     }
 

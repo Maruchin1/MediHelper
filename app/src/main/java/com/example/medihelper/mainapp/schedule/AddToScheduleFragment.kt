@@ -118,9 +118,9 @@ class AddToScheduleFragment : Fragment() {
         viewModel.scheduleTypeLive.observe(viewLifecycleOwner, Observer { scheduleType ->
             if (scheduleType != null) {
                 when (scheduleType) {
-                    ScheduledMedicine.ScheduleType.ONCE -> changeScheduleTypeFragment(onceFragment)
-                    ScheduledMedicine.ScheduleType.PERIOD -> changeScheduleTypeFragment(periodFragment)
-                    ScheduledMedicine.ScheduleType.CONTINUOUS -> changeScheduleTypeFragment(continuousFragment)
+                    ScheduledMedicine.DurationType.ONCE -> changeScheduleTypeFragment(onceFragment)
+                    ScheduledMedicine.DurationType.PERIOD -> changeScheduleTypeFragment(periodFragment)
+                    ScheduledMedicine.DurationType.CONTINUOUS -> changeScheduleTypeFragment(continuousFragment)
                 }
             }
         })
@@ -129,9 +129,9 @@ class AddToScheduleFragment : Fragment() {
         viewModel.scheduleDaysLive.observe(viewLifecycleOwner, Observer { scheduleDays ->
             if (scheduleDays != null) {
                 when (scheduleDays) {
-                    ScheduledMedicine.ScheduleDays.EVERYDAY -> changeScheduleDaysFragment(null)
-                    ScheduledMedicine.ScheduleDays.DAYS_OF_WEEK -> changeScheduleDaysFragment(daysOfWeekFragment)
-                    ScheduledMedicine.ScheduleDays.INTERVAL_OF_DAYS -> changeScheduleDaysFragment(intervalOfDaysFragment)
+                    ScheduledMedicine.DaysType.EVERYDAY -> changeScheduleDaysFragment(null)
+                    ScheduledMedicine.DaysType.DAYS_OF_WEEK -> changeScheduleDaysFragment(daysOfWeekFragment)
+                    ScheduledMedicine.DaysType.INTERVAL_OF_DAYS -> changeScheduleDaysFragment(intervalOfDaysFragment)
                 }
             }
         })
@@ -165,9 +165,9 @@ class AddToScheduleFragment : Fragment() {
     private fun setupScheduleTypeChipGroup() {
         chip_group_schedule_type.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.chip_once -> viewModel.scheduleTypeLive.value = ScheduledMedicine.ScheduleType.ONCE
-                R.id.chip_period -> viewModel.scheduleTypeLive.value = ScheduledMedicine.ScheduleType.PERIOD
-                R.id.chip_continuous -> viewModel.scheduleTypeLive.value = ScheduledMedicine.ScheduleType.CONTINUOUS
+                R.id.chip_once -> viewModel.scheduleTypeLive.value = ScheduledMedicine.DurationType.ONCE
+                R.id.chip_period -> viewModel.scheduleTypeLive.value = ScheduledMedicine.DurationType.PERIOD
+                R.id.chip_continuous -> viewModel.scheduleTypeLive.value = ScheduledMedicine.DurationType.CONTINUOUS
             }
         }
         chip_group_schedule_type.check(R.id.chip_once)
@@ -176,9 +176,9 @@ class AddToScheduleFragment : Fragment() {
     private fun setupScheduleDaysChipGroup() {
         chip_group_schedule_days.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.chip_everyday -> viewModel.scheduleDaysLive.value = ScheduledMedicine.ScheduleDays.EVERYDAY
-                R.id.chip_days_of_week -> viewModel.scheduleDaysLive.value = ScheduledMedicine.ScheduleDays.DAYS_OF_WEEK
-                R.id.chip_interval_of_days -> viewModel.scheduleDaysLive.value = ScheduledMedicine.ScheduleDays.INTERVAL_OF_DAYS
+                R.id.chip_everyday -> viewModel.scheduleDaysLive.value = ScheduledMedicine.DaysType.EVERYDAY
+                R.id.chip_days_of_week -> viewModel.scheduleDaysLive.value = ScheduledMedicine.DaysType.DAYS_OF_WEEK
+                R.id.chip_interval_of_days -> viewModel.scheduleDaysLive.value = ScheduledMedicine.DaysType.INTERVAL_OF_DAYS
             }
         }
         chip_group_schedule_days.check(R.id.chip_everyday)

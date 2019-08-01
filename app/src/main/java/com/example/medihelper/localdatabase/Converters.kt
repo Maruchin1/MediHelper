@@ -19,23 +19,23 @@ class Converters {
     }
 
     @TypeConverter
-    fun scheduleTypeToString(type: ScheduledMedicine.ScheduleType): String {
+    fun scheduleTypeToString(type: ScheduledMedicine.DurationType): String {
         return type.toString()
     }
 
     @TypeConverter
-    fun stringToScheduleType(string: String): ScheduledMedicine.ScheduleType {
-        return ScheduledMedicine.ScheduleType.valueOf(string)
+    fun stringToScheduleType(string: String): ScheduledMedicine.DurationType {
+        return ScheduledMedicine.DurationType.valueOf(string)
     }
 
     @TypeConverter
-    fun scheduleDaysToString(scheduleDays: ScheduledMedicine.ScheduleDays): String {
-        return scheduleDays.toString()
+    fun scheduleDaysToString(daysType: ScheduledMedicine.DaysType): String {
+        return daysType.toString()
     }
 
     @TypeConverter
-    fun stringToScheduleDays(string: String): ScheduledMedicine.ScheduleDays {
-        return ScheduledMedicine.ScheduleDays.valueOf(string)
+    fun stringToScheduleDays(string: String): ScheduledMedicine.DaysType {
+        return ScheduledMedicine.DaysType.valueOf(string)
     }
 
     @TypeConverter

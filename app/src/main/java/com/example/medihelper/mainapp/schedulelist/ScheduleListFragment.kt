@@ -44,14 +44,14 @@ class ScheduleListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        recycler_view.adapter = ScheduleListAdapter()
-        recycler_view.layoutManager = LinearLayoutManager(context)
-        recycler_view.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        recycler_view_scheduled_medicine_for_day.adapter = ScheduleListAdapter()
+        recycler_view_scheduled_medicine_for_day.layoutManager = LinearLayoutManager(context)
+        recycler_view_scheduled_medicine_for_day.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
     }
 
     private fun observeViewModel() {
         viewModel.scheduledMedicineListLive.observe(viewLifecycleOwner, Observer { scheduledMedicineList ->
-            val adapter = recycler_view.adapter as ScheduleListAdapter
+            val adapter = recycler_view_scheduled_medicine_for_day.adapter as ScheduleListAdapter
             adapter.setScheduledMedicineList(scheduledMedicineList)
         })
     }
@@ -83,10 +83,10 @@ class ScheduleListFragment : Fragment() {
                 txv_medicine_id.text = scheduledMedicine.medicineID.toString()
                 txv_start_date.text = scheduledMedicine.startDate.toString()
                 txv_end_date.text = scheduledMedicine.endDate.toString()
-                txv_schedule_type.text = scheduledMedicine.scheduleType.toString()
+                txv_schedule_type.text = scheduledMedicine.durationType.toString()
                 txv_days_of_week.text = scheduledMedicine.daysOfWeek.toString()
                 txv_interval_of_days.text = scheduledMedicine.intervalOfDays.toString()
-                txv_schedule_days.text = scheduledMedicine.scheduleDays.toString()
+                txv_schedule_days.text = scheduledMedicine.daysType.toString()
                 txv_dose_hour_list.text = scheduledMedicine.timeOfTakingList.toString()
             }
         }

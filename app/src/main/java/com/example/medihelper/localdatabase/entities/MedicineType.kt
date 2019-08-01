@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey
 data class MedicineType(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "medicine_type_id")
-    val medicineTypeID: Int? = null,
+    val medicineTypeID: Int = 0,
 
     @ColumnInfo(name = "type_name")
     var typeName: String

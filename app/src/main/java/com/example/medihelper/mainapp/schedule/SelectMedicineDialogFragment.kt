@@ -59,7 +59,7 @@ class SelectMedicineDialogFragment : BottomSheetDialogFragment() {
 
     private fun setupRecyclerView() {
         context?.let { context ->
-            recycler_view.apply {
+            recycler_view_scheduled_medicine_for_day.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = SelectMedicineAdapter()
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -85,12 +85,12 @@ class SelectMedicineDialogFragment : BottomSheetDialogFragment() {
     private fun observeViewModel() {
         viewModel.medicinesListLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                (recycler_view.adapter as SelectMedicineAdapter).setMedicinesList(it)
+                (recycler_view_scheduled_medicine_for_day.adapter as SelectMedicineAdapter).setMedicinesList(it)
             }
         })
         viewModel.medicinesTypesListLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                (recycler_view.adapter as SelectMedicineAdapter).setMedicineTypesList(it)
+                (recycler_view_scheduled_medicine_for_day.adapter as SelectMedicineAdapter).setMedicineTypesList(it)
             }
         })
     }
