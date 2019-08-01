@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.FieldMutableLiveData
-import com.example.medihelper.Repository
+import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
@@ -15,8 +15,8 @@ import kotlin.collections.ArrayList
 class AddToScheduleViewModel : ViewModel() {
     private val TAG = AddToScheduleViewModel::class.simpleName
 
-    val medicinesListLive = Repository.getMedicinesLive()
-    val medicinesTypesListLive = Repository.getMedicineTypesLive()
+    val medicinesListLive = AppRepository.getMedicinesLive()
+    val medicinesTypesListLive = AppRepository.getMedicineTypesLive()
 
     val selectedMedicineLive = MutableLiveData<Medicine>()
     val selectedMedicineNameLive: LiveData<String>
@@ -31,7 +31,7 @@ class AddToScheduleViewModel : ViewModel() {
     val daysOfWeekLive = FieldMutableLiveData<ScheduledMedicine.DaysOfWeek>()
     val intervalOfDaysLive = MutableLiveData<Int>()
 
-    val doseHourListLive = MutableLiveData<ArrayList<ScheduledMedicine.DoseHour>>()
+    val doseHourListLive = MutableLiveData<ArrayList<ScheduledMedicine.TimeOfTaking>>()
 
     init {
         selectedMedicineNameLive = Transformations.map(selectedMedicineLive) { medicine ->
@@ -45,44 +45,49 @@ class AddToScheduleViewModel : ViewModel() {
         selectedMedicineStateLive = Transformations.map(selectedMedicineLive) { medicine ->
             "${medicine.currState}/${medicine.packageSize}"
         }
-        daysOfWeekLive.value = ScheduledMedicine.DaysOfWeek()
-        intervalOfDaysLive.value = 0
-        doseHourListLive.value = arrayListOf(ScheduledMedicine.DoseHour())
-    }
-
-    fun incrementIntervalOfDays() {
-        intervalOfDaysLive.value = intervalOfDaysLive.value?.let { currInterval ->
-            currInterval + 1
+        Transformations.map(selectedMedicineLive) { medicine ->
+            daysOfWeekLive.value = ScheduledMedicine.DaysOfWeek()
+            intervalOfDaysLive.value = 0
+            doseHourListLive.value = arrayListOf(ScheduledMedicine.TimeOfTaking())
         }
     }
 
-    fun decrementIntervalOfDays() {
-        intervalOfDaysLive.value = intervalOfDaysLive.value?.let { currInterval ->
-            var newInterval = currInterval - 1
-            if (newInterval < 0) {
-                newInterval = 0
-            }
-            newInterval
+    fun saveScheduledMedicine() {
+        //todo zrobić to porządniej i z walidacją danych
+        val scheduledMedicine = ScheduledMedicine(
+            medicineID = selectedMedicineLive.value!!.medicineID!!,
+            startDate = startDateLive.value!!,
+            scheduleType = scheduleTypeLive.value!!,
+            scheduleDays = scheduleDaysLive.value!!,
+            timeOfTakingList = doseHourListLive.value!!.toList()
+        )
+        if (scheduleTypeLive.value == ScheduledMedicine.ScheduleType.PERIOD) {
+            scheduledMedicine.endDate = endDateLive.value
         }
+        when (scheduleDaysLive.value) {
+            ScheduledMedicine.ScheduleDays.DAYS_OF_WEEK -> scheduledMedicine.daysOfWeek = daysOfWeekLive.value
+            ScheduledMedicine.ScheduleDays.INTERVAL_OF_DAYS -> scheduledMedicine.intervalOfDays = intervalOfDaysLive.value
+        }
+        AppRepository.insertScheduledMedicie(scheduledMedicine)
     }
 
     fun addDoseHour() {
         doseHourListLive.value?.let { doseHourList ->
-            doseHourList.add(ScheduledMedicine.DoseHour())
+            doseHourList.add(ScheduledMedicine.TimeOfTaking())
             doseHourListLive.value = doseHourListLive.value
         }
     }
 
-    fun removeDoseHour(doseHour: ScheduledMedicine.DoseHour) {
+    fun removeDoseHour(timeOfTaking: ScheduledMedicine.TimeOfTaking) {
         doseHourListLive.value?.let { doseHourList ->
-            doseHourList.remove(doseHour)
+            doseHourList.remove(timeOfTaking)
             doseHourListLive.value = doseHourListLive.value
         }
     }
 
-    fun updateDoseHour(position: Int, doseHour: ScheduledMedicine.DoseHour) {
+    fun updateDoseHour(position: Int, timeOfTaking: ScheduledMedicine.TimeOfTaking) {
         doseHourListLive.value?.let { doseHourList ->
-            doseHourList[position] = doseHour
+            doseHourList[position] = timeOfTaking
             doseHourListLive.value = doseHourListLive.value
         }
     }

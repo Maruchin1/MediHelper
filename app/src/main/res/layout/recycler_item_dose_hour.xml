@@ -20,7 +20,7 @@
         android:id="@+id/lay_dose_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
@@ -59,7 +59,7 @@
     <View
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorDarkerGray"
         app:layout_constraintEnd_toEndOf="@id/lay_dose_size"
         app:layout_constraintStart_toStartOf="@id/lay_dose_size"
         app:layout_constraintTop_toBottomOf="@id/lay_dose_size" />

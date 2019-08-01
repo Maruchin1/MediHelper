@@ -1,19 +1,13 @@
 package com.example.medihelper.mainapp.medickit
 
-import android.util.Log
-import androidx.arch.core.util.Function
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.Repository
-import com.example.medihelper.localdatabase.entities.Medicine
-import com.example.medihelper.localdatabase.entities.MedicineType
+import com.example.medihelper.AppRepository
 
 class KitViewModel : ViewModel() {
     private val TAG = KitViewModel::class.simpleName
 
-    val medicinesListLive = Repository.getMedicinesLive()
-    val medicineTypesListLive = Repository.getMedicineTypesLive()
+    val medicinesListLive = AppRepository.getMedicinesLive()
+    val medicineTypesListLive = AppRepository.getMedicineTypesLive()
 
     companion object {
         const val STATE_GOOD_LIMIT = 0.75f

@@ -4,7 +4,6 @@ import androidx.room.TypeConverter
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.sql.Time
 import java.util.*
 
 class Converters {
@@ -40,13 +39,13 @@ class Converters {
     }
 
     @TypeConverter
-    fun doseHourListToString(list: List<ScheduledMedicine.DoseHour>): String {
+    fun doseHourListToString(list: List<ScheduledMedicine.TimeOfTaking>): String {
         return Gson().toJson(list)
     }
 
     @TypeConverter
-    fun stringToDoseHourlist(string: String): List<ScheduledMedicine.DoseHour> {
-        val listType = object : TypeToken<List<ScheduledMedicine.DoseHour>>() {}.type
+    fun stringToDoseHourlist(string: String): List<ScheduledMedicine.TimeOfTaking> {
+        val listType = object : TypeToken<List<ScheduledMedicine.TimeOfTaking>>() {}.type
         return Gson().fromJson(string, listType)
     }
 }

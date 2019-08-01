@@ -50,14 +50,19 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
-        btn_back_to_menu.setOnClickListener { findNavController().popBackStack() }
         setupMainActivity()
-        observeViewModel()
         setupTimelineRecyclerView()
         setupDatesViewPager()
         setInitialDate()
+        observeViewModel()
     }
 
+    fun onClickNavigateMenu() = findNavController().popBackStack()
+
+    fun onClickNavigateList() {
+        val direction = ScheduleFragmentDirections.actionScheduleDestinationToScheduleListDestination()
+        findNavController().navigate(direction)
+    }
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
         val binding: FragmentScheduleBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_schedule, container, false)
@@ -65,6 +70,10 @@ class ScheduleFragment : Fragment() {
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
+    }
+
+    private fun observeViewModel() {
+        viewModel.scheduledMedicineListLive.observe(viewLifecycleOwner, Observer {  })
     }
 
     private fun setupMainActivity() {
@@ -123,17 +132,10 @@ class ScheduleFragment : Fragment() {
         dialog.show(childFragmentManager, SelectMedicineDialogFragment.TAG)
     }
 
-    private fun observeViewModel() {
-        viewModel.run {
-            medicinesListLive.observe(viewLifecycleOwner, Observer { })
-            medicinesTypesListLive.observe(viewLifecycleOwner, Observer { })
-        }
-    }
-
-    private fun getCalendarForPosition(position: Int): Calendar {
+    private fun getDateForPosition(position: Int): Date {
         val calendar = AppDateTimeUtil.getCurrCalendar()
         calendar.add(Calendar.DAY_OF_YEAR, position - (TIMELINE_DAYS_COUNT / 2))
-        return calendar
+        return calendar.time
     }
 
     inner class ScheduleDayPagerAdapter(fragmentManager: FragmentManager) :
@@ -148,9 +150,9 @@ class ScheduleFragment : Fragment() {
         }
 
         override fun getItem(position: Int): Fragment {
-            val calendar = getCalendarForPosition(position)
-            val dateString = AppDateTimeUtil.dateToString(calendar.time)
-            return ScheduleDayFragment.getInstance(dateString)
+            val fragment = ScheduleDayFragment()
+            fragment.date = getDateForPosition(position)
+            return fragment
         }
     }
 
@@ -186,7 +188,7 @@ class ScheduleFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ScheduleTimelineViewHolder, position: Int) {
-            val calendar = getCalendarForPosition(position)
+            val date = getDateForPosition(position)
             var textColorID = R.color.colorTextTertiary
             var selectedIndicatorVisibility = View.INVISIBLE
 
@@ -198,11 +200,11 @@ class ScheduleFragment : Fragment() {
 
             holder.apply {
                 txvDay.apply {
-                    text = AppDateTimeUtil.dayMonthString(calendar.time)
+                    text = AppDateTimeUtil.dayMonthString(date)
                     setTextColor(resources.getColor(textColorID))
                 }
                 txvDayOfWeek.apply {
-                    text = AppDateTimeUtil.dayOfWeekString(calendar.time)
+                    text = AppDateTimeUtil.dayOfWeekString(date)
                     setTextColor(resources.getColor(textColorID))
                 }
                 viewSelectedIndicator.visibility = selectedIndicatorVisibility

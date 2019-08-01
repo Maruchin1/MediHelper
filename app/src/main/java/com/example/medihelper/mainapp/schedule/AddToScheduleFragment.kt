@@ -87,7 +87,10 @@ class AddToScheduleFragment : Fragment() {
                     setIconResource(R.drawable.round_save_white_48)
                     text = "Zapisz"
                     extend()
-                    setOnClickListener { }
+                    setOnClickListener {
+                        viewModel.saveScheduledMedicine()
+                        findNavController().popBackStack()
+                    }
                 }
             }
         }
@@ -133,7 +136,7 @@ class AddToScheduleFragment : Fragment() {
             }
         })
         viewModel.doseHourListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
-            Log.d(TAG, "doseHourList change = $doseHourList")
+            Log.d(TAG, "timeOfTakingList change = $doseHourList")
             val adapter = recycler_view_schedule_hours.adapter as DoseHourAdapter
             adapter.setDoseHourList(doseHourList)
         })
@@ -182,6 +185,7 @@ class AddToScheduleFragment : Fragment() {
     }
 
     private fun setupDoseHourRecyclerView() {
+        //todo tutaj chyba niepotrzebnie ustawiamy wartość listy na start jak jest observer
         recycler_view_schedule_hours.adapter = DoseHourAdapter().apply {
             viewModel.doseHourListLive.value?.let { doseHoursList ->
                 setDoseHourList(doseHoursList)
@@ -193,7 +197,7 @@ class AddToScheduleFragment : Fragment() {
     // Inner classes
     inner class DoseHourAdapter : RecyclerView.Adapter<DoseHourAdapter.DoseHourViewHolder>() {
 
-        private var doseHourList = ArrayList<ScheduledMedicine.DoseHour>()
+        private var doseHourList = ArrayList<ScheduledMedicine.TimeOfTaking>()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoseHourViewHolder {
             val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_dose_hour, parent, false)
@@ -223,7 +227,7 @@ class AddToScheduleFragment : Fragment() {
             }
         }
 
-        fun setDoseHourList(list: List<ScheduledMedicine.DoseHour>?) {
+        fun setDoseHourList(list: List<ScheduledMedicine.TimeOfTaking>?) {
             doseHourList.clear()
             if (list != null) {
                 doseHourList.addAll(list)
@@ -231,21 +235,21 @@ class AddToScheduleFragment : Fragment() {
             notifyDataSetChanged()
         }
 
-        private fun openSelectTimeDialog(position: Int, doseHour: ScheduledMedicine.DoseHour) {
+        private fun openSelectTimeDialog(position: Int, timeOfTaking: ScheduledMedicine.TimeOfTaking) {
             val dialog = SelectTimeDialog()
-            dialog.defaultTime = doseHour.time
+            dialog.defaultTime = timeOfTaking.time
             dialog.setTimeSelectedListener { time ->
-                viewModel.updateDoseHour(position, doseHour.copy(time = time))
+                viewModel.updateDoseHour(position, timeOfTaking.copy(time = time))
             }
             dialog.show(childFragmentManager, SelectTimeDialog.TAG)
         }
 
-        private fun openSelectNumberDialog(position: Int, doseHour: ScheduledMedicine.DoseHour) {
+        private fun openSelectNumberDialog(position: Int, timeOfTaking: ScheduledMedicine.TimeOfTaking) {
             val dialog = SelectNumberDialog()
-            dialog.defaultNumber = doseHour.doseSize
+            dialog.defaultNumber = timeOfTaking.doseSize
             dialog.setNumberSelectedListener { number ->
                 Log.d(TAG, "numberSelected")
-                viewModel.updateDoseHour(position, doseHour.copy(doseSize = number))
+                viewModel.updateDoseHour(position, timeOfTaking.copy(doseSize = number))
             }
             dialog.show(childFragmentManager, SelectNumberDialog.TAG)
         }

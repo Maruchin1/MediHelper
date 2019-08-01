@@ -10,7 +10,7 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "onCreate")
-        Repository.init(this)
+        AppRepository.init(this)
     }
 
     companion object {

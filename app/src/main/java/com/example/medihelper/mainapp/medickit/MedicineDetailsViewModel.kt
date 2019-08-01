@@ -6,7 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.R
-import com.example.medihelper.Repository
+import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 import java.io.File
@@ -31,7 +31,7 @@ class MedicineDetailsViewModel : ViewModel() {
 
     init {
         selectedMedicine = Transformations.switchMap(selectedMedicineID) { medicineID ->
-            Repository.getMedicineByIdLive(medicineID)
+            AppRepository.getMedicineByIdLive(medicineID)
         }
         stateAvailableLive = Transformations.map(selectedMedicine) { medicine ->
             medicine.packageSize != null || medicine.currState != null
@@ -51,7 +51,7 @@ class MedicineDetailsViewModel : ViewModel() {
         }
         medicineTypeLive = Transformations.switchMap(selectedMedicine) { medicine ->
             medicine.medicineTypeID?.let { medicineTypeID ->
-                Repository.getMedicineTypeByIdLive(medicineTypeID)
+                AppRepository.getMedicineTypeByIdLive(medicineTypeID)
             }
         }
         expireDateLive = Transformations.map(selectedMedicine) { medicine ->
@@ -79,7 +79,7 @@ class MedicineDetailsViewModel : ViewModel() {
         }
     }
 
-    fun deleteMedicine() = selectedMedicine.value?.let { Repository.deleteMedicine(it) }
+    fun deleteMedicine() = selectedMedicine.value?.let { AppRepository.deleteMedicine(it) }
 
     private fun stateWeight(medicine: Medicine): Float? {
         return medicine.currState?.let { currState ->

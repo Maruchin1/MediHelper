@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:gravity="center"
     android:orientation="vertical">
 
     <TextView
@@ -11,12 +10,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="data"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_gravity="center_horizontal"/>
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recycler_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        tools:listitem="@layout/recycler_item_schedule_medicine"/>-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/recycler_item_schedule_medicine"/>
 
 </LinearLayout>

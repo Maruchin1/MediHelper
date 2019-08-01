@@ -7,13 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
-
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.medihelper.AppDateTimeUtil
+import androidx.lifecycle.Observer
 import com.example.medihelper.R
+import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
+import kotlinx.android.synthetic.main.recycler_item_schedule_medicine.view.*
+import java.sql.Time
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ScheduleDayFragment : Fragment() {
 
+    var date: Date? = null
     private lateinit var viewModel: ScheduleViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,44 +41,64 @@ class ScheduleDayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.let { args ->
-            val date = args.getString(ARG_DATE, "Brak")
-            txv_date.text = date
-        }
-
-//        setupRecyclerView()
-//        arguments?.let { args ->
-//            args.getString(ARG_DATE)?.let { dateString ->
-//                observeViewModel(DateTime(dateString))
-//            }
-//        }
+        date?.let { txv_date.text = AppDateTimeUtil.dateToString(it) }
+        setupRecyclerView()
+        observeViewModel()
     }
 
-//    private fun observeViewModel(date: Date) {
-//        viewModel.getScheduledMedicinesByDateLive(date).observe(viewLifecycleOwner, Observer {
-//            if (it != null) {
-//                (recycler_view.adapter as ScheduleMedicineAdapter).setScheduledMedicinesList(it)
-//            }
-//        })
-//    }
-//
-//    private fun setupRecyclerView() {
-//        context?.run {
-//            recycler_view.adapter = ScheduleMedicineAdapter(this, viewModel)
-//            recycler_view.layoutManager = LinearLayoutManager(this)
-//            recycler_view.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-//        }
-//    }
-
-    companion object {
-        val ARG_DATE = "arg-date"
-
-        fun getInstance(date: String): ScheduleDayFragment {
-            val instance = ScheduleDayFragment()
-            val args = Bundle()
-            args.putString(ARG_DATE, date)
-            instance.arguments = args
-            return instance
+    private fun observeViewModel() {
+        date?.let {
+            viewModel.getScheduledMedicinesByDate(it).observe(viewLifecycleOwner, Observer { scheduledMedicineList ->
+                val adapter = recycler_view.adapter as ScheduledMedicineForDayAdapter
+                adapter.setScheduledMedicineForDayList(viewModel.getScheduledMedicinesForDay(scheduledMedicineList))
+            })
         }
     }
+
+    private fun setupRecyclerView() {
+        recycler_view.adapter = ScheduledMedicineForDayAdapter()
+        recycler_view.layoutManager = LinearLayoutManager(context)
+    }
+
+    // Inner classes
+    inner class ScheduledMedicineForDayAdapter :
+        RecyclerView.Adapter<ScheduledMedicineForDayAdapter.ScheduledMedicineForDayViewHolder>() {
+
+        private val scheduledMedicineForDayList = ArrayList<ScheduledMedicineForDay>()
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduledMedicineForDayViewHolder {
+            val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_schedule_medicine, parent, false)
+            return ScheduledMedicineForDayViewHolder(itemView)
+        }
+
+        override fun getItemCount(): Int {
+            return scheduledMedicineForDayList.size
+        }
+
+        override fun onBindViewHolder(holder: ScheduledMedicineForDayViewHolder, position: Int) {
+            val scheduledMedicineForDay = scheduledMedicineForDayList[position]
+            holder.view.run {
+                txv_time.text = AppDateTimeUtil.timeToString(scheduledMedicineForDay.time)
+                txv_medicine_dose.text = scheduledMedicineForDay.doseSize.toString()
+            }
+        }
+
+        fun setScheduledMedicineForDayList(list: List<ScheduledMedicineForDay>?) {
+            scheduledMedicineForDayList.clear()
+            if (list != null) {
+                scheduledMedicineForDayList.addAll(list)
+            }
+            notifyDataSetChanged()
+        }
+
+        inner class ScheduledMedicineForDayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            var view = itemView
+        }
+    }
+
+    data class ScheduledMedicineForDay(
+        val scheduledMedicine: ScheduledMedicine,
+        var doseSize: Int,
+        var time: Time
+    )
 }

@@ -16,8 +16,8 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-object Repository {
-    private val TAG = Repository::class.simpleName
+object AppRepository {
+    private val TAG = AppRepository::class.simpleName
 
     private lateinit var medicineDao: MedicineDAO
     private lateinit var medicineTypeDao: MedicineTypeDAO
@@ -26,6 +26,7 @@ object Repository {
 
     private lateinit var medicinesLive: LiveData<List<Medicine>>
     private lateinit var medicineTypesLive: LiveData<List<MedicineType>>
+    private lateinit var scheduledMedicinesLive: LiveData<List<ScheduledMedicine>>
 
     fun init(app: Application) {
         Log.d(TAG, "init")
@@ -47,6 +48,8 @@ object Repository {
 
     fun getMedicineTypeByIdLive(medicineTypeId: Int) = medicineTypeDao.getByIdLive(medicineTypeId)
 
+    fun getScheduledMedicinesLive() = scheduledMedicinesLive
+
 //    fun getScheduledMedicinesByDateLive(date: Date) = scheduledMedicineDao.getByDate(date)
 
     fun deleteMedicine(medicine: Medicine) = AsyncTask.execute { medicineDao.delete(medicine) }
@@ -56,13 +59,14 @@ object Repository {
         AsyncTask.execute { medicineDao.insertSingle(medicine) }
     }
 
-    fun insertMedicineType(medicineType: MedicineType) {
-        AsyncTask.execute { medicineTypeDao.insertSingle(medicineType) }
+    fun insertMedicineType(medicineType: MedicineType) = AsyncTask.execute {
+        medicineTypeDao.insertSingle(medicineType)
     }
 
-    fun insertAllScheduledMedicines(list: List<ScheduledMedicine>) {
-        AsyncTask.execute { scheduledMedicineDao.insertAll(list) }
+    fun insertScheduledMedicie(scheduledMedicine: ScheduledMedicine) = AsyncTask.execute {
+        scheduledMedicineDao.insertSingle(scheduledMedicine)
     }
+
 
     fun updateMedicine(medicine: Medicine) {
         AsyncTask.execute { medicineDao.update(medicine) }
@@ -71,9 +75,9 @@ object Repository {
     fun createTempPhotoFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         return File.createTempFile(
-                "TMP_JPEG_${timeStamp}_",
-                ".jpg",
-                photosDir
+            "TMP_JPEG_${timeStamp}_",
+            ".jpg",
+            photosDir
         ).apply {
             deleteOnExit()
         }
@@ -89,6 +93,7 @@ object Repository {
     private fun initDatabaseData() {
         medicinesLive = medicineDao.getAllLive()
         medicineTypesLive = medicineTypeDao.getAllLive()
+        scheduledMedicinesLive = scheduledMedicineDao.getAllLive()
     }
 
     private fun insertInitialMedicinesTypes() {

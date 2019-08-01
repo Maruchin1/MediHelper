@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_schedule_destination_to_add_medicine_destination"
             app:destination="@id/add_medicine_destination" />
+        <action
+            android:id="@+id/action_schedule_destination_to_schedule_list_destination"
+            app:destination="@id/schedule_list_destination" />
     </fragment>
     <fragment
         android:id="@+id/kit_destination"
@@ -87,4 +90,8 @@
             android:id="@+id/action_add_to_schedule_destination_to_add_medicine_destination"
             app:destination="@id/add_medicine_destination" />
     </fragment>
+    <fragment
+        android:id="@+id/schedule_list_destination"
+        android:name="com.example.medihelper.mainapp.schedulelist.ScheduleListFragment"
+        tools:layout="@layout/fragment_schedule_list" />
 </navigation>

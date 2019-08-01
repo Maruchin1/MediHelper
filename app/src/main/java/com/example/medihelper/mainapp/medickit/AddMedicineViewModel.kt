@@ -9,8 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.AppDateTimeUtil
-import com.example.medihelper.Repository
+import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 import java.io.File
@@ -21,7 +20,7 @@ class AddMedicineViewModel : ViewModel() {
 
     val selectedMedicineIdLive = MutableLiveData<Int>()
     val selectedMedicineLive: LiveData<Medicine>
-    val medicineTypesListLive = Repository.getMedicineTypesLive()
+    val medicineTypesListLive = AppRepository.getMedicineTypesLive()
 
     val nameLive = MutableLiveData<String>()
     val medicineTypeLive = MutableLiveData<MedicineType>()
@@ -33,7 +32,7 @@ class AddMedicineViewModel : ViewModel() {
 
     init {
         selectedMedicineLive = Transformations.switchMap(selectedMedicineIdLive) { medicineId ->
-            Repository.getMedicineByIdLive(medicineId)
+            AppRepository.getMedicineByIdLive(medicineId)
         }
         selectedMedicineLive.observeForever { medicine ->
             if (medicine != null) {
@@ -67,7 +66,7 @@ class AddMedicineViewModel : ViewModel() {
         val capacity = capacityLive.value
         val currState = currStateLive.value
         val photoFilePath = photoFileLive.value?.let { photoFile ->
-            Repository.createPhotoFileFromTemp(photoFile).absolutePath
+            AppRepository.createPhotoFileFromTemp(photoFile).absolutePath
         }
         val expireDate = expireDateLive.value
         val comments = commentsLive.value
@@ -86,7 +85,7 @@ class AddMedicineViewModel : ViewModel() {
                 this.expireDate = expireDate
                 this.comments = comments
             }
-            Repository.updateMedicine(medicineToUpdate)
+            AppRepository.updateMedicine(medicineToUpdate)
             return true
         }
 
@@ -99,14 +98,14 @@ class AddMedicineViewModel : ViewModel() {
             expireDate = expireDate,
             comments = comments
         )
-        Repository.insertMedicine(newMedicine)
+        AppRepository.insertMedicine(newMedicine)
         return true
     }
 
     fun takePhotoIntent(activity: FragmentActivity): Intent {
         return Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(activity.packageManager)?.also {
-                val photoFile = Repository.createTempPhotoFile()
+                val photoFile = AppRepository.createTempPhotoFile()
                 photoFileLive.value = photoFile
                 val photoURI = FileProvider.getUriForFile(
                     activity,

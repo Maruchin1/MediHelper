@@ -1,32 +1,37 @@
 package com.example.medihelper.mainapp.schedule
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.Repository
-import com.example.medihelper.localdatabase.entities.Medicine
-import com.example.medihelper.localdatabase.entities.MedicineType
+import com.example.medihelper.AppRepository
+import com.example.medihelper.localdatabase.entities.ScheduledMedicine
+import java.util.*
 
 class ScheduleViewModel : ViewModel() {
 
-    val medicinesListLive = Repository.getMedicinesLive()
-    val medicinesTypesListLive = Repository.getMedicineTypesLive()
+    val scheduledMedicineListLive = AppRepository.getScheduledMedicinesLive()
 
-//    fun getScheduledMedicinesByDateLive(date: Date): LiveData<List<ScheduledMedicine>> {
-//        return Transformations.map(Repository.getScheduledMedicinesByDateLive(date)) {
-//            it.sortedBy { scheduledMedicine ->
-//                scheduledMedicine.date
-//            }
-//        }
-//    }
-
-    fun findMedicineById(medicineID: Int): Medicine? {
-        return medicinesListLive.value?.find { medicine ->
-            medicine.medicineID == medicineID
+    fun getScheduledMedicinesByDate(date: Date): LiveData<List<ScheduledMedicine>> {
+        return Transformations.map(scheduledMedicineListLive) { scheduledMedicineList ->
+            scheduledMedicineList.filter { scheduledMedicine ->
+                scheduledMedicine.isScheduledForDate(date)
+            }
         }
     }
 
-    fun findMedicineTypeById(medicineTypeID: Int): MedicineType? {
-        return medicinesTypesListLive.value?.find { medicineType ->
-            medicineType.medicineTypeID == medicineTypeID
+    fun getScheduledMedicinesForDay(scheduledMedicineList: List<ScheduledMedicine>): List<ScheduleDayFragment.ScheduledMedicineForDay> {
+        val scheduledMedicineForDayList = ArrayList<ScheduleDayFragment.ScheduledMedicineForDay>()
+        scheduledMedicineList.forEach { scheduledMedicine ->
+            scheduledMedicine.timeOfTakingList.forEach { timeOfTaking ->
+                scheduledMedicineForDayList.add(
+                    ScheduleDayFragment.ScheduledMedicineForDay(
+                        scheduledMedicine = scheduledMedicine,
+                        doseSize = timeOfTaking.doseSize,
+                        time = timeOfTaking.time
+                    )
+                )
+            }
         }
+        return scheduledMedicineForDayList
     }
 }
