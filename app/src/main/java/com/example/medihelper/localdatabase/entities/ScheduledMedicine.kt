@@ -1,5 +1,6 @@
 package com.example.medihelper.localdatabase.entities
 
+import android.util.Log
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
@@ -94,7 +95,8 @@ data class ScheduledMedicine(
 
     private fun checkDateForIntervalOfDays(date: Date): Boolean {
         val daysDiff = AppDateTimeUtil.daysBetween(startDate, date)
-        return daysDiff.rem(intervalOfDays!!) == 0
+        val rem = daysDiff.rem(intervalOfDays!!)
+        return rem == 0
     }
 
     enum class DurationType {

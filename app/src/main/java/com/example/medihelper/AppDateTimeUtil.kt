@@ -36,9 +36,17 @@ object AppDateTimeUtil {
     }
 
     fun areDatesEqual(date1: Date, date2: Date): Boolean {
-        return date1.year == date2.year &&
-                date1.month == date2.month &&
-                date1.day == date2.day
+        val calendar1 = Calendar.getInstance().apply {
+            time = date1
+        }
+        val calendar2 = Calendar.getInstance().apply {
+            time = date2
+        }
+        val yearEquals = calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR)
+        val monthEquals = calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH)
+        val dayEquals = calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH)
+
+        return yearEquals && monthEquals && dayEquals
     }
 
     // Time
