@@ -89,5 +89,5 @@ object AppDateTimeUtil {
 
     private fun dateFormat() = SimpleDateFormat.getDateInstance()
 
-    private fun timeFormat() = SimpleDateFormat("hh:mm")
+    private fun timeFormat() = SimpleDateFormat("HH:mm")
 }
