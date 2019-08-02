@@ -12,10 +12,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
+import com.example.medihelper.ConfirmDialog
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleListBinding
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
@@ -34,11 +33,12 @@ class ScheduleListFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return bindLayout(inflater, container)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding: FragmentScheduleListBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_list, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,7 +51,6 @@ class ScheduleListFragment : Fragment() {
     private fun setupRecyclerView() {
         recycler_view_scheduled_medicine.adapter = ScheduledMedicineAdapter()
         recycler_view_scheduled_medicine.layoutManager = LinearLayoutManager(context)
-        recycler_view_scheduled_medicine.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
     }
 
     private fun observeViewModel() {
@@ -59,14 +58,6 @@ class ScheduleListFragment : Fragment() {
             val adapter = recycler_view_scheduled_medicine.adapter as ScheduledMedicineAdapter
             adapter.setScheduledMedicineList(scheduledMedicineList)
         })
-    }
-
-    private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: FragmentScheduleListBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_list, container, false)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
     }
 
     private fun setupToolbar() {
@@ -91,15 +82,15 @@ class ScheduleListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ScheduledMedicineViewHolder, position: Int) {
             val scheduledMedicine = scheduledMedicineList[position]
+            val scheduledMedicineForList = viewModel.getScheduledMedicineForList(scheduledMedicine)
             holder.view.run {
-                txv_medicine_id.text = scheduledMedicine.medicineID.toString()
-                txv_start_date.text = scheduledMedicine.startDate.toString()
-                txv_end_date.text = scheduledMedicine.endDate.toString()
-                txv_schedule_type.text = scheduledMedicine.durationType.toString()
-                txv_days_of_week.text = scheduledMedicine.daysOfWeek.toString()
-                txv_interval_of_days.text = scheduledMedicine.intervalOfDays.toString()
-                txv_schedule_days.text = scheduledMedicine.daysType.toString()
-                txv_dose_hour_list.text = scheduledMedicine.timeOfTakingList.toString()
+                txv_medicine_name.text = scheduledMedicineForList.medicineName
+                txv_duration_type.text = scheduledMedicineForList.durationType
+                txv_duration_dates.text = scheduledMedicineForList.durationDates
+                txv_days_type.text = scheduledMedicineForList.daysType
+                txv_time_of_taking.text = scheduledMedicineForList.timeOfTaking
+
+                btn_delete.setOnClickListener { openConfirmDeleteDialog(scheduledMedicine) }
             }
         }
 
@@ -109,6 +100,18 @@ class ScheduleListFragment : Fragment() {
                 scheduledMedicineList.addAll(list)
             }
             notifyDataSetChanged()
+        }
+
+        private fun openConfirmDeleteDialog(scheduledMedicine: ScheduledMedicine) {
+            val dialog = ConfirmDialog().apply {
+                title = "Usuń lek z planu"
+                message = "Wybrany lek zostanie usunięty z planu. Czy chcesz kontynuować?"
+                iconResId = R.drawable.round_delete_black_48
+                setOnConfirmClickListener {
+                    viewModel.deleteScheduledMedicine(scheduledMedicine)
+                }
+            }
+            dialog.show(childFragmentManager, ConfirmDialog.TAG)
         }
 
         inner class ScheduledMedicineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

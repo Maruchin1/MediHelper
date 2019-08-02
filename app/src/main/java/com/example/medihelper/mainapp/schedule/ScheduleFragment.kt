@@ -41,11 +41,13 @@ class ScheduleFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return bindLayout(inflater, container)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding: FragmentScheduleBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule, container, false)
+        binding.viewModel = viewModel
+        binding.handler = this
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,20 +66,12 @@ class ScheduleFragment : Fragment() {
         val direction = ScheduleFragmentDirections.actionScheduleDestinationToScheduleListDestination()
         findNavController().navigate(direction)
     }
-    private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: FragmentScheduleBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule, container, false)
-        binding.viewModel = viewModel
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
-    }
 
     private fun observeViewModel() {
         viewModel.run {
-            medicineListLive.observe(viewLifecycleOwner, Observer {  })
-            medicineTypeListLive.observe(viewLifecycleOwner, Observer {  })
-            scheduledMedicineListLive.observe(viewLifecycleOwner, Observer {  })
+            medicineListLive.observe(viewLifecycleOwner, Observer { })
+            medicineTypeListLive.observe(viewLifecycleOwner, Observer { })
+            scheduledMedicineListLive.observe(viewLifecycleOwner, Observer { })
         }
     }
 

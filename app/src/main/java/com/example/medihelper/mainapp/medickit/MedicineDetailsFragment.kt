@@ -16,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
+import com.example.medihelper.ConfirmDialog
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
 import com.example.medihelper.mainapp.MainActivity
@@ -37,11 +38,13 @@ class MedicineDetailsFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return bindLayout(inflater, container)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding: FragmentMedicineDetailsBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_medicine_details, container, false)
+        binding.viewModel = viewModel
+        binding.handler = this
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,25 +55,23 @@ class MedicineDetailsFragment : Fragment() {
         loadSelectedMedicine()
     }
 
-    fun onClickEdit(view: View) {
+    fun onClickEdit() {
         viewModel.selectedMedicineID.value?.let { medicineId ->
             val action = MedicineDetailsFragmentDirections.actionMedicineDetailsDestinationToAddMedicineDestination(medicineId)
             findNavController().navigate(action)
         }
     }
 
-    fun onClickDelete(view: View) {
-        val dialog = DeleteMedicineDialogFragment()
-        dialog.show(childFragmentManager, DeleteMedicineDialogFragment.TAG)
-    }
-
-    private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: FragmentMedicineDetailsBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_medicine_details, container, false)
-        binding.viewModel = viewModel
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+    fun onClickDelete() {
+        val dialog = ConfirmDialog().apply {
+            title = "Usuń lek"
+            message = "Wybrany lek zostanie usunięty. Czy chcesz kontynuować?"
+            iconResId = R.drawable.round_delete_black_48
+            setOnConfirmClickListener {
+                viewModel.deleteMedicine()
+            }
+        }
+        dialog.show(childFragmentManager, ConfirmDialog.TAG)
     }
 
     private fun loadSelectedMedicine() {

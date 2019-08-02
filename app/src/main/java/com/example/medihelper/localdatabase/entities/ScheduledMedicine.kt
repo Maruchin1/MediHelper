@@ -1,6 +1,5 @@
 package com.example.medihelper.localdatabase.entities
 
-import android.util.Log
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
@@ -8,7 +7,7 @@ import androidx.room.*
 import com.example.medihelper.AppDateTimeUtil
 import java.sql.Time
 import java.util.*
-import java.util.concurrent.TimeUnit
+import kotlin.text.StringBuilder
 
 @Entity(
     tableName = "scheduled_medicines",
@@ -97,7 +96,7 @@ data class ScheduledMedicine(
     private fun checkDateForIntervalOfDays(date: Date): Boolean {
         val daysDiff = AppDateTimeUtil.daysBetween(startDate, date)
         val rem = daysDiff.rem(intervalOfDays!!)
-        return rem == 0
+        return rem == 0L
     }
 
     enum class DurationType {
@@ -168,6 +167,34 @@ data class ScheduledMedicine(
                 7 -> saturday
                 1 -> sunday
                 else -> throw Exception("Incorrect number of day")
+            }
+        }
+
+        fun getSelectedDaysString(): String {
+            return StringBuilder().run {
+                if (monday) {
+                    append("poniedziałek, ")
+                }
+                if (tuesday) {
+                    append("wtorek, ")
+                }
+                if (wednesday) {
+                    append("środa, ")
+                }
+                if (thursday) {
+                    append("czwartek, ")
+                }
+                if (friday) {
+                    append("piątek, ")
+                }
+                if (saturday) {
+                    append("sobota, ")
+                }
+                if (sunday) {
+                    append("niedziela, ")
+                }
+                setLength(length - 2)
+                toString()
             }
         }
 

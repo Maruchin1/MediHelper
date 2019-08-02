@@ -2,6 +2,7 @@ package com.example.medihelper.localdatabase.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
@@ -18,6 +19,6 @@ interface ScheduledMedicineDAO {
     @Query("SELECT * FROM scheduled_medicines")
     fun getAllLive(): LiveData<List<ScheduledMedicine>>
 
-//    @Query("SELECT * FROM scheduled_medicines WHERE date = :date")
-//    fun getByDate(date: Date): LiveData<List<ScheduledMedicine>>
+    @Delete
+    fun delete(scheduledMedicine: ScheduledMedicine)
 }

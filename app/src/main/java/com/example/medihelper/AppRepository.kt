@@ -54,6 +54,8 @@ object AppRepository {
 
     fun deleteMedicine(medicine: Medicine) = AsyncTask.execute { medicineDao.delete(medicine) }
 
+    fun deleteScheduledMedicine(scheduledMedicine: ScheduledMedicine) = AsyncTask.execute { scheduledMedicineDao.delete(scheduledMedicine) }
+
     fun insertMedicine(medicine: Medicine) {
         Log.d(TAG, "insertMedicine")
         AsyncTask.execute { medicineDao.insertSingle(medicine) }

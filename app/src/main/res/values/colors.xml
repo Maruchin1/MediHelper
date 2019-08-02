@@ -16,6 +16,7 @@
     <color name="colorTextTertiary">@android:color/tertiary_text_light</color>
 
     <color name="colorWhite">@android:color/white</color>
+    <color name="colorBlack">@android:color/black</color>
     <color name="colorDarkerGray">@android:color/darker_gray</color>
 
 </resources>

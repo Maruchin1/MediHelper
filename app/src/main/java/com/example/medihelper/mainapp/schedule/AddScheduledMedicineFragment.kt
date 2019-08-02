@@ -49,7 +49,12 @@ class AddScheduledMedicineFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return bindLayout(inflater, container)
+        val binding: FragmentAddScheduledMedicineBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_scheduled_medicine, container, false)
+        binding.viewModel = viewModel
+        binding.handler = this
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,15 +70,6 @@ class AddScheduledMedicineFragment : Fragment() {
     fun onClickSelectMedicine() {
         val dialog = SelectMedicineDialog()
         dialog.show(childFragmentManager, SelectMedicineDialog.TAG)
-    }
-
-    private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: FragmentAddScheduledMedicineBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_add_scheduled_medicine, container, false)
-        binding.viewModel = viewModel
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
     }
 
     private fun setupMainActivity() {

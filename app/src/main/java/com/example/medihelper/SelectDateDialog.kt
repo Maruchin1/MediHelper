@@ -16,7 +16,10 @@ class SelectDateDialog : BottomSheetDialogFragment() {
     private var dateSelectedListener: ((date: Date) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bindLayout(inflater, container)
+        val binding: DialogSelectDateBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_select_date, container, false)
+        binding.handler = this
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,13 +37,6 @@ class SelectDateDialog : BottomSheetDialogFragment() {
 
     fun setDateSelectedListener(listener: (date: Date) -> Unit) {
         dateSelectedListener = listener
-    }
-
-    private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: DialogSelectDateBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_select_date, container, false)
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
     }
 
     private fun setupCalendar() {
