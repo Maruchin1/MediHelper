@@ -72,7 +72,7 @@ class AddScheduledMedicineViewModel : ViewModel() {
             ScheduledMedicine.DaysType.DAYS_OF_WEEK -> scheduledMedicine.daysOfWeek = daysOfWeekLive.value
             ScheduledMedicine.DaysType.INTERVAL_OF_DAYS -> scheduledMedicine.intervalOfDays = intervalOfDaysLive.value
         }
-        AppRepository.insertScheduledMedicie(scheduledMedicine)
+        AppRepository.insertScheduledMedicine(scheduledMedicine)
     }
 
     fun addDoseHour() {

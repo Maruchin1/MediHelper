@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.medihelper.AppDateTimeUtil
 import androidx.lifecycle.Observer
 import com.example.medihelper.R
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
@@ -32,10 +31,7 @@ class ScheduleDayFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_schedule_day, container, false)
     }
 
@@ -46,11 +42,11 @@ class ScheduleDayFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        date?.let {
-            viewModel.getScheduledMedicinesByDate(it).observe(viewLifecycleOwner, Observer { scheduledMedicineList ->
+        date?.let { dayDate ->
+            viewModel.getScheduledMedicinesByDateLive(dayDate).observe(viewLifecycleOwner, Observer { scheduledMedicineList ->
                 Log.d(TAG, "date = $date, scheduledMedicinesList change = $scheduledMedicineList")
                 val adapter = recycler_view_scheduled_medicine_for_day.adapter as ScheduledMedicineForDayAdapter
-                adapter.setScheduledMedicineForDayList(viewModel.getScheduledMedicineForDayList(scheduledMedicineList))
+                adapter.setScheduledMedicineForDayList(viewModel.getScheduledMedicineForDayList(scheduledMedicineList, dayDate))
             })
         }
     }
@@ -78,9 +74,11 @@ class ScheduleDayFragment : Fragment() {
         override fun onBindViewHolder(holder: ScheduledMedicineForDayViewHolder, position: Int) {
             val scheduledMedicineForDay = scheduledMedicineForDayList[position]
             holder.view.run {
-                txv_scheduled_time.text = AppDateTimeUtil.timeToString(scheduledMedicineForDay.time)
-                txv_scheduled_dose.text = scheduledMedicineForDay.doseSize.toString()
+                txv_scheduled_time.text = scheduledMedicineForDay.time
                 txv_medicine_name.text = scheduledMedicineForDay.medicineName
+                txv_scheduled_dose.text = scheduledMedicineForDay.doseSize
+                txv_schedule_status.text = scheduledMedicineForDay.statusOfTaking
+                lay_header.setBackgroundColor(resources.getColor(scheduledMedicineForDay.statusOfTakingColorId))
             }
         }
 

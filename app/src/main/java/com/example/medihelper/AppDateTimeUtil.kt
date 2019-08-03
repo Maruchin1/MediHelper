@@ -9,14 +9,13 @@ import java.util.concurrent.TimeUnit
 object AppDateTimeUtil {
 
     // Date
-    fun getCurrCalendar(): Calendar {
-        return Calendar.getInstance(TimeZone.getDefault()).apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
+    fun getCurrCalendar() = Calendar.getInstance(TimeZone.getDefault()).apply {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
     }
+
 
     fun dateToString(date: Date): String = dateFormat().format(date)
 
@@ -85,7 +84,30 @@ object AppDateTimeUtil {
     }
 
     // Time
+    fun getCurrTime(): Time {
+        val currCalendar = Calendar.getInstance(TimeZone.getDefault())
+        val currHour = currCalendar.get(Calendar.HOUR_OF_DAY)
+        val currMinute = currCalendar.get(Calendar.MINUTE)
+        return Time(currHour, currMinute, 0)
+    }
+
     fun timeToString(time: Time): String = timeFormat().format(time)
+
+    fun compareTimes(time1: Time, time2: Time): Int {
+        val hour1 = time1.hours
+        val minute1 = time1.minutes
+
+        val hour2 = time2.hours
+        val minute2 = time2.minutes
+
+        return when {
+            hour1 > hour2 -> 1
+            hour2 > hour1 -> 2
+            minute1 > minute2 -> 1
+            minute2 > minute1 -> 2
+            else -> 0
+        }
+    }
 
     private fun dateFormat() = SimpleDateFormat.getDateInstance()
 

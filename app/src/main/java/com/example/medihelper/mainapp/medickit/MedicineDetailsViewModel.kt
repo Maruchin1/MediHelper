@@ -34,39 +34,39 @@ class MedicineDetailsViewModel : ViewModel() {
             AppRepository.getMedicineByIdLive(medicineID)
         }
         stateAvailableLive = Transformations.map(selectedMedicine) { medicine ->
-            medicine.packageSize != null || medicine.currState != null
+            medicine?.packageSize != null || medicine?.currState != null
         }
         photoLive = Transformations.map(selectedMedicine) { medicine ->
-            if (medicine.photoFilePath.isNullOrEmpty()) {
+            if (medicine?.photoFilePath.isNullOrEmpty()) {
                 null
             } else {
                 File(medicine.photoFilePath)
             }
         }
         nameLive = Transformations.map(selectedMedicine) { medicine ->
-            medicine.name
+            medicine?.name
         }
         stateNumberStringLive = Transformations.map(selectedMedicine) { medicine ->
-            stateNumberString(medicine)
+            medicine?.let { stateNumberString(it) }
         }
         medicineTypeLive = Transformations.switchMap(selectedMedicine) { medicine ->
-            medicine.medicineTypeID?.let { medicineTypeID ->
+            medicine?.medicineTypeID?.let { medicineTypeID ->
                 AppRepository.getMedicineTypeByIdLive(medicineTypeID)
             }
         }
         expireDateLive = Transformations.map(selectedMedicine) { medicine ->
-            medicine.expireDate?.let { expireDate ->
+            medicine?.expireDate?.let { expireDate ->
                 AppDateTimeUtil.dateToString(expireDate)
             }
         }
         daysRemainsLive = Transformations.map(selectedMedicine) { medicine ->
-            daysRemainsString(medicine)
+            medicine?.let { daysRemainsString(it) }
         }
         comments = Transformations.map(selectedMedicine) { medicine ->
-            medicine.comments
+            medicine?.comments
         }
         stateWeightLive = Transformations.map(selectedMedicine) { medicine ->
-            stateWeight(medicine)
+            medicine?.let { stateWeight(it) }
         }
         emptyWeightLive = Transformations.map(stateWeightLive) { state ->
             state?.let { 1 - it }

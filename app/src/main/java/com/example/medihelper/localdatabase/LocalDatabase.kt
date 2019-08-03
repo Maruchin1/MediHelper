@@ -12,7 +12,15 @@ import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 
-@Database(entities = [Medicine::class, MedicineType::class, ScheduledMedicine::class], version = 12, exportSchema = false)
+@Database(
+    entities = [
+        Medicine::class,
+        MedicineType::class,
+        ScheduledMedicine::class
+    ],
+    version = 16,
+    exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {
 
@@ -26,8 +34,7 @@ abstract class LocalDatabase : RoomDatabase() {
         @Volatile
         private var instance: LocalDatabase? = null
 
-        fun getInstance(context: Context) = instance ?:
-        synchronized(this) {
+        fun getInstance(context: Context) = instance ?: synchronized(this) {
             instance ?: buildDatabase(context).also {
                 instance = it
             }

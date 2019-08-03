@@ -69,6 +69,7 @@ class MedicineDetailsFragment : Fragment() {
             iconResId = R.drawable.round_delete_black_48
             setOnConfirmClickListener {
                 viewModel.deleteMedicine()
+                findNavController().popBackStack()
             }
         }
         dialog.show(childFragmentManager, ConfirmDialog.TAG)

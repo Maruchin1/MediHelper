@@ -4,9 +4,11 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 import com.example.medihelper.AppDateTimeUtil
 import java.sql.Time
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.text.StringBuilder
 
 @Entity(
@@ -14,7 +16,8 @@ import kotlin.text.StringBuilder
     foreignKeys = [ForeignKey(
         entity = Medicine::class,
         parentColumns = arrayOf("medicine_id"),
-        childColumns = arrayOf("medicine_id")
+        childColumns = arrayOf("medicine_id"),
+        onDelete = CASCADE
     )],
     indices = [Index(value = ["medicine_id"])]
 )
@@ -44,9 +47,13 @@ data class ScheduledMedicine(
     @ColumnInfo(name = "schedule_days")
     var daysType: DaysType,
 
-    @ColumnInfo(name = "dose_hour")
-    var timeOfTakingList: List<TimeOfTaking>
+    @ColumnInfo(name = "dose_hour_list")
+    var timeOfTakingList: List<TimeOfTaking>,
+
+    @ColumnInfo(name = "taken_medicine_list")
+    val takenMedicineArrayList: ArrayList<TakenMedicine> = ArrayList()
 ) {
+
     fun isScheduledForDate(date: Date): Boolean {
         val laterDate = AppDateTimeUtil.compareDates(startDate, date)
         return if (laterDate == 2 || laterDate == 0) {
@@ -206,5 +213,10 @@ data class ScheduledMedicine(
     data class TimeOfTaking(
         var doseSize: Int = 1,
         var time: Time = Time(8, 0, 0)
+    )
+
+    data class TakenMedicine(
+        var date: Date,
+        var time: Time
     )
 }

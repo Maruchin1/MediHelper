@@ -34,6 +34,7 @@ object AppRepository {
         medicineDao = database.medicineDao()
         medicineTypeDao = database.medicineTypeDao()
         scheduledMedicineDao = database.scheduledMedicineDao()
+
         initDatabaseData()
         photosDir = app.applicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
@@ -50,28 +51,32 @@ object AppRepository {
 
     fun getScheduledMedicinesLive() = scheduledMedicinesLive
 
-//    fun getScheduledMedicinesByDateLive(date: Date) = scheduledMedicineDao.getByDate(date)
+    fun deleteMedicine(medicine: Medicine) = AsyncTask.execute {
+        medicineDao.delete(medicine)
+    }
 
-    fun deleteMedicine(medicine: Medicine) = AsyncTask.execute { medicineDao.delete(medicine) }
+    fun deleteScheduledMedicine(scheduledMedicine: ScheduledMedicine) = AsyncTask.execute {
+        scheduledMedicineDao.delete(scheduledMedicine)
+    }
 
-    fun deleteScheduledMedicine(scheduledMedicine: ScheduledMedicine) = AsyncTask.execute { scheduledMedicineDao.delete(scheduledMedicine) }
-
-    fun insertMedicine(medicine: Medicine) {
-        Log.d(TAG, "insertMedicine")
-        AsyncTask.execute { medicineDao.insertSingle(medicine) }
+    fun insertMedicine(medicine: Medicine) = AsyncTask.execute {
+        medicineDao.insertSingle(medicine)
     }
 
     fun insertMedicineType(medicineType: MedicineType) = AsyncTask.execute {
         medicineTypeDao.insertSingle(medicineType)
     }
 
-    fun insertScheduledMedicie(scheduledMedicine: ScheduledMedicine) = AsyncTask.execute {
+    fun insertScheduledMedicine(scheduledMedicine: ScheduledMedicine) = AsyncTask.execute {
         scheduledMedicineDao.insertSingle(scheduledMedicine)
     }
 
+    fun updateMedicine(medicine: Medicine) = AsyncTask.execute {
+        medicineDao.update(medicine)
+    }
 
-    fun updateMedicine(medicine: Medicine) {
-        AsyncTask.execute { medicineDao.update(medicine) }
+    fun updateScheduledMedicine(scheduledMedicine: ScheduledMedicine) = AsyncTask.execute {
+        scheduledMedicineDao.update(scheduledMedicine)
     }
 
     fun createTempPhotoFile(): File {

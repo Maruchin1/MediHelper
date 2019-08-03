@@ -5,7 +5,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.AppRepository
-import com.example.medihelper.localdatabase.entities.Medicine
+import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 import java.sql.Time
 import java.util.*
@@ -26,7 +26,7 @@ class ScheduleViewModel : ViewModel() {
         return calendar.time
     }
 
-    fun getScheduledMedicinesByDate(date: Date): LiveData<List<ScheduledMedicine>> {
+    fun getScheduledMedicinesByDateLive(date: Date): LiveData<List<ScheduledMedicine>> {
         return Transformations.map(scheduledMedicineListLive) { scheduledMedicineList ->
             scheduledMedicineList.filter { scheduledMedicine ->
                 scheduledMedicine.isScheduledForDate(date)
@@ -34,23 +34,24 @@ class ScheduleViewModel : ViewModel() {
         }
     }
 
-    fun getScheduledMedicineForDayList(scheduledMedicineList: List<ScheduledMedicine>): List<ScheduledMedicineForDay> {
+    fun getScheduledMedicineForDayList(scheduledMedicineList: List<ScheduledMedicine>, dayDate: Date): List<ScheduledMedicineForDay> {
         val scheduledMedicineForDayList = ArrayList<ScheduledMedicineForDay>()
+
         scheduledMedicineList.forEach { scheduledMedicine ->
             val medicine = getMedicineById(scheduledMedicine.medicineID)
-            if (medicine != null) {
-                val medicineType = getMedicineTypeById(medicine.medicineTypeID!!)
-                scheduledMedicine.timeOfTakingList.forEach { timeOfTaking ->
-                    scheduledMedicineForDayList.add(
-                        ScheduledMedicineForDay(
-                            medicineID = medicine.medicineID,
-                            medicineName = medicine.name,
-                            medicineTypeName = medicineType?.typeName ?: "brak typu",
-                            doseSize = timeOfTaking.doseSize,
-                            time = timeOfTaking.time
-                        )
+            val medicineType = medicine?.medicineTypeID?.let { getMedicineTypeById(it) }
+
+            scheduledMedicine.timeOfTakingList.forEach { timeOfTaking ->
+                val statusOfTaking = getStatusOfTaking(scheduledMedicine, dayDate, timeOfTaking.time)
+                scheduledMedicineForDayList.add(
+                    ScheduledMedicineForDay(
+                        medicineName = medicine?.name ?: "--",
+                        doseSize = "Dawka: ${timeOfTaking.doseSize} ${medicineType?.typeName ?: "--"}",
+                        time = AppDateTimeUtil.timeToString(timeOfTaking.time),
+                        statusOfTaking = statusOfTaking.statusString,
+                        statusOfTakingColorId = statusOfTaking.statusColorId
                     )
-                }
+                )
             }
         }
         return scheduledMedicineForDayList
@@ -104,12 +105,38 @@ class ScheduleViewModel : ViewModel() {
         medicineType.medicineTypeID == medicineTypeID
     }
 
+    private fun getStatusOfTaking(scheduledMedicine: ScheduledMedicine, date: Date, time: Time): StatusOfTaking {
+        val medicineTaken = scheduledMedicine.takenMedicineArrayList.any { takenMedicine ->
+            val datesEqual = AppDateTimeUtil.compareDates(takenMedicine.date, date) == 0
+            val timesEqual = AppDateTimeUtil.compareTimes(takenMedicine.time, time) == 0
+            datesEqual && timesEqual
+        }
+        return if (medicineTaken) {
+            StatusOfTaking.TAKEN
+        } else {
+            val currDate = AppDateTimeUtil.getCurrCalendar().time
+            val laterDate = AppDateTimeUtil.compareDates(currDate, date)
+            when (laterDate) {
+                1 -> StatusOfTaking.NOT_TAKEN
+                2 -> StatusOfTaking.WAITING
+                else -> {
+                    val currTime = AppDateTimeUtil.getCurrTime()
+                    val laterTime = AppDateTimeUtil.compareTimes(currTime, time)
+                    when (laterTime) {
+                        1 -> StatusOfTaking.NOT_TAKEN
+                        else -> StatusOfTaking.WAITING
+                    }
+                }
+            }
+        }
+    }
+
     data class ScheduledMedicineForDay(
-        val medicineID: Int,
         val medicineName: String,
-        val medicineTypeName: String,
-        var doseSize: Int,
-        var time: Time
+        val doseSize: String,
+        val time: String,
+        val statusOfTaking: String,
+        val statusOfTakingColorId: Int
     )
 
     data class ScheduledMedicineForList(
@@ -119,4 +146,10 @@ class ScheduleViewModel : ViewModel() {
         val daysType: String,
         val timeOfTaking: String
     )
+
+    enum class StatusOfTaking(val statusString: String, val statusColorId: Int) {
+        WAITING("oczekujący", R.color.colorDarkerGray),
+        TAKEN("przyjęty", R.color.colorStateGood),
+        NOT_TAKEN("nieprzyjęty", R.color.colorStateSmall)
+    }
 }
