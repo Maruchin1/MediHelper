@@ -9,6 +9,6 @@
         android:id="@+id/recycler_view_scheduled_medicine_for_day"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/recycler_item_scheduled_medicine_for_day"/>
+        tools:listitem="@layout/recycler_item_planned_medicine"/>
 
 </LinearLayout>

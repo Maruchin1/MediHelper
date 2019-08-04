@@ -14,7 +14,7 @@ import androidx.lifecycle.Observer
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.PlannedMedicine
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
-import kotlinx.android.synthetic.main.recycler_item_scheduled_medicine_for_day.view.*
+import kotlinx.android.synthetic.main.recycler_item_planned_medicine.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -65,7 +65,7 @@ class ScheduleDayFragment : Fragment() {
         private val medicinePlannedForDateArrayList = ArrayList<PlannedMedicine>()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicinePlannedForDateViewHolder {
-            val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_scheduled_medicine_for_day, parent, false)
+            val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_planned_medicine, parent, false)
             return MedicinePlannedForDateViewHolder(itemView)
         }
 

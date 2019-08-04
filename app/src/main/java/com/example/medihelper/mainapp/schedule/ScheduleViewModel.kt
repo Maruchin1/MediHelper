@@ -55,19 +55,19 @@ class ScheduleViewModel : ViewModel() {
             medicineName = medicine?.name ?: "--",
             durationType = when (medicinePlan.durationType) {
                 MedicinePlan.DurationType.ONCE -> "Jednorazowo"
-                MedicinePlan.DurationType.PERIOD -> "Liczba dni"
+                MedicinePlan.DurationType.PERIOD -> "Przez ${AppDateTimeUtil.daysBetween(medicinePlan.startDate, medicinePlan.endDate!!)} dni"
                 MedicinePlan.DurationType.CONTINUOUS -> "Leczenie ciągłe"
             },
-            durationDates = StringBuilder().run {
-                append(AppDateTimeUtil.dateToString(medicinePlan.startDate))
-                medicinePlan.endDate?.let { endDate ->
-                    append(" - ")
-                    append(AppDateTimeUtil.dateToString(endDate))
-                }
-                toString()
+            startDate = when (medicinePlan.durationType) {
+                MedicinePlan.DurationType.ONCE -> AppDateTimeUtil.dateToString(medicinePlan.startDate)
+                else -> "Od ${AppDateTimeUtil.dateToString(medicinePlan.startDate)}"
+            },
+            endDate = when (medicinePlan.durationType) {
+                MedicinePlan.DurationType.PERIOD -> "Do ${AppDateTimeUtil.dateToString(medicinePlan.endDate!!)}"
+                else -> ""
             },
             daysType = when (medicinePlan.daysType) {
-                MedicinePlan.DaysType.NONE -> "--"
+                MedicinePlan.DaysType.NONE -> ""
                 MedicinePlan.DaysType.EVERYDAY -> "Codziennie"
                 MedicinePlan.DaysType.DAYS_OF_WEEK -> medicinePlan.daysOfWeek?.getSelectedDaysString() ?: "--"
                 MedicinePlan.DaysType.INTERVAL_OF_DAYS -> "Co ${medicinePlan.intervalOfDays ?: "--"} dni"
@@ -111,7 +111,8 @@ class ScheduleViewModel : ViewModel() {
     data class MedicinePlanDisplayData(
         val medicineName: String,
         val durationType: String,
-        val durationDates: String,
+        val startDate: String,
+        val endDate: String,
         val daysType: String,
         val timeOfTaking: String
     )

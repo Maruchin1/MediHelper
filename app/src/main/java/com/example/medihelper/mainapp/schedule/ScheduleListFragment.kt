@@ -19,7 +19,7 @@ import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleListBinding
 import com.example.medihelper.localdatabase.entities.MedicinePlan
 import kotlinx.android.synthetic.main.fragment_schedule_list.*
-import kotlinx.android.synthetic.main.recycler_item_scheduled_medicine.view.*
+import kotlinx.android.synthetic.main.recycler_item_medicine_plan.view.*
 
 class ScheduleListFragment : Fragment() {
     private val TAG = ScheduleListFragment::class.simpleName
@@ -72,7 +72,7 @@ class ScheduleListFragment : Fragment() {
         private val medicinePlanList = ArrayList<MedicinePlan>()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicinePlanViewHolder {
-            val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_scheduled_medicine, parent, false)
+            val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_medicine_plan, parent, false)
             return MedicinePlanViewHolder(itemView)
         }
 
@@ -86,11 +86,14 @@ class ScheduleListFragment : Fragment() {
             holder.view.run {
                 txv_medicine_name.text = medicinePlanDisplayData.medicineName
                 txv_duration_type.text = medicinePlanDisplayData.durationType
-                txv_duration_dates.text = medicinePlanDisplayData.durationDates
+                txv_start_date.text = medicinePlanDisplayData.startDate
+                txv_end_date.text = medicinePlanDisplayData.endDate
                 txv_days_type.text = medicinePlanDisplayData.daysType
                 txv_time_of_taking.text = medicinePlanDisplayData.timeOfTaking
 
                 btn_delete.setOnClickListener { openConfirmDeleteDialog(medicinePlan) }
+
+                lay_days_type.visibility = if (medicinePlanDisplayData.daysType.isEmpty()) View.GONE else View.VISIBLE
             }
         }
 
