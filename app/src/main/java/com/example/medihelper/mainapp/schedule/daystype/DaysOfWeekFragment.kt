@@ -13,17 +13,17 @@ import androidx.lifecycle.ViewModelProviders
 
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentDaysOfWeekBinding
-import com.example.medihelper.mainapp.schedule.AddScheduledMedicineViewModel
+import com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel
 
 class DaysOfWeekFragment : Fragment() {
     private val TAG = DaysOfWeekFragment::class.simpleName
 
-    private lateinit var viewModel: AddScheduledMedicineViewModel
+    private lateinit var planViewModel: AddMedicinePlanViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
-            viewModel = ViewModelProviders.of(this).get(AddScheduledMedicineViewModel::class.java)
+            planViewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
@@ -36,7 +36,7 @@ class DaysOfWeekFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.daysOfWeekLive.observe(viewLifecycleOwner, Observer {
+        planViewModel.daysOfWeekLive.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "daysOfWeek change = $it")
         })
     }
@@ -44,7 +44,7 @@ class DaysOfWeekFragment : Fragment() {
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
         val binding: FragmentDaysOfWeekBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_days_of_week, container, false)
-        binding.viewModel = viewModel
+        binding.viewModel = planViewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }

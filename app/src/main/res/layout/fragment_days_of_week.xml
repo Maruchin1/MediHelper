@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.schedule.AddScheduledMedicineViewModel" />
+            type="com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

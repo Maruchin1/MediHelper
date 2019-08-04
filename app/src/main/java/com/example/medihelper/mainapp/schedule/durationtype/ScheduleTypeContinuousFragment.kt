@@ -11,19 +11,19 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.medihelper.AppDateTimeUtil
 
 import com.example.medihelper.R
-import com.example.medihelper.SelectDateDialog
+import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.databinding.FragmentScheduleTypeContinuousBinding
-import com.example.medihelper.mainapp.schedule.AddScheduledMedicineViewModel
+import com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel
 
 class ScheduleTypeContinuousFragment : Fragment() {
     private val TAG = ScheduleTypeContinuousFragment::class.simpleName
 
-    private lateinit var viewModel: AddScheduledMedicineViewModel
+    private lateinit var planViewModel: AddMedicinePlanViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
-            viewModel = ViewModelProviders.of(this).get(AddScheduledMedicineViewModel::class.java)
+            planViewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
@@ -36,9 +36,9 @@ class ScheduleTypeContinuousFragment : Fragment() {
 
     fun onClickSelectDate() {
         val dialog = SelectDateDialog()
-        dialog.defaultDate = viewModel.startDateLive.value
+        dialog.defaultDate = planViewModel.startDateLive.value
         dialog.setDateSelectedListener { date ->
-            viewModel.startDateLive.value = date
+            planViewModel.startDateLive.value = date
         }
         dialog.show(childFragmentManager, SelectDateDialog.TAG)
     }
@@ -46,7 +46,7 @@ class ScheduleTypeContinuousFragment : Fragment() {
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
         val binding: FragmentScheduleTypeContinuousBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_type_continuous, container, false)
-        binding.viewModel = viewModel
+        binding.viewModel = planViewModel
         binding.handler = this
         binding.appDateTimeUtil = AppDateTimeUtil
         binding.lifecycleOwner = viewLifecycleOwner

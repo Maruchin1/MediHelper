@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.SelectTimeDialog" />
+            type="com.example.medihelper.dialogs.SelectTimeDialog" />
         
     </data>
 

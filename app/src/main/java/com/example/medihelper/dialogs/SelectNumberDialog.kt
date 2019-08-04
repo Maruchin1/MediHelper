@@ -1,10 +1,11 @@
-package com.example.medihelper
+package com.example.medihelper.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.example.medihelper.R
 import com.example.medihelper.databinding.DialogSelectNumberBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_number.*

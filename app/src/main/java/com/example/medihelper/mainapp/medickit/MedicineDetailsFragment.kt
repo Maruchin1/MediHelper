@@ -16,7 +16,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
-import com.example.medihelper.ConfirmDialog
+import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
 import com.example.medihelper.mainapp.MainActivity

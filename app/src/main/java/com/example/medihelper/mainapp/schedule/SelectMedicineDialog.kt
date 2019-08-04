@@ -18,16 +18,17 @@ import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_medicine.*
+import kotlinx.android.synthetic.main.recycler_item_select_medicine.view.*
 import java.io.File
 
 class SelectMedicineDialog : BottomSheetDialogFragment() {
 
-    private lateinit var viewModel: AddScheduledMedicineViewModel
+    private lateinit var planViewModel: AddMedicinePlanViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
-            viewModel = ViewModelProviders.of(this).get(AddScheduledMedicineViewModel::class.java)
+            planViewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
         }
     }
 
@@ -48,7 +49,7 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     }
 
     private fun setSelectedMedicine(medicine: Medicine) {
-        viewModel.selectedMedicineLive.value = medicine
+        planViewModel.selectedMedicineLive.value = medicine
         findNavController().run {
             if (currentDestination?.id == R.id.schedule_destination) {
                 navigate(ScheduleFragmentDirections.actionScheduleDestinationToAddToScheduleDestination())
@@ -72,7 +73,7 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
             findNavController().run {
                 val direction = when (currentDestination?.id) {
                     R.id.schedule_destination -> ScheduleFragmentDirections.actionScheduleDestinationToAddMedicineDestination(-1)
-                    R.id.add_to_schedule_destination -> AddScheduledMedicineFragmentDirections.actionAddToScheduleDestinationToAddMedicineDestination(-1)
+                    R.id.add_to_schedule_destination -> AddMedicinePlanFragmentDirections.actionAddToScheduleDestinationToAddMedicineDestination(-1)
                     else -> null
                 }
                 direction?.let {
@@ -83,12 +84,12 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.medicinesListLive.observe(viewLifecycleOwner, Observer {
+        planViewModel.medicinesListLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 (recycler_view_scheduled_medicine_for_day.adapter as SelectMedicineAdapter).setMedicinesList(it)
             }
         })
-        viewModel.medicinesTypesListLive.observe(viewLifecycleOwner, Observer {
+        planViewModel.medicinesTypesListLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 (recycler_view_scheduled_medicine_for_day.adapter as SelectMedicineAdapter).setMedicineTypesList(it)
             }
@@ -102,8 +103,6 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     // Inner classes -------------------------------------------------------------------------------
 
     inner class SelectMedicineAdapter : RecyclerView.Adapter<SelectMedicineAdapter.SelectMedicineViewHolder>() {
-        private val TAG = SelectMedicineAdapter::class.simpleName
-
         private var medicinesList = ArrayList<Medicine>()
         private var medicinesTypesList = ArrayList<MedicineType>()
 
@@ -131,15 +130,15 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
             val medicineTypeName = medicineType?.typeName ?: "brak typu"
             val stateFullString = "${medicine.currState}/${medicine.packageSize} $medicineTypeName"
 
-            holder.apply {
-                txvMedicineName.text = medicine.name
-                txvMedicineState.text = stateFullString
-                layClick.setOnClickListener { setSelectedMedicine(medicine) }
+            holder.view.apply {
+                txv_medicine_name.text = medicine.name
+                txv_medicine_state.text = stateFullString
+                lay_click.setOnClickListener { setSelectedMedicine(medicine) }
                 context?.let {
                     Glide.with(it)
                         .load(File(medicine.photoFilePath))
                         .centerCrop()
-                        .into(imgMedicinePicture)
+                        .into(img_medicine_picture)
                 }
             }
         }
@@ -157,10 +156,7 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
         }
 
         inner class SelectMedicineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val txvMedicineName: TextView = itemView.findViewById(R.id.txv_medicine_name)
-            val txvMedicineState: TextView = itemView.findViewById(R.id.txv_medicine_state)
-            val imgMedicinePicture: ImageView = itemView.findViewById(R.id.img_medicine_picture)
-            val layClick: View = itemView.findViewById(R.id.lay_click)
+            val view = itemView
         }
     }
 }

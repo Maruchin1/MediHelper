@@ -6,8 +6,8 @@ import com.example.medihelper.AppRepository
 class KitViewModel : ViewModel() {
     private val TAG = KitViewModel::class.simpleName
 
-    val medicinesListLive = AppRepository.getMedicinesLive()
-    val medicineTypesListLive = AppRepository.getMedicineTypesLive()
+    val medicinesListLive = AppRepository.getMedicineListLive()
+    val medicineTypesListLive = AppRepository.getMedicineTypeListLive()
 
     companion object {
         const val STATE_GOOD_LIMIT = 0.75f

@@ -6,12 +6,13 @@ import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.medihelper.localdatabase.LocalDatabase
+import com.example.medihelper.localdatabase.PlannedMedicineScheduler
 import com.example.medihelper.localdatabase.dao.MedicineDAO
+import com.example.medihelper.localdatabase.dao.MedicinePlanDAO
 import com.example.medihelper.localdatabase.dao.MedicineTypeDAO
-import com.example.medihelper.localdatabase.dao.ScheduledMedicineDAO
 import com.example.medihelper.localdatabase.entities.Medicine
+import com.example.medihelper.localdatabase.entities.MedicinePlan
 import com.example.medihelper.localdatabase.entities.MedicineType
-import com.example.medihelper.localdatabase.entities.ScheduledMedicine
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,19 +22,21 @@ object AppRepository {
 
     private lateinit var medicineDao: MedicineDAO
     private lateinit var medicineTypeDao: MedicineTypeDAO
-    private lateinit var scheduledMedicineDao: ScheduledMedicineDAO
+    private lateinit var medicinePlanDao: MedicinePlanDAO
+    private lateinit var plannedMedicineDao: com.example.medihelper.localdatabase.dao.PlannedMedicineDAO
     private var photosDir: File? = null
 
-    private lateinit var medicinesLive: LiveData<List<Medicine>>
-    private lateinit var medicineTypesLive: LiveData<List<MedicineType>>
-    private lateinit var scheduledMedicinesLive: LiveData<List<ScheduledMedicine>>
+    private lateinit var medicineListLive: LiveData<List<Medicine>>
+    private lateinit var medicineTypeListLive: LiveData<List<MedicineType>>
+    private lateinit var medicinesPlanListLive: LiveData<List<MedicinePlan>>
 
     fun init(app: Application) {
         Log.d(TAG, "init")
         val database = LocalDatabase.getInstance(app.applicationContext)
         medicineDao = database.medicineDao()
         medicineTypeDao = database.medicineTypeDao()
-        scheduledMedicineDao = database.scheduledMedicineDao()
+        medicinePlanDao = database.medicinePlanDao()
+        plannedMedicineDao = database.plannedMedicineDao()
 
         initDatabaseData()
         photosDir = app.applicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
@@ -41,22 +44,24 @@ object AppRepository {
         insertInitialMedicinesTypes()
     }
 
-    fun getMedicinesLive() = medicinesLive
+    fun getMedicineListLive() = medicineListLive
 
-    fun getMedicineTypesLive() = medicineTypesLive
+    fun getMedicineTypeListLive() = medicineTypeListLive
+
+    fun getMedicinesPlanListLive() = medicinesPlanListLive
 
     fun getMedicineByIdLive(medicineId: Int) = medicineDao.getByIdLive(medicineId)
 
     fun getMedicineTypeByIdLive(medicineTypeId: Int) = medicineTypeDao.getByIdLive(medicineTypeId)
 
-    fun getScheduledMedicinesLive() = scheduledMedicinesLive
+    fun getPlannedMedicineListByDateLive(date: Date) = plannedMedicineDao.getByDateLive(date)
 
     fun deleteMedicine(medicine: Medicine) = AsyncTask.execute {
         medicineDao.delete(medicine)
     }
 
-    fun deleteScheduledMedicine(scheduledMedicine: ScheduledMedicine) = AsyncTask.execute {
-        scheduledMedicineDao.delete(scheduledMedicine)
+    fun deleteMedicinePlan(medicinePlan: MedicinePlan) = AsyncTask.execute {
+        medicinePlanDao.delete(medicinePlan)
     }
 
     fun insertMedicine(medicine: Medicine) = AsyncTask.execute {
@@ -67,16 +72,15 @@ object AppRepository {
         medicineTypeDao.insertSingle(medicineType)
     }
 
-    fun insertScheduledMedicine(scheduledMedicine: ScheduledMedicine) = AsyncTask.execute {
-        scheduledMedicineDao.insertSingle(scheduledMedicine)
+    fun insertMedicinePlan(medicinePlan: MedicinePlan) = AsyncTask.execute {
+        val addedMedicinePlanID = medicinePlanDao.insert(medicinePlan)
+        val addedMedicinePlan = medicinePlanDao.getById(addedMedicinePlanID.toInt())
+        val plannedMedicineList = PlannedMedicineScheduler().getPlannedMedicineList(addedMedicinePlan)
+        plannedMedicineDao.insert(plannedMedicineList)
     }
 
     fun updateMedicine(medicine: Medicine) = AsyncTask.execute {
         medicineDao.update(medicine)
-    }
-
-    fun updateScheduledMedicine(scheduledMedicine: ScheduledMedicine) = AsyncTask.execute {
-        scheduledMedicineDao.update(scheduledMedicine)
     }
 
     fun createTempPhotoFile(): File {
@@ -98,9 +102,9 @@ object AppRepository {
     }
 
     private fun initDatabaseData() {
-        medicinesLive = medicineDao.getAllLive()
-        medicineTypesLive = medicineTypeDao.getAllLive()
-        scheduledMedicinesLive = scheduledMedicineDao.getAllLive()
+        medicineListLive = medicineDao.getAllLive()
+        medicineTypeListLive = medicineTypeDao.getAllLive()
+        medicinesPlanListLive = medicinePlanDao.getAllLive()
     }
 
     private fun insertInitialMedicinesTypes() {

@@ -21,7 +21,7 @@ class AddMedicineViewModel : ViewModel() {
 
     val selectedMedicineIdLive = MutableLiveData<Int>()
     val selectedMedicineLive: LiveData<Medicine>
-    val medicineTypesListLive = AppRepository.getMedicineTypesLive()
+    val medicineTypesListLive = AppRepository.getMedicineTypeListLive()
 
     val nameLive = MutableLiveData<String>()
     val medicineTypeLive = MutableLiveData<MedicineType>()

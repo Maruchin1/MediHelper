@@ -5,20 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.medihelper.localdatabase.dao.MedicineDAO
-import com.example.medihelper.localdatabase.dao.MedicineTypeDAO
-import com.example.medihelper.localdatabase.dao.ScheduledMedicineDAO
-import com.example.medihelper.localdatabase.entities.Medicine
-import com.example.medihelper.localdatabase.entities.MedicineType
-import com.example.medihelper.localdatabase.entities.ScheduledMedicine
+import com.example.medihelper.localdatabase.dao.*
+import com.example.medihelper.localdatabase.dao.PlannedMedicineDAO
+import com.example.medihelper.localdatabase.entities.*
 
 @Database(
     entities = [
         Medicine::class,
         MedicineType::class,
-        ScheduledMedicine::class
+        MedicinePlan::class,
+        PlannedMedicine::class
     ],
-    version = 16,
+    version = 18,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -26,7 +24,8 @@ abstract class LocalDatabase : RoomDatabase() {
 
     abstract fun medicineDao(): MedicineDAO
     abstract fun medicineTypeDao(): MedicineTypeDAO
-    abstract fun scheduledMedicineDao(): ScheduledMedicineDAO
+    abstract fun medicinePlanDao(): MedicinePlanDAO
+    abstract fun plannedMedicineDao(): PlannedMedicineDAO
 
     companion object {
         private const val DATABASE_NAME = "local-database"

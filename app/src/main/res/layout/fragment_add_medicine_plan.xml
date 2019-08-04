@@ -5,17 +5,17 @@
 
     <data>
 
-        <import type="com.example.medihelper.localdatabase.entities.ScheduledMedicine.DaysType" />
+        <import type="com.example.medihelper.localdatabase.entities.MedicinePlan.DaysType" />
 
         <import type="android.view.View" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.schedule.AddScheduledMedicineViewModel" />
+            type="com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.schedule.AddScheduledMedicineFragment" />
+            type="com.example.medihelper.mainapp.schedule.AddMedicinePlanFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -24,7 +24,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
         android:fitsSystemWindows="true"
-        tools:context=".mainapp.schedule.AddScheduledMedicineFragment">
+        tools:context=".mainapp.schedule.AddMedicinePlanFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"

@@ -4,27 +4,23 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.room.*
-import androidx.room.ForeignKey.CASCADE
-import com.example.medihelper.AppDateTimeUtil
 import java.sql.Time
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.text.StringBuilder
 
 @Entity(
-    tableName = "scheduled_medicines",
+    tableName = "medicines_plans",
     foreignKeys = [ForeignKey(
         entity = Medicine::class,
         parentColumns = arrayOf("medicine_id"),
         childColumns = arrayOf("medicine_id"),
-        onDelete = CASCADE
+        onDelete = ForeignKey.CASCADE
     )],
     indices = [Index(value = ["medicine_id"])]
 )
-data class ScheduledMedicine(
+data class MedicinePlan(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "scheduled_medicine_id")
-    val scheduledMedicineID: Int = 0,
+    @ColumnInfo(name = "medicine_plan_id")
+    val medicinePlanID: Int = 0,
 
     @ColumnInfo(name = "medicine_id")
     var medicineID: Int,
@@ -48,64 +44,8 @@ data class ScheduledMedicine(
     var daysType: DaysType,
 
     @ColumnInfo(name = "dose_hour_list")
-    var timeOfTakingList: List<TimeOfTaking>,
-
-    @ColumnInfo(name = "taken_medicine_list")
-    val takenMedicineArrayList: ArrayList<TakenMedicine> = ArrayList()
+    var timeOfTakingList: List<TimeOfTaking>
 ) {
-
-    fun isScheduledForDate(date: Date): Boolean {
-        val laterDate = AppDateTimeUtil.compareDates(startDate, date)
-        return if (laterDate == 2 || laterDate == 0) {
-            when (durationType) {
-                DurationType.ONCE -> checkDateForOnce(date)
-                DurationType.PERIOD -> checkDateForPeriod(date)
-                DurationType.CONTINUOUS -> checkDateForContinuous(date)
-            }
-        } else {
-            false
-        }
-    }
-
-    private fun checkDateForOnce(date: Date) = AppDateTimeUtil.compareDates(startDate, date) == 0
-
-    private fun checkDateForPeriod(date: Date): Boolean {
-        return if (date.after(endDate)) {
-            false
-        } else {
-            when (daysType) {
-                DaysType.NONE -> true
-                DaysType.EVERYDAY -> true
-                DaysType.DAYS_OF_WEEK -> checkDateForDaysOfWeek(date)
-                DaysType.INTERVAL_OF_DAYS -> checkDateForIntervalOfDays(date)
-            }
-        }
-    }
-
-    private fun checkDateForContinuous(date: Date): Boolean {
-        return when (daysType) {
-            DaysType.NONE -> true
-            DaysType.EVERYDAY -> true
-            DaysType.DAYS_OF_WEEK -> checkDateForDaysOfWeek(date)
-            DaysType.INTERVAL_OF_DAYS -> checkDateForIntervalOfDays(date)
-        }
-    }
-
-    private fun checkDateForDaysOfWeek(date: Date): Boolean {
-        val calendar = Calendar.getInstance().apply {
-            time = date
-        }
-        val dayOfWeekNumber = calendar.get(Calendar.DAY_OF_WEEK)
-        val isDaySelected = daysOfWeek!!.isDaySelectedByNumber(dayOfWeekNumber)
-        return isDaySelected
-    }
-
-    private fun checkDateForIntervalOfDays(date: Date): Boolean {
-        val daysDiff = AppDateTimeUtil.daysBetween(startDate, date)
-        val rem = daysDiff.rem(intervalOfDays!!)
-        return rem == 0L
-    }
-
     enum class DurationType {
         ONCE, PERIOD, CONTINUOUS
     }
@@ -113,6 +53,11 @@ data class ScheduledMedicine(
     enum class DaysType {
         NONE, EVERYDAY, DAYS_OF_WEEK, INTERVAL_OF_DAYS
     }
+
+    data class TimeOfTaking(
+        var doseSize: Int = 1,
+        var time: Time = Time(8, 0, 0)
+    )
 
     class DaysOfWeek : BaseObservable() {
         @Bindable
@@ -164,15 +109,15 @@ data class ScheduledMedicine(
                 notifyPropertyChanged(BR.sunday)
             }
 
-        fun isDaySelectedByNumber(numberOfDay: Int): Boolean {
+        fun isDaySelected(numberOfDay: Int): Boolean {
             return when(numberOfDay) {
+                1 -> sunday
                 2 -> monday
                 3 -> tuesday
                 4 -> wednesday
                 5 -> thursday
                 6 -> friday
                 7 -> saturday
-                1 -> sunday
                 else -> throw Exception("Incorrect number of day")
             }
         }
@@ -209,14 +154,4 @@ data class ScheduledMedicine(
             return "modnay:$monday, tuesday:$tuesday, wednesday:$wednesday, thursday:$thursday, friday:$friday, saturday:$saturday, sunday:$sunday"
         }
     }
-
-    data class TimeOfTaking(
-        var doseSize: Int = 1,
-        var time: Time = Time(8, 0, 0)
-    )
-
-    data class TakenMedicine(
-        var date: Date,
-        var time: Time
-    )
 }

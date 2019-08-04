@@ -1,10 +1,11 @@
-package com.example.medihelper
+package com.example.medihelper.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.example.medihelper.R
 import com.example.medihelper.databinding.DialogConfirmBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -18,7 +19,8 @@ class ConfirmDialog : BottomSheetDialogFragment() {
     private var onCancelClickListener: (() -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: DialogConfirmBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_confirm, container, false)
+        val binding: DialogConfirmBinding = DataBindingUtil.inflate(inflater,
+            R.layout.dialog_confirm, container, false)
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root

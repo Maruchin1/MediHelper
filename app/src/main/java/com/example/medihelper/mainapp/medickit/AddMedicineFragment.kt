@@ -19,7 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.R
-import com.example.medihelper.SelectDateDialog
+import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.databinding.FragmentAddMedicineBinding
 import com.example.medihelper.localdatabase.entities.MedicineType
 import com.example.medihelper.mainapp.MainActivity

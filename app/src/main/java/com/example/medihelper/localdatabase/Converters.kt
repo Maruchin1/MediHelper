@@ -1,12 +1,12 @@
 package com.example.medihelper.localdatabase
 
 import androidx.room.TypeConverter
-import com.example.medihelper.localdatabase.entities.ScheduledMedicine
+import com.example.medihelper.localdatabase.entities.MedicinePlan
+import com.example.medihelper.localdatabase.entities.PlannedMedicine
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.sql.Time
 import java.util.*
-import kotlin.collections.ArrayList
 
 class Converters {
 
@@ -34,47 +34,47 @@ class Converters {
 
     // DurationType
     @TypeConverter
-    fun durationTypeToString(durationType: ScheduledMedicine.DurationType): String {
+    fun durationTypeToString(durationType: MedicinePlan.DurationType): String {
         return durationType.toString()
     }
 
     @TypeConverter
-    fun stringToDurationType(string: String): ScheduledMedicine.DurationType {
-        return ScheduledMedicine.DurationType.valueOf(string)
+    fun stringToDurationType(string: String): MedicinePlan.DurationType {
+        return MedicinePlan.DurationType.valueOf(string)
     }
 
     // DaysType
     @TypeConverter
-    fun daysTypeToString(daysType: ScheduledMedicine.DaysType): String {
+    fun daysTypeToString(daysType: MedicinePlan.DaysType): String {
         return daysType.toString()
     }
 
     @TypeConverter
-    fun stringToDaysType(string: String): ScheduledMedicine.DaysType {
-        return ScheduledMedicine.DaysType.valueOf(string)
+    fun stringToDaysType(string: String): MedicinePlan.DaysType {
+        return MedicinePlan.DaysType.valueOf(string)
     }
 
     // List<TimeOfTaking>
     @TypeConverter
-    fun timeOfTakingListToString(list: List<ScheduledMedicine.TimeOfTaking>): String {
+    fun timeOfTakingListToString(list: List<MedicinePlan.TimeOfTaking>): String {
         return Gson().toJson(list)
     }
 
     @TypeConverter
-    fun stringToTimeOfTakingList(string: String): List<ScheduledMedicine.TimeOfTaking> {
-        val listType = object : TypeToken<List<ScheduledMedicine.TimeOfTaking>>() {}.type
+    fun stringToTimeOfTakingList(string: String): List<MedicinePlan.TimeOfTaking> {
+        val listType = object : TypeToken<List<MedicinePlan.TimeOfTaking>>() {}.type
         return Gson().fromJson(string, listType)
     }
 
-    // List<SavedStatus>
+    // StatusOfTaking
     @TypeConverter
-    fun takenMedicineArrayListToString(arrayList: ArrayList<ScheduledMedicine.TakenMedicine>): String {
-        return Gson().toJson(arrayList)
+    fun statusOfTakingToString(statusOfTaking: PlannedMedicine.StatusOfTaking): String {
+        return statusOfTaking.toString()
     }
 
     @TypeConverter
-    fun stringTotakenMedicineArrayList(string: String): ArrayList<ScheduledMedicine.TakenMedicine> {
-        val listType = object : TypeToken<ArrayList<ScheduledMedicine.TakenMedicine>>() {}.type
-        return Gson().fromJson(string, listType)
+    fun stringToStatusOfTaking(string: String): PlannedMedicine.StatusOfTaking {
+        return PlannedMedicine.StatusOfTaking.valueOf(string)
     }
+
 }

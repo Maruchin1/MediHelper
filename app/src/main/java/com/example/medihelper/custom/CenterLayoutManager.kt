@@ -1,4 +1,4 @@
-package com.example.medihelper
+package com.example.medihelper.custom
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager

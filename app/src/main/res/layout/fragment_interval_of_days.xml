@@ -10,7 +10,7 @@
             type="com.example.medihelper.mainapp.schedule.daystype.IntervalOfDaysFragment" />
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.schedule.AddScheduledMedicineViewModel" />
+            type="com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel" />
 
     </data>
 

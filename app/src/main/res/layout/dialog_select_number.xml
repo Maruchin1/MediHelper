@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.SelectNumberDialog" />
+            type="com.example.medihelper.dialogs.SelectNumberDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.schedule.AddScheduledMedicineViewModel" />
+            type="com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel" />
 
         <variable
             name="handler"

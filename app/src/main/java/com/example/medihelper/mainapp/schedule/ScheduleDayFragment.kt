@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.Observer
 import com.example.medihelper.R
+import com.example.medihelper.localdatabase.entities.PlannedMedicine
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import kotlinx.android.synthetic.main.recycler_item_scheduled_medicine_for_day.view.*
 import java.util.*
@@ -43,54 +44,56 @@ class ScheduleDayFragment : Fragment() {
 
     private fun observeViewModel() {
         date?.let { dayDate ->
-            viewModel.getScheduledMedicinesByDateLive(dayDate).observe(viewLifecycleOwner, Observer { scheduledMedicineList ->
-                Log.d(TAG, "date = $date, scheduledMedicinesList change = $scheduledMedicineList")
-                val adapter = recycler_view_scheduled_medicine_for_day.adapter as ScheduledMedicineForDayAdapter
-                adapter.setScheduledMedicineForDayList(viewModel.getScheduledMedicineForDayList(scheduledMedicineList, dayDate))
-            })
+            viewModel.getMedicinePlannedForDateListLive(dayDate)
+                .observe(viewLifecycleOwner, Observer { medicinePlannedForDateList ->
+                    Log.d(TAG, "date = $date, scheduledMedicinesList change = $medicinePlannedForDateList")
+                    val adapter = recycler_view_scheduled_medicine_for_day.adapter as MedicinePlannedForDateAdapter
+                    adapter.setMedicinePlannedForDateList(medicinePlannedForDateList)
+                })
         }
     }
 
     private fun setupRecyclerView() {
-        recycler_view_scheduled_medicine_for_day.adapter = ScheduledMedicineForDayAdapter()
+        recycler_view_scheduled_medicine_for_day.adapter = MedicinePlannedForDateAdapter()
         recycler_view_scheduled_medicine_for_day.layoutManager = LinearLayoutManager(context)
     }
 
     // Inner classes
-    inner class ScheduledMedicineForDayAdapter :
-        RecyclerView.Adapter<ScheduledMedicineForDayAdapter.ScheduledMedicineForDayViewHolder>() {
+    inner class MedicinePlannedForDateAdapter :
+        RecyclerView.Adapter<MedicinePlannedForDateAdapter.MedicinePlannedForDateViewHolder>() {
 
-        private val scheduledMedicineForDayList = ArrayList<ScheduleViewModel.ScheduledMedicineForDay>()
+        private val medicinePlannedForDateArrayList = ArrayList<PlannedMedicine>()
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduledMedicineForDayViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicinePlannedForDateViewHolder {
             val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_scheduled_medicine_for_day, parent, false)
-            return ScheduledMedicineForDayViewHolder(itemView)
+            return MedicinePlannedForDateViewHolder(itemView)
         }
 
         override fun getItemCount(): Int {
-            return scheduledMedicineForDayList.size
+            return medicinePlannedForDateArrayList.size
         }
 
-        override fun onBindViewHolder(holder: ScheduledMedicineForDayViewHolder, position: Int) {
-            val scheduledMedicineForDay = scheduledMedicineForDayList[position]
+        override fun onBindViewHolder(holder: MedicinePlannedForDateViewHolder, position: Int) {
+            val medicinePlannedForDate = medicinePlannedForDateArrayList[position]
+            val medicinePlannedForDateDisplayData = viewModel.getMedicinePlannedForDateDisplayData(medicinePlannedForDate)
             holder.view.run {
-                txv_scheduled_time.text = scheduledMedicineForDay.time
-                txv_medicine_name.text = scheduledMedicineForDay.medicineName
-                txv_scheduled_dose.text = scheduledMedicineForDay.doseSize
-                txv_schedule_status.text = scheduledMedicineForDay.statusOfTaking
-                lay_header.setBackgroundColor(resources.getColor(scheduledMedicineForDay.statusOfTakingColorId))
+                txv_scheduled_time.text = medicinePlannedForDateDisplayData.time
+                txv_medicine_name.text = medicinePlannedForDateDisplayData.medicineName
+                txv_scheduled_dose.text = medicinePlannedForDateDisplayData.doseSize
+                txv_schedule_status.text = medicinePlannedForDateDisplayData.statusOfTaking
+                lay_header.setBackgroundColor(resources.getColor(medicinePlannedForDateDisplayData.statusOfTakingColorId))
             }
         }
 
-        fun setScheduledMedicineForDayList(list: List<ScheduleViewModel.ScheduledMedicineForDay>?) {
-            scheduledMedicineForDayList.clear()
+        fun setMedicinePlannedForDateList(list: List<PlannedMedicine>?) {
+            medicinePlannedForDateArrayList.clear()
             if (list != null) {
-                scheduledMedicineForDayList.addAll(list)
+                medicinePlannedForDateArrayList.addAll(list)
             }
             notifyDataSetChanged()
         }
 
-        inner class ScheduledMedicineForDayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        inner class MedicinePlannedForDateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var view = itemView
         }
     }

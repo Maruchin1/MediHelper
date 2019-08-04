@@ -11,19 +11,19 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.medihelper.AppDateTimeUtil
 
 import com.example.medihelper.R
-import com.example.medihelper.SelectDateDialog
+import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.databinding.FragmentScheduleTypePeriodBinding
-import com.example.medihelper.mainapp.schedule.AddScheduledMedicineViewModel
+import com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel
 
 class ScheduleTypePeriodFragment : Fragment() {
     private val TAG = ScheduleTypePeriodFragment::class.simpleName
 
-    private lateinit var viewModel: AddScheduledMedicineViewModel
+    private lateinit var planViewModel: AddMedicinePlanViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
-            viewModel = ViewModelProviders.of(this).get(AddScheduledMedicineViewModel::class.java)
+            planViewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
@@ -36,8 +36,8 @@ class ScheduleTypePeriodFragment : Fragment() {
 
     fun onClickSelectDate(view: View) {
         val selectedDateLive = when (view.id) {
-            R.id.lay_start_date -> viewModel.startDateLive
-            R.id.lay_end_date -> viewModel.endDateLive
+            R.id.lay_start_date -> planViewModel.startDateLive
+            R.id.lay_end_date -> planViewModel.endDateLive
             else -> null
         }
         val dialog = SelectDateDialog()
@@ -51,7 +51,7 @@ class ScheduleTypePeriodFragment : Fragment() {
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
         val binding: FragmentScheduleTypePeriodBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_type_period, container, false)
-        binding.viewModel = viewModel
+        binding.viewModel = planViewModel
         binding.handler = this
         binding.appDateTimeUtil = AppDateTimeUtil
         binding.lifecycleOwner = viewLifecycleOwner

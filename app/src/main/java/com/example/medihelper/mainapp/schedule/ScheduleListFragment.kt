@@ -14,10 +14,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.medihelper.ConfirmDialog
+import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleListBinding
-import com.example.medihelper.localdatabase.entities.ScheduledMedicine
+import com.example.medihelper.localdatabase.entities.MedicinePlan
 import kotlinx.android.synthetic.main.fragment_schedule_list.*
 import kotlinx.android.synthetic.main.recycler_item_scheduled_medicine.view.*
 
@@ -49,14 +49,14 @@ class ScheduleListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        recycler_view_scheduled_medicine.adapter = ScheduledMedicineAdapter()
+        recycler_view_scheduled_medicine.adapter = MedicinePlanAdapter()
         recycler_view_scheduled_medicine.layoutManager = LinearLayoutManager(context)
     }
 
     private fun observeViewModel() {
-        viewModel.scheduledMedicineListLive.observe(viewLifecycleOwner, Observer { scheduledMedicineList ->
-            val adapter = recycler_view_scheduled_medicine.adapter as ScheduledMedicineAdapter
-            adapter.setScheduledMedicineList(scheduledMedicineList)
+        viewModel.medicinePlanListLive.observe(viewLifecycleOwner, Observer { medicinePlanList ->
+            val adapter = recycler_view_scheduled_medicine.adapter as MedicinePlanAdapter
+            adapter.setMedicinePlanList(medicinePlanList)
         })
     }
 
@@ -67,54 +67,54 @@ class ScheduleListFragment : Fragment() {
     }
 
     // Inner classes
-    inner class ScheduledMedicineAdapter : RecyclerView.Adapter<ScheduledMedicineAdapter.ScheduledMedicineViewHolder>() {
+    inner class MedicinePlanAdapter : RecyclerView.Adapter<MedicinePlanAdapter.MedicinePlanViewHolder>() {
 
-        private val scheduledMedicineList = ArrayList<ScheduledMedicine>()
+        private val medicinePlanList = ArrayList<MedicinePlan>()
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduledMedicineViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicinePlanViewHolder {
             val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_scheduled_medicine, parent, false)
-            return ScheduledMedicineViewHolder(itemView)
+            return MedicinePlanViewHolder(itemView)
         }
 
         override fun getItemCount(): Int {
-            return scheduledMedicineList.size
+            return medicinePlanList.size
         }
 
-        override fun onBindViewHolder(holder: ScheduledMedicineViewHolder, position: Int) {
-            val scheduledMedicine = scheduledMedicineList[position]
-            val scheduledMedicineForList = viewModel.getScheduledMedicineForList(scheduledMedicine)
+        override fun onBindViewHolder(holder: MedicinePlanViewHolder, position: Int) {
+            val medicinePlan = medicinePlanList[position]
+            val medicinePlanDisplayData = viewModel.getMedicinePlanDisplayData(medicinePlan)
             holder.view.run {
-                txv_medicine_name.text = scheduledMedicineForList.medicineName
-                txv_duration_type.text = scheduledMedicineForList.durationType
-                txv_duration_dates.text = scheduledMedicineForList.durationDates
-                txv_days_type.text = scheduledMedicineForList.daysType
-                txv_time_of_taking.text = scheduledMedicineForList.timeOfTaking
+                txv_medicine_name.text = medicinePlanDisplayData.medicineName
+                txv_duration_type.text = medicinePlanDisplayData.durationType
+                txv_duration_dates.text = medicinePlanDisplayData.durationDates
+                txv_days_type.text = medicinePlanDisplayData.daysType
+                txv_time_of_taking.text = medicinePlanDisplayData.timeOfTaking
 
-                btn_delete.setOnClickListener { openConfirmDeleteDialog(scheduledMedicine) }
+                btn_delete.setOnClickListener { openConfirmDeleteDialog(medicinePlan) }
             }
         }
 
-        fun setScheduledMedicineList(list: List<ScheduledMedicine>?) {
-            scheduledMedicineList.clear()
+        fun setMedicinePlanList(list: List<MedicinePlan>?) {
+            medicinePlanList.clear()
             if (list != null) {
-                scheduledMedicineList.addAll(list)
+                medicinePlanList.addAll(list)
             }
             notifyDataSetChanged()
         }
 
-        private fun openConfirmDeleteDialog(scheduledMedicine: ScheduledMedicine) {
+        private fun openConfirmDeleteDialog(medicinePlan: MedicinePlan) {
             val dialog = ConfirmDialog().apply {
                 title = "Usuń lek z planu"
                 message = "Wybrany lek zostanie usunięty z planu. Czy chcesz kontynuować?"
                 iconResId = R.drawable.round_delete_black_48
                 setOnConfirmClickListener {
-                    viewModel.deleteScheduledMedicine(scheduledMedicine)
+                    viewModel.deleteMedicinePlan(medicinePlan)
                 }
             }
             dialog.show(childFragmentManager, ConfirmDialog.TAG)
         }
 
-        inner class ScheduledMedicineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        inner class MedicinePlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val view = itemView
         }
     }

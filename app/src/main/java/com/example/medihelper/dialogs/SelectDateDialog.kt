@@ -1,10 +1,12 @@
-package com.example.medihelper
+package com.example.medihelper.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.example.medihelper.AppDateTimeUtil
+import com.example.medihelper.R
 import com.example.medihelper.databinding.DialogSelectDateBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_date.*
@@ -16,7 +18,8 @@ class SelectDateDialog : BottomSheetDialogFragment() {
     private var dateSelectedListener: ((date: Date) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: DialogSelectDateBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_select_date, container, false)
+        val binding: DialogSelectDateBinding = DataBindingUtil.inflate(inflater,
+            R.layout.dialog_select_date, container, false)
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root

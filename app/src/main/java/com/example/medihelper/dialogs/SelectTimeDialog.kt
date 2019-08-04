@@ -1,10 +1,11 @@
-package com.example.medihelper
+package com.example.medihelper.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.example.medihelper.R
 import com.example.medihelper.databinding.DialogSelectTimeBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_time.*
@@ -37,7 +38,8 @@ class SelectTimeDialog : BottomSheetDialogFragment() {
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: DialogSelectTimeBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_select_time, container, false)
+        val binding: DialogSelectTimeBinding = DataBindingUtil.inflate(inflater,
+            R.layout.dialog_select_time, container, false)
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root

@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -18,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.example.medihelper.CenterLayoutManager
+import com.example.medihelper.custom.CenterLayoutManager
 import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
@@ -26,7 +24,6 @@ import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.recycler_item_schedule_timeline.view.*
-import java.util.*
 
 
 class ScheduleFragment : Fragment() {
@@ -71,7 +68,7 @@ class ScheduleFragment : Fragment() {
         viewModel.run {
             medicineListLive.observe(viewLifecycleOwner, Observer { })
             medicineTypeListLive.observe(viewLifecycleOwner, Observer { })
-            scheduledMedicineListLive.observe(viewLifecycleOwner, Observer { })
+            medicinePlanListLive.observe(viewLifecycleOwner, Observer {  })
         }
     }
 

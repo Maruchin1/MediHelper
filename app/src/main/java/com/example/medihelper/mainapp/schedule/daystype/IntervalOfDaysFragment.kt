@@ -10,19 +10,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 
 import com.example.medihelper.R
-import com.example.medihelper.SelectNumberDialog
+import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.databinding.FragmentIntervalOfDaysBinding
-import com.example.medihelper.mainapp.schedule.AddScheduledMedicineViewModel
+import com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel
 
 class IntervalOfDaysFragment : Fragment() {
     private val TAG = IntervalOfDaysFragment::class.simpleName
 
-    private lateinit var viewModel: AddScheduledMedicineViewModel
+    private lateinit var planViewModel: AddMedicinePlanViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
-            viewModel = ViewModelProviders.of(this).get(AddScheduledMedicineViewModel::class.java)
+            planViewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
@@ -35,9 +35,9 @@ class IntervalOfDaysFragment : Fragment() {
 
     fun onClickSelectInterval() {
         val dialog = SelectNumberDialog()
-        dialog.defaultNumber = viewModel.intervalOfDaysLive.value
+        dialog.defaultNumber = planViewModel.intervalOfDaysLive.value
         dialog.setNumberSelectedListener { number ->
-            viewModel.intervalOfDaysLive.value = number
+            planViewModel.intervalOfDaysLive.value = number
         }
         dialog.show(childFragmentManager, SelectNumberDialog.TAG)
     }
@@ -45,7 +45,7 @@ class IntervalOfDaysFragment : Fragment() {
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
         val binding: FragmentIntervalOfDaysBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_interval_of_days, container, false)
-        binding.viewModel = viewModel
+        binding.viewModel = planViewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
