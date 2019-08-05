@@ -81,7 +81,7 @@ class ScheduleDayFragment : Fragment() {
                 txv_medicine_name.text = medicinePlannedForDateDisplayData.medicineName
                 txv_scheduled_dose.text = medicinePlannedForDateDisplayData.doseSize
                 txv_schedule_status.text = medicinePlannedForDateDisplayData.statusOfTaking
-                lay_header.setBackgroundColor(resources.getColor(medicinePlannedForDateDisplayData.statusOfTakingColorId))
+                lay_header.setBackgroundResource(medicinePlannedForDateDisplayData.statusOfTakingColorId)
             }
         }
 

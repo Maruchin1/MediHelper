@@ -6,18 +6,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.Glide
 
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentKitBinding
+import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_kit.*
 import kotlinx.android.synthetic.main.fragment_kit.btn_back_to_menu
+import kotlinx.android.synthetic.main.recycler_item_medicine.view.*
+import java.io.File
 
 
 class KitFragment : Fragment() {
@@ -32,11 +38,13 @@ class KitFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return bindLayout(inflater, container)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding: FragmentKitBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_kit, container, false)
+        binding.viewModel = viewModel
+        binding.handler = this
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,23 +55,9 @@ class KitFragment : Fragment() {
         observeViewModel()
     }
 
-    fun openMedicineDetailsFragment(medicineID: Int) {
-        val action = KitFragmentDirections.actionKitDestinationToMedicineDetailsFragment(medicineID)
-        findNavController().navigate(action)
-    }
-
     private fun openAddMedicineFragment() {
         val action = KitFragmentDirections.actionKitDestinationToAddMedicineFragment(-1)
         findNavController().navigate(action)
-    }
-
-    private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: FragmentKitBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_kit, container, false)
-        binding.viewModel = viewModel
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
     }
 
     private fun setupMainActivity() {
@@ -83,20 +77,83 @@ class KitFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        context?.let { context ->
-            with(recycler_view_scheduled_medicine_for_day) {
-                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                adapter = KitAdapter(context, this@KitFragment)
-            }
+        recycler_view_medicines.apply {
+            adapter = MedicineAdapter()
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
     }
 
     private fun observeViewModel() {
-        viewModel.medicinesListLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) (recycler_view_scheduled_medicine_for_day.adapter as KitAdapter).setMedicinesList(it)
+        viewModel.medicineTypesListLive.observe(viewLifecycleOwner, Observer { })
+        viewModel.medicinesListLive.observe(viewLifecycleOwner, Observer { medicineList ->
+            val adapter = recycler_view_medicines.adapter as MedicineAdapter
+            adapter.setMedicineList(medicineList)
         })
-        viewModel.medicineTypesListLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) (recycler_view_scheduled_medicine_for_day.adapter as KitAdapter).setMedicineTypesList(it)
-        })
+    }
+
+    // Inner classes
+    inner class MedicineAdapter : RecyclerView.Adapter<MedicineAdapter.MedicineViewHolder>() {
+
+        private val medicinesArrayList = ArrayList<Medicine>()
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineViewHolder {
+            val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_medicine, parent, false)
+            return MedicineViewHolder(itemView)
+        }
+
+        override fun getItemCount(): Int {
+            return medicinesArrayList.size
+        }
+
+        override fun onBindViewHolder(holder: MedicineViewHolder, position: Int) {
+            val medicine = medicinesArrayList[position]
+            val medicineDisplayData = viewModel.getMedicineDisplayData(medicine)
+            holder.view.apply {
+                txv_medicine_name.text = medicineDisplayData.medicineName
+                txv_state.text = medicineDisplayData.medicineState
+                txv_type.text = medicineDisplayData.medicineTypeName
+                if (medicineDisplayData.stateLayoutWeight != null &&
+                    medicineDisplayData.emptyLayoutWeight != null &&
+                    medicineDisplayData.stateColorId != null
+                ) {
+                    setLayoutWeight(line_state, medicineDisplayData.stateLayoutWeight)
+                    setLayoutWeight(line_empty, medicineDisplayData.emptyLayoutWeight)
+                    line_state.setBackgroundResource(medicineDisplayData.stateColorId)
+                } else {
+                    lay_curr_state_line.visibility = View.GONE
+                    lay_curr_state_text.visibility = View.GONE
+                }
+                lay_click.setOnClickListener {
+                    openMedicineDetailsFragment(medicine.medicineID)
+                }
+            }
+            context?.run {
+                Glide.with(this)
+                    .load(File(medicine.photoFilePath))
+                    .centerCrop()
+                    .into(holder.view.img_photo)
+            }
+        }
+
+        fun setMedicineList(list: List<Medicine>?) {
+            medicinesArrayList.clear()
+            if (list != null) {
+                medicinesArrayList.addAll(list)
+            }
+            notifyDataSetChanged()
+        }
+
+        private fun setLayoutWeight(lay: View, weight: Float) {
+            lay.layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, weight)
+        }
+
+        private fun openMedicineDetailsFragment(medicineID: Int) {
+            val action = KitFragmentDirections.actionKitDestinationToMedicineDetailsFragment(medicineID)
+            findNavController().navigate(action)
+        }
+
+        inner class MedicineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val view = itemView
+        }
     }
 }
