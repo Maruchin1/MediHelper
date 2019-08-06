@@ -18,9 +18,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.medihelper.AppDateTimeUtil
 
 import com.example.medihelper.R
+import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.databinding.FragmentAddMedicinePlanBinding
+import com.example.medihelper.databinding.RecyclerItemTimeOfTakingBinding
 import com.example.medihelper.localdatabase.entities.MedicinePlan
 import com.example.medihelper.mainapp.MainActivity
 import com.example.medihelper.mainapp.schedule.daystype.DaysOfWeekFragment
@@ -30,18 +32,18 @@ import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypePeriodFr
 import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypeOnceFragment
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_add_medicine_plan.*
-import kotlinx.android.synthetic.main.recycler_item_dose_hour.view.*
+import kotlinx.android.synthetic.main.recycler_item_time_of_taking.view.*
 
 
 class AddMedicinePlanFragment : Fragment() {
     private val TAG = AddMedicinePlanFragment::class.simpleName
 
-    private lateinit var planViewModel: AddMedicinePlanViewModel
+    private lateinit var viewModel: AddMedicinePlanViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
-            planViewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
+            viewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
@@ -51,7 +53,7 @@ class AddMedicinePlanFragment : Fragment() {
     ): View? {
         val binding: FragmentAddMedicinePlanBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_add_medicine_plan, container, false)
-        binding.viewModel = planViewModel
+        binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
@@ -81,7 +83,7 @@ class AddMedicinePlanFragment : Fragment() {
                     text = "Zapisz"
                     extend()
                     setOnClickListener {
-                        planViewModel.saveScheduledMedicine()
+                        viewModel.saveScheduledMedicine()
                         findNavController().popBackStack()
                     }
                 }
@@ -96,7 +98,7 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        planViewModel.selectedMedicineLive.observe(viewLifecycleOwner, Observer {
+        viewModel.selectedMedicineLive.observe(viewLifecycleOwner, Observer {
             if (it == null) {
                 lay_selected_medicine.visibility = View.INVISIBLE
                 txv_medicine_not_selected.visibility = View.VISIBLE
@@ -108,7 +110,7 @@ class AddMedicinePlanFragment : Fragment() {
         val onceFragment = ScheduleTypeOnceFragment()
         val periodFragment = ScheduleTypePeriodFragment()
         val continuousFragment = ScheduleTypeContinuousFragment()
-        planViewModel.durationTypeLive.observe(viewLifecycleOwner, Observer { scheduleType ->
+        viewModel.durationTypeLive.observe(viewLifecycleOwner, Observer { scheduleType ->
             if (scheduleType != null) {
                 when (scheduleType) {
                     MedicinePlan.DurationType.ONCE -> changeScheduleTypeFragment(onceFragment)
@@ -119,7 +121,7 @@ class AddMedicinePlanFragment : Fragment() {
         })
         val daysOfWeekFragment = DaysOfWeekFragment()
         val intervalOfDaysFragment = IntervalOfDaysFragment()
-        planViewModel.daysTypeLive.observe(viewLifecycleOwner, Observer { scheduleDays ->
+        viewModel.daysTypeLive.observe(viewLifecycleOwner, Observer { scheduleDays ->
             if (scheduleDays != null) {
                 when (scheduleDays) {
                     MedicinePlan.DaysType.EVERYDAY -> changeScheduleDaysFragment(null)
@@ -128,8 +130,8 @@ class AddMedicinePlanFragment : Fragment() {
                 }
             }
         })
-        planViewModel.doseHourListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
-            val adapter = recycler_view_schedule_hours.adapter as DoseHourAdapter
+        viewModel.doseHourListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
+            val adapter = recycler_view_schedule_hours.adapter as TimeOfTakingAdapter
             adapter.setDoseHourList(doseHourList)
         })
     }
@@ -158,17 +160,17 @@ class AddMedicinePlanFragment : Fragment() {
         chip_group_schedule_type.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.chip_once -> {
-                    planViewModel.durationTypeLive.value = MedicinePlan.DurationType.ONCE
-                    planViewModel.daysTypeLive.value = MedicinePlan.DaysType.NONE
+                    viewModel.durationTypeLive.value = MedicinePlan.DurationType.ONCE
+                    viewModel.daysTypeLive.value = MedicinePlan.DaysType.NONE
                 }
                 R.id.chip_period -> {
-                    planViewModel.durationTypeLive.value = MedicinePlan.DurationType.PERIOD
-                    planViewModel.daysTypeLive.value = MedicinePlan.DaysType.EVERYDAY
+                    viewModel.durationTypeLive.value = MedicinePlan.DurationType.PERIOD
+                    viewModel.daysTypeLive.value = MedicinePlan.DaysType.EVERYDAY
                     chip_group_schedule_days.check(R.id.chip_everyday)
                 }
                 R.id.chip_continuous -> {
-                    planViewModel.durationTypeLive.value = MedicinePlan.DurationType.CONTINUOUS
-                    planViewModel.daysTypeLive.value = MedicinePlan.DaysType.EVERYDAY
+                    viewModel.durationTypeLive.value = MedicinePlan.DurationType.CONTINUOUS
+                    viewModel.daysTypeLive.value = MedicinePlan.DaysType.EVERYDAY
                     chip_group_schedule_days.check(R.id.chip_everyday)
                 }
             }
@@ -179,55 +181,58 @@ class AddMedicinePlanFragment : Fragment() {
     private fun setupScheduleDaysChipGroup() {
         chip_group_schedule_days.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.chip_everyday -> planViewModel.daysTypeLive.value = MedicinePlan.DaysType.EVERYDAY
-                R.id.chip_days_of_week -> planViewModel.daysTypeLive.value = MedicinePlan.DaysType.DAYS_OF_WEEK
-                R.id.chip_interval_of_days -> planViewModel.daysTypeLive.value = MedicinePlan.DaysType.INTERVAL_OF_DAYS
+                R.id.chip_everyday -> viewModel.daysTypeLive.value = MedicinePlan.DaysType.EVERYDAY
+                R.id.chip_days_of_week -> viewModel.daysTypeLive.value = MedicinePlan.DaysType.DAYS_OF_WEEK
+                R.id.chip_interval_of_days -> viewModel.daysTypeLive.value = MedicinePlan.DaysType.INTERVAL_OF_DAYS
             }
         }
     }
 
     private fun setupDoseHourRecyclerView() {
-        recycler_view_schedule_hours.adapter = DoseHourAdapter()
+        recycler_view_schedule_hours.adapter = TimeOfTakingAdapter()
         recycler_view_schedule_hours.layoutManager = LinearLayoutManager(context)
     }
 
     // Inner classes
-    inner class DoseHourAdapter : RecyclerView.Adapter<DoseHourAdapter.DoseHourViewHolder>() {
+    inner class TimeOfTakingAdapter : RecyclerView.Adapter<RecyclerItemViewHolder>() {
 
-        private var doseHourList = ArrayList<MedicinePlan.TimeOfTaking>()
+        private var timeOfTakingArrayList = ArrayList<MedicinePlan.TimeOfTaking>()
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoseHourViewHolder {
-            val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_dose_hour, parent, false)
-            return DoseHourViewHolder(itemView)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
+            val binding: RecyclerItemTimeOfTakingBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(context),
+                R.layout.recycler_item_time_of_taking,
+                parent,
+                false
+            )
+            return RecyclerItemViewHolder(binding)
         }
 
         override fun getItemCount(): Int {
-            return doseHourList.size
+            return timeOfTakingArrayList.size
         }
 
-        override fun onBindViewHolder(holder: DoseHourViewHolder, position: Int) {
-            val doseHour = doseHourList[position]
+        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+            val timeOfTaking = timeOfTakingArrayList[position]
+            val timeOfTakingDisplayData = viewModel.getTimeOfTakingDisplayData(timeOfTaking)
+            holder.bind(timeOfTakingDisplayData)
             holder.view.apply {
-                chip_hour.text = AppDateTimeUtil.timeToString(doseHour.time)
-                txv_dose_size.text = doseHour.doseSize.toString()
-                txv_medicine_type.text = planViewModel.selectedMedicineTypeLive.value?.typeName ?: "brak typu"
-
                 chip_hour.setOnClickListener {
-                    openSelectTimeDialog(position, doseHour)
+                    openSelectTimeDialog(position, timeOfTaking)
                 }
                 lay_dose_size.setOnClickListener {
-                    openSelectNumberDialog(position, doseHour)
+                    openSelectNumberDialog(position, timeOfTaking)
                 }
                 btn_delete.setOnClickListener {
-                    planViewModel.removeDoseHour(doseHour)
+                    viewModel.removeDoseHour(timeOfTaking)
                 }
             }
         }
 
         fun setDoseHourList(list: List<MedicinePlan.TimeOfTaking>?) {
-            doseHourList.clear()
+            timeOfTakingArrayList.clear()
             if (list != null) {
-                doseHourList.addAll(list)
+                timeOfTakingArrayList.addAll(list)
             }
             notifyDataSetChanged()
         }
@@ -236,7 +241,7 @@ class AddMedicinePlanFragment : Fragment() {
             val dialog = SelectTimeDialog()
             dialog.defaultTime = timeOfTaking.time
             dialog.setTimeSelectedListener { time ->
-                planViewModel.updateDoseHour(position, timeOfTaking.copy(time = time))
+                viewModel.updateDoseHour(position, timeOfTaking.copy(time = time))
             }
             dialog.show(childFragmentManager, SelectTimeDialog.TAG)
         }
@@ -246,13 +251,9 @@ class AddMedicinePlanFragment : Fragment() {
             dialog.defaultNumber = timeOfTaking.doseSize
             dialog.setNumberSelectedListener { number ->
                 Log.d(TAG, "numberSelected")
-                planViewModel.updateDoseHour(position, timeOfTaking.copy(doseSize = number))
+                viewModel.updateDoseHour(position, timeOfTaking.copy(doseSize = number))
             }
             dialog.show(childFragmentManager, SelectNumberDialog.TAG)
-        }
-
-        inner class DoseHourViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val view = itemView
         }
     }
 }

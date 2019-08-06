@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.Medicine
@@ -96,6 +97,14 @@ class AddMedicinePlanViewModel : ViewModel() {
         }
     }
 
+    fun getTimeOfTakingDisplayData(timeOfTaking: MedicinePlan.TimeOfTaking): TimeOfTakingDisplayData {
+        return TimeOfTakingDisplayData(
+            time = AppDateTimeUtil.timeToString(timeOfTaking.time),
+            doseSize = timeOfTaking.doseSize.toString(),
+            medicineTypeName = selectedMedicineTypeLive.value?.typeName ?: "--"
+        )
+    }
+
     private fun resetViewModel() {
         arrayOf(
             durationTypeLive,
@@ -115,4 +124,10 @@ class AddMedicinePlanViewModel : ViewModel() {
             medicineType.medicineTypeID == medicineTypeID
         }
     }
+
+    data class TimeOfTakingDisplayData(
+        val time: String,
+        val doseSize: String,
+        val medicineTypeName: String
+    )
 }
