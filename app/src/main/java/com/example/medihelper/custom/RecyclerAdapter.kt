@@ -6,10 +6,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class RecyclerAdapter(
-    private val layoutResId: Int,
-    private val itemsList: List<Any>
-) : RecyclerView.Adapter<RecyclerItemViewHolder>() {
+abstract class RecyclerAdapter<T>(private val layoutResId: Int) : RecyclerView.Adapter<RecyclerItemViewHolder>() {
+
+    val itemsArrayList: ArrayList<T> = ArrayList()
+
+    fun setItemsList(list: List<T>?) {
+        itemsArrayList.clear()
+        if (list != null) {
+            itemsArrayList.addAll(list)
+        }
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
         val binding: ViewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), layoutResId, parent, false)
@@ -17,6 +24,6 @@ abstract class RecyclerAdapter(
     }
 
     override fun getItemCount(): Int {
-        return itemsList.size
+        return itemsArrayList.size
     }
 }

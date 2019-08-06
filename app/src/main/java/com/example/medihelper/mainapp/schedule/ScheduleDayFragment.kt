@@ -52,7 +52,7 @@ class ScheduleDayFragment : Fragment() {
                 .observe(viewLifecycleOwner, Observer { medicinePlannedForDateList ->
                     Log.d(TAG, "date = $date, scheduledMedicinesList change = $medicinePlannedForDateList")
                     val adapter = recycler_view_scheduled_medicine_for_day.adapter as PlannedMedicineAdapter
-                    adapter.setMedicinePlannedForDateList(medicinePlannedForDateList)
+                    adapter.setItemsList(medicinePlannedForDateList)
                 })
         }
     }
@@ -63,22 +63,12 @@ class ScheduleDayFragment : Fragment() {
     }
 
     // Inner classes
-    inner class PlannedMedicineAdapter(
-        private val plannedMedicineArrayList: ArrayList<PlannedMedicine> = ArrayList()
-    ) : RecyclerAdapter(R.layout.recycler_item_planned_medicine, plannedMedicineArrayList) {
+    inner class PlannedMedicineAdapter : RecyclerAdapter<PlannedMedicine>(R.layout.recycler_item_planned_medicine) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicinePlannedForDate = plannedMedicineArrayList[position]
+            val medicinePlannedForDate = itemsArrayList[position]
             val plannedMedicineDisplayData = viewModel.getPlannedMedicineDisplayData(medicinePlannedForDate)
             holder.bind(plannedMedicineDisplayData, this@ScheduleDayFragment)
-        }
-
-        fun setMedicinePlannedForDateList(list: List<PlannedMedicine>?) {
-            plannedMedicineArrayList.clear()
-            if (list != null) {
-                plannedMedicineArrayList.addAll(list)
-            }
-            notifyDataSetChanged()
         }
     }
 }

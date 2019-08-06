@@ -71,7 +71,7 @@ class ScheduleListFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.medicinePlanListLive.observe(viewLifecycleOwner, Observer { medicinePlanList ->
             val adapter = recycler_view_scheduled_medicine.adapter as MedicinePlanAdapter
-            adapter.setMedicinePlanList(medicinePlanList)
+            adapter.setItemsList(medicinePlanList)
         })
     }
 
@@ -82,22 +82,12 @@ class ScheduleListFragment : Fragment() {
     }
 
     // Inner classes
-    inner class MedicinePlanAdapter(
-        private val medicinePlanArrayList: ArrayList<MedicinePlan> = ArrayList()
-    ) : RecyclerAdapter(R.layout.recycler_item_medicine_plan, medicinePlanArrayList) {
+    inner class MedicinePlanAdapter : RecyclerAdapter<MedicinePlan>(R.layout.recycler_item_medicine_plan) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicinePlan = medicinePlanArrayList[position]
+            val medicinePlan = itemsArrayList[position]
             val medicinePlanDisplayData = viewModel.getMedicinePlanDisplayData(medicinePlan)
             holder.bind(medicinePlanDisplayData, this@ScheduleListFragment)
-        }
-
-        fun setMedicinePlanList(list: List<MedicinePlan>?) {
-            medicinePlanArrayList.clear()
-            if (list != null) {
-                medicinePlanArrayList.addAll(list)
-            }
-            notifyDataSetChanged()
         }
     }
 }

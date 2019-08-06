@@ -150,7 +150,7 @@ class AddMedicinePlanFragment : Fragment() {
         })
         viewModel.doseHourListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
             val adapter = recycler_view_schedule_hours.adapter as TimeOfTakingAdapter
-            adapter.setDoseHourList(doseHourList)
+            adapter.setItemsList(doseHourList)
         })
     }
 
@@ -212,22 +212,12 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     // Inner classes
-    inner class TimeOfTakingAdapter(
-        private val timeOfTakingArrayList: ArrayList<MedicinePlan.TimeOfTaking> = ArrayList()
-    ) : RecyclerAdapter(R.layout.recycler_item_time_of_taking, timeOfTakingArrayList) {
+    inner class TimeOfTakingAdapter : RecyclerAdapter<MedicinePlan.TimeOfTaking>(R.layout.recycler_item_time_of_taking) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val timeOfTaking = timeOfTakingArrayList[position]
+            val timeOfTaking = itemsArrayList[position]
             val timeOfTakingDisplayData = viewModel.getTimeOfTakingDisplayData(timeOfTaking)
             holder.bind(timeOfTakingDisplayData, this@AddMedicinePlanFragment, position)
-        }
-
-        fun setDoseHourList(list: List<MedicinePlan.TimeOfTaking>?) {
-            timeOfTakingArrayList.clear()
-            if (list != null) {
-                timeOfTakingArrayList.addAll(list)
-            }
-            notifyDataSetChanged()
         }
     }
 }

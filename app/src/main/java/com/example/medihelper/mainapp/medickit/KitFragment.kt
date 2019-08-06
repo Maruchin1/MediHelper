@@ -95,27 +95,17 @@ class KitFragment : Fragment() {
         viewModel.medicineTypesListLive.observe(viewLifecycleOwner, Observer { })
         viewModel.medicinesListLive.observe(viewLifecycleOwner, Observer { medicineList ->
             val adapter = recycler_view_medicines.adapter as MedicineAdapter
-            adapter.setMedicineList(medicineList)
+            adapter.setItemsList(medicineList)
         })
     }
 
     // Inner classes
-    inner class MedicineAdapter(
-        private val medicineArrayList: ArrayList<Medicine> = ArrayList()
-    ) : RecyclerAdapter(R.layout.recycler_item_medicine, medicineArrayList) {
+    inner class MedicineAdapter : RecyclerAdapter<Medicine>(R.layout.recycler_item_medicine) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicine = medicineArrayList[position]
+            val medicine = itemsArrayList[position]
             val medicineDisplayData = viewModel.getMedicineDisplayData(medicine)
             holder.bind(medicineDisplayData, this@KitFragment)
-        }
-
-        fun setMedicineList(list: List<Medicine>?) {
-            medicineArrayList.clear()
-            if (list != null) {
-                medicineArrayList.addAll(list)
-            }
-            notifyDataSetChanged()
         }
     }
 }
