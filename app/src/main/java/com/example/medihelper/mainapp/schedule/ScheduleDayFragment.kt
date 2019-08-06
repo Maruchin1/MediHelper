@@ -7,11 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.Observer
 import com.example.medihelper.R
+import com.example.medihelper.custom.RecyclerItemViewHolder
+import com.example.medihelper.databinding.RecyclerItemPlannedMedicineBinding
 import com.example.medihelper.localdatabase.entities.PlannedMedicine
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import kotlinx.android.synthetic.main.recycler_item_planned_medicine.view.*
@@ -44,45 +47,43 @@ class ScheduleDayFragment : Fragment() {
 
     private fun observeViewModel() {
         date?.let { dayDate ->
-            viewModel.getMedicinePlannedForDateListLive(dayDate)
+            viewModel.getPlannedMedicinesForDateListLive(dayDate)
                 .observe(viewLifecycleOwner, Observer { medicinePlannedForDateList ->
                     Log.d(TAG, "date = $date, scheduledMedicinesList change = $medicinePlannedForDateList")
-                    val adapter = recycler_view_scheduled_medicine_for_day.adapter as MedicinePlannedForDateAdapter
+                    val adapter = recycler_view_scheduled_medicine_for_day.adapter as PlannedMedicineAdapter
                     adapter.setMedicinePlannedForDateList(medicinePlannedForDateList)
                 })
         }
     }
 
     private fun setupRecyclerView() {
-        recycler_view_scheduled_medicine_for_day.adapter = MedicinePlannedForDateAdapter()
+        recycler_view_scheduled_medicine_for_day.adapter = PlannedMedicineAdapter()
         recycler_view_scheduled_medicine_for_day.layoutManager = LinearLayoutManager(context)
     }
 
     // Inner classes
-    inner class MedicinePlannedForDateAdapter :
-        RecyclerView.Adapter<MedicinePlannedForDateAdapter.MedicinePlannedForDateViewHolder>() {
+    inner class PlannedMedicineAdapter : RecyclerView.Adapter<RecyclerItemViewHolder>() {
 
         private val medicinePlannedForDateArrayList = ArrayList<PlannedMedicine>()
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicinePlannedForDateViewHolder {
-            val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_planned_medicine, parent, false)
-            return MedicinePlannedForDateViewHolder(itemView)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
+            val binding: RecyclerItemPlannedMedicineBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(context),
+                R.layout.recycler_item_planned_medicine,
+                parent,
+                false
+            )
+            return RecyclerItemViewHolder(binding)
         }
 
         override fun getItemCount(): Int {
             return medicinePlannedForDateArrayList.size
         }
 
-        override fun onBindViewHolder(holder: MedicinePlannedForDateViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicinePlannedForDate = medicinePlannedForDateArrayList[position]
-            val medicinePlannedForDateDisplayData = viewModel.getMedicinePlannedForDateDisplayData(medicinePlannedForDate)
-            holder.view.run {
-                txv_scheduled_time.text = medicinePlannedForDateDisplayData.time
-                txv_medicine_name.text = medicinePlannedForDateDisplayData.medicineName
-                txv_scheduled_dose.text = medicinePlannedForDateDisplayData.doseSize
-                txv_schedule_status.text = medicinePlannedForDateDisplayData.statusOfTaking
-                lay_header.setBackgroundResource(medicinePlannedForDateDisplayData.statusOfTakingColorId)
-            }
+            val plannedMedicineDisplayData = viewModel.getPlannedMedicineDisplayData(medicinePlannedForDate)
+            holder.bind(plannedMedicineDisplayData)
         }
 
         fun setMedicinePlannedForDateList(list: List<PlannedMedicine>?) {
@@ -91,10 +92,6 @@ class ScheduleDayFragment : Fragment() {
                 medicinePlannedForDateArrayList.addAll(list)
             }
             notifyDataSetChanged()
-        }
-
-        inner class MedicinePlannedForDateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            var view = itemView
         }
     }
 }

@@ -64,6 +64,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="@{displayData.stateLayoutWeight, default=7}"
+                        android:background="@color/colorStateGood"
                         app:backgroundResource='@{displayData.stateColorId ?? R.color.colorBackground}' />
 
                     <View

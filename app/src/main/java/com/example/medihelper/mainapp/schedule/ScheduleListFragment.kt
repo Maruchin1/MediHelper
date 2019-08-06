@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.R
+import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentScheduleListBinding
+import com.example.medihelper.databinding.RecyclerItemMedicinePlanBinding
 import com.example.medihelper.localdatabase.entities.MedicinePlan
 import kotlinx.android.synthetic.main.fragment_schedule_list.*
 import kotlinx.android.synthetic.main.recycler_item_medicine_plan.view.*
@@ -67,34 +69,29 @@ class ScheduleListFragment : Fragment() {
     }
 
     // Inner classes
-    inner class MedicinePlanAdapter : RecyclerView.Adapter<MedicinePlanAdapter.MedicinePlanViewHolder>() {
+    inner class MedicinePlanAdapter : RecyclerView.Adapter<RecyclerItemViewHolder>() {
 
         private val medicinePlanList = ArrayList<MedicinePlan>()
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicinePlanViewHolder {
-            val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_medicine_plan, parent, false)
-            return MedicinePlanViewHolder(itemView)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
+            val binding: RecyclerItemMedicinePlanBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(context),
+                R.layout.recycler_item_medicine_plan,
+                parent,
+                false
+            )
+            return RecyclerItemViewHolder(binding)
         }
 
         override fun getItemCount(): Int {
             return medicinePlanList.size
         }
 
-        override fun onBindViewHolder(holder: MedicinePlanViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicinePlan = medicinePlanList[position]
             val medicinePlanDisplayData = viewModel.getMedicinePlanDisplayData(medicinePlan)
-            holder.view.run {
-                txv_medicine_name.text = medicinePlanDisplayData.medicineName
-                txv_duration_type.text = medicinePlanDisplayData.durationType
-                txv_start_date.text = medicinePlanDisplayData.startDate
-                txv_end_date.text = medicinePlanDisplayData.endDate
-                txv_days_type.text = medicinePlanDisplayData.daysType
-                txv_time_of_taking.text = medicinePlanDisplayData.timeOfTaking
-
-                btn_delete.setOnClickListener { openConfirmDeleteDialog(medicinePlan) }
-
-                lay_days_type.visibility = if (medicinePlanDisplayData.daysType.isEmpty()) View.GONE else View.VISIBLE
-            }
+            holder.bind(medicinePlanDisplayData)
+            holder.view.btn_delete.setOnClickListener {openConfirmDeleteDialog(medicinePlan) }
         }
 
         fun setMedicinePlanList(list: List<MedicinePlan>?) {
@@ -115,10 +112,6 @@ class ScheduleListFragment : Fragment() {
                 }
             }
             dialog.show(childFragmentManager, ConfirmDialog.TAG)
-        }
-
-        inner class MedicinePlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val view = itemView
         }
     }
 }

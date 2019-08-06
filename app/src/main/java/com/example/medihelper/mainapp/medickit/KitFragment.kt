@@ -99,8 +99,12 @@ class KitFragment : Fragment() {
         private val medicinesArrayList = ArrayList<Medicine>()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
-            val inflater = LayoutInflater.from(context)
-            val binding: RecyclerItemMedicineBinding = DataBindingUtil.inflate(inflater, R.layout.recycler_item_medicine, parent, false)
+            val binding: RecyclerItemMedicineBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(context),
+                R.layout.recycler_item_medicine,
+                parent,
+                false
+            )
             return RecyclerItemViewHolder(binding)
         }
 

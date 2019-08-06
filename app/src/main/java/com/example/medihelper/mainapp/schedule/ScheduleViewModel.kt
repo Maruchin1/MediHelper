@@ -1,7 +1,5 @@
 package com.example.medihelper.mainapp.schedule
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.AppRepository
@@ -25,13 +23,13 @@ class ScheduleViewModel : ViewModel() {
         return calendar.time
     }
 
-    fun getMedicinePlannedForDateListLive(date: Date) = AppRepository.getPlannedMedicineListByDateLive(date)
+    fun getPlannedMedicinesForDateListLive(date: Date) = AppRepository.getPlannedMedicineListByDateLive(date)
 
-    fun getMedicinePlannedForDateDisplayData(plannedMedicine: PlannedMedicine): MedicinePlannedForDateDisplayData {
+    fun getPlannedMedicineDisplayData(plannedMedicine: PlannedMedicine): PlannedMedicineDisplayData {
         val medicinePlan = getMedicinePlanById(plannedMedicine.medicinePlanID)
         val medicine = getMedicineById(medicinePlan?.medicineID)
         val medicineType = getMedicineTypeById(medicine?.medicineTypeID)
-        return MedicinePlannedForDateDisplayData(
+        return PlannedMedicineDisplayData(
             medicineName = medicine?.name ?: "--",
             doseSize = "Dawka: ${plannedMedicine.plannedDoseSize} ${medicineType?.typeName ?: "--"}",
             time = AppDateTimeUtil.timeToString(plannedMedicine.plannedTime),
@@ -100,7 +98,7 @@ class ScheduleViewModel : ViewModel() {
         medicinePlan.medicinePlanID == medicinePlanID
     }
 
-    data class MedicinePlannedForDateDisplayData(
+    data class PlannedMedicineDisplayData(
         val medicineName: String,
         val doseSize: String,
         val time: String,
