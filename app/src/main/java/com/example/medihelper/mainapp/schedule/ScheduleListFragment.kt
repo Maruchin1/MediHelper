@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.R
+import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentScheduleListBinding
 import com.example.medihelper.databinding.RecyclerItemMedicinePlanBinding
@@ -69,35 +70,21 @@ class ScheduleListFragment : Fragment() {
     }
 
     // Inner classes
-    inner class MedicinePlanAdapter : RecyclerView.Adapter<RecyclerItemViewHolder>() {
-
-        private val medicinePlanList = ArrayList<MedicinePlan>()
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
-            val binding: RecyclerItemMedicinePlanBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(context),
-                R.layout.recycler_item_medicine_plan,
-                parent,
-                false
-            )
-            return RecyclerItemViewHolder(binding)
-        }
-
-        override fun getItemCount(): Int {
-            return medicinePlanList.size
-        }
+    inner class MedicinePlanAdapter(
+        private val medicinePlanArrayList: ArrayList<MedicinePlan> = ArrayList()
+    ) : RecyclerAdapter(R.layout.recycler_item_medicine_plan, medicinePlanArrayList) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicinePlan = medicinePlanList[position]
+            val medicinePlan = medicinePlanArrayList[position]
             val medicinePlanDisplayData = viewModel.getMedicinePlanDisplayData(medicinePlan)
             holder.bind(medicinePlanDisplayData)
             holder.view.btn_delete.setOnClickListener {openConfirmDeleteDialog(medicinePlan) }
         }
 
         fun setMedicinePlanList(list: List<MedicinePlan>?) {
-            medicinePlanList.clear()
+            medicinePlanArrayList.clear()
             if (list != null) {
-                medicinePlanList.addAll(list)
+                medicinePlanArrayList.addAll(list)
             }
             notifyDataSetChanged()
         }

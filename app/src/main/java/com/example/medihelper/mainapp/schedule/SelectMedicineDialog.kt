@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.medihelper.R
+import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.RecyclerItemSelectMedicineBinding
 import com.example.medihelper.localdatabase.entities.Medicine
@@ -96,25 +97,12 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     }
 
     // Inner classes -------------------------------------------------------------------------------
-    inner class MedicineAdapter : RecyclerView.Adapter<RecyclerItemViewHolder>() {
-        private var medicinesList = ArrayList<Medicine>()
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
-            val binding: RecyclerItemSelectMedicineBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(context),
-                R.layout.recycler_item_select_medicine,
-                parent,
-                false
-            )
-            return RecyclerItemViewHolder(binding)
-        }
-
-        override fun getItemCount(): Int {
-            return medicinesList.size
-        }
+    inner class MedicineAdapter(
+        private val medicineArrayList: ArrayList<Medicine> = ArrayList()
+    ) : RecyclerAdapter(R.layout.recycler_item_select_medicine, medicineArrayList) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicine = medicinesList[position]
+            val medicine = medicineArrayList[position]
             val medicineDisplayData = viewModel.getMedicineDisplayData(medicine)
             holder.bind(medicineDisplayData)
             holder.view.lay_click.setOnClickListener { setSelectedMedicine(medicine) }
@@ -127,9 +115,9 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
         }
 
         fun setMedicinesList(list: List<Medicine>?) {
-            medicinesList.clear()
+            medicineArrayList.clear()
             if (list != null) {
-                medicinesList.addAll(list)
+                medicineArrayList.addAll(list)
             }
             notifyDataSetChanged()
         }

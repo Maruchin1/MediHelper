@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.medihelper.AppDateTimeUtil
 
 import com.example.medihelper.R
+import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.dialogs.SelectTimeDialog
@@ -194,23 +195,9 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     // Inner classes
-    inner class TimeOfTakingAdapter : RecyclerView.Adapter<RecyclerItemViewHolder>() {
-
-        private var timeOfTakingArrayList = ArrayList<MedicinePlan.TimeOfTaking>()
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
-            val binding: RecyclerItemTimeOfTakingBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(context),
-                R.layout.recycler_item_time_of_taking,
-                parent,
-                false
-            )
-            return RecyclerItemViewHolder(binding)
-        }
-
-        override fun getItemCount(): Int {
-            return timeOfTakingArrayList.size
-        }
+    inner class TimeOfTakingAdapter(
+        private val timeOfTakingArrayList: ArrayList<MedicinePlan.TimeOfTaking> = ArrayList()
+    ) : RecyclerAdapter(R.layout.recycler_item_time_of_taking, timeOfTakingArrayList) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val timeOfTaking = timeOfTakingArrayList[position]

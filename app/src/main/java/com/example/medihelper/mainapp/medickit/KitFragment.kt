@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 
 import com.example.medihelper.R
+import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentKitBinding
 import com.example.medihelper.databinding.RecyclerItemMedicineBinding
@@ -94,26 +95,12 @@ class KitFragment : Fragment() {
     }
 
     // Inner classes
-    inner class MedicineAdapter : RecyclerView.Adapter<RecyclerItemViewHolder>() {
-
-        private val medicinesArrayList = ArrayList<Medicine>()
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
-            val binding: RecyclerItemMedicineBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(context),
-                R.layout.recycler_item_medicine,
-                parent,
-                false
-            )
-            return RecyclerItemViewHolder(binding)
-        }
-
-        override fun getItemCount(): Int {
-            return medicinesArrayList.size
-        }
+    inner class MedicineAdapter(
+        private val medicineArrayList: ArrayList<Medicine> = ArrayList()
+    ) : RecyclerAdapter(R.layout.recycler_item_medicine, medicineArrayList) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicine = medicinesArrayList[position]
+            val medicine = medicineArrayList[position]
             val medicineDisplayData = viewModel.getMedicineDisplayData(medicine)
             holder.bind(medicineDisplayData)
             holder.view.lay_click.setOnClickListener {
@@ -128,9 +115,9 @@ class KitFragment : Fragment() {
         }
 
         fun setMedicineList(list: List<Medicine>?) {
-            medicinesArrayList.clear()
+            medicineArrayList.clear()
             if (list != null) {
-                medicinesArrayList.addAll(list)
+                medicineArrayList.addAll(list)
             }
             notifyDataSetChanged()
         }

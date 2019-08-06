@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.Observer
 import com.example.medihelper.R
+import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.RecyclerItemPlannedMedicineBinding
 import com.example.medihelper.localdatabase.entities.PlannedMedicine
@@ -62,34 +63,20 @@ class ScheduleDayFragment : Fragment() {
     }
 
     // Inner classes
-    inner class PlannedMedicineAdapter : RecyclerView.Adapter<RecyclerItemViewHolder>() {
-
-        private val medicinePlannedForDateArrayList = ArrayList<PlannedMedicine>()
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
-            val binding: RecyclerItemPlannedMedicineBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(context),
-                R.layout.recycler_item_planned_medicine,
-                parent,
-                false
-            )
-            return RecyclerItemViewHolder(binding)
-        }
-
-        override fun getItemCount(): Int {
-            return medicinePlannedForDateArrayList.size
-        }
+    inner class PlannedMedicineAdapter(
+        private val plannedMedicineArrayList: ArrayList<PlannedMedicine> = ArrayList()
+    ) : RecyclerAdapter(R.layout.recycler_item_planned_medicine, plannedMedicineArrayList) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicinePlannedForDate = medicinePlannedForDateArrayList[position]
+            val medicinePlannedForDate = plannedMedicineArrayList[position]
             val plannedMedicineDisplayData = viewModel.getPlannedMedicineDisplayData(medicinePlannedForDate)
             holder.bind(plannedMedicineDisplayData)
         }
 
         fun setMedicinePlannedForDateList(list: List<PlannedMedicine>?) {
-            medicinePlannedForDateArrayList.clear()
+            plannedMedicineArrayList.clear()
             if (list != null) {
-                medicinePlannedForDateArrayList.addAll(list)
+                plannedMedicineArrayList.addAll(list)
             }
             notifyDataSetChanged()
         }
