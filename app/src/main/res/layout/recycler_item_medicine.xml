@@ -1,105 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.CardView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="4dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="4dp">
+<layout>
 
-    <FrameLayout
-        android:id="@+id/lay_click"
+    <data>
+
+        <import type="com.example.medihelper.R" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="displayData"
+            type="com.example.medihelper.mainapp.medickit.KitViewModel.MedicineDisplayData" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        style="@style/Widget.CardView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/lay_click"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="24dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_photo">
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
 
-            <TextView
-                android:id="@+id/txv_medicine_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Nazwa leku"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/lay_curr_state_line"
                 android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:layout_marginTop="24dp"
-                android:orientation="horizontal">
-
-                <View
-                    android:id="@+id/line_state"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="7"
-                    android:background="@android:color/holo_green_light" />
-
-                <View
-                    android:id="@+id/line_empty"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:background="@color/colorBackground" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lay_curr_state_text"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="24dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_photo">
 
                 <TextView
-                    android:id="@+id/txv_state"
+                    android:id="@+id/txv_medicine_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text='@{displayData.medicineName, default="Nazwa leku"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                <LinearLayout
+                    android:id="@+id/lay_curr_state_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="24dp"
+                    android:orientation="horizontal"
+                    android:visibility="@{displayData.stateAvailable ? View.VISIBLE : View.GONE}">
+
+                    <View
+                        android:id="@+id/line_state"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="@{displayData.stateLayoutWeight, default=7}"
+                        app:backgroundResource='@{displayData.stateColorId ?? R.color.colorBackground}' />
+
+                    <View
+                        android:id="@+id/line_empty"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="@{displayData.emptyLayoutWeight, default=3}"
+                        android:background="@color/colorBackground" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lay_curr_state_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:text="15/30"
-                    android:textAlignment="viewEnd"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                    android:textColor="@android:color/tertiary_text_dark" />
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="@{displayData.stateAvailable ? View.VISIBLE : View.GONE}">
+
+                    <TextView
+                        android:id="@+id/txv_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:text='@{displayData.medicineState, default="00/00"}'
+                        android:textAlignment="viewEnd"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:textColor="@android:color/tertiary_text_dark" />
 
 
-                <TextView
-                    android:id="@+id/txv_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="4dp"
-                    android:text="pigułki"
-                    android:textAlignment="viewStart"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                    android:textColor="@android:color/tertiary_text_dark" />
+                    <TextView
+                        android:id="@+id/txv_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        android:text='@{displayData.medicineTypeName, default="pigułki"}'
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:textColor="@android:color/tertiary_text_dark" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
 
-        <ImageView
-            android:id="@+id/img_photo"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:src="@drawable/ic_pill_grey600_48dp"
-            app:layout_constraintDimensionRatio="4:3"
-            app:layout_constraintTop_toTopOf="parent"/>
+            <ImageView
+                android:id="@+id/img_photo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_pill_grey600_48dp"
+                app:layout_constraintDimensionRatio="4:3"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

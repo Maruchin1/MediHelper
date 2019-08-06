@@ -107,8 +107,7 @@ object AppRepository {
         medicinesPlanListLive = medicinePlanDao.getAllLive()
     }
 
-    private fun insertInitialMedicinesTypes() {
-        val insertRunnable = Runnable {
+    private fun insertInitialMedicinesTypes() = AsyncTask.execute {
             val medicineTypesList = medicineTypeDao.getAll()
             if (medicineTypesList.isNullOrEmpty()) {
                 val namesArray = arrayOf("pigułki", "ml", "g", "mg", "krople")
@@ -117,6 +116,4 @@ object AppRepository {
                 }
             }
         }
-        AsyncTask.execute(insertRunnable)
-    }
 }

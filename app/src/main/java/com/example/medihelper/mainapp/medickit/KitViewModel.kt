@@ -18,6 +18,7 @@ class KitViewModel : ViewModel() {
         return MedicineDisplayData(
             medicineName = medicine.name,
             medicineTypeName = medicineType?.typeName ?: "--",
+            stateAvailable = medicineState != null,
             medicineState = "${medicine.currState}/${medicine.packageSize}",
             stateLayoutWeight = medicineState,
             emptyLayoutWeight = medicineState?.let { 1 - it },
@@ -43,6 +44,7 @@ class KitViewModel : ViewModel() {
     data class MedicineDisplayData(
         val medicineName: String,
         val medicineTypeName: String,
+        val stateAvailable: Boolean,
         val medicineState: String,
         val stateLayoutWeight: Float?,
         val emptyLayoutWeight: Float?,

@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 
 import com.example.medihelper.R
+import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentKitBinding
+import com.example.medihelper.databinding.RecyclerItemMedicineBinding
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -92,40 +94,26 @@ class KitFragment : Fragment() {
     }
 
     // Inner classes
-    inner class MedicineAdapter : RecyclerView.Adapter<MedicineAdapter.MedicineViewHolder>() {
+    inner class MedicineAdapter : RecyclerView.Adapter<RecyclerItemViewHolder>() {
 
         private val medicinesArrayList = ArrayList<Medicine>()
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineViewHolder {
-            val itemView = LayoutInflater.from(context).inflate(R.layout.recycler_item_medicine, parent, false)
-            return MedicineViewHolder(itemView)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
+            val inflater = LayoutInflater.from(context)
+            val binding: RecyclerItemMedicineBinding = DataBindingUtil.inflate(inflater, R.layout.recycler_item_medicine, parent, false)
+            return RecyclerItemViewHolder(binding)
         }
 
         override fun getItemCount(): Int {
             return medicinesArrayList.size
         }
 
-        override fun onBindViewHolder(holder: MedicineViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicine = medicinesArrayList[position]
             val medicineDisplayData = viewModel.getMedicineDisplayData(medicine)
-            holder.view.apply {
-                txv_medicine_name.text = medicineDisplayData.medicineName
-                txv_state.text = medicineDisplayData.medicineState
-                txv_type.text = medicineDisplayData.medicineTypeName
-                if (medicineDisplayData.stateLayoutWeight != null &&
-                    medicineDisplayData.emptyLayoutWeight != null &&
-                    medicineDisplayData.stateColorId != null
-                ) {
-                    setLayoutWeight(line_state, medicineDisplayData.stateLayoutWeight)
-                    setLayoutWeight(line_empty, medicineDisplayData.emptyLayoutWeight)
-                    line_state.setBackgroundResource(medicineDisplayData.stateColorId)
-                } else {
-                    lay_curr_state_line.visibility = View.GONE
-                    lay_curr_state_text.visibility = View.GONE
-                }
-                lay_click.setOnClickListener {
-                    openMedicineDetailsFragment(medicine.medicineID)
-                }
+            holder.bind(medicineDisplayData)
+            holder.view.lay_click.setOnClickListener {
+                openMedicineDetailsFragment(medicine.medicineID)
             }
             context?.run {
                 Glide.with(this)
@@ -143,17 +131,9 @@ class KitFragment : Fragment() {
             notifyDataSetChanged()
         }
 
-        private fun setLayoutWeight(lay: View, weight: Float) {
-            lay.layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, weight)
-        }
-
         private fun openMedicineDetailsFragment(medicineID: Int) {
             val action = KitFragmentDirections.actionKitDestinationToMedicineDetailsFragment(medicineID)
             findNavController().navigate(action)
-        }
-
-        inner class MedicineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val view = itemView
         }
     }
 }
