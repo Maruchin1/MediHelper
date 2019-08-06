@@ -34,6 +34,11 @@ class KitFragment : Fragment() {
 
     private lateinit var viewModel: KitViewModel
 
+    fun onClickOpenMedicineDetails(medicineID: Int) {
+        val action = KitFragmentDirections.actionKitDestinationToMedicineDetailsFragment(medicineID)
+        findNavController().navigate(action)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
@@ -102,16 +107,7 @@ class KitFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicine = medicineArrayList[position]
             val medicineDisplayData = viewModel.getMedicineDisplayData(medicine)
-            holder.bind(medicineDisplayData)
-            holder.view.lay_click.setOnClickListener {
-                openMedicineDetailsFragment(medicine.medicineID)
-            }
-            context?.run {
-                Glide.with(this)
-                    .load(File(medicine.photoFilePath))
-                    .centerCrop()
-                    .into(holder.view.img_photo)
-            }
+            holder.bind(medicineDisplayData, this@KitFragment)
         }
 
         fun setMedicineList(list: List<Medicine>?) {
@@ -120,11 +116,6 @@ class KitFragment : Fragment() {
                 medicineArrayList.addAll(list)
             }
             notifyDataSetChanged()
-        }
-
-        private fun openMedicineDetailsFragment(medicineID: Int) {
-            val action = KitFragmentDirections.actionKitDestinationToMedicineDetailsFragment(medicineID)
-            findNavController().navigate(action)
         }
     }
 }

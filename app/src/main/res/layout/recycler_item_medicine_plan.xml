@@ -6,6 +6,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="handler"
+            type="com.example.medihelper.mainapp.schedule.ScheduleListFragment" />
+
+        <variable
             name="displayData"
             type="com.example.medihelper.mainapp.schedule.ScheduleViewModel.MedicinePlanDisplayData" />
     </data>
@@ -53,7 +57,8 @@
                 android:src="@drawable/round_delete_black_24"
                 app:layout_constraintBottom_toBottomOf="@id/lay_header"
                 app:layout_constraintEnd_toEndOf="@id/lay_header"
-                app:layout_constraintTop_toTopOf="@id/lay_header" />
+                app:layout_constraintTop_toTopOf="@id/lay_header"
+                android:onClick="@{() -> handler.onClickDeleteMedicinePlan(displayData.medicinePlanRef)}"/>
 
             <ImageButton
                 android:id="@+id/btn_edit"

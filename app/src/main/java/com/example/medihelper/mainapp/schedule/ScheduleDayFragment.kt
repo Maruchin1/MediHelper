@@ -70,7 +70,7 @@ class ScheduleDayFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicinePlannedForDate = plannedMedicineArrayList[position]
             val plannedMedicineDisplayData = viewModel.getPlannedMedicineDisplayData(medicinePlannedForDate)
-            holder.bind(plannedMedicineDisplayData)
+            holder.bind(plannedMedicineDisplayData, this@ScheduleDayFragment)
         }
 
         fun setMedicinePlannedForDateList(list: List<PlannedMedicine>?) {

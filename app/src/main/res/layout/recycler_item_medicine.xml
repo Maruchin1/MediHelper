@@ -8,6 +8,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="handler"
+            type="com.example.medihelper.mainapp.medickit.KitFragment" />
+
+        <variable
             name="displayData"
             type="com.example.medihelper.mainapp.medickit.KitViewModel.MedicineDisplayData" />
     </data>
@@ -27,7 +31,8 @@
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:focusable="true" />
+            android:focusable="true"
+            android:onClick="@{() -> handler.onClickOpenMedicineDetails(displayData.medicineID)}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -110,6 +115,7 @@
 
             <ImageView
                 android:id="@+id/img_photo"
+                srcFile="@{displayData.medicineImageFile}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:src="@drawable/ic_pill_grey600_48dp"

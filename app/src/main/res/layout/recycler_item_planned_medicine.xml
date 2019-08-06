@@ -2,6 +2,10 @@
 <layout>
     <data>
         <variable
+            name="handler"
+            type="com.example.medihelper.mainapp.schedule.ScheduleDayFragment" />
+
+        <variable
             name="displayData"
             type="com.example.medihelper.mainapp.schedule.ScheduleViewModel.PlannedMedicineDisplayData" />
     </data>

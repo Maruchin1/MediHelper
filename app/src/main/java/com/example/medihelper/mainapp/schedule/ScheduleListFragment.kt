@@ -29,6 +29,18 @@ class ScheduleListFragment : Fragment() {
 
     private lateinit var viewModel: ScheduleViewModel
 
+    fun onClickDeleteMedicinePlan(medicinePlan: MedicinePlan) {
+        val dialog = ConfirmDialog().apply {
+            title = "Usuń lek z planu"
+            message = "Wybrany lek zostanie usunięty z planu. Czy chcesz kontynuować?"
+            iconResId = R.drawable.round_delete_black_48
+            setOnConfirmClickListener {
+                viewModel.deleteMedicinePlan(medicinePlan)
+            }
+        }
+        dialog.show(childFragmentManager, ConfirmDialog.TAG)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
@@ -77,8 +89,7 @@ class ScheduleListFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicinePlan = medicinePlanArrayList[position]
             val medicinePlanDisplayData = viewModel.getMedicinePlanDisplayData(medicinePlan)
-            holder.bind(medicinePlanDisplayData)
-            holder.view.btn_delete.setOnClickListener {openConfirmDeleteDialog(medicinePlan) }
+            holder.bind(medicinePlanDisplayData, this@ScheduleListFragment)
         }
 
         fun setMedicinePlanList(list: List<MedicinePlan>?) {
@@ -87,18 +98,6 @@ class ScheduleListFragment : Fragment() {
                 medicinePlanArrayList.addAll(list)
             }
             notifyDataSetChanged()
-        }
-
-        private fun openConfirmDeleteDialog(medicinePlan: MedicinePlan) {
-            val dialog = ConfirmDialog().apply {
-                title = "Usuń lek z planu"
-                message = "Wybrany lek zostanie usunięty z planu. Czy chcesz kontynuować?"
-                iconResId = R.drawable.round_delete_black_48
-                setOnConfirmClickListener {
-                    viewModel.deleteMedicinePlan(medicinePlan)
-                }
-            }
-            dialog.show(childFragmentManager, ConfirmDialog.TAG)
         }
     }
 }

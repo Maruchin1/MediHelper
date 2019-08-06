@@ -14,8 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.medihelper.AppDateTimeUtil
 
 import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
@@ -23,7 +21,6 @@ import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.databinding.FragmentAddMedicinePlanBinding
-import com.example.medihelper.databinding.RecyclerItemTimeOfTakingBinding
 import com.example.medihelper.localdatabase.entities.MedicinePlan
 import com.example.medihelper.mainapp.MainActivity
 import com.example.medihelper.mainapp.schedule.daystype.DaysOfWeekFragment
@@ -33,13 +30,38 @@ import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypePeriodFr
 import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypeOnceFragment
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_add_medicine_plan.*
-import kotlinx.android.synthetic.main.recycler_item_time_of_taking.view.*
 
 
 class AddMedicinePlanFragment : Fragment() {
     private val TAG = AddMedicinePlanFragment::class.simpleName
 
     private lateinit var viewModel: AddMedicinePlanViewModel
+
+    fun onClickSelectMedicine() {
+        val dialog = SelectMedicineDialog()
+        dialog.show(childFragmentManager, SelectMedicineDialog.TAG)
+    }
+
+    fun onClickSelectTime(position: Int, timeOfTaking: MedicinePlan.TimeOfTaking) {
+        val dialog = SelectTimeDialog()
+        dialog.defaultTime = timeOfTaking.time
+        dialog.setTimeSelectedListener { time ->
+            viewModel.updateTimeOfTaking(position, timeOfTaking.copy(time = time))
+        }
+        dialog.show(childFragmentManager, SelectTimeDialog.TAG)
+    }
+
+    fun onClickSelectDoseSize(position: Int, timeOfTaking: MedicinePlan.TimeOfTaking) {
+        val dialog = SelectNumberDialog()
+        dialog.defaultNumber = timeOfTaking.doseSize
+        dialog.setNumberSelectedListener { number ->
+            Log.d(TAG, "numberSelected")
+            viewModel.updateTimeOfTaking(position, timeOfTaking.copy(doseSize = number))
+        }
+        dialog.show(childFragmentManager, SelectNumberDialog.TAG)
+    }
+
+    fun onClickRemoveTimeOfTaking(timeOfTaking: MedicinePlan.TimeOfTaking) = viewModel.removeTimeOfTaking(timeOfTaking)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,11 +90,6 @@ class AddMedicinePlanFragment : Fragment() {
         setupScheduleDaysChipGroup()
         setupDoseHourRecyclerView()
         observeViewModel()
-    }
-
-    fun onClickSelectMedicine() {
-        val dialog = SelectMedicineDialog()
-        dialog.show(childFragmentManager, SelectMedicineDialog.TAG)
     }
 
     private fun setupMainActivity() {
@@ -202,18 +219,7 @@ class AddMedicinePlanFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val timeOfTaking = timeOfTakingArrayList[position]
             val timeOfTakingDisplayData = viewModel.getTimeOfTakingDisplayData(timeOfTaking)
-            holder.bind(timeOfTakingDisplayData)
-            holder.view.apply {
-                chip_hour.setOnClickListener {
-                    openSelectTimeDialog(position, timeOfTaking)
-                }
-                lay_dose_size.setOnClickListener {
-                    openSelectNumberDialog(position, timeOfTaking)
-                }
-                btn_delete.setOnClickListener {
-                    viewModel.removeDoseHour(timeOfTaking)
-                }
-            }
+            holder.bind(timeOfTakingDisplayData, this@AddMedicinePlanFragment, position)
         }
 
         fun setDoseHourList(list: List<MedicinePlan.TimeOfTaking>?) {
@@ -222,25 +228,6 @@ class AddMedicinePlanFragment : Fragment() {
                 timeOfTakingArrayList.addAll(list)
             }
             notifyDataSetChanged()
-        }
-
-        private fun openSelectTimeDialog(position: Int, timeOfTaking: MedicinePlan.TimeOfTaking) {
-            val dialog = SelectTimeDialog()
-            dialog.defaultTime = timeOfTaking.time
-            dialog.setTimeSelectedListener { time ->
-                viewModel.updateDoseHour(position, timeOfTaking.copy(time = time))
-            }
-            dialog.show(childFragmentManager, SelectTimeDialog.TAG)
-        }
-
-        private fun openSelectNumberDialog(position: Int, timeOfTaking: MedicinePlan.TimeOfTaking) {
-            val dialog = SelectNumberDialog()
-            dialog.defaultNumber = timeOfTaking.doseSize
-            dialog.setNumberSelectedListener { number ->
-                Log.d(TAG, "numberSelected")
-                viewModel.updateDoseHour(position, timeOfTaking.copy(doseSize = number))
-            }
-            dialog.show(childFragmentManager, SelectNumberDialog.TAG)
         }
     }
 }

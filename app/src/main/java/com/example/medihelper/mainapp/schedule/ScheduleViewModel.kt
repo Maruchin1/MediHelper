@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.AppRepository
 import com.example.medihelper.R
+import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicinePlan
 import com.example.medihelper.localdatabase.entities.PlannedMedicine
 import java.util.*
@@ -50,6 +51,7 @@ class ScheduleViewModel : ViewModel() {
         val medicine = getMedicineById(medicinePlan.medicineID)
         val medicineType = getMedicineTypeById(medicine?.medicineTypeID)
         return MedicinePlanDisplayData(
+            medicinePlanRef = medicinePlan,
             medicineName = medicine?.name ?: "--",
             durationType = when (medicinePlan.durationType) {
                 MedicinePlan.DurationType.ONCE -> "Jednorazowo"
@@ -107,6 +109,7 @@ class ScheduleViewModel : ViewModel() {
     )
 
     data class MedicinePlanDisplayData(
+        val medicinePlanRef: MedicinePlan,
         val medicineName: String,
         val durationType: String,
         val startDate: String,

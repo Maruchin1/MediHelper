@@ -26,6 +26,16 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
 
     private lateinit var viewModel: AddMedicinePlanViewModel
 
+    fun onClickSelectMedicine(medicine: Medicine) {
+        viewModel.selectedMedicineLive.value = medicine
+        findNavController().run {
+            if (currentDestination?.id == R.id.schedule_destination) {
+                navigate(ScheduleFragmentDirections.actionScheduleDestinationToAddToScheduleDestination())
+            }
+        }
+        dismiss()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
@@ -47,16 +57,6 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
         setupRecyclerView()
         setupAddMedicineButton()
         observeViewModel()
-    }
-
-    private fun setSelectedMedicine(medicine: Medicine) {
-        viewModel.selectedMedicineLive.value = medicine
-        findNavController().run {
-            if (currentDestination?.id == R.id.schedule_destination) {
-                navigate(ScheduleFragmentDirections.actionScheduleDestinationToAddToScheduleDestination())
-            }
-        }
-        dismiss()
     }
 
     private fun setupRecyclerView() {
@@ -104,14 +104,7 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicine = medicineArrayList[position]
             val medicineDisplayData = viewModel.getMedicineDisplayData(medicine)
-            holder.bind(medicineDisplayData)
-            holder.view.lay_click.setOnClickListener { setSelectedMedicine(medicine) }
-            context?.let {
-                Glide.with(it)
-                    .load(File(medicine.photoFilePath))
-                    .centerCrop()
-                    .into(holder.view.img_medicine_picture)
-            }
+            holder.bind(medicineDisplayData, this@SelectMedicineDialog)
         }
 
         fun setMedicinesList(list: List<Medicine>?) {

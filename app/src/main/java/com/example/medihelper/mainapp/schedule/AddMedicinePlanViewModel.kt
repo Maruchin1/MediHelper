@@ -11,6 +11,7 @@ import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicinePlan
 import com.example.medihelper.localdatabase.entities.MedicineType
+import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -83,14 +84,14 @@ class AddMedicinePlanViewModel : ViewModel() {
         }
     }
 
-    fun removeDoseHour(timeOfTaking: MedicinePlan.TimeOfTaking) {
+    fun removeTimeOfTaking(timeOfTaking: MedicinePlan.TimeOfTaking) {
         doseHourListLive.value?.let { doseHourList ->
             doseHourList.remove(timeOfTaking)
             doseHourListLive.value = doseHourListLive.value
         }
     }
 
-    fun updateDoseHour(position: Int, timeOfTaking: MedicinePlan.TimeOfTaking) {
+    fun updateTimeOfTaking(position: Int, timeOfTaking: MedicinePlan.TimeOfTaking) {
         doseHourListLive.value?.let { doseHourList ->
             doseHourList[position] = timeOfTaking
             doseHourListLive.value = doseHourListLive.value
@@ -99,6 +100,7 @@ class AddMedicinePlanViewModel : ViewModel() {
 
     fun getTimeOfTakingDisplayData(timeOfTaking: MedicinePlan.TimeOfTaking): TimeOfTakingDisplayData {
         return TimeOfTakingDisplayData(
+            timeOfTakingRef = timeOfTaking,
             time = AppDateTimeUtil.timeToString(timeOfTaking.time),
             doseSize = timeOfTaking.doseSize.toString(),
             medicineTypeName = selectedMedicineTypeLive.value?.typeName ?: "--"
@@ -110,8 +112,10 @@ class AddMedicinePlanViewModel : ViewModel() {
             medicineType.medicineTypeID == medicine.medicineTypeID
         }
         return MedicineDisplayData(
+            medicineRef = medicine,
             medicineName = medicine.name,
-            medicineState = "${medicine.currState}/${medicine.packageSize} ${medicineType?.typeName ?: "--"}"
+            medicineState = "${medicine.currState}/${medicine.packageSize} ${medicineType?.typeName ?: "--"}",
+            medicineImageFile = medicine.photoFilePath?.let { File(it) }
         )
     }
 
@@ -136,13 +140,16 @@ class AddMedicinePlanViewModel : ViewModel() {
     }
 
     data class TimeOfTakingDisplayData(
+        val timeOfTakingRef: MedicinePlan.TimeOfTaking,
         val time: String,
         val doseSize: String,
         val medicineTypeName: String
     )
 
     data class MedicineDisplayData(
+        val medicineRef: Medicine,
         val medicineName: String,
-        val medicineState: String
+        val medicineState: String,
+        val medicineImageFile: File?
     )
 }

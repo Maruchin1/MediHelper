@@ -5,6 +5,7 @@ import com.example.medihelper.AppRepository
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicineType
+import java.io.File
 
 class KitViewModel : ViewModel() {
     private val TAG = KitViewModel::class.simpleName
@@ -16,6 +17,7 @@ class KitViewModel : ViewModel() {
         val medicineType = findMedicineTypeById(medicine.medicineTypeID)
         val medicineState = medicine.calcMedicineState()
         return MedicineDisplayData(
+            medicineID = medicine.medicineID,
             medicineName = medicine.name,
             medicineTypeName = medicineType?.typeName ?: "--",
             stateAvailable = medicineState != null,
@@ -28,7 +30,8 @@ class KitViewModel : ViewModel() {
                     medicineState > STATE_MEDIUM_LIMIT -> R.color.colorStateMedium
                     else -> R.color.colorStateSmall
                 }
-            }
+            },
+            medicineImageFile = medicine.photoFilePath?.let { File(it) }
         )
     }
 
@@ -42,12 +45,14 @@ class KitViewModel : ViewModel() {
     }
 
     data class MedicineDisplayData(
+        val medicineID: Int,
         val medicineName: String,
         val medicineTypeName: String,
         val stateAvailable: Boolean,
         val medicineState: String,
         val stateLayoutWeight: Float?,
         val emptyLayoutWeight: Float?,
-        val stateColorId: Int?
+        val stateColorId: Int?,
+        val medicineImageFile: File?
     )
 }
