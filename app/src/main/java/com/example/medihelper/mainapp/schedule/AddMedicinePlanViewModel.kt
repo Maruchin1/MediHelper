@@ -17,8 +17,8 @@ import kotlin.collections.ArrayList
 class AddMedicinePlanViewModel : ViewModel() {
     private val TAG = AddMedicinePlanViewModel::class.simpleName
 
-    val medicinesListLive = AppRepository.getMedicineListLive()
-    val medicinesTypesListLive = AppRepository.getMedicineTypeListLive()
+    val medicineListLive = AppRepository.getMedicineListLive()
+    val medicineTypeListLive = AppRepository.getMedicineTypeListLive()
 
     val selectedMedicineLive = MutableLiveData<Medicine>()
     val selectedMedicineNameLive: LiveData<String>
@@ -105,6 +105,16 @@ class AddMedicinePlanViewModel : ViewModel() {
         )
     }
 
+    fun getMedicineDisplayData(medicine: Medicine): MedicineDisplayData {
+        val medicineType = medicineTypeListLive.value?.find { medicineType ->
+            medicineType.medicineTypeID == medicine.medicineTypeID
+        }
+        return MedicineDisplayData(
+            medicineName = medicine.name,
+            medicineState = "${medicine.currState}/${medicine.packageSize} ${medicineType?.typeName ?: "--"}"
+        )
+    }
+
     private fun resetViewModel() {
         arrayOf(
             durationTypeLive,
@@ -120,7 +130,7 @@ class AddMedicinePlanViewModel : ViewModel() {
     }
 
     private fun findMedicineType(medicineTypeID: Int): MedicineType? {
-        return medicinesTypesListLive.value?.find { medicineType ->
+        return medicineTypeListLive.value?.find { medicineType ->
             medicineType.medicineTypeID == medicineTypeID
         }
     }
@@ -129,5 +139,10 @@ class AddMedicinePlanViewModel : ViewModel() {
         val time: String,
         val doseSize: String,
         val medicineTypeName: String
+    )
+
+    data class MedicineDisplayData(
+        val medicineName: String,
+        val medicineState: String
     )
 }

@@ -40,7 +40,7 @@
     <include layout="@layout/line_horizontal" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_scheduled_medicine_for_day"
+        android:id="@+id/recycler_view_medicines"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         app:layout_constraintBottom_toBottomOf="parent"

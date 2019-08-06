@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -14,8 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.medihelper.R
+import com.example.medihelper.custom.RecyclerItemViewHolder
+import com.example.medihelper.databinding.RecyclerItemSelectMedicineBinding
 import com.example.medihelper.localdatabase.entities.Medicine
-import com.example.medihelper.localdatabase.entities.MedicineType
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_medicine.*
 import kotlinx.android.synthetic.main.recycler_item_select_medicine.view.*
@@ -23,12 +23,12 @@ import java.io.File
 
 class SelectMedicineDialog : BottomSheetDialogFragment() {
 
-    private lateinit var planViewModel: AddMedicinePlanViewModel
+    private lateinit var viewModel: AddMedicinePlanViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
-            planViewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
+            viewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
         }
     }
 
@@ -49,7 +49,7 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     }
 
     private fun setSelectedMedicine(medicine: Medicine) {
-        planViewModel.selectedMedicineLive.value = medicine
+        viewModel.selectedMedicineLive.value = medicine
         findNavController().run {
             if (currentDestination?.id == R.id.schedule_destination) {
                 navigate(ScheduleFragmentDirections.actionScheduleDestinationToAddToScheduleDestination())
@@ -60,9 +60,9 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
 
     private fun setupRecyclerView() {
         context?.let { context ->
-            recycler_view_scheduled_medicine_for_day.apply {
+            recycler_view_medicines.apply {
                 layoutManager = LinearLayoutManager(context)
-                adapter = SelectMedicineAdapter()
+                adapter = MedicineAdapter()
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
         }
@@ -84,16 +84,11 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     }
 
     private fun observeViewModel() {
-        planViewModel.medicinesListLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                (recycler_view_scheduled_medicine_for_day.adapter as SelectMedicineAdapter).setMedicinesList(it)
-            }
+        viewModel.medicineListLive.observe(viewLifecycleOwner, Observer { medicineList ->
+            val adapter = recycler_view_medicines.adapter as MedicineAdapter
+            adapter.setMedicinesList(medicineList)
         })
-        planViewModel.medicinesTypesListLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                (recycler_view_scheduled_medicine_for_day.adapter as SelectMedicineAdapter).setMedicineTypesList(it)
-            }
-        })
+        viewModel.medicineTypeListLive.observe(viewLifecycleOwner, Observer {  })
     }
 
     companion object {
@@ -101,62 +96,42 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     }
 
     // Inner classes -------------------------------------------------------------------------------
-
-    inner class SelectMedicineAdapter : RecyclerView.Adapter<SelectMedicineAdapter.SelectMedicineViewHolder>() {
+    inner class MedicineAdapter : RecyclerView.Adapter<RecyclerItemViewHolder>() {
         private var medicinesList = ArrayList<Medicine>()
-        private var medicinesTypesList = ArrayList<MedicineType>()
 
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
-        ): SelectMedicineViewHolder {
-            val itemView = LayoutInflater.from(context)
-                .inflate(R.layout.recycler_item_select_medicine, parent, false)
-            return SelectMedicineViewHolder(itemView)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
+            val binding: RecyclerItemSelectMedicineBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(context),
+                R.layout.recycler_item_select_medicine,
+                parent,
+                false
+            )
+            return RecyclerItemViewHolder(binding)
         }
 
         override fun getItemCount(): Int {
             return medicinesList.size
         }
 
-        override fun onBindViewHolder(
-            holder: SelectMedicineViewHolder,
-            position: Int
-        ) {
+        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicine = medicinesList[position]
-            val medicineType = medicinesTypesList.find {
-                it.medicineTypeID == medicine.medicineTypeID
-            }
-            val medicineTypeName = medicineType?.typeName ?: "brak typu"
-            val stateFullString = "${medicine.currState}/${medicine.packageSize} $medicineTypeName"
-
-            holder.view.apply {
-                txv_medicine_name.text = medicine.name
-                txv_medicine_state.text = stateFullString
-                lay_click.setOnClickListener { setSelectedMedicine(medicine) }
-                context?.let {
-                    Glide.with(it)
-                        .load(File(medicine.photoFilePath))
-                        .centerCrop()
-                        .into(img_medicine_picture)
-                }
+            val medicineDisplayData = viewModel.getMedicineDisplayData(medicine)
+            holder.bind(medicineDisplayData)
+            holder.view.lay_click.setOnClickListener { setSelectedMedicine(medicine) }
+            context?.let {
+                Glide.with(it)
+                    .load(File(medicine.photoFilePath))
+                    .centerCrop()
+                    .into(holder.view.img_medicine_picture)
             }
         }
 
-        fun setMedicinesList(list: List<Medicine>) {
+        fun setMedicinesList(list: List<Medicine>?) {
             medicinesList.clear()
-            medicinesList.addAll(list)
+            if (list != null) {
+                medicinesList.addAll(list)
+            }
             notifyDataSetChanged()
-        }
-
-        fun setMedicineTypesList(list: List<MedicineType>) {
-            medicinesTypesList.clear()
-            medicinesTypesList.addAll(list)
-            notifyDataSetChanged()
-        }
-
-        inner class SelectMedicineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val view = itemView
         }
     }
 }
