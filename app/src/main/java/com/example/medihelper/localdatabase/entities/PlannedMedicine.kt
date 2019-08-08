@@ -1,6 +1,8 @@
 package com.example.medihelper.localdatabase.entities
 
 import androidx.room.*
+import com.example.medihelper.AppDateTimeUtil
+import com.example.medihelper.AppRepository
 import java.sql.Time
 import java.util.*
 
@@ -34,6 +36,28 @@ data class PlannedMedicine(
     @ColumnInfo(name = "status_of_taking")
     var statusOfTaking: StatusOfTaking = StatusOfTaking.WAITING
 ) {
+    fun setMedicineTaken(taken: Boolean) {
+        statusOfTaking = if (taken) {
+            StatusOfTaking.TAKEN
+        } else {
+            statusOfTakingByCurrDate()
+        }
+        AppRepository.updatePlannedMedicine(this)
+    }
+
+    private fun statusOfTakingByCurrDate(): StatusOfTaking {
+        val currDate = AppDateTimeUtil.getCurrCalendar().time
+        val currTime = AppDateTimeUtil.getCurrTime()
+        return when (AppDateTimeUtil.compareDates(currDate, plannedDate)) {
+            2 -> StatusOfTaking.WAITING
+            1 -> StatusOfTaking.NOT_TAKEN
+            else -> when (AppDateTimeUtil.compareTimes(currTime, plannedTime)) {
+                1 -> StatusOfTaking.NOT_TAKEN
+                else -> StatusOfTaking.WAITING
+            }
+        }
+    }
+
     enum class StatusOfTaking {
         WAITING, TAKEN, NOT_TAKEN
     }

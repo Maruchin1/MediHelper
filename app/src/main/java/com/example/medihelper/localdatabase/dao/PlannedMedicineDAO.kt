@@ -20,6 +20,9 @@ interface PlannedMedicineDAO {
     @Query("SELECT * FROM planned_medicines WHERE planned_date = :date")
     fun getByDateLive(date: Date): LiveData<List<PlannedMedicine>>
 
+    @Query("SELECT * FROM planned_medicines WHERE planned_medicine_id = :plannedMedicineID")
+    fun getByIdLive(plannedMedicineID: Int): LiveData<PlannedMedicine>
+
     @Delete
     fun delete(plannedMedicine: PlannedMedicine)
 

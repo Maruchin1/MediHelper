@@ -29,6 +29,12 @@ class ScheduleDayFragment : Fragment() {
     var date: Date? = null
     private lateinit var viewModel: ScheduleViewModel
 
+    fun onClickOpenPlannedMedicineOptions(plannedMedicine: PlannedMedicine) {
+        val dialog = PlannedMedicineOptionsDialog()
+        dialog.plannedMedicineId = plannedMedicine.plannedMedicineID
+        dialog.show(childFragmentManager, dialog.TAG)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
@@ -48,12 +54,11 @@ class ScheduleDayFragment : Fragment() {
 
     private fun observeViewModel() {
         date?.let { dayDate ->
-            viewModel.getPlannedMedicinesForDateListLive(dayDate)
-                .observe(viewLifecycleOwner, Observer { medicinePlannedForDateList ->
-                    Log.d(TAG, "date = $date, scheduledMedicinesList change = $medicinePlannedForDateList")
-                    val adapter = recycler_view_scheduled_medicine_for_day.adapter as PlannedMedicineAdapter
-                    adapter.setItemsList(medicinePlannedForDateList)
-                })
+            viewModel.getPlannedMedicinesForDateListLive(dayDate).observe(viewLifecycleOwner, Observer { medicinePlannedForDateList ->
+                Log.d(TAG, "date = $date, scheduledMedicinesList change = $medicinePlannedForDateList")
+                val adapter = recycler_view_scheduled_medicine_for_day.adapter as PlannedMedicineAdapter
+                adapter.setItemsList(medicinePlannedForDateList)
+            })
         }
     }
 

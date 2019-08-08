@@ -13,6 +13,7 @@ import com.example.medihelper.localdatabase.dao.MedicineTypeDAO
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicinePlan
 import com.example.medihelper.localdatabase.entities.MedicineType
+import com.example.medihelper.localdatabase.entities.PlannedMedicine
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,6 +55,10 @@ object AppRepository {
 
     fun getMedicineTypeByIdLive(medicineTypeId: Int) = medicineTypeDao.getByIdLive(medicineTypeId)
 
+    fun getMedicinePlanByIdLive(medicinePlanId: Int) = medicinePlanDao.getByIdLive(medicinePlanId)
+
+    fun getPlannedMedicineByIdLive(plannedMedicineId: Int) = plannedMedicineDao.getByIdLive(plannedMedicineId)
+
     fun getPlannedMedicineListByDateLive(date: Date) = plannedMedicineDao.getByDateLive(date)
 
     fun deleteMedicine(medicine: Medicine) = AsyncTask.execute {
@@ -81,6 +86,10 @@ object AppRepository {
 
     fun updateMedicine(medicine: Medicine) = AsyncTask.execute {
         medicineDao.update(medicine)
+    }
+
+    fun updatePlannedMedicine(plannedMedicine: PlannedMedicine) = AsyncTask.execute {
+        plannedMedicineDao.update(plannedMedicine)
     }
 
     fun createTempPhotoFile(): File {

@@ -1,5 +1,7 @@
 package com.example.medihelper.mainapp.schedule
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.AppRepository
@@ -7,6 +9,8 @@ import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.Medicine
 import com.example.medihelper.localdatabase.entities.MedicinePlan
 import com.example.medihelper.localdatabase.entities.PlannedMedicine
+import java.io.File
+import java.sql.Time
 import java.util.*
 
 class ScheduleViewModel : ViewModel() {
@@ -31,6 +35,7 @@ class ScheduleViewModel : ViewModel() {
         val medicine = getMedicineById(medicinePlan?.medicineID)
         val medicineType = getMedicineTypeById(medicine?.medicineTypeID)
         return PlannedMedicineDisplayData(
+            plannedMedicineRef = plannedMedicine,
             medicineName = medicine?.name ?: "--",
             doseSize = "Dawka: ${plannedMedicine.plannedDoseSize} ${medicineType?.typeName ?: "--"}",
             time = AppDateTimeUtil.timeToString(plannedMedicine.plannedTime),
@@ -55,7 +60,10 @@ class ScheduleViewModel : ViewModel() {
             medicineName = medicine?.name ?: "--",
             durationType = when (medicinePlan.durationType) {
                 MedicinePlan.DurationType.ONCE -> "Jednorazowo"
-                MedicinePlan.DurationType.PERIOD -> "Przez ${AppDateTimeUtil.daysBetween(medicinePlan.startDate, medicinePlan.endDate!!)} dni"
+                MedicinePlan.DurationType.PERIOD -> "Przez ${AppDateTimeUtil.daysBetween(
+                    medicinePlan.startDate,
+                    medicinePlan.endDate!!
+                )} dni"
                 MedicinePlan.DurationType.CONTINUOUS -> "Leczenie ciągłe"
             },
             startDate = when (medicinePlan.durationType) {
@@ -101,6 +109,7 @@ class ScheduleViewModel : ViewModel() {
     }
 
     data class PlannedMedicineDisplayData(
+        val plannedMedicineRef: PlannedMedicine,
         val medicineName: String,
         val doseSize: String,
         val time: String,

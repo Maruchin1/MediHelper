@@ -58,7 +58,7 @@
 
     <style name="AppModalStyle"
         parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/bg_bottom_dialog</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="AppCalendarView" parent="Theme.AppCompat.Light">

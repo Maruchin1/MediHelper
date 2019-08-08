@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="handler"
             type="com.example.medihelper.mainapp.schedule.ScheduleDayFragment" />
@@ -27,19 +29,20 @@
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:onClick="@{() -> handler.onClickOpenPlannedMedicineOptions(displayData.plannedMedicineRef)}">
 
             <LinearLayout
                 android:id="@+id/lay_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorDarkerGray"
-                app:backgroundResource="@{displayData.statusOfTakingColorId}"
                 android:orientation="horizontal"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="8dp"
+                app:backgroundResource="@{displayData.statusOfTakingColorId}"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -55,25 +58,25 @@
                 android:id="@+id/card_schedule_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/lay_header"
-                app:layout_constraintBottom_toBottomOf="@id/lay_header"
-                app:layout_constraintEnd_toEndOf="@id/lay_header"
                 android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="@color/colorWhite"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/colorWhite">
+                app:layout_constraintBottom_toBottomOf="@id/lay_header"
+                app:layout_constraintEnd_toEndOf="@id/lay_header"
+                app:layout_constraintTop_toTopOf="@id/lay_header">
 
                 <TextView
                     android:id="@+id/txv_schedule_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="12dp"
                     android:layout_marginBottom="4dp"
                     android:text='@{displayData.statusOfTaking, default="status"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                    android:textColor="@color/colorTextPrimary"/>
+                    android:textColor="@color/colorTextPrimary" />
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
