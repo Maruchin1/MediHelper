@@ -17,7 +17,7 @@ interface PlannedMedicineDAO {
     @Query("SELECT * FROM planned_medicines")
     fun getAllLive(): LiveData<List<PlannedMedicine>>
 
-    @Query("SELECT * FROM planned_medicines WHERE planned_date = :date")
+    @Query("SELECT * FROM planned_medicines WHERE planned_date = :date ORDER BY planned_time")
     fun getByDateLive(date: Date): LiveData<List<PlannedMedicine>>
 
     @Query("SELECT * FROM planned_medicines WHERE planned_medicine_id = :plannedMedicineID")

@@ -28,6 +28,7 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        viewModel.setPlannedMedicineId(plannedMedicineId)
         val binding: DialogPlannedMedicineOptionsBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.dialog_planned_medicine_options,
@@ -38,10 +39,5 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.setPlannedMedicineId(plannedMedicineId)
     }
 }
