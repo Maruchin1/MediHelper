@@ -11,66 +11,68 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppRepository
-import com.example.medihelper.localdatabase.entities.Medicine
-import com.example.medihelper.localdatabase.entities.MedicineType
+import com.example.medihelper.localdatabase.entities.MedicineEntity
+import com.example.medihelper.localdatabase.entities.MedicineTypeEntity
+import com.example.medihelper.localdatabase.pojos.MedicineEditData
 import java.io.File
 import java.util.*
 
 class AddMedicineViewModel : ViewModel() {
     private val TAG = AddMedicineViewModel::class.simpleName
 
-    val selectedMedicineIdLive = MutableLiveData<Int>()
-    val selectedMedicineLive: LiveData<Medicine>
-    val medicineTypesListLive = AppRepository.getMedicineTypeListLive()
+    val medicineTypeListLive = AppRepository.getMedicineTypeListLive()
 
-    val nameLive = MutableLiveData<String>()
-    val medicineTypeLive = MutableLiveData<MedicineType>()
+    val medicineNameLive = MutableLiveData<String>()
+    val medicineTypeLive = MutableLiveData<MedicineTypeEntity>()
     val capacityLive = MutableLiveData<String>()
     val currStateLive = MutableLiveData<String>()
     val expireDateLive = MutableLiveData<Date>()
     val commentsLive = MutableLiveData<String>()
     val photoFileLive = MutableLiveData<File>()
 
-    private val selectedMedicineObserver: Observer<Medicine>
+    private val selectedMedicineIDLive = MutableLiveData<Int>()
+    private val selectedMedicineEditDataLive: LiveData<MedicineEditData>
+
+    private val selectedMedicineEditDataObserver: Observer<MedicineEditData>
 
     init {
-        selectedMedicineLive = Transformations.switchMap(selectedMedicineIdLive) { medicineId ->
-            AppRepository.getMedicineByIdLive(medicineId)
+        selectedMedicineEditDataLive = Transformations.switchMap(selectedMedicineIDLive) { medicineId ->
+            AppRepository.getMedicineEditDataLive(medicineId)
         }
-        selectedMedicineObserver = Observer { medicine ->
-            if (medicine != null) {
-                nameLive.value = medicine.name
-                medicineTypesListLive.value?.let { typesList ->
-                    typesList.find { medicineType ->
-                        medicineType.medicineTypeID == medicine.medicineTypeID
-                    }
-                }
-                capacityLive.value = medicine.packageSize?.toString()
-                currStateLive.value = medicine.currState?.toString()
-                expireDateLive.value = medicine.expireDate
-                commentsLive.value = medicine.comments
-                photoFileLive.value = medicine.photoFilePath?.let { photoFilePath ->
+        selectedMedicineEditDataObserver = Observer { medicineEditData ->
+            medicineEditData?.run {
+                medicineNameLive.value = medicineName
+                medicineTypeLive.value = medicineType
+                capacityLive.value = packageSize?.toString()
+                currStateLive.value = currState?.toString()
+                expireDateLive.value = expireDate
+                commentsLive.value = comments
+                photoFileLive.value = photoFilePath?.let { photoFilePath ->
                     File(photoFilePath)
                 }
             }
         }
-        selectedMedicineLive.observeForever(selectedMedicineObserver)
+        selectedMedicineEditDataLive.observeForever(selectedMedicineEditDataObserver)
+    }
+
+    fun setSelectedMedicineID(medicineID: Int) {
+        selectedMedicineIDLive.value = medicineID
     }
 
     override fun onCleared() {
         super.onCleared()
-        selectedMedicineLive.removeObserver(selectedMedicineObserver)
+        selectedMedicineEditDataLive.removeObserver(selectedMedicineEditDataObserver)
     }
 
     fun setMedicineType(position: Int) {
-        medicineTypesListLive.value?.let {
+        medicineTypeListLive.value?.let {
             medicineTypeLive.value = it[position]
         }
     }
 
     fun saveMedicine(): Boolean {
         Log.d(TAG, "onClickSaveNewMedicine")
-        val name = nameLive.value
+        val name = medicineNameLive.value
         val type = medicineTypeLive.value
         val capacity = capacityLive.value
         val currState = currStateLive.value
@@ -84,22 +86,8 @@ class AddMedicineViewModel : ViewModel() {
             return false
         }
 
-        selectedMedicineLive.value?.let { medicineToUpdate ->
-            medicineToUpdate.apply {
-                this.name = name
-                this.medicineTypeID = type?.medicineTypeID
-                this.packageSize = capacity?.toFloat()
-                this.currState = currState?.toFloat()
-                this.photoFilePath = photoFilePath
-                this.expireDate = expireDate
-                this.comments = comments
-            }
-            AppRepository.updateMedicine(medicineToUpdate)
-            return true
-        }
-
-        val newMedicine = Medicine(
-            name = name,
+        val medicineEntity = MedicineEntity(
+            medicineName = name,
             medicineTypeID = type?.medicineTypeID,
             packageSize = capacity?.toFloat(),
             currState = currState?.toFloat(),
@@ -107,7 +95,13 @@ class AddMedicineViewModel : ViewModel() {
             expireDate = expireDate,
             comments = comments
         )
-        AppRepository.insertMedicine(newMedicine)
+        selectedMedicineEditDataLive.value?.let { medicineEditData ->
+            val medicineEntityToUpdate = medicineEntity.copy(medicineID = medicineEditData.medicineID)
+            AppRepository.updateMedicine(medicineEntityToUpdate)
+            return true
+        }
+
+        AppRepository.insertMedicine(medicineEntity)
         return true
     }
 
@@ -128,7 +122,7 @@ class AddMedicineViewModel : ViewModel() {
 
     fun resetViewModel() {
         arrayOf(
-            nameLive,
+            medicineNameLive,
             medicineTypeLive,
             capacityLive,
             currStateLive,

@@ -56,7 +56,7 @@ class MedicineDetailsFragment : Fragment() {
     }
 
     fun onClickEdit() {
-        viewModel.selectedMedicineID.value?.let { medicineId ->
+        viewModel.selectedMedicineIDLive.value?.let { medicineId ->
             val action = MedicineDetailsFragmentDirections.actionMedicineDetailsDestinationToAddMedicineDestination(medicineId)
             findNavController().navigate(action)
         }
@@ -77,7 +77,7 @@ class MedicineDetailsFragment : Fragment() {
 
     private fun loadSelectedMedicine() {
         val medicineID = args.medicineId
-        viewModel.selectedMedicineID.value = medicineID
+        viewModel.selectedMedicineIDLive.value = medicineID
     }
 
     private fun setupToolbar() {
@@ -106,8 +106,7 @@ class MedicineDetailsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.selectedMedicineID.observe(viewLifecycleOwner, Observer { })
-        viewModel.selectedMedicine.observe(viewLifecycleOwner, Observer { })
+        viewModel.medicineDetailsLive.observe(viewLifecycleOwner, Observer { })
         viewModel.photoLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 setMedicinePicture(it)

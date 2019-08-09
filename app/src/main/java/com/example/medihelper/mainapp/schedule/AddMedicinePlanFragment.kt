@@ -21,7 +21,7 @@ import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.databinding.FragmentAddMedicinePlanBinding
-import com.example.medihelper.localdatabase.entities.MedicinePlan
+import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.mainapp.MainActivity
 import com.example.medihelper.mainapp.schedule.daystype.DaysOfWeekFragment
 import com.example.medihelper.mainapp.schedule.daystype.IntervalOfDaysFragment
@@ -42,7 +42,7 @@ class AddMedicinePlanFragment : Fragment() {
         dialog.show(childFragmentManager, SelectMedicineDialog.TAG)
     }
 
-    fun onClickSelectTime(position: Int, timeOfTaking: MedicinePlan.TimeOfTaking) {
+    fun onClickSelectTime(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
         val dialog = SelectTimeDialog()
         dialog.defaultTime = timeOfTaking.time
         dialog.setTimeSelectedListener { time ->
@@ -51,7 +51,7 @@ class AddMedicinePlanFragment : Fragment() {
         dialog.show(childFragmentManager, SelectTimeDialog.TAG)
     }
 
-    fun onClickSelectDoseSize(position: Int, timeOfTaking: MedicinePlan.TimeOfTaking) {
+    fun onClickSelectDoseSize(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
         val dialog = SelectNumberDialog()
         dialog.defaultNumber = timeOfTaking.doseSize
         dialog.setNumberSelectedListener { number ->
@@ -61,7 +61,7 @@ class AddMedicinePlanFragment : Fragment() {
         dialog.show(childFragmentManager, SelectNumberDialog.TAG)
     }
 
-    fun onClickRemoveTimeOfTaking(timeOfTaking: MedicinePlan.TimeOfTaking) = viewModel.removeTimeOfTaking(timeOfTaking)
+    fun onClickRemoveTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) = viewModel.removeTimeOfTaking(timeOfTaking)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,7 +116,7 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.selectedMedicineLive.observe(viewLifecycleOwner, Observer {
+        viewModel.medicineKitItemLive.observe(viewLifecycleOwner, Observer {
             if (it == null) {
                 lay_selected_medicine.visibility = View.INVISIBLE
                 txv_medicine_not_selected.visibility = View.VISIBLE
@@ -131,9 +131,9 @@ class AddMedicinePlanFragment : Fragment() {
         viewModel.durationTypeLive.observe(viewLifecycleOwner, Observer { scheduleType ->
             if (scheduleType != null) {
                 when (scheduleType) {
-                    MedicinePlan.DurationType.ONCE -> changeScheduleTypeFragment(onceFragment)
-                    MedicinePlan.DurationType.PERIOD -> changeScheduleTypeFragment(periodFragment)
-                    MedicinePlan.DurationType.CONTINUOUS -> changeScheduleTypeFragment(continuousFragment)
+                    MedicinePlanEntity.DurationType.ONCE -> changeScheduleTypeFragment(onceFragment)
+                    MedicinePlanEntity.DurationType.PERIOD -> changeScheduleTypeFragment(periodFragment)
+                    MedicinePlanEntity.DurationType.CONTINUOUS -> changeScheduleTypeFragment(continuousFragment)
                 }
             }
         })
@@ -142,9 +142,9 @@ class AddMedicinePlanFragment : Fragment() {
         viewModel.daysTypeLive.observe(viewLifecycleOwner, Observer { scheduleDays ->
             if (scheduleDays != null) {
                 when (scheduleDays) {
-                    MedicinePlan.DaysType.EVERYDAY -> changeScheduleDaysFragment(null)
-                    MedicinePlan.DaysType.DAYS_OF_WEEK -> changeScheduleDaysFragment(daysOfWeekFragment)
-                    MedicinePlan.DaysType.INTERVAL_OF_DAYS -> changeScheduleDaysFragment(intervalOfDaysFragment)
+                    MedicinePlanEntity.DaysType.EVERYDAY -> changeScheduleDaysFragment(null)
+                    MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> changeScheduleDaysFragment(daysOfWeekFragment)
+                    MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> changeScheduleDaysFragment(intervalOfDaysFragment)
                 }
             }
         })
@@ -178,17 +178,17 @@ class AddMedicinePlanFragment : Fragment() {
         chip_group_schedule_type.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.chip_once -> {
-                    viewModel.durationTypeLive.value = MedicinePlan.DurationType.ONCE
-                    viewModel.daysTypeLive.value = MedicinePlan.DaysType.NONE
+                    viewModel.durationTypeLive.value = MedicinePlanEntity.DurationType.ONCE
+                    viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.NONE
                 }
                 R.id.chip_period -> {
-                    viewModel.durationTypeLive.value = MedicinePlan.DurationType.PERIOD
-                    viewModel.daysTypeLive.value = MedicinePlan.DaysType.EVERYDAY
+                    viewModel.durationTypeLive.value = MedicinePlanEntity.DurationType.PERIOD
+                    viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.EVERYDAY
                     chip_group_schedule_days.check(R.id.chip_everyday)
                 }
                 R.id.chip_continuous -> {
-                    viewModel.durationTypeLive.value = MedicinePlan.DurationType.CONTINUOUS
-                    viewModel.daysTypeLive.value = MedicinePlan.DaysType.EVERYDAY
+                    viewModel.durationTypeLive.value = MedicinePlanEntity.DurationType.CONTINUOUS
+                    viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.EVERYDAY
                     chip_group_schedule_days.check(R.id.chip_everyday)
                 }
             }
@@ -199,9 +199,9 @@ class AddMedicinePlanFragment : Fragment() {
     private fun setupScheduleDaysChipGroup() {
         chip_group_schedule_days.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.chip_everyday -> viewModel.daysTypeLive.value = MedicinePlan.DaysType.EVERYDAY
-                R.id.chip_days_of_week -> viewModel.daysTypeLive.value = MedicinePlan.DaysType.DAYS_OF_WEEK
-                R.id.chip_interval_of_days -> viewModel.daysTypeLive.value = MedicinePlan.DaysType.INTERVAL_OF_DAYS
+                R.id.chip_everyday -> viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.EVERYDAY
+                R.id.chip_days_of_week -> viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.DAYS_OF_WEEK
+                R.id.chip_interval_of_days -> viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS
             }
         }
     }
@@ -212,7 +212,7 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     // Inner classes
-    inner class TimeOfTakingAdapter : RecyclerAdapter<MedicinePlan.TimeOfTaking>(R.layout.recycler_item_time_of_taking) {
+    inner class TimeOfTakingAdapter : RecyclerAdapter<MedicinePlanEntity.TimeOfTaking>(R.layout.recycler_item_time_of_taking) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val timeOfTaking = itemsArrayList[position]

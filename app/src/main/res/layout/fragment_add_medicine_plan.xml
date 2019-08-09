@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.example.medihelper.localdatabase.entities.MedicinePlan.DaysType" />
+        <import type="com.example.medihelper.localdatabase.entities.MedicinePlanEntity.DaysType" />
 
         <import type="android.view.View" />
 
@@ -120,14 +120,14 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text='@{viewModel.selectedMedicineNameLive, default="Nazwa leku"}'
+                                android:text='@{viewModel.medicineKitItemLive.medicineName, default="Nazwa leku"}'
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text='@{"Aktualny stan: " + viewModel.selectedMedicineStateLive + " " + viewModel.selectedMedicineTypeLive.typeName, default="Stan leku"}'
+                                android:text='@{"Aktualny stan: " + viewModel.medicineKitItemLive.currState + "/" + viewModel.medicineKitItemLive.packageSize + " " + viewModel.medicineKitItemLive.typeName, default="Stan leku"}'
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                                 android:textColor="@android:color/tertiary_text_dark" />
                         </LinearLayout>

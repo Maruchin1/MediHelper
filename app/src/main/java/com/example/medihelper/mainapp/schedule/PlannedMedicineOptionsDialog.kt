@@ -6,16 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.R
 import com.example.medihelper.databinding.DialogPlannedMedicineOptionsBinding
-import com.example.medihelper.localdatabase.entities.PlannedMedicine
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
     val TAG = PlannedMedicineOptionsDialog::class.simpleName
 
-    var plannedMedicineId: Int? = null
+    var plannedMedicineID: Int? = null
     private lateinit var viewModel: PlannedMedicineOptionsViewModel
 
     fun onClickCloseDialog() = dismiss()
@@ -28,7 +26,7 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewModel.setPlannedMedicineId(plannedMedicineId)
+        viewModel.plannedMedicineIDLive.value = plannedMedicineID
         val binding: DialogPlannedMedicineOptionsBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.dialog_planned_medicine_options,
@@ -40,4 +38,6 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
+
+
 }

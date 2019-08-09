@@ -10,14 +10,14 @@ import java.util.*
 @Entity(
     tableName = "medicines_plans",
     foreignKeys = [ForeignKey(
-        entity = Medicine::class,
+        entity = MedicineEntity::class,
         parentColumns = arrayOf("medicine_id"),
         childColumns = arrayOf("medicine_id"),
         onDelete = ForeignKey.CASCADE
     )],
     indices = [Index(value = ["medicine_id"])]
 )
-data class MedicinePlan(
+data class MedicinePlanEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "medicine_plan_id")
     val medicinePlanID: Int = 0,

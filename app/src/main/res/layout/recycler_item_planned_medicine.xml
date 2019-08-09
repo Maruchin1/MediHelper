@@ -3,13 +3,15 @@
 
     <data>
 
+        <import type="java.sql.Time" />
+
         <variable
             name="handler"
             type="com.example.medihelper.mainapp.schedule.ScheduleDayFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.schedule.ScheduleViewModel.PlannedMedicineDisplayData" />
+            type="com.example.medihelper.localdatabase.pojos.PlannedMedicineItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -30,7 +32,7 @@
             android:background="?selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{() -> handler.onClickOpenPlannedMedicineOptions(displayData.plannedMedicineRef.plannedMedicineID)}">
+            android:onClick="@{() -> handler.onClickOpenPlannedMedicineOptions(displayData.plannedMedicineID)}">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/lay_header"
@@ -41,14 +43,14 @@
                 android:paddingTop="4dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="4dp"
-                app:backgroundResource="@{displayData.statusOfTakingColorId}"
+                app:backgroundResource="@{displayData.statusOfTaking.colorResID}"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/txv_scheduled_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{displayData.time, default="00:00"}'
+                    android:text='@{displayData.plannedTime, default="00:00"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                     android:textColor="@color/colorWhite"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -59,12 +61,12 @@
                     android:id="@+id/txv_schedule_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{displayData.statusOfTaking, default="status"}'
+                    android:text='@{displayData.statusOfTaking.shortString, default="status"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                     android:textColor="@color/colorWhite"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -85,7 +87,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:text='@{displayData.doseSize, default="Dawka do przyjęcia"}'
+                android:text='@{"Dawka: " + displayData.plannedDoseSize + " " + displayData.typeName, default="Dawka do przyjęcia"}'
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txv_medicine_name" />

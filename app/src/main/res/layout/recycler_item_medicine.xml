@@ -13,7 +13,7 @@
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.medickit.KitViewModel.MedicineDisplayData" />
+            type="com.example.medihelper.mainapp.medickit.KitViewModel.MedicineKitItemDisplayData" />
     </data>
 
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"

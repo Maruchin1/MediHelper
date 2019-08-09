@@ -4,30 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.databinding.RecyclerItemSelectMedicineBinding
-import com.example.medihelper.localdatabase.entities.Medicine
+import com.example.medihelper.localdatabase.pojos.MedicineKitItem
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_medicine.*
-import kotlinx.android.synthetic.main.recycler_item_select_medicine.view.*
-import java.io.File
 
 class SelectMedicineDialog : BottomSheetDialogFragment() {
 
     private lateinit var viewModel: AddMedicinePlanViewModel
 
-    fun onClickSelectMedicine(medicine: Medicine) {
-        viewModel.selectedMedicineLive.value = medicine
+    fun onClickSelectMedicine(medicineID: Int) {
+        viewModel.selectedMedicineIDLive.value = medicineID
         findNavController().run {
             if (currentDestination?.id == R.id.schedule_destination) {
                 navigate(ScheduleFragmentDirections.actionScheduleDestinationToAddToScheduleDestination())
@@ -85,11 +79,10 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.medicineListLive.observe(viewLifecycleOwner, Observer { medicineList ->
+        viewModel.medicineKitItemListLive.observe(viewLifecycleOwner, Observer { medicineKitItemList ->
             val adapter = recycler_view_medicines.adapter as MedicineAdapter
-            adapter.setItemsList(medicineList)
+            adapter.setItemsList(medicineKitItemList)
         })
-        viewModel.medicineTypeListLive.observe(viewLifecycleOwner, Observer {  })
     }
 
     companion object {
@@ -97,11 +90,11 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     }
 
     // Inner classes -------------------------------------------------------------------------------
-    inner class MedicineAdapter : RecyclerAdapter<Medicine>(R.layout.recycler_item_select_medicine) {
+    inner class MedicineAdapter : RecyclerAdapter<MedicineKitItem>(R.layout.recycler_item_select_medicine) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicine = itemsArrayList[position]
-            val medicineDisplayData = viewModel.getMedicineDisplayData(medicine)
+            val medicineKitItem = itemsArrayList[position]
+            val medicineDisplayData = viewModel.getMedicineDisplayData(medicineKitItem)
             holder.bind(medicineDisplayData, this@SelectMedicineDialog)
         }
     }

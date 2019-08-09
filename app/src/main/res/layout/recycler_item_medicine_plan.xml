@@ -58,7 +58,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/lay_header"
                 app:layout_constraintEnd_toEndOf="@id/lay_header"
                 app:layout_constraintTop_toTopOf="@id/lay_header"
-                android:onClick="@{() -> handler.onClickDeleteMedicinePlan(displayData.medicinePlanRef)}"/>
+                android:onClick="@{() -> handler.onClickDeleteMedicinePlan(displayData.medicinePlanID)}"/>
 
             <ImageButton
                 android:id="@+id/btn_edit"

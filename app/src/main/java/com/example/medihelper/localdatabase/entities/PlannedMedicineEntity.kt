@@ -3,20 +3,21 @@ package com.example.medihelper.localdatabase.entities
 import androidx.room.*
 import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.AppRepository
+import com.example.medihelper.R
 import java.sql.Time
 import java.util.*
 
 @Entity(
     tableName = "planned_medicines",
     foreignKeys = [ForeignKey(
-        entity = MedicinePlan::class,
+        entity = MedicinePlanEntity::class,
         parentColumns = arrayOf("medicine_plan_id"),
         childColumns = arrayOf("medicine_plan_id"),
         onDelete = ForeignKey.CASCADE
     )],
     indices = [Index(value = ["medicine_plan_id"])]
 )
-data class PlannedMedicine(
+data class PlannedMedicineEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "planned_medicine_id")
     val plannedMedicineID: Int = 0,
@@ -68,7 +69,9 @@ data class PlannedMedicine(
         }
     }
 
-    enum class StatusOfTaking {
-        WAITING, TAKEN, NOT_TAKEN
+    enum class StatusOfTaking(val shortString: String, val colorResID: Int) {
+        WAITING("oczekujący", R.color.colorDarkerGray),
+        TAKEN("przyjęty", R.color.colorStateGood),
+        NOT_TAKEN("nieprzyjęty", R.color.colorStateSmall)
     }
 }

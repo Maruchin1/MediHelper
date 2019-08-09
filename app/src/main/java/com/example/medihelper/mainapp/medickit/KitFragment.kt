@@ -6,27 +6,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.bumptech.glide.Glide
 
 import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentKitBinding
-import com.example.medihelper.databinding.RecyclerItemMedicineBinding
-import com.example.medihelper.localdatabase.entities.Medicine
+import com.example.medihelper.localdatabase.pojos.MedicineKitItem
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_kit.*
 import kotlinx.android.synthetic.main.fragment_kit.btn_back_to_menu
-import kotlinx.android.synthetic.main.recycler_item_medicine.view.*
-import java.io.File
 
 
 class KitFragment : Fragment() {
@@ -92,19 +86,20 @@ class KitFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.medicineTypesListLive.observe(viewLifecycleOwner, Observer { })
-        viewModel.medicinesListLive.observe(viewLifecycleOwner, Observer { medicineList ->
-            val adapter = recycler_view_medicines.adapter as MedicineAdapter
-            adapter.setItemsList(medicineList)
-        })
+        viewModel.run {
+            medicineKitItemListLive.observe(viewLifecycleOwner, Observer { medicineKitItemList ->
+                val adapter = recycler_view_medicines.adapter as MedicineAdapter
+                adapter.setItemsList(medicineKitItemList)
+            })
+        }
     }
 
     // Inner classes
-    inner class MedicineAdapter : RecyclerAdapter<Medicine>(R.layout.recycler_item_medicine) {
+    inner class MedicineAdapter : RecyclerAdapter<MedicineKitItem>(R.layout.recycler_item_medicine) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicine = itemsArrayList[position]
-            val medicineDisplayData = viewModel.getMedicineDisplayData(medicine)
+            val medicineDisplayData = viewModel.getMedicineKitItemDisplayData(medicine)
             holder.bind(medicineDisplayData, this@KitFragment)
         }
     }

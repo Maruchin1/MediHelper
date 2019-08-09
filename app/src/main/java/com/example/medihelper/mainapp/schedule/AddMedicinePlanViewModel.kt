@@ -8,9 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.AppRepository
-import com.example.medihelper.localdatabase.entities.Medicine
-import com.example.medihelper.localdatabase.entities.MedicinePlan
-import com.example.medihelper.localdatabase.entities.MedicineType
+import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
+import com.example.medihelper.localdatabase.pojos.MedicineKitItem
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -18,104 +17,90 @@ import kotlin.collections.ArrayList
 class AddMedicinePlanViewModel : ViewModel() {
     private val TAG = AddMedicinePlanViewModel::class.simpleName
 
-    val medicineListLive = AppRepository.getMedicineListLive()
-    val medicineTypeListLive = AppRepository.getMedicineTypeListLive()
+    val medicineKitItemListLive = AppRepository.getMedicineKitItemListLive()
 
-    val selectedMedicineLive = MutableLiveData<Medicine>()
-    val selectedMedicineNameLive: LiveData<String>
-    val selectedMedicineTypeLive: LiveData<MedicineType>
-    val selectedMedicineStateLive: LiveData<String>
+    val selectedMedicineIDLive = MutableLiveData<Int>()
+    val medicineKitItemLive: LiveData<MedicineKitItem>
 
-    val durationTypeLive = MutableLiveData<MedicinePlan.DurationType>()
+    val durationTypeLive = MutableLiveData<MedicinePlanEntity.DurationType>()
     val startDateLive = MutableLiveData<Date>()
     val endDateLive = MutableLiveData<Date>()
 
-    val daysTypeLive = MutableLiveData<MedicinePlan.DaysType>()
-    val daysOfWeekLive = FieldMutableLiveData<MedicinePlan.DaysOfWeek>()
+    val daysTypeLive = MutableLiveData<MedicinePlanEntity.DaysType>()
+    val daysOfWeekLive = FieldMutableLiveData<MedicinePlanEntity.DaysOfWeek>()
     val intervalOfDaysLive = MutableLiveData<Int>()
 
-    val doseHourListLive = MutableLiveData<ArrayList<MedicinePlan.TimeOfTaking>>()
+    val doseHourListLive = MutableLiveData<ArrayList<MedicinePlanEntity.TimeOfTaking>>()
 
-    private val selectedMedicineObserver = Observer<Medicine> { resetViewModel() }
+    private val selectedMedicineIDObserver = Observer<Int> { resetViewModel() }
 
     init {
-        selectedMedicineNameLive = Transformations.map(selectedMedicineLive) { medicine ->
-            medicine?.name
+        medicineKitItemLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
+            AppRepository.getMedicineKitItemLive(medicineID)
         }
-        selectedMedicineTypeLive = Transformations.map(selectedMedicineLive) { medicine ->
-            medicine?.medicineTypeID?.let { medicineTypeID ->
-                findMedicineType(medicineTypeID)
-            }
-        }
-        selectedMedicineStateLive = Transformations.map(selectedMedicineLive) { medicine ->
-            "${medicine?.currState}/${medicine?.packageSize}"
-        }
-        selectedMedicineLive.observeForever(selectedMedicineObserver)
+        selectedMedicineIDLive.observeForever(selectedMedicineIDObserver)
     }
 
     override fun onCleared() {
         super.onCleared()
-        selectedMedicineLive.removeObserver(selectedMedicineObserver)
+        selectedMedicineIDLive.removeObserver(selectedMedicineIDObserver)
     }
 
     fun saveScheduledMedicine() {
         //todo zrobić to porządniej i z walidacją danych
-        val medicinePlan = MedicinePlan(
-            medicineID = selectedMedicineLive.value!!.medicineID,
+        val medicinePlan = MedicinePlanEntity(
+            medicineID = medicineKitItemLive.value!!.medicineID,
             startDate = startDateLive.value!!,
             durationType = durationTypeLive.value!!,
             daysType = daysTypeLive.value!!,
             timeOfTakingList = doseHourListLive.value!!.toList()
         )
-        if (durationTypeLive.value == MedicinePlan.DurationType.PERIOD) {
+        if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
             medicinePlan.endDate = endDateLive.value
         }
         when (daysTypeLive.value) {
-            MedicinePlan.DaysType.DAYS_OF_WEEK -> medicinePlan.daysOfWeek = daysOfWeekLive.value
-            MedicinePlan.DaysType.INTERVAL_OF_DAYS -> medicinePlan.intervalOfDays = intervalOfDaysLive.value
+            MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlan.daysOfWeek = daysOfWeekLive.value
+            MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> medicinePlan.intervalOfDays = intervalOfDaysLive.value
         }
         AppRepository.insertMedicinePlan(medicinePlan)
     }
 
     fun addDoseHour() {
         doseHourListLive.value?.let { doseHourList ->
-            doseHourList.add(MedicinePlan.TimeOfTaking())
+            doseHourList.add(MedicinePlanEntity.TimeOfTaking())
             doseHourListLive.value = doseHourListLive.value
         }
     }
 
-    fun removeTimeOfTaking(timeOfTaking: MedicinePlan.TimeOfTaking) {
+    fun removeTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
         doseHourListLive.value?.let { doseHourList ->
             doseHourList.remove(timeOfTaking)
             doseHourListLive.value = doseHourListLive.value
         }
     }
 
-    fun updateTimeOfTaking(position: Int, timeOfTaking: MedicinePlan.TimeOfTaking) {
+    fun updateTimeOfTaking(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
         doseHourListLive.value?.let { doseHourList ->
             doseHourList[position] = timeOfTaking
             doseHourListLive.value = doseHourListLive.value
         }
     }
 
-    fun getTimeOfTakingDisplayData(timeOfTaking: MedicinePlan.TimeOfTaking): TimeOfTakingDisplayData {
+    fun getTimeOfTakingDisplayData(timeOfTaking: MedicinePlanEntity.TimeOfTaking): TimeOfTakingDisplayData {
         return TimeOfTakingDisplayData(
             timeOfTakingRef = timeOfTaking,
             time = AppDateTimeUtil.timeToString(timeOfTaking.time),
             doseSize = timeOfTaking.doseSize.toString(),
-            medicineTypeName = selectedMedicineTypeLive.value?.typeName ?: "--"
+            medicineTypeName = medicineKitItemLive.value?.typeName ?: "--"
         )
     }
 
-    fun getMedicineDisplayData(medicine: Medicine): MedicineDisplayData {
-        val medicineType = medicineTypeListLive.value?.find { medicineType ->
-            medicineType.medicineTypeID == medicine.medicineTypeID
-        }
+    fun getMedicineDisplayData(medicineKitItem: MedicineKitItem): MedicineDisplayData {
         return MedicineDisplayData(
-            medicineRef = medicine,
-            medicineName = medicine.name,
-            medicineState = "${medicine.currState}/${medicine.packageSize} ${medicineType?.typeName ?: "--"}",
-            medicineImageFile = medicine.photoFilePath?.let { File(it) }
+            medicineID = medicineKitItem.medicineID,
+            medicineName = medicineKitItem.medicineName,
+            medicineState = "${medicineKitItem.currState}/${medicineKitItem.packageSize} ${medicineKitItem.typeName ?: "--"}",
+            medicineImageFile = medicineKitItem.photoFilePath?.let { File(it) }
         )
     }
 
@@ -128,26 +113,20 @@ class AddMedicinePlanViewModel : ViewModel() {
         ).forEach { field ->
             field.value = null
         }
-        daysOfWeekLive.value = MedicinePlan.DaysOfWeek()
+        daysOfWeekLive.value = MedicinePlanEntity.DaysOfWeek()
         intervalOfDaysLive.value = 0
-        doseHourListLive.value = arrayListOf(MedicinePlan.TimeOfTaking())
-    }
-
-    private fun findMedicineType(medicineTypeID: Int): MedicineType? {
-        return medicineTypeListLive.value?.find { medicineType ->
-            medicineType.medicineTypeID == medicineTypeID
-        }
+        doseHourListLive.value = arrayListOf(MedicinePlanEntity.TimeOfTaking())
     }
 
     data class TimeOfTakingDisplayData(
-        val timeOfTakingRef: MedicinePlan.TimeOfTaking,
+        val timeOfTakingRef: MedicinePlanEntity.TimeOfTaking,
         val time: String,
         val doseSize: String,
         val medicineTypeName: String
     )
 
     data class MedicineDisplayData(
-        val medicineRef: Medicine,
+        val medicineID: Int,
         val medicineName: String,
         val medicineState: String,
         val medicineImageFile: File?

@@ -20,7 +20,7 @@
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="@{() -> handler.onClickSelectMedicine(displayData.medicineRef)}"
+        android:onClick="@{() -> handler.onClickSelectMedicine(displayData.medicineID)}"
         android:orientation="horizontal">
 
         <LinearLayout

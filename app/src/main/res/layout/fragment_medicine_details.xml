@@ -96,7 +96,7 @@
                                 android:id="@+id/txv_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{viewModel.nameLive, default=Nazwa}"
+                                android:text="@{viewModel.medicineNameLive, default=Nazwa}"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
                                 android:textColor="@android:color/black"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -284,7 +284,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_marginStart="4dp"
-                                    android:text="@{viewModel.medicineTypeLive.typeName, default=typ}"
+                                    android:text="@{viewModel.typeNameLive, default=typ}"
                                     android:textAlignment="viewStart"
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                                     android:textColor="@android:color/tertiary_text_dark" />

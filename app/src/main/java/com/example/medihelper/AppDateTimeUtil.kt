@@ -16,7 +16,6 @@ object AppDateTimeUtil {
         set(Calendar.MILLISECOND, 0)
     }
 
-
     fun dateToString(date: Date): String = dateFormat().format(date)
 
     fun stringToDate(string: String): Date = dateFormat().parse(string)

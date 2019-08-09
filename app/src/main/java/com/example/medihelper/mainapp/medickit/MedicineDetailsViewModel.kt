@@ -7,65 +7,61 @@ import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.R
 import com.example.medihelper.AppRepository
-import com.example.medihelper.localdatabase.entities.Medicine
-import com.example.medihelper.localdatabase.entities.MedicineType
+import com.example.medihelper.localdatabase.entities.MedicineEntity
+import com.example.medihelper.localdatabase.entities.MedicineTypeEntity
+import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import java.io.File
 
 class MedicineDetailsViewModel : ViewModel() {
-    val selectedMedicineID = MutableLiveData<Int>()
-    val selectedMedicine: LiveData<Medicine>
+
+    val selectedMedicineIDLive = MutableLiveData<Int>()
+    val medicineDetailsLive: LiveData<MedicineDetails>
 
     val stateAvailableLive: LiveData<Boolean>
 
     val photoLive: LiveData<File>
-    val nameLive: LiveData<String>
+    val medicineNameLive: LiveData<String>
     val stateWeightLive: LiveData<Float>
     val emptyWeightLive: LiveData<Float>
     val stateNumberStringLive: LiveData<String>
     val stateTextLive: LiveData<String>
     val stateColorResIdLive: LiveData<Int>
-    val medicineTypeLive: LiveData<MedicineType>
+    val typeNameLive: LiveData<String>
     val expireDateLive: LiveData<String>
     val daysRemainsLive: LiveData<String>
     val comments: LiveData<String>
 
     init {
-        selectedMedicine = Transformations.switchMap(selectedMedicineID) { medicineID ->
-            AppRepository.getMedicineByIdLive(medicineID)
+        medicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
+            AppRepository.getMedicineDetailsLive(medicineID)
         }
-        stateAvailableLive = Transformations.map(selectedMedicine) { medicine ->
-            medicine?.packageSize != null || medicine?.currState != null
+        stateAvailableLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
+            medicineDetails?.packageSize != null || medicineDetails?.currState != null
         }
-        photoLive = Transformations.map(selectedMedicine) { medicine ->
-            if (medicine?.photoFilePath.isNullOrEmpty()) {
-                null
-            } else {
-                File(medicine.photoFilePath)
-            }
+        photoLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
+            medicineDetails.photoFilePath?.let { File(it) }
         }
-        nameLive = Transformations.map(selectedMedicine) { medicine ->
-            medicine?.name
+        medicineNameLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
+            medicineDetails?.medicineName
         }
-        stateNumberStringLive = Transformations.map(selectedMedicine) { medicine ->
-            medicine?.let { stateNumberString(it) }
+        stateNumberStringLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
+            "${medicineDetails.currState}/${medicineDetails.packageSize}"
         }
-        medicineTypeLive = Transformations.switchMap(selectedMedicine) { medicine ->
-            medicine?.medicineTypeID?.let { medicineTypeID ->
-                AppRepository.getMedicineTypeByIdLive(medicineTypeID)
-            }
+        typeNameLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
+            medicineDetails.typeName
         }
-        expireDateLive = Transformations.map(selectedMedicine) { medicine ->
-            medicine?.expireDate?.let { expireDate ->
+        expireDateLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
+            medicineDetails?.expireDate?.let { expireDate ->
                 AppDateTimeUtil.dateToString(expireDate)
             }
         }
-        daysRemainsLive = Transformations.map(selectedMedicine) { medicine ->
-            medicine?.let { daysRemainsString(it) }
+        daysRemainsLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
+            medicineDetails?.let { daysRemainsString(it) }
         }
-        comments = Transformations.map(selectedMedicine) { medicine ->
+        comments = Transformations.map(medicineDetailsLive) { medicine ->
             medicine?.comments
         }
-        stateWeightLive = Transformations.map(selectedMedicine) { medicine ->
+        stateWeightLive = Transformations.map(medicineDetailsLive) { medicine ->
             medicine?.let { stateWeight(it) }
         }
         emptyWeightLive = Transformations.map(stateWeightLive) { state ->
@@ -79,18 +75,18 @@ class MedicineDetailsViewModel : ViewModel() {
         }
     }
 
-    fun deleteMedicine() = selectedMedicine.value?.let { AppRepository.deleteMedicine(it) }
-
-    private fun stateWeight(medicine: Medicine): Float? {
-        return medicine.currState?.let { currState ->
-            medicine.packageSize?.let { packageSize ->
-                return currState.div(packageSize)
-            }
-        }
+    fun setSelectedMedicineID(medicineID: Int) {
+        selectedMedicineIDLive.value = medicineID
     }
 
-    private fun stateNumberString(medicine: Medicine): String {
-        return "${medicine.currState}/${medicine.packageSize}"
+    fun deleteMedicine() = medicineDetailsLive.value?.let { AppRepository.deleteMedicine(it.medicineID) }
+
+    private fun stateWeight(medicineDetails: MedicineDetails): Float? {
+        return medicineDetails.currState?.let { currState ->
+            medicineDetails.packageSize?.let { packageSize ->
+                currState.div(packageSize)
+            }
+        }
     }
 
     private fun stateColorResId(stateWeight: Float): Int {
@@ -113,8 +109,8 @@ class MedicineDetailsViewModel : ViewModel() {
         }
     }
 
-    private fun daysRemainsString(medicine: Medicine): String? {
-        return medicine.expireDate?.let { expireDate ->
+    private fun daysRemainsString(medicineDetails: MedicineDetails): String? {
+        return medicineDetails.expireDate?.let { expireDate ->
             val currDate = AppDateTimeUtil.getCurrCalendar().time
             val daysBetween = AppDateTimeUtil.daysBetween(currDate, expireDate)
             "$daysBetween dni"

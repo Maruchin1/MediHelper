@@ -1,16 +1,10 @@
 package com.example.medihelper.mainapp.schedule
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.AppRepository
-import com.example.medihelper.R
-import com.example.medihelper.localdatabase.entities.Medicine
-import com.example.medihelper.localdatabase.entities.MedicinePlan
-import com.example.medihelper.localdatabase.entities.PlannedMedicine
-import java.io.File
-import java.sql.Time
+import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
+import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 import java.util.*
 
 class ScheduleViewModel : ViewModel() {
@@ -18,75 +12,49 @@ class ScheduleViewModel : ViewModel() {
     val timelineDaysCount = 10000
     val initialDatePosition = timelineDaysCount / 2
 
-    val medicineListLive = AppRepository.getMedicineListLive()
-    val medicineTypeListLive = AppRepository.getMedicineTypeListLive()
-    val medicinePlanListLive = AppRepository.getMedicinesPlanListLive()
-
     fun getDateForPosition(position: Int): Date {
         val calendar = AppDateTimeUtil.getCurrCalendar()
         calendar.add(Calendar.DAY_OF_YEAR, position - (timelineDaysCount / 2))
         return calendar.time
     }
 
-    fun getPlannedMedicinesForDateListLive(date: Date) = AppRepository.getPlannedMedicineListByDateLive(date)
+    fun getMedicinePlaListLive() = AppRepository.getMedicinePlanListLive()
 
-    fun getPlannedMedicineDisplayData(plannedMedicine: PlannedMedicine): PlannedMedicineDisplayData {
-        val medicinePlan = getMedicinePlanById(plannedMedicine.medicinePlanID)
-        val medicine = getMedicineById(medicinePlan?.medicineID)
-        val medicineType = getMedicineTypeById(medicine?.medicineTypeID)
-        return PlannedMedicineDisplayData(
-            plannedMedicineRef = plannedMedicine,
-            medicineName = medicine?.name ?: "--",
-            doseSize = "Dawka: ${plannedMedicine.plannedDoseSize} ${medicineType?.typeName ?: "--"}",
-            time = AppDateTimeUtil.timeToString(plannedMedicine.plannedTime),
-            statusOfTaking = when (plannedMedicine.statusOfTaking) {
-                PlannedMedicine.StatusOfTaking.WAITING -> "oczekujący"
-                PlannedMedicine.StatusOfTaking.TAKEN -> "przyjety"
-                PlannedMedicine.StatusOfTaking.NOT_TAKEN -> "nieprzyjęty"
-            },
-            statusOfTakingColorId = when (plannedMedicine.statusOfTaking) {
-                PlannedMedicine.StatusOfTaking.WAITING -> R.color.colorDarkerGray
-                PlannedMedicine.StatusOfTaking.TAKEN -> R.color.colorStateGood
-                PlannedMedicine.StatusOfTaking.NOT_TAKEN -> R.color.colorStateSmall
-            }
-        )
-    }
+    fun getPlannedMedicinesByDateListLive(date: Date) = AppRepository.getPlannedMedicineItemListLiveByDate(date)
 
-    fun getMedicinePlanDisplayData(medicinePlan: MedicinePlan): MedicinePlanDisplayData {
-        val medicine = getMedicineById(medicinePlan.medicineID)
-        val medicineType = getMedicineTypeById(medicine?.medicineTypeID)
+    fun getMedicinePlanDisplayData(medicinePlanItem: MedicinePlanItem): MedicinePlanDisplayData {
         return MedicinePlanDisplayData(
-            medicinePlanRef = medicinePlan,
-            medicineName = medicine?.name ?: "--",
-            durationType = when (medicinePlan.durationType) {
-                MedicinePlan.DurationType.ONCE -> "Jednorazowo"
-                MedicinePlan.DurationType.PERIOD -> "Przez ${AppDateTimeUtil.daysBetween(
-                    medicinePlan.startDate,
-                    medicinePlan.endDate!!
+            medicinePlanID = medicinePlanItem.medicinePlanID,
+            medicineName = medicinePlanItem.medicineName,
+            durationType = when (medicinePlanItem.durationType) {
+                MedicinePlanEntity.DurationType.ONCE -> "Jednorazowo"
+                MedicinePlanEntity.DurationType.PERIOD -> "Przez ${AppDateTimeUtil.daysBetween(
+                    medicinePlanItem.startDate,
+                    medicinePlanItem.endDate!!
                 )} dni"
-                MedicinePlan.DurationType.CONTINUOUS -> "Leczenie ciągłe"
+                MedicinePlanEntity.DurationType.CONTINUOUS -> "Leczenie ciągłe"
             },
-            startDate = when (medicinePlan.durationType) {
-                MedicinePlan.DurationType.ONCE -> AppDateTimeUtil.dateToString(medicinePlan.startDate)
-                else -> "Od ${AppDateTimeUtil.dateToString(medicinePlan.startDate)}"
+            startDate = when (medicinePlanItem.durationType) {
+                MedicinePlanEntity.DurationType.ONCE -> AppDateTimeUtil.dateToString(medicinePlanItem.startDate)
+                else -> "Od ${AppDateTimeUtil.dateToString(medicinePlanItem.startDate)}"
             },
-            endDate = when (medicinePlan.durationType) {
-                MedicinePlan.DurationType.PERIOD -> "Do ${AppDateTimeUtil.dateToString(medicinePlan.endDate!!)}"
+            endDate = when (medicinePlanItem.durationType) {
+                MedicinePlanEntity.DurationType.PERIOD -> "Do ${AppDateTimeUtil.dateToString(medicinePlanItem.endDate!!)}"
                 else -> ""
             },
-            daysType = when (medicinePlan.daysType) {
-                MedicinePlan.DaysType.NONE -> ""
-                MedicinePlan.DaysType.EVERYDAY -> "Codziennie"
-                MedicinePlan.DaysType.DAYS_OF_WEEK -> medicinePlan.daysOfWeek?.getSelectedDaysString() ?: "--"
-                MedicinePlan.DaysType.INTERVAL_OF_DAYS -> "Co ${medicinePlan.intervalOfDays ?: "--"} dni"
+            daysType = when (medicinePlanItem.daysType) {
+                MedicinePlanEntity.DaysType.NONE -> ""
+                MedicinePlanEntity.DaysType.EVERYDAY -> "Codziennie"
+                MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanItem.daysOfWeek?.getSelectedDaysString() ?: "--"
+                MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> "Co ${medicinePlanItem.intervalOfDays ?: "--"} dni"
             },
             timeOfTaking = StringBuilder().run {
-                medicinePlan.timeOfTakingList.forEach { timeOfTaking ->
+                medicinePlanItem.timeOfTakingList.forEach { timeOfTaking ->
                     append(AppDateTimeUtil.timeToString(timeOfTaking.time))
                     append(" - ")
                     append(timeOfTaking.doseSize)
                     append(" ")
-                    append(medicineType?.typeName ?: "brak typu")
+                    append(medicinePlanItem.typeName ?: "brak typu")
                     append("\n")
                 }
                 toString()
@@ -94,31 +62,19 @@ class ScheduleViewModel : ViewModel() {
         )
     }
 
-    fun deleteMedicinePlan(medicinePlan: MedicinePlan) = AppRepository.deleteMedicinePlan(medicinePlan)
+    fun deleteMedicinePlan(medicinePlanID: Int) = AppRepository.deleteMedicinePlan(medicinePlanID)
 
-    private fun getMedicineById(medicineID: Int?) = medicineListLive.value?.find { medicine ->
-        medicine.medicineID == medicineID
-    }
-
-    private fun getMedicineTypeById(medicineTypeID: Int?) = medicineTypeListLive.value?.find { medicineType ->
-        medicineType.medicineTypeID == medicineTypeID
-    }
-
-    private fun getMedicinePlanById(medicinePlanID: Int?) = medicinePlanListLive.value?.find { medicinePlan ->
-        medicinePlan.medicinePlanID == medicinePlanID
-    }
-
-    data class PlannedMedicineDisplayData(
-        val plannedMedicineRef: PlannedMedicine,
-        val medicineName: String,
-        val doseSize: String,
-        val time: String,
-        val statusOfTaking: String,
-        val statusOfTakingColorId: Int
-    )
+//    data class PlannedMedicineDisplayData(
+//        val plannedMedicineEntityRef: PlannedMedicineEntity,
+//        val medicineName: String,
+//        val doseSize: String,
+//        val time: String,
+//        val statusOfTaking: String,
+//        val statusOfTakingColorId: Int
+//    )
 
     data class MedicinePlanDisplayData(
-        val medicinePlanRef: MedicinePlan,
+        val medicinePlanID: Int,
         val medicineName: String,
         val durationType: String,
         val startDate: String,

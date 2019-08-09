@@ -3,25 +3,22 @@ package com.example.medihelper.mainapp.medickit
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppRepository
 import com.example.medihelper.R
-import com.example.medihelper.localdatabase.entities.Medicine
-import com.example.medihelper.localdatabase.entities.MedicineType
+import com.example.medihelper.localdatabase.pojos.MedicineKitItem
 import java.io.File
 
 class KitViewModel : ViewModel() {
     private val TAG = KitViewModel::class.simpleName
 
-    val medicinesListLive = AppRepository.getMedicineListLive()
-    val medicineTypesListLive = AppRepository.getMedicineTypeListLive()
+    val medicineKitItemListLive = AppRepository.getMedicineKitItemListLive()
 
-    fun getMedicineDisplayData(medicine: Medicine): MedicineDisplayData {
-        val medicineType = findMedicineTypeById(medicine.medicineTypeID)
-        val medicineState = medicine.calcMedicineState()
-        return MedicineDisplayData(
-            medicineID = medicine.medicineID,
-            medicineName = medicine.name,
-            medicineTypeName = medicineType?.typeName ?: "--",
+    fun getMedicineKitItemDisplayData(medicineKitItem: MedicineKitItem): MedicineKitItemDisplayData {
+        val medicineState = medicineKitItem.calcMedicineState()
+        return MedicineKitItemDisplayData(
+            medicineID = medicineKitItem.medicineID,
+            medicineName = medicineKitItem.medicineName,
+            medicineTypeName = medicineKitItem.typeName ?: "--",
             stateAvailable = medicineState != null,
-            medicineState = "${medicine.currState}/${medicine.packageSize}",
+            medicineState = "${medicineKitItem.currState}/${medicineKitItem.packageSize}",
             stateLayoutWeight = medicineState,
             emptyLayoutWeight = medicineState?.let { 1 - it },
             stateColorId = medicineState?.let {
@@ -31,12 +28,8 @@ class KitViewModel : ViewModel() {
                     else -> R.color.colorStateSmall
                 }
             },
-            medicineImageFile = medicine.photoFilePath?.let { File(it) }
+            medicineImageFile = medicineKitItem.photoFilePath?.let { File(it) }
         )
-    }
-
-    private fun findMedicineTypeById(medicineTypeID: Int?) = medicineTypesListLive.value?.find { medicineType ->
-        medicineType.medicineTypeID == medicineTypeID
     }
 
     companion object {
@@ -44,7 +37,7 @@ class KitViewModel : ViewModel() {
         const val STATE_MEDIUM_LIMIT = 0.4f
     }
 
-    data class MedicineDisplayData(
+    data class MedicineKitItemDisplayData(
         val medicineID: Int,
         val medicineName: String,
         val medicineTypeName: String,

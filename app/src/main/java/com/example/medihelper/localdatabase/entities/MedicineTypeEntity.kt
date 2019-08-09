@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
     tableName = "medicine_types",
     indices = [Index(value = ["type_name"], unique = true)]
 )
-data class MedicineType(
+data class MedicineTypeEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "medicine_type_id")
     val medicineTypeID: Int = 0,

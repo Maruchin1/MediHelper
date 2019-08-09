@@ -6,19 +6,20 @@ import java.util.*
 @Entity(
     tableName = "medicines",
     foreignKeys = [ForeignKey(
-        entity = MedicineType::class,
+        entity = MedicineTypeEntity::class,
         parentColumns = arrayOf("medicine_type_id"),
         childColumns = arrayOf("medicine_type_id")
     )],
     indices = [Index(value = ["medicine_type_id"])]
 )
-data class Medicine(
+data class MedicineEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "medicine_id")
     val medicineID: Int = 0,
 
-    var name: String,
+    @ColumnInfo(name = "medicine_name")
+    var medicineName: String,
 
     @ColumnInfo(name = "medicine_type_id")
     var medicineTypeID: Int? = null,
@@ -36,12 +37,4 @@ data class Medicine(
     var expireDate: Date? = null,
 
     var comments: String? = null
-) {
-    fun calcMedicineState(): Float? {
-        return if (packageSize != null && currState != null) {
-            currState?.div(packageSize!!)
-        } else {
-            null
-        }
-    }
-}
+)

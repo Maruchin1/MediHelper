@@ -21,7 +21,7 @@ import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.R
 import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.databinding.FragmentAddMedicineBinding
-import com.example.medihelper.localdatabase.entities.MedicineType
+import com.example.medihelper.localdatabase.entities.MedicineTypeEntity
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_add_medicine.*
@@ -93,7 +93,7 @@ class AddMedicineFragment : Fragment() {
                 Log.d(TAG, "photoFile change = $photoFile")
                 setPhotoImage(photoFile)
             })
-            medicineTypesListLive.observe(viewLifecycleOwner, Observer { list ->
+            medicineTypeListLive.observe(viewLifecycleOwner, Observer { list ->
                 if (list != null) {
                     setMedicineTypeSpinnerItems(list)
                 }
@@ -113,7 +113,7 @@ class AddMedicineFragment : Fragment() {
     private fun loadSelectedMedicineData() {
         val medicineId = args.medicineId
         if (medicineId != -1) {
-            viewModel.selectedMedicineIdLive.value = medicineId
+            viewModel.setSelectedMedicineID(medicineId)
             txv_title.text = "Edytuj lek"
         } else {
             txv_title.text = "Dodaj lek"
@@ -171,7 +171,7 @@ class AddMedicineFragment : Fragment() {
         }
     }
 
-    private fun setMedicineTypeSpinnerItems(list: List<MedicineType>) {
+    private fun setMedicineTypeSpinnerItems(list: List<MedicineTypeEntity>) {
         val medicineTypesNamesList = ArrayList<String>()
         list.forEach {
             medicineTypesNamesList.add(it.typeName)

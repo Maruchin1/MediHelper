@@ -13,29 +13,26 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentScheduleListBinding
-import com.example.medihelper.databinding.RecyclerItemMedicinePlanBinding
-import com.example.medihelper.localdatabase.entities.MedicinePlan
+import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 import kotlinx.android.synthetic.main.fragment_schedule_list.*
-import kotlinx.android.synthetic.main.recycler_item_medicine_plan.view.*
 
 class ScheduleListFragment : Fragment() {
     private val TAG = ScheduleListFragment::class.simpleName
 
     private lateinit var viewModel: ScheduleViewModel
 
-    fun onClickDeleteMedicinePlan(medicinePlan: MedicinePlan) {
+    fun onClickDeleteMedicinePlan(medicinePlanID: Int) {
         val dialog = ConfirmDialog().apply {
             title = "Usuń lek z planu"
             message = "Wybrany lek zostanie usunięty z planu. Czy chcesz kontynuować?"
             iconResId = R.drawable.round_delete_black_48
             setOnConfirmClickListener {
-                viewModel.deleteMedicinePlan(medicinePlan)
+                viewModel.deleteMedicinePlan(medicinePlanID)
             }
         }
         dialog.show(childFragmentManager, ConfirmDialog.TAG)
@@ -69,7 +66,7 @@ class ScheduleListFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.medicinePlanListLive.observe(viewLifecycleOwner, Observer { medicinePlanList ->
+        viewModel.getMedicinePlaListLive().observe(viewLifecycleOwner, Observer { medicinePlanList ->
             val adapter = recycler_view_scheduled_medicine.adapter as MedicinePlanAdapter
             adapter.setItemsList(medicinePlanList)
         })
@@ -82,7 +79,7 @@ class ScheduleListFragment : Fragment() {
     }
 
     // Inner classes
-    inner class MedicinePlanAdapter : RecyclerAdapter<MedicinePlan>(R.layout.recycler_item_medicine_plan) {
+    inner class MedicinePlanAdapter : RecyclerAdapter<MedicinePlanItem>(R.layout.recycler_item_medicine_plan) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicinePlan = itemsArrayList[position]
