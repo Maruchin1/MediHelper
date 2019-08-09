@@ -45,6 +45,16 @@ data class PlannedMedicine(
         AppRepository.updatePlannedMedicine(this)
     }
 
+    fun updateStatusByCurrDate() {
+        if (statusOfTaking != StatusOfTaking.TAKEN) {
+            val newStatus = statusOfTakingByCurrDate()
+            if (newStatus != statusOfTaking) {
+                statusOfTaking = newStatus
+                AppRepository.updatePlannedMedicine(this)
+            }
+        }
+    }
+
     private fun statusOfTakingByCurrDate(): StatusOfTaking {
         val currDate = AppDateTimeUtil.getCurrCalendar().time
         val currTime = AppDateTimeUtil.getCurrTime()

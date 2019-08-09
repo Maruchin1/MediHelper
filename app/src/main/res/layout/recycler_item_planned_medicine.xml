@@ -30,18 +30,17 @@
             android:background="?selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{() -> handler.onClickOpenPlannedMedicineOptions(displayData.plannedMedicineRef)}">
+            android:onClick="@{() -> handler.onClickOpenPlannedMedicineOptions(displayData.plannedMedicineRef.plannedMedicineID)}">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/lay_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorDarkerGray"
-                android:orientation="horizontal"
                 android:paddingStart="16dp"
-                android:paddingTop="8dp"
+                android:paddingTop="4dp"
                 android:paddingEnd="16dp"
-                android:paddingBottom="8dp"
+                android:paddingBottom="4dp"
                 app:backgroundResource="@{displayData.statusOfTakingColorId}"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -51,33 +50,22 @@
                     android:layout_height="wrap_content"
                     android:text='@{displayData.time, default="00:00"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                    android:textColor="@color/colorWhite" />
-            </LinearLayout>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_schedule_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                app:cardBackgroundColor="@color/colorWhite"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/lay_header"
-                app:layout_constraintEnd_toEndOf="@id/lay_header"
-                app:layout_constraintTop_toTopOf="@id/lay_header">
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txv_schedule_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginBottom="4dp"
                     android:text='@{displayData.statusOfTaking, default="status"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                    android:textColor="@color/colorTextPrimary" />
-            </com.google.android.material.card.MaterialCardView>
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/txv_medicine_name"

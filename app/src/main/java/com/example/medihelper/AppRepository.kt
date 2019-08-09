@@ -82,6 +82,7 @@ object AppRepository {
         val addedMedicinePlan = medicinePlanDao.getById(addedMedicinePlanID.toInt())
         val plannedMedicineList = PlannedMedicineScheduler().getPlannedMedicineList(addedMedicinePlan)
         plannedMedicineDao.insert(plannedMedicineList)
+        updatePlannedMedicinesStatuses()
     }
 
     fun updateMedicine(medicine: Medicine) = AsyncTask.execute {
@@ -108,6 +109,12 @@ object AppRepository {
         val file = File(photosDir, fileName)
         tmpFile.copyTo(file)
         return file
+    }
+
+    fun updatePlannedMedicinesStatuses() = AsyncTask.execute {
+        plannedMedicineDao.getAll().forEach { plannedMedicine ->
+            plannedMedicine.updateStatusByCurrDate()
+        }
     }
 
     private fun initDatabaseData() {

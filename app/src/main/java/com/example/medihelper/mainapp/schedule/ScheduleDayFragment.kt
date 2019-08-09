@@ -7,20 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.Observer
 import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.databinding.RecyclerItemPlannedMedicineBinding
 import com.example.medihelper.localdatabase.entities.PlannedMedicine
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
-import kotlinx.android.synthetic.main.recycler_item_planned_medicine.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ScheduleDayFragment : Fragment() {
@@ -29,9 +24,9 @@ class ScheduleDayFragment : Fragment() {
     var date: Date? = null
     private lateinit var viewModel: ScheduleViewModel
 
-    fun onClickOpenPlannedMedicineOptions(plannedMedicine: PlannedMedicine) {
+    fun onClickOpenPlannedMedicineOptions(plannedMedicineId: Int) {
         val dialog = PlannedMedicineOptionsDialog()
-        dialog.plannedMedicineId = plannedMedicine.plannedMedicineID
+        dialog.plannedMedicineId = plannedMedicineId
         dialog.show(childFragmentManager, dialog.TAG)
     }
 
@@ -71,8 +66,8 @@ class ScheduleDayFragment : Fragment() {
     inner class PlannedMedicineAdapter : RecyclerAdapter<PlannedMedicine>(R.layout.recycler_item_planned_medicine) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicinePlannedForDate = itemsArrayList[position]
-            val plannedMedicineDisplayData = viewModel.getPlannedMedicineDisplayData(medicinePlannedForDate)
+            val plannedMedicine = itemsArrayList[position]
+            val plannedMedicineDisplayData = viewModel.getPlannedMedicineDisplayData(plannedMedicine)
             holder.bind(plannedMedicineDisplayData, this@ScheduleDayFragment)
         }
     }
