@@ -2,7 +2,9 @@ package com.example.medihelper.localdatabase.pojos
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
+import androidx.room.Relation
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
+import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import java.util.*
 
 class MedicinePlanItem(
@@ -16,23 +18,29 @@ class MedicinePlanItem(
     val medicineUnit: String,
 
     @ColumnInfo(name = "start_date")
-    var startDate: Date,
+    val startDate: Date,
 
     @ColumnInfo(name = "end_date")
-    var endDate: Date? = null,
+    val endDate: Date? = null,
 
     @ColumnInfo(name = "schedule_type")
-    var durationType: MedicinePlanEntity.DurationType,
+    val durationType: MedicinePlanEntity.DurationType,
 
     @Embedded
-    var daysOfWeek: MedicinePlanEntity.DaysOfWeek? = null,
+    val daysOfWeek: MedicinePlanEntity.DaysOfWeek? = null,
 
     @ColumnInfo(name = "interval_of_days")
-    var intervalOfDays: Int? = null,
+    val intervalOfDays: Int? = null,
 
     @ColumnInfo(name = "schedule_days")
-    var daysType: MedicinePlanEntity.DaysType,
+    val daysType: MedicinePlanEntity.DaysType,
 
     @ColumnInfo(name = "dose_hour_list")
-    var timeOfTakingList: List<MedicinePlanEntity.TimeOfTaking>
+    val timeOfTakingList: List<MedicinePlanEntity.TimeOfTaking>,
+
+    @Relation(
+        entity = PlannedMedicineEntity::class,
+        parentColumn = "medicine_plan_id",
+        entityColumn = "medicine_plan_id")
+    val plannedMedicineList: List<PlannedMedicineForPlanItem>
 )

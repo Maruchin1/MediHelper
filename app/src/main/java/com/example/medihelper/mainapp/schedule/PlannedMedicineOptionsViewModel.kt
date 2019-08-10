@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.AppDateTimeUtil
+import com.example.medihelper.AppDateTime
 import com.example.medihelper.AppRepository
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
@@ -53,10 +53,10 @@ class PlannedMedicineOptionsViewModel : ViewModel() {
             }
         }
         plannedDateLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            plannedMedicine?.let { AppDateTimeUtil.dateToString(it.plannedDate) }
+            plannedMedicine?.let { AppDateTime.dateToString(it.plannedDate) }
         }
         plannedTimeLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            plannedMedicine?.let { AppDateTimeUtil.timeToString(it.plannedTime) }
+            plannedMedicine?.let { AppDateTime.timeToString(it.plannedTime) }
         }
         dozeSizeLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
             plannedMedicine.plannedDoseSize.toString()

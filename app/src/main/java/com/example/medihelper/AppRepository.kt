@@ -42,6 +42,16 @@ object AppRepository {
     // SharedPreferences
     fun getMedicineUnitListLive(): LiveData<List<String>> = medicineUnitListLive
 
+    fun insertMedicineUnit(medicineUnit: String) {
+        sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.let { medicineUnitSet ->
+            medicineUnitSet.add(medicineUnit)
+            sharedPreferences.edit {
+                putStringSet(KEY_MEDICINE_UNIT_SET, medicineUnitSet)
+                apply()
+            }
+        }
+    }
+
     // Database
     // Get
     fun getMedicineKitItemLive(medicineID: Int) = medicineDao.getKitItemLive(medicineID)
@@ -52,7 +62,7 @@ object AppRepository {
 
     fun getMedicineDetailsLive(medicineID: Int) = medicineDao.getMedicineDetailsLive(medicineID)
 
-    fun getMedicinePlanListLive() = medicinePlanDao.getMedicinePlanListLive()
+    fun getMedicinePlanItemListLive() = medicinePlanDao.getMedicinePlanItemListLive()
 
     fun getPlannedMedicine(plannedMedicineID: Int) = plannedMedicineDao.getByID(plannedMedicineID)
 

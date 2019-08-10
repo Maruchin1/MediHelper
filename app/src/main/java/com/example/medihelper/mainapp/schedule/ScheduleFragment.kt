@@ -10,14 +10,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.medihelper.custom.CenterLayoutManager
-import com.example.medihelper.AppDateTimeUtil
+import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
 import com.example.medihelper.mainapp.MainActivity
@@ -189,11 +188,11 @@ class ScheduleFragment : Fragment() {
 
             holder.view.apply {
                 txv_day.apply {
-                    text = AppDateTimeUtil.dayMonthString(date)
+                    text = AppDateTime.dayMonthString(date)
                     setTextColor(resources.getColor(textColorID))
                 }
                 txv_day_of_week.apply {
-                    text = AppDateTimeUtil.dayOfWeekString(date)
+                    text = AppDateTime.dayOfWeekString(date)
                     setTextColor(resources.getColor(textColorID))
                 }
                 view_selected_indicator.visibility = selectedIndicatorVisibility

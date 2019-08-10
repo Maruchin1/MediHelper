@@ -21,5 +21,5 @@ interface MedicinePlanDAO  {
     fun getByID(medicinePlanID: Int): MedicinePlanEntity
 
     @Query("SELECT * FROM medicines_plans mp JOIN medicines m ON mp.medicine_id = m.medicine_id")
-    fun getMedicinePlanListLive(): LiveData<List<MedicinePlanItem>>
+    fun getMedicinePlanItemListLive(): LiveData<List<MedicinePlanItem>>
 }

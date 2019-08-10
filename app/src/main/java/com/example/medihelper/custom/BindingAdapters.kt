@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.example.medihelper.AppDateTimeUtil
+import com.example.medihelper.AppDateTime
 import com.google.android.material.button.MaterialButton
 import java.io.File
 import java.sql.Time
@@ -40,14 +40,5 @@ fun setTextColor(textView: TextView, colorResId: Int?) {
 fun setIcon(button: MaterialButton, iconResId: Int?) {
     if (iconResId != null) {
         button.setIconResource(iconResId)
-    }
-}
-
-@BindingAdapter("android:text")
-fun setTimeAsText(textView: TextView, time: Time?) {
-    textView.text = if (time != null) {
-        AppDateTimeUtil.timeToString(time)
-    } else {
-        ""
     }
 }

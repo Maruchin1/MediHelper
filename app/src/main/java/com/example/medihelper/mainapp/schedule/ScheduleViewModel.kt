@@ -1,7 +1,7 @@
 package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.AppDateTimeUtil
+import com.example.medihelper.AppDateTime
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
@@ -13,12 +13,12 @@ class ScheduleViewModel : ViewModel() {
     val initialDatePosition = timelineDaysCount / 2
 
     fun getDateForPosition(position: Int): Date {
-        val calendar = AppDateTimeUtil.getCurrCalendar()
+        val calendar = AppDateTime.getCurrCalendar()
         calendar.add(Calendar.DAY_OF_YEAR, position - (timelineDaysCount / 2))
         return calendar.time
     }
 
-    fun getMedicinePlaListLive() = AppRepository.getMedicinePlanListLive()
+    fun getMedicinePlaListLive() = AppRepository.getMedicinePlanItemListLive()
 
     fun getPlannedMedicinesByDateListLive(date: Date) = AppRepository.getPlannedMedicineItemListLiveByDate(date)
 
@@ -28,18 +28,18 @@ class ScheduleViewModel : ViewModel() {
             medicineName = medicinePlanItem.medicineName,
             durationType = when (medicinePlanItem.durationType) {
                 MedicinePlanEntity.DurationType.ONCE -> "Jednorazowo"
-                MedicinePlanEntity.DurationType.PERIOD -> "Przez ${AppDateTimeUtil.daysBetween(
+                MedicinePlanEntity.DurationType.PERIOD -> "Przez ${AppDateTime.daysBetween(
                     medicinePlanItem.startDate,
                     medicinePlanItem.endDate!!
                 )} dni"
                 MedicinePlanEntity.DurationType.CONTINUOUS -> "Leczenie ciągłe"
             },
             startDate = when (medicinePlanItem.durationType) {
-                MedicinePlanEntity.DurationType.ONCE -> AppDateTimeUtil.dateToString(medicinePlanItem.startDate)
-                else -> "Od ${AppDateTimeUtil.dateToString(medicinePlanItem.startDate)}"
+                MedicinePlanEntity.DurationType.ONCE -> AppDateTime.dateToString(medicinePlanItem.startDate)
+                else -> "Od ${AppDateTime.dateToString(medicinePlanItem.startDate)}"
             },
             endDate = when (medicinePlanItem.durationType) {
-                MedicinePlanEntity.DurationType.PERIOD -> "Do ${AppDateTimeUtil.dateToString(medicinePlanItem.endDate!!)}"
+                MedicinePlanEntity.DurationType.PERIOD -> "Do ${AppDateTime.dateToString(medicinePlanItem.endDate!!)}"
                 else -> ""
             },
             daysType = when (medicinePlanItem.daysType) {
@@ -50,7 +50,7 @@ class ScheduleViewModel : ViewModel() {
             },
             timeOfTaking = StringBuilder().run {
                 medicinePlanItem.timeOfTakingList.forEach { timeOfTaking ->
-                    append(AppDateTimeUtil.timeToString(timeOfTaking.time))
+                    append(AppDateTime.timeToString(timeOfTaking.time))
                     append(" - ")
                     append(timeOfTaking.doseSize)
                     append(" ")

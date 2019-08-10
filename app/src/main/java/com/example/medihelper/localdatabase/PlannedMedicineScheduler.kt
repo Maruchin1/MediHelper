@@ -1,6 +1,6 @@
 package com.example.medihelper.localdatabase
 
-import com.example.medihelper.AppDateTimeUtil
+import com.example.medihelper.AppDateTime
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import java.util.*
@@ -24,7 +24,7 @@ class PlannedMedicineScheduler {
                 }
             }
             MedicinePlanEntity.DurationType.CONTINUOUS -> {
-                val endCalendar = AppDateTimeUtil.getCurrCalendar().apply {
+                val endCalendar = AppDateTime.getCurrCalendar().apply {
                     time = medicinePlanEntity.startDate
                     add(Calendar.DATE, CONTINUOUS_DAYS_COUNT)
                 }
@@ -41,9 +41,9 @@ class PlannedMedicineScheduler {
 
     private fun getForEveryday(medicinePlanEntity: MedicinePlanEntity): List<PlannedMedicineEntity> {
         val plannedMedicineArrayList = ArrayList<PlannedMedicineEntity>()
-        val currCalendar = AppDateTimeUtil.getCurrCalendar().apply { time = medicinePlanEntity.startDate }
+        val currCalendar = AppDateTime.getCurrCalendar().apply { time = medicinePlanEntity.startDate }
 
-        while (AppDateTimeUtil.compareDates(currCalendar.time, medicinePlanEntity.endDate!!) != 1) {
+        while (AppDateTime.compareDates(currCalendar.time, medicinePlanEntity.endDate!!) != 1) {
             plannedMedicineArrayList.addAll(
                 getForDate(
                     medicinePlanID = medicinePlanEntity.medicinePlanID,
@@ -58,9 +58,9 @@ class PlannedMedicineScheduler {
 
     private fun getForDaysOfWeek(medicinePlanEntity: MedicinePlanEntity): List<PlannedMedicineEntity> {
         val plannedMedicineArrayList = ArrayList<PlannedMedicineEntity>()
-        val currCalendar = AppDateTimeUtil.getCurrCalendar().apply { time = medicinePlanEntity.startDate }
+        val currCalendar = AppDateTime.getCurrCalendar().apply { time = medicinePlanEntity.startDate }
 
-        while (AppDateTimeUtil.compareDates(currCalendar.time, medicinePlanEntity.endDate!!) != 1) {
+        while (AppDateTime.compareDates(currCalendar.time, medicinePlanEntity.endDate!!) != 1) {
             val currDayOfWeekNumber = currCalendar.get(Calendar.DAY_OF_WEEK)
             if (medicinePlanEntity.daysOfWeek?.isDaySelected(currDayOfWeekNumber) == true) {
                 plannedMedicineArrayList.addAll(
@@ -78,9 +78,9 @@ class PlannedMedicineScheduler {
 
     private fun getForIntervalOfDays(medicinePlanEntity: MedicinePlanEntity): List<PlannedMedicineEntity> {
         val plannedMedicineArrayList = ArrayList<PlannedMedicineEntity>()
-        val currCalendar = AppDateTimeUtil.getCurrCalendar().apply { time = medicinePlanEntity.startDate }
+        val currCalendar = AppDateTime.getCurrCalendar().apply { time = medicinePlanEntity.startDate }
 
-        while (AppDateTimeUtil.compareDates(currCalendar.time, medicinePlanEntity.endDate!!) != 1) {
+        while (AppDateTime.compareDates(currCalendar.time, medicinePlanEntity.endDate!!) != 1) {
             plannedMedicineArrayList.addAll(
                 getForDate(
                     medicinePlanID = medicinePlanEntity.medicinePlanID,

@@ -7,6 +7,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.example.medihelper.AppDateTime" />
+
         <variable
             name="viewModel"
             type="com.example.medihelper.mainapp.medickit.AddMedicineViewModel" />
@@ -14,10 +16,6 @@
         <variable
             name="handler"
             type="com.example.medihelper.mainapp.medickit.AddMedicineFragment" />
-
-        <variable
-            name="appDateTimeUtil"
-            type="com.example.medihelper.AppDateTimeUtil" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -149,7 +147,7 @@
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:onClick="@{handler::onClickExpireDate}"
-                                android:text='@{viewModel.expireDateLive != null ? appDateTimeUtil.dateToString(viewModel.expireDateLive) : "Nie określono"}'
+                                android:text='@{viewModel.expireDateLive != null ? AppDateTime.dateToString(viewModel.expireDateLive) : "Nie określono"}'
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
                         </LinearLayout>
                     </LinearLayout>

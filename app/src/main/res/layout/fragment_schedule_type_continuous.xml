@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.example.medihelper.AppDateTime"/>
+
         <variable
             name="viewModel"
             type="com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel" />
@@ -13,9 +15,6 @@
             name="handler"
             type="com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypeContinuousFragment" />
 
-        <variable
-            name="appDateTimeUtil"
-            type="com.example.medihelper.AppDateTimeUtil" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text='@{viewModel.startDateLive != null ? appDateTimeUtil.dateToString(viewModel.startDateLive) : "nie wybrano", default="nie wybrano"}'
+                android:text='@{viewModel.startDateLive != null ? AppDateTime.dateToString(viewModel.startDateLive) : "nie wybrano", default="nie wybrano"}'
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
         </LinearLayout>
 

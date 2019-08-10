@@ -20,10 +20,10 @@ data class MedicineEditData(
     val currState: Float?,
 
     @ColumnInfo(name = "photo_file_path")
-    var photoFilePath: String?,
+    val photoFilePath: String?,
 
     @ColumnInfo(name = "expire_date")
-    var expireDate: Date?,
+    val expireDate: Date?,
 
-    var comments: String?
+    val comments: String?
 )

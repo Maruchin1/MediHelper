@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.AppDateTimeUtil
+import com.example.medihelper.AppDateTime
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
@@ -89,7 +89,7 @@ class AddMedicinePlanViewModel : ViewModel() {
     fun getTimeOfTakingDisplayData(timeOfTaking: MedicinePlanEntity.TimeOfTaking): TimeOfTakingDisplayData {
         return TimeOfTakingDisplayData(
             timeOfTakingRef = timeOfTaking,
-            time = AppDateTimeUtil.timeToString(timeOfTaking.time),
+            time = AppDateTime.timeToString(timeOfTaking.time),
             doseSize = timeOfTaking.doseSize.toString(),
             medicineTypeName = medicineKitItemLive.value?.medicineUnit ?: "--"
         )
@@ -106,7 +106,7 @@ class AddMedicinePlanViewModel : ViewModel() {
 
     private fun resetViewModel() {
         durationTypeLive.value = MedicinePlanEntity.DurationType.ONCE
-        startDateLive.value = AppDateTimeUtil.getCurrCalendar().time
+        startDateLive.value = AppDateTime.getCurrCalendar().time
         endDateLive.value = null
         daysTypeLive.value = MedicinePlanEntity.DaysType.NONE
         daysOfWeekLive.value = MedicinePlanEntity.DaysOfWeek()

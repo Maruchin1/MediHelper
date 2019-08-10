@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import com.example.medihelper.AppDateTimeUtil
+import com.example.medihelper.AppDateTime
 
 import com.example.medihelper.R
 import com.example.medihelper.dialogs.SelectDateDialog
@@ -51,7 +51,6 @@ class ScheduleTypeOnceFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_type_once, container, false)
         binding.viewModel = planViewModel
         binding.handler = this
-        binding.appDateTimeUtil = AppDateTimeUtil
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }

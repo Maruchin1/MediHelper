@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.example.medihelper.AppDateTimeUtil
+import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.databinding.DialogSelectDateBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -33,7 +33,7 @@ class SelectDateDialog : BottomSheetDialogFragment() {
     fun onClickCancel() = dismiss()
 
     fun onClickConfirm() {
-        val selectedDate = AppDateTimeUtil.makeDate(calendar_view.date)
+        val selectedDate = AppDateTime.makeDate(calendar_view.date)
         dateSelectedListener?.invoke(selectedDate)
         dismiss()
     }
@@ -45,7 +45,7 @@ class SelectDateDialog : BottomSheetDialogFragment() {
     private fun setupCalendar() {
         defaultDate?.let { calendar_view.date = it.time }
         calendar_view.setOnDateChangeListener { _, year, month, day ->
-            calendar_view.date = AppDateTimeUtil.makeDate(day, month, year).time
+            calendar_view.date = AppDateTime.makeDate(day, month, year).time
         }
     }
 

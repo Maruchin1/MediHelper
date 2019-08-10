@@ -2,11 +2,9 @@ package com.example.medihelper
 
 import java.sql.Time
 import java.text.SimpleDateFormat
-import java.time.temporal.ChronoUnit
 import java.util.*
-import java.util.concurrent.TimeUnit
 
-object AppDateTimeUtil {
+object AppDateTime {
 
     // Date
     fun getCurrCalendar() = Calendar.getInstance(TimeZone.getDefault()).apply {
@@ -16,9 +14,8 @@ object AppDateTimeUtil {
         set(Calendar.MILLISECOND, 0)
     }
 
+    @JvmStatic
     fun dateToString(date: Date): String = dateFormat().format(date)
-
-    fun stringToDate(string: String): Date = dateFormat().parse(string)
 
     fun dayMonthString(date: Date): String {
         val dateFormat = SimpleDateFormat("dd MMM", Locale.getDefault())
@@ -90,6 +87,7 @@ object AppDateTimeUtil {
         return Time(currHour, currMinute, 0)
     }
 
+    @JvmStatic
     fun timeToString(time: Time): String = timeFormat().format(time)
 
     fun compareTimes(time1: Time, time2: Time): Int {

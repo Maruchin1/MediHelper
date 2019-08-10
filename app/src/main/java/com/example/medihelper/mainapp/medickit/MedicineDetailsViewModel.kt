@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.AppDateTimeUtil
+import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
@@ -50,7 +50,7 @@ class MedicineDetailsViewModel : ViewModel() {
         }
         expireDateLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
             medicineDetails?.expireDate?.let { expireDate ->
-                AppDateTimeUtil.dateToString(expireDate)
+                AppDateTime.dateToString(expireDate)
             }
         }
         daysRemainsLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
@@ -105,8 +105,8 @@ class MedicineDetailsViewModel : ViewModel() {
 
     private fun daysRemainsString(medicineDetails: MedicineDetails): String? {
         return medicineDetails.expireDate?.let { expireDate ->
-            val currDate = AppDateTimeUtil.getCurrCalendar().time
-            val daysBetween = AppDateTimeUtil.daysBetween(currDate, expireDate)
+            val currDate = AppDateTime.getCurrCalendar().time
+            val daysBetween = AppDateTime.daysBetween(currDate, expireDate)
             "$daysBetween dni"
         }
     }

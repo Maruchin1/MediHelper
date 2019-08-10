@@ -17,7 +17,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
-import com.example.medihelper.AppDateTimeUtil
+import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.databinding.FragmentAddMedicineBinding
@@ -51,7 +51,6 @@ class AddMedicineFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_add_medicine, container, false)
         binding.viewModel = viewModel
         binding.handler = this
-        binding.appDateTimeUtil = AppDateTimeUtil
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
