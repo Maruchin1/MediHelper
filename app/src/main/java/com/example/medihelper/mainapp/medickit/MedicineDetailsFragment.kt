@@ -57,7 +57,7 @@ class MedicineDetailsFragment : Fragment() {
 
     fun onClickEdit() {
         viewModel.selectedMedicineIDLive.value?.let { medicineId ->
-            val action = MedicineDetailsFragmentDirections.actionMedicineDetailsDestinationToAddMedicineDestination(medicineId)
+            val action = MedicineDetailsFragmentDirections.toAddMedicineDestination(medicineId)
             findNavController().navigate(action)
         }
     }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.example.medihelper.mainapp.schedule.MedicinePlanListFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.example.medihelper.mainapp.schedule.ScheduleViewModel" />
+    </data>
+
+    <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/recycler_view_medicine_plan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".mainapp.schedule.MedicinePlanListFragment"
+        tools:listitem="@layout/recycler_item_medicine_plan"/>
+
+</layout>
+

@@ -29,7 +29,7 @@ class KitFragment : Fragment() {
     private lateinit var viewModel: KitViewModel
 
     fun onClickOpenMedicineDetails(medicineID: Int) {
-        val action = KitFragmentDirections.actionKitDestinationToMedicineDetailsFragment(medicineID)
+        val action = KitFragmentDirections.toMedicineDetailsDestination(medicineID)
         findNavController().navigate(action)
     }
 
@@ -58,7 +58,7 @@ class KitFragment : Fragment() {
     }
 
     private fun openAddMedicineFragment() {
-        val action = KitFragmentDirections.actionKitDestinationToAddMedicineFragment(-1)
+        val action = KitFragmentDirections.toAddMedicineDestination(-1)
         findNavController().navigate(action)
     }
 

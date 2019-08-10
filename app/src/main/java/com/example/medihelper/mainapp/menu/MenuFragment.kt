@@ -32,8 +32,8 @@ class MenuFragment : Fragment() {
         Log.d(TAG, "onClickMenuOption")
         Log.d(TAG, "view ID = ${view.id}")
         val direction = when(view.id) {
-            R.id.lay_click_schedule -> MenuFragmentDirections.actionMenuDestinationToScheduleDestination()
-            R.id.lay_click_kit -> MenuFragmentDirections.actionMenuDestinationToKitDestination()
+            R.id.lay_click_schedule -> MenuFragmentDirections.toScheduleDestination()
+            R.id.lay_click_kit -> MenuFragmentDirections.toKitDestination()
             else -> null
         }
         direction?.let {

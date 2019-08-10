@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".mainapp.schedule.ScheduleListFragment">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <variable
+            name="handler"
+            type="com.example.medihelper.mainapp.schedule.MedicinePlanListHostFragment" />
+
         <variable
             name="viewModel"
             type="com.example.medihelper.mainapp.schedule.ScheduleViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        tools:context=".mainapp.schedule.MedicinePlanListHostFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
@@ -52,19 +55,31 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/toolbar" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/colorWhite"
+                style="@style/Widget.MaterialComponents.TabLayout.Colored"/>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_scheduled_medicine"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
             android:background="@color/colorBackground"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 </layout>
+

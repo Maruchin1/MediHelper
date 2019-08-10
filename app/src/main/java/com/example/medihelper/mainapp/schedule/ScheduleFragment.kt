@@ -59,16 +59,12 @@ class ScheduleFragment : Fragment() {
     fun onClickNavigateMenu() = findNavController().popBackStack()
 
     fun onClickNavigateList() {
-        val direction = ScheduleFragmentDirections.actionScheduleDestinationToScheduleListDestination()
+        val direction = ScheduleFragmentDirections.toMedicinePlanListDestination()
         findNavController().navigate(direction)
     }
 
     private fun observeViewModel() {
-//        viewModel.run {
-//            medicineListLive.observe(viewLifecycleOwner, Observer { })
-//            medicineTypeListLive.observe(viewLifecycleOwner, Observer { })
-//            medicinePlanListLive.observe(viewLifecycleOwner, Observer {  })
-//        }
+
     }
 
     private fun setupMainActivity() {
@@ -89,7 +85,7 @@ class ScheduleFragment : Fragment() {
 
     private fun setupDatesViewPager() {
         view_pager_dates.apply {
-            adapter = ScheduleDayPagerAdapter(childFragmentManager)
+            adapter = ScheduleDayPagerAdapter()
             offscreenPageLimit = 1
             addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
@@ -126,8 +122,8 @@ class ScheduleFragment : Fragment() {
         dialog.show(childFragmentManager, SelectMedicineDialog.TAG)
     }
 
-    inner class ScheduleDayPagerAdapter(fragmentManager: FragmentManager) :
-        FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    // Inner classes
+    inner class ScheduleDayPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getCount(): Int {
             return viewModel.timelineDaysCount

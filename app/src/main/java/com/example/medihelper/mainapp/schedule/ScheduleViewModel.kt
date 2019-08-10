@@ -1,5 +1,7 @@
 package com.example.medihelper.mainapp.schedule
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.AppRepository
@@ -12,13 +14,35 @@ class ScheduleViewModel : ViewModel() {
     val timelineDaysCount = 10000
     val initialDatePosition = timelineDaysCount / 2
 
+    private val medicinePlanItemListLive = AppRepository.getMedicinePlanItemListLive()
+    private val medicinePlanItemOngoingListLive: LiveData<List<MedicinePlanItem>>
+    private val medicinePlanItemEndedListLive: LiveData<List<MedicinePlanItem>>
+
+    init {
+        medicinePlanItemOngoingListLive = Transformations.map(medicinePlanItemListLive) { medicinePlanItemList ->
+            medicinePlanItemList.filter { medicinePlanItem ->
+                getMedicinePlanType(medicinePlanItem) == MedicinePlanType.ONGOING
+            }
+        }
+        medicinePlanItemEndedListLive = Transformations.map(medicinePlanItemListLive) { medicinePlanItemList ->
+            medicinePlanItemList.filter { medicinePlanItem ->
+                getMedicinePlanType(medicinePlanItem) == MedicinePlanType.ENDED
+            }
+        }
+    }
+
     fun getDateForPosition(position: Int): Date {
         val calendar = AppDateTime.getCurrCalendar()
         calendar.add(Calendar.DAY_OF_YEAR, position - (timelineDaysCount / 2))
         return calendar.time
     }
 
-    fun getMedicinePlaListLive() = AppRepository.getMedicinePlanItemListLive()
+    fun getMedicinePlanItemListLive(medicinePlanType: MedicinePlanType): LiveData<List<MedicinePlanItem>> {
+        return when (medicinePlanType) {
+            MedicinePlanType.ONGOING -> medicinePlanItemOngoingListLive
+            MedicinePlanType.ENDED -> medicinePlanItemEndedListLive
+        }
+    }
 
     fun getPlannedMedicinesByDateListLive(date: Date) = AppRepository.getPlannedMedicineItemListLiveByDate(date)
 
@@ -64,6 +88,25 @@ class ScheduleViewModel : ViewModel() {
 
     fun deleteMedicinePlan(medicinePlanID: Int) = AppRepository.deleteMedicinePlan(medicinePlanID)
 
+    private fun getMedicinePlanType(medicinePlanItem: MedicinePlanItem): MedicinePlanType {
+        val currDate = AppDateTime.getCurrCalendar().time
+        return when (medicinePlanItem.durationType) {
+            MedicinePlanEntity.DurationType.ONCE -> {
+                when (AppDateTime.compareDates(currDate, medicinePlanItem.startDate)) {
+                    1 -> MedicinePlanType.ENDED
+                    else -> MedicinePlanType.ONGOING
+                }
+            }
+            MedicinePlanEntity.DurationType.PERIOD -> {
+                when (AppDateTime.compareDates(currDate, medicinePlanItem.endDate!!)) {
+                    1 -> MedicinePlanType.ENDED
+                    else -> MedicinePlanType.ONGOING
+                }
+            }
+            MedicinePlanEntity.DurationType.CONTINUOUS -> MedicinePlanType.ONGOING
+        }
+    }
+
 //    data class PlannedMedicineDisplayData(
 //        val plannedMedicineEntityRef: PlannedMedicineEntity,
 //        val medicineName: String,
@@ -82,4 +125,9 @@ class ScheduleViewModel : ViewModel() {
         val daysType: String,
         val timeOfTaking: String
     )
+
+    enum class MedicinePlanType(val pageTitle: String) {
+        ENDED("Zakończone"),
+        ONGOING("Trwające")
+    }
 }

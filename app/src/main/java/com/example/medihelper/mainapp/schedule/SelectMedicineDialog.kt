@@ -24,7 +24,7 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
         viewModel.selectedMedicineIDLive.value = medicineID
         findNavController().run {
             if (currentDestination?.id == R.id.schedule_destination) {
-                navigate(ScheduleFragmentDirections.actionScheduleDestinationToAddToScheduleDestination())
+                navigate(ScheduleFragmentDirections.toAddMedicinePlanDestination())
             }
         }
         dismiss()
@@ -67,8 +67,8 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
         btn_add_medicine.setOnClickListener {
             findNavController().run {
                 val direction = when (currentDestination?.id) {
-                    R.id.schedule_destination -> ScheduleFragmentDirections.actionScheduleDestinationToAddMedicineDestination(-1)
-                    R.id.add_to_schedule_destination -> AddMedicinePlanFragmentDirections.actionAddToScheduleDestinationToAddMedicineDestination(-1)
+                    R.id.schedule_destination -> ScheduleFragmentDirections.toAddMedicineDestination(-1)
+                    R.id.add_medicine_plan_destination -> AddMedicinePlanFragmentDirections.toAddMedicineDestination(-1)
                     else -> null
                 }
                 direction?.let {
