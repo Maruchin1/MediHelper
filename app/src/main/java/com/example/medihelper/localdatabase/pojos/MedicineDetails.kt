@@ -10,8 +10,8 @@ class MedicineDetails(
     @ColumnInfo(name = "medicine_name")
     val medicineName: String,
 
-    @ColumnInfo(name = "type_name")
-    val typeName: String?,
+    @ColumnInfo(name = "medicine_unit")
+    val medicineUnit: String,
 
     @ColumnInfo(name = "package_size")
     val packageSize: Float?,

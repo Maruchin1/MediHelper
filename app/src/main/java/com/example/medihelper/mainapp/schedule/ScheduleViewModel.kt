@@ -54,7 +54,7 @@ class ScheduleViewModel : ViewModel() {
                     append(" - ")
                     append(timeOfTaking.doseSize)
                     append(" ")
-                    append(medicinePlanItem.typeName ?: "brak typu")
+                    append(medicinePlanItem.medicineUnit)
                     append("\n")
                 }
                 toString()

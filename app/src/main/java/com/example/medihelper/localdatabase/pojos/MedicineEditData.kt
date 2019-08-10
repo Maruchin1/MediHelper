@@ -1,8 +1,6 @@
 package com.example.medihelper.localdatabase.pojos
 
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import com.example.medihelper.localdatabase.entities.MedicineTypeEntity
 import java.util.*
 
 data class MedicineEditData(
@@ -12,8 +10,8 @@ data class MedicineEditData(
     @ColumnInfo(name = "medicine_name")
     val medicineName: String,
 
-    @Embedded
-    val medicineType: MedicineTypeEntity?,
+    @ColumnInfo(name = "medicine_unit")
+    val medicineUnit: String,
 
     @ColumnInfo(name = "package_size")
     val packageSize: Float?,

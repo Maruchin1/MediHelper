@@ -19,15 +19,15 @@ interface MedicineDAO {
     @Query("DELETE FROM medicines WHERE medicine_id = :medicineID")
     fun delete(medicineID: Int)
 
-    @Query("SELECT * FROM medicines m JOIN medicine_types mt ON m.medicine_type_id = mt.medicine_type_id")
+    @Query("SELECT * FROM medicines")
     fun getKitItemListLive(): LiveData<List<MedicineKitItem>>
 
-    @Query("SELECT * FROM medicines m JOIN medicine_types mt ON m.medicine_type_id = mt.medicine_type_id WHERE m.medicine_id = :medicineID")
+    @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
     fun getKitItemLive(medicineID: Int): LiveData<MedicineKitItem>
 
-    @Query("SELECT * FROM medicines m JOIN medicine_types mt ON m.medicine_type_id = mt.medicine_type_id WHERE m.medicine_id = :medicineID")
+    @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
     fun getEditDataLive(medicineID: Int): LiveData<MedicineEditData>
 
-    @Query("SELECT * FROM medicines m JOIN medicine_types mt ON m.medicine_type_id = mt.medicine_type_id WHERE m.medicine_id = :medicineID")
+    @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
     fun getMedicineDetailsLive(medicineID: Int): LiveData<MedicineDetails>
 }

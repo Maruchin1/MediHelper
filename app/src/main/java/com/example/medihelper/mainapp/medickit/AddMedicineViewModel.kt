@@ -12,7 +12,6 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicineEntity
-import com.example.medihelper.localdatabase.entities.MedicineTypeEntity
 import com.example.medihelper.localdatabase.pojos.MedicineEditData
 import java.io.File
 import java.util.*
@@ -20,11 +19,11 @@ import java.util.*
 class AddMedicineViewModel : ViewModel() {
     private val TAG = AddMedicineViewModel::class.simpleName
 
-    val medicineTypeListLive = AppRepository.getMedicineTypeListLive()
+    val medicineUnitListLive = AppRepository.getMedicineUnitListLive()
 
     val medicineNameLive = MutableLiveData<String>()
-    val medicineTypeLive = MutableLiveData<MedicineTypeEntity>()
-    val capacityLive = MutableLiveData<String>()
+    val medicineUnitLive = MutableLiveData<String>()
+    val packageSizeLive = MutableLiveData<String>()
     val currStateLive = MutableLiveData<String>()
     val expireDateLive = MutableLiveData<Date>()
     val commentsLive = MutableLiveData<String>()
@@ -42,9 +41,9 @@ class AddMedicineViewModel : ViewModel() {
         selectedMedicineEditDataObserver = Observer { medicineEditData ->
             medicineEditData?.run {
                 medicineNameLive.value = medicineName
-                medicineTypeLive.value = medicineType
-                capacityLive.value = packageSize?.toString()
-                currStateLive.value = currState?.toString()
+                medicineUnitLive.value = medicineUnit
+                packageSizeLive.value = packageSize.toString()
+                currStateLive.value = currState.toString()
                 expireDateLive.value = expireDate
                 commentsLive.value = comments
                 photoFileLive.value = photoFilePath?.let { photoFilePath ->
@@ -65,16 +64,16 @@ class AddMedicineViewModel : ViewModel() {
     }
 
     fun setMedicineType(position: Int) {
-        medicineTypeListLive.value?.let {
-            medicineTypeLive.value = it[position]
+        medicineUnitListLive.value?.let { medicineUnitList ->
+            medicineUnitLive.value = medicineUnitList[position]
         }
     }
 
     fun saveMedicine(): Boolean {
         Log.d(TAG, "onClickSaveNewMedicine")
-        val name = medicineNameLive.value
-        val type = medicineTypeLive.value
-        val capacity = capacityLive.value
+        val medicineName = medicineNameLive.value
+        val medicineUnit = medicineUnitLive.value
+        val packageSize = packageSizeLive.value
         val currState = currStateLive.value
         val photoFilePath = photoFileLive.value?.let { photoFile ->
             AppRepository.createPhotoFileFromTemp(photoFile).absolutePath
@@ -82,14 +81,14 @@ class AddMedicineViewModel : ViewModel() {
         val expireDate = expireDateLive.value
         val comments = commentsLive.value
 
-        if (name == null) {
+        if (medicineName == null || medicineUnit == null) {
             return false
         }
 
         val medicineEntity = MedicineEntity(
-            medicineName = name,
-            medicineTypeID = type?.medicineTypeID,
-            packageSize = capacity?.toFloat(),
+            medicineName = medicineName,
+            medicineUnit = medicineUnit,
+            packageSize = packageSize?.toFloat(),
             currState = currState?.toFloat(),
             photoFilePath = photoFilePath,
             expireDate = expireDate,
@@ -123,8 +122,8 @@ class AddMedicineViewModel : ViewModel() {
     fun resetViewModel() {
         arrayOf(
             medicineNameLive,
-            medicineTypeLive,
-            capacityLive,
+            medicineUnitLive,
+            packageSizeLive,
             currStateLive,
             expireDateLive,
             commentsLive,

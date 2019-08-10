@@ -12,8 +12,8 @@ class MedicinePlanItem(
     @ColumnInfo(name = "medicine_name")
     val medicineName: String,
 
-    @ColumnInfo(name = "type_name")
-    val typeName: String?,
+    @ColumnInfo(name = "medicine_unit")
+    val medicineUnit: String,
 
     @ColumnInfo(name = "start_date")
     var startDate: Date,

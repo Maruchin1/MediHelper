@@ -93,7 +93,8 @@
                             app:layout_constraintBottom_toBottomOf="@id/icon_medicine"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/icon_medicine"
-                            app:layout_constraintTop_toTopOf="@id/icon_medicine" />
+                            app:layout_constraintTop_toTopOf="@id/icon_medicine"
+                            android:visibility="@{viewModel.medicineKitItemLive == null ? View.VISIBLE : View.INVISIBLE}"/>
 
                         <ImageView
                             android:id="@+id/icon_medicine"
@@ -115,7 +116,8 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/icon_medicine"
-                            app:layout_constraintTop_toTopOf="parent">
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:visibility="@{viewModel.medicineKitItemLive == null ? View.INVISIBLE : View.VISIBLE}">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -127,7 +129,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text='@{"Aktualny stan: " + viewModel.medicineKitItemLive.currState + "/" + viewModel.medicineKitItemLive.packageSize + " " + viewModel.medicineKitItemLive.typeName, default="Stan leku"}'
+                                android:text='@{"Aktualny stan: " + viewModel.medicineKitItemLive.currState + "/" + viewModel.medicineKitItemLive.packageSize + " " + viewModel.medicineKitItemLive.medicineUnit, default="Stan leku"}'
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                                 android:textColor="@android:color/tertiary_text_dark" />
                         </LinearLayout>

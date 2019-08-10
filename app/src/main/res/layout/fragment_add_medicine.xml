@@ -219,7 +219,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:inputType="number"
-                                android:text="@={viewModel.capacityLive}" />
+                                android:text='@={viewModel.packageSizeLive}' />
                         </LinearLayout>
 
                         <LinearLayout
@@ -240,7 +240,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:inputType="number"
-                                android:text="@={viewModel.currStateLive}" />
+                                android:text='@={viewModel.currStateLive}' />
                         </LinearLayout>
 
                     </LinearLayout>

@@ -80,7 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text='@{"Dawka do przyjęcia: " + viewModel.dozeSizeLive + " " + viewModel.medicineTypeNameLive, default="Dawka do przyjęcia"}'
+                    android:text='@{"Dawka do przyjęcia: " + viewModel.dozeSizeLive + " " + viewModel.medicineUnitLive, default="Dawka do przyjęcia"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
             </LinearLayout>
 

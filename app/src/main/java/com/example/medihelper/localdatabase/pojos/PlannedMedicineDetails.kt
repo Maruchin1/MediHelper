@@ -12,11 +12,11 @@ data class PlannedMedicineDetails(
     @ColumnInfo(name = "medicine_name")
     val medicineName: String,
 
+    @ColumnInfo(name = "medicine_unit")
+    val medicineUnit: String,
+
     @ColumnInfo(name = "photo_file_path")
     var photoFilePath: String? = null,
-
-    @ColumnInfo(name = "type_name")
-    val typeName: String,
 
     @ColumnInfo(name = "planned_dose_size")
     val plannedDoseSize: Int,

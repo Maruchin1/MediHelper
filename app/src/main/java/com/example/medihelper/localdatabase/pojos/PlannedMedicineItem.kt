@@ -11,8 +11,8 @@ data class PlannedMedicineItem(
     @ColumnInfo(name = "medicine_name")
     val medicineName: String,
 
-    @ColumnInfo(name = "type_name")
-    val typeName: String,
+    @ColumnInfo(name = "medicine_unit")
+    val medicineUnit: String,
 
     @ColumnInfo(name = "planned_dose_size")
     val plannedDoseSize: Int,

@@ -3,15 +3,7 @@ package com.example.medihelper.localdatabase.entities
 import androidx.room.*
 import java.util.*
 
-@Entity(
-    tableName = "medicines",
-    foreignKeys = [ForeignKey(
-        entity = MedicineTypeEntity::class,
-        parentColumns = arrayOf("medicine_type_id"),
-        childColumns = arrayOf("medicine_type_id")
-    )],
-    indices = [Index(value = ["medicine_type_id"])]
-)
+@Entity(tableName = "medicines")
 data class MedicineEntity(
 
     @PrimaryKey(autoGenerate = true)
@@ -21,8 +13,8 @@ data class MedicineEntity(
     @ColumnInfo(name = "medicine_name")
     var medicineName: String,
 
-    @ColumnInfo(name = "medicine_type_id")
-    var medicineTypeID: Int? = null,
+    @ColumnInfo(name = "medicine_unit")
+    var medicineUnit: String,
 
     @ColumnInfo(name = "package_size")
     var packageSize: Float? = null,

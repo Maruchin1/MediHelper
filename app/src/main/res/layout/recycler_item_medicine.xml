@@ -105,7 +105,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="4dp"
-                        android:text='@{displayData.medicineTypeName, default="pigułki"}'
+                        android:text='@{displayData.medicineUnit, default="pigułki"}'
                         android:textAlignment="viewStart"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                         android:textColor="@android:color/tertiary_text_dark" />

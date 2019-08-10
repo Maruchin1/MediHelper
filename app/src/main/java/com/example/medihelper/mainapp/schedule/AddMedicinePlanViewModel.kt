@@ -30,20 +30,20 @@ class AddMedicinePlanViewModel : ViewModel() {
     val daysOfWeekLive = FieldMutableLiveData<MedicinePlanEntity.DaysOfWeek>()
     val intervalOfDaysLive = MutableLiveData<Int>()
 
-    val doseHourListLive = MutableLiveData<ArrayList<MedicinePlanEntity.TimeOfTaking>>()
+    val timeOfTakingListLive = MutableLiveData<ArrayList<MedicinePlanEntity.TimeOfTaking>>()
 
-    private val selectedMedicineIDObserver = Observer<Int> { resetViewModel() }
+    private val medicineKitItemObserver = Observer<MedicineKitItem> { resetViewModel() }
 
     init {
         medicineKitItemLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
             AppRepository.getMedicineKitItemLive(medicineID)
         }
-        selectedMedicineIDLive.observeForever(selectedMedicineIDObserver)
+        medicineKitItemLive.observeForever(medicineKitItemObserver)
     }
 
     override fun onCleared() {
         super.onCleared()
-        selectedMedicineIDLive.removeObserver(selectedMedicineIDObserver)
+        medicineKitItemLive.removeObserver(medicineKitItemObserver)
     }
 
     fun saveScheduledMedicine() {
@@ -53,7 +53,7 @@ class AddMedicinePlanViewModel : ViewModel() {
             startDate = startDateLive.value!!,
             durationType = durationTypeLive.value!!,
             daysType = daysTypeLive.value!!,
-            timeOfTakingList = doseHourListLive.value!!.toList()
+            timeOfTakingList = timeOfTakingListLive.value!!.toList()
         )
         if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
             medicinePlan.endDate = endDateLive.value
@@ -66,23 +66,23 @@ class AddMedicinePlanViewModel : ViewModel() {
     }
 
     fun addDoseHour() {
-        doseHourListLive.value?.let { doseHourList ->
+        timeOfTakingListLive.value?.let { doseHourList ->
             doseHourList.add(MedicinePlanEntity.TimeOfTaking())
-            doseHourListLive.value = doseHourListLive.value
+            timeOfTakingListLive.value = timeOfTakingListLive.value
         }
     }
 
     fun removeTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
-        doseHourListLive.value?.let { doseHourList ->
+        timeOfTakingListLive.value?.let { doseHourList ->
             doseHourList.remove(timeOfTaking)
-            doseHourListLive.value = doseHourListLive.value
+            timeOfTakingListLive.value = timeOfTakingListLive.value
         }
     }
 
     fun updateTimeOfTaking(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
-        doseHourListLive.value?.let { doseHourList ->
+        timeOfTakingListLive.value?.let { doseHourList ->
             doseHourList[position] = timeOfTaking
-            doseHourListLive.value = doseHourListLive.value
+            timeOfTakingListLive.value = timeOfTakingListLive.value
         }
     }
 
@@ -91,7 +91,7 @@ class AddMedicinePlanViewModel : ViewModel() {
             timeOfTakingRef = timeOfTaking,
             time = AppDateTimeUtil.timeToString(timeOfTaking.time),
             doseSize = timeOfTaking.doseSize.toString(),
-            medicineTypeName = medicineKitItemLive.value?.typeName ?: "--"
+            medicineTypeName = medicineKitItemLive.value?.medicineUnit ?: "--"
         )
     }
 
@@ -99,23 +99,19 @@ class AddMedicinePlanViewModel : ViewModel() {
         return MedicineDisplayData(
             medicineID = medicineKitItem.medicineID,
             medicineName = medicineKitItem.medicineName,
-            medicineState = "${medicineKitItem.currState}/${medicineKitItem.packageSize} ${medicineKitItem.typeName ?: "--"}",
+            medicineState = "${medicineKitItem.currState}/${medicineKitItem.packageSize} ${medicineKitItem.medicineUnit}",
             medicineImageFile = medicineKitItem.photoFilePath?.let { File(it) }
         )
     }
 
     private fun resetViewModel() {
-        arrayOf(
-            durationTypeLive,
-            startDateLive,
-            endDateLive,
-            daysTypeLive
-        ).forEach { field ->
-            field.value = null
-        }
+        durationTypeLive.value = MedicinePlanEntity.DurationType.ONCE
+        startDateLive.value = AppDateTimeUtil.getCurrCalendar().time
+        endDateLive.value = null
+        daysTypeLive.value = MedicinePlanEntity.DaysType.NONE
         daysOfWeekLive.value = MedicinePlanEntity.DaysOfWeek()
-        intervalOfDaysLive.value = 0
-        doseHourListLive.value = arrayListOf(MedicinePlanEntity.TimeOfTaking())
+        intervalOfDaysLive.value = 1
+        timeOfTakingListLive.value = arrayListOf(MedicinePlanEntity.TimeOfTaking())
     }
 
     data class TimeOfTakingDisplayData(

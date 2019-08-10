@@ -88,7 +88,7 @@ class AddMedicinePlanFragment : Fragment() {
         setupMainActivity()
         setupScheduleTypeChipGroup()
         setupScheduleDaysChipGroup()
-        setupDoseHourRecyclerView()
+        setupTimeOfTakingRecyclerView()
         observeViewModel()
     }
 
@@ -116,15 +116,6 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.medicineKitItemLive.observe(viewLifecycleOwner, Observer {
-            if (it == null) {
-                lay_selected_medicine.visibility = View.INVISIBLE
-                txv_medicine_not_selected.visibility = View.VISIBLE
-            } else {
-                txv_medicine_not_selected.visibility = View.INVISIBLE
-                lay_selected_medicine.visibility = View.VISIBLE
-            }
-        })
         val onceFragment = ScheduleTypeOnceFragment()
         val periodFragment = ScheduleTypePeriodFragment()
         val continuousFragment = ScheduleTypeContinuousFragment()
@@ -148,7 +139,7 @@ class AddMedicinePlanFragment : Fragment() {
                 }
             }
         })
-        viewModel.doseHourListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
+        viewModel.timeOfTakingListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
             val adapter = recycler_view_schedule_hours.adapter as TimeOfTakingAdapter
             adapter.setItemsList(doseHourList)
         })
@@ -206,7 +197,7 @@ class AddMedicinePlanFragment : Fragment() {
         }
     }
 
-    private fun setupDoseHourRecyclerView() {
+    private fun setupTimeOfTakingRecyclerView() {
         recycler_view_schedule_hours.adapter = TimeOfTakingAdapter()
         recycler_view_schedule_hours.layoutManager = LinearLayoutManager(context)
     }

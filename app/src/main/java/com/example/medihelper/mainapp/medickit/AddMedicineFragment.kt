@@ -21,7 +21,6 @@ import com.example.medihelper.AppDateTimeUtil
 import com.example.medihelper.R
 import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.databinding.FragmentAddMedicineBinding
-import com.example.medihelper.localdatabase.entities.MedicineTypeEntity
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_add_medicine.*
@@ -48,7 +47,13 @@ class AddMedicineFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return bindLayout(inflater, container)
+        val binding: FragmentAddMedicineBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_medicine, container, false)
+        binding.viewModel = viewModel
+        binding.handler = this
+        binding.appDateTimeUtil = AppDateTimeUtil
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,25 +82,15 @@ class AddMedicineFragment : Fragment() {
         dialog.show(childFragmentManager, SelectDateDialog.TAG)
     }
 
-    private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: FragmentAddMedicineBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_add_medicine, container, false)
-        binding.viewModel = viewModel
-        binding.handler = this
-        binding.appDateTimeUtil = AppDateTimeUtil
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
-    }
-
     private fun observeViewModel() {
         viewModel.run {
             photoFileLive.observe(viewLifecycleOwner, Observer { photoFile ->
                 Log.d(TAG, "photoFile change = $photoFile")
                 setPhotoImage(photoFile)
             })
-            medicineTypeListLive.observe(viewLifecycleOwner, Observer { list ->
-                if (list != null) {
-                    setMedicineTypeSpinnerItems(list)
+            medicineUnitListLive.observe(viewLifecycleOwner, Observer { medicineUnitList ->
+                if (medicineUnitList != null) {
+                    setMedicineTypeSpinnerItems(medicineUnitList)
                 }
             })
         }
@@ -171,10 +166,10 @@ class AddMedicineFragment : Fragment() {
         }
     }
 
-    private fun setMedicineTypeSpinnerItems(list: List<MedicineTypeEntity>) {
+    private fun setMedicineTypeSpinnerItems(list: List<String>) {
         val medicineTypesNamesList = ArrayList<String>()
-        list.forEach {
-            medicineTypesNamesList.add(it.typeName)
+        list.forEach { medicineUnit ->
+            medicineTypesNamesList.add(medicineUnit)
         }
         medicineTypeAdapter.apply {
             clear()

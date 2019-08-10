@@ -19,12 +19,12 @@ class PlannedMedicineOptionsViewModel : ViewModel() {
     val plannedMedicineDetailsLive: LiveData<PlannedMedicineDetails>
 
     val medicineNameLive: LiveData<String>
+    val medicineUnitLive: LiveData<String>
     val statusOfTakingLive: LiveData<String>
     val statusOfTakingColorIdLive: LiveData<Int>
     val plannedDateLive: LiveData<String>
     val plannedTimeLive: LiveData<String>
     val dozeSizeLive: LiveData<String>
-    val medicineTypeNameLive: LiveData<String>
     val medicineImageFileLive: LiveData<File>
 
     val takeMedicineBtnText: LiveData<String>
@@ -61,8 +61,8 @@ class PlannedMedicineOptionsViewModel : ViewModel() {
         dozeSizeLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
             plannedMedicine.plannedDoseSize.toString()
         }
-        medicineTypeNameLive = Transformations.map(plannedMedicineDetailsLive) { medicineType ->
-            medicineType.typeName
+        medicineUnitLive = Transformations.map(plannedMedicineDetailsLive) { medicineType ->
+            medicineType.medicineUnit
         }
         medicineImageFileLive = Transformations.map(plannedMedicineDetailsLive) { medicine ->
             medicine?.photoFilePath?.let { File(it) }

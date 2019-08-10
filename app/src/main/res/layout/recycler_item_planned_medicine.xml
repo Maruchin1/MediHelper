@@ -87,7 +87,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:text='@{"Dawka: " + displayData.plannedDoseSize + " " + displayData.typeName, default="Dawka do przyjęcia"}'
+                android:text='@{"Dawka: " + displayData.plannedDoseSize + " " + displayData.medicineUnit, default="Dawka do przyjęcia"}'
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txv_medicine_name" />

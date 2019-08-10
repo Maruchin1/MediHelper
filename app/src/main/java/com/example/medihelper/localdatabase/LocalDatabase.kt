@@ -12,18 +12,16 @@ import com.example.medihelper.localdatabase.entities.*
 @Database(
     entities = [
         MedicineEntity::class,
-        MedicineTypeEntity::class,
         MedicinePlanEntity::class,
         PlannedMedicineEntity::class
     ],
-    version = 19,
+    version = 20,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {
 
     abstract fun medicineDao(): MedicineDAO
-    abstract fun medicineTypeDao(): MedicineTypeDAO
     abstract fun medicinePlanDao(): MedicinePlanDAO
     abstract fun plannedMedicineDao(): PlannedMedicineDAO
 
