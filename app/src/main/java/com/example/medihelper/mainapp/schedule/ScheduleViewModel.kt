@@ -5,9 +5,13 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.AppRepository
+import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
+import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
+import com.example.medihelper.localdatabase.pojos.PlannedMedicineCheckbox
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ScheduleViewModel : ViewModel() {
 
@@ -88,6 +92,41 @@ class ScheduleViewModel : ViewModel() {
 
     fun deleteMedicinePlan(medicinePlanID: Int) = AppRepository.deleteMedicinePlan(medicinePlanID)
 
+    fun getPlannedMedicinesGroupedByDateList(plannedMedicineList: List<PlannedMedicineCheckbox>): List<PlannedMedicinesGroupedByDate> {
+        val distinctDatesArrayList = ArrayList<Date>()
+        plannedMedicineList.forEach { plannedMedicineForPlanItem ->
+            val plannedDate = plannedMedicineForPlanItem.plannedDate
+            if (!distinctDatesArrayList.contains(plannedDate)) {
+                distinctDatesArrayList.add(plannedDate)
+            }
+        }
+        val plannedMedicinesGroupedByDateArrayList = ArrayList<PlannedMedicinesGroupedByDate>()
+        distinctDatesArrayList.forEach { date ->
+            val plannedMedicinesByDate = plannedMedicineList.filter { plannedMedicine ->
+                AppDateTime.compareDates(plannedMedicine.plannedDate, date) == 0
+            }
+            plannedMedicinesGroupedByDateArrayList.add(
+                PlannedMedicinesGroupedByDate(
+                    date = date,
+                    plannedMedicineCheckboxList = plannedMedicinesByDate
+                )
+            )
+        }
+        return plannedMedicinesGroupedByDateArrayList
+    }
+
+    fun getPlannedMedicineCheckboxDisplayData(plannedMedicineCheckbox: PlannedMedicineCheckbox): PlannedMedicineCheckboxDisplayData {
+        return PlannedMedicineCheckboxDisplayData(
+            plannedMedicineID = plannedMedicineCheckbox.plannedMedicineID,
+            statusColorResID = plannedMedicineCheckbox.statusOfTaking.colorResID,
+            statusIconResID = when (plannedMedicineCheckbox.statusOfTaking) {
+                PlannedMedicineEntity.StatusOfTaking.TAKEN -> R.drawable.baseline_check_white_24
+                PlannedMedicineEntity.StatusOfTaking.NOT_TAKEN -> R.drawable.round_close_black_24
+                PlannedMedicineEntity.StatusOfTaking.WAITING -> null
+            }
+        )
+    }
+
     private fun getMedicinePlanType(medicinePlanItem: MedicinePlanItem): MedicinePlanType {
         val currDate = AppDateTime.getCurrCalendar().time
         return when (medicinePlanItem.durationType) {
@@ -124,6 +163,17 @@ class ScheduleViewModel : ViewModel() {
         val endDate: String,
         val daysType: String,
         val timeOfTaking: String
+    )
+
+    data class PlannedMedicinesGroupedByDate(
+        val date: Date,
+        val plannedMedicineCheckboxList: List<PlannedMedicineCheckbox>
+    )
+
+    data class PlannedMedicineCheckboxDisplayData(
+        val plannedMedicineID: Int,
+        val statusColorResID: Int,
+        val statusIconResID: Int?
     )
 
     enum class MedicinePlanType(val pageTitle: String) {

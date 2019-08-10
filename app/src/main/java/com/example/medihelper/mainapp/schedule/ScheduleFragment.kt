@@ -30,6 +30,13 @@ class ScheduleFragment : Fragment() {
 
     private lateinit var viewModel: ScheduleViewModel
 
+    fun onClickNavigateMenu() = findNavController().popBackStack()
+
+    fun onClickNavigateList() {
+        val direction = ScheduleFragmentDirections.toMedicinePlanListDestination()
+        findNavController().navigate(direction)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
@@ -54,13 +61,6 @@ class ScheduleFragment : Fragment() {
         setupDatesViewPager()
         setInitialDate()
         observeViewModel()
-    }
-
-    fun onClickNavigateMenu() = findNavController().popBackStack()
-
-    fun onClickNavigateList() {
-        val direction = ScheduleFragmentDirections.toMedicinePlanListDestination()
-        findNavController().navigate(direction)
     }
 
     private fun observeViewModel() {

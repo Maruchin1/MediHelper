@@ -1,16 +1,25 @@
 package com.example.medihelper.custom
 
+import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.example.medihelper.AppDateTime
 import com.google.android.material.button.MaterialButton
 import java.io.File
-import java.sql.Time
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.content.res.ColorStateList
+import android.view.LayoutInflater
+import com.example.medihelper.BR
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
+
 
 @BindingAdapter("android:layout_weight")
 fun setLayoutWeight(view: View, weight: Float?) {
@@ -42,3 +51,18 @@ fun setIcon(button: MaterialButton, iconResId: Int?) {
         button.setIconResource(iconResId)
     }
 }
+
+@BindingAdapter("android:src")
+fun setImageViewSrc(imageView: ImageView, imageResId: Int?) {
+    if (imageResId != null) {
+        imageView.setImageResource(imageResId)
+    }
+}
+
+@BindingAdapter("android:background")
+fun setBackgroundColor(view: View, colorResId: Int?) {
+    if (colorResId != null) {
+        view.setBackgroundColor(ContextCompat.getColor(view.context, colorResId))
+    }
+}
+

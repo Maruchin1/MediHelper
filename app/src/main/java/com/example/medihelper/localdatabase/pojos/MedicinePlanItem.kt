@@ -42,5 +42,5 @@ class MedicinePlanItem(
         entity = PlannedMedicineEntity::class,
         parentColumn = "medicine_plan_id",
         entityColumn = "medicine_plan_id")
-    val plannedMedicineList: List<PlannedMedicineForPlanItem>
+    val plannedMedicineList: List<PlannedMedicineCheckbox>
 )

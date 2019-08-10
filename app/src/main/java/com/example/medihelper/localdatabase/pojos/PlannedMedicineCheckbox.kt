@@ -5,7 +5,7 @@ import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import java.sql.Time
 import java.util.*
 
-data class PlannedMedicineForPlanItem(
+data class PlannedMedicineCheckbox(
     @ColumnInfo(name = "planned_medicine_id")
     val plannedMedicineID: Int,
 
@@ -14,9 +14,6 @@ data class PlannedMedicineForPlanItem(
 
     @ColumnInfo(name = "planned_time")
     val plannedTime: Time,
-
-    @ColumnInfo(name = "planned_dose_size")
-    val plannedDoseSize: Int,
 
     @ColumnInfo(name = "status_of_taking")
     val statusOfTaking: PlannedMedicineEntity.StatusOfTaking

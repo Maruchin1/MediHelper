@@ -17,11 +17,13 @@ object AppDateTime {
     @JvmStatic
     fun dateToString(date: Date): String = dateFormat().format(date)
 
+    @JvmStatic
     fun dayMonthString(date: Date): String {
         val dateFormat = SimpleDateFormat("dd MMM", Locale.getDefault())
         return dateFormat.format(date)
     }
 
+    @JvmStatic
     fun dayOfWeekString(date: Date): String {
         val dateFormat = SimpleDateFormat("EEE", Locale.getDefault())
         return dateFormat.format(date)

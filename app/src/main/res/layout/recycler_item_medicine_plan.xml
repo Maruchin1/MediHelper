@@ -194,16 +194,8 @@
 
             <include layout="@layout/line_horizontal" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Przedział dat"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                android:layout_marginTop="16dp"/>
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/view_pager_planned_medicine"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_planned_medicine_grouped_by_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
