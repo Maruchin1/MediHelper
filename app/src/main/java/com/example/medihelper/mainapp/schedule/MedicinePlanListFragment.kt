@@ -6,12 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.TransitionManager
 import com.example.medihelper.BR
 
 import com.example.medihelper.R
@@ -21,7 +21,9 @@ import com.example.medihelper.databinding.FragmentMedicinePlanListBinding
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list.*
+import kotlinx.android.synthetic.main.recycler_item_medicine_plan.*
 import kotlinx.android.synthetic.main.recycler_item_medicine_plan.view.*
+import kotlinx.android.synthetic.main.recycler_item_medicine_plan.view.recycler_view_planned_medicine_checkbox
 import kotlinx.android.synthetic.main.recycler_item_planned_medicine_for_plan_item.view.*
 
 
@@ -95,11 +97,29 @@ class MedicinePlanListFragment : Fragment() {
             val medicinePlanDisplayData = viewModel.getMedicinePlanDisplayData(medicinePlanItem)
             holder.bind(medicinePlanDisplayData, this@MedicinePlanListFragment)
 
-            val plannedMedicinesGroupedByDateList = viewModel.getPlannedMedicinesGroupedByDateList(medicinePlanItem.plannedMedicineList)
-            holder.view.recycler_view_planned_medicine_grouped_by_date.apply {
+            holder.view.recycler_view_planned_medicine_checkbox.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = PlannedMedicineGroupedByDateAdapter().apply {
-                    setItemsList(plannedMedicinesGroupedByDateList)
+                    setItemsList(viewModel.getPlannedMedicinesGroupedByDateList(medicinePlanItem.plannedMedicineList))
+                }
+            }
+
+            holder.view.btn_show_hide_history.setOnClickListener {
+                when (recycler_view_planned_medicine_checkbox.visibility){
+                    View.GONE -> {
+                        recycler_view_planned_medicine_checkbox.visibility = View.VISIBLE
+                        btn_show_hide_history.apply {
+                            text = "Ukryj historię"
+                            setIconResource(R.drawable.round_keyboard_arrow_up_24)
+                        }
+                    }
+                    View.VISIBLE -> {
+                        recycler_view_planned_medicine_checkbox.visibility = View.GONE
+                        btn_show_hide_history.apply {
+                            text = "Pokaż historię"
+                            setIconResource(R.drawable.round_keyboard_arrow_down_24)
+                        }
+                    }
                 }
             }
         }
