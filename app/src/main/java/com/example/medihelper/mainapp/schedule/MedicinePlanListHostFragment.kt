@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentMedicinePlanListHostBinding
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list_host.*
 
 class MedicinePlanListHostFragment : Fragment() {
@@ -49,29 +51,29 @@ class MedicinePlanListHostFragment : Fragment() {
     }
 
     private fun setupTabs() {
-        view_pager_tabs.adapter = MedicinePlanListPagerAdapter()
-        tab_layout.setupWithViewPager(view_pager_tabs)
-    }
+        val fragOngoing = MedicinePlanListFragment().apply { medicinePlanType = ScheduleViewModel.MedicinePlanType.ONGOING }
+        val fragEnded = MedicinePlanListFragment().apply { medicinePlanType = ScheduleViewModel.MedicinePlanType.ENDED }
+        tab_layout.selectTab(null)
+        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
 
-    // Inner classes
-    inner class MedicinePlanListPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
-        private val pagesList = listOf(
-            MedicinePlanListFragment().apply { medicinePlanType = ScheduleViewModel.MedicinePlanType.ONGOING},
-            MedicinePlanListFragment().apply { medicinePlanType = ScheduleViewModel.MedicinePlanType.ENDED }
-        )
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                val selectedFrag = when (tab?.position) {
+                    0 -> fragOngoing
+                    1 -> fragEnded
+                    else -> null
+                }
+                if (selectedFrag != null) {
+                    childFragmentManager.beginTransaction()
+                        .replace(R.id.frame_medicine_plan_list, selectedFrag)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit()
+                }
+            }
 
-        override fun getCount(): Int {
-            return pagesList.size
-        }
-
-        override fun getItem(position: Int): Fragment {
-            return pagesList[position]
-        }
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return pagesList[position].medicinePlanType?.pageTitle
-        }
-
+        })
+        tab_layout.getTabAt(0)?.select()
     }
 }
