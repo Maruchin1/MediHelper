@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.Observer
 import com.example.medihelper.R
+import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
@@ -52,7 +53,7 @@ class ScheduleDayFragment : Fragment() {
             viewModel.getPlannedMedicinesByDateListLive(dayDate).observe(viewLifecycleOwner, Observer { plannedMedicineList ->
                 Log.d(TAG, "date = $date, scheduledMedicinesList change = $plannedMedicineList")
                 val adapter = recycler_view_scheduled_medicine_for_day.adapter as PlannedMedicineAdapter
-                adapter.setItemsList(plannedMedicineList)
+                adapter.updateItemsList(plannedMedicineList)
             })
         }
     }
@@ -63,10 +64,16 @@ class ScheduleDayFragment : Fragment() {
     }
 
     // Inner classes
-    inner class PlannedMedicineAdapter : RecyclerAdapter<PlannedMedicineItem>(R.layout.recycler_item_planned_medicine) {
-
+    inner class PlannedMedicineAdapter : RecyclerAdapter<PlannedMedicineItem>(
+        R.layout.recycler_item_planned_medicine,
+        object : DiffCallback<PlannedMedicineItem>() {
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldList[oldItemPosition].plannedMedicineID == newList[newItemPosition].plannedMedicineID
+            }
+        }
+    ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val plannedMedicine = itemsArrayList[position]
+            val plannedMedicine = itemsList[position]
             holder.bind(plannedMedicine, this@ScheduleDayFragment)
         }
     }

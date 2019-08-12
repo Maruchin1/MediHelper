@@ -1,7 +1,6 @@
 package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTime
@@ -93,7 +92,7 @@ class ScheduleViewModel : ViewModel() {
 
     fun deleteMedicinePlan(medicinePlanID: Int) = AppRepository.deleteMedicinePlan(medicinePlanID)
 
-    fun getPlannedMedicinesGroupedByDateList(plannedMedicineList: List<PlannedMedicineCheckbox>): List<PlannedMedicinesGroupedByDate> {
+    fun getPlannedMedicinesGroupedByDateList(plannedMedicineList: List<PlannedMedicineCheckbox>): List<PlannedMedicineCheckboxGroupedByDate> {
         val distinctDatesArrayList = ArrayList<Date>()
         plannedMedicineList.forEach { plannedMedicineForPlanItem ->
             val plannedDate = plannedMedicineForPlanItem.plannedDate
@@ -101,13 +100,13 @@ class ScheduleViewModel : ViewModel() {
                 distinctDatesArrayList.add(plannedDate)
             }
         }
-        val plannedMedicinesGroupedByDateArrayList = ArrayList<PlannedMedicinesGroupedByDate>()
+        val plannedMedicinesGroupedByDateArrayList = ArrayList<PlannedMedicineCheckboxGroupedByDate>()
         distinctDatesArrayList.forEach { date ->
             val plannedMedicinesByDate = plannedMedicineList.filter { plannedMedicine ->
                 AppDateTime.compareDates(plannedMedicine.plannedDate, date) == 0
             }
             plannedMedicinesGroupedByDateArrayList.add(
-                PlannedMedicinesGroupedByDate(
+                PlannedMedicineCheckboxGroupedByDate(
                     date = date,
                     plannedMedicineCheckboxList = plannedMedicinesByDate
                 )
@@ -166,7 +165,7 @@ class ScheduleViewModel : ViewModel() {
         val timeOfTaking: String
     )
 
-    data class PlannedMedicinesGroupedByDate(
+    data class PlannedMedicineCheckboxGroupedByDate(
         val date: Date,
         val plannedMedicineCheckboxList: List<PlannedMedicineCheckbox>
     )

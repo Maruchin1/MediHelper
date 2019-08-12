@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.R
+import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.localdatabase.pojos.MedicineKitItem
@@ -81,7 +82,7 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     private fun observeViewModel() {
         viewModel.medicineKitItemListLive.observe(viewLifecycleOwner, Observer { medicineKitItemList ->
             val adapter = recycler_view_medicines.adapter as MedicineAdapter
-            adapter.setItemsList(medicineKitItemList)
+            adapter.updateItemsList(medicineKitItemList)
         })
     }
 
@@ -90,10 +91,16 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     }
 
     // Inner classes -------------------------------------------------------------------------------
-    inner class MedicineAdapter : RecyclerAdapter<MedicineKitItem>(R.layout.recycler_item_select_medicine) {
-
+    inner class MedicineAdapter : RecyclerAdapter<MedicineKitItem>(
+        R.layout.recycler_item_select_medicine,
+        object : DiffCallback<MedicineKitItem>() {
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldList[oldItemPosition].medicineID == newList[newItemPosition].medicineID
+            }
+        }
+    ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicineKitItem = itemsArrayList[position]
+            val medicineKitItem = itemsList[position]
             val medicineDisplayData = viewModel.getMedicineDisplayData(medicineKitItem)
             holder.bind(medicineDisplayData, this@SelectMedicineDialog)
         }

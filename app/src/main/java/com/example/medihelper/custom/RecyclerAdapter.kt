@@ -4,18 +4,35 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class RecyclerAdapter<T>(private val layoutResId: Int) : RecyclerView.Adapter<RecyclerItemViewHolder>() {
+abstract class RecyclerAdapter<T>(
+    private val layoutResId: Int,
+    private val diffCallback: DiffCallback<T>?
+) : RecyclerView.Adapter<RecyclerItemViewHolder>() {
 
-    val itemsArrayList: ArrayList<T> = ArrayList()
+    protected val itemsList = mutableListOf<T>()
 
-    fun setItemsList(list: List<T>?) {
-        itemsArrayList.clear()
-        if (list != null) {
-            itemsArrayList.addAll(list)
+    fun updateItemsList(newList: List<T>?) {
+        when {
+            newList == null -> {
+                itemsList.clear()
+                notifyDataSetChanged()
+            }
+            diffCallback == null -> {
+                itemsList.clear()
+                itemsList.addAll(newList)
+                notifyDataSetChanged()
+            }
+            else -> {
+                diffCallback.setLists(oldList = itemsList, newList = newList)
+                val diffResult = DiffUtil.calculateDiff(diffCallback)
+                itemsList.clear()
+                itemsList.addAll(newList)
+                diffResult.dispatchUpdatesTo(this)
+            }
         }
-        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
@@ -24,6 +41,6 @@ abstract class RecyclerAdapter<T>(private val layoutResId: Int) : RecyclerView.A
     }
 
     override fun getItemCount(): Int {
-        return itemsArrayList.size
+        return itemsList.size
     }
 }

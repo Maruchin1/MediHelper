@@ -16,6 +16,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.medihelper.R
+import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.dialogs.SelectNumberDialog
@@ -141,7 +142,7 @@ class AddMedicinePlanFragment : Fragment() {
         })
         viewModel.timeOfTakingListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
             val adapter = recycler_view_schedule_hours.adapter as TimeOfTakingAdapter
-            adapter.setItemsList(doseHourList)
+            adapter.updateItemsList(doseHourList)
         })
     }
 
@@ -203,10 +204,10 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     // Inner classes
-    inner class TimeOfTakingAdapter : RecyclerAdapter<MedicinePlanEntity.TimeOfTaking>(R.layout.recycler_item_time_of_taking) {
+    inner class TimeOfTakingAdapter : RecyclerAdapter<MedicinePlanEntity.TimeOfTaking>(R.layout.recycler_item_time_of_taking, null) {
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val timeOfTaking = itemsArrayList[position]
+            val timeOfTaking = itemsList[position]
             val timeOfTakingDisplayData = viewModel.getTimeOfTakingDisplayData(timeOfTaking)
             holder.bind(timeOfTakingDisplayData, this@AddMedicinePlanFragment, position)
         }

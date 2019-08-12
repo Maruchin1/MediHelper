@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.example.medihelper.R
+import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentKitBinding
@@ -89,16 +90,22 @@ class KitFragment : Fragment() {
         viewModel.run {
             medicineKitItemListLive.observe(viewLifecycleOwner, Observer { medicineKitItemList ->
                 val adapter = recycler_view_medicines.adapter as MedicineAdapter
-                adapter.setItemsList(medicineKitItemList)
+                adapter.updateItemsList(medicineKitItemList)
             })
         }
     }
 
     // Inner classes
-    inner class MedicineAdapter : RecyclerAdapter<MedicineKitItem>(R.layout.recycler_item_medicine) {
-
+    inner class MedicineAdapter : RecyclerAdapter<MedicineKitItem>(
+        R.layout.recycler_item_medicine,
+        object : DiffCallback<MedicineKitItem>() {
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldList[oldItemPosition].medicineID == newList[newItemPosition].medicineID
+            }
+        }
+    ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicine = itemsArrayList[position]
+            val medicine = itemsList[position]
             val medicineDisplayData = viewModel.getMedicineKitItemDisplayData(medicine)
             holder.bind(medicineDisplayData, this@KitFragment)
         }
