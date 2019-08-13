@@ -68,7 +68,7 @@ class MedicinePlanListHostFragment : Fragment() {
                 if (selectedFrag != null) {
                     childFragmentManager.beginTransaction()
                         .replace(R.id.frame_medicine_plan_list, selectedFrag)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit()
                 }
             }

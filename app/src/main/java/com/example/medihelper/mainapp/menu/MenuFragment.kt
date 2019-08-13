@@ -34,6 +34,7 @@ class MenuFragment : Fragment() {
         val direction = when(view.id) {
             R.id.lay_click_schedule -> MenuFragmentDirections.toScheduleDestination()
             R.id.lay_click_kit -> MenuFragmentDirections.toKitDestination()
+            R.id.lay_click_family ->MenuFragmentDirections.toFamilyDestination()
             else -> null
         }
         direction?.let {

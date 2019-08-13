@@ -28,7 +28,4 @@ abstract class DiffCallback<T> : DiffUtil.Callback() {
         return oldList[oldItemPosition] == newList[newItemPosition]
     }
 
-    override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
-        return super.getChangePayload(oldItemPosition, newItemPosition)
-    }
 }

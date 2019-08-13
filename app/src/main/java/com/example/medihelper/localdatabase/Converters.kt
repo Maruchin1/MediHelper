@@ -2,6 +2,7 @@ package com.example.medihelper.localdatabase
 
 import androidx.room.TypeConverter
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
+import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -75,6 +76,17 @@ class Converters {
     @TypeConverter
     fun stringToStatusOfTaking(string: String): PlannedMedicineEntity.StatusOfTaking {
         return PlannedMedicineEntity.StatusOfTaking.valueOf(string)
+    }
+
+    // Gender
+    @TypeConverter
+    fun genderToString(gender: PersonEntity.Gender): String {
+        return gender.toString()
+    }
+
+    @TypeConverter
+    fun stringToGender(string: String): PersonEntity.Gender {
+        return PersonEntity.Gender.valueOf(string)
     }
 
 }

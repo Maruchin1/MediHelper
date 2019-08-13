@@ -64,6 +64,13 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/to_family_destination"
+            app:destination="@id/family_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/add_medicine_destination"
@@ -97,4 +104,19 @@
     <fragment
         android:id="@+id/medicine_plan_list_destination"
         android:name="com.example.medihelper.mainapp.schedule.MedicinePlanListHostFragment" />
+    <fragment
+        android:id="@+id/family_destination"
+        android:name="com.example.medihelper.mainapp.family.FamilyFragment"
+        tools:layout="@layout/fragment_family" >
+        <action
+            android:id="@+id/to_add_person_destination"
+            app:destination="@id/add_person_destination"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_down" />
+    </fragment>
+    <fragment
+        android:id="@+id/add_person_destination"
+        android:name="com.example.medihelper.mainapp.family.AddPersonFragment" />
 </navigation>

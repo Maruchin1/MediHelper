@@ -13,9 +13,10 @@ import com.example.medihelper.localdatabase.entities.*
     entities = [
         MedicineEntity::class,
         MedicinePlanEntity::class,
-        PlannedMedicineEntity::class
+        PlannedMedicineEntity::class,
+        PersonEntity::class
     ],
-    version = 20,
+    version = 21,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -24,6 +25,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun medicineDao(): MedicineDAO
     abstract fun medicinePlanDao(): MedicinePlanDAO
     abstract fun plannedMedicineDao(): PlannedMedicineDAO
+    abstract fun personDao(): PersonDAO
 
     companion object {
         private const val DATABASE_NAME = "local-database"

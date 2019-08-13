@@ -13,8 +13,11 @@ import com.example.medihelper.localdatabase.LocalDatabase
 import com.example.medihelper.localdatabase.PlannedMedicineScheduler
 import com.example.medihelper.localdatabase.dao.MedicineDAO
 import com.example.medihelper.localdatabase.dao.MedicinePlanDAO
+import com.example.medihelper.localdatabase.dao.PersonDAO
+import com.example.medihelper.localdatabase.dao.PlannedMedicineDAO
 import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
+import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import java.io.File
 import java.text.SimpleDateFormat
@@ -28,7 +31,8 @@ object AppRepository {
 
     private lateinit var medicineDao: MedicineDAO
     private lateinit var medicinePlanDao: MedicinePlanDAO
-    private lateinit var plannedMedicineDao: com.example.medihelper.localdatabase.dao.PlannedMedicineDAO
+    private lateinit var plannedMedicineDao: PlannedMedicineDAO
+    private lateinit var personDao: PersonDAO
     private var photosDir: File? = null
 
     fun init(app: Application) {
@@ -37,10 +41,17 @@ object AppRepository {
         initDatabaseData(app)
         photosDir = app.applicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         insertInitialMedicinesTypes()
+        insertInitialPersonColorResID()
     }
 
     // SharedPreferences
     fun getMedicineUnitListLive(): LiveData<List<String>> = medicineUnitListLive
+
+    fun getPersonColorResIDList(): List<Int> {
+        return sharedPreferences.getStringSet(KEY_PERSON_COLOR_RES_ID_SET, null)?.map { string ->
+            string.toInt()
+        } ?: emptyList()
+    }
 
     fun insertMedicineUnit(medicineUnit: String) {
         sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.let { medicineUnitSet ->
@@ -70,6 +81,8 @@ object AppRepository {
 
     fun getPlannedMedicineItemListLiveByDate(date: Date) = plannedMedicineDao.getPlannedMedicineByDateListLive(date)
 
+    fun getPersonListItemListLive() = personDao.getListItemListLive()
+
     // Delete
     fun deleteMedicine(medicineID: Int) = AsyncTask.execute { medicineDao.delete(medicineID) }
 
@@ -97,6 +110,11 @@ object AppRepository {
         updatePlannedMedicinesStatuses()
     }
 
+    fun insertPerson(personEntity: PersonEntity) = AsyncTask.execute {
+        personDao.insert(personEntity)
+    }
+
+    // Other
     fun createTempPhotoFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         return File.createTempFile(
@@ -126,6 +144,7 @@ object AppRepository {
         medicineDao = database.medicineDao()
         medicinePlanDao = database.medicinePlanDao()
         plannedMedicineDao = database.plannedMedicineDao()
+        personDao = database.personDao()
     }
 
     private fun initSharedPreferences(app: Application) {
@@ -134,6 +153,28 @@ object AppRepository {
         sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
                 KEY_MEDICINE_UNIT_SET -> medicineUnitListLive.value = sharedPreferences.getStringSet(key, null)?.toList()
+            }
+        }
+    }
+
+    private fun insertInitialPersonColorResID() = AsyncTask.execute {
+        val personColorResIDSet = sharedPreferences.getStringSet(KEY_PERSON_COLOR_RES_ID_SET, null)
+        if (personColorResIDSet.isNullOrEmpty()) {
+            val colorSet = listOf(
+                R.color.colorPersonBlue,
+                R.color.colorPersonBrown,
+                R.color.colorPersonCyan,
+                R.color.colorPersonGray,
+                R.color.colorPersonLightGreen,
+                R.color.colorPersonOrange,
+                R.color.colorPersonPurple,
+                R.color.colorPersonTeal,
+                R.color.colorPersonYellow
+            ).map { colorResID ->
+                colorResID.toString()
+            }.toMutableSet()
+            sharedPreferences.edit(true) {
+                putStringSet(KEY_PERSON_COLOR_RES_ID_SET, colorSet)
             }
         }
     }
@@ -151,4 +192,5 @@ object AppRepository {
 
     private const val APP_SHARED_PREFERENCES = "app-shared-preferences"
     private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
+    private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-array"
 }

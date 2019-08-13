@@ -66,3 +66,10 @@ fun setBackgroundColor(view: View, colorResId: Int?) {
     }
 }
 
+@BindingAdapter("cardBackgroundColorResID")
+fun setCardBackgroundColor(materialCardView: MaterialCardView, colorResId: Int?) {
+    if (colorResId != null) {
+        materialCardView.setCardBackgroundColor(ContextCompat.getColor(materialCardView.context, colorResId))
+    }
+}
+
