@@ -122,6 +122,7 @@ class AddMedicinePlanFragment : Fragment() {
             (it as MainActivity).run {
                 val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
                 fab.hide()
+                setTransparentStatusBar(false)
             }
         }
     }
@@ -158,10 +159,14 @@ class AddMedicinePlanFragment : Fragment() {
         })
         viewModel.timeOfTakingListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
             val adapter = recycler_view_schedule_hours.adapter as TimeOfTakingAdapter
-            adapter.updateItemsList(doseHourList)
+            adapter.updateItemsList(doseHourList.toList())
         })
-        viewModel.personSimpleItemLive.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG, "person change = $it")
+        viewModel.personSimpleItemLive.observe(viewLifecycleOwner, Observer { personSimpleItem ->
+            if (personSimpleItem != null) {
+                activity?.run {
+                    (this as MainActivity).setStatusBarColor(personSimpleItem.personColorResID)
+                }
+            }
         })
     }
 

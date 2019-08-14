@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -87,7 +88,13 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-
+        viewModel.personSimpleItemLive.observe(viewLifecycleOwner, Observer { personSimpleItem ->
+            if (personSimpleItem != null) {
+                activity?.run {
+                    (this as MainActivity).setStatusBarColor(personSimpleItem.personColorResID)
+                }
+            }
+        })
     }
 
     private fun setupMainActivity() {

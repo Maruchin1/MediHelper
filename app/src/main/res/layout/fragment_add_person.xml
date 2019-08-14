@@ -24,8 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -141,19 +141,22 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            cardBackgroundColorResID="@{viewModel.personColorResIDLive}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="40dp"
-            app:cardElevation="16dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="8dp"
             app:layout_anchor="@id/card_person_data"
-            app:layout_anchorGravity="top|center_horizontal">
+            app:layout_anchorGravity="top|center_horizontal"
+            app:strokeColor="@color/colorWhite"
+            app:strokeWidth="3dp">
 
             <ImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_margin="8dp"
                 android:src="@drawable/round_person_24"
-                android:tint="@color/colorDarkerGray" />
+                android:tint="@color/colorWhite" />
         </com.google.android.material.card.MaterialCardView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

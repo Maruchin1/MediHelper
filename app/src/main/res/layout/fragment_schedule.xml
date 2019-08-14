@@ -25,7 +25,7 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@{viewModel.personSimpleItemLive.personColorResID}"
             app:elevation="4dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -68,15 +68,17 @@
                             <com.google.android.material.card.MaterialCardView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:cardBackgroundColor="@color/colorTransparent"
                                 app:cardCornerRadius="16dp"
+                                app:cardElevation="0dp"
                                 app:strokeColor="@color/colorWhite"
-                                app:strokeWidth="1dp">
+                                app:strokeWidth="2dp">
 
                                 <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@{viewModel.personSimpleItemLive.personColorResID}"
-                                    android:src="@drawable/round_person_white_48" />
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    android:layout_margin="8dp"
+                                    android:src="@drawable/round_person_white_36" />
                             </com.google.android.material.card.MaterialCardView>
 
                             <TextView
@@ -101,14 +103,14 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{() -> handler.onClickNavigateList()}"
-                        android:text="Lista zaplanowanych leków"
-                        android:textColor="@color/colorPrimary"
-                        app:backgroundTint="@color/colorWhite"
-                        app:cornerRadius="20dp" />
+<!--                    <com.google.android.material.button.MaterialButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:onClick="@{() -> handler.onClickNavigateList()}"-->
+<!--                        android:text="Lista zaplanowanych leków"-->
+<!--                        android:textColor="@color/colorPrimary"-->
+<!--                        app:backgroundTint="@color/colorWhite"-->
+<!--                        app:cornerRadius="20dp" />-->
 
                 </LinearLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>

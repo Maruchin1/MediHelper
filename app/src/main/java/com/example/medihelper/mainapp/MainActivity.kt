@@ -3,6 +3,7 @@ package com.example.medihelper.mainapp
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import com.example.medihelper.AppRepository
 import com.example.medihelper.R
 import com.google.android.material.snackbar.Snackbar
@@ -25,6 +26,10 @@ class MainActivity : AppCompatActivity() {
             true -> window.statusBarColor = Color.TRANSPARENT
             false -> window.statusBarColor = resources.getColor(R.color.colorPrimary)
         }
+    }
+
+    fun setStatusBarColor(colorResID: Int) {
+        window.statusBarColor = ContextCompat.getColor(this, colorResID)
     }
 
     fun showSnackBar(message: String) {
