@@ -9,9 +9,9 @@ import com.example.medihelper.AppDateTime
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
+import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.localdatabase.pojos.PersonSimpleItem
-import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -22,7 +22,10 @@ class AddMedicinePlanViewModel : ViewModel() {
     val personSimpleItemLive: LiveData<PersonSimpleItem>
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
-    val medicineItemLive: LiveData<MedicineItem>
+    val medicineDetailsLive: LiveData<MedicineDetails>
+    val medicineName: LiveData<String>
+    val medicineCurrState: LiveData<String>
+    val medicineExpireDate: LiveData<String>
 
     val durationTypeLive = MutableLiveData<MedicinePlanEntity.DurationType>()
     val startDateLive = MutableLiveData<Date>()
@@ -34,28 +37,37 @@ class AddMedicinePlanViewModel : ViewModel() {
 
     val timeOfTakingListLive = MutableLiveData<ArrayList<MedicinePlanEntity.TimeOfTaking>>()
 
-    private val medicineKitItemObserver = Observer<MedicineItem> { loadDefaultData() }
+    private val medicineDetailsObserver = Observer<MedicineDetails> { loadDefaultData() }
 
     init {
         personSimpleItemLive = Transformations.switchMap(selectedPersonIDLive) { personID ->
             AppRepository.getPersonSimpleItemLive(personID)
         }
-        medicineItemLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
-            AppRepository.getMedicineItemLive(medicineID)
+        medicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
+            AppRepository.getMedicineDetailsLive(medicineID)
+        }
+        medicineName = Transformations.map(medicineDetailsLive) { medicineDetails ->
+            medicineDetails.medicineName
+        }
+        medicineCurrState = Transformations.map(medicineDetailsLive) { medicineDetails ->
+            "${medicineDetails.currState}/${medicineDetails.packageSize} ${medicineDetails.medicineUnit}"
+        }
+        medicineExpireDate = Transformations.map(medicineDetailsLive) { medicineDetails ->
+            medicineDetails.expireDate?.let { AppDateTime.dateToString(it) }
         }
         loadDefaultData()
-        medicineItemLive.observeForever(medicineKitItemObserver)
+        medicineDetailsLive.observeForever(medicineDetailsObserver)
     }
 
     override fun onCleared() {
         super.onCleared()
-        medicineItemLive.removeObserver(medicineKitItemObserver)
+        medicineDetailsLive.removeObserver(medicineDetailsObserver)
     }
 
-    fun saveScheduledMedicine() {
+    fun saveMedicinePlan() {
         //todo zrobić to porządniej i z walidacją danych
         val medicinePlan = MedicinePlanEntity(
-            medicineID = medicineItemLive.value!!.medicineID,
+            medicineID = medicineDetailsLive.value!!.medicineID,
             personID = personSimpleItemLive.value!!.personID,
             startDate = startDateLive.value!!,
             durationType = durationTypeLive.value!!,
@@ -98,7 +110,7 @@ class AddMedicinePlanViewModel : ViewModel() {
             timeOfTakingRef = timeOfTaking,
             time = AppDateTime.timeToString(timeOfTaking.time),
             doseSize = timeOfTaking.doseSize.toString(),
-            medicineTypeName = medicineItemLive.value?.medicineUnit ?: "--"
+            medicineTypeName = medicineDetailsLive.value?.medicineUnit ?: "--"
         )
     }
 

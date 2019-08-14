@@ -18,14 +18,15 @@
         android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorBackground"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            app:elevation="4dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsing_toolbar"
@@ -35,65 +36,81 @@
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
                 app:titleEnabled="false">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="?actionBarSize"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_height="wrap_content">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:onClick="@{() -> handler.onClickSelectPerson()}"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="8dp"
-                        app:layout_constraintBottom_toBottomOf="@id/toolbar"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/toolbar">
+                        <androidx.appcompat.widget.Toolbar
+                            android:id="@+id/toolbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="?actionBarSize"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <com.google.android.material.card.MaterialCardView
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="16dp"
-                            app:strokeColor="@color/colorWhite"
-                            app:strokeWidth="1dp">
+                            android:layout_height="0dp"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:onClick="@{() -> handler.onClickSelectPerson()}"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="8dp"
+                            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/toolbar">
 
-                            <ImageView
+                            <com.google.android.material.card.MaterialCardView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@{viewModel.personSimpleItemLive.personColorResID}"
-                                android:src="@drawable/round_person_white_48" />
-                        </com.google.android.material.card.MaterialCardView>
+                                app:cardCornerRadius="16dp"
+                                app:strokeColor="@color/colorWhite"
+                                app:strokeWidth="1dp">
 
-                        <TextView
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@{viewModel.personSimpleItemLive.personColorResID}"
+                                    android:src="@drawable/round_person_white_48" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text='@{viewModel.personSimpleItemLive.personName, default="Nazwa  osoby"}'
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                                android:textColor="@color/colorWhite" />
+                        </LinearLayout>
+
+                        <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text='@{viewModel.personSimpleItemLive.personName, default="Nazwa  osoby"}'
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                            android:textColor="@color/colorWhite" />
-                    </LinearLayout>
+                            android:layout_marginEnd="10dp"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:onClick="@{() -> handler.onClickSelectDate()}"
+                            android:src="@drawable/round_event_white_36"
+                            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/toolbar" />
 
-                    <ImageButton
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.button.MaterialButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:onClick="@{() -> handler.onClickSelectDate()}"
-                        android:src="@drawable/round_event_white_36"
-                        app:layout_constraintBottom_toBottomOf="@id/toolbar"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/toolbar" />
+                        android:onClick="@{() -> handler.onClickNavigateList()}"
+                        android:text="Lista zaplanowanych leków"
+                        android:textColor="@color/colorPrimary"
+                        app:backgroundTint="@color/colorWhite"
+                        app:cornerRadius="20dp" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -108,7 +125,6 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorBackground"
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 

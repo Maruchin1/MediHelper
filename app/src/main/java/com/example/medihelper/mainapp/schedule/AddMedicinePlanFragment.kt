@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,7 @@ import kotlinx.android.synthetic.main.fragment_add_medicine_plan.*
 class AddMedicinePlanFragment : Fragment() {
     private val TAG = AddMedicinePlanFragment::class.simpleName
 
+    private val args: AddMedicinePlanFragmentArgs by navArgs()
     private lateinit var viewModel: AddMedicinePlanViewModel
 
     fun onClickSelectMedicine() {
@@ -78,6 +80,11 @@ class AddMedicinePlanFragment : Fragment() {
 
     fun onClickRemoveTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) = viewModel.removeTimeOfTaking(timeOfTaking)
 
+    fun onClickSaveNewMedicinePlan() {
+        viewModel.saveMedicinePlan()
+        findNavController().popBackStack()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
@@ -102,22 +109,19 @@ class AddMedicinePlanFragment : Fragment() {
         setupScheduleTypeChipGroup()
         setupScheduleDaysChipGroup()
         setupTimeOfTakingRecyclerView()
+        setDefaultArguments()
         observeViewModel()
+    }
+
+    private fun setDefaultArguments() {
+        viewModel.selectedPersonIDLive.value = args.personID
     }
 
     private fun setupMainActivity() {
         activity?.let {
             (it as MainActivity).run {
                 val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
-                fab.apply {
-                    setIconResource(R.drawable.round_save_white_48)
-                    text = "Zapisz"
-                    extend()
-                    setOnClickListener {
-                        viewModel.saveScheduledMedicine()
-                        findNavController().popBackStack()
-                    }
-                }
+                fab.hide()
             }
         }
     }

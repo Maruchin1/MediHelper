@@ -140,9 +140,11 @@ class ScheduleFragment : Fragment() {
         view_pager_dates.currentItem = viewModel.initialDatePosition
     }
 
-    private fun navigateToAddMedicinePlanFragment() = findNavController().navigate(
-        ScheduleFragmentDirections.toAddMedicinePlanDestination()
-    )
+    private fun navigateToAddMedicinePlanFragment(){
+        viewModel.selectedPersonIDLive.value?.let {
+            findNavController().navigate(ScheduleFragmentDirections.toAddMedicinePlanDestination(it))
+        }
+    }
 
     // Inner classes
     inner class ScheduleDayPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
