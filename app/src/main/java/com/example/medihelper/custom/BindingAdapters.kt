@@ -61,14 +61,14 @@ fun setImageViewSrc(imageView: ImageView, imageResId: Int?) {
 
 @BindingAdapter("android:background")
 fun setBackgroundColor(view: View, colorResId: Int?) {
-    if (colorResId != null) {
+    if (colorResId != null && colorResId != 0) {
         view.setBackgroundColor(ContextCompat.getColor(view.context, colorResId))
     }
 }
 
 @BindingAdapter("cardBackgroundColorResID")
 fun setCardBackgroundColor(materialCardView: MaterialCardView, colorResId: Int?) {
-    if (colorResId != null) {
+    if (colorResId != null && colorResId != 0) {
         materialCardView.setCardBackgroundColor(ContextCompat.getColor(materialCardView.context, colorResId))
     }
 }

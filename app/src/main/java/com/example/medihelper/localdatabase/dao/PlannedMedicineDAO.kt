@@ -29,8 +29,8 @@ interface PlannedMedicineDAO {
     fun getByID(plannedMedicineID: Int): PlannedMedicineEntity
 
     @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE pm.planned_medicine_id = :plannedMedicineID")
-    fun getPlannedMedicineDetailsLive(plannedMedicineID: Int): LiveData<PlannedMedicineDetails>
+    fun getDetailsLive(plannedMedicineID: Int): LiveData<PlannedMedicineDetails>
 
-    @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE pm.planned_date = :date")
-    fun getPlannedMedicineByDateListLive(date: Date): LiveData<List<PlannedMedicineItem>>
+    @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN medicines m ON mp.medicine_id = m.medicine_id JOIN persons p ON mp.person_id = p.person_id WHERE pm.planned_date = :date AND p.person_id = :personID")
+    fun getItemByDateListLive(date: Date, personID: Int): LiveData<List<PlannedMedicineItem>>
 }

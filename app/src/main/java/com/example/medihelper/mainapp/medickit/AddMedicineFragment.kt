@@ -78,7 +78,7 @@ class AddMedicineFragment : Fragment() {
         dialog.setDateSelectedListener { date ->
             viewModel.expireDateLive.value = date
         }
-        dialog.show(childFragmentManager, SelectDateDialog.TAG)
+        dialog.show(childFragmentManager, dialog.TAG)
     }
 
     private fun observeViewModel() {

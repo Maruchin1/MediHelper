@@ -3,7 +3,6 @@ package com.example.medihelper.mainapp.schedule
 
 import android.os.Bundle
 import android.transition.TransitionManager
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.BR
@@ -23,10 +23,7 @@ import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicinePlanListBinding
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
-import kotlinx.android.synthetic.main.fragment_medicine_plan_list.*
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list.recycler_view_medicine_plan
-import kotlinx.android.synthetic.main.fragment_medicine_plan_list.view.*
-import kotlinx.android.synthetic.main.recycler_item_medicine_plan.*
 import kotlinx.android.synthetic.main.recycler_item_medicine_plan.view.*
 import kotlinx.android.synthetic.main.recycler_item_medicine_plan.view.recycler_view_planned_medicine_checkbox
 import kotlinx.android.synthetic.main.recycler_item_planned_medicine_for_plan_item.view.*

@@ -40,7 +40,7 @@ class ScheduleTypeContinuousFragment : Fragment() {
         dialog.setDateSelectedListener { date ->
             planViewModel.startDateLive.value = date
         }
-        dialog.show(childFragmentManager, SelectDateDialog.TAG)
+        dialog.show(childFragmentManager, dialog.TAG)
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {

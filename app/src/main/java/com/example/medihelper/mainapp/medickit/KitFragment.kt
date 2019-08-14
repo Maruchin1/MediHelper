@@ -17,11 +17,10 @@ import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentKitBinding
-import com.example.medihelper.localdatabase.pojos.MedicineKitItem
+import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_kit.*
-import kotlinx.android.synthetic.main.fragment_kit.btn_back_to_menu
 
 
 class KitFragment : Fragment() {
@@ -33,6 +32,8 @@ class KitFragment : Fragment() {
         val action = KitFragmentDirections.toMedicineDetailsDestination(medicineID)
         findNavController().navigate(action)
     }
+
+    fun onClickBackToMenu() = findNavController().popBackStack()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,6 @@ class KitFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_back_to_menu.setOnClickListener { findNavController().popBackStack() }
         setupMainActivity()
         setupRecyclerView()
         observeViewModel()
@@ -96,9 +96,9 @@ class KitFragment : Fragment() {
     }
 
     // Inner classes
-    inner class MedicineAdapter : RecyclerAdapter<MedicineKitItem>(
+    inner class MedicineAdapter : RecyclerAdapter<MedicineItem>(
         R.layout.recycler_item_medicine,
-        object : DiffCallback<MedicineKitItem>() {
+        object : DiffCallback<MedicineItem>() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 return oldList[oldItemPosition].medicineID == newList[newItemPosition].medicineID
             }

@@ -35,6 +35,7 @@ class AddPersonViewModel : ViewModel() {
     }
 
     fun saveNewPerson() {
+        //todo zrobić walidację
         val newPerson = PersonEntity(
             personName = personNameLive.value!!,
             gender = genderLive.value!!,

@@ -3,8 +3,6 @@
 
     <data>
 
-        <import type="java.sql.Time" />
-
         <import type="com.example.medihelper.AppDateTime" />
 
         <variable
@@ -20,9 +18,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="8dp"
@@ -53,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text='@{AppDateTime.timeToString(displayData.plannedTime), default="00:00"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:textColor="@color/colorWhite"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -73,27 +71,45 @@
 
             <TextView
                 android:id="@+id/txv_medicine_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_margin="16dp"
                 android:text='@{displayData.medicineName, default="Nazwa leku"}'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/ver_guideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lay_header" />
 
             <TextView
                 android:id="@+id/txv_scheduled_dose"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text='@{"Dawka: " + displayData.plannedDoseSize + " " + displayData.medicineUnit, default="Dawka do przyjęcia"}'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:textColor="@color/colorTextTertiary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ver_guideline"
+                app:layout_constraintTop_toBottomOf="@id/lay_header" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/ver_guideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:text='@{"Dawka: " + displayData.plannedDoseSize + " " + displayData.medicineUnit, default="Dawka do przyjęcia"}'
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txv_medicine_name" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:alpha="0.12"
+                android:background="@color/colorBlack"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/ver_guideline"
+                app:layout_constraintStart_toStartOf="@id/ver_guideline"
+                app:layout_constraintTop_toBottomOf="@id/lay_header" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

@@ -22,6 +22,7 @@ import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.databinding.FragmentAddMedicinePlanBinding
+import com.example.medihelper.dialogs.SelectPersonDialog
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.mainapp.MainActivity
 import com.example.medihelper.mainapp.schedule.daystype.DaysOfWeekFragment
@@ -39,8 +40,21 @@ class AddMedicinePlanFragment : Fragment() {
     private lateinit var viewModel: AddMedicinePlanViewModel
 
     fun onClickSelectMedicine() {
-        val dialog = SelectMedicineDialog()
-        dialog.show(childFragmentManager, SelectMedicineDialog.TAG)
+        val dialog = SelectMedicineDialog().apply {
+            setMedicineSelectedListener { medicineID ->
+                viewModel.selectedMedicineIDLive.value = medicineID
+            }
+        }
+        dialog.show(childFragmentManager, dialog.TAG)
+    }
+
+    fun onClickSelectPerson() {
+        val dialog = SelectPersonDialog().apply {
+            setPersonSelectedListener { personID ->
+                viewModel.selectedPersonIDLive.value = personID
+            }
+        }
+        dialog.show(childFragmentManager, dialog.TAG)
     }
 
     fun onClickSelectTime(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
@@ -66,9 +80,7 @@ class AddMedicinePlanFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        viewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -143,6 +155,9 @@ class AddMedicinePlanFragment : Fragment() {
         viewModel.timeOfTakingListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
             val adapter = recycler_view_schedule_hours.adapter as TimeOfTakingAdapter
             adapter.updateItemsList(doseHourList)
+        })
+        viewModel.personSimpleItemLive.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, "person change = $it")
         })
     }
 

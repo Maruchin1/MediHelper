@@ -50,7 +50,7 @@ class ScheduleDayFragment : Fragment() {
 
     private fun observeViewModel() {
         date?.let { dayDate ->
-            viewModel.getPlannedMedicinesByDateListLive(dayDate).observe(viewLifecycleOwner, Observer { plannedMedicineList ->
+            viewModel.getPlannedMedicineItemListByDateLive(dayDate).observe(viewLifecycleOwner, Observer { plannedMedicineList ->
                 Log.d(TAG, "date = $date, scheduledMedicinesList change = $plannedMedicineList")
                 val adapter = recycler_view_scheduled_medicine_for_day.adapter as PlannedMedicineAdapter
                 adapter.updateItemsList(plannedMedicineList)

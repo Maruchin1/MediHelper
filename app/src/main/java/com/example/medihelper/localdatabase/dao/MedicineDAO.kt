@@ -5,7 +5,7 @@ import androidx.room.*
 import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.MedicineEditData
-import com.example.medihelper.localdatabase.pojos.MedicineKitItem
+import com.example.medihelper.localdatabase.pojos.MedicineItem
 
 @Dao
 interface MedicineDAO {
@@ -20,10 +20,10 @@ interface MedicineDAO {
     fun delete(medicineID: Int)
 
     @Query("SELECT * FROM medicines")
-    fun getKitItemListLive(): LiveData<List<MedicineKitItem>>
+    fun getItemListLive(): LiveData<List<MedicineItem>>
 
     @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
-    fun getKitItemLive(medicineID: Int): LiveData<MedicineKitItem>
+    fun getItemLive(medicineID: Int): LiveData<MedicineItem>
 
     @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
     fun getEditDataLive(medicineID: Int): LiveData<MedicineEditData>

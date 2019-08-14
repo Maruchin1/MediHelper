@@ -18,6 +18,7 @@
     <color name="colorWhite">@android:color/white</color>
     <color name="colorBlack">@android:color/black</color>
     <color name="colorDarkerGray">@android:color/darker_gray</color>
+    <color name="colorTransparent">@android:color/transparent</color>
 
     <color name="colorPersonPurple">#9C27B0</color>
     <color name="colorPersonBlue">#2196F3</color>

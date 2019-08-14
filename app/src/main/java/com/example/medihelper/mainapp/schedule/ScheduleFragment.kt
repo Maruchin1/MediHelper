@@ -19,6 +19,8 @@ import com.example.medihelper.custom.CenterLayoutManager
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
+import com.example.medihelper.dialogs.SelectDateDialog
+import com.example.medihelper.dialogs.SelectPersonDialog
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_schedule.*
@@ -35,6 +37,27 @@ class ScheduleFragment : Fragment() {
     fun onClickNavigateList() {
         val direction = ScheduleFragmentDirections.toMedicinePlanListDestination()
         findNavController().navigate(direction)
+    }
+
+    fun onClickSelectPerson() {
+        val dialog = SelectPersonDialog().apply {
+            setPersonSelectedListener { personID ->
+                viewModel.selectedPersonIDLive.value = personID
+            }
+        }
+        dialog.show(childFragmentManager, dialog.TAG)
+    }
+
+    fun onClickSelectDate() {
+        val adapter = recycler_view_timeline.adapter as ScheduleTimelineAdapter
+        val selectedDate = viewModel.getDateForPosition(adapter.getSelectedPosition())
+        val dialog = SelectDateDialog().apply {
+            defaultDate = selectedDate
+            setDateSelectedListener { date ->
+                adapter.selectDate(viewModel.getPositionForDate(date))
+            }
+        }
+        dialog.show(childFragmentManager, dialog.TAG)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,7 +100,7 @@ class ScheduleFragment : Fragment() {
                     shrink()
                     setIconResource(R.drawable.round_add_alert_white_48)
                     text = ""
-                    setOnClickListener { openSelectMedicineDialog() }
+                    setOnClickListener { navigateToAddMedicinePlanFragment() }
                 }
             }
         }
@@ -117,10 +140,9 @@ class ScheduleFragment : Fragment() {
         view_pager_dates.currentItem = viewModel.initialDatePosition
     }
 
-    private fun openSelectMedicineDialog() {
-        val dialog = SelectMedicineDialog()
-        dialog.show(childFragmentManager, SelectMedicineDialog.TAG)
-    }
+    private fun navigateToAddMedicinePlanFragment() = findNavController().navigate(
+        ScheduleFragmentDirections.toAddMedicinePlanDestination()
+    )
 
     // Inner classes
     inner class ScheduleDayPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -158,6 +180,8 @@ class ScheduleFragment : Fragment() {
             notifyItemChanged(position)
         }
 
+        fun getSelectedPosition() = selectedPosition
+
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -173,11 +197,13 @@ class ScheduleFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ScheduleTimelineViewHolder, position: Int) {
             val date = viewModel.getDateForPosition(position)
-            var textColorID = R.color.colorTextTertiary
+            var textColorID = R.color.colorBackground
+            var textAlpha = 0.5f
             var selectedIndicatorVisibility = View.INVISIBLE
 
             if (selectedPosition == position) {
-                textColorID = R.color.colorPrimary
+                textColorID = R.color.colorWhite
+                textAlpha = 1.0f
                 selectedIndicatorVisibility = View.VISIBLE
                 recycler_view_timeline.smoothScrollToPosition(position)
             }
@@ -185,10 +211,12 @@ class ScheduleFragment : Fragment() {
             holder.view.apply {
                 txv_day.apply {
                     text = AppDateTime.dayMonthString(date)
+                    alpha = textAlpha
                     setTextColor(resources.getColor(textColorID))
                 }
                 txv_day_of_week.apply {
                     text = AppDateTime.dayOfWeekString(date)
+                    alpha = textAlpha
                     setTextColor(resources.getColor(textColorID))
                 }
                 view_selected_indicator.visibility = selectedIndicatorVisibility

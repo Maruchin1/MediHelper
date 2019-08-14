@@ -17,7 +17,8 @@ import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentFamilyBinding
-import com.example.medihelper.localdatabase.pojos.PersonListItem
+import com.example.medihelper.localdatabase.pojos.PersonItem
+import com.example.medihelper.mainapp.MainActivity
 import kotlinx.android.synthetic.main.fragment_family.*
 
 
@@ -29,6 +30,8 @@ class FamilyFragment : Fragment() {
     fun onClickAddPerson() {
         findNavController().navigate(FamilyFragmentDirections.toAddPersonDestination())
     }
+
+    fun onClickBackToMenu() = findNavController().popBackStack()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,12 +53,13 @@ class FamilyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupMainActivity()
         setupRecyclerView()
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        viewModel.personListItemListLive.observe(viewLifecycleOwner, Observer { personListItemList ->
+        viewModel.personListItemLive.observe(viewLifecycleOwner, Observer { personListItemList ->
             val adapter = recycler_view_persons.adapter as PersonsAdapter
             adapter.updateItemsList(personListItemList)
         })
@@ -68,10 +72,18 @@ class FamilyFragment : Fragment() {
         }
     }
 
+    private fun setupMainActivity() {
+        activity?.run {
+            (this as MainActivity).apply {
+                setTransparentStatusBar(false)
+            }
+        }
+    }
+
     // Inner classes
-    inner class PersonsAdapter : RecyclerAdapter<PersonListItem>(
+    inner class PersonsAdapter : RecyclerAdapter<PersonItem>(
         R.layout.recycler_item_person,
-        object : DiffCallback<PersonListItem>() {
+        object : DiffCallback<PersonItem>() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 return oldList[oldItemPosition].personID == newList[newItemPosition].personID
             }

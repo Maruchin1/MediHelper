@@ -53,6 +53,8 @@ object AppRepository {
         } ?: emptyList()
     }
 
+    fun getMainPersonID() = sharedPreferences.getInt(KEY_MAIN_PERSON_ID, -1)
+
     fun insertMedicineUnit(medicineUnit: String) {
         sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.let { medicineUnitSet ->
             medicineUnitSet.add(medicineUnit)
@@ -63,11 +65,17 @@ object AppRepository {
         }
     }
 
+    fun updateMainPersonID(personID: Int) {
+        sharedPreferences.edit(true) {
+            putInt(KEY_MAIN_PERSON_ID, personID)
+        }
+    }
+
     // Database
     // Get
-    fun getMedicineKitItemLive(medicineID: Int) = medicineDao.getKitItemLive(medicineID)
+    fun getMedicineItemLive(medicineID: Int) = medicineDao.getItemLive(medicineID)
 
-    fun getMedicineKitItemListLive() = medicineDao.getKitItemListLive()
+    fun getMedicineItemListLive() = medicineDao.getItemListLive()
 
     fun getMedicineEditDataLive(medicineID: Int) = medicineDao.getEditDataLive(medicineID)
 
@@ -77,11 +85,15 @@ object AppRepository {
 
     fun getPlannedMedicine(plannedMedicineID: Int) = plannedMedicineDao.getByID(plannedMedicineID)
 
-    fun getPlannedMedicineDetailsLive(plannedMedicineID: Int) = plannedMedicineDao.getPlannedMedicineDetailsLive(plannedMedicineID)
+    fun getPlannedMedicineDetailsLive(plannedMedicineID: Int) = plannedMedicineDao.getDetailsLive(plannedMedicineID)
 
-    fun getPlannedMedicineItemListLiveByDate(date: Date) = plannedMedicineDao.getPlannedMedicineByDateListLive(date)
+    fun getPlannedMedicineItemListLiveByDate(date: Date, personID: Int) = plannedMedicineDao.getItemByDateListLive(date, personID)
 
     fun getPersonListItemListLive() = personDao.getListItemListLive()
+
+    fun getPersonSimpleItemListLive() = personDao.getSimpleItemListLive()
+
+    fun getPersonSimpleItemLive(personID: Int) = personDao.getSimpleItemLive(personID)
 
     // Delete
     fun deleteMedicine(medicineID: Int) = AsyncTask.execute { medicineDao.delete(medicineID) }
@@ -111,7 +123,10 @@ object AppRepository {
     }
 
     fun insertPerson(personEntity: PersonEntity) = AsyncTask.execute {
-        personDao.insert(personEntity)
+        val addedPersonID = personDao.insert(personEntity)
+        if (getMainPersonID() == -1) {
+            updateMainPersonID(addedPersonID.toInt())
+        }
     }
 
     // Other
@@ -193,4 +208,5 @@ object AppRepository {
     private const val APP_SHARED_PREFERENCES = "app-shared-preferences"
     private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
     private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-array"
+    private const val KEY_MAIN_PERSON_ID = "key-main-person-id"
 }

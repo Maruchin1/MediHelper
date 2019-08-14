@@ -15,15 +15,6 @@ class SelectNumberDialog : BottomSheetDialogFragment() {
     var defaultNumber: Int? = null
     private var numberSelectedListener: ((number: Int) -> Unit)? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bindLayout(inflater, container)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupNumberPicker()
-    }
-
     fun setNumberSelectedListener(listener: (number: Int) -> Unit) {
         numberSelectedListener = listener
     }
@@ -36,12 +27,17 @@ class SelectNumberDialog : BottomSheetDialogFragment() {
         dismiss()
     }
 
-    private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: DialogSelectNumberBinding =
             DataBindingUtil.inflate(inflater, R.layout.dialog_select_number, container, false)
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupNumberPicker()
     }
 
     private fun setupNumberPicker() {

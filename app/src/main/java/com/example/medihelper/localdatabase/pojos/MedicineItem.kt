@@ -2,7 +2,7 @@ package com.example.medihelper.localdatabase.pojos
 
 import androidx.room.ColumnInfo
 
-data class MedicineKitItem(
+data class MedicineItem(
     @ColumnInfo(name = "medicine_id")
     val medicineID: Int,
 

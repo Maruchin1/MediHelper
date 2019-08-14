@@ -17,9 +17,6 @@
             app:popEnterAnim="@anim/slide_in_start"
             app:popExitAnim="@anim/slide_out_end" />
         <action
-            android:id="@+id/to_add_medicine_destination"
-            app:destination="@id/add_medicine_destination" />
-        <action
             android:id="@+id/to_medicine_plan_list_destination"
             app:destination="@id/medicine_plan_list_destination"
             app:enterAnim="@anim/slide_in_end"
@@ -82,7 +79,8 @@
     </fragment>
     <fragment
         android:id="@+id/medicine_details_destination"
-        android:name="com.example.medihelper.mainapp.medickit.MedicineDetailsFragment">
+        android:name="com.example.medihelper.mainapp.medickit.MedicineDetailsFragment"
+        tools:layout="@layout/fragment_medicine_details">
         <argument
             android:name="medicineId"
             app:argType="integer" />
@@ -96,14 +94,23 @@
     </fragment>
     <fragment
         android:id="@+id/add_medicine_plan_destination"
-        android:name="com.example.medihelper.mainapp.schedule.AddMedicinePlanFragment" >
+        android:name="com.example.medihelper.mainapp.schedule.AddMedicinePlanFragment"
+        tools:layout="@layout/fragment_add_medicine_plan">
         <action
             android:id="@+id/to_add_medicine_destination"
             app:destination="@id/add_medicine_destination" />
+        <action
+            android:id="@+id/to_add_person_destination"
+            app:destination="@id/add_person_destination" />
     </fragment>
     <fragment
         android:id="@+id/medicine_plan_list_destination"
-        android:name="com.example.medihelper.mainapp.schedule.MedicinePlanListHostFragment" />
+        android:name="com.example.medihelper.mainapp.schedule.MedicinePlanListHostFragment"
+        tools:layout="@layout/fragment_medicine_plan_list_host">
+        <action
+            android:id="@+id/to_add_medicine_plan_direction"
+            app:destination="@id/add_medicine_plan_destination" />
+    </fragment>
     <fragment
         android:id="@+id/family_destination"
         android:name="com.example.medihelper.mainapp.family.FamilyFragment"
@@ -111,12 +118,13 @@
         <action
             android:id="@+id/to_add_person_destination"
             app:destination="@id/add_person_destination"
-            app:enterAnim="@anim/slide_up"
+            app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/slide_down" />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/add_person_destination"
-        android:name="com.example.medihelper.mainapp.family.AddPersonFragment" />
+        android:name="com.example.medihelper.mainapp.family.AddPersonFragment"
+        tools:layout="@layout/fragment_add_person"/>
 </navigation>

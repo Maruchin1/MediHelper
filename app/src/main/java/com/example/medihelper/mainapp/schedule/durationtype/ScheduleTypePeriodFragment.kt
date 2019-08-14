@@ -45,7 +45,7 @@ class ScheduleTypePeriodFragment : Fragment() {
         dialog.setDateSelectedListener { date ->
             selectedDateLive?.value = date
         }
-        dialog.show(childFragmentManager, SelectDateDialog.TAG)
+        dialog.show(childFragmentManager, dialog.TAG)
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {

@@ -1,15 +1,15 @@
 package com.example.medihelper.mainapp.schedule
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.AppRepository
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
+import com.example.medihelper.localdatabase.pojos.PersonSimpleItem
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineCheckbox
+import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -18,11 +18,17 @@ class ScheduleViewModel : ViewModel() {
     val timelineDaysCount = 10000
     val initialDatePosition = timelineDaysCount / 2
 
+    val selectedPersonIDLive = MutableLiveData(AppRepository.getMainPersonID())
+    val personSimpleItemLive: LiveData<PersonSimpleItem>
+
     private val medicinePlanItemListLive = AppRepository.getMedicinePlanItemListLive()
     private val medicinePlanItemOngoingListLive: LiveData<List<MedicinePlanItem>>
     private val medicinePlanItemEndedListLive: LiveData<List<MedicinePlanItem>>
 
     init {
+        personSimpleItemLive = Transformations.switchMap(selectedPersonIDLive) { personID ->
+            AppRepository.getPersonSimpleItemLive(personID)
+        }
         medicinePlanItemOngoingListLive = Transformations.map(medicinePlanItemListLive) { medicinePlanItemList ->
             medicinePlanItemList.filter { medicinePlanItem ->
                 getMedicinePlanType(medicinePlanItem) == MedicinePlanType.ONGOING
@@ -41,6 +47,12 @@ class ScheduleViewModel : ViewModel() {
         return calendar.time
     }
 
+    fun getPositionForDate(date: Date): Int {
+        val currCalendar = AppDateTime.getCurrCalendar()
+        val daysDiff = AppDateTime.daysBetween(currCalendar.time, date)
+        return (timelineDaysCount / 2) + daysDiff.toInt()
+    }
+
     fun getMedicinePlanItemListLive(medicinePlanType: MedicinePlanType): LiveData<List<MedicinePlanItem>> {
         return when (medicinePlanType) {
             MedicinePlanType.ONGOING -> medicinePlanItemOngoingListLive
@@ -48,7 +60,11 @@ class ScheduleViewModel : ViewModel() {
         }
     }
 
-    fun getPlannedMedicinesByDateListLive(date: Date) = AppRepository.getPlannedMedicineItemListLiveByDate(date)
+    fun getPlannedMedicineItemListByDateLive(date: Date): LiveData<List<PlannedMedicineItem>> {
+        return Transformations.switchMap(selectedPersonIDLive) { personID ->
+            AppRepository.getPlannedMedicineItemListLiveByDate(date, personID)
+        }
+    }
 
     fun getMedicinePlanDisplayData(medicinePlanItem: MedicinePlanItem): MedicinePlanDisplayData {
         return MedicinePlanDisplayData(

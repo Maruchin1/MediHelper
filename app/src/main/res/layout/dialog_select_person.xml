@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.schedule.SelectMedicineDialog" />
+            type="com.example.medihelper.dialogs.SelectPersonDialog" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_bottom_dialog"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_medicines"
+            android:id="@+id/recycler_view_persons"
             android:layout_width="match_parent"
             android:layout_height="300dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_add_medicine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:onClick="@{() -> handler.onClickAddNewMedicine()}"
-            android:text="Dodaj nowy lek"
+            android:onClick="@{() -> handler.onClickAddNewPerson()}"
+            android:text="Dodaj nową osobę"
             app:cornerRadius="20dp" />
 
     </LinearLayout>
+
 </layout>

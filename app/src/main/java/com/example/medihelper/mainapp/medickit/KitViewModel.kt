@@ -3,23 +3,22 @@ package com.example.medihelper.mainapp.medickit
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppRepository
 import com.example.medihelper.R
-import com.example.medihelper.custom.DiffCallback
-import com.example.medihelper.localdatabase.pojos.MedicineKitItem
+import com.example.medihelper.localdatabase.pojos.MedicineItem
 import java.io.File
 
 class KitViewModel : ViewModel() {
     private val TAG = KitViewModel::class.simpleName
 
-    val medicineKitItemListLive = AppRepository.getMedicineKitItemListLive()
+    val medicineKitItemListLive = AppRepository.getMedicineItemListLive()
 
-    fun getMedicineKitItemDisplayData(medicineKitItem: MedicineKitItem): MedicineKitItemDisplayData {
-        val medicineState = medicineKitItem.calcMedicineState()
+    fun getMedicineKitItemDisplayData(medicineItem: MedicineItem): MedicineKitItemDisplayData {
+        val medicineState = medicineItem.calcMedicineState()
         return MedicineKitItemDisplayData(
-            medicineID = medicineKitItem.medicineID,
-            medicineName = medicineKitItem.medicineName,
-            medicineUnit = medicineKitItem.medicineUnit,
+            medicineID = medicineItem.medicineID,
+            medicineName = medicineItem.medicineName,
+            medicineUnit = medicineItem.medicineUnit,
             stateAvailable = medicineState != null,
-            medicineState = "${medicineKitItem.currState}/${medicineKitItem.packageSize}",
+            medicineState = "${medicineItem.currState}/${medicineItem.packageSize}",
             stateLayoutWeight = medicineState,
             emptyLayoutWeight = medicineState?.let { 1 - it },
             stateColorId = medicineState?.let {
@@ -29,7 +28,7 @@ class KitViewModel : ViewModel() {
                     else -> R.color.colorStateSmall
                 }
             },
-            medicineImageFile = medicineKitItem.photoFilePath?.let { File(it) }
+            medicineImageFile = medicineItem.photoFilePath?.let { File(it) }
         )
     }
 

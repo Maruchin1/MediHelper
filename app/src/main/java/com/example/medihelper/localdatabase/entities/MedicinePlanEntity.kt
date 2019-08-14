@@ -9,12 +9,20 @@ import java.util.*
 
 @Entity(
     tableName = "medicines_plans",
-    foreignKeys = [ForeignKey(
-        entity = MedicineEntity::class,
-        parentColumns = arrayOf("medicine_id"),
-        childColumns = arrayOf("medicine_id"),
-        onDelete = ForeignKey.CASCADE
-    )],
+    foreignKeys = [
+        ForeignKey(
+            entity = MedicineEntity::class,
+            parentColumns = arrayOf("medicine_id"),
+            childColumns = arrayOf("medicine_id"),
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = PersonEntity::class,
+            parentColumns = arrayOf("person_id"),
+            childColumns = arrayOf("person_id"),
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
     indices = [Index(value = ["medicine_id"])]
 )
 data class MedicinePlanEntity(
@@ -24,6 +32,9 @@ data class MedicinePlanEntity(
 
     @ColumnInfo(name = "medicine_id")
     var medicineID: Int,
+
+    @ColumnInfo(name = "person_id")
+    var personID: Int,
 
     @ColumnInfo(name = "start_date")
     var startDate: Date,
@@ -110,7 +121,7 @@ data class MedicinePlanEntity(
             }
 
         fun isDaySelected(numberOfDay: Int): Boolean {
-            return when(numberOfDay) {
+            return when (numberOfDay) {
                 1 -> sunday
                 2 -> monday
                 3 -> tuesday

@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.dialog_select_date.*
 import java.util.*
 
 class SelectDateDialog : BottomSheetDialogFragment() {
+    val TAG = SelectDateDialog::class.simpleName
 
     var defaultDate: Date? = null
     private var dateSelectedListener: ((date: Date) -> Unit)? = null
@@ -47,9 +48,5 @@ class SelectDateDialog : BottomSheetDialogFragment() {
         calendar_view.setOnDateChangeListener { _, year, month, day ->
             calendar_view.date = AppDateTime.makeDate(day, month, year).time
         }
-    }
-
-    companion object {
-        val TAG = SelectDateDialog::class.simpleName
     }
 }

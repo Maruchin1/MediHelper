@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.AppRepository
-import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
-import com.example.medihelper.localdatabase.pojos.MedicineKitItem
+import com.example.medihelper.localdatabase.pojos.MedicineItem
+import com.example.medihelper.localdatabase.pojos.PersonSimpleItem
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -18,10 +18,11 @@ import kotlin.collections.ArrayList
 class AddMedicinePlanViewModel : ViewModel() {
     private val TAG = AddMedicinePlanViewModel::class.simpleName
 
-    val medicineKitItemListLive = AppRepository.getMedicineKitItemListLive()
+    val selectedPersonIDLive = MutableLiveData<Int>()
+    val personSimpleItemLive: LiveData<PersonSimpleItem>
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
-    val medicineKitItemLive: LiveData<MedicineKitItem>
+    val medicineItemLive: LiveData<MedicineItem>
 
     val durationTypeLive = MutableLiveData<MedicinePlanEntity.DurationType>()
     val startDateLive = MutableLiveData<Date>()
@@ -33,24 +34,29 @@ class AddMedicinePlanViewModel : ViewModel() {
 
     val timeOfTakingListLive = MutableLiveData<ArrayList<MedicinePlanEntity.TimeOfTaking>>()
 
-    private val medicineKitItemObserver = Observer<MedicineKitItem> { resetViewModel() }
+    private val medicineKitItemObserver = Observer<MedicineItem> { loadDefaultData() }
 
     init {
-        medicineKitItemLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
-            AppRepository.getMedicineKitItemLive(medicineID)
+        personSimpleItemLive = Transformations.switchMap(selectedPersonIDLive) { personID ->
+            AppRepository.getPersonSimpleItemLive(personID)
         }
-        medicineKitItemLive.observeForever(medicineKitItemObserver)
+        medicineItemLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
+            AppRepository.getMedicineItemLive(medicineID)
+        }
+        loadDefaultData()
+        medicineItemLive.observeForever(medicineKitItemObserver)
     }
 
     override fun onCleared() {
         super.onCleared()
-        medicineKitItemLive.removeObserver(medicineKitItemObserver)
+        medicineItemLive.removeObserver(medicineKitItemObserver)
     }
 
     fun saveScheduledMedicine() {
         //todo zrobić to porządniej i z walidacją danych
         val medicinePlan = MedicinePlanEntity(
-            medicineID = medicineKitItemLive.value!!.medicineID,
+            medicineID = medicineItemLive.value!!.medicineID,
+            personID = personSimpleItemLive.value!!.personID,
             startDate = startDateLive.value!!,
             durationType = durationTypeLive.value!!,
             daysType = daysTypeLive.value!!,
@@ -92,20 +98,11 @@ class AddMedicinePlanViewModel : ViewModel() {
             timeOfTakingRef = timeOfTaking,
             time = AppDateTime.timeToString(timeOfTaking.time),
             doseSize = timeOfTaking.doseSize.toString(),
-            medicineTypeName = medicineKitItemLive.value?.medicineUnit ?: "--"
+            medicineTypeName = medicineItemLive.value?.medicineUnit ?: "--"
         )
     }
 
-    fun getMedicineDisplayData(medicineKitItem: MedicineKitItem): MedicineDisplayData {
-        return MedicineDisplayData(
-            medicineID = medicineKitItem.medicineID,
-            medicineName = medicineKitItem.medicineName,
-            medicineState = "${medicineKitItem.currState}/${medicineKitItem.packageSize} ${medicineKitItem.medicineUnit}",
-            medicineImageFile = medicineKitItem.photoFilePath?.let { File(it) }
-        )
-    }
-
-    private fun resetViewModel() {
+    private fun loadDefaultData() {
         durationTypeLive.value = MedicinePlanEntity.DurationType.ONCE
         startDateLive.value = AppDateTime.getCurrCalendar().time
         endDateLive.value = null
@@ -120,12 +117,5 @@ class AddMedicinePlanViewModel : ViewModel() {
         val time: String,
         val doseSize: String,
         val medicineTypeName: String
-    )
-
-    data class MedicineDisplayData(
-        val medicineID: Int,
-        val medicineName: String,
-        val medicineState: String,
-        val medicineImageFile: File?
     )
 }
