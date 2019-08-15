@@ -38,7 +38,6 @@ import kotlinx.android.synthetic.main.fragment_add_medicine_plan.*
 class AddMedicinePlanFragment : Fragment() {
     private val TAG = AddMedicinePlanFragment::class.simpleName
 
-    private val args: AddMedicinePlanFragmentArgs by navArgs()
     private lateinit var viewModel: AddMedicinePlanViewModel
 
     fun onClickSelectMedicine() {
@@ -53,7 +52,7 @@ class AddMedicinePlanFragment : Fragment() {
     fun onClickSelectPerson() {
         val dialog = SelectPersonDialog().apply {
             setPersonSelectedListener { personID ->
-                viewModel.selectedPersonIDLive.value = personID
+                viewModel.selectPerson(personID)
             }
         }
         dialog.show(childFragmentManager, dialog.TAG)
@@ -109,12 +108,7 @@ class AddMedicinePlanFragment : Fragment() {
         setupScheduleTypeChipGroup()
         setupScheduleDaysChipGroup()
         setupTimeOfTakingRecyclerView()
-        setDefaultArguments()
         observeViewModel()
-    }
-
-    private fun setDefaultArguments() {
-        viewModel.selectedPersonIDLive.value = args.personID
     }
 
     private fun setupMainActivity() {
@@ -161,10 +155,10 @@ class AddMedicinePlanFragment : Fragment() {
             val adapter = recycler_view_schedule_hours.adapter as TimeOfTakingAdapter
             adapter.updateItemsList(doseHourList.toList())
         })
-        viewModel.personSimpleItemLive.observe(viewLifecycleOwner, Observer { personSimpleItem ->
-            if (personSimpleItem != null) {
+        viewModel.selectedPersonItemLive.observe(viewLifecycleOwner, Observer { personItem ->
+            if (personItem != null) {
                 activity?.run {
-                    (this as MainActivity).setStatusBarColor(personSimpleItem.personColorResID)
+                    (this as MainActivity).setStatusBarColor(personItem.personColorResID)
                 }
             }
         })

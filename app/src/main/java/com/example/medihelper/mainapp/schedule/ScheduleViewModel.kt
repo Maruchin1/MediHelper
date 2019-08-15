@@ -7,7 +7,6 @@ import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
-import com.example.medihelper.localdatabase.pojos.PersonSimpleItem
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineCheckbox
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import java.util.*
@@ -18,17 +17,15 @@ class ScheduleViewModel : ViewModel() {
     val timelineDaysCount = 10000
     val initialDatePosition = timelineDaysCount / 2
 
-    val selectedPersonIDLive = MutableLiveData(AppRepository.getMainPersonID())
-    val personSimpleItemLive: LiveData<PersonSimpleItem>
+    val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
+    val calendarLayoutVisibleLive = MutableLiveData(false)
+    val selectedDateLive = MutableLiveData<Date>()
 
     private val medicinePlanItemListLive = AppRepository.getMedicinePlanItemListLive()
     private val medicinePlanItemOngoingListLive: LiveData<List<MedicinePlanItem>>
     private val medicinePlanItemEndedListLive: LiveData<List<MedicinePlanItem>>
 
     init {
-        personSimpleItemLive = Transformations.switchMap(selectedPersonIDLive) { personID ->
-            AppRepository.getPersonSimpleItemLive(personID)
-        }
         medicinePlanItemOngoingListLive = Transformations.map(medicinePlanItemListLive) { medicinePlanItemList ->
             medicinePlanItemList.filter { medicinePlanItem ->
                 getMedicinePlanType(medicinePlanItem) == MedicinePlanType.ONGOING
@@ -40,6 +37,28 @@ class ScheduleViewModel : ViewModel() {
             }
         }
     }
+
+    fun selectDate(position: Int) = selectDate(getDateForPosition(position))
+
+    fun selectDate(date: Date) {
+        val currDate = selectedDateLive.value
+        if (currDate != null) {
+            if (AppDateTime.compareDates(date, currDate) != 0) {
+                selectedDateLive.value = date
+            }
+        } else {
+            selectedDateLive.value = date
+        }
+    }
+
+    fun changeCalendarVisibility() {
+        val currValue = calendarLayoutVisibleLive.value
+        if (currValue != null) {
+            calendarLayoutVisibleLive.value = !currValue
+        }
+    }
+
+    fun selectPerson(personID: Int) = AppRepository.setSelectedPerson(personID)
 
     fun getDateForPosition(position: Int): Date {
         val calendar = AppDateTime.getCurrCalendar()
@@ -61,8 +80,8 @@ class ScheduleViewModel : ViewModel() {
     }
 
     fun getPlannedMedicineItemListByDateLive(date: Date): LiveData<List<PlannedMedicineItem>> {
-        return Transformations.switchMap(selectedPersonIDLive) { personID ->
-            AppRepository.getPlannedMedicineItemListLiveByDate(date, personID)
+        return Transformations.switchMap(selectedPersonItemLive) { personItem ->
+            AppRepository.getPlannedMedicineItemListLiveByDate(date, personItem.personID)
         }
     }
 
@@ -164,7 +183,7 @@ class ScheduleViewModel : ViewModel() {
 
 //    data class PlannedMedicineDisplayData(
 //        val plannedMedicineEntityRef: PlannedMedicineEntity,
-//        val medicineName: String,
+//        val selectedMedicineName: String,
 //        val doseSize: String,
 //        val time: String,
 //        val statusOfTaking: String,

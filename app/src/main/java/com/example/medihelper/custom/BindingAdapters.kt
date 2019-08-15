@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import com.example.medihelper.BR
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 @BindingAdapter("android:layout_weight")
@@ -70,6 +71,13 @@ fun setBackgroundColor(view: View, colorResId: Int?) {
 fun setCardBackgroundColor(materialCardView: MaterialCardView, colorResId: Int?) {
     if (colorResId != null && colorResId != 0) {
         materialCardView.setCardBackgroundColor(ContextCompat.getColor(materialCardView.context, colorResId))
+    }
+}
+
+@BindingAdapter("app:fabBackgroundColor")
+fun setFabColor(fab: FloatingActionButton, colorResId: Int?) {
+    if (colorResId != null && colorResId != 0) {
+        fab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(fab.context, colorResId))
     }
 }
 

@@ -102,9 +102,6 @@
         <action
             android:id="@+id/to_add_person_destination"
             app:destination="@id/add_person_destination" />
-        <argument
-            android:name="personID"
-            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/medicine_plan_list_destination"

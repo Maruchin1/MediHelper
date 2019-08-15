@@ -77,16 +77,4 @@ class Converters {
     fun stringToStatusOfTaking(string: String): PlannedMedicineEntity.StatusOfTaking {
         return PlannedMedicineEntity.StatusOfTaking.valueOf(string)
     }
-
-    // Gender
-    @TypeConverter
-    fun genderToString(gender: PersonEntity.Gender): String {
-        return gender.toString()
-    }
-
-    @TypeConverter
-    fun stringToGender(string: String): PersonEntity.Gender {
-        return PersonEntity.Gender.valueOf(string)
-    }
-
 }

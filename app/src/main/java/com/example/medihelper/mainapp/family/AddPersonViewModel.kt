@@ -13,7 +13,6 @@ class AddPersonViewModel : ViewModel() {
     val personColorDisplayDataListLive: LiveData<List<PersonColorDisplayData>>
 
     val personNameLive = MutableLiveData<String>()
-    val genderLive = MutableLiveData<PersonEntity.Gender>()
     val personColorResIDLive = MutableLiveData<Int>()
 
     private val personColorResIDList = AppRepository.getPersonColorResIDList()
@@ -38,7 +37,6 @@ class AddPersonViewModel : ViewModel() {
         //todo zrobić walidację
         val newPerson = PersonEntity(
             personName = personNameLive.value!!,
-            gender = genderLive.value!!,
             personColorResID = personColorResIDLive.value!!
         )
         AppRepository.insertPerson(newPerson)

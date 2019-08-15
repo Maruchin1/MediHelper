@@ -52,7 +52,6 @@ class AddPersonFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupMainActivity()
         setupColorRecyclerView()
-        setupGenderChipGroup()
         observeViewModel()
     }
 
@@ -68,19 +67,6 @@ class AddPersonFragment : Fragment() {
             (this as MainActivity).apply {
                 setTransparentStatusBar(true)
             }
-        }
-    }
-
-    private fun setupGenderChipGroup() {
-        chip_group_gender.apply {
-            setOnCheckedChangeListener { group, checkedId ->
-                viewModel.genderLive.value = when (checkedId) {
-                    R.id.chip_male -> PersonEntity.Gender.MALE
-                    R.id.chip_female -> PersonEntity.Gender.FEMALE
-                    else -> null
-                }
-            }
-            check(R.id.chip_male)
         }
     }
 

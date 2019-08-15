@@ -10,9 +10,6 @@ data class PersonItem(
     @ColumnInfo(name = "person_name")
     val personName: String,
 
-    @ColumnInfo(name = "gender")
-    val gender: PersonEntity.Gender,
-
     @ColumnInfo(name = "person_color_res_id")
     val personColorResID: Int
 )

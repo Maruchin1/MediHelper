@@ -56,45 +56,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:text="Płeć"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                    android:textColor="@color/colorPrimary" />
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chip_group_gender"
-                    style="@style/Widget.MaterialComponents.ChipGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:chipSpacingHorizontal="16dp"
-                    app:singleSelection="true">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_male"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mężczyzna"
-                        android:textColor="@color/chip_single_select_text_color"
-                        app:chipBackgroundColor="@color/chip_single_select_bg"
-                        app:chipStrokeColor="@android:color/darker_gray"
-                        app:chipStrokeWidth="2dp" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_female"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Kobieta"
-                        android:textColor="@color/chip_single_select_text_color"
-                        app:chipBackgroundColor="@color/chip_single_select_bg"
-                        app:chipStrokeColor="@android:color/darker_gray"
-                        app:chipStrokeWidth="2dp" />
-                </com.google.android.material.chip.ChipGroup>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
                     android:text="Kolor profilu"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                     android:textColor="@color/colorPrimary" />

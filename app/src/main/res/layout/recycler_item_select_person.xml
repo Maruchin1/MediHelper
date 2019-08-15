@@ -10,7 +10,7 @@
 
         <variable
             name="displayData"
-            type="com.example.medihelper.localdatabase.pojos.PersonSimpleItem" />
+            type="com.example.medihelper.localdatabase.pojos.PersonItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

@@ -15,8 +15,7 @@ import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogSelectPersonBinding
-import com.example.medihelper.localdatabase.pojos.PersonSimpleItem
-import com.example.medihelper.mainapp.schedule.AddMedicinePlanFragmentDirections
+import com.example.medihelper.localdatabase.pojos.PersonItem
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_person.*
 
@@ -60,16 +59,16 @@ class SelectPersonDialog : BottomSheetDialogFragment() {
     }
 
     private fun observeData() {
-        AppRepository.getPersonSimpleItemListLive().observe(viewLifecycleOwner, Observer { personListItemList ->
+        AppRepository.getPersonItemListLive().observe(viewLifecycleOwner, Observer { personItemList ->
             val adapter = recycler_view_persons.adapter as PersonAdapter
-            adapter.updateItemsList(personListItemList)
+            adapter.updateItemsList(personItemList)
         })
     }
 
     // Inner classes
-    inner class PersonAdapter : RecyclerAdapter<PersonSimpleItem>(
+    inner class PersonAdapter : RecyclerAdapter<PersonItem>(
         R.layout.recycler_item_select_person,
-        object : DiffCallback<PersonSimpleItem>() {
+        object : DiffCallback<PersonItem>() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 return oldList[oldItemPosition].personID == newList[newItemPosition].personID
             }

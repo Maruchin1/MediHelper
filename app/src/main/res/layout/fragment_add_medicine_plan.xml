@@ -31,7 +31,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@{viewModel.personSimpleItemLive.personColorResID}">
+            android:background="@{viewModel.selectedPersonItemLive.personColorResID}">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
@@ -109,7 +109,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text='@{viewModel.personSimpleItemLive.personName, default="Nazwa osoby"}'
+                            android:text='@{viewModel.selectedPersonItemLive.personName, default="Nazwa osoby"}'
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                             android:textColor="@color/colorWhite" />
                     </LinearLayout>
@@ -164,7 +164,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
-                                android:text='@{viewModel.medicineName ?? "Nie wybrano leku", default="Nazwa leku"}'
+                                android:text='@{viewModel.selectedMedicineName ?? "Nie wybrano leku", default="Nazwa leku"}'
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                                 android:textColor="@color/colorTextSecondary" />
                         </LinearLayout>
@@ -173,7 +173,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text='@{"Aktualny stan: " + viewModel.medicineCurrState ?? "--", default="Aktualny stan"}'
+                            android:text='@{"Aktualny stan: " + viewModel.selectedMedicineCurrState ?? "--", default="Aktualny stan"}'
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:textColor="@color/colorTextTertiary" />
 
@@ -181,7 +181,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text='@{"Lek ważny do: " + viewModel.medicineExpireDate ?? "--", default="Data ważności"}'
+                            android:text='@{"Lek ważny do: " + viewModel.selectedMedicineExpireDate ?? "--", default="Data ważności"}'
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:textColor="@color/colorTextTertiary" />
                     </LinearLayout>

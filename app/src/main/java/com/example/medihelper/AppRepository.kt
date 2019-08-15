@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.example.medihelper.localdatabase.LocalDatabase
 import com.example.medihelper.localdatabase.PlannedMedicineScheduler
 import com.example.medihelper.localdatabase.dao.MedicineDAO
@@ -19,6 +20,7 @@ import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
+import com.example.medihelper.localdatabase.pojos.PersonItem
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,6 +30,10 @@ object AppRepository {
 
     private lateinit var sharedPreferences: SharedPreferences
     private val medicineUnitListLive = MutableLiveData<List<String>>()
+    private val selectedPersonIDLive = MutableLiveData<Int>()
+    private val selectedPersonItemLive: LiveData<PersonItem> = Transformations.switchMap(selectedPersonIDLive) { personID ->
+        if (personID != -1) personDao.getItemLive(personID) else null
+    }
 
     private lateinit var medicineDao: MedicineDAO
     private lateinit var medicinePlanDao: MedicinePlanDAO
@@ -53,22 +59,10 @@ object AppRepository {
         } ?: emptyList()
     }
 
-    fun getMainPersonID() = sharedPreferences.getInt(KEY_MAIN_PERSON_ID, -1)
+    fun getSelectedPersonItemLive() = selectedPersonItemLive
 
-    fun insertMedicineUnit(medicineUnit: String) {
-        sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.let { medicineUnitSet ->
-            medicineUnitSet.add(medicineUnit)
-            sharedPreferences.edit {
-                putStringSet(KEY_MEDICINE_UNIT_SET, medicineUnitSet)
-                apply()
-            }
-        }
-    }
-
-    fun updateMainPersonID(personID: Int) {
-        sharedPreferences.edit(true) {
-            putInt(KEY_MAIN_PERSON_ID, personID)
-        }
+    fun setSelectedPerson(personID: Int) {
+        selectedPersonIDLive.value = personID
     }
 
     // Database
@@ -89,11 +83,9 @@ object AppRepository {
 
     fun getPlannedMedicineItemListLiveByDate(date: Date, personID: Int) = plannedMedicineDao.getItemByDateListLive(date, personID)
 
-    fun getPersonListItemListLive() = personDao.getListItemListLive()
+    fun getPersonItemListLive() = personDao.getItemListLive()
 
-    fun getPersonSimpleItemListLive() = personDao.getSimpleItemListLive()
-
-    fun getPersonSimpleItemLive(personID: Int) = personDao.getSimpleItemLive(personID)
+    fun getPersonItemLive(personID: Int) = personDao.getItemLive(personID)
 
     // Delete
     fun deleteMedicine(medicineID: Int) = AsyncTask.execute { medicineDao.delete(medicineID) }
@@ -124,8 +116,10 @@ object AppRepository {
 
     fun insertPerson(personEntity: PersonEntity) = AsyncTask.execute {
         val addedPersonID = personDao.insert(personEntity)
-        if (getMainPersonID() == -1) {
-            updateMainPersonID(addedPersonID.toInt())
+        if (selectedPersonItemLive.value == null) {
+            sharedPreferences.edit(true) {
+                putInt(KEY_MAIN_PERSON_ID, addedPersonID.toInt())
+            }
         }
     }
 
@@ -165,6 +159,8 @@ object AppRepository {
     private fun initSharedPreferences(app: Application) {
         sharedPreferences = app.getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE)
         medicineUnitListLive.value = sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList()
+        selectedPersonIDLive.value = sharedPreferences.getInt(KEY_MAIN_PERSON_ID, -1)
+
         sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
                 KEY_MEDICINE_UNIT_SET -> medicineUnitListLive.value = sharedPreferences.getStringSet(key, null)?.toList()

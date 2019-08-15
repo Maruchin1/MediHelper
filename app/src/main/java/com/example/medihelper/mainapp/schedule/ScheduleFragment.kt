@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
 import com.example.medihelper.custom.CenterLayoutManager
 import com.example.medihelper.AppDateTime
@@ -40,25 +41,32 @@ class ScheduleFragment : Fragment() {
         findNavController().navigate(direction)
     }
 
+    fun onClickAddMedicinePlan() = findNavController().navigate(ScheduleFragmentDirections.toAddMedicinePlanDestination())
+
     fun onClickSelectPerson() {
         val dialog = SelectPersonDialog().apply {
             setPersonSelectedListener { personID ->
-                viewModel.selectedPersonIDLive.value = personID
+                viewModel.selectPerson(personID)
             }
         }
         dialog.show(childFragmentManager, dialog.TAG)
     }
 
-    fun onClickSelectDate() {
-        val adapter = recycler_view_timeline.adapter as ScheduleTimelineAdapter
-        val selectedDate = viewModel.getDateForPosition(adapter.getSelectedPosition())
-        val dialog = SelectDateDialog().apply {
-            defaultDate = selectedDate
-            setDateSelectedListener { date ->
-                adapter.selectDate(viewModel.getPositionForDate(date))
-            }
-        }
-        dialog.show(childFragmentManager, dialog.TAG)
+//    fun onClickSelectDate() {
+//        val adapter = recycler_view_timeline.adapter as ScheduleTimelineAdapter
+//        val selectedDate = viewModel.getDateForPosition(adapter.getSelectedPosition())
+//        val dialog = SelectDateDialog().apply {
+//            defaultDate = selectedDate
+//            setDateSelectedListener { date ->
+//                adapter.selectDate(viewModel.getPositionForDate(date))
+//            }
+//        }
+//        dialog.show(childFragmentManager, dialog.TAG)
+//    }
+
+    fun onClickOpenCloseCalendar() {
+        TransitionManager.beginDelayedTransition(root_lay)
+        viewModel.changeCalendarVisibility()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,16 +91,31 @@ class ScheduleFragment : Fragment() {
         setupMainActivity()
         setupTimelineRecyclerView()
         setupDatesViewPager()
+        setupCalendarView()
         setInitialDate()
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        viewModel.personSimpleItemLive.observe(viewLifecycleOwner, Observer { personSimpleItem ->
-            if (personSimpleItem != null) {
+        viewModel.selectedPersonItemLive.observe(viewLifecycleOwner, Observer { personItem ->
+            if (personItem != null) {
                 activity?.run {
-                    (this as MainActivity).setStatusBarColor(personSimpleItem.personColorResID)
+                    (this as MainActivity).setStatusBarColor(personItem.personColorResID)
                 }
+            }
+        })
+        viewModel.selectedDateLive.observe(viewLifecycleOwner, Observer { selectedDate ->
+            val position = viewModel.getPositionForDate(selectedDate)
+            val timelineAdapter = recycler_view_timeline.adapter as ScheduleTimelineAdapter
+            timelineAdapter.selectDate(position)
+
+            if (view_pager_dates.currentItem != position) {
+                view_pager_dates.currentItem = position
+            }
+
+            val calendarCurrDate = AppDateTime.makeDate(calendar_view.date)
+            if (AppDateTime.compareDates(calendarCurrDate, selectedDate) != 0) {
+                calendar_view.date = selectedDate.time
             }
         })
     }
@@ -102,13 +125,7 @@ class ScheduleFragment : Fragment() {
             (it as MainActivity).run {
                 setTransparentStatusBar(false)
                 val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
-                fab.apply {
-                    show()
-                    shrink()
-                    setIconResource(R.drawable.round_add_alert_white_48)
-                    text = ""
-                    setOnClickListener { navigateToAddMedicinePlanFragment() }
-                }
+                fab.hide()
             }
         }
     }
@@ -129,7 +146,7 @@ class ScheduleFragment : Fragment() {
                 }
 
                 override fun onPageSelected(position: Int) {
-                    (recycler_view_timeline.adapter as ScheduleTimelineAdapter).selectDate(position)
+                    viewModel.selectDate(position)
                 }
             })
         }
@@ -142,15 +159,16 @@ class ScheduleFragment : Fragment() {
         }
     }
 
+    private fun setupCalendarView() {
+        calendar_view.setOnDateChangeListener { _, year, month, day ->
+            Log.d(TAG, "calendar date change")
+            viewModel.selectDate(AppDateTime.makeDate(day, month, year))
+        }
+    }
+
     private fun setInitialDate() {
         (recycler_view_timeline.adapter as ScheduleTimelineAdapter).setInitialDate(viewModel.initialDatePosition)
         view_pager_dates.currentItem = viewModel.initialDatePosition
-    }
-
-    private fun navigateToAddMedicinePlanFragment(){
-        viewModel.selectedPersonIDLive.value?.let {
-            findNavController().navigate(ScheduleFragmentDirections.toAddMedicinePlanDestination(it))
-        }
     }
 
     // Inner classes
@@ -183,13 +201,13 @@ class ScheduleFragment : Fragment() {
         }
 
         fun selectDate(position: Int) {
-            val prevSelectedPosition = selectedPosition
-            selectedPosition = position
-            notifyItemChanged(prevSelectedPosition)
-            notifyItemChanged(position)
+            if (selectedPosition != position) {
+                val prevSelectedPosition = selectedPosition
+                selectedPosition = position
+                notifyItemChanged(prevSelectedPosition)
+                notifyItemChanged(position)
+            }
         }
-
-        fun getSelectedPosition() = selectedPosition
 
         override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -230,8 +248,7 @@ class ScheduleFragment : Fragment() {
                 }
                 view_selected_indicator.visibility = selectedIndicatorVisibility
                 lay_click.setOnClickListener {
-                    selectDate(position)
-                    view_pager_dates.currentItem = position
+                    viewModel.selectDate(position)
                 }
             }
         }

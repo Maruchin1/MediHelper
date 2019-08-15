@@ -14,14 +14,6 @@ data class PersonEntity(
     @ColumnInfo(name = "person_name")
     var personName: String,
 
-    @ColumnInfo(name = "gender")
-    var gender: Gender,
-
     @ColumnInfo(name = "person_color_res_id")
     var personColorResID: Int
-) {
-    enum class Gender(var string: String) {
-        MALE("Mężczyzna"),
-        FEMALE("Kobieta")
-    }
-}
+)

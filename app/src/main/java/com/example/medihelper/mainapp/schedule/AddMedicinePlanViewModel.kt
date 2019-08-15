@@ -10,22 +10,18 @@ import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
-import com.example.medihelper.localdatabase.pojos.MedicineItem
-import com.example.medihelper.localdatabase.pojos.PersonSimpleItem
 import java.util.*
 import kotlin.collections.ArrayList
 
 class AddMedicinePlanViewModel : ViewModel() {
     private val TAG = AddMedicinePlanViewModel::class.simpleName
 
-    val selectedPersonIDLive = MutableLiveData<Int>()
-    val personSimpleItemLive: LiveData<PersonSimpleItem>
+    val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
-    val medicineDetailsLive: LiveData<MedicineDetails>
-    val medicineName: LiveData<String>
-    val medicineCurrState: LiveData<String>
-    val medicineExpireDate: LiveData<String>
+    val selectedMedicineName: LiveData<String>
+    val selectedMedicineCurrState: LiveData<String>
+    val selectedMedicineExpireDate: LiveData<String>
 
     val durationTypeLive = MutableLiveData<MedicinePlanEntity.DurationType>()
     val startDateLive = MutableLiveData<Date>()
@@ -38,37 +34,37 @@ class AddMedicinePlanViewModel : ViewModel() {
     val timeOfTakingListLive = MutableLiveData<ArrayList<MedicinePlanEntity.TimeOfTaking>>()
 
     private val medicineDetailsObserver = Observer<MedicineDetails> { loadDefaultData() }
+    private val selectedMedicineDetailsLive: LiveData<MedicineDetails>
 
     init {
-        personSimpleItemLive = Transformations.switchMap(selectedPersonIDLive) { personID ->
-            AppRepository.getPersonSimpleItemLive(personID)
-        }
-        medicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
+        selectedMedicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
             AppRepository.getMedicineDetailsLive(medicineID)
         }
-        medicineName = Transformations.map(medicineDetailsLive) { medicineDetails ->
+        selectedMedicineName = Transformations.map(selectedMedicineDetailsLive) { medicineDetails ->
             medicineDetails.medicineName
         }
-        medicineCurrState = Transformations.map(medicineDetailsLive) { medicineDetails ->
+        selectedMedicineCurrState = Transformations.map(selectedMedicineDetailsLive) { medicineDetails ->
             "${medicineDetails.currState}/${medicineDetails.packageSize} ${medicineDetails.medicineUnit}"
         }
-        medicineExpireDate = Transformations.map(medicineDetailsLive) { medicineDetails ->
+        selectedMedicineExpireDate = Transformations.map(selectedMedicineDetailsLive) { medicineDetails ->
             medicineDetails.expireDate?.let { AppDateTime.dateToString(it) }
         }
         loadDefaultData()
-        medicineDetailsLive.observeForever(medicineDetailsObserver)
+        selectedMedicineDetailsLive.observeForever(medicineDetailsObserver)
     }
 
     override fun onCleared() {
         super.onCleared()
-        medicineDetailsLive.removeObserver(medicineDetailsObserver)
+        selectedMedicineDetailsLive.removeObserver(medicineDetailsObserver)
     }
+
+    fun selectPerson(personID: Int) = AppRepository.setSelectedPerson(personID)
 
     fun saveMedicinePlan() {
         //todo zrobić to porządniej i z walidacją danych
         val medicinePlan = MedicinePlanEntity(
-            medicineID = medicineDetailsLive.value!!.medicineID,
-            personID = personSimpleItemLive.value!!.personID,
+            medicineID = selectedMedicineDetailsLive.value!!.medicineID,
+            personID = selectedPersonItemLive.value!!.personID,
             startDate = startDateLive.value!!,
             durationType = durationTypeLive.value!!,
             daysType = daysTypeLive.value!!,
@@ -110,7 +106,7 @@ class AddMedicinePlanViewModel : ViewModel() {
             timeOfTakingRef = timeOfTaking,
             time = AppDateTime.timeToString(timeOfTaking.time),
             doseSize = timeOfTaking.doseSize.toString(),
-            medicineTypeName = medicineDetailsLive.value?.medicineUnit ?: "--"
+            medicineTypeName = selectedMedicineDetailsLive.value?.medicineUnit ?: "--"
         )
     }
 

@@ -7,6 +7,6 @@ import com.example.medihelper.localdatabase.pojos.PersonItem
 
 class FamilyViewModel : ViewModel() {
 
-    val personListItemLive: LiveData<List<PersonItem>> = AppRepository.getPersonListItemListLive()
+    val personListItemLive: LiveData<List<PersonItem>> = AppRepository.getPersonItemListLive()
 
 }

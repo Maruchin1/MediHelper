@@ -67,4 +67,8 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+    <style name="AppCalendarViewDark" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/colorWhite</item>
+    </style>
+
 </resources>
