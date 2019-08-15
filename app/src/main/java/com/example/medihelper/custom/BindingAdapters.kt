@@ -16,6 +16,7 @@ import androidx.databinding.ViewDataBinding
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
+import android.widget.ImageButton
 import com.example.medihelper.BR
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
@@ -78,6 +79,20 @@ fun setCardBackgroundColor(materialCardView: MaterialCardView, colorResId: Int?)
 fun setFabColor(fab: FloatingActionButton, colorResId: Int?) {
     if (colorResId != null && colorResId != 0) {
         fab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(fab.context, colorResId))
+    }
+}
+
+@BindingAdapter("android:tint")
+fun setImageButtonIconTintColor(imageButton: ImageButton, colorResId: Int?) {
+    if (colorResId != null && colorResId != 0) {
+        imageButton.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(imageButton.context, colorResId))
+    }
+}
+
+@BindingAdapter("android:tint")
+fun setImageViewTintColor(imageView: ImageView, colorResId: Int?) {
+    if (colorResId != null && colorResId != 0) {
+        imageView.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(imageView.context, colorResId))
     }
 }
 
