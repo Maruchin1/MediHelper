@@ -95,7 +95,6 @@ class MedicinePlanListFragment : Fragment() {
     // Inner classes
     inner class MedicinePlanAdapter : RecyclerAdapter<MedicinePlanItem>(
         R.layout.recycler_item_medicine_plan,
-//        null
         object : DiffCallback<MedicinePlanItem>() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 return oldList[oldItemPosition].medicinePlanID == newList[newItemPosition].medicinePlanID

@@ -29,17 +29,17 @@ class MenuFragment : Fragment() {
     }
 
     fun onClickMenuOption(view: View) {
-        Log.d(TAG, "onClickMenuOption")
-        Log.d(TAG, "view ID = ${view.id}")
-        val direction = when(view.id) {
-            R.id.lay_click_schedule -> MenuFragmentDirections.toScheduleDestination()
-            R.id.lay_click_kit -> MenuFragmentDirections.toKitDestination()
-            R.id.lay_click_family ->MenuFragmentDirections.toFamilyDestination()
-            else -> null
-        }
-        direction?.let {
-            findNavController().navigate(direction)
-        }
+//        Log.d(TAG, "onClickMenuOption")
+//        Log.d(TAG, "view ID = ${view.id}")
+//        val direction = when(view.id) {
+//            R.id.lay_click_schedule -> MenuFragmentDirections.toScheduleDestination()
+//            R.id.lay_click_kit -> MenuFragmentDirections.toKitDestination()
+//            R.id.lay_click_family ->MenuFragmentDirections.toFamilyDestination()
+//            else -> null
+//        }
+//        direction?.let {
+//            findNavController().navigate(direction)
+//        }
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -53,10 +53,6 @@ class MenuFragment : Fragment() {
         activity?.let {
             (it as MainActivity).run {
                 setTransparentStatusBar(false)
-                val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
-                fab.apply {
-                    hide()
-                }
             }
         }
     }

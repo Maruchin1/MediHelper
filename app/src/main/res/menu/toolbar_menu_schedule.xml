@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/btn_calendar"
+        android:icon="@drawable/round_event_white_36"
+        android:title="Kalendarz"
+        app:showAsAction="always"
+        android:orderInCategory="1" />
+
+    <item
+        android:id="@+id/btn_list"
+        android:icon="@drawable/round_format_list_bulleted_white_36"
+        android:title="List"
+        app:showAsAction="always"
+        android:orderInCategory="2"/>
+</menu>

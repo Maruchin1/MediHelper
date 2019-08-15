@@ -34,7 +34,6 @@ class AddMedicinePlanViewModel : ViewModel() {
 
     val timeOfTakingListLive = MutableLiveData<ArrayList<MedicinePlanEntity.TimeOfTaking>>()
 
-    private val medicineDetailsObserver = Observer<MedicineDetails> { loadDefaultData() }
     private val selectedMedicineDetailsLive: LiveData<MedicineDetails>
 
     init {
@@ -54,12 +53,6 @@ class AddMedicinePlanViewModel : ViewModel() {
             medicineDetails.expireDate?.let { AppDateTime.dateToString(it) }
         }
         loadDefaultData()
-        selectedMedicineDetailsLive.observeForever(medicineDetailsObserver)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        selectedMedicineDetailsLive.removeObserver(medicineDetailsObserver)
     }
 
     fun selectPerson(personID: Int) = AppRepository.setSelectedPerson(personID)

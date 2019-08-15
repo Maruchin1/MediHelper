@@ -35,6 +35,22 @@ class AddMedicineFragment : Fragment() {
     private lateinit var viewModel: AddMedicineViewModel
     private lateinit var medicineTypeAdapter: ArrayAdapter<String>
 
+    fun onClickTakePhoto() {
+        activity?.let {
+            val intent = viewModel.takePhotoIntent(it)
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        }
+    }
+
+    fun onClickExpireDate(view: View) {
+        val dialog = SelectDateDialog()
+        dialog.defaultDate = viewModel.expireDateLive.value
+        dialog.setDateSelectedListener { date ->
+            viewModel.expireDateLive.value = date
+        }
+        dialog.show(childFragmentManager, dialog.TAG)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
@@ -59,26 +75,9 @@ class AddMedicineFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.resetViewModel()
         setupMainActivity()
-        setupToolbar()
+        setupToolbarMenu()
         observeViewModel()
         setupSpinMedicineType()
-        loadSelectedMedicineData()
-    }
-
-    fun onClickTakePhoto() {
-        activity?.let {
-            val intent = viewModel.takePhotoIntent(it)
-            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
-        }
-    }
-
-    fun onClickExpireDate(view: View) {
-        val dialog = SelectDateDialog()
-        dialog.defaultDate = viewModel.expireDateLive.value
-        dialog.setDateSelectedListener { date ->
-            viewModel.expireDateLive.value = date
-        }
-        dialog.show(childFragmentManager, dialog.TAG)
     }
 
     private fun observeViewModel() {
@@ -104,47 +103,10 @@ class AddMedicineFragment : Fragment() {
         }
     }
 
-    private fun loadSelectedMedicineData() {
-        val medicineId = args.medicineId
-        if (medicineId != -1) {
-            viewModel.setSelectedMedicineID(medicineId)
-            txv_title.text = "Edytuj lek"
-        } else {
-            txv_title.text = "Dodaj lek"
-        }
-    }
-
-    private fun setupToolbar() {
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.setupWithNavController(navController, appBarConfiguration)
-    }
-
     private fun setupMainActivity() {
         activity?.let {
             (it as MainActivity).run {
                 setTransparentStatusBar(false)
-                val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
-                fab.apply {
-                    setIconResource(R.drawable.round_save_white_48)
-                    text = "Zapisz"
-                    extend()
-                    setOnClickListener { saveNewMedicine() }
-                }
-            }
-        }
-    }
-
-    private fun saveNewMedicine() {
-        val medicineSaved = viewModel.saveMedicine()
-        if (medicineSaved) {
-            findNavController().popBackStack()
-            viewModel.resetViewModel()
-        } else {
-            val errorMessage = "Podanie nazwy leku jest wymagane"
-            etx_medicine_name.error = errorMessage
-            activity?.run {
-                (this as MainActivity).showSnackBar(errorMessage)
             }
         }
     }
@@ -174,6 +136,19 @@ class AddMedicineFragment : Fragment() {
             clear()
             addAll(medicineTypesNamesList)
             notifyDataSetChanged()
+        }
+    }
+
+    private fun setupToolbarMenu() {
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.btn_cancel -> findNavController().popBackStack()
+                R.id.btn_save -> {
+                    viewModel.saveMedicine()
+                    findNavController().popBackStack()
+                }
+            }
+            true
         }
     }
 }

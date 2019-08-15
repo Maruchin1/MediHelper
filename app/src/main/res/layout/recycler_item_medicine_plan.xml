@@ -44,7 +44,6 @@
                     android:layout_height="wrap_content"
                     android:text='@{displayData.medicineName, default="Nazwa leku"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                    android:textColor="@color/colorTextPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -94,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:text='@{displayData.durationType, default="Typ przyjmowania"}'
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                        android:textColor="@color/colorPrimary" />
+                        android:textColor="@color/colorTextSecondary" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -143,7 +142,7 @@
                         android:layout_height="wrap_content"
                         android:text="Godziny"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                        android:textColor="@color/colorPrimary"/>
+                        android:textColor="@color/colorTextSecondary" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -156,6 +155,13 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_planned_medicine_checkbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_show_hide_history"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -165,17 +171,11 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="2dp"
                 android:text="Pokaż historię"
+                android:textColor="@color/colorTextSecondary"
                 app:cornerRadius="20dp"
                 app:icon="@drawable/round_keyboard_arrow_down_24"
-                app:strokeColor="@color/colorPrimary"
-                app:strokeWidth="2dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_planned_medicine_checkbox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:visibility="gone" />
+                app:iconGravity="textStart"
+                app:iconTint="@color/colorTextSecondary" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

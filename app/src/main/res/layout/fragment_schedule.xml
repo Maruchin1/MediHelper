@@ -27,7 +27,7 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@{viewModel.selectedPersonItemLive.personColorResID}"
+            android:background="@{viewModel.primaryColorLive}"
             app:elevation="4dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -51,7 +51,8 @@
                             android:id="@+id/toolbar"
                             android:layout_width="match_parent"
                             android:layout_height="?actionBarSize"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:menu="@menu/toolbar_menu_schedule"/>
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/card_avatar"
@@ -80,7 +81,7 @@
 
                         <TextView
                             android:id="@+id/txv_person_name"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
@@ -88,7 +89,6 @@
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                             android:textColor="@color/colorWhite"
                             app:layout_constraintBottom_toBottomOf="@id/card_avatar"
-                            app:layout_constraintEnd_toStartOf="@id/btn_calendar"
                             app:layout_constraintStart_toEndOf="@id/card_avatar"
                             app:layout_constraintTop_toTopOf="@id/card_avatar" />
 
@@ -103,18 +103,6 @@
                             app:layout_constraintEnd_toEndOf="@id/txv_person_name"
                             app:layout_constraintStart_toStartOf="@id/card_avatar"
                             app:layout_constraintTop_toTopOf="@id/card_avatar" />
-
-                        <ImageButton
-                            android:id="@+id/btn_calendar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:onClick="@{() -> handler.onClickOpenCloseCalendar()}"
-                            android:src="@drawable/round_event_white_36"
-                            app:layout_constraintBottom_toBottomOf="@id/toolbar"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/toolbar" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -139,9 +127,9 @@
                 android:id="@+id/recycler_view_timeline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="@{viewModel.calendarLayoutVisibleLive ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/toolbar"
-                android:visibility="@{viewModel.calendarLayoutVisibleLive ? View.GONE : View.VISIBLE}"/>
+                app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -166,7 +154,7 @@
             android:onClick="@{() -> handler.onClickAddMedicinePlan()}"
             android:src="@drawable/round_add_white_48"
             app:backgroundTint="@color/colorPrimary"
-            app:fabBackgroundColor="@{viewModel.selectedPersonItemLive.personColorResID}"
+            app:fabBackgroundColor="@{viewModel.primaryColorLive}"
             app:tint="@color/colorWhite" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

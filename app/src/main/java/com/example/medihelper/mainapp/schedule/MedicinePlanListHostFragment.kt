@@ -9,18 +9,32 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentMedicinePlanListHostBinding
+import com.example.medihelper.dialogs.SelectPersonDialog
+import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list_host.*
 
 class MedicinePlanListHostFragment : Fragment() {
 
     private lateinit var viewModel: ScheduleViewModel
+
+    fun onClickSelectPerson() {
+        val dialog = SelectPersonDialog().apply {
+            setPersonSelectedListener { personID ->
+                viewModel.selectPerson(personID)
+            }
+        }
+        dialog.show(childFragmentManager, dialog.TAG)
+    }
+
+    fun onClickCloseScreen() = findNavController().popBackStack()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,40 +54,52 @@ class MedicinePlanListHostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
         setupTabs()
+        setupToolbarMenu()
+        observeViewModel()
     }
 
-    private fun setupToolbar() {
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.setupWithNavController(navController, appBarConfiguration)
+    private fun observeViewModel() {
+        viewModel.primaryColorLive.observe(viewLifecycleOwner, Observer { colorResID ->
+            if (colorResID != null) {
+                activity?.run {
+                    (this as MainActivity).setStatusBarColor(colorResID)
+                }
+            }
+        })
+    }
+
+    private fun setupToolbarMenu() {
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            findNavController().popBackStack()
+            true
+        }
     }
 
     private fun setupTabs() {
-        val fragOngoing = MedicinePlanListFragment().apply { medicinePlanType = ScheduleViewModel.MedicinePlanType.ONGOING }
-        val fragEnded = MedicinePlanListFragment().apply { medicinePlanType = ScheduleViewModel.MedicinePlanType.ENDED }
-        tab_layout.selectTab(null)
-        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        view_pager_medicine_plan_list.adapter = MedicinePlanListPagerAdapter()
+        tab_layout.setupWithViewPager(view_pager_medicine_plan_list)
+    }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+    // Inner classes
+    inner class MedicinePlanListPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                val selectedFrag = when (tab?.position) {
-                    0 -> fragOngoing
-                    1 -> fragEnded
-                    else -> null
-                }
-                if (selectedFrag != null) {
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.frame_medicine_plan_list, selectedFrag)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit()
-                }
-            }
+        private val pagesList = listOf(
+            MedicinePlanListFragment().apply { medicinePlanType = ScheduleViewModel.MedicinePlanType.ONGOING},
+            MedicinePlanListFragment().apply { medicinePlanType = ScheduleViewModel.MedicinePlanType.ENDED }
+        )
 
-        })
-        tab_layout.getTabAt(0)?.select()
+        override fun getCount(): Int {
+            return pagesList.size
+        }
+
+        override fun getItem(position: Int): Fragment {
+            return pagesList[position]
+        }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return pagesList[position].medicinePlanType?.pageTitle
+        }
+
     }
 }

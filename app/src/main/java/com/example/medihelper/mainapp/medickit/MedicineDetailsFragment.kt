@@ -90,13 +90,6 @@ class MedicineDetailsFragment : Fragment() {
         activity?.let {
             (it as MainActivity).run {
                 setTransparentStatusBar(true)
-                val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
-                fab.apply {
-                    setIconResource(R.drawable.cross_icon)
-                    text = "Zażyj lek"
-                    extend()
-                    setOnClickListener { takeMedicine() }
-                }
             }
         }
     }

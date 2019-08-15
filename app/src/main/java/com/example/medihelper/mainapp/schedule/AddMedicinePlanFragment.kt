@@ -32,7 +32,9 @@ import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypeContinuo
 import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypePeriodFragment
 import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypeOnceFragment
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import kotlinx.android.synthetic.main.fragment_add_medicine.*
 import kotlinx.android.synthetic.main.fragment_add_medicine_plan.*
+import kotlinx.android.synthetic.main.fragment_add_medicine_plan.toolbar
 
 
 class AddMedicinePlanFragment : Fragment() {
@@ -79,14 +81,11 @@ class AddMedicinePlanFragment : Fragment() {
 
     fun onClickRemoveTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) = viewModel.removeTimeOfTaking(timeOfTaking)
 
-    fun onClickSaveNewMedicinePlan() {
-        viewModel.saveMedicinePlan()
-        findNavController().popBackStack()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
+        activity?.run {
+            viewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
+        }
     }
 
     override fun onCreateView(
@@ -103,28 +102,33 @@ class AddMedicinePlanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
         setupMainActivity()
+        setupToolbarMenu()
         setupScheduleTypeChipGroup()
         setupScheduleDaysChipGroup()
         setupTimeOfTakingRecyclerView()
         observeViewModel()
     }
 
-    private fun setupMainActivity() {
-        activity?.let {
-            (it as MainActivity).run {
-                val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
-                fab.hide()
-                setTransparentStatusBar(false)
+    private fun setupToolbarMenu() {
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.btn_cancel -> findNavController().popBackStack()
+                R.id.btn_save -> {
+                    viewModel.saveMedicinePlan()
+                    findNavController().popBackStack()
+                }
             }
+            true
         }
     }
 
-    private fun setupToolbar() {
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.setupWithNavController(navController, appBarConfiguration)
+    private fun setupMainActivity() {
+        activity?.let {
+            (it as MainActivity).run {
+                setTransparentStatusBar(false)
+            }
+        }
     }
 
     private fun observeViewModel() {
@@ -161,6 +165,14 @@ class AddMedicinePlanFragment : Fragment() {
                     (this as MainActivity).setStatusBarColor(personItem.personColorResID)
                 }
             }
+        })
+
+
+        viewModel.startDateLive.observe(viewLifecycleOwner, Observer { startDate ->
+            Log.d(TAG, "startDate change = $startDate")
+        })
+        viewModel.endDateLive.observe(viewLifecycleOwner, Observer { endDate ->
+            Log.d(TAG, "endDate change = $endDate")
         })
     }
 

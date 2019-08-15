@@ -67,14 +67,6 @@ class KitFragment : Fragment() {
         activity?.let {
             (it as MainActivity).run {
                 setTransparentStatusBar(false)
-                val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
-                fab.apply {
-                    show()
-                    shrink()
-                    setIconResource(R.drawable.round_add_white_48)
-                    text = ""
-                    setOnClickListener { openAddMedicineFragment() }
-                }
             }
         }
     }

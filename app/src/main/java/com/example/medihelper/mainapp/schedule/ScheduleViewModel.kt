@@ -18,6 +18,7 @@ class ScheduleViewModel : ViewModel() {
     val initialDatePosition = timelineDaysCount / 2
 
     val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
+    val primaryColorLive: LiveData<Int>
     val calendarLayoutVisibleLive = MutableLiveData(false)
     val selectedDateLive = MutableLiveData<Date>()
 
@@ -26,6 +27,9 @@ class ScheduleViewModel : ViewModel() {
     private val medicinePlanItemEndedListLive: LiveData<List<MedicinePlanItem>>
 
     init {
+        primaryColorLive = Transformations.map(selectedPersonItemLive) { personItem ->
+            personItem.personColorResID
+        }
         medicinePlanItemOngoingListLive = Transformations.map(medicinePlanItemListLive) { medicinePlanItemList ->
             medicinePlanItemList.filter { medicinePlanItem ->
                 getMedicinePlanType(medicinePlanItem) == MedicinePlanType.ONGOING
@@ -121,7 +125,8 @@ class ScheduleViewModel : ViewModel() {
                     append("\n")
                 }
                 toString()
-            }
+            },
+            primaryColorResID = primaryColorLive.value ?: R.color.colorPrimary
         )
     }
 
@@ -181,15 +186,6 @@ class ScheduleViewModel : ViewModel() {
         }
     }
 
-//    data class PlannedMedicineDisplayData(
-//        val plannedMedicineEntityRef: PlannedMedicineEntity,
-//        val selectedMedicineName: String,
-//        val doseSize: String,
-//        val time: String,
-//        val statusOfTaking: String,
-//        val statusOfTakingColorId: Int
-//    )
-
     data class MedicinePlanDisplayData(
         val medicinePlanID: Int,
         val medicineName: String,
@@ -197,7 +193,8 @@ class ScheduleViewModel : ViewModel() {
         val startDate: String,
         val endDate: String,
         val daysType: String,
-        val timeOfTaking: String
+        val timeOfTaking: String,
+        val primaryColorResID: Int
     )
 
     data class PlannedMedicineCheckboxGroupedByDate(

@@ -48,6 +48,7 @@ object AppRepository {
         photosDir = app.applicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         insertInitialMedicinesTypes()
         insertInitialPersonColorResID()
+        insertInitialPerson()
     }
 
     // SharedPreferences
@@ -187,6 +188,16 @@ object AppRepository {
             sharedPreferences.edit(true) {
                 putStringSet(KEY_PERSON_COLOR_RES_ID_SET, colorSet)
             }
+        }
+    }
+
+    private fun insertInitialPerson() = AsyncTask.execute {
+        if (personDao.getCount() == 0) {
+            val mePerson = PersonEntity(
+                personName = "Ja",
+                personColorResID = R.color.colorPrimary
+            )
+            personDao.insert(mePerson)
         }
     }
 

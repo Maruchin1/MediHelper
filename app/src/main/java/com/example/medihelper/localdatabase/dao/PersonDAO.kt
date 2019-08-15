@@ -22,4 +22,7 @@ interface PersonDAO {
 
     @Query("SELECT * FROM persons WHERE person_id == :personID")
     fun getItemLive(personID: Int): LiveData<PersonItem>
+
+    @Query("SELECT COUNT(*) FROM persons")
+    fun getCount(): Int
 }

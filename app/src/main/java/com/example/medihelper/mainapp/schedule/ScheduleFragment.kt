@@ -34,13 +34,6 @@ class ScheduleFragment : Fragment() {
 
     private lateinit var viewModel: ScheduleViewModel
 
-    fun onClickNavigateMenu() = findNavController().popBackStack()
-
-    fun onClickNavigateList() {
-        val direction = ScheduleFragmentDirections.toMedicinePlanListDestination()
-        findNavController().navigate(direction)
-    }
-
     fun onClickAddMedicinePlan() = findNavController().navigate(ScheduleFragmentDirections.toAddMedicinePlanDestination())
 
     fun onClickSelectPerson() {
@@ -50,23 +43,6 @@ class ScheduleFragment : Fragment() {
             }
         }
         dialog.show(childFragmentManager, dialog.TAG)
-    }
-
-//    fun onClickSelectDate() {
-//        val adapter = recycler_view_timeline.adapter as ScheduleTimelineAdapter
-//        val selectedDate = viewModel.getDateForPosition(adapter.getSelectedPosition())
-//        val dialog = SelectDateDialog().apply {
-//            defaultDate = selectedDate
-//            setDateSelectedListener { date ->
-//                adapter.selectDate(viewModel.getPositionForDate(date))
-//            }
-//        }
-//        dialog.show(childFragmentManager, dialog.TAG)
-//    }
-
-    fun onClickOpenCloseCalendar() {
-        TransitionManager.beginDelayedTransition(root_lay)
-        viewModel.changeCalendarVisibility()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +64,7 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
+        setupToolbarMenu()
         setupMainActivity()
         setupTimelineRecyclerView()
         setupDatesViewPager()
@@ -97,10 +74,10 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.selectedPersonItemLive.observe(viewLifecycleOwner, Observer { personItem ->
-            if (personItem != null) {
+        viewModel.primaryColorLive.observe(viewLifecycleOwner, Observer { colorResID ->
+            if (colorResID != null) {
                 activity?.run {
-                    (this as MainActivity).setStatusBarColor(personItem.personColorResID)
+                    (this as MainActivity).setStatusBarColor(colorResID)
                 }
             }
         })
@@ -124,9 +101,20 @@ class ScheduleFragment : Fragment() {
         activity?.let {
             (it as MainActivity).run {
                 setTransparentStatusBar(false)
-                val fab = findViewById<ExtendedFloatingActionButton>(R.id.btn_floating_action)
-                fab.hide()
             }
+        }
+    }
+
+    private fun setupToolbarMenu() {
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.btn_calendar -> {
+                    TransitionManager.beginDelayedTransition(root_lay)
+                    viewModel.changeCalendarVisibility()
+                }
+                R.id.btn_list -> findNavController().navigate(ScheduleFragmentDirections.toMedicinePlanListDestination())
+            }
+            true
         }
     }
 

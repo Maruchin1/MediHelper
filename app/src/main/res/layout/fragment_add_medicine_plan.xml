@@ -46,34 +46,17 @@
                     android:layout_marginBottom="80dp"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    app:layout_collapseMode="parallax"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_collapseMode="parallax">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_collapseMode="parallax">
-
-                        <androidx.appcompat.widget.Toolbar
-                            android:id="@+id/toolbar"
-                            android:layout_width="match_parent"
-                            android:layout_height="?actionBarSize"
-                            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:title="Zaplanuj lek" />
-
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:onClick="@{() -> handler.onClickSaveNewMedicinePlan()}"
-                            android:src="@drawable/baseline_check_white_36"
-                            app:layout_constraintBottom_toBottomOf="@id/toolbar"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/toolbar" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_height="?actionBarSize"
+                        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+                        app:icon="@drawable/round_close_24"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:title="Zaplanuj lek"
+                        app:menu="@menu/toolbar_menu_add_edit"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
