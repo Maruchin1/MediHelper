@@ -14,7 +14,7 @@ abstract class RecyclerAdapter<T>(
 
     protected val itemsList = mutableListOf<T>()
 
-    fun updateItemsList(newList: List<T>?) {
+    open fun updateItemsList(newList: List<T>?) {
         when {
             newList == null -> {
                 itemsList.clear()

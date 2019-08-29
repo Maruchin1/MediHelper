@@ -74,6 +74,16 @@ class SelectPersonDialog : BottomSheetDialogFragment() {
             }
         }
     ) {
+        override fun updateItemsList(newList: List<PersonItem>?) {
+            val listWithOneEmptyItem = mutableListOf<PersonItem>().apply {
+                if (newList != null) {
+                    addAll(newList)
+                }
+                add(PersonItem(personID = -1, personName = "", personColorResID = 0))
+            }
+            super.updateItemsList(listWithOneEmptyItem.toList())
+        }
+
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val personSimpleItem = itemsList[position]
             holder.bind(personSimpleItem, this@SelectPersonDialog)
