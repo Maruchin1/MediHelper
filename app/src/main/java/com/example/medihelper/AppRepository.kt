@@ -28,12 +28,13 @@ import java.util.*
 object AppRepository {
     private val TAG = AppRepository::class.simpleName
 
-    private lateinit var sharedPreferences: SharedPreferences
-    private val medicineUnitListLive = MutableLiveData<List<String>>()
     private val selectedPersonIDLive = MutableLiveData<Int>()
     private val selectedPersonItemLive: LiveData<PersonItem> = Transformations.switchMap(selectedPersonIDLive) { personID ->
         if (personID != -1) personDao.getItemLive(personID) else null
     }
+
+    private lateinit var sharedPreferences: SharedPreferences
+    private val medicineUnitListLive = MutableLiveData<List<String>>()
 
     private lateinit var medicineDao: MedicineDAO
     private lateinit var medicinePlanDao: MedicinePlanDAO
@@ -48,6 +49,12 @@ object AppRepository {
         photosDir = app.applicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
     }
 
+    fun getSelectedPersonItemLive() = selectedPersonItemLive
+
+    fun setSelectedPerson(personID: Int) {
+        selectedPersonIDLive.value = personID
+    }
+
     // SharedPreferences
     fun getMedicineUnitListLive(): LiveData<List<String>> = medicineUnitListLive
 
@@ -57,10 +64,8 @@ object AppRepository {
         } ?: emptyList()
     }
 
-    fun getSelectedPersonItemLive() = selectedPersonItemLive
-
-    fun setSelectedPerson(personID: Int) {
-        selectedPersonIDLive.value = personID
+    fun getMainPersonID(): Int {
+        return sharedPreferences.getInt(KEY_MAIN_PERSON_ID, -1)
     }
 
     // Database
@@ -90,6 +95,8 @@ object AppRepository {
 
     fun deleteMedicinePlan(medicinePlanID: Int) = AsyncTask.execute { medicinePlanDao.delete(medicinePlanID) }
 
+    fun deletePerson(personID: Int) = AsyncTask.execute { personDao.delete(personID) }
+
     // Update
     fun updateMedicine(medicineEntity: MedicineEntity) = AsyncTask.execute {
         medicineDao.update(medicineEntity)
@@ -113,7 +120,7 @@ object AppRepository {
     }
 
     fun insertPerson(personEntity: PersonEntity) = AsyncTask.execute {
-        val addedPersonID = personDao.insert(personEntity)
+        personDao.insert(personEntity)
     }
 
     // Other
@@ -147,6 +154,7 @@ object AppRepository {
         medicinePlanDao = database.medicinePlanDao()
         plannedMedicineDao = database.plannedMedicineDao()
         personDao = database.personDao()
+        insertInitialPerson()
     }
 
     private fun initSharedPreferences(app: Application) {
@@ -160,7 +168,6 @@ object AppRepository {
 
         insertInitialMedicinesTypes()
         insertInitialPersonColorResID()
-        insertInitialPerson()
         medicineUnitListLive.value = sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList()
         selectedPersonIDLive.value = sharedPreferences.getInt(KEY_MAIN_PERSON_ID, -1)
     }

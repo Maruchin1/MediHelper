@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -16,9 +15,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentMedicinePlanListHostBinding
-import com.example.medihelper.dialogs.SelectPersonDialog
+import com.example.medihelper.mainapp.family.PersonDialog
 import com.example.medihelper.mainapp.MainActivity
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list_host.*
 
 class MedicinePlanListHostFragment : Fragment() {
@@ -26,7 +24,8 @@ class MedicinePlanListHostFragment : Fragment() {
     private lateinit var viewModel: ScheduleViewModel
 
     fun onClickSelectPerson() {
-        val dialog = SelectPersonDialog().apply {
+        val dialog = PersonDialog().apply {
+            addPersonDirection = MedicinePlanListHostFragmentDirections.toAddPersonDestination()
             setPersonSelectedListener { personID ->
                 viewModel.selectPerson(personID)
             }

@@ -11,19 +11,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.medihelper.R
-import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.databinding.FragmentAddMedicinePlanBinding
-import com.example.medihelper.dialogs.SelectPersonDialog
+import com.example.medihelper.mainapp.family.PersonDialog
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.mainapp.MainActivity
 import com.example.medihelper.mainapp.schedule.daystype.DaysOfWeekFragment
@@ -31,8 +29,6 @@ import com.example.medihelper.mainapp.schedule.daystype.IntervalOfDaysFragment
 import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypeContinuousFragment
 import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypePeriodFragment
 import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypeOnceFragment
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import kotlinx.android.synthetic.main.fragment_add_medicine.*
 import kotlinx.android.synthetic.main.fragment_add_medicine_plan.*
 import kotlinx.android.synthetic.main.fragment_add_medicine_plan.toolbar
 
@@ -52,7 +48,8 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     fun onClickSelectPerson() {
-        val dialog = SelectPersonDialog().apply {
+        val dialog = PersonDialog().apply {
+            addPersonDirection = AddMedicinePlanFragmentDirections.toAddPersonDestination()
             setPersonSelectedListener { personID ->
                 viewModel.selectPerson(personID)
             }

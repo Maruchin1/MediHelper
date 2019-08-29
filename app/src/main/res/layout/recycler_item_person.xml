@@ -8,11 +8,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.dialogs.SelectPersonDialog" />
+            type="com.example.medihelper.mainapp.family.PersonDialog" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.localdatabase.pojos.PersonItem" />
+            type="com.example.medihelper.mainapp.family.PersonViewModel.PersonItemDisplayData" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -21,8 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
         app:strokeColor="@color/colorWhite"
@@ -37,7 +37,7 @@
             android:gravity="center_horizontal"
             android:onClick="@{() -> handler.onClickSelectPerson(displayData.personID)}"
             android:orientation="vertical"
-            android:visibility="@{displayData.personID == -1 ? View.INVISIBLE : View.VISIBLE, default=visible}">
+            android:visibility="@{displayData.personID == -1 ? View.INVISIBLE : View.VISIBLE, default=invisible}">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_avatar"
@@ -74,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="?selectableItemBackgroundBorderless"
+                android:onClick="@{() -> handler.onClickOpenOptions(displayData.personID)}"
                 android:src="@drawable/round_more_horiz_black_36"
                 android:tint="@color/colorWhite" />
 
@@ -106,8 +107,63 @@
                 android:text="Dodaj osobę"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textColor="@color/colorWhite" />
-
         </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background='@{displayData.personColorResID, default="@color/colorPrimary"}'
+            android:orientation="vertical"
+            android:visibility="@{displayData.optionsEnabled ? View.VISIBLE : View.GONE}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/btn_close"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Edytuj"
+                    android:textColor="@color/colorWhite"
+                    app:icon="@drawable/round_edit_24"
+                    app:iconTint="@color/colorWhite" />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="@{() -> handler.onClickDeletePerson(displayData.personID)}"
+                    android:text="Usuń"
+                    android:textColor="@color/colorWhite"
+                    android:visibility="@{displayData.isMainPerson ? View.GONE : View.VISIBLE}"
+                    app:icon="@drawable/round_delete_black_24"
+                    app:iconTint="@color/colorWhite" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btn_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="?selectableItemBackgroundBorderless"
+                android:onClick="@{() -> handler.onClickCloseOptions()}"
+                android:src="@drawable/round_close_black_36"
+                android:tint="@color/colorWhite"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
 </layout>

@@ -3,6 +3,7 @@ package com.example.medihelper.mainapp.schedule
 
 import android.os.Bundle
 import android.transition.TransitionManager
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicinePlanListBinding
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
+import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list.recycler_view_medicine_plan
 import kotlinx.android.synthetic.main.recycler_item_medicine_plan.view.*
 import kotlinx.android.synthetic.main.recycler_item_medicine_plan.view.recycler_view_planned_medicine_checkbox
@@ -108,6 +110,7 @@ class MedicinePlanListFragment : Fragment() {
                 adapter = PlannedMedicineGroupedByDateAdapter().apply {
                     updateItemsList(viewModel.getPlannedMedicinesGroupedByDateList(medicinePlanItem.plannedMedicineList))
                 }
+                GravitySnapHelper(Gravity.START).attachToRecyclerView(this)
             }
 
             holder.view.run {

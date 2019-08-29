@@ -14,13 +14,13 @@ interface PersonDAO {
     @Update
     fun update(person: PersonEntity)
 
-    @Delete
-    fun delete(person: PersonEntity)
+    @Query("DELETE FROM persons WHERE person_id = :personID")
+    fun delete(personID: Int)
 
     @Query("SELECT * FROM persons")
     fun getItemListLive(): LiveData<List<PersonItem>>
 
-    @Query("SELECT * FROM persons WHERE person_id == :personID")
+    @Query("SELECT * FROM persons WHERE person_id = :personID")
     fun getItemLive(personID: Int): LiveData<PersonItem>
 
     @Query("SELECT COUNT(*) FROM persons")

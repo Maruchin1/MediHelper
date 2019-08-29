@@ -1,28 +1,32 @@
-package com.example.medihelper.dialogs
+package com.example.medihelper.mainapp.family
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.medihelper.AppRepository
 import com.example.medihelper.R
 import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogSelectPersonBinding
 import com.example.medihelper.localdatabase.pojos.PersonItem
+import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_person.*
 
-class SelectPersonDialog : BottomSheetDialogFragment() {
-    val TAG = SelectPersonDialog::class.simpleName
+class PersonDialog : BottomSheetDialogFragment() {
+    val TAG = PersonDialog::class.simpleName
 
+    var addPersonDirection: NavDirections? = null
     private var personSelectedListener: ((personID: Int) -> Unit)? = null
+    private lateinit var viewModel: PersonViewModel
 
     fun setPersonSelectedListener(listener: (personID: Int) -> Unit) {
         personSelectedListener = listener
@@ -33,7 +37,29 @@ class SelectPersonDialog : BottomSheetDialogFragment() {
         dismiss()
     }
 
-    fun onClickAddNewPerson() = findNavController().navigate(R.id.add_person_destination)
+    fun onClickAddNewPerson() {
+        if (addPersonDirection != null) {
+            findNavController().navigate(addPersonDirection!!)
+        }
+    }
+
+    fun onClickOpenOptions(personID: Int) {
+        viewModel.optionsEnabledPersonIDLive.value = personID
+    }
+
+    fun onClickCloseOptions() {
+        viewModel.optionsEnabledPersonIDLive.value = null
+    }
+
+    fun onClickDeletePerson(personID: Int) {
+        viewModel.optionsEnabledPersonIDLive.value = null
+        viewModel.deletePerson(personID)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(PersonViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: DialogSelectPersonBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_select_person, container, false)
@@ -53,27 +79,53 @@ class SelectPersonDialog : BottomSheetDialogFragment() {
             recycler_view_persons.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = PersonAdapter()
-                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+                GravitySnapHelper(Gravity.START).attachToRecyclerView(this)
             }
         }
     }
 
     private fun observeData() {
-        AppRepository.getPersonItemListLive().observe(viewLifecycleOwner, Observer { personItemList ->
+        viewModel.personItemListLive.observe(viewLifecycleOwner, Observer { personItemList ->
             val adapter = recycler_view_persons.adapter as PersonAdapter
             adapter.updateItemsList(personItemList)
+        })
+        viewModel.optionsEnabledPersonIDLive.observe(viewLifecycleOwner, Observer { personID ->
+            val adapter = recycler_view_persons.adapter as PersonAdapter
+            if (personID != null) {
+                adapter.openItemOptions(personID)
+            } else {
+                adapter.closeItemOptions()
+            }
         })
     }
 
     // Inner classes
     inner class PersonAdapter : RecyclerAdapter<PersonItem>(
-        R.layout.recycler_item_select_person,
+        R.layout.recycler_item_person,
         object : DiffCallback<PersonItem>() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 return oldList[oldItemPosition].personID == newList[newItemPosition].personID
             }
         }
     ) {
+        private var optionsEnabledPosition = -1
+
+        fun openItemOptions(personID: Int) {
+            val prevPosition = optionsEnabledPosition
+            val newPosition = itemsList.indexOfFirst { personItem ->
+                personItem.personID == personID
+            }
+            optionsEnabledPosition = newPosition
+            notifyItemChanged(prevPosition)
+            notifyItemChanged(newPosition)
+        }
+
+        fun closeItemOptions() {
+            val prevPosition = optionsEnabledPosition
+            optionsEnabledPosition = -1
+            notifyItemChanged(prevPosition)
+        }
+
         override fun updateItemsList(newList: List<PersonItem>?) {
             val listWithOneEmptyItem = mutableListOf<PersonItem>().apply {
                 if (newList != null) {
@@ -85,8 +137,12 @@ class SelectPersonDialog : BottomSheetDialogFragment() {
         }
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val personSimpleItem = itemsList[position]
-            holder.bind(personSimpleItem, this@SelectPersonDialog)
+            val personItem = itemsList[position]
+            val personItemDisplayData = viewModel.getPersonItemDisplayData(personItem)
+            if (position == optionsEnabledPosition) {
+                personItemDisplayData.optionsEnabled = true
+            }
+            holder.bind(personItemDisplayData, this@PersonDialog)
         }
     }
 }

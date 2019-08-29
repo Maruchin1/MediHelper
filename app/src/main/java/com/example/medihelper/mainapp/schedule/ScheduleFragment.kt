@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
@@ -21,10 +20,8 @@ import com.example.medihelper.custom.CenterLayoutManager
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
-import com.example.medihelper.dialogs.SelectDateDialog
-import com.example.medihelper.dialogs.SelectPersonDialog
+import com.example.medihelper.mainapp.family.PersonDialog
 import com.example.medihelper.mainapp.MainActivity
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.recycler_item_schedule_timeline.view.*
 
@@ -37,7 +34,8 @@ class ScheduleFragment : Fragment() {
     fun onClickAddMedicinePlan() = findNavController().navigate(ScheduleFragmentDirections.toAddMedicinePlanDestination())
 
     fun onClickSelectPerson() {
-        val dialog = SelectPersonDialog().apply {
+        val dialog = PersonDialog().apply {
+            addPersonDirection = ScheduleFragmentDirections.toAddPersonDestination()
             setPersonSelectedListener { personID ->
                 viewModel.selectPerson(personID)
             }

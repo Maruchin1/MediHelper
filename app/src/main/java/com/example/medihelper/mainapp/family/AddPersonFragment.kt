@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.R
 import com.example.medihelper.custom.DiffCallback
@@ -28,13 +31,6 @@ class AddPersonFragment : Fragment() {
         viewModel.personColorResIDLive.value = colorResID
     }
 
-    fun onClickSaveNewPerson() {
-        viewModel.saveNewPerson()
-        findNavController().popBackStack()
-    }
-
-    fun onClickCancel() = findNavController().popBackStack()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(AddPersonViewModel::class.java)
@@ -50,6 +46,7 @@ class AddPersonFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
         setupMainActivity()
         setupColorRecyclerView()
         observeViewModel()
@@ -62,6 +59,21 @@ class AddPersonFragment : Fragment() {
         })
     }
 
+    private fun setupToolbar() {
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.btn_save -> {
+                    viewModel.saveNewPerson()
+                    findNavController().popBackStack()
+                }
+            }
+            true
+        }
+    }
+
     private fun setupMainActivity() {
         activity?.run {
             (this as MainActivity).apply {
@@ -72,7 +84,7 @@ class AddPersonFragment : Fragment() {
 
     private fun setupColorRecyclerView() {
         recycler_view_color.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(context, 3)
             adapter = PersonColorAdapter()
         }
     }
