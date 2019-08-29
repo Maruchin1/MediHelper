@@ -19,6 +19,18 @@ class IntervalOfDaysFragment : Fragment() {
 
     private lateinit var planViewModel: AddMedicinePlanViewModel
 
+    fun onClickSelectInterval() {
+        val dialog = SelectNumberDialog().apply {
+            title = "Wybierz odstęp dni"
+            iconResID = R.drawable.round_access_time_black_36
+            defaultNumber = planViewModel.intervalOfDaysLive.value
+            setNumberSelectedListener { number ->
+                planViewModel.intervalOfDaysLive.value = number
+            }
+        }
+        dialog.show(childFragmentManager, SelectNumberDialog.TAG)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
@@ -31,15 +43,6 @@ class IntervalOfDaysFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return bindLayout(inflater, container)
-    }
-
-    fun onClickSelectInterval() {
-        val dialog = SelectNumberDialog()
-        dialog.defaultNumber = planViewModel.intervalOfDaysLive.value
-        dialog.setNumberSelectedListener { number ->
-            planViewModel.intervalOfDaysLive.value = number
-        }
-        dialog.show(childFragmentManager, SelectNumberDialog.TAG)
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {

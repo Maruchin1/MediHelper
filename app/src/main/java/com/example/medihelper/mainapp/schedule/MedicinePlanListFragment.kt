@@ -39,7 +39,7 @@ class MedicinePlanListFragment : Fragment() {
         val dialog = ConfirmDialog().apply {
             title = "Usuń lek z planu"
             message = "Wybrany lek zostanie usunięty z planu. Czy chcesz kontynuować?"
-            iconResId = R.drawable.round_delete_black_48
+            iconResId = R.drawable.round_delete_black_36
             setOnConfirmClickListener {
                 viewModel.deleteMedicinePlan(medicinePlanID)
             }
@@ -60,10 +60,7 @@ class MedicinePlanListFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentMedicinePlanListBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_medicine_plan_list, container, false)
         binding.handler = this

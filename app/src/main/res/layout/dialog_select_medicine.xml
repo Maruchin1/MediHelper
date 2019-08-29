@@ -9,28 +9,51 @@
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_bottom_dialog"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="4dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_pill_black_36dp"
+                android:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="Wybierz lek"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@color/colorPrimary"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:onClick="@{() -> handler.onClickAddNewMedicine()}"
+                android:src="@drawable/round_add_white_36"
+                android:tint="@color/colorBlack" />
+        </LinearLayout>
+
+        <include layout="@layout/line_horizontal" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_medicines"
             android:layout_width="match_parent"
             android:layout_height="300dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_add_medicine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:onClick="@{() -> handler.onClickAddNewMedicine()}"
-            android:text="Dodaj nowy lek"
-            app:cornerRadius="20dp" />
 
     </LinearLayout>
 </layout>

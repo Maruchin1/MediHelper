@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.dialog_select_number.*
 
 class SelectNumberDialog : BottomSheetDialogFragment() {
 
+    var title: String? = null
+    var iconResID: Int? = null
     var defaultNumber: Int? = null
     private var numberSelectedListener: ((number: Int) -> Unit)? = null
 

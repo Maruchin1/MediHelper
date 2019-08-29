@@ -7,6 +7,7 @@ import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
+import com.example.medihelper.localdatabase.pojos.PersonItem
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineCheckbox
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import java.util.*
@@ -18,7 +19,6 @@ class ScheduleViewModel : ViewModel() {
     val initialDatePosition = timelineDaysCount / 2
 
     val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
-    val primaryColorLive: LiveData<Int>
     val calendarLayoutVisibleLive = MutableLiveData(false)
     val selectedDateLive = MutableLiveData<Date>()
 
@@ -27,9 +27,6 @@ class ScheduleViewModel : ViewModel() {
     private val medicinePlanItemEndedListLive: LiveData<List<MedicinePlanItem>>
 
     init {
-        primaryColorLive = Transformations.map(selectedPersonItemLive) { personItem ->
-            personItem.personColorResID
-        }
         medicinePlanItemOngoingListLive = Transformations.map(medicinePlanItemListLive) { medicinePlanItemList ->
             medicinePlanItemList.filter { medicinePlanItem ->
                 getMedicinePlanType(medicinePlanItem) == MedicinePlanType.ONGOING
@@ -52,13 +49,6 @@ class ScheduleViewModel : ViewModel() {
             }
         } else {
             selectedDateLive.value = date
-        }
-    }
-
-    fun changeCalendarVisibility() {
-        val currValue = calendarLayoutVisibleLive.value
-        if (currValue != null) {
-            calendarLayoutVisibleLive.value = !currValue
         }
     }
 
@@ -125,8 +115,7 @@ class ScheduleViewModel : ViewModel() {
                     append("\n")
                 }
                 toString()
-            },
-            primaryColorResID = primaryColorLive.value ?: R.color.colorPrimary
+            }
         )
     }
 
@@ -193,8 +182,7 @@ class ScheduleViewModel : ViewModel() {
         val startDate: String,
         val endDate: String,
         val daysType: String,
-        val timeOfTaking: String,
-        val primaryColorResID: Int
+        val timeOfTaking: String
     )
 
     data class PlannedMedicineCheckboxGroupedByDate(

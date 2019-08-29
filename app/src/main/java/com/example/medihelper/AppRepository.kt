@@ -117,11 +117,6 @@ object AppRepository {
 
     fun insertPerson(personEntity: PersonEntity) = AsyncTask.execute {
         val addedPersonID = personDao.insert(personEntity)
-        if (selectedPersonItemLive.value == null) {
-            sharedPreferences.edit(true) {
-                putInt(KEY_MAIN_PERSON_ID, addedPersonID.toInt())
-            }
-        }
     }
 
     // Other
@@ -160,7 +155,6 @@ object AppRepository {
     private fun initSharedPreferences(app: Application) {
         sharedPreferences = app.getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE)
         medicineUnitListLive.value = sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList()
-        selectedPersonIDLive.value = sharedPreferences.getInt(KEY_MAIN_PERSON_ID, -1)
 
         sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
@@ -215,5 +209,4 @@ object AppRepository {
     private const val APP_SHARED_PREFERENCES = "app-shared-preferences"
     private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
     private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-array"
-    private const val KEY_MAIN_PERSON_ID = "key-main-person-id"
 }

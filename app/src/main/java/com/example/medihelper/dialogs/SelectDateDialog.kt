@@ -31,22 +31,18 @@ class SelectDateDialog : BottomSheetDialogFragment() {
         setupCalendar()
     }
 
-    fun onClickCancel() = dismiss()
-
-    fun onClickConfirm() {
-        val selectedDate = AppDateTime.makeDate(calendar_view.date)
-        dateSelectedListener?.invoke(selectedDate)
-        dismiss()
-    }
-
     fun setDateSelectedListener(listener: (date: Date) -> Unit) {
         dateSelectedListener = listener
     }
 
     private fun setupCalendar() {
-        defaultDate?.let { calendar_view.date = it.time }
+        if (defaultDate != null) {
+            calendar_view.date = defaultDate!!.time
+        }
         calendar_view.setOnDateChangeListener { _, year, month, day ->
-            calendar_view.date = AppDateTime.makeDate(day, month, year).time
+            val selectedDate = AppDateTime.makeDate(day, month, year)
+            dateSelectedListener?.invoke(selectedDate)
+            dismiss()
         }
     }
 }

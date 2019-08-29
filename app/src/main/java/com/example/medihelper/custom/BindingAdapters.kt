@@ -75,24 +75,3 @@ fun setCardBackgroundColor(materialCardView: MaterialCardView, colorResId: Int?)
     }
 }
 
-@BindingAdapter("app:fabBackgroundColor")
-fun setFabColor(fab: FloatingActionButton, colorResId: Int?) {
-    if (colorResId != null && colorResId != 0) {
-        fab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(fab.context, colorResId))
-    }
-}
-
-@BindingAdapter("android:tint")
-fun setImageButtonIconTintColor(imageButton: ImageButton, colorResId: Int?) {
-    if (colorResId != null && colorResId != 0) {
-        imageButton.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(imageButton.context, colorResId))
-    }
-}
-
-@BindingAdapter("android:tint")
-fun setImageViewTintColor(imageView: ImageView, colorResId: Int?) {
-    if (colorResId != null && colorResId != 0) {
-        imageView.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(imageView.context, colorResId))
-    }
-}
-

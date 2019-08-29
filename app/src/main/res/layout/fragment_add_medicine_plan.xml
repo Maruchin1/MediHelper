@@ -31,7 +31,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@{viewModel.selectedPersonItemLive.personColorResID}">
+            android:background="@color/colorPrimary">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
@@ -54,9 +54,8 @@
                         android:layout_height="?actionBarSize"
                         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                         app:icon="@drawable/round_close_24"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:title="Zaplanuj lek"
-                        app:menu="@menu/toolbar_menu_add_edit"/>
+                        app:menu="@menu/toolbar_menu_add_edit"
+                        app:title="Zaplanuj lek" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -142,7 +141,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_pill_grey600_36dp"
-                                android:tint="@{viewModel.primaryColorLive}" />
+                                android:tint="@color/colorPrimary" />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -150,7 +149,7 @@
                                 android:layout_marginStart="8dp"
                                 android:text='@{viewModel.selectedMedicineName ?? "Nie wybrano leku", default="Nazwa leku"}'
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                                android:textColor="@{viewModel.primaryColorLive}" />
+                                android:textColor="@color/colorPrimary" />
                         </LinearLayout>
 
                         <TextView
@@ -195,7 +194,7 @@
                             android:layout_height="wrap_content"
                             android:text="Czas przyjmowania"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor='@{viewModel.primaryColorLive}'
+                            android:textColor="@color/colorPrimary"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.chip.ChipGroup
@@ -278,7 +277,7 @@
                             android:layout_height="wrap_content"
                             android:text="Dni przyjmowania"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor="@{viewModel.primaryColorLive}" />
+                            android:textColor="@color/colorPrimary" />
 
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/chip_group_schedule_days"
@@ -356,7 +355,7 @@
                             android:layout_height="wrap_content"
                             android:text="Godziny przyjmowania"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor="@{viewModel.primaryColorLive}" />
+                            android:textColor="@color/colorPrimary" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycler_view_schedule_hours"
@@ -372,7 +371,7 @@
                             android:background="?selectableItemBackgroundBorderless"
                             android:onClick="@{() -> viewModel.addDoseHour()}"
                             android:src="@drawable/round_add_white_36"
-                            android:tint="@{viewModel.primaryColorLive}" />
+                            android:tint="@color/colorPrimary" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

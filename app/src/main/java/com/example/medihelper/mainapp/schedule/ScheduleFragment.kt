@@ -74,13 +74,6 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.primaryColorLive.observe(viewLifecycleOwner, Observer { colorResID ->
-            if (colorResID != null) {
-                activity?.run {
-                    (this as MainActivity).setStatusBarColor(colorResID)
-                }
-            }
-        })
         viewModel.selectedDateLive.observe(viewLifecycleOwner, Observer { selectedDate ->
             val position = viewModel.getPositionForDate(selectedDate)
             val timelineAdapter = recycler_view_timeline.adapter as ScheduleTimelineAdapter
@@ -110,7 +103,7 @@ class ScheduleFragment : Fragment() {
             when (menuItem.itemId) {
                 R.id.btn_calendar -> {
                     TransitionManager.beginDelayedTransition(root_lay)
-                    viewModel.changeCalendarVisibility()
+                    viewModel.calendarLayoutVisibleLive.value = true
                 }
                 R.id.btn_list -> findNavController().navigate(ScheduleFragmentDirections.toMedicinePlanListDestination())
             }
@@ -151,6 +144,8 @@ class ScheduleFragment : Fragment() {
         calendar_view.setOnDateChangeListener { _, year, month, day ->
             Log.d(TAG, "calendar date change")
             viewModel.selectDate(AppDateTime.makeDate(day, month, year))
+            TransitionManager.beginDelayedTransition(root_lay)
+            viewModel.calendarLayoutVisibleLive.value = false
         }
     }
 

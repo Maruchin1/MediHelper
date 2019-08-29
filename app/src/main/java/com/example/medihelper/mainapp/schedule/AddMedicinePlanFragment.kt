@@ -61,20 +61,24 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     fun onClickSelectTime(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
-        val dialog = SelectTimeDialog()
-        dialog.defaultTime = timeOfTaking.time
-        dialog.setTimeSelectedListener { time ->
-            viewModel.updateTimeOfTaking(position, timeOfTaking.copy(time = time))
+        val dialog = SelectTimeDialog().apply {
+            defaultTime = timeOfTaking.time
+            setTimeSelectedListener { time ->
+                viewModel.updateTimeOfTaking(position, timeOfTaking.copy(time = time))
+            }
         }
         dialog.show(childFragmentManager, SelectTimeDialog.TAG)
     }
 
     fun onClickSelectDoseSize(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
-        val dialog = SelectNumberDialog()
-        dialog.defaultNumber = timeOfTaking.doseSize
-        dialog.setNumberSelectedListener { number ->
-            Log.d(TAG, "numberSelected")
-            viewModel.updateTimeOfTaking(position, timeOfTaking.copy(doseSize = number))
+        val dialog = SelectNumberDialog().apply {
+            title = "Wybierz dawkę leku"
+            iconResID = R.drawable.ic_pill_black_36dp
+            defaultNumber = timeOfTaking.doseSize
+            setNumberSelectedListener { number ->
+                Log.d(TAG, "numberSelected")
+                viewModel.updateTimeOfTaking(position, timeOfTaking.copy(doseSize = number))
+            }
         }
         dialog.show(childFragmentManager, SelectNumberDialog.TAG)
     }
@@ -85,13 +89,13 @@ class AddMedicinePlanFragment : Fragment() {
         super.onCreate(savedInstanceState)
         activity?.run {
             viewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
+            (this as MainActivity).run {
+                setTransparentStatusBar(false)
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentAddMedicinePlanBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_add_medicine_plan, container, false)
         binding.viewModel = viewModel
@@ -102,32 +106,25 @@ class AddMedicinePlanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupMainActivity()
-        setupToolbarMenu()
+        setupToolbar()
         setupScheduleTypeChipGroup()
         setupScheduleDaysChipGroup()
         setupTimeOfTakingRecyclerView()
         observeViewModel()
     }
 
-    private fun setupToolbarMenu() {
+    private fun setupToolbar() {
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.btn_cancel -> findNavController().popBackStack()
                 R.id.btn_save -> {
                     viewModel.saveMedicinePlan()
                     findNavController().popBackStack()
                 }
             }
             true
-        }
-    }
-
-    private fun setupMainActivity() {
-        activity?.let {
-            (it as MainActivity).run {
-                setTransparentStatusBar(false)
-            }
         }
     }
 

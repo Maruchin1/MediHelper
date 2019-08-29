@@ -27,7 +27,7 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@{viewModel.primaryColorLive}"
+            android:background="@color/colorPrimary"
             app:elevation="4dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -45,14 +45,15 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="@{viewModel.calendarLayoutVisibleLive ? View.GONE : View.VISIBLE}">
 
                         <androidx.appcompat.widget.Toolbar
                             android:id="@+id/toolbar"
                             android:layout_width="match_parent"
                             android:layout_height="?actionBarSize"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:menu="@menu/toolbar_menu_schedule"/>
+                            app:menu="@menu/toolbar_menu_schedule" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/card_avatar"
@@ -154,7 +155,6 @@
             android:onClick="@{() -> handler.onClickAddMedicinePlan()}"
             android:src="@drawable/round_add_white_48"
             app:backgroundTint="@color/colorPrimary"
-            app:fabBackgroundColor="@{viewModel.primaryColorLive}"
             app:tint="@color/colorWhite" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

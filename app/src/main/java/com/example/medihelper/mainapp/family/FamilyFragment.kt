@@ -28,7 +28,7 @@ class FamilyFragment : Fragment() {
     private lateinit var viewModel: FamilyViewModel
 
     fun onClickAddPerson() {
-        findNavController().navigate(FamilyFragmentDirections.toAddPersonDestination())
+//        findNavController().navigate(FamilyFragmentDirections.toAddPersonDestination())
     }
 
     fun onClickBackToMenu() = findNavController().popBackStack()

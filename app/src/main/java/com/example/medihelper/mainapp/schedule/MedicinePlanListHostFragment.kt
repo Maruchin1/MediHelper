@@ -34,8 +34,6 @@ class MedicinePlanListHostFragment : Fragment() {
         dialog.show(childFragmentManager, dialog.TAG)
     }
 
-    fun onClickCloseScreen() = findNavController().popBackStack()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {
@@ -56,24 +54,12 @@ class MedicinePlanListHostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupTabs()
         setupToolbarMenu()
-        observeViewModel()
-    }
-
-    private fun observeViewModel() {
-        viewModel.primaryColorLive.observe(viewLifecycleOwner, Observer { colorResID ->
-            if (colorResID != null) {
-                activity?.run {
-                    (this as MainActivity).setStatusBarColor(colorResID)
-                }
-            }
-        })
     }
 
     private fun setupToolbarMenu() {
-        toolbar.setOnMenuItemClickListener { menuItem ->
-            findNavController().popBackStack()
-            true
-        }
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     private fun setupTabs() {

@@ -51,7 +51,7 @@ class SelectPersonDialog : BottomSheetDialogFragment() {
     private fun setupPersonRecyclerView() {
         context?.let { context ->
             recycler_view_persons.apply {
-                layoutManager = LinearLayoutManager(context)
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = PersonAdapter()
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }

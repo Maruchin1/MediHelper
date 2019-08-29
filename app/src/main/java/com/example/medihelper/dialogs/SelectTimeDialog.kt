@@ -16,15 +16,6 @@ class SelectTimeDialog : BottomSheetDialogFragment() {
     var defaultTime: Time? = null
     private var timeSelectedListener: ((time: Time) -> Unit)? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bindLayout(inflater, container)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupTimePicker()
-    }
-
     fun setTimeSelectedListener(listener: (time: Time) -> Unit) {
         timeSelectedListener = listener
     }
@@ -35,6 +26,15 @@ class SelectTimeDialog : BottomSheetDialogFragment() {
         val selectedTime = Time(time_picker.currentHour, time_picker.currentMinute, 0)
         timeSelectedListener?.invoke(selectedTime)
         dismiss()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return bindLayout(inflater, container)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupTimePicker()
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {

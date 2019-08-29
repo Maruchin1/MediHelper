@@ -11,11 +11,6 @@
         android:title="Apteczka" />
 
     <item
-        android:id="@+id/family_destination"
-        android:icon="@drawable/round_people_white_48"
-        android:title="Rodzina" />
-
-    <item
         android:id="@+id/doctors_destination"
         android:icon="@drawable/ic_doctor_black_48dp"
         android:title="Lekarze" />
