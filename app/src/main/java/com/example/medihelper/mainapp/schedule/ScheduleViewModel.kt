@@ -22,11 +22,14 @@ class ScheduleViewModel : ViewModel() {
     val calendarLayoutVisibleLive = MutableLiveData(false)
     val selectedDateLive = MutableLiveData<Date>()
 
-    private val medicinePlanItemListLive = AppRepository.getMedicinePlanItemListLive()
+    private val medicinePlanItemListLive: LiveData<List<MedicinePlanItem>>
     private val medicinePlanItemOngoingListLive: LiveData<List<MedicinePlanItem>>
     private val medicinePlanItemEndedListLive: LiveData<List<MedicinePlanItem>>
 
     init {
+        medicinePlanItemListLive = Transformations.switchMap(selectedPersonItemLive) { personItem ->
+            AppRepository.getMedicinePlanItemListLive(personItem.personID)
+        }
         medicinePlanItemOngoingListLive = Transformations.map(medicinePlanItemListLive) { medicinePlanItemList ->
             medicinePlanItemList.filter { medicinePlanItem ->
                 getMedicinePlanType(medicinePlanItem) == MedicinePlanType.ONGOING

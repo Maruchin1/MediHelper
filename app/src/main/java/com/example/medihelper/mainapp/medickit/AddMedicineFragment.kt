@@ -17,12 +17,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
-import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.databinding.FragmentAddMedicineBinding
 import com.example.medihelper.mainapp.MainActivity
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_add_medicine.*
 import java.io.File
 
@@ -75,7 +73,7 @@ class AddMedicineFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.resetViewModel()
         setupMainActivity()
-        setupToolbarMenu()
+        setupToolbar()
         observeViewModel()
         setupSpinMedicineType()
     }
@@ -139,10 +137,12 @@ class AddMedicineFragment : Fragment() {
         }
     }
 
-    private fun setupToolbarMenu() {
+    private fun setupToolbar() {
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.btn_cancel -> findNavController().popBackStack()
                 R.id.btn_save -> {
                     viewModel.saveMedicine()
                     findNavController().popBackStack()

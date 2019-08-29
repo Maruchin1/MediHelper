@@ -43,12 +43,9 @@ object AppRepository {
 
     fun init(app: Application) {
         Log.d(TAG, "init")
-        initSharedPreferences(app)
         initDatabaseData(app)
+        initSharedPreferences(app)
         photosDir = app.applicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        insertInitialMedicinesTypes()
-        insertInitialPersonColorResID()
-        insertInitialPerson()
     }
 
     // SharedPreferences
@@ -76,7 +73,7 @@ object AppRepository {
 
     fun getMedicineDetailsLive(medicineID: Int) = medicineDao.getMedicineDetailsLive(medicineID)
 
-    fun getMedicinePlanItemListLive() = medicinePlanDao.getMedicinePlanItemListLive()
+    fun getMedicinePlanItemListLive(personID: Int) = medicinePlanDao.getMedicinePlanItemListLive(personID)
 
     fun getPlannedMedicine(plannedMedicineID: Int) = plannedMedicineDao.getByID(plannedMedicineID)
 
@@ -154,13 +151,18 @@ object AppRepository {
 
     private fun initSharedPreferences(app: Application) {
         sharedPreferences = app.getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE)
-        medicineUnitListLive.value = sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList()
-
         sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
                 KEY_MEDICINE_UNIT_SET -> medicineUnitListLive.value = sharedPreferences.getStringSet(key, null)?.toList()
+                KEY_MAIN_PERSON_ID -> selectedPersonIDLive.value = sharedPreferences.getInt(key, -1)
             }
         }
+
+        insertInitialMedicinesTypes()
+        insertInitialPersonColorResID()
+        insertInitialPerson()
+        medicineUnitListLive.value = sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList()
+        selectedPersonIDLive.value = sharedPreferences.getInt(KEY_MAIN_PERSON_ID, -1)
     }
 
     private fun insertInitialPersonColorResID() = AsyncTask.execute {
@@ -191,7 +193,10 @@ object AppRepository {
                 personName = "Ja",
                 personColorResID = R.color.colorPrimary
             )
-            personDao.insert(mePerson)
+            val insertedPersonID = personDao.insert(mePerson)
+            sharedPreferences.edit(true) {
+                putInt(KEY_MAIN_PERSON_ID, insertedPersonID.toInt())
+            }
         }
     }
 
@@ -209,4 +214,5 @@ object AppRepository {
     private const val APP_SHARED_PREFERENCES = "app-shared-preferences"
     private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
     private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-array"
+    private const val KEY_MAIN_PERSON_ID = "key-main-person-id"
 }
