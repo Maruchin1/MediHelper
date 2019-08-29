@@ -54,6 +54,17 @@ class MedicinePlanListHostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupTabs()
         setupToolbarMenu()
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
+            if (colorResID != null) {
+                activity?.run {
+                    (this as MainActivity).setStatusBarColor(colorResID)
+                }
+            }
+        })
     }
 
     private fun setupToolbarMenu() {

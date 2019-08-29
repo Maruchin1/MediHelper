@@ -7,7 +7,6 @@ import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
-import com.example.medihelper.localdatabase.pojos.PersonItem
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineCheckbox
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import java.util.*
@@ -19,6 +18,7 @@ class ScheduleViewModel : ViewModel() {
     val initialDatePosition = timelineDaysCount / 2
 
     val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
+    val colorPrimaryLive: LiveData<Int>
     val calendarLayoutVisibleLive = MutableLiveData(false)
     val selectedDateLive = MutableLiveData<Date>()
 
@@ -27,6 +27,9 @@ class ScheduleViewModel : ViewModel() {
     private val medicinePlanItemEndedListLive: LiveData<List<MedicinePlanItem>>
 
     init {
+        colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
+            personItem.personColorResID
+        }
         medicinePlanItemListLive = Transformations.switchMap(selectedPersonItemLive) { personItem ->
             AppRepository.getMedicinePlanItemListLive(personItem.personID)
         }

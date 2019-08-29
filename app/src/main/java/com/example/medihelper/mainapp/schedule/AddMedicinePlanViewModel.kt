@@ -17,6 +17,7 @@ class AddMedicinePlanViewModel : ViewModel() {
     private val TAG = AddMedicinePlanViewModel::class.simpleName
 
     val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
+    val colorPrimaryLive: LiveData<Int>
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
     val selectedMedicineName: LiveData<String>
@@ -36,6 +37,9 @@ class AddMedicinePlanViewModel : ViewModel() {
     private val selectedMedicineDetailsLive: LiveData<MedicineDetails>
 
     init {
+        colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
+            personItem.personColorResID
+        }
         selectedMedicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
             AppRepository.getMedicineDetailsLive(medicineID)
         }

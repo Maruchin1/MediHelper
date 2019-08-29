@@ -74,6 +74,13 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
+            if (colorResID != null) {
+                activity?.run {
+                    (this as MainActivity).setStatusBarColor(colorResID)
+                }
+            }
+        })
         viewModel.selectedDateLive.observe(viewLifecycleOwner, Observer { selectedDate ->
             val position = viewModel.getPositionForDate(selectedDate)
             val timelineAdapter = recycler_view_timeline.adapter as ScheduleTimelineAdapter

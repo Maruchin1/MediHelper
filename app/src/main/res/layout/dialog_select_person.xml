@@ -12,36 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_bottom_dialog"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="4dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Wybierz osobę"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/round_add_white_36"
-                android:tint="@color/colorBlack"
-                android:onClick="@{() -> handler.onClickAddNewPerson()}"/>
-        </LinearLayout>
-
-        <include layout="@layout/line_horizontal" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_persons"

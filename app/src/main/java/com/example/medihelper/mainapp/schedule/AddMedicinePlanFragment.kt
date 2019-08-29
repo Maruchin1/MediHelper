@@ -156,15 +156,13 @@ class AddMedicinePlanFragment : Fragment() {
             val adapter = recycler_view_schedule_hours.adapter as TimeOfTakingAdapter
             adapter.updateItemsList(doseHourList.toList())
         })
-        viewModel.selectedPersonItemLive.observe(viewLifecycleOwner, Observer { personItem ->
-            if (personItem != null) {
+        viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
+            if (colorResID != null) {
                 activity?.run {
-                    (this as MainActivity).setStatusBarColor(personItem.personColorResID)
+                    (this as MainActivity).setStatusBarColor(colorResID)
                 }
             }
         })
-
-
         viewModel.startDateLive.observe(viewLifecycleOwner, Observer { startDate ->
             Log.d(TAG, "startDate change = $startDate")
         })

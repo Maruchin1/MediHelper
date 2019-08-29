@@ -14,38 +14,38 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        cardBackgroundColorResID="@{displayData.personColorResID}"
-        android:layout_width="100dp"
-        android:layout_height="130dp"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:cardCornerRadius="8dp">
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:onClick="@{() -> handler.onClickSelectPerson(displayData.personID)}"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:onClick="@{() -> handler.onClickSelectPerson(displayData.personID)}"
             android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_avatar"
+                cardBackgroundColorResID='@{displayData.personColorResID, default="@color/colorPrimary"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:cardBackgroundColor="@color/colorTransparent"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:strokeColor="@color/colorWhite"
                 app:strokeWidth="2dp">
 
                 <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_margin="8dp"
                     android:src="@drawable/round_person_white_36"
                     android:tint="@color/colorWhite" />
@@ -53,14 +53,22 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:maxLines="1"
                 android:text='@{displayData.personName, default="Nazwa"}'
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="@color/colorWhite"
-                android:gravity="center"/>
+                android:textColor="@color/colorTextSecondary" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/round_more_horiz_black_36"
+                android:tint="@color/colorTextTertiary"
+                android:layout_marginTop="8dp"/>
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

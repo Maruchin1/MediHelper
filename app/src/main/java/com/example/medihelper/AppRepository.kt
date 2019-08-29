@@ -176,7 +176,7 @@ object AppRepository {
                 R.color.colorPersonLightGreen,
                 R.color.colorPersonOrange,
                 R.color.colorPersonPurple,
-                R.color.colorPersonTeal,
+                R.color.colorPersonRed,
                 R.color.colorPersonYellow
             ).map { colorResID ->
                 colorResID.toString()
