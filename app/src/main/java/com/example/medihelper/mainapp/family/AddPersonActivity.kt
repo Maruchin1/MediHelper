@@ -52,12 +52,12 @@ class AddPersonActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        toolbar.setNavigationOnClickListener { onBackPressed() }
+        toolbar.setNavigationOnClickListener { finish() }
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {
                     viewModel.saveNewPerson()
-                    onBackPressed()
+                    finish()
                 }
             }
             true

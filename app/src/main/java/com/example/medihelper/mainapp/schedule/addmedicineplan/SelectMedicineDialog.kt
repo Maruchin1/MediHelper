@@ -9,7 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.medihelper.AppRepository
 import com.example.medihelper.R
 import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
@@ -18,7 +17,6 @@ import com.example.medihelper.databinding.DialogSelectMedicineBinding
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_medicine.*
-import java.io.File
 
 class SelectMedicineDialog : BottomSheetDialogFragment() {
     val TAG = SelectMedicineDialog::class.simpleName
@@ -58,19 +56,10 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     }
 
     private fun observeData() {
-        AppRepository.getMedicineItemListLive().observe(viewLifecycleOwner, Observer { medicineKitItemList ->
+        viewModel.medicineItemListLive.observe(viewLifecycleOwner, Observer { medicineItemList ->
             val adapter = recycler_view_medicines.adapter as MedicineAdapter
-            adapter.updateItemsList(medicineKitItemList)
+            adapter.updateItemsList(medicineItemList)
         })
-    }
-
-    private fun getMedicineDisplayData(medicineItem: MedicineItem): MedicineItemDisplayData {
-        return MedicineItemDisplayData(
-            medicineID = medicineItem.medicineID,
-            medicineName = medicineItem.medicineName,
-            medicineState = "${medicineItem.currState}/${medicineItem.packageSize} ${medicineItem.medicineUnit}",
-            medicineImageFile = medicineItem.photoFilePath?.let { File(it) }
-        )
     }
 
     // Inner classes -------------------------------------------------------------------------------
@@ -83,16 +72,9 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
         }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicineKitItem = itemsList[position]
-            val medicineDisplayData = getMedicineDisplayData(medicineKitItem)
+            val medicineItem = itemsList[position]
+            val medicineDisplayData = viewModel.getMedicineDisplayData(medicineItem)
             holder.bind(medicineDisplayData, this@SelectMedicineDialog)
         }
     }
-
-    data class MedicineItemDisplayData(
-        val medicineID: Int,
-        val medicineName: String,
-        val medicineState: String,
-        val medicineImageFile: File?
-    )
 }

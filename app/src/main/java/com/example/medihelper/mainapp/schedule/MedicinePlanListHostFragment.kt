@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -21,20 +22,12 @@ import kotlinx.android.synthetic.main.fragment_medicine_plan_list_host.*
 
 class MedicinePlanListHostFragment : Fragment() {
 
-    private lateinit var viewModel: ScheduleViewModel
+    private val viewModel: ScheduleViewModel by activityViewModels()
+    private val directions by lazyOf(MedicinePlanListHostFragmentDirections)
 
-    fun onClickAddMedicinePlan() {
+    fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddMedicinePlanActivity())
 
-    }
-
-    fun onClickSelectPerson() = findNavController().navigate(MedicinePlanListHostFragmentDirections.toPersonDialog())
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
-        }
-    }
+    fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentMedicinePlanListHostBinding =
@@ -63,9 +56,9 @@ class MedicinePlanListHostFragment : Fragment() {
     }
 
     private fun setupToolbarMenu() {
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.setupWithNavController(navController, appBarConfiguration)
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun setupTabs() {

@@ -47,7 +47,8 @@
                         android:layout_height="?actionBarSize"
                         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                         app:icon="@drawable/round_close_24"
-                        app:title="Zaplanowane leki" />
+                        app:title="Zaplanowane leki"
+                        app:navigationIcon="?android:homeAsUpIndicator"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"

@@ -9,7 +9,7 @@
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.schedule.addmedicineplan.SelectMedicineDialog.MedicineItemDisplayData" />
+            type="com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanViewModel.MedicineItemDisplayData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

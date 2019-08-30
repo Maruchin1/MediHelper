@@ -31,10 +31,11 @@ class ScheduleFragment : Fragment() {
     private val TAG = ScheduleFragment::class.simpleName
 
     private val viewModel: ScheduleViewModel by activityViewModels()
+    private val directions by lazyOf(ScheduleFragmentDirections)
 
-    fun onClickAddMedicinePlan() = findNavController().navigate(ScheduleFragmentDirections.toAddMedicinePlanActivity())
+    fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddMedicinePlanActivity())
 
-    fun onClickSelectPerson() = findNavController().navigate(ScheduleFragmentDirections.toPersonDialog())
+    fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentScheduleBinding =

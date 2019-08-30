@@ -37,10 +37,11 @@ class AddMedicinePlanFragment : Fragment() {
     private val TAG = AddMedicinePlanFragment::class.simpleName
 
     private val viewModel: AddMedicinePlanViewModel by activityViewModels()
+    private val directions by lazyOf(AddMedicinePlanFragmentDirections)
 
-    fun onClickSelectMedicine() = findNavController().navigate(AddMedicinePlanFragmentDirections.toSelectMedicineDialog())
+    fun onClickSelectMedicine() = findNavController().navigate(directions.toSelectMedicineDialog())
 
-    fun onClickSelectPerson() = findNavController().navigate(AddMedicinePlanFragmentDirections.toPersonDialog())
+    fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
 
     fun onClickSelectTime(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
         val dialog = SelectTimeDialog().apply {

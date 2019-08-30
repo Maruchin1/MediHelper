@@ -9,6 +9,8 @@ import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
+import com.example.medihelper.localdatabase.pojos.MedicineItem
+import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -16,6 +18,7 @@ class AddMedicinePlanViewModel : ViewModel() {
     private val TAG = AddMedicinePlanViewModel::class.simpleName
 
     val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
+    val medicineItemListLive = AppRepository.getMedicineItemListLive()
     val colorPrimaryLive: LiveData<Int>
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
@@ -104,6 +107,15 @@ class AddMedicinePlanViewModel : ViewModel() {
         )
     }
 
+    fun getMedicineDisplayData(medicineItem: MedicineItem): MedicineItemDisplayData {
+        return MedicineItemDisplayData(
+            medicineID = medicineItem.medicineID,
+            medicineName = medicineItem.medicineName,
+            medicineState = "${medicineItem.currState}/${medicineItem.packageSize} ${medicineItem.medicineUnit}",
+            medicineImageFile = medicineItem.photoFilePath?.let { File(it) }
+        )
+    }
+
     private fun loadDefaultData() {
         durationTypeLive.value = MedicinePlanEntity.DurationType.ONCE
         startDateLive.value = AppDateTime.getCurrCalendar().time
@@ -119,5 +131,12 @@ class AddMedicinePlanViewModel : ViewModel() {
         val time: String,
         val doseSize: String,
         val medicineTypeName: String
+    )
+
+    data class MedicineItemDisplayData(
+        val medicineID: Int,
+        val medicineName: String,
+        val medicineState: String,
+        val medicineImageFile: File?
     )
 }
