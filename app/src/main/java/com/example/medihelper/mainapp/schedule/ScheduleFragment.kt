@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -29,20 +30,11 @@ import kotlinx.android.synthetic.main.recycler_item_schedule_timeline.view.*
 class ScheduleFragment : Fragment() {
     private val TAG = ScheduleFragment::class.simpleName
 
-    private lateinit var viewModel: ScheduleViewModel
+    private val viewModel: ScheduleViewModel by activityViewModels()
 
-    fun onClickAddMedicinePlan() {
-
-    }
+    fun onClickAddMedicinePlan() = findNavController().navigate(ScheduleFragmentDirections.toAddMedicinePlanActivity())
 
     fun onClickSelectPerson() = findNavController().navigate(ScheduleFragmentDirections.toPersonDialog())
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentScheduleBinding =

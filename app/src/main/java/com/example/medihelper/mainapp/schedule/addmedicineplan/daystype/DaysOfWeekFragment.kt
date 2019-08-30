@@ -1,22 +1,22 @@
-package com.example.medihelper.mainapp.schedule.durationtype
+package com.example.medihelper.mainapp.schedule.addmedicineplan.daystype
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.medihelper.AppDateTime
 
 import com.example.medihelper.R
-import com.example.medihelper.dialogs.SelectDateDialog
-import com.example.medihelper.databinding.FragmentScheduleTypeContinuousBinding
-import com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel
+import com.example.medihelper.databinding.FragmentDaysOfWeekBinding
+import com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanViewModel
 
-class ScheduleTypeContinuousFragment : Fragment() {
-    private val TAG = ScheduleTypeContinuousFragment::class.simpleName
+class DaysOfWeekFragment : Fragment() {
+    private val TAG = DaysOfWeekFragment::class.simpleName
 
     private lateinit var planViewModel: AddMedicinePlanViewModel
 
@@ -34,20 +34,17 @@ class ScheduleTypeContinuousFragment : Fragment() {
         return bindLayout(inflater, container)
     }
 
-    fun onClickSelectDate() {
-        val dialog = SelectDateDialog()
-        dialog.defaultDate = planViewModel.startDateLive.value
-        dialog.setDateSelectedListener { date ->
-            planViewModel.startDateLive.value = date
-        }
-        dialog.show(childFragmentManager, dialog.TAG)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        planViewModel.daysOfWeekLive.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, "daysOfWeek change = $it")
+        })
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: FragmentScheduleTypeContinuousBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_type_continuous, container, false)
+        val binding: FragmentDaysOfWeekBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_days_of_week, container, false)
         binding.viewModel = planViewModel
-        binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }

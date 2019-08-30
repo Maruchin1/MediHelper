@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule.durationtype
+package com.example.medihelper.mainapp.schedule.addmedicineplan.durationtype
 
 
 import android.os.Bundle
@@ -8,15 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import com.example.medihelper.AppDateTime
 
 import com.example.medihelper.R
 import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.databinding.FragmentScheduleTypePeriodBinding
-import com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel
+import com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanViewModel
 
-class ScheduleTypePeriodFragment : Fragment() {
-    private val TAG = ScheduleTypePeriodFragment::class.simpleName
+class PeriodFragment : Fragment() {
+    private val TAG = PeriodFragment::class.simpleName
 
     private lateinit var planViewModel: AddMedicinePlanViewModel
 

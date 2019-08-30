@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule
+package com.example.medihelper.mainapp.schedule.addmedicineplan
 
 
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -21,14 +22,13 @@ import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.databinding.FragmentAddMedicinePlanBinding
-import com.example.medihelper.mainapp.family.PersonDialog
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.mainapp.MainActivity
-import com.example.medihelper.mainapp.schedule.daystype.DaysOfWeekFragment
-import com.example.medihelper.mainapp.schedule.daystype.IntervalOfDaysFragment
-import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypeContinuousFragment
-import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypePeriodFragment
-import com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypeOnceFragment
+import com.example.medihelper.mainapp.schedule.addmedicineplan.daystype.DaysOfWeekFragment
+import com.example.medihelper.mainapp.schedule.addmedicineplan.daystype.IntervalOfDaysFragment
+import com.example.medihelper.mainapp.schedule.addmedicineplan.durationtype.ContinuousFragment
+import com.example.medihelper.mainapp.schedule.addmedicineplan.durationtype.PeriodFragment
+import com.example.medihelper.mainapp.schedule.addmedicineplan.durationtype.OnceFragment
 import kotlinx.android.synthetic.main.fragment_add_medicine_plan.*
 import kotlinx.android.synthetic.main.fragment_add_medicine_plan.toolbar
 
@@ -36,20 +36,11 @@ import kotlinx.android.synthetic.main.fragment_add_medicine_plan.toolbar
 class AddMedicinePlanFragment : Fragment() {
     private val TAG = AddMedicinePlanFragment::class.simpleName
 
-    private lateinit var viewModel: AddMedicinePlanViewModel
+    private val viewModel: AddMedicinePlanViewModel by activityViewModels()
 
-    fun onClickSelectMedicine() {
-        val dialog = SelectMedicineDialog().apply {
-            setMedicineSelectedListener { medicineID ->
-                viewModel.selectedMedicineIDLive.value = medicineID
-            }
-        }
-        dialog.show(childFragmentManager, dialog.TAG)
-    }
+    fun onClickSelectMedicine() = findNavController().navigate(AddMedicinePlanFragmentDirections.toSelectMedicineDialog())
 
-    fun onClickSelectPerson() {
-
-    }
+    fun onClickSelectPerson() = findNavController().navigate(AddMedicinePlanFragmentDirections.toPersonDialog())
 
     fun onClickSelectTime(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
         val dialog = SelectTimeDialog().apply {
@@ -76,16 +67,6 @@ class AddMedicinePlanFragment : Fragment() {
 
     fun onClickRemoveTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) = viewModel.removeTimeOfTaking(timeOfTaking)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this).get(AddMedicinePlanViewModel::class.java)
-            (this as MainActivity).run {
-                setTransparentStatusBar(false)
-            }
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentAddMedicinePlanBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_add_medicine_plan, container, false)
@@ -105,14 +86,14 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.setupWithNavController(navController, appBarConfiguration)
+        toolbar.setNavigationOnClickListener {
+            requireActivity().finish()
+        }
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {
                     viewModel.saveMedicinePlan()
-                    findNavController().popBackStack()
+                    requireActivity().finish()
                 }
             }
             true
@@ -120,9 +101,9 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        val onceFragment = ScheduleTypeOnceFragment()
-        val periodFragment = ScheduleTypePeriodFragment()
-        val continuousFragment = ScheduleTypeContinuousFragment()
+        val onceFragment = OnceFragment()
+        val periodFragment = PeriodFragment()
+        val continuousFragment = ContinuousFragment()
         viewModel.durationTypeLive.observe(viewLifecycleOwner, Observer { scheduleType ->
             if (scheduleType != null) {
                 when (scheduleType) {
@@ -150,7 +131,7 @@ class AddMedicinePlanFragment : Fragment() {
         viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
             if (colorResID != null) {
                 activity?.run {
-                    (this as MainActivity).setStatusBarColor(colorResID)
+                    (this as AddMedicinePlanActivity).setStatusBarColor(colorResID)
                 }
             }
         })

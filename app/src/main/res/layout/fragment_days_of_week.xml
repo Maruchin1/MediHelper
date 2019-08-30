@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".mainapp.schedule.daystype.DaysOfWeekFragment">
+    tools:context=".mainapp.schedule.addmedicineplan.daystype.DaysOfWeekFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel" />
+            type="com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

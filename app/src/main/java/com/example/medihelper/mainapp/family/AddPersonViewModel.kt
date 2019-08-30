@@ -1,9 +1,7 @@
 package com.example.medihelper.mainapp.family
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.medihelper.AppRepository
-import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.pojos.PersonItem
 
@@ -11,7 +9,6 @@ class AddPersonViewModel : ViewModel() {
     private val TAG = AddPersonViewModel::class.simpleName
 
     val personColorDisplayDataListLive: LiveData<List<PersonColorDisplayData>>
-
     val personNameLive = MutableLiveData<String>()
     val personColorResIDLive = MutableLiveData<Int>()
 
@@ -34,11 +31,9 @@ class AddPersonViewModel : ViewModel() {
             }
         }
         editPersonItemLive = Transformations.switchMap(editPersonIDLive) { personID ->
-            Log.d(TAG, "personID change = $personID")
             AppRepository.getPersonItemLive(personID)
         }
         editPersonItemObserver = Observer { personItem ->
-            Log.d(TAG, "personItem change = $personItem")
             personNameLive.value = personItem?.personName
             personColorResIDLive.value = personItem?.personColorResID ?: personColorResIDList[0]
         }

@@ -9,18 +9,18 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel" />
+            type="com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.schedule.durationtype.ScheduleTypeContinuousFragment" />
+            type="com.example.medihelper.mainapp.schedule.addmedicineplan.durationtype.ContinuousFragment" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".mainapp.schedule.durationtype.ScheduleTypeContinuousFragment">
+        tools:context=".mainapp.schedule.addmedicineplan.durationtype.ContinuousFragment">
 
         <LinearLayout
             android:id="@+id/lay_date"

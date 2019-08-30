@@ -15,6 +15,9 @@
         <action
             android:id="@+id/toPersonDialog"
             app:destination="@id/personDialog" />
+        <action
+            android:id="@+id/toAddMedicinePlanActivity"
+            app:destination="@id/addMedicinePlanActivity" />
     </fragment>
     <fragment
         android:id="@+id/kitFragment"
@@ -27,6 +30,9 @@
         <action
             android:id="@+id/toPersonDialog"
             app:destination="@id/personDialog" />
+        <action
+            android:id="@+id/toAddMedicinePlanActivity"
+            app:destination="@id/addMedicinePlanActivity" />
     </fragment>
     <dialog
         android:id="@+id/personDialog"
@@ -45,4 +51,8 @@
             app:argType="integer"
             android:defaultValue="-1" />
     </activity>
+    <activity
+        android:id="@+id/addMedicinePlanActivity"
+        android:name="com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanActivity"
+        tools:layout="@layout/activity_add_medicine_plan" />
 </navigation>

@@ -1,8 +1,7 @@
-package com.example.medihelper.mainapp.schedule
+package com.example.medihelper.mainapp.schedule.addmedicineplan
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDateTime
@@ -54,8 +53,6 @@ class AddMedicinePlanViewModel : ViewModel() {
         }
         loadDefaultData()
     }
-
-    fun selectPerson(personID: Int) = AppRepository.setSelectedPerson(personID)
 
     fun saveMedicinePlan() {
         //todo zrobić to porządniej i z walidacją danych

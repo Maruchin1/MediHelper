@@ -68,7 +68,7 @@
     </fragment>
     <fragment
         android:id="@+id/add_medicine_plan_destination"
-        android:name="com.example.medihelper.mainapp.schedule.AddMedicinePlanFragment"
+        android:name="com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanFragment"
         tools:layout="@layout/fragment_add_medicine_plan">
         <action
             android:id="@+id/to_add_medicine_destination"

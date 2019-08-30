@@ -13,11 +13,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel" />
+            type="com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.schedule.AddMedicinePlanFragment" />
+            type="com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
         android:fitsSystemWindows="true"
-        tools:context=".mainapp.schedule.AddMedicinePlanFragment">
+        tools:context=".mainapp.schedule.addmedicineplan.AddMedicinePlanFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -55,7 +55,8 @@
                         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                         app:icon="@drawable/round_close_24"
                         app:menu="@menu/toolbar_menu_add_edit"
-                        app:title="Zaplanuj lek" />
+                        app:title="Zaplanuj lek"
+                        app:navigationIcon="?android:homeAsUpIndicator"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"

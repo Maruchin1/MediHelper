@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".mainapp.family.AddPersonActivity"></activity>
+        <activity android:name=".mainapp.schedule.addmedicineplan.AddMedicinePlanActivity"></activity>
+        <activity android:name=".mainapp.schedule.addmedicineplan.AddMedicinePlanActivity" />
+        <activity android:name=".mainapp.family.AddPersonActivity" />
         <activity android:name=".mainapp.LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +26,7 @@
         </activity>
         <activity
             android:name=".mainapp.MainActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -1,12 +1,12 @@
-package com.example.medihelper.mainapp.schedule
+package com.example.medihelper.mainapp.schedule.addmedicineplan
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.AppRepository
@@ -23,18 +23,16 @@ import java.io.File
 class SelectMedicineDialog : BottomSheetDialogFragment() {
     val TAG = SelectMedicineDialog::class.simpleName
 
-    private var medicineSelectedListener: ((medicineID: Int) -> Unit)? = null
-
-    fun setMedicineSelectedListener(listener: (medicineID: Int) -> Unit) {
-        medicineSelectedListener = listener
-    }
+    private val viewModel: AddMedicinePlanViewModel by activityViewModels()
 
     fun onClickSelectMedicine(medicineID: Int) {
-        medicineSelectedListener?.invoke(medicineID)
+        viewModel.selectedMedicineIDLive.value = medicineID
         dismiss()
     }
 
-    fun onClickAddNewMedicine() = findNavController().navigate(AddMedicinePlanFragmentDirections.toAddMedicineDestination(-1))
+    fun onClickAddNewMedicine() {
+
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: DialogSelectMedicineBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_select_medicine, container, false)

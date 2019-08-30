@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule.daystype
+package com.example.medihelper.mainapp.schedule.addmedicineplan.durationtype
 
 
 import android.os.Bundle
@@ -10,26 +10,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 
 import com.example.medihelper.R
-import com.example.medihelper.dialogs.SelectNumberDialog
-import com.example.medihelper.databinding.FragmentIntervalOfDaysBinding
-import com.example.medihelper.mainapp.schedule.AddMedicinePlanViewModel
+import com.example.medihelper.dialogs.SelectDateDialog
+import com.example.medihelper.databinding.FragmentScheduleTypeContinuousBinding
+import com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanViewModel
 
-class IntervalOfDaysFragment : Fragment() {
-    private val TAG = IntervalOfDaysFragment::class.simpleName
+class ContinuousFragment : Fragment() {
+    private val TAG = ContinuousFragment::class.simpleName
 
     private lateinit var planViewModel: AddMedicinePlanViewModel
-
-    fun onClickSelectInterval() {
-        val dialog = SelectNumberDialog().apply {
-            title = "Wybierz odstęp dni"
-            iconResID = R.drawable.round_access_time_black_36
-            defaultNumber = planViewModel.intervalOfDaysLive.value
-            setNumberSelectedListener { number ->
-                planViewModel.intervalOfDaysLive.value = number
-            }
-        }
-        dialog.show(childFragmentManager, SelectNumberDialog.TAG)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +33,18 @@ class IntervalOfDaysFragment : Fragment() {
         return bindLayout(inflater, container)
     }
 
+    fun onClickSelectDate() {
+        val dialog = SelectDateDialog()
+        dialog.defaultDate = planViewModel.startDateLive.value
+        dialog.setDateSelectedListener { date ->
+            planViewModel.startDateLive.value = date
+        }
+        dialog.show(childFragmentManager, dialog.TAG)
+    }
+
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: FragmentIntervalOfDaysBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_interval_of_days, container, false)
+        val binding: FragmentScheduleTypeContinuousBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_type_continuous, container, false)
         binding.viewModel = planViewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner

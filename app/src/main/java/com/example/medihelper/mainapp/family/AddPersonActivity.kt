@@ -20,7 +20,6 @@ class AddPersonActivity : AppCompatActivity() {
     private val TAG = AddPersonActivity::class.simpleName
 
     private val viewModel: AddPersonViewModel by viewModels()
-//    private val args: AddPersonActivityArgs by navArgs()
 
     fun onClickSelectColor(colorResID: Int) {
         viewModel.personColorResIDLive.value = colorResID
