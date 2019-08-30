@@ -131,6 +131,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:onClick="@{() -> handler.onClickEditPerson(displayData.personID)}"
                     android:text="Edytuj"
                     android:textColor="@color/colorWhite"
                     app:icon="@drawable/round_edit_24"

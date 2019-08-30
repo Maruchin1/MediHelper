@@ -23,15 +23,11 @@ class MedicinePlanListHostFragment : Fragment() {
 
     private lateinit var viewModel: ScheduleViewModel
 
-    fun onClickSelectPerson() {
-        val dialog = PersonDialog().apply {
-            addPersonDirection = MedicinePlanListHostFragmentDirections.toAddPersonDestination()
-            setPersonSelectedListener { personID ->
-                viewModel.selectPerson(personID)
-            }
-        }
-        dialog.show(childFragmentManager, dialog.TAG)
+    fun onClickAddMedicinePlan() {
+
     }
+
+    fun onClickSelectPerson() = findNavController().navigate(MedicinePlanListHostFragmentDirections.toPersonDialog())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -10,6 +10,8 @@ class PersonViewModel : ViewModel() {
     val personItemListLive = AppRepository.getPersonItemListLive()
     val optionsEnabledPersonIDLive = MutableLiveData<Int>()
 
+    fun selectPerson(personID: Int) = AppRepository.setSelectedPerson(personID)
+
     fun deletePerson(personID: Int) {
         if (personID == AppRepository.getSelectedPersonItemLive().value?.personID) {
             AppRepository.setSelectedPerson(AppRepository.getMainPersonID())

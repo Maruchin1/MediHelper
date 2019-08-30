@@ -48,13 +48,7 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     fun onClickSelectPerson() {
-        val dialog = PersonDialog().apply {
-            addPersonDirection = AddMedicinePlanFragmentDirections.toAddPersonDestination()
-            setPersonSelectedListener { personID ->
-                viewModel.selectPerson(personID)
-            }
-        }
-        dialog.show(childFragmentManager, dialog.TAG)
+
     }
 
     fun onClickSelectTime(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {

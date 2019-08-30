@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
@@ -15,33 +16,23 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.databinding.DialogSelectPersonBinding
+import com.example.medihelper.databinding.DialogPersonBinding
 import com.example.medihelper.localdatabase.pojos.PersonItem
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.dialog_select_person.*
+import kotlinx.android.synthetic.main.dialog_person.*
 
 class PersonDialog : BottomSheetDialogFragment() {
     val TAG = PersonDialog::class.simpleName
 
-    var addPersonDirection: NavDirections? = null
-    private var personSelectedListener: ((personID: Int) -> Unit)? = null
-    private lateinit var viewModel: PersonViewModel
-
-    fun setPersonSelectedListener(listener: (personID: Int) -> Unit) {
-        personSelectedListener = listener
-    }
+    private val viewModel: PersonViewModel by viewModels()
 
     fun onClickSelectPerson(personID: Int) {
-        personSelectedListener?.invoke(personID)
+        viewModel.selectPerson(personID)
         dismiss()
     }
 
-    fun onClickAddNewPerson() {
-        if (addPersonDirection != null) {
-            findNavController().navigate(addPersonDirection!!)
-        }
-    }
+    fun onClickAddNewPerson() = findNavController().navigate(PersonDialogDirections.toAddPersonActivity())
 
     fun onClickOpenOptions(personID: Int) {
         viewModel.optionsEnabledPersonIDLive.value = personID
@@ -56,13 +47,10 @@ class PersonDialog : BottomSheetDialogFragment() {
         viewModel.deletePerson(personID)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(PersonViewModel::class.java)
-    }
+    fun onClickEditPerson(personID: Int) = findNavController().navigate(PersonDialogDirections.toAddPersonActivity(personID))
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: DialogSelectPersonBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_select_person, container, false)
+        val binding: DialogPersonBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_person, container, false)
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root

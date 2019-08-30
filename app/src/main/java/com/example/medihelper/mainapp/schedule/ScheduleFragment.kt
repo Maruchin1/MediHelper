@@ -31,17 +31,11 @@ class ScheduleFragment : Fragment() {
 
     private lateinit var viewModel: ScheduleViewModel
 
-    fun onClickAddMedicinePlan() = findNavController().navigate(ScheduleFragmentDirections.toAddMedicinePlanDestination())
+    fun onClickAddMedicinePlan() {
 
-    fun onClickSelectPerson() {
-        val dialog = PersonDialog().apply {
-            addPersonDirection = ScheduleFragmentDirections.toAddPersonDestination()
-            setPersonSelectedListener { personID ->
-                viewModel.selectPerson(personID)
-            }
-        }
-        dialog.show(childFragmentManager, dialog.TAG)
     }
+
+    fun onClickSelectPerson() = findNavController().navigate(ScheduleFragmentDirections.toPersonDialog())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,7 +104,7 @@ class ScheduleFragment : Fragment() {
                     TransitionManager.beginDelayedTransition(root_lay)
                     viewModel.calendarLayoutVisibleLive.value = true
                 }
-                R.id.btn_list -> findNavController().navigate(ScheduleFragmentDirections.toMedicinePlanListDestination())
+                R.id.btn_list -> findNavController().navigate(ScheduleFragmentDirections.toMedicinePlanListHostFragment())
             }
             true
         }

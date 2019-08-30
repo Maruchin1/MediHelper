@@ -115,6 +115,18 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            fabBackgroundColor="@{viewModel.colorPrimaryLive}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:onClick="@{() -> handler.onClickAddMedicinePlan()}"
+            android:src="@drawable/round_add_white_48"
+            app:iconTint="@color/colorWhite"
+            app:backgroundTint="@color/colorPrimary"
+            app:tint="@color/colorWhite" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
 

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.family.AddPersonFragment" />
+            type="com.example.medihelper.mainapp.family.AddPersonActivity" />
 
         <variable
             name="viewModel"
@@ -16,23 +17,24 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background='@{viewModel.personColorResIDLive, default="@color/colorPrimary"}'
         android:fitsSystemWindows="true"
-        android:background='@{viewModel.personColorResIDLive, default="@color/colorPrimary"}'>
+        tools:context=".mainapp.family.AddPersonActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                app:icon="@drawable/round_close_24"
+                app:navigationIcon="?homeAsUpIndicator"
                 app:menu="@menu/toolbar_menu_add_edit"
-                app:title="Dodaj osobę" />
+                app:title="Dodaj osobę"/>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
@@ -57,8 +59,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
                 android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp">
 
@@ -94,8 +96,8 @@
                         android:id="@+id/recycler_view_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_gravity="center_horizontal"/>
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp" />
 
                 </LinearLayout>
 
@@ -105,3 +107,4 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
+

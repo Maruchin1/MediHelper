@@ -31,7 +31,6 @@ class AddMedicineViewModel : ViewModel() {
 
     private val selectedMedicineIDLive = MutableLiveData<Int>()
     private val selectedMedicineEditDataLive: LiveData<MedicineEditData>
-
     private val selectedMedicineEditDataObserver: Observer<MedicineEditData>
 
     init {

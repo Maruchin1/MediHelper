@@ -76,8 +76,7 @@ class MedicineDetailsFragment : Fragment() {
     }
 
     private fun loadSelectedMedicine() {
-        val medicineID = args.medicineId
-        viewModel.selectedMedicineIDLive.value = medicineID
+        viewModel.selectedMedicineIDLive.value = args.medicineId
     }
 
     private fun setupToolbar() {

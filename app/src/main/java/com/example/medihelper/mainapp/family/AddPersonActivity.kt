@@ -1,31 +1,26 @@
 package com.example.medihelper.mainapp.family
 
+import android.graphics.Color
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.R
 import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.databinding.FragmentAddPersonBinding
-import com.example.medihelper.localdatabase.entities.PersonEntity
-import com.example.medihelper.mainapp.MainActivity
-import kotlinx.android.synthetic.main.fragment_add_person.*
+import com.example.medihelper.databinding.ActivityAddPersonBinding
+import kotlinx.android.synthetic.main.activity_add_person.*
 
-class AddPersonFragment : Fragment() {
-    val TAG = AddPersonFragment::class.simpleName
+class AddPersonActivity : AppCompatActivity() {
+    private val TAG = AddPersonActivity::class.simpleName
 
-    private lateinit var viewModel: AddPersonViewModel
+    private val viewModel: AddPersonViewModel by viewModels()
+//    private val args: AddPersonActivityArgs by navArgs()
 
     fun onClickSelectColor(colorResID: Int) {
         viewModel.personColorResIDLive.value = colorResID
@@ -33,52 +28,40 @@ class AddPersonFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(AddPersonViewModel::class.java)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentAddPersonBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_person, container, false)
+        val binding: ActivityAddPersonBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_person)
         binding.handler = this
         binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
-    }
+        binding.lifecycleOwner = this
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        intent?.extras?.let {
+            val args = AddPersonActivityArgs.fromBundle(it)
+            Log.d(TAG, "editPersonID = ${args.editPersonID}")
+            viewModel.setArgs(args)
+        }
+        setTransparentStatusBar()
         setupToolbar()
-        setupMainActivity()
         setupColorRecyclerView()
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        viewModel.personColorDisplayDataListLive.observe(viewLifecycleOwner, Observer { personColorDisplayDataList ->
+        viewModel.personColorDisplayDataListLive.observe(this, Observer { personColorDisplayDataList ->
+            Log.d(TAG, "personColorList change = $personColorDisplayDataList")
             val adapter = recycler_view_color.adapter as PersonColorAdapter
             adapter.updateItemsList(personColorDisplayDataList)
         })
     }
 
     private fun setupToolbar() {
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.setupWithNavController(navController, appBarConfiguration)
+        toolbar.setNavigationOnClickListener { onBackPressed() }
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {
                     viewModel.saveNewPerson()
-                    findNavController().popBackStack()
+                    onBackPressed()
                 }
             }
             true
-        }
-    }
-
-    private fun setupMainActivity() {
-        activity?.run {
-            (this as MainActivity).apply {
-                setTransparentStatusBar(true)
-            }
         }
     }
 
@@ -87,6 +70,10 @@ class AddPersonFragment : Fragment() {
             layoutManager = GridLayoutManager(context, 3)
             adapter = PersonColorAdapter()
         }
+    }
+
+    private fun setTransparentStatusBar() {
+        window.statusBarColor = Color.TRANSPARENT
     }
 
     // Inner classes
@@ -100,7 +87,7 @@ class AddPersonFragment : Fragment() {
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val personColorDisplayData = itemsList[position]
-            holder.bind(personColorDisplayData, this@AddPersonFragment)
+            holder.bind(personColorDisplayData, this@AddPersonActivity)
         }
     }
 }

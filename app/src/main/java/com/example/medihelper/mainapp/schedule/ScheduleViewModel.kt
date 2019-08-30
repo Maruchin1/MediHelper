@@ -58,8 +58,6 @@ class ScheduleViewModel : ViewModel() {
         }
     }
 
-    fun selectPerson(personID: Int) = AppRepository.setSelectedPerson(personID)
-
     fun getDateForPosition(position: Int): Date {
         val calendar = AppDateTime.getCurrCalendar()
         calendar.add(Calendar.DAY_OF_YEAR, position - (timelineDaysCount / 2))

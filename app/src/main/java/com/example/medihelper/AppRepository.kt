@@ -106,6 +106,10 @@ object AppRepository {
         plannedMedicineDao.update(plannedMedicineEntity)
     }
 
+    fun updatePerson(personEntity: PersonEntity) = AsyncTask.execute {
+        personDao.update(personEntity)
+    }
+
     // Insert
     fun insertMedicine(medicineEntity: MedicineEntity) = AsyncTask.execute {
         medicineDao.insert(medicineEntity)
