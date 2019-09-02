@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule.addmedicineplan.durationtype
+package com.example.medihelper.mainapp.addmedicineplan.durationtype
 
 
 import android.os.Bundle
@@ -11,11 +11,11 @@ import androidx.lifecycle.ViewModelProviders
 
 import com.example.medihelper.R
 import com.example.medihelper.dialogs.SelectDateDialog
-import com.example.medihelper.databinding.FragmentScheduleTypeContinuousBinding
-import com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanViewModel
+import com.example.medihelper.databinding.FragmentScheduleTypePeriodBinding
+import com.example.medihelper.mainapp.addmedicineplan.AddMedicinePlanViewModel
 
-class ContinuousFragment : Fragment() {
-    private val TAG = ContinuousFragment::class.simpleName
+class PeriodFragment : Fragment() {
+    private val TAG = PeriodFragment::class.simpleName
 
     private lateinit var planViewModel: AddMedicinePlanViewModel
 
@@ -33,18 +33,23 @@ class ContinuousFragment : Fragment() {
         return bindLayout(inflater, container)
     }
 
-    fun onClickSelectDate() {
+    fun onClickSelectDate(view: View) {
+        val selectedDateLive = when (view.id) {
+            R.id.lay_start_date -> planViewModel.startDateLive
+            R.id.lay_end_date -> planViewModel.endDateLive
+            else -> null
+        }
         val dialog = SelectDateDialog()
-        dialog.defaultDate = planViewModel.startDateLive.value
+        selectedDateLive?.let { dialog.defaultDate = it.value }
         dialog.setDateSelectedListener { date ->
-            planViewModel.startDateLive.value = date
+            selectedDateLive?.value = date
         }
         dialog.show(childFragmentManager, dialog.TAG)
     }
 
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: FragmentScheduleTypeContinuousBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_type_continuous, container, false)
+        val binding: FragmentScheduleTypePeriodBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_type_period, container, false)
         binding.viewModel = planViewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner

@@ -33,7 +33,7 @@ class ScheduleFragment : Fragment() {
     private val viewModel: ScheduleViewModel by activityViewModels()
     private val directions by lazyOf(ScheduleFragmentDirections)
 
-    fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddMedicinePlanActivity())
+    fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddMedicinePlanFragment())
 
     fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
 
@@ -50,12 +50,18 @@ class ScheduleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
         setupToolbarMenu()
-        setupMainActivity()
         setupTimelineRecyclerView()
         setupDatesViewPager()
         setupCalendarView()
         setInitialDate()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.colorPrimaryLive.value?.let { colorResId ->
+            (requireActivity() as MainActivity).setStatusBarColor(colorResId)
+        }
     }
 
     private fun observeViewModel() {
@@ -82,14 +88,6 @@ class ScheduleFragment : Fragment() {
         })
     }
 
-    private fun setupMainActivity() {
-        activity?.let {
-            (it as MainActivity).run {
-                setTransparentStatusBar(false)
-            }
-        }
-    }
-
     private fun setupToolbarMenu() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
@@ -97,7 +95,7 @@ class ScheduleFragment : Fragment() {
                     TransitionManager.beginDelayedTransition(root_lay)
                     viewModel.calendarLayoutVisibleLive.value = true
                 }
-                R.id.btn_list -> findNavController().navigate(ScheduleFragmentDirections.toMedicinePlanListHostFragment())
+                R.id.btn_list -> findNavController().navigate(directions.toMedicinePlanListHostFragment())
             }
             true
         }

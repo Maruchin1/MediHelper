@@ -18,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.R
+import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -25,10 +26,8 @@ import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import java.io.File
 
 
-class MedicineDetailsFragment : Fragment() {
-    private val TAG = MedicineDetailsFragment::class.simpleName
+class MedicineDetailsFragment : AppFullScreenDialog() {
 
-    private val args: MedicineDetailsFragmentArgs by navArgs()
     private lateinit var viewModel: MedicineDetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +48,6 @@ class MedicineDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupMainActivity()
         setupToolbar()
         observeViewModel()
         loadSelectedMedicine()
@@ -57,8 +55,7 @@ class MedicineDetailsFragment : Fragment() {
 
     fun onClickEdit() {
         viewModel.selectedMedicineIDLive.value?.let { medicineId ->
-            val action = MedicineDetailsFragmentDirections.toAddMedicineDestination(medicineId)
-            findNavController().navigate(action)
+
         }
     }
 
@@ -76,21 +73,13 @@ class MedicineDetailsFragment : Fragment() {
     }
 
     private fun loadSelectedMedicine() {
-        viewModel.selectedMedicineIDLive.value = args.medicineId
+
     }
 
     private fun setupToolbar() {
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         collapsing_toolbar.setupWithNavController(toolbar, navController, appBarConfiguration)
-    }
-
-    private fun setupMainActivity() {
-        activity?.let {
-            (it as MainActivity).run {
-                setTransparentStatusBar(true)
-            }
-        }
     }
 
     private fun takeMedicine() {

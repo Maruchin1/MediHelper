@@ -1,24 +1,35 @@
-package com.example.medihelper.mainapp.schedule.addmedicineplan.daystype
+package com.example.medihelper.mainapp.addmedicineplan.daystype
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
 import com.example.medihelper.R
-import com.example.medihelper.databinding.FragmentDaysOfWeekBinding
-import com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanViewModel
+import com.example.medihelper.dialogs.SelectNumberDialog
+import com.example.medihelper.databinding.FragmentIntervalOfDaysBinding
+import com.example.medihelper.mainapp.addmedicineplan.AddMedicinePlanViewModel
 
-class DaysOfWeekFragment : Fragment() {
-    private val TAG = DaysOfWeekFragment::class.simpleName
+class IntervalOfDaysFragment : Fragment() {
+    private val TAG = IntervalOfDaysFragment::class.simpleName
 
     private lateinit var planViewModel: AddMedicinePlanViewModel
+
+    fun onClickSelectInterval() {
+        val dialog = SelectNumberDialog().apply {
+            title = "Wybierz odstęp dni"
+            iconResID = R.drawable.round_access_time_black_36
+            defaultNumber = planViewModel.intervalOfDaysLive.value
+            setNumberSelectedListener { number ->
+                planViewModel.intervalOfDaysLive.value = number
+            }
+        }
+        dialog.show(childFragmentManager, SelectNumberDialog.TAG)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,17 +45,11 @@ class DaysOfWeekFragment : Fragment() {
         return bindLayout(inflater, container)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        planViewModel.daysOfWeekLive.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG, "daysOfWeek change = $it")
-        })
-    }
-
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
-        val binding: FragmentDaysOfWeekBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_days_of_week, container, false)
+        val binding: FragmentIntervalOfDaysBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_interval_of_days, container, false)
         binding.viewModel = planViewModel
+        binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }

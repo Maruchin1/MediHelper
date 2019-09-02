@@ -40,7 +40,7 @@ class AddPersonViewModel : ViewModel() {
         editPersonItemLive.observeForever(editPersonItemObserver)
     }
 
-    fun setArgs(args: AddPersonActivityArgs) {
+    fun setArgs(args: AddPersonFragmentArgs) {
         editPersonIDLive.value = args.editPersonID
     }
 

@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule.addmedicineplan.durationtype
+package com.example.medihelper.mainapp.addmedicineplan.durationtype
 
 
 import android.os.Bundle
@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.medihelper.R
 import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.databinding.FragmentScheduleTypeOnceBinding
-import com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanViewModel
+import com.example.medihelper.mainapp.addmedicineplan.AddMedicinePlanViewModel
 
 
 class OnceFragment : Fragment() {

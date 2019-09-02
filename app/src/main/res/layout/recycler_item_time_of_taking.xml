@@ -5,7 +5,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanFragment" />
+            type="com.example.medihelper.mainapp.addmedicineplan.AddMedicinePlanFragment" />
 
         <variable
             name="position"
@@ -13,7 +13,7 @@
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanViewModel.TimeOfTakingDisplayData" />
+            type="com.example.medihelper.mainapp.addmedicineplan.AddMedicinePlanViewModel.TimeOfTakingDisplayData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

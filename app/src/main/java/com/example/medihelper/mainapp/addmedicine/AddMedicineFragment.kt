@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.medickit
+package com.example.medihelper.mainapp.addmedicine
 
 
 import android.os.Bundle
@@ -18,6 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.medihelper.R
+import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.databinding.FragmentAddMedicineBinding
 import com.example.medihelper.mainapp.MainActivity
@@ -25,11 +26,10 @@ import kotlinx.android.synthetic.main.fragment_add_medicine.*
 import java.io.File
 
 
-class AddMedicineFragment : Fragment() {
+class AddMedicineFragment : AppFullScreenDialog() {
     private val TAG = AddMedicineFragment::class.simpleName
     private val REQUEST_IMAGE_CAPTURE = 1
 
-    private val args: MedicineDetailsFragmentArgs by navArgs()
     private lateinit var viewModel: AddMedicineViewModel
     private lateinit var medicineTypeAdapter: ArrayAdapter<String>
 
@@ -57,10 +57,7 @@ class AddMedicineFragment : Fragment() {
         } ?: throw Exception("Invalid Activity")
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentAddMedicineBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_add_medicine, container, false)
         binding.viewModel = viewModel
@@ -72,7 +69,6 @@ class AddMedicineFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.resetViewModel()
-        setupMainActivity()
         setupToolbar()
         observeViewModel()
         setupSpinMedicineType()
@@ -98,14 +94,6 @@ class AddMedicineFragment : Fragment() {
                 .load(photoFile)
                 .centerCrop()
                 .into(img_photo)
-        }
-    }
-
-    private fun setupMainActivity() {
-        activity?.let {
-            (it as MainActivity).run {
-                setTransparentStatusBar(false)
-            }
         }
     }
 
@@ -138,14 +126,12 @@ class AddMedicineFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.setupWithNavController(navController, appBarConfiguration)
+       toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {
                     viewModel.saveMedicine()
-                    findNavController().popBackStack()
+                    dismiss()
                 }
             }
             true

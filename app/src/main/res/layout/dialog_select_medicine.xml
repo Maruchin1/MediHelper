@@ -5,7 +5,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.schedule.addmedicineplan.SelectMedicineDialog" />
+            type="com.example.medihelper.mainapp.addmedicineplan.SelectMedicineDialog" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

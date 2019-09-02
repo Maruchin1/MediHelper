@@ -20,13 +20,20 @@
             android:id="@+id/toPersonDialog"
             app:destination="@id/personDialog" />
         <action
-            android:id="@+id/toAddMedicinePlanActivity"
-            app:destination="@id/addMedicinePlanActivity" />
+            android:id="@+id/toAddMedicinePlanFragment"
+            app:destination="@id/addMedicinePlanFragment" />
     </fragment>
     <fragment
         android:id="@+id/kitFragment"
         android:name="com.example.medihelper.mainapp.medickit.KitFragment"
-        tools:layout="@layout/fragment_kit" />
+        tools:layout="@layout/fragment_kit" >
+        <action
+            android:id="@+id/toAddMedicineFragment"
+            app:destination="@id/addMedicineFragment" />
+        <action
+            android:id="@+id/toMedicineDetailsFragment"
+            app:destination="@id/medicineDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/medicinePlanListHostFragment"
         android:name="com.example.medihelper.mainapp.schedule.MedicinePlanListHostFragment"
@@ -35,28 +42,51 @@
             android:id="@+id/toPersonDialog"
             app:destination="@id/personDialog" />
         <action
-            android:id="@+id/toAddMedicinePlanActivity"
-            app:destination="@id/addMedicinePlanActivity" />
+            android:id="@+id/toAddMedicinePlanFragment"
+            app:destination="@id/addMedicinePlanFragment" />
     </fragment>
     <dialog
         android:id="@+id/personDialog"
         android:name="com.example.medihelper.mainapp.family.PersonDialog"
         tools:layout="@layout/dialog_person">
         <action
-            android:id="@+id/toAddPersonActivity"
-            app:destination="@id/addPersonActivity" />
+            android:id="@+id/toAddPersonFragment"
+            app:destination="@id/addPersonFragment" />
     </dialog>
-    <activity
-        android:id="@+id/addPersonActivity"
-        android:name="com.example.medihelper.mainapp.family.AddPersonActivity"
-        tools:layout="@layout/activity_add_person" >
+    <dialog
+        android:id="@+id/addPersonFragment"
+        android:name="com.example.medihelper.mainapp.family.AddPersonFragment"
+        tools:layout="@layout/dialog_add_person">
         <argument
             android:name="editPersonID"
-            app:argType="integer"
-            android:defaultValue="-1" />
-    </activity>
-    <activity
-        android:id="@+id/addMedicinePlanActivity"
-        android:name="com.example.medihelper.mainapp.schedule.addmedicineplan.AddMedicinePlanActivity"
-        tools:layout="@layout/activity_add_medicine_plan" />
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </dialog>
+    <dialog
+        android:id="@+id/addMedicinePlanFragment"
+        android:name="com.example.medihelper.mainapp.addmedicineplan.AddMedicinePlanFragment"
+        tools:layout="@layout/fragment_add_medicine_plan">
+        <action
+            android:id="@+id/toPersonDialog"
+            app:destination="@id/personDialog" />
+        <action
+            android:id="@+id/toSelectMedicineDialog"
+            app:destination="@id/selectMedicineDialog" />
+    </dialog>
+    <dialog
+        android:id="@+id/selectMedicineDialog"
+        android:name="com.example.medihelper.mainapp.addmedicineplan.SelectMedicineDialog"
+        tools:layout="@layout/dialog_select_medicine" >
+        <action
+            android:id="@+id/toAddMedicineFragment"
+            app:destination="@id/addMedicineFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/addMedicineFragment"
+        android:name="com.example.medihelper.mainapp.addmedicine.AddMedicineFragment"
+        tools:layout="@layout/fragment_add_medicine" />
+    <dialog
+        android:id="@+id/medicineDetailsFragment"
+        android:name="com.example.medihelper.mainapp.medickit.MedicineDetailsFragment"
+        tools:layout="@layout/fragment_medicine_details"/>
 </navigation>

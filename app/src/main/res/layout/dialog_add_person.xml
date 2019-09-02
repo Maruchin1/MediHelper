@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.family.AddPersonActivity" />
-
+            type="com.example.medihelper.mainapp.family.AddPersonFragment" />
         <variable
             name="viewModel"
             type="com.example.medihelper.mainapp.family.AddPersonViewModel" />
@@ -18,8 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background='@{viewModel.personColorResIDLive, default="@color/colorPrimary"}'
-        android:fitsSystemWindows="true"
-        tools:context=".mainapp.family.AddPersonActivity">
+        android:fitsSystemWindows="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -105,6 +101,4 @@
         </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 </layout>
-

@@ -7,7 +7,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.family.AddPersonActivity" />
+            type="com.example.medihelper.mainapp.family.AddPersonFragment" />
 
         <variable
             name="displayData"

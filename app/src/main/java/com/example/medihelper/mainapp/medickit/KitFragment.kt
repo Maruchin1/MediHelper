@@ -29,8 +29,7 @@ class KitFragment : Fragment() {
     private lateinit var viewModel: KitViewModel
 
     fun onClickOpenMedicineDetails(medicineID: Int) {
-        val action = KitFragmentDirections.toMedicineDetailsDestination(medicineID)
-        findNavController().navigate(action)
+
     }
 
     fun onClickBackToMenu() = findNavController().popBackStack()
@@ -53,22 +52,12 @@ class KitFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupMainActivity()
         setupRecyclerView()
         observeViewModel()
     }
 
     private fun openAddMedicineFragment() {
-        val action = KitFragmentDirections.toAddMedicineDestination(-1)
-        findNavController().navigate(action)
-    }
 
-    private fun setupMainActivity() {
-        activity?.let {
-            (it as MainActivity).run {
-                setTransparentStatusBar(false)
-            }
-        }
     }
 
     private fun setupRecyclerView() {

@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.Observer
@@ -14,6 +17,7 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
+import com.example.medihelper.databinding.FragmentScheduleDayBinding
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import java.util.*
@@ -23,7 +27,8 @@ class ScheduleDayFragment : Fragment() {
     private val TAG = ScheduleDayFragment::class.simpleName
 
     var date: Date? = null
-    private lateinit var viewModel: ScheduleViewModel
+    val plannedMedicinesAvailableLive = MutableLiveData(false)
+    private val viewModel: ScheduleViewModel by activityViewModels()
 
     fun onClickOpenPlannedMedicineOptions(plannedMedicineID: Int) {
         val dialog = PlannedMedicineOptionsDialog()
@@ -31,15 +36,11 @@ class ScheduleDayFragment : Fragment() {
         dialog.show(childFragmentManager, dialog.TAG)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_schedule_day, container, false)
+        val binding: FragmentScheduleDayBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_day, container, false)
+        binding.handler = this
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,6 +55,7 @@ class ScheduleDayFragment : Fragment() {
                 Log.d(TAG, "date = $date, scheduledMedicinesList change = $plannedMedicineList")
                 val adapter = recycler_view_scheduled_medicine_for_day.adapter as PlannedMedicineAdapter
                 adapter.updateItemsList(plannedMedicineList)
+                plannedMedicinesAvailableLive.value = !plannedMedicineList.isNullOrEmpty()
             })
         }
     }

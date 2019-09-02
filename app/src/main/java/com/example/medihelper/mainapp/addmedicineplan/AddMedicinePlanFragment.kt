@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule.addmedicineplan
+package com.example.medihelper.mainapp.addmedicineplan
 
 
 import android.os.Bundle
@@ -10,31 +10,29 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.medihelper.R
+import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
+import com.example.medihelper.custom.TAG
 import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.databinding.FragmentAddMedicinePlanBinding
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.mainapp.MainActivity
-import com.example.medihelper.mainapp.schedule.addmedicineplan.daystype.DaysOfWeekFragment
-import com.example.medihelper.mainapp.schedule.addmedicineplan.daystype.IntervalOfDaysFragment
-import com.example.medihelper.mainapp.schedule.addmedicineplan.durationtype.ContinuousFragment
-import com.example.medihelper.mainapp.schedule.addmedicineplan.durationtype.PeriodFragment
-import com.example.medihelper.mainapp.schedule.addmedicineplan.durationtype.OnceFragment
+import com.example.medihelper.mainapp.addmedicineplan.daystype.DaysOfWeekFragment
+import com.example.medihelper.mainapp.addmedicineplan.daystype.IntervalOfDaysFragment
+import com.example.medihelper.mainapp.addmedicineplan.durationtype.ContinuousFragment
+import com.example.medihelper.mainapp.addmedicineplan.durationtype.PeriodFragment
+import com.example.medihelper.mainapp.addmedicineplan.durationtype.OnceFragment
 import kotlinx.android.synthetic.main.fragment_add_medicine_plan.*
 import kotlinx.android.synthetic.main.fragment_add_medicine_plan.toolbar
 
 
-class AddMedicinePlanFragment : Fragment() {
-    private val TAG = AddMedicinePlanFragment::class.simpleName
+class AddMedicinePlanFragment : AppFullScreenDialog() {
 
     private val viewModel: AddMedicinePlanViewModel by activityViewModels()
     private val directions by lazyOf(AddMedicinePlanFragmentDirections)
@@ -87,14 +85,12 @@ class AddMedicinePlanFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        toolbar.setNavigationOnClickListener {
-            requireActivity().finish()
-        }
+        toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {
                     viewModel.saveMedicinePlan()
-                    requireActivity().finish()
+                    dismiss()
                 }
             }
             true
@@ -131,9 +127,7 @@ class AddMedicinePlanFragment : Fragment() {
         })
         viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
             if (colorResID != null) {
-                activity?.run {
-                    (this as AddMedicinePlanActivity).setStatusBarColor(colorResID)
-                }
+                (requireActivity() as MainActivity).setStatusBarColor(colorResID)
             }
         })
         viewModel.startDateLive.observe(viewLifecycleOwner, Observer { startDate ->

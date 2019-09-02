@@ -1,63 +1,61 @@
 package com.example.medihelper.mainapp.family
 
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.viewModels
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.navArgs
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.medihelper.R
+import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.databinding.ActivityAddPersonBinding
-import kotlinx.android.synthetic.main.activity_add_person.*
+import com.example.medihelper.databinding.DialogAddPersonBinding
+import kotlinx.android.synthetic.main.dialog_add_person.*
 
-class AddPersonActivity : AppCompatActivity() {
-    private val TAG = AddPersonActivity::class.simpleName
+class AddPersonFragment : AppFullScreenDialog() {
 
     private val viewModel: AddPersonViewModel by viewModels()
+    private val args: AddPersonFragmentArgs by navArgs()
 
     fun onClickSelectColor(colorResID: Int) {
         viewModel.personColorResIDLive.value = colorResID
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val binding: ActivityAddPersonBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_person)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding: DialogAddPersonBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_add_person, container, false)
         binding.handler = this
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
+    }
 
-        intent?.extras?.let {
-            val args = AddPersonActivityArgs.fromBundle(it)
-            Log.d(TAG, "editPersonID = ${args.editPersonID}")
-            viewModel.setArgs(args)
-        }
-        setTransparentStatusBar()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.setArgs(args)
         setupToolbar()
         setupColorRecyclerView()
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        viewModel.personColorDisplayDataListLive.observe(this, Observer { personColorDisplayDataList ->
-            Log.d(TAG, "personColorList change = $personColorDisplayDataList")
+        viewModel.personColorDisplayDataListLive.observe(viewLifecycleOwner, Observer { personColorDisplayDataList ->
             val adapter = recycler_view_color.adapter as PersonColorAdapter
             adapter.updateItemsList(personColorDisplayDataList)
         })
     }
 
     private fun setupToolbar() {
-        toolbar.setNavigationOnClickListener { finish() }
+        toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {
                     viewModel.saveNewPerson()
-                    finish()
+                    dismiss()
                 }
             }
             true
@@ -71,10 +69,6 @@ class AddPersonActivity : AppCompatActivity() {
         }
     }
 
-    private fun setTransparentStatusBar() {
-        window.statusBarColor = Color.TRANSPARENT
-    }
-
     // Inner classes
     inner class PersonColorAdapter : RecyclerAdapter<AddPersonViewModel.PersonColorDisplayData>(
         R.layout.recycler_item_person_color,
@@ -86,7 +80,7 @@ class AddPersonActivity : AppCompatActivity() {
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val personColorDisplayData = itemsList[position]
-            holder.bind(personColorDisplayData, this@AddPersonActivity)
+            holder.bind(personColorDisplayData, this@AddPersonFragment)
         }
     }
 }

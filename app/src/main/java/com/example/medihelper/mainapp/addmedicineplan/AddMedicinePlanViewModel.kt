@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule.addmedicineplan
+package com.example.medihelper.mainapp.addmedicineplan
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

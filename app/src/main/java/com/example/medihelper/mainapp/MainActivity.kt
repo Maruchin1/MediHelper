@@ -1,6 +1,5 @@
 package com.example.medihelper.mainapp
 
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
@@ -8,7 +7,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.AppRepository
 import com.example.medihelper.R
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -24,19 +22,8 @@ class MainActivity : AppCompatActivity() {
         AppRepository.updatePlannedMedicinesStatuses()
     }
 
-    fun setTransparentStatusBar(isTransparent: Boolean) {
-        when(isTransparent) {
-            true -> window.statusBarColor = Color.TRANSPARENT
-            false -> window.statusBarColor = resources.getColor(R.color.colorPrimary)
-        }
-    }
-
     fun setStatusBarColor(colorResID: Int) {
         window.statusBarColor = ContextCompat.getColor(this, colorResID)
-    }
-
-    fun showSnackBar(message: String) {
-        Snackbar.make(root_lay, message, Snackbar.LENGTH_LONG).show()
     }
 
     private fun setupBottomNav() {

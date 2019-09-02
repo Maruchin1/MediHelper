@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -32,10 +33,19 @@ import kotlinx.android.synthetic.main.recycler_item_planned_medicine_for_plan_it
 
 
 class MedicinePlanListFragment : Fragment() {
-    private val TAG = MedicinePlanListFragment::class.simpleName
 
     var medicinePlanType: ScheduleViewModel.MedicinePlanType? = null
+    set(value) {
+        field = value
+        when (medicinePlanType) {
+            ScheduleViewModel.MedicinePlanType.ENDED -> unavailableMessage =  "Brak zakończonych planów"
+            ScheduleViewModel.MedicinePlanType.ONGOING -> unavailableMessage =  "Brak trwających planów"
+        }
+    }
+    var unavailableMessage = ""
+    val medicinePlanAvailableLive = MutableLiveData(false)
     private lateinit var viewModel: ScheduleViewModel
+
 
     fun onClickDeleteMedicinePlan(medicinePlanID: Int) {
         val dialog = ConfirmDialog().apply {
@@ -82,13 +92,13 @@ class MedicinePlanListFragment : Fragment() {
             viewModel.getMedicinePlanItemListLive(it).observe(viewLifecycleOwner, Observer { medicinePlanList ->
                 val adapter = recycler_view_medicine_plan.adapter as MedicinePlanAdapter
                 adapter.updateItemsList(medicinePlanList)
+                medicinePlanAvailableLive.value = !medicinePlanList.isNullOrEmpty()
             })
         }
     }
 
     private fun setupRecyclerView() {
         recycler_view_medicine_plan.adapter = MedicinePlanAdapter()
-        recycler_view_medicine_plan.layoutManager = LinearLayoutManager(context)
     }
 
     // Inner classes

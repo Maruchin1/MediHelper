@@ -23,11 +23,6 @@ class MenuFragment : Fragment() {
         return bindLayout(inflater, container)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupMainActivity()
-    }
-
     fun onClickMenuOption(view: View) {
 //        Log.d(TAG, "onClickMenuOption")
 //        Log.d(TAG, "view ID = ${view.id}")
@@ -47,13 +42,5 @@ class MenuFragment : Fragment() {
                 DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false)
         binding.handler = this
         return binding.root
-    }
-
-    private fun setupMainActivity() {
-        activity?.let {
-            (it as MainActivity).run {
-                setTransparentStatusBar(false)
-            }
-        }
     }
 }
