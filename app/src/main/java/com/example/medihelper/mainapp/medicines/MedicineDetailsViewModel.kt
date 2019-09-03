@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.medickit
+package com.example.medihelper.mainapp.medicines
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,10 +13,6 @@ import java.io.File
 class MedicineDetailsViewModel : ViewModel() {
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
-    val medicineDetailsLive: LiveData<MedicineDetails>
-
-    val stateAvailableLive: LiveData<Boolean>
-
     val photoLive: LiveData<File>
     val medicineNameLive: LiveData<String>
     val stateWeightLive: LiveData<Float>
@@ -28,6 +24,8 @@ class MedicineDetailsViewModel : ViewModel() {
     val expireDateLive: LiveData<String>
     val daysRemainsLive: LiveData<String>
     val comments: LiveData<String>
+    val stateAvailableLive: LiveData<Boolean>
+    private val medicineDetailsLive: LiveData<MedicineDetails>
 
     init {
         medicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
@@ -75,6 +73,10 @@ class MedicineDetailsViewModel : ViewModel() {
 
     fun deleteMedicine() = medicineDetailsLive.value?.let { AppRepository.deleteMedicine(it.medicineID) }
 
+    fun setArgs(args: MedicineDetailsFragmentArgs) {
+        selectedMedicineIDLive.value = args.medicineID
+    }
+
     private fun stateWeight(medicineDetails: MedicineDetails): Float? {
         return medicineDetails.currState?.let { currState ->
             medicineDetails.packageSize?.let { packageSize ->
@@ -84,8 +86,8 @@ class MedicineDetailsViewModel : ViewModel() {
     }
 
     private fun stateColorResId(stateWeight: Float): Int {
-        val stateGoodLimit = KitViewModel.STATE_GOOD_LIMIT
-        val stateMediumLimit = KitViewModel.STATE_MEDIUM_LIMIT
+        val stateGoodLimit = MedicinesViewModel.STATE_GOOD_LIMIT
+        val stateMediumLimit = MedicinesViewModel.STATE_MEDIUM_LIMIT
         return when {
             stateWeight >= stateGoodLimit -> R.color.colorStateGood
             stateWeight > stateMediumLimit -> R.color.colorStateMedium
@@ -94,8 +96,8 @@ class MedicineDetailsViewModel : ViewModel() {
     }
 
     private fun stateText(stateWeight: Float): String {
-        val stateGoodLimit = KitViewModel.STATE_GOOD_LIMIT
-        val stateMediumLimit = KitViewModel.STATE_MEDIUM_LIMIT
+        val stateGoodLimit = MedicinesViewModel.STATE_GOOD_LIMIT
+        val stateMediumLimit = MedicinesViewModel.STATE_MEDIUM_LIMIT
         return when {
             stateWeight >= stateGoodLimit -> TEXT_STATE_GOOD
             stateWeight > stateMediumLimit -> TEXT_STATE_MEDIUM

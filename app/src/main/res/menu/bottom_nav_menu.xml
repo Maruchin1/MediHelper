@@ -6,7 +6,7 @@
         android:title="Plan" />
 
     <item
-        android:id="@+id/kitFragment"
+        android:id="@+id/medicinesFragment"
         android:icon="@drawable/ic_pill_black_48dp"
         android:title="Apteczka" />
 

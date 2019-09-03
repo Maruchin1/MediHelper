@@ -24,9 +24,9 @@
             app:destination="@id/addMedicinePlanFragment" />
     </fragment>
     <fragment
-        android:id="@+id/kitFragment"
-        android:name="com.example.medihelper.mainapp.medickit.KitFragment"
-        tools:layout="@layout/fragment_kit" >
+        android:id="@+id/medicinesFragment"
+        android:name="com.example.medihelper.mainapp.medicines.MedicinesFragment"
+        tools:layout="@layout/fragment_medicines" >
         <action
             android:id="@+id/toAddMedicineFragment"
             app:destination="@id/addMedicineFragment" />
@@ -87,6 +87,14 @@
         tools:layout="@layout/fragment_add_medicine" />
     <dialog
         android:id="@+id/medicineDetailsFragment"
-        android:name="com.example.medihelper.mainapp.medickit.MedicineDetailsFragment"
-        tools:layout="@layout/fragment_medicine_details"/>
+        android:name="com.example.medihelper.mainapp.medicines.MedicineDetailsFragment"
+        tools:layout="@layout/fragment_medicine_details">
+        <argument
+            android:name="medicineID"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <action
+            android:id="@+id/toAddMedicineFragment"
+            app:destination="@id/addMedicineFragment" />
+    </dialog>
 </navigation>

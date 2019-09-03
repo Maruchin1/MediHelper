@@ -22,6 +22,9 @@ interface MedicineDAO {
     @Query("SELECT * FROM medicines")
     fun getItemListLive(): LiveData<List<MedicineItem>>
 
+    @Query("SELECT * FROM medicines WHERE LOWER(medicine_name) LIKE '%' || LOWER(:searchQuery) || '%'")
+    fun getFilteredItemListLive(searchQuery: String): LiveData<List<MedicineItem>>
+
     @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
     fun getItemLive(medicineID: Int): LiveData<MedicineItem>
 

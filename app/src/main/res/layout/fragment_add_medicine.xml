@@ -42,7 +42,8 @@
                     android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                     app:layout_constraintTop_toTopOf="parent"
                     app:title="Dodaj lek"
-                    app:menu="@menu/toolbar_menu_add_edit"/>
+                    app:menu="@menu/toolbar_menu_add_edit"
+                    app:navigationIcon="@drawable/round_close_24"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>

@@ -1,19 +1,35 @@
-package com.example.medihelper.mainapp.medickit
+package com.example.medihelper.mainapp.medicines
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppRepository
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 import java.io.File
 
-class KitViewModel : ViewModel() {
-    private val TAG = KitViewModel::class.simpleName
+class MedicinesViewModel : ViewModel() {
+    private val TAG = MedicinesViewModel::class.simpleName
 
-    val medicineKitItemListLive = AppRepository.getMedicineItemListLive()
+    val medicineItemListLive: LiveData<List<MedicineItem>>
+    val searchQueryLive = MutableLiveData("")
 
-    fun getMedicineKitItemDisplayData(medicineItem: MedicineItem): MedicineKitItemDisplayData {
+    init {
+        medicineItemListLive = Transformations.switchMap(searchQueryLive) { searchQuery ->
+            Log.d(TAG, "searchQuery change = $searchQuery")
+            if (searchQuery.isNullOrEmpty()) {
+                AppRepository.getMedicineItemListLive()
+            } else {
+                AppRepository.getFilteredMedicineItemListLive(searchQuery)
+            }
+        }
+    }
+
+    fun getMedicineKitItemDisplayData(medicineItem: MedicineItem): MedicineItemDisplayData {
         val medicineState = medicineItem.calcMedicineState()
-        return MedicineKitItemDisplayData(
+        return MedicineItemDisplayData(
             medicineID = medicineItem.medicineID,
             medicineName = medicineItem.medicineName,
             medicineUnit = medicineItem.medicineUnit,
@@ -37,7 +53,7 @@ class KitViewModel : ViewModel() {
         const val STATE_MEDIUM_LIMIT = 0.4f
     }
 
-    data class MedicineKitItemDisplayData(
+    data class MedicineItemDisplayData(
         val medicineID: Int,
         val medicineName: String,
         val medicineUnit: String,

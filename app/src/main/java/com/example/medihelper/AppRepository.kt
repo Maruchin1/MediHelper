@@ -74,6 +74,8 @@ object AppRepository {
 
     fun getMedicineItemListLive() = medicineDao.getItemListLive()
 
+    fun getFilteredMedicineItemListLive(searchQuery: String) = medicineDao.getFilteredItemListLive(searchQuery)
+
     fun getMedicineEditDataLive(medicineID: Int) = medicineDao.getEditDataLive(medicineID)
 
     fun getMedicineDetailsLive(medicineID: Int) = medicineDao.getMedicineDetailsLive(medicineID)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -37,9 +38,16 @@ class AddPersonFragment : AppFullScreenDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setArgs(args)
+        setTransparentStatusBar()
         setupToolbar()
         setupColorRecyclerView()
         observeViewModel()
+    }
+
+    private fun setTransparentStatusBar() {
+        context?.run {
+            dialog?.window?.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
+        }
     }
 
     private fun observeViewModel() {

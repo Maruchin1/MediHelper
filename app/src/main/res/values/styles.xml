@@ -27,23 +27,18 @@
     </style>
 
     <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/white</item>
-        <item name="actionMenuTextColor">@color/colorPrimary</item>
-    </style>
-
-    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <item name="boxStrokeColor">#fff</item>
-        <item name="boxStrokeWidth">2dp</item>
+        <item name="android:windowFullscreen">false</item>
     </style>
 
     <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:textColorHint">@android:color/white</item>
-        <item name="boxStrokeColor">@android:color/white</item>
-        <item name="boxStrokeWidth">2dp</item>
+        <item name="android:textColorHint">@color/colorWhite</item>
+        <item name="android:colorAccent">@color/colorWhite</item>
+        <item name="boxStrokeColor">@color/input_lay_stroke_color</item>
+        <item name="colorControlActivated">@color/colorWhite</item>
     </style>
 
     <style name="Widget.CardView" parent="Widget.MaterialComponents.CardView">
@@ -52,14 +47,12 @@
         <item name="cardElevation">4dp</item>
     </style>
 
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+    <style name="AppBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>
 
-    <style name="AppModalStyle"
-        parent="Widget.Design.BottomSheet.Modal">
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>
 

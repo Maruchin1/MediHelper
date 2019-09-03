@@ -126,7 +126,7 @@ class AddMedicineFragment : AppFullScreenDialog() {
     }
 
     private fun setupToolbar() {
-       toolbar.setNavigationOnClickListener { dismiss() }
+        toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {

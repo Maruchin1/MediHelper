@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.medickit
+package com.example.medihelper.mainapp.medicines
 
 
 import android.os.Bundle
@@ -7,43 +7,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-
 import com.example.medihelper.R
 import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.databinding.FragmentKitBinding
+import com.example.medihelper.databinding.FragmentMedicinesBinding
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.mainapp.MainActivity
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import kotlinx.android.synthetic.main.fragment_kit.*
+import kotlinx.android.synthetic.main.fragment_medicines.*
 
 
-class KitFragment : Fragment() {
-    private val TAG = KitFragment::class.simpleName
+class MedicinesFragment : Fragment() {
 
-    private lateinit var viewModel: KitViewModel
+    private val viewModel: MedicinesViewModel by viewModels()
+    private val directions by lazyOf(MedicinesFragmentDirections)
 
-    fun onClickOpenMedicineDetails(medicineID: Int) {
+    fun onClickOpenMedicineDetails(medicineID: Int)  = findNavController().navigate(directions.toMedicineDetailsFragment(medicineID))
 
-    }
-
-    fun onClickBackToMenu() = findNavController().popBackStack()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this).get(KitViewModel::class.java)
-        }
-    }
+    fun onClickAddMedicine() = findNavController().navigate(directions.toAddMedicineFragment())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentKitBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_kit, container, false)
+        val binding: FragmentMedicinesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_medicines, container, false)
         binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
@@ -52,26 +39,26 @@ class KitFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupMainActivity()
         setupRecyclerView()
         observeViewModel()
     }
 
-    private fun openAddMedicineFragment() {
-
+    private fun setupMainActivity() {
+        (requireActivity() as MainActivity).setStatusBarColor(R.color.colorPrimary)
     }
 
     private fun setupRecyclerView() {
         recycler_view_medicines.apply {
             adapter = MedicineAdapter()
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
     }
 
     private fun observeViewModel() {
         viewModel.run {
-            medicineKitItemListLive.observe(viewLifecycleOwner, Observer { medicineKitItemList ->
+            medicineItemListLive.observe(viewLifecycleOwner, Observer { medicineItemList ->
                 val adapter = recycler_view_medicines.adapter as MedicineAdapter
-                adapter.updateItemsList(medicineKitItemList)
+                adapter.updateItemsList(medicineItemList)
             })
         }
     }
@@ -88,7 +75,7 @@ class KitFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicine = itemsList[position]
             val medicineDisplayData = viewModel.getMedicineKitItemDisplayData(medicine)
-            holder.bind(medicineDisplayData, this@KitFragment)
+            holder.bind(medicineDisplayData, this@MedicinesFragment)
         }
     }
 }

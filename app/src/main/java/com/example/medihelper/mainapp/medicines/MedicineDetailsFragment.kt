@@ -1,62 +1,34 @@
-package com.example.medihelper.mainapp.medickit
+package com.example.medihelper.mainapp.medicines
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
-import com.example.medihelper.mainapp.MainActivity
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import java.io.File
 
 
 class MedicineDetailsFragment : AppFullScreenDialog() {
 
-    private lateinit var viewModel: MedicineDetailsViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this).get(MedicineDetailsViewModel::class.java)
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentMedicineDetailsBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_medicine_details, container, false)
-        binding.viewModel = viewModel
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
-        observeViewModel()
-        loadSelectedMedicine()
-    }
+    private val viewModel: MedicineDetailsViewModel by viewModels()
+    private val args: MedicineDetailsFragmentArgs by navArgs()
 
     fun onClickEdit() {
-        viewModel.selectedMedicineIDLive.value?.let { medicineId ->
 
-        }
     }
 
     fun onClickDelete() {
@@ -72,14 +44,31 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
         dialog.show(childFragmentManager, ConfirmDialog.TAG)
     }
 
-    private fun loadSelectedMedicine() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding: FragmentMedicineDetailsBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_medicine_details, container, false)
+        binding.viewModel = viewModel
+        binding.handler = this
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.setArgs(args)
+        setTransparentStatusBar()
+        setupToolbar()
+        observeViewModel()
+    }
+
+    private fun setTransparentStatusBar() {
+        context?.run {
+            dialog?.window?.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
+        }
     }
 
     private fun setupToolbar() {
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        collapsing_toolbar.setupWithNavController(toolbar, navController, appBarConfiguration)
+       toolbar.setNavigationOnClickListener { dismiss() }
     }
 
     private fun takeMedicine() {
@@ -87,7 +76,6 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
     }
 
     private fun observeViewModel() {
-        viewModel.medicineDetailsLive.observe(viewLifecycleOwner, Observer { })
         viewModel.photoLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 setMedicinePicture(it)
