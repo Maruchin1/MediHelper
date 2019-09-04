@@ -27,7 +27,6 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?selectableItemBackground"
-            android:onClick="@{() -> handler.onClickOpenPlannedMedicineOptions(displayData.plannedMedicineID)}"
             app:cardCornerRadius="16dp">
 
             <ImageView

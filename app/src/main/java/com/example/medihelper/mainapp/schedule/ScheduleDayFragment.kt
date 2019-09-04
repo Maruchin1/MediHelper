@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
 import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
@@ -21,19 +22,17 @@ import com.example.medihelper.databinding.FragmentScheduleDayBinding
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import java.util.*
-
-
 class ScheduleDayFragment : Fragment() {
     private val TAG = ScheduleDayFragment::class.simpleName
 
     var date: Date? = null
     val plannedMedicinesAvailableLive = MutableLiveData(false)
     private val viewModel: ScheduleViewModel by activityViewModels()
+    private val directions by lazyOf(ScheduleFragmentDirections)
 
     fun onClickOpenPlannedMedicineOptions(plannedMedicineID: Int) {
-        val dialog = PlannedMedicineOptionsDialog()
-        dialog.plannedMedicineID = plannedMedicineID
-        dialog.show(childFragmentManager, dialog.TAG)
+        val parentFrag = parentFragment as ScheduleFragment
+        parentFrag.findNavController().navigate(directions.toPlannedMedicineOptionsDialog(plannedMedicineID))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -79,3 +78,5 @@ class ScheduleDayFragment : Fragment() {
         }
     }
 }
+
+

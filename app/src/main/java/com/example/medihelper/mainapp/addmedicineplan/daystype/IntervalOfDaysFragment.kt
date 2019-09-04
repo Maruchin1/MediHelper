@@ -23,9 +23,9 @@ class IntervalOfDaysFragment : Fragment() {
         val dialog = SelectNumberDialog().apply {
             title = "Wybierz odstęp dni"
             iconResID = R.drawable.round_access_time_black_36
-            defaultNumber = planViewModel.intervalOfDaysLive.value
+            defaultNumber = planViewModel.intervalOfDaysLive.value?.toFloat()
             setNumberSelectedListener { number ->
-                planViewModel.intervalOfDaysLive.value = number
+                planViewModel.intervalOfDaysLive.value = number.toInt()
             }
         }
         dialog.show(childFragmentManager, SelectNumberDialog.TAG)

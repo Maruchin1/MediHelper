@@ -15,7 +15,7 @@ data class PlannedMedicineItem(
     val medicineUnit: String,
 
     @ColumnInfo(name = "planned_dose_size")
-    val plannedDoseSize: Int,
+    val plannedDoseSize: Float,
 
     @ColumnInfo(name = "planned_time")
     val plannedTime: Time,

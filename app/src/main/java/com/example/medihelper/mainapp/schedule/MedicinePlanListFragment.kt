@@ -59,12 +59,6 @@ class MedicinePlanListFragment : Fragment() {
         dialog.show(childFragmentManager, ConfirmDialog.TAG)
     }
 
-    fun onClickOpenPlannedMedicineOptions(plannedMedicineID: Int) {
-        val dialog = PlannedMedicineOptionsDialog()
-        dialog.plannedMedicineID = plannedMedicineID
-        dialog.show(childFragmentManager, dialog.TAG)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.run {

@@ -32,7 +32,7 @@ data class PlannedMedicineEntity(
     var plannedTime: Time,
 
     @ColumnInfo(name = "planned_dose_size")
-    var plannedDoseSize: Int,
+    var plannedDoseSize: Float,
 
     @ColumnInfo(name = "status_of_taking")
     var statusOfTaking: StatusOfTaking = StatusOfTaking.WAITING

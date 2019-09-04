@@ -22,11 +22,14 @@
         <action
             android:id="@+id/toAddMedicinePlanFragment"
             app:destination="@id/addMedicinePlanFragment" />
+        <action
+            android:id="@+id/toPlannedMedicineOptionsDialog"
+            app:destination="@id/plannedMedicineOptionsDialog" />
     </fragment>
     <fragment
         android:id="@+id/medicinesFragment"
         android:name="com.example.medihelper.mainapp.medicines.MedicinesFragment"
-        tools:layout="@layout/fragment_medicines" >
+        tools:layout="@layout/fragment_medicines">
         <action
             android:id="@+id/toAddMedicineFragment"
             app:destination="@id/addMedicineFragment" />
@@ -76,7 +79,7 @@
     <dialog
         android:id="@+id/selectMedicineDialog"
         android:name="com.example.medihelper.mainapp.addmedicineplan.SelectMedicineDialog"
-        tools:layout="@layout/dialog_select_medicine" >
+        tools:layout="@layout/dialog_select_medicine">
         <action
             android:id="@+id/toAddMedicineFragment"
             app:destination="@id/addMedicineFragment" />
@@ -91,10 +94,17 @@
         tools:layout="@layout/fragment_medicine_details">
         <argument
             android:name="medicineID"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            app:argType="integer" />
         <action
             android:id="@+id/toAddMedicineFragment"
             app:destination="@id/addMedicineFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/plannedMedicineOptionsDialog"
+        android:name="com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsDialog"
+        tools:layout="@layout/dialog_planned_medicine_options">
+        <argument
+            android:name="plannedMedicineID"
+            app:argType="integer" />
     </dialog>
 </navigation>

@@ -70,7 +70,8 @@ object AppRepository {
 
     // Database
     // Get
-    fun getMedicineItemLive(medicineID: Int) = medicineDao.getItemLive(medicineID)
+
+    fun getMedicineEntity(medicineID: Int) = medicineDao.getEntity(medicineID)
 
     fun getMedicineItemListLive() = medicineDao.getItemListLive()
 
@@ -82,7 +83,7 @@ object AppRepository {
 
     fun getMedicinePlanItemListLive(personID: Int) = medicinePlanDao.getMedicinePlanItemListLive(personID)
 
-    fun getPlannedMedicine(plannedMedicineID: Int) = plannedMedicineDao.getByID(plannedMedicineID)
+    fun getPlannedMedicineEntity(plannedMedicineID: Int) = plannedMedicineDao.getEntity(plannedMedicineID)
 
     fun getPlannedMedicineDetailsLive(plannedMedicineID: Int) = plannedMedicineDao.getDetailsLive(plannedMedicineID)
 
@@ -149,7 +150,7 @@ object AppRepository {
     }
 
     fun updatePlannedMedicinesStatuses() = AsyncTask.execute {
-        plannedMedicineDao.getAll().forEach { plannedMedicine ->
+        plannedMedicineDao.getEntityList().forEach { plannedMedicine ->
             plannedMedicine.updateStatusByCurrDate()
         }
     }

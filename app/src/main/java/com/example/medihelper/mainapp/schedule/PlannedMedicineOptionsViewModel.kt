@@ -15,9 +15,6 @@ import java.io.File
 class PlannedMedicineOptionsViewModel : ViewModel() {
     private val TAG = PlannedMedicineOptionsViewModel::class.simpleName
 
-    val plannedMedicineIDLive = MutableLiveData<Int>()
-    val plannedMedicineDetailsLive: LiveData<PlannedMedicineDetails>
-
     val medicineNameLive: LiveData<String>
     val medicineUnitLive: LiveData<String>
     val statusOfTakingLive: LiveData<String>
@@ -26,9 +23,11 @@ class PlannedMedicineOptionsViewModel : ViewModel() {
     val plannedTimeLive: LiveData<String>
     val dozeSizeLive: LiveData<String>
     val medicineImageFileLive: LiveData<File>
-
     val takeMedicineBtnText: LiveData<String>
     val takeMedicineBtnIcon: LiveData<Int>
+
+    private val plannedMedicineIDLive = MutableLiveData<Int>()
+    private val plannedMedicineDetailsLive: LiveData<PlannedMedicineDetails>
 
     init {
         plannedMedicineDetailsLive = Transformations.switchMap(plannedMedicineIDLive) { plannedMedicineID ->
@@ -83,16 +82,25 @@ class PlannedMedicineOptionsViewModel : ViewModel() {
         }
     }
 
+    fun setArgs(args: PlannedMedicineOptionsDialogArgs) {
+        plannedMedicineIDLive.value = args.plannedMedicineID
+    }
+
     fun changePlannedMedicineStatus() = AsyncTask.execute {
-        plannedMedicineDetailsLive.value?.plannedMedicineID?.let { plannedMedicineID ->
-            AppRepository.getPlannedMedicine(plannedMedicineID).let { plannedMedicineEntity ->
-                if (plannedMedicineEntity.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
-                    plannedMedicineEntity.setMedicineTaken(false)
-                } else {
-                    plannedMedicineEntity.setMedicineTaken(true)
-                }
-                AppRepository.updatePlannedMedicine(plannedMedicineEntity)
+        plannedMedicineDetailsLive.value?.let { plannedMedicineDetails ->
+            val plannedMedicineEntity = AppRepository.getPlannedMedicineEntity(plannedMedicineDetails.plannedMedicineID)
+            val medicineEntity = AppRepository.getMedicineEntity(plannedMedicineDetails.medicineID)
+
+            if (plannedMedicineDetails.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
+                plannedMedicineEntity.setMedicineTaken(false)
+                medicineEntity.increaseCurrState(plannedMedicineDetails.plannedDoseSize)
+            } else {
+                plannedMedicineEntity.setMedicineTaken(true)
+                medicineEntity.reduceCurrState(plannedMedicineDetails.plannedDoseSize)
             }
+
+            AppRepository.updatePlannedMedicine(plannedMedicineEntity)
+            AppRepository.updateMedicine(medicineEntity)
         }
     }
 }

@@ -23,10 +23,10 @@ interface PlannedMedicineDAO {
     fun update(plannedMedicineEntity: PlannedMedicineEntity)
 
     @Query("SELECT * FROM planned_medicines")
-    fun getAll(): List<PlannedMedicineEntity>
+    fun getEntityList(): List<PlannedMedicineEntity>
 
     @Query("SELECT * FROM planned_medicines WHERE planned_medicine_id = :plannedMedicineID")
-    fun getByID(plannedMedicineID: Int): PlannedMedicineEntity
+    fun getEntity(plannedMedicineID: Int): PlannedMedicineEntity
 
     @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE pm.planned_medicine_id = :plannedMedicineID")
     fun getDetailsLive(plannedMedicineID: Int): LiveData<PlannedMedicineDetails>

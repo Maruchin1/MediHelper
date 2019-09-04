@@ -19,6 +19,9 @@ interface MedicineDAO {
     @Query("DELETE FROM medicines WHERE medicine_id = :medicineID")
     fun delete(medicineID: Int)
 
+    @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
+    fun getEntity(medicineID: Int): MedicineEntity
+
     @Query("SELECT * FROM medicines")
     fun getItemListLive(): LiveData<List<MedicineItem>>
 

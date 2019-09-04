@@ -16,7 +16,7 @@ import com.example.medihelper.localdatabase.entities.*
         PlannedMedicineEntity::class,
         PersonEntity::class
     ],
-    version = 25,
+    version = 26,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

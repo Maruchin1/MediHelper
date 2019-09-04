@@ -66,7 +66,7 @@ data class MedicinePlanEntity(
     }
 
     data class TimeOfTaking(
-        var doseSize: Int = 1,
+        var doseSize: Float = 1.0f,
         var time: Time = Time(8, 0, 0)
     )
 

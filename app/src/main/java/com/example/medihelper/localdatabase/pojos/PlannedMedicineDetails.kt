@@ -9,6 +9,9 @@ data class PlannedMedicineDetails(
     @ColumnInfo(name = "planned_medicine_id")
     val plannedMedicineID: Int,
 
+    @ColumnInfo(name = "medicine_id")
+    val medicineID: Int,
+
     @ColumnInfo(name = "medicine_name")
     val medicineName: String,
 
@@ -19,7 +22,7 @@ data class PlannedMedicineDetails(
     val photoFilePath: String? = null,
 
     @ColumnInfo(name = "planned_dose_size")
-    val plannedDoseSize: Int,
+    val plannedDoseSize: Float,
 
     @ColumnInfo(name = "planned_date")
     val plannedDate: Date,

@@ -29,4 +29,22 @@ data class MedicineEntity(
     var expireDate: Date? = null,
 
     var comments: String? = null
-)
+) {
+    fun reduceCurrState(doseSize: Float) {
+        currState?.let { currState ->
+            this.currState = currState - doseSize
+            if (this.currState!! < 0f) {
+                this.currState = 0f
+            }
+        }
+    }
+
+    fun increaseCurrState(doseSize: Float) {
+        currState?.let { currState ->
+            this.currState = currState + doseSize
+            if (packageSize != null && this.currState!! > packageSize!!) {
+                this.currState = this.packageSize
+            }
+        }
+    }
+}
