@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
                     app:layout_collapseMode="parallax"
-                    app:navigationIcon="?android:homeAsUpIndicator">
+                    app:navigationIcon="@drawable/round_close_24">
 
                 </androidx.appcompat.widget.Toolbar>
 

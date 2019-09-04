@@ -59,7 +59,7 @@
     <dialog
         android:id="@+id/addPersonFragment"
         android:name="com.example.medihelper.mainapp.family.AddPersonFragment"
-        tools:layout="@layout/dialog_add_person">
+        tools:layout="@layout/fragment_add_person">
         <argument
             android:name="editPersonID"
             android:defaultValue="-1"

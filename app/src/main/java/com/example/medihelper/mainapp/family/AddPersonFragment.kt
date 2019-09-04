@@ -15,8 +15,8 @@ import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.databinding.DialogAddPersonBinding
-import kotlinx.android.synthetic.main.dialog_add_person.*
+import com.example.medihelper.databinding.FragmentAddPersonBinding
+import kotlinx.android.synthetic.main.fragment_add_person.*
 
 class AddPersonFragment : AppFullScreenDialog() {
 
@@ -28,7 +28,7 @@ class AddPersonFragment : AppFullScreenDialog() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: DialogAddPersonBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_add_person, container, false)
+        val binding: FragmentAddPersonBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_person, container, false)
         binding.handler = this
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

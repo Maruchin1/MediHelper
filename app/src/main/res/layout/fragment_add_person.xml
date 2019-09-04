@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                app:navigationIcon="?homeAsUpIndicator"
+                app:navigationIcon="@drawable/round_close_24"
                 app:menu="@menu/toolbar_menu_add_edit"
                 app:title="Dodaj osobę"/>
 
