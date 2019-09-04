@@ -193,7 +193,6 @@ class AddMedicinePlanFragment : AppFullScreenDialog() {
 
     private fun setupTimeOfTakingRecyclerView() {
         recycler_view_schedule_hours.adapter = TimeOfTakingAdapter()
-        recycler_view_schedule_hours.layoutManager = LinearLayoutManager(context)
     }
 
     // Inner classes

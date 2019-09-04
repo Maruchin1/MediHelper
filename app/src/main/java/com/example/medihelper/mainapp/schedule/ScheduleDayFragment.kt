@@ -62,7 +62,6 @@ class ScheduleDayFragment : Fragment() {
 
     private fun setupRecyclerView() {
         recycler_view_scheduled_medicine_for_day.adapter = PlannedMedicineAdapter()
-        recycler_view_scheduled_medicine_for_day.layoutManager = LinearLayoutManager(context)
     }
 
     // Inner classes

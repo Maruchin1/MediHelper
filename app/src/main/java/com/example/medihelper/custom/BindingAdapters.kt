@@ -3,9 +3,6 @@ package com.example.medihelper.custom
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -16,7 +13,7 @@ import androidx.databinding.ViewDataBinding
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
-import android.widget.ImageButton
+import android.widget.*
 import com.example.medihelper.BR
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip

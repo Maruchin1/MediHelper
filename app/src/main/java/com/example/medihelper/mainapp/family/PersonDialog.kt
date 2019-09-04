@@ -66,7 +66,6 @@ class PersonDialog : BottomSheetDialogFragment() {
     private fun setupPersonRecyclerView() {
         context?.let { context ->
             recycler_view_persons.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = PersonAdapter()
                 GravitySnapHelper(Gravity.START).attachToRecyclerView(this)
             }

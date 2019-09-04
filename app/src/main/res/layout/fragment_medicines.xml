@@ -34,26 +34,31 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:titleEnabled="false">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/TextInputLayout"
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:hint="Wyszukaj"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:cardCornerRadius="8dp"
+                        app:cardBackgroundColor="@color/colorTransparent"
+                        app:strokeColor="@color/colorWhite"
+                        app:strokeWidth="2dp"
+                        app:cardElevation="0dp">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <androidx.appcompat.widget.SearchView
+                            android:id="@+id/search_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@={viewModel.searchQueryLive}" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:clickable="true"/>
+                    </com.google.android.material.card.MaterialCardView>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>

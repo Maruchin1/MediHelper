@@ -48,7 +48,6 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
     private fun setupRecyclerView() {
         context?.let { context ->
             recycler_view_medicines.apply {
-                layoutManager = LinearLayoutManager(context)
                 adapter = MedicineAdapter()
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
