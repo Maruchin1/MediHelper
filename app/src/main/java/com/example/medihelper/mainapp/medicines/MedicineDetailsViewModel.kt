@@ -8,6 +8,7 @@ import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
+import com.example.medihelper.localdatabase.pojos.PersonItem
 import java.io.File
 
 class MedicineDetailsViewModel : ViewModel() {
@@ -24,6 +25,7 @@ class MedicineDetailsViewModel : ViewModel() {
     val daysRemainsLive: LiveData<String>
     val comments: LiveData<String>
     val stateAvailableLive: LiveData<Boolean>
+    val personItemTakingMedicineLive: LiveData<List<PersonItem>>
     private val selectedMedicineIDLive = MutableLiveData<Int>()
     private val medicineDetailsLive: LiveData<MedicineDetails>
 
@@ -68,6 +70,9 @@ class MedicineDetailsViewModel : ViewModel() {
         }
         stateColorResIdLive = Transformations.map(stateWeightLive) { state ->
             state?.let { stateColorResId(it) }
+        }
+        personItemTakingMedicineLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
+            AppRepository.getPersonItemListLiveByMedicineID(medicineID)
         }
     }
 

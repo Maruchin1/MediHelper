@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.adapters.SearchViewBindingAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -90,8 +89,8 @@ class MedicinesFragment : Fragment() {
         }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicine = itemsList[position]
-            val medicineDisplayData = viewModel.getMedicineKitItemDisplayData(medicine)
+            val medicineItem = itemsList[position]
+            val medicineDisplayData = viewModel.getMedicineKitItemDisplayData(medicineItem)
             holder.bind(medicineDisplayData, this@MedicinesFragment)
         }
     }

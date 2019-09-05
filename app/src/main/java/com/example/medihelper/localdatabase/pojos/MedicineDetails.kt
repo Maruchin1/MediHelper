@@ -1,6 +1,8 @@
 package com.example.medihelper.localdatabase.pojos
 
 import androidx.room.ColumnInfo
+import androidx.room.Relation
+import com.example.medihelper.localdatabase.entities.PersonEntity
 import java.util.*
 
 class MedicineDetails(
@@ -25,5 +27,6 @@ class MedicineDetails(
     @ColumnInfo(name = "expire_date")
     val expireDate: Date?,
 
+    @ColumnInfo(name = "comments")
     val comments: String?
 )

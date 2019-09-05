@@ -91,6 +91,8 @@ object AppRepository {
 
     fun getPersonItemListLive() = personDao.getItemListLive()
 
+    fun getPersonItemListLiveByMedicineID(medicineID: Int) = personDao.getItemListLiveByMedicineID(medicineID)
+
     fun getPersonItemLive(personID: Int) = personDao.getItemLive(personID)
 
     // Delete

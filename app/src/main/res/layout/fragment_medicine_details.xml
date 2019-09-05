@@ -73,7 +73,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.CardView"
+                    style="@style/AppTheme.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -83,35 +83,32 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
                         android:orientation="vertical">
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
+                        <TextView
+                            android:id="@+id/txv_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginBottom="8dp">
+                            android:text="@{viewModel.medicineNameLive, default=Nazwa}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                            android:textColor="@color/colorPrimary" />
 
-                            <TextView
-                                android:id="@+id/txv_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@{viewModel.medicineNameLive, default=Nazwa}"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-                                android:textColor="@android:color/black"
-                                app:layout_constraintTop_toTopOf="parent" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp">
 
                             <TextView
                                 android:id="@+id/label_expire_date"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
                                 android:text="Lek ważny do:"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                                android:textColor="@android:color/tertiary_text_dark"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/txv_name" />
+                                android:textColor="@color/colorTextSecondary" />
 
                             <TextView
                                 android:id="@+id/txv_expire_date"
@@ -120,21 +117,21 @@
                                 android:layout_marginStart="8dp"
                                 android:text='@{viewModel.expireDateLive ?? "--", default=data}'
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                                android:textColor="@android:color/tertiary_text_dark"
-                                app:layout_constraintBottom_toBottomOf="@id/label_expire_date"
-                                app:layout_constraintStart_toEndOf="@id/label_expire_date"
-                                app:layout_constraintTop_toTopOf="@id/label_expire_date" />
+                                android:textColor="@color/colorTextSecondary" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp">
 
                             <TextView
                                 android:id="@+id/label_days_remain"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
                                 android:text="Pozostało:"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                                android:textColor="@android:color/tertiary_text_dark"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/label_expire_date" />
+                                android:textColor="@color/colorTextSecondary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -142,44 +139,46 @@
                                 android:layout_marginStart="8dp"
                                 android:text='@{viewModel.daysRemainsLive ?? "--", default=dni}'
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                                android:textColor="@android:color/tertiary_text_dark"
-                                app:layout_constraintBottom_toBottomOf="@id/label_days_remain"
-                                app:layout_constraintStart_toEndOf="@id/label_days_remain"
-                                app:layout_constraintTop_toTopOf="@id/label_days_remain" />
+                                android:textColor="@color/colorTextSecondary" />
+                        </LinearLayout>
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <LinearLayout
+                        <com.google.android.material.chip.ChipGroup
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_marginTop="16dp"
+                            app:chipSpacingHorizontal="16dp"
+                            app:singleLine="true">
 
-                            <ImageButton
-                                android:layout_width="0dp"
+                            <com.google.android.material.chip.Chip
+                                style="@style/MedicineDetailFragment.Chip.Action"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="?selectableItemBackground"
+                                android:onClick="@{() -> handler.onClickTake()}"
+                                android:text="Zażyj"
+                                app:chipIcon="@drawable/pill" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/MedicineDetailFragment.Chip.Action"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:onClick="@{() -> handler.onClickEdit()}"
-                                android:paddingTop="8dp"
-                                android:paddingBottom="8dp"
-                                android:src="@drawable/round_edit_black_36" />
+                                android:text="Edytuj"
+                                app:chipIcon="@drawable/round_edit_black_24" />
 
-                            <ImageButton
-                                android:layout_width="0dp"
+                            <com.google.android.material.chip.Chip
+                                style="@style/MedicineDetailFragment.Chip.Action"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="?selectableItemBackground"
                                 android:onClick="@{() -> handler.onClickDelete()}"
-                                android:paddingTop="8dp"
-                                android:paddingBottom="8dp"
-                                android:src="@drawable/round_delete_black_36" />
-                        </LinearLayout>
+                                android:text="Usuń"
+                                app:chipIcon="@drawable/round_delete_black_24" />
+                        </com.google.android.material.chip.ChipGroup>
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.CardView"
+                    style="@style/AppTheme.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -204,8 +203,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Aktualny stan"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                android:textSize="18sp"
+                                android:textAppearance="@style/MedicineDetailFragment.TextAppearance.Subtitle"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -295,7 +293,41 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.CardView"
+                    style="@style/AppTheme.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:text="Osoby przyjmujące lek"
+                            android:textAppearance="@style/MedicineDetailFragment.TextAppearance.Subtitle" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_persons"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/recycler_item_person_taking_medicine" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/AppTheme.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -303,23 +335,21 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/label_extra_info"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Dodatkowe informacje"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textSize="18sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:textAppearance="@style/MedicineDetailFragment.TextAppearance.Subtitle" />
 
                         <TextView
                             android:id="@+id/txv_extra_info"
@@ -328,11 +358,9 @@
                             android:layout_marginTop="4dp"
                             android:text='@{viewModel.comments ?? "Brak informacji", default="Brak informacji"}'
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                            android:textColor="@android:color/tertiary_text_dark"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/label_extra_info" />
+                            android:textColor="@android:color/tertiary_text_dark" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
 

@@ -11,13 +11,17 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.bumptech.glide.Glide
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
+import com.example.medihelper.custom.DiffCallback
+import com.example.medihelper.custom.RecyclerAdapter
+import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
+import com.example.medihelper.localdatabase.pojos.PersonItem
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import java.io.File
 
@@ -27,6 +31,10 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
     private val viewModel: MedicineDetailsViewModel by viewModels()
     private val args: MedicineDetailsFragmentArgs by navArgs()
 
+    fun onClickTake() {
+
+    }
+
     fun onClickEdit() {
 
     }
@@ -35,7 +43,7 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
         val dialog = ConfirmDialog().apply {
             title = "Usuń lek"
             message = "Wybrany lek zostanie usunięty. Czy chcesz kontynuować?"
-            iconResId = R.drawable.round_delete_black_48
+            iconResId = R.drawable.round_delete_black_36
             setOnConfirmClickListener {
                 viewModel.deleteMedicine()
                 this@MedicineDetailsFragment.dismiss()
@@ -58,6 +66,7 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
         viewModel.setArgs(args)
         setTransparentStatusBar()
         setupToolbar()
+        setupPersonRecyclerView()
         observeViewModel()
     }
 
@@ -69,10 +78,6 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
 
     private fun setupToolbar() {
        toolbar.setNavigationOnClickListener { dismiss() }
-    }
-
-    private fun takeMedicine() {
-        Toast.makeText(context!!, "Zażyj lej", Toast.LENGTH_SHORT).show()
     }
 
     private fun observeViewModel() {
@@ -91,6 +96,10 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
         })
         viewModel.emptyWeightLive.observe(viewLifecycleOwner, Observer {
             if (it != null) setViewWeight(line_empty, it)
+        })
+        viewModel.personItemTakingMedicineLive.observe(viewLifecycleOwner, Observer { personItemList ->
+            val adapter = recycler_view_persons.adapter as PersonAdapter
+            adapter.updateItemsList(personItemList)
         })
     }
 
@@ -118,5 +127,25 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
     private fun setStateColor(colorResId: Int) {
         txv_curr_state_text.setTextColor(resources.getColor(colorResId))
         line_state.setBackgroundResource(colorResId)
+    }
+
+    private fun setupPersonRecyclerView() {
+        recycler_view_persons.apply {
+            adapter = PersonAdapter()
+        }
+    }
+
+    inner class PersonAdapter : RecyclerAdapter<PersonItem>(
+        R.layout.recycler_item_person_taking_medicine,
+        object : DiffCallback<PersonItem>() {
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldList[oldItemPosition].personID == newList[newItemPosition].personID
+            }
+        }
+    ) {
+        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+            val personItem = itemsList[position]
+            holder.bind(personItem, this@MedicineDetailsFragment)
+        }
     }
 }
