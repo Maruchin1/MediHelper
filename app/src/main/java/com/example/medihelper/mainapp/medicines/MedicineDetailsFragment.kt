@@ -38,7 +38,7 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
             iconResId = R.drawable.round_delete_black_48
             setOnConfirmClickListener {
                 viewModel.deleteMedicine()
-                findNavController().popBackStack()
+                this@MedicineDetailsFragment.dismiss()
             }
         }
         dialog.show(childFragmentManager, ConfirmDialog.TAG)

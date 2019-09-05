@@ -13,8 +13,9 @@ import java.io.File
 class MedicinesViewModel : ViewModel() {
     private val TAG = MedicinesViewModel::class.simpleName
 
-    val medicineItemListLive: LiveData<List<MedicineItem>>
     val searchQueryLive = MutableLiveData("")
+    val medicineItemListLive: LiveData<List<MedicineItem>>
+    val medicineAvailableLive: LiveData<Boolean>
 
     init {
         medicineItemListLive = Transformations.switchMap(searchQueryLive) { searchQuery ->
@@ -24,6 +25,9 @@ class MedicinesViewModel : ViewModel() {
             } else {
                 AppRepository.getFilteredMedicineItemListLive(searchQuery)
             }
+        }
+        medicineAvailableLive = Transformations.map(medicineItemListLive) { list ->
+            list != null && list.isNotEmpty()
         }
     }
 
