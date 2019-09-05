@@ -13,7 +13,6 @@ import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
 import java.io.File
 
 class PlannedMedicineOptionsViewModel : ViewModel() {
-    private val TAG = PlannedMedicineOptionsViewModel::class.simpleName
 
     val medicineNameLive: LiveData<String>
     val medicineUnitLive: LiveData<String>

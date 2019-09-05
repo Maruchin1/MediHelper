@@ -78,7 +78,7 @@
 
     <style name="MedicineDetailFragment.TextAppearance.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
 </resources>

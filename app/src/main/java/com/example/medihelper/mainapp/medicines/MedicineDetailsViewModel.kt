@@ -1,5 +1,6 @@
 package com.example.medihelper.mainapp.medicines
 
+import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -80,6 +81,14 @@ class MedicineDetailsViewModel : ViewModel() {
 
     fun setArgs(args: MedicineDetailsFragmentArgs) {
         selectedMedicineIDLive.value = args.medicineID
+    }
+
+    fun takeMedicineDose(doseSize: Float) = AsyncTask.execute {
+        selectedMedicineIDLive.value?.let { medicineID ->
+            val medicineEntity = AppRepository.getMedicineEntity(medicineID)
+            medicineEntity.reduceCurrState(doseSize)
+            AppRepository.updateMedicine(medicineEntity)
+        }
     }
 
     private fun stateWeight(medicineDetails: MedicineDetails): Float? {

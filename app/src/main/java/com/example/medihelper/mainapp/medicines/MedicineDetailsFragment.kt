@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -16,11 +17,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.bumptech.glide.Glide
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppFullScreenDialog
-import com.example.medihelper.custom.DiffCallback
-import com.example.medihelper.custom.RecyclerAdapter
-import com.example.medihelper.custom.RecyclerItemViewHolder
+import com.example.medihelper.custom.*
 import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
+import com.example.medihelper.dialogs.SelectFloatNumberDialog
 import com.example.medihelper.localdatabase.pojos.PersonItem
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import java.io.File
@@ -28,11 +27,18 @@ import java.io.File
 
 class MedicineDetailsFragment : AppFullScreenDialog() {
 
-    private val viewModel: MedicineDetailsViewModel by viewModels()
+    private val viewModel: MedicineDetailsViewModel by activityViewModels()
     private val args: MedicineDetailsFragmentArgs by navArgs()
 
     fun onClickTake() {
-
+        val dialog = SelectFloatNumberDialog().apply {
+            iconResID = R.drawable.ic_pill_black_36dp
+            title = "Zażyj dawkę leku"
+            setNumberSelectedListener { number ->
+                viewModel.takeMedicineDose(number)
+            }
+        }
+        dialog.show(childFragmentManager, dialog.TAG)
     }
 
     fun onClickEdit() {
