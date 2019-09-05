@@ -22,6 +22,7 @@ import com.example.medihelper.custom.TAG
 import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.databinding.FragmentAddMedicinePlanBinding
+import com.example.medihelper.dialogs.SelectFloatNumberDialog
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.mainapp.MainActivity
 import com.example.medihelper.mainapp.addmedicineplan.daystype.DaysOfWeekFragment
@@ -53,7 +54,7 @@ class AddMedicinePlanFragment : AppFullScreenDialog() {
     }
 
     fun onClickSelectDoseSize(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
-        val dialog = SelectNumberDialog().apply {
+        val dialog = SelectFloatNumberDialog().apply {
             title = "Wybierz dawkę leku"
             iconResID = R.drawable.ic_pill_black_36dp
             defaultNumber = timeOfTaking.doseSize

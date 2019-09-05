@@ -12,7 +12,6 @@ import java.io.File
 
 class MedicineDetailsViewModel : ViewModel() {
 
-    val selectedMedicineIDLive = MutableLiveData<Int>()
     val photoLive: LiveData<File>
     val medicineNameLive: LiveData<String>
     val stateWeightLive: LiveData<Float>
@@ -25,6 +24,7 @@ class MedicineDetailsViewModel : ViewModel() {
     val daysRemainsLive: LiveData<String>
     val comments: LiveData<String>
     val stateAvailableLive: LiveData<Boolean>
+    private val selectedMedicineIDLive = MutableLiveData<Int>()
     private val medicineDetailsLive: LiveData<MedicineDetails>
 
     init {

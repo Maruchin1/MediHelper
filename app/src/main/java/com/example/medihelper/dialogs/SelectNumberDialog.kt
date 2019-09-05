@@ -14,10 +14,10 @@ class SelectNumberDialog : BottomSheetDialogFragment() {
 
     var title: String? = null
     var iconResID: Int? = null
-    var defaultNumber: Float? = null
-    private var numberSelectedListener: ((number: Float) -> Unit)? = null
+    var defaultNumber: Int? = null
+    private var numberSelectedListener: ((number: Int) -> Unit)? = null
 
-    fun setNumberSelectedListener(listener: (number: Float) -> Unit) {
+    fun setNumberSelectedListener(listener: (number: Int) -> Unit) {
         numberSelectedListener = listener
     }
 
@@ -25,7 +25,7 @@ class SelectNumberDialog : BottomSheetDialogFragment() {
 
     fun onClickConfirm() {
         val selectedNumber = number_picker.value
-        numberSelectedListener?.invoke(selectedNumber.toFloat())
+        numberSelectedListener?.invoke(selectedNumber)
         dismiss()
     }
 
@@ -45,7 +45,7 @@ class SelectNumberDialog : BottomSheetDialogFragment() {
     private fun setupNumberPicker() {
         number_picker.minValue = 0
         number_picker.maxValue = 100
-        defaultNumber?.let { number_picker.value = it.toInt() }
+        defaultNumber?.let { number_picker.value = it }
     }
 
     companion object {
