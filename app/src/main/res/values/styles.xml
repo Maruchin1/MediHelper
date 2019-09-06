@@ -65,6 +65,23 @@
         <item name="cardElevation">4dp</item>
     </style>
 
+    <style name="AppTheme.Widget.Chip.Action" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="chipBackgroundColor">@color/colorTransparent</item>
+        <item name="chipIconTint">@color/colorDarkerGray</item>
+        <item name="chipStrokeColor">@color/colorDarkerGray</item>
+        <item name="chipStrokeWidth">2dp</item>
+        <item name="iconStartPadding">4dp</item>
+        <item name="rippleColor">@color/colorTextTertiary</item>
+        <item name="android:textColor">@color/colorTextTertiary</item>
+    </style>
+
+    <style name="AppTheme.Widget.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textColor">@color/chip_single_select_text_color</item>
+        <item name="chipBackgroundColor">@color/chip_single_select_bg</item>
+        <item name="chipStrokeColor">@color/colorDarkerGray</item>
+        <item name="chipStrokeWidth">2dp</item>
+    </style>
+
     <style name="AppTheme.Text.Form.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textColor">@color/colorTextTertiary</item>
     </style>
@@ -73,16 +90,8 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+
     <!--    fragment_medicine_details-->
-    <style name="MedicineDetailFragment.Chip.Action" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="chipBackgroundColor">@color/colorTransparent</item>
-        <item name="chipIconTint">@color/colorTextTertiary</item>
-        <item name="chipStrokeColor">@color/colorTextTertiary</item>
-        <item name="chipStrokeWidth">2dp</item>
-        <item name="iconStartPadding">4dp</item>
-        <item name="rippleColor">@color/colorTextTertiary</item>
-        <item name="android:textColor">@color/colorTextTertiary</item>
-    </style>
 
     <style name="MedicineDetailFragment.Text.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:textSize">18sp</item>

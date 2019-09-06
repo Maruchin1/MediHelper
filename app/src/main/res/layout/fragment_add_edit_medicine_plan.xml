@@ -102,7 +102,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:behavior_overlapTop="80dp"
+            app:behavior_overlapTop="82dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <LinearLayout
@@ -140,7 +140,7 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_pill_grey600_36dp"
+                                android:src="@drawable/ic_pill_black_24dp"
                                 android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
 
                             <TextView
@@ -152,23 +152,51 @@
                                 android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
                         </LinearLayout>
 
-                        <TextView
+                        <TableLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text='@{"Aktualny stan: " + viewModel.selectedMedicineCurrState ?? "--", default="Aktualny stan"}'
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                            android:textColor="@color/colorTextSecondary" />
+                            android:layout_marginTop="16dp"
+                            android:visibility="@{viewModel.selectedMedicineAvailableLive ? View.VISIBLE : View.GONE}">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text='@{"Lek ważny do: " + viewModel.selectedMedicineExpireDate ?? "--", default="Data ważności"}'
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                            android:textColor="@color/colorTextSecondary" />
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Aktualny stan"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                                    android:textColor="@color/colorTextTertiary"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="32dp"
+                                    android:text='@{viewModel.selectedMedicineCurrState ?? "--", default=stan}'
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                                    android:textColor="@color/colorTextTertiary"/>
+                            </TableRow>
+
+                            <TableRow android:layout_marginTop="8dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Lek ważny do"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                                    android:textColor="@color/colorTextTertiary" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="32dp"
+                                    android:text='@{viewModel.selectedMedicineExpireDate ?? "--", default=data}'
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                                    android:textColor="@color/colorTextTertiary"/>
+                            </TableRow>
+                        </TableLayout>
+
+
                     </LinearLayout>
-
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
@@ -208,36 +236,24 @@
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chip_once"
-                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                style="@style/AppTheme.Widget.Chip.Choice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Jednorazowo"
-                                android:textColor="@color/chip_single_select_text_color"
-                                app:chipBackgroundColor="@color/chip_single_select_bg"
-                                app:chipStrokeColor="@android:color/darker_gray"
-                                app:chipStrokeWidth="2dp" />
+                                android:text="Jednorazowo" />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chip_period"
-                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                style="@style/AppTheme.Widget.Chip.Choice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Liczba dni"
-                                android:textColor="@color/chip_single_select_text_color"
-                                app:chipBackgroundColor="@color/chip_single_select_bg"
-                                app:chipStrokeColor="@android:color/darker_gray"
-                                app:chipStrokeWidth="2dp" />
+                                android:text="Liczba dni" />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chip_continuous"
-                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                style="@style/AppTheme.Widget.Chip.Choice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Przyjmowanie ciągłe"
-                                android:textColor="@color/chip_single_select_text_color"
-                                app:chipBackgroundColor="@color/chip_single_select_bg"
-                                app:chipStrokeColor="@android:color/darker_gray"
-                                app:chipStrokeWidth="2dp" />
+                                android:text="Przyjmowanie ciągłe" />
                         </com.google.android.material.chip.ChipGroup>
 
                         <FrameLayout

@@ -20,6 +20,7 @@ class AddEditMedicinePlanViewModel : ViewModel() {
     val medicineItemListLive = AppRepository.getMedicineItemListLive()
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
+    val selectedMedicineAvailableLive: LiveData<Boolean>
     val selectedMedicineName: LiveData<String>
     val selectedMedicineCurrState: LiveData<String>
     val selectedMedicineExpireDate: LiveData<String>
@@ -40,6 +41,9 @@ class AddEditMedicinePlanViewModel : ViewModel() {
     init {
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
             personItem.personColorResID
+        }
+        selectedMedicineAvailableLive = Transformations.map(selectedMedicineIDLive) { medicineID ->
+            medicineID != null
         }
         selectedMedicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
             AppRepository.getMedicineDetailsLive(medicineID)
@@ -171,4 +175,10 @@ class AddEditMedicinePlanViewModel : ViewModel() {
         val medicineState: String,
         val medicineImageFile: File?
     )
+
+    companion object {
+        const val TEXT_STATE_GOOD = "Duży zapas"
+        const val TEXT_STATE_MEDIUM = "Średnia ilość"
+        const val TEXT_STATE_SMALL = "Blisko końca"
+    }
 }
