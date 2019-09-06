@@ -68,17 +68,17 @@
     <!--    fragment_medicine_details-->
     <style name="MedicineDetailFragment.Chip.Action" parent="Widget.MaterialComponents.Chip.Action">
         <item name="chipBackgroundColor">@color/colorTransparent</item>
-        <item name="chipIconTint">@color/colorPrimary</item>
-        <item name="chipStrokeColor">@color/colorPrimary</item>
+        <item name="chipIconTint">@color/colorTextTertiary</item>
+        <item name="chipStrokeColor">@color/colorTextTertiary</item>
         <item name="chipStrokeWidth">2dp</item>
         <item name="iconStartPadding">4dp</item>
-        <item name="rippleColor">@color/colorPrimary</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="rippleColor">@color/colorTextTertiary</item>
+        <item name="android:textColor">@color/colorTextTertiary</item>
     </style>
 
     <style name="MedicineDetailFragment.TextAppearance.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
 
 </resources>

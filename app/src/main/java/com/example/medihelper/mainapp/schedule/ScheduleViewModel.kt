@@ -9,6 +9,7 @@ import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineCheckbox
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -123,7 +124,9 @@ class ScheduleViewModel : ViewModel() {
         )
     }
 
-    fun deleteMedicinePlan(medicinePlanID: Int) = AppRepository.deleteMedicinePlan(medicinePlanID)
+    fun deleteMedicinePlan(medicinePlanID: Int) = viewModelScope.launch {
+        AppRepository.deleteMedicinePlan(medicinePlanID)
+    }
 
     fun getPlannedMedicinesGroupedByDateList(plannedMedicineList: List<PlannedMedicineCheckbox>): List<PlannedMedicineCheckboxGroupedByDate> {
         val distinctDatesArrayList = ArrayList<Date>()

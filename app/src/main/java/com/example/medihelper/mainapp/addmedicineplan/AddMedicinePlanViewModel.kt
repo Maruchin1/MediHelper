@@ -1,15 +1,13 @@
 package com.example.medihelper.mainapp.addmedicineplan
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.MedicineItem
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -74,7 +72,9 @@ class AddMedicinePlanViewModel : ViewModel() {
             MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlan.daysOfWeek = daysOfWeekLive.value
             MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> medicinePlan.intervalOfDays = intervalOfDaysLive.value
         }
-        AppRepository.insertMedicinePlan(medicinePlan)
+        viewModelScope.launch {
+            AppRepository.insertMedicinePlan(medicinePlan)
+        }
     }
 
     fun addDoseHour() {

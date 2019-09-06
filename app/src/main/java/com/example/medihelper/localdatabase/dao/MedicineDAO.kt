@@ -11,16 +11,16 @@ import com.example.medihelper.localdatabase.pojos.MedicineItem
 interface MedicineDAO {
 
     @Insert
-    fun insert(medicineEntity: MedicineEntity)
+    suspend fun insert(medicineEntity: MedicineEntity)
 
     @Update
-    fun update(medicineEntity: MedicineEntity)
+    suspend fun update(medicineEntity: MedicineEntity)
 
     @Query("DELETE FROM medicines WHERE medicine_id = :medicineID")
-    fun delete(medicineID: Int)
+    suspend fun delete(medicineID: Int)
 
     @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
-    fun getEntity(medicineID: Int): MedicineEntity
+    suspend fun getEntity(medicineID: Int): MedicineEntity
 
     @Query("SELECT * FROM medicines")
     fun getItemListLive(): LiveData<List<MedicineItem>>

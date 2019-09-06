@@ -11,22 +11,22 @@ import java.util.*
 interface PlannedMedicineDAO {
 
     @Insert
-    fun insert(plannedMedicineEntity: PlannedMedicineEntity)
+    suspend fun insert(plannedMedicineEntity: PlannedMedicineEntity)
 
     @Insert
-    fun insert(plannedMedicineEntityList: List<PlannedMedicineEntity>)
+    suspend fun insert(plannedMedicineEntityList: List<PlannedMedicineEntity>)
 
     @Delete
-    fun delete(plannedMedicineEntity: PlannedMedicineEntity)
+    suspend fun delete(plannedMedicineEntity: PlannedMedicineEntity)
 
     @Update
-    fun update(plannedMedicineEntity: PlannedMedicineEntity)
+    suspend fun update(plannedMedicineEntity: PlannedMedicineEntity)
 
     @Query("SELECT * FROM planned_medicines")
-    fun getEntityList(): List<PlannedMedicineEntity>
+    suspend fun getEntityList(): List<PlannedMedicineEntity>
 
     @Query("SELECT * FROM planned_medicines WHERE planned_medicine_id = :plannedMedicineID")
-    fun getEntity(plannedMedicineID: Int): PlannedMedicineEntity
+    suspend fun getEntity(plannedMedicineID: Int): PlannedMedicineEntity
 
     @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE pm.planned_medicine_id = :plannedMedicineID")
     fun getDetailsLive(plannedMedicineID: Int): LiveData<PlannedMedicineDetails>

@@ -5,14 +5,12 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicineEditData
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
@@ -95,11 +93,15 @@ class AddMedicineViewModel : ViewModel() {
         )
         selectedMedicineEditDataLive.value?.let { medicineEditData ->
             val medicineEntityToUpdate = medicineEntity.copy(medicineID = medicineEditData.medicineID)
-            AppRepository.updateMedicine(medicineEntityToUpdate)
+            viewModelScope.launch {
+                AppRepository.updateMedicine(medicineEntityToUpdate)
+            }
             return true
         }
 
-        AppRepository.insertMedicine(medicineEntity)
+        viewModelScope.launch {
+            AppRepository.insertMedicine(medicineEntity)
+        }
         return true
     }
 

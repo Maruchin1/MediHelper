@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.pojos.PersonItem
+import kotlinx.coroutines.launch
 
 class AddPersonViewModel : ViewModel() {
     private val TAG = AddPersonViewModel::class.simpleName
@@ -11,11 +12,8 @@ class AddPersonViewModel : ViewModel() {
     val personColorDisplayDataListLive: LiveData<List<PersonColorDisplayData>>
     val personNameLive = MutableLiveData<String>()
     val personColorResIDLive = MutableLiveData<Int>()
-
-    private val editPersonIDLive = MutableLiveData<Int>()
-    private val editPersonItemLive: LiveData<PersonItem>
-    private val editPersonItemObserver: Observer<PersonItem>
     private val personColorResIDList = AppRepository.getPersonColorResIDList()
+    private var editPersonID: Int? = null
 
     init {
         personColorDisplayDataListLive = Transformations.map(personColorResIDLive) { selectedPersonColorResID ->
@@ -30,18 +28,18 @@ class AddPersonViewModel : ViewModel() {
                 }
             }
         }
-        editPersonItemLive = Transformations.switchMap(editPersonIDLive) { personID ->
-            AppRepository.getPersonItemLive(personID)
-        }
-        editPersonItemObserver = Observer { personItem ->
-            personNameLive.value = personItem?.personName
-            personColorResIDLive.value = personItem?.personColorResID ?: personColorResIDList[0]
-        }
-        editPersonItemLive.observeForever(editPersonItemObserver)
+        personNameLive.value = ""
+        personColorResIDLive.value = personColorResIDList[0]
     }
 
-    fun setArgs(args: AddPersonFragmentArgs) {
-        editPersonIDLive.value = args.editPersonID
+    fun setArgs(args: AddPersonFragmentArgs) = viewModelScope.launch {
+        if (args.editPersonID != -1) {
+            editPersonID = args.editPersonID
+            AppRepository.getPersonItem(args.editPersonID).let { personItem ->
+                personNameLive.postValue(personItem.personName)
+                personColorResIDLive.postValue(personItem.personColorResID)
+            }
+        }
     }
 
     fun saveNewPerson() {
@@ -50,17 +48,13 @@ class AddPersonViewModel : ViewModel() {
             personName = personNameLive.value!!,
             personColorResID = personColorResIDLive.value!!
         )
-        val editPersonItem = editPersonItemLive.value
-        if (editPersonItem != null) {
-            AppRepository.updatePerson(personEntity.copy(personID = editPersonItem.personID))
-        } else {
-            AppRepository.insertPerson(personEntity)
+        viewModelScope.launch {
+            if (editPersonID != null) {
+                AppRepository.updatePerson(personEntity.copy(personID = editPersonID!!))
+            } else {
+                AppRepository.insertPerson(personEntity)
+            }
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        editPersonItemLive.removeObserver(editPersonItemObserver)
     }
 
     data class PersonColorDisplayData(

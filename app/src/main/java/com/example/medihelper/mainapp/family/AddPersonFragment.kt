@@ -72,7 +72,6 @@ class AddPersonFragment : AppFullScreenDialog() {
 
     private fun setupColorRecyclerView() {
         recycler_view_color.apply {
-            layoutManager = GridLayoutManager(context, 3)
             adapter = PersonColorAdapter()
         }
     }

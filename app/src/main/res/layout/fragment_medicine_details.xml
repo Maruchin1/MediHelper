@@ -95,7 +95,7 @@
                             android:layout_height="wrap_content"
                             android:text="@{viewModel.medicineNameLive, default=Nazwa}"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-                            android:textColor="@color/colorPrimary" />
+                            android:textColor="@color/colorTextPrimary" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -107,7 +107,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Lek ważny do:"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                                 android:textColor="@color/colorTextSecondary" />
 
                             <TextView
@@ -116,7 +116,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:text='@{viewModel.expireDateLive ?? "--", default=data}'
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                                 android:textColor="@color/colorTextSecondary" />
                         </LinearLayout>
 
@@ -130,7 +130,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Pozostało:"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                                 android:textColor="@color/colorTextSecondary" />
 
                             <TextView
@@ -138,7 +138,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:text='@{viewModel.daysRemainsLive ?? "--", default=dni}'
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                                 android:textColor="@color/colorTextSecondary" />
                         </LinearLayout>
 

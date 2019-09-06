@@ -1,15 +1,16 @@
 package com.example.medihelper.mainapp.schedule
 
 import android.os.AsyncTask
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.AppRepository
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class PlannedMedicineOptionsViewModel : ViewModel() {
@@ -20,7 +21,7 @@ class PlannedMedicineOptionsViewModel : ViewModel() {
     val statusOfTakingColorIdLive: LiveData<Int>
     val plannedDateLive: LiveData<String>
     val plannedTimeLive: LiveData<String>
-    val dozeSizeLive: LiveData<String>
+    val doseSizeLive: LiveData<String>
     val medicineImageFileLive: LiveData<File>
     val takeMedicineBtnText: LiveData<String>
     val takeMedicineBtnIcon: LiveData<Int>
@@ -37,11 +38,7 @@ class PlannedMedicineOptionsViewModel : ViewModel() {
             plannedMedicine.medicineName
         }
         statusOfTakingLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            when (plannedMedicine.statusOfTaking) {
-                PlannedMedicineEntity.StatusOfTaking.WAITING -> "Oczekujacy na przyjęcie"
-                PlannedMedicineEntity.StatusOfTaking.TAKEN -> "Przyjęty o godzinie 00:00"
-                PlannedMedicineEntity.StatusOfTaking.NOT_TAKEN -> "Nieprzyjety o zaplanowanej godzinie"
-            }
+            plannedMedicine.statusOfTaking.shortString
         }
         statusOfTakingColorIdLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
             when (plannedMedicine.statusOfTaking) {
@@ -56,7 +53,7 @@ class PlannedMedicineOptionsViewModel : ViewModel() {
         plannedTimeLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
             plannedMedicine?.let { AppDateTime.timeToString(it.plannedTime) }
         }
-        dozeSizeLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
+        doseSizeLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
             plannedMedicine.plannedDoseSize.toString()
         }
         medicineUnitLive = Transformations.map(plannedMedicineDetailsLive) { medicineType ->
@@ -79,13 +76,16 @@ class PlannedMedicineOptionsViewModel : ViewModel() {
                 R.drawable.baseline_check_white_24
             }
         }
+        viewModelScope.launch {
+
+        }
     }
 
     fun setArgs(args: PlannedMedicineOptionsDialogArgs) {
         plannedMedicineIDLive.value = args.plannedMedicineID
     }
 
-    fun changePlannedMedicineStatus() = AsyncTask.execute {
+    fun changePlannedMedicineStatus() = viewModelScope.launch {
         plannedMedicineDetailsLive.value?.let { plannedMedicineDetails ->
             val plannedMedicineEntity = AppRepository.getPlannedMedicineEntity(plannedMedicineDetails.plannedMedicineID)
             val medicineEntity = AppRepository.getMedicineEntity(plannedMedicineDetails.medicineID)

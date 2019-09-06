@@ -66,6 +66,13 @@ fun setBackgroundColor(view: View, colorResId: Int?) {
     }
 }
 
+@BindingAdapter("android:backgroundTint")
+fun setBackgroundTint(view: View, colorResId: Int?) {
+    if (colorResId != null && colorResId != 0) {
+        view.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(view.context, colorResId))
+    }
+}
+
 @BindingAdapter("cardBackgroundColorResID")
 fun setCardBackgroundColor(materialCardView: MaterialCardView, colorResId: Int?) {
     if (colorResId != null && colorResId != 0) {

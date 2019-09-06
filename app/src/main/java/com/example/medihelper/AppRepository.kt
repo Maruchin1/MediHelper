@@ -21,6 +21,8 @@ import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PersonItem
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -44,8 +46,10 @@ object AppRepository {
 
     fun init(app: Application) {
         Log.d(TAG, "init")
-        initDatabaseData(app)
-        initSharedPreferences(app)
+        GlobalScope.launch {
+            initDatabaseData(app)
+            initSharedPreferences(app)
+        }
         photosDir = app.applicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
     }
 
@@ -71,7 +75,11 @@ object AppRepository {
     // Database
     // Get
 
-    fun getMedicineEntity(medicineID: Int) = medicineDao.getEntity(medicineID)
+    suspend fun getMedicineEntity(medicineID: Int) = medicineDao.getEntity(medicineID)
+
+    suspend fun getPlannedMedicineEntity(plannedMedicineID: Int) = plannedMedicineDao.getEntity(plannedMedicineID)
+
+    suspend fun getPersonItem(personID: Int) = personDao.getItem(personID)
 
     fun getMedicineItemListLive() = medicineDao.getItemListLive()
 
@@ -83,8 +91,6 @@ object AppRepository {
 
     fun getMedicinePlanItemListLive(personID: Int) = medicinePlanDao.getMedicinePlanItemListLive(personID)
 
-    fun getPlannedMedicineEntity(plannedMedicineID: Int) = plannedMedicineDao.getEntity(plannedMedicineID)
-
     fun getPlannedMedicineDetailsLive(plannedMedicineID: Int) = plannedMedicineDao.getDetailsLive(plannedMedicineID)
 
     fun getPlannedMedicineItemListLiveByDate(date: Date, personID: Int) = plannedMedicineDao.getItemByDateListLive(date, personID)
@@ -93,44 +99,32 @@ object AppRepository {
 
     fun getPersonItemListLiveByMedicineID(medicineID: Int) = personDao.getItemListLiveByMedicineID(medicineID)
 
-    fun getPersonItemLive(personID: Int) = personDao.getItemLive(personID)
-
     // Delete
-    fun deleteMedicine(medicineID: Int) = AsyncTask.execute { medicineDao.delete(medicineID) }
+    suspend fun deleteMedicine(medicineID: Int) = medicineDao.delete(medicineID)
 
-    fun deleteMedicinePlan(medicinePlanID: Int) = AsyncTask.execute { medicinePlanDao.delete(medicinePlanID) }
+    suspend fun deleteMedicinePlan(medicinePlanID: Int) = medicinePlanDao.delete(medicinePlanID)
 
-    fun deletePerson(personID: Int) = AsyncTask.execute { personDao.delete(personID) }
+    suspend fun deletePerson(personID: Int) = personDao.delete(personID)
 
     // Update
-    fun updateMedicine(medicineEntity: MedicineEntity) = AsyncTask.execute {
-        medicineDao.update(medicineEntity)
-    }
+    suspend fun updateMedicine(medicineEntity: MedicineEntity) = medicineDao.update(medicineEntity)
 
-    fun updatePlannedMedicine(plannedMedicineEntity: PlannedMedicineEntity) = AsyncTask.execute {
-        plannedMedicineDao.update(plannedMedicineEntity)
-    }
+    suspend fun updatePlannedMedicine(plannedMedicineEntity: PlannedMedicineEntity) = plannedMedicineDao.update(plannedMedicineEntity)
 
-    fun updatePerson(personEntity: PersonEntity) = AsyncTask.execute {
-        personDao.update(personEntity)
-    }
+    suspend fun updatePerson(personEntity: PersonEntity) = personDao.update(personEntity)
 
     // Insert
-    fun insertMedicine(medicineEntity: MedicineEntity) = AsyncTask.execute {
-        medicineDao.insert(medicineEntity)
-    }
+    suspend fun insertMedicine(medicineEntity: MedicineEntity) = medicineDao.insert(medicineEntity)
 
-    fun insertMedicinePlan(medicinePlanEntity: MedicinePlanEntity) = AsyncTask.execute {
+    suspend fun insertMedicinePlan(medicinePlanEntity: MedicinePlanEntity) {
         val addedMedicinePlanID = medicinePlanDao.insert(medicinePlanEntity)
-        val addedMedicinePlan = medicinePlanDao.getByID(addedMedicinePlanID.toInt())
+        val addedMedicinePlan = medicinePlanDao.getEntity(addedMedicinePlanID.toInt())
         val plannedMedicineList = PlannedMedicineScheduler().getPlannedMedicineList(addedMedicinePlan)
         plannedMedicineDao.insert(plannedMedicineList)
         updatePlannedMedicinesStatuses()
     }
 
-    fun insertPerson(personEntity: PersonEntity) = AsyncTask.execute {
-        personDao.insert(personEntity)
-    }
+    suspend fun insertPerson(personEntity: PersonEntity) = personDao.insert(personEntity)
 
     // Other
     fun createTempPhotoFile(): File {
@@ -151,13 +145,13 @@ object AppRepository {
         return file
     }
 
-    fun updatePlannedMedicinesStatuses() = AsyncTask.execute {
+    suspend fun updatePlannedMedicinesStatuses() {
         plannedMedicineDao.getEntityList().forEach { plannedMedicine ->
             plannedMedicine.updateStatusByCurrDate()
         }
     }
 
-    private fun initDatabaseData(app: Application) {
+    private suspend fun initDatabaseData(app: Application) {
         val database = LocalDatabase.getInstance(app.applicationContext)
         medicineDao = database.medicineDao()
         medicinePlanDao = database.medicinePlanDao()
@@ -170,15 +164,15 @@ object AppRepository {
         sharedPreferences = app.getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
-                KEY_MEDICINE_UNIT_SET -> medicineUnitListLive.value = sharedPreferences.getStringSet(key, null)?.toList()
-                KEY_MAIN_PERSON_ID -> selectedPersonIDLive.value = sharedPreferences.getInt(key, -1)
+                KEY_MEDICINE_UNIT_SET -> medicineUnitListLive.postValue(sharedPreferences.getStringSet(key, null)?.toList())
+                KEY_MAIN_PERSON_ID -> selectedPersonIDLive.postValue(sharedPreferences.getInt(key, -1))
             }
         }
 
         insertInitialMedicinesTypes()
         insertInitialPersonColorResID()
-        medicineUnitListLive.value = sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList()
-        selectedPersonIDLive.value = sharedPreferences.getInt(KEY_MAIN_PERSON_ID, -1)
+        medicineUnitListLive.postValue(sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList())
+        selectedPersonIDLive.postValue(sharedPreferences.getInt(KEY_MAIN_PERSON_ID, -1))
     }
 
     private fun insertInitialPersonColorResID() = AsyncTask.execute {
@@ -203,7 +197,7 @@ object AppRepository {
         }
     }
 
-    private fun insertInitialPerson() = AsyncTask.execute {
+    private suspend fun insertInitialPerson()  {
         if (personDao.getCount() == 0) {
             val mePerson = PersonEntity(
                 personName = "Ja",

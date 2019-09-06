@@ -2,8 +2,10 @@ package com.example.medihelper.mainapp.family
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.pojos.PersonItem
+import kotlinx.coroutines.launch
 
 class PersonViewModel : ViewModel() {
 
@@ -16,7 +18,9 @@ class PersonViewModel : ViewModel() {
         if (personID == AppRepository.getSelectedPersonItemLive().value?.personID) {
             AppRepository.setSelectedPerson(AppRepository.getMainPersonID())
         }
-        AppRepository.deletePerson(personID)
+        viewModelScope.launch {
+            AppRepository.deletePerson(personID)
+        }
     }
 
     fun getPersonItemDisplayData(personItem: PersonItem) = PersonItemDisplayData(

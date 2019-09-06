@@ -8,6 +8,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.AppRepository
 import com.example.medihelper.R
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,7 +21,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        AppRepository.updatePlannedMedicinesStatuses()
+        GlobalScope.launch {
+            AppRepository.updatePlannedMedicinesStatuses()
+        }
     }
 
     fun setStatusBarColor(colorResID: Int) {

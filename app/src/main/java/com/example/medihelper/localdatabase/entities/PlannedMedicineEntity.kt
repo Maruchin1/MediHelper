@@ -4,6 +4,7 @@ import androidx.room.*
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.AppRepository
 import com.example.medihelper.R
+import kotlinx.coroutines.coroutineScope
 import java.sql.Time
 import java.util.*
 
@@ -37,7 +38,7 @@ data class PlannedMedicineEntity(
     @ColumnInfo(name = "status_of_taking")
     var statusOfTaking: StatusOfTaking = StatusOfTaking.WAITING
 ) {
-    fun setMedicineTaken(taken: Boolean) {
+    suspend fun setMedicineTaken(taken: Boolean) {
         statusOfTaking = if (taken) {
             StatusOfTaking.TAKEN
         } else {
@@ -46,7 +47,7 @@ data class PlannedMedicineEntity(
         AppRepository.updatePlannedMedicine(this)
     }
 
-    fun updateStatusByCurrDate() {
+    suspend fun updateStatusByCurrDate() {
         if (statusOfTaking != StatusOfTaking.TAKEN) {
             val newStatus = statusOfTakingByCurrDate()
             if (newStatus != statusOfTaking) {

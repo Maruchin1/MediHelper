@@ -1,15 +1,13 @@
 package com.example.medihelper.mainapp.medicines
 
 import android.os.AsyncTask
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.PersonItem
+import kotlinx.coroutines.launch
 import java.io.File
 
 class MedicineDetailsViewModel : ViewModel() {
@@ -77,13 +75,17 @@ class MedicineDetailsViewModel : ViewModel() {
         }
     }
 
-    fun deleteMedicine() = medicineDetailsLive.value?.let { AppRepository.deleteMedicine(it.medicineID) }
+    fun deleteMedicine() = viewModelScope.launch {
+        medicineDetailsLive.value?.let { medicineDetails ->
+            AppRepository.deleteMedicine(medicineDetails.medicineID)
+        }
+    }
 
     fun setArgs(args: MedicineDetailsFragmentArgs) {
         selectedMedicineIDLive.value = args.medicineID
     }
 
-    fun takeMedicineDose(doseSize: Float) = AsyncTask.execute {
+    fun takeMedicineDose(doseSize: Float) = viewModelScope.launch {
         selectedMedicineIDLive.value?.let { medicineID ->
             val medicineEntity = AppRepository.getMedicineEntity(medicineID)
             medicineEntity.reduceCurrState(doseSize)
