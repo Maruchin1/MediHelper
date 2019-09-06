@@ -9,26 +9,25 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.databinding.FragmentAddPersonBinding
-import kotlinx.android.synthetic.main.fragment_add_person.*
+import com.example.medihelper.databinding.FragmentAddEditPersonBinding
+import kotlinx.android.synthetic.main.fragment_add_edit_person.*
 
-class AddPersonFragment : AppFullScreenDialog() {
+class AddEditPersonFragment : AppFullScreenDialog() {
 
     private val viewModel: AddPersonViewModel by viewModels()
-    private val args: AddPersonFragmentArgs by navArgs()
+    private val args: AddEditPersonFragmentArgs by navArgs()
 
     fun onClickSelectColor(colorResID: Int) {
         viewModel.personColorResIDLive.value = colorResID
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentAddPersonBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_person, container, false)
+        val binding: FragmentAddEditPersonBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_edit_person, container, false)
         binding.handler = this
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -55,6 +54,12 @@ class AddPersonFragment : AppFullScreenDialog() {
             val adapter = recycler_view_color.adapter as PersonColorAdapter
             adapter.updateItemsList(personColorDisplayDataList)
         })
+        viewModel.errorPersonNameLive.observe(viewLifecycleOwner, Observer { errorMessage ->
+            in_lay_person_name.apply {
+                error = errorMessage
+                isErrorEnabled = errorMessage != null
+            }
+        })
     }
 
     private fun setupToolbar() {
@@ -62,8 +67,10 @@ class AddPersonFragment : AppFullScreenDialog() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {
-                    viewModel.saveNewPerson()
-                    dismiss()
+                    val personSaved = viewModel.saveNewPerson()
+                    if (personSaved) {
+                        dismiss()
+                    }
                 }
             }
             true
@@ -87,7 +94,7 @@ class AddPersonFragment : AppFullScreenDialog() {
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val personColorDisplayData = itemsList[position]
-            holder.bind(personColorDisplayData, this@AddPersonFragment)
+            holder.bind(personColorDisplayData, this@AddEditPersonFragment)
         }
     }
 }

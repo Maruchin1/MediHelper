@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.family.AddPersonFragment" />
+            type="com.example.medihelper.mainapp.family.AddEditPersonFragment" />
+
         <variable
             name="viewModel"
             type="com.example.medihelper.mainapp.family.AddPersonViewModel" />
@@ -29,9 +31,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                app:navigationIcon="@drawable/round_close_24"
                 app:menu="@menu/toolbar_menu_add_edit"
-                app:title="Dodaj osobę"/>
+                app:navigationIcon="@drawable/round_close_24"
+                app:title="Dodaj osobę" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
@@ -76,10 +78,17 @@
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textColor='@{viewModel.personColorResIDLive, default="@color/colorPrimary"}' />
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/in_lay_person_name"
+                        style="@style/Widget.Design.TextInputLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@={viewModel.personNameLive}" />
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.personNameLive}" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -97,7 +106,7 @@
                         android:layout_marginTop="8dp"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                         app:spanCount="3"
-                        tools:listitem="@layout/recycler_item_person_color"/>
+                        tools:listitem="@layout/recycler_item_person_color" />
 
                 </LinearLayout>
 
