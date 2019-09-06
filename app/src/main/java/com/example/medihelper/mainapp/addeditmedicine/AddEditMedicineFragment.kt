@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.addmedicine
+package com.example.medihelper.mainapp.addeditmedicine
 
 
 import android.os.Bundle
@@ -15,10 +15,10 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
+import com.example.medihelper.databinding.FragmentAddEditMedicineBinding
 import com.example.medihelper.dialogs.SelectDateDialog
-import com.example.medihelper.databinding.FragmentAddMedicineBinding
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.android.synthetic.main.fragment_add_medicine.*
+import kotlinx.android.synthetic.main.fragment_add_edit_medicine.*
 import java.io.File
 
 
@@ -46,8 +46,8 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentAddMedicineBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_add_medicine, container, false)
+        val binding: FragmentAddEditMedicineBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_edit_medicine, container, false)
         binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner

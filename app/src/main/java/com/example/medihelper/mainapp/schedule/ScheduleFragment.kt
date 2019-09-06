@@ -33,7 +33,7 @@ class ScheduleFragment : Fragment() {
     private val viewModel: ScheduleViewModel by activityViewModels()
     private val directions by lazyOf(ScheduleFragmentDirections)
 
-    fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddMedicinePlanFragment())
+    fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddEditMedicinePlanFragment())
 
     fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
 

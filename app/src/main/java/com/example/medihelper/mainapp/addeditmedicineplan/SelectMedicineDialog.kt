@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.addmedicineplan
+package com.example.medihelper.mainapp.addeditmedicineplan
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.R
 import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
@@ -22,7 +21,7 @@ import kotlinx.android.synthetic.main.dialog_select_medicine.*
 class SelectMedicineDialog : BottomSheetDialogFragment() {
     val TAG = SelectMedicineDialog::class.simpleName
 
-    private val viewModel: AddMedicinePlanViewModel by activityViewModels()
+    private val viewModel: AddEditMedicinePlanViewModel by activityViewModels()
     private val directions by lazyOf(SelectMedicineDialogDirections)
 
     fun onClickSelectMedicine(medicineID: Int) {

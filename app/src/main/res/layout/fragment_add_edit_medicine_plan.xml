@@ -13,11 +13,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.addmedicineplan.AddMedicinePlanViewModel" />
+            type="com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.addmedicineplan.AddMedicinePlanFragment" />
+            type="com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
         android:fitsSystemWindows="true"
-        tools:context=".mainapp.addmedicineplan.AddMedicinePlanFragment">
+        tools:context=".mainapp.addeditmedicineplan.AddEditMedicinePlanFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -54,8 +54,8 @@
                         android:layout_height="?actionBarSize"
                         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                         app:menu="@menu/toolbar_menu_add_edit"
-                        app:title="Zaplanuj lek"
-                        app:navigationIcon="@drawable/round_close_24"/>
+                        app:navigationIcon="@drawable/round_close_24"
+                        app:title="Zaplanuj lek" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -244,7 +244,9 @@
                             android:id="@+id/frame_schedule_type"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
                             android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
                             android:layout_marginBottom="16dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/chip_group_schedule_type" />
@@ -361,7 +363,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                         <ImageButton
                             android:layout_width="wrap_content"

@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.addmedicine
+package com.example.medihelper.mainapp.addeditmedicine
 
 import android.content.Intent
 import android.provider.MediaStore

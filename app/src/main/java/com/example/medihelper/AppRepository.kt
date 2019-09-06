@@ -79,13 +79,15 @@ object AppRepository {
 
     suspend fun getMedicineDetails(medicineID: Int) = medicineDao.getMedicineDetails(medicineID)
 
+    suspend fun getMedicinePlanEntity(medicinePlanID: Int) = medicinePlanDao.getEntity(medicinePlanID)
+
     suspend fun getPlannedMedicineEntity(plannedMedicineID: Int) = plannedMedicineDao.getEntity(plannedMedicineID)
 
     suspend fun getPersonItem(personID: Int) = personDao.getItem(personID)
 
     fun getMedicineItemListLive() = medicineDao.getItemListLive()
 
-    fun getFilteredMedicineItemListLive(searchQuery: String) = medicineDao.getFilteredItemListLive(searchQuery)
+    fun getMedicineItemFilteredListLive(searchQuery: String) = medicineDao.getFilteredItemListLive(searchQuery)
 
     fun getMedicineDetailsLive(medicineID: Int) = medicineDao.getMedicineDetailsLive(medicineID)
 
@@ -108,6 +110,8 @@ object AppRepository {
 
     // Update
     suspend fun updateMedicine(medicineEntity: MedicineEntity) = medicineDao.update(medicineEntity)
+
+    suspend fun updateMedicinePlan(medicinePlanEntity: MedicinePlanEntity) = medicinePlanDao.update(medicinePlanEntity)
 
     suspend fun updatePlannedMedicine(plannedMedicineEntity: PlannedMedicineEntity) = plannedMedicineDao.update(plannedMedicineEntity)
 

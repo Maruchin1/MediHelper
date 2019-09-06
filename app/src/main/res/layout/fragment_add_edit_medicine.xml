@@ -11,11 +11,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.addmedicine.AddEditMedicineViewModel" />
+            type="com.example.medihelper.mainapp.addeditmedicine.AddEditMedicineViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.addmedicine.AddEditMedicineFragment" />
+            type="com.example.medihelper.mainapp.addeditmedicine.AddEditMedicineFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -112,7 +112,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="Nazwa leku"
-                                    android:text="@={viewModel.medicineNameLive}" />
+                                    android:text="@={viewModel.medicineNameLive}"
+                                    android:inputType="text"/>
                             </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
@@ -151,7 +152,7 @@
                                     android:layout_height="wrap_content"
                                     android:clickable="true"
                                     android:focusable="false"
-                                    android:hint="nie określono"
+                                    android:hint="nie wybrano"
                                     android:onClick="@{() -> handler.onClickSelectExpireDate()}"
                                     android:text='@{AppDateTime.dateToString(viewModel.expireDateLive)}' />
                             </com.google.android.material.textfield.TextInputLayout>

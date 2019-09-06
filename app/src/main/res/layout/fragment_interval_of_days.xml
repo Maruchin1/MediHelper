@@ -7,17 +7,17 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.addmedicineplan.daystype.IntervalOfDaysFragment" />
+            type="com.example.medihelper.mainapp.addeditmedicineplan.daystype.IntervalOfDaysFragment" />
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.addmedicineplan.AddMedicinePlanViewModel" />
+            type="com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".mainapp.addmedicineplan.daystype.IntervalOfDaysFragment"
+        tools:context=".mainapp.addeditmedicineplan.daystype.IntervalOfDaysFragment"
         android:layout_marginBottom="8dp">
 
         <LinearLayout

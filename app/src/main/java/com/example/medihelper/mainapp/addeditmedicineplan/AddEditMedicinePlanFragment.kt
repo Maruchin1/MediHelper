@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.addmedicineplan
+package com.example.medihelper.mainapp.addeditmedicineplan
 
 
 import android.os.Bundle
@@ -12,32 +12,31 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-
+import androidx.navigation.fragment.navArgs
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.custom.TAG
+import com.example.medihelper.databinding.FragmentAddEditMedicinePlanBinding
 import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.dialogs.SelectTimeDialog
-import com.example.medihelper.databinding.FragmentAddMedicinePlanBinding
 import com.example.medihelper.dialogs.SelectFloatNumberDialog
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
-import com.example.medihelper.mainapp.MainActivity
-import com.example.medihelper.mainapp.addmedicineplan.daystype.DaysOfWeekFragment
-import com.example.medihelper.mainapp.addmedicineplan.daystype.IntervalOfDaysFragment
-import com.example.medihelper.mainapp.addmedicineplan.durationtype.ContinuousFragment
-import com.example.medihelper.mainapp.addmedicineplan.durationtype.PeriodFragment
-import com.example.medihelper.mainapp.addmedicineplan.durationtype.OnceFragment
-import kotlinx.android.synthetic.main.fragment_add_medicine_plan.*
-import kotlinx.android.synthetic.main.fragment_add_medicine_plan.toolbar
+import com.example.medihelper.mainapp.addeditmedicineplan.daystype.DaysOfWeekFragment
+import com.example.medihelper.mainapp.addeditmedicineplan.daystype.IntervalOfDaysFragment
+import com.example.medihelper.mainapp.addeditmedicineplan.durationtype.ContinuousFragment
+import com.example.medihelper.mainapp.addeditmedicineplan.durationtype.PeriodFragment
+import com.example.medihelper.mainapp.addeditmedicineplan.durationtype.OnceFragment
+import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*
+import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.toolbar
 
 
-class AddMedicinePlanFragment : AppFullScreenDialog() {
+class AddEditMedicinePlanFragment : AppFullScreenDialog() {
 
-    private val viewModel: AddMedicinePlanViewModel by activityViewModels()
-    private val directions by lazyOf(AddMedicinePlanFragmentDirections)
+    private val viewModel: AddEditMedicinePlanViewModel by activityViewModels()
+    private val args: AddEditMedicinePlanFragmentArgs by navArgs()
+    private val directions by lazyOf(AddEditMedicinePlanFragmentDirections)
 
     fun onClickSelectMedicine() = findNavController().navigate(directions.toSelectMedicineDialog())
 
@@ -69,8 +68,8 @@ class AddMedicinePlanFragment : AppFullScreenDialog() {
     fun onClickRemoveTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) = viewModel.removeTimeOfTaking(timeOfTaking)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentAddMedicinePlanBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_add_medicine_plan, container, false)
+        val binding: FragmentAddEditMedicinePlanBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_edit_medicine_plan, container, false)
         binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
@@ -79,6 +78,7 @@ class AddMedicinePlanFragment : AppFullScreenDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.setArgs(args)
         setupToolbar()
         setupScheduleTypeChipGroup()
         setupScheduleDaysChipGroup()
@@ -202,7 +202,7 @@ class AddMedicinePlanFragment : AppFullScreenDialog() {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val timeOfTaking = itemsList[position]
             val timeOfTakingDisplayData = viewModel.getTimeOfTakingDisplayData(timeOfTaking)
-            holder.bind(timeOfTakingDisplayData, this@AddMedicinePlanFragment, position)
+            holder.bind(timeOfTakingDisplayData, this@AddEditMedicinePlanFragment, position)
         }
     }
 }

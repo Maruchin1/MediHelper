@@ -23,7 +23,7 @@ class MedicinesViewModel : ViewModel() {
             if (searchQuery.isNullOrEmpty()) {
                 AppRepository.getMedicineItemListLive()
             } else {
-                AppRepository.getFilteredMedicineItemListLive(searchQuery)
+                AppRepository.getMedicineItemFilteredListLive(searchQuery)
             }
         }
         medicineAvailableLive = Transformations.map(medicineItemListLive) { list ->

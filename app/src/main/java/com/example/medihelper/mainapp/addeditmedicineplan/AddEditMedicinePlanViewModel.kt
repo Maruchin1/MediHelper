@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.addmedicineplan
+package com.example.medihelper.mainapp.addeditmedicineplan
 
 import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
@@ -12,12 +12,12 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddMedicinePlanViewModel : ViewModel() {
-    private val TAG = AddMedicinePlanViewModel::class.simpleName
+class AddEditMedicinePlanViewModel : ViewModel() {
+    private val TAG = AddEditMedicinePlanViewModel::class.simpleName
 
     val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
-    val medicineItemListLive = AppRepository.getMedicineItemListLive()
     val colorPrimaryLive: LiveData<Int>
+    val medicineItemListLive = AppRepository.getMedicineItemListLive()
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
     val selectedMedicineName: LiveData<String>
@@ -32,9 +32,10 @@ class AddMedicinePlanViewModel : ViewModel() {
     val daysOfWeekLive = FieldMutableLiveData<MedicinePlanEntity.DaysOfWeek>()
     val intervalOfDaysLive = MutableLiveData<Int>()
 
-    val timeOfTakingListLive = MutableLiveData<ArrayList<MedicinePlanEntity.TimeOfTaking>>()
+    val timeOfTakingListLive = MutableLiveData<MutableList<MedicinePlanEntity.TimeOfTaking>>()
 
     private val selectedMedicineDetailsLive: LiveData<MedicineDetails>
+    private var editMedicinePlanID: Int? = null
 
     init {
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
@@ -55,26 +56,53 @@ class AddMedicinePlanViewModel : ViewModel() {
         loadDefaultData()
     }
 
-    fun saveMedicinePlan() {
-        //todo zrobić to porządniej i z walidacją danych
-        val medicinePlan = MedicinePlanEntity(
-            medicineID = selectedMedicineDetailsLive.value!!.medicineID,
-            personID = selectedPersonItemLive.value!!.personID,
-            startDate = startDateLive.value!!,
-            durationType = durationTypeLive.value!!,
-            daysType = daysTypeLive.value!!,
-            timeOfTakingList = timeOfTakingListLive.value!!.toList()
-        )
-        if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
-            medicinePlan.endDate = endDateLive.value
+    fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
+        if (args.editMedicinePlanID != -1) {
+            editMedicinePlanID = args.editMedicinePlanID
+            AppRepository.getMedicinePlanEntity(args.editMedicinePlanID).run {
+                selectedMedicineIDLive.postValue(medicineID)
+                AppRepository.setSelectedPerson(personID)
+
+                durationTypeLive.postValue(durationType)
+                startDateLive.postValue(startDate)
+                endDateLive.postValue(endDate)
+
+                daysTypeLive.postValue(daysType)
+                daysOfWeekLive.postValue(daysOfWeek)
+                intervalOfDaysLive.postValue(intervalOfDays)
+
+                timeOfTakingListLive.postValue(timeOfTakingList.toMutableList())
+            }
         }
-        when (daysTypeLive.value) {
-            MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlan.daysOfWeek = daysOfWeekLive.value
-            MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> medicinePlan.intervalOfDays = intervalOfDaysLive.value
+    }
+
+    fun saveMedicinePlan(): Boolean {
+        if (validateInputData()) {
+            val medicinePlanEntity = MedicinePlanEntity(
+                medicineID = selectedMedicineIDLive.value!!,
+                personID = selectedPersonItemLive.value!!.personID,
+                startDate = startDateLive.value!!,
+                durationType = durationTypeLive.value!!,
+                daysType = daysTypeLive.value!!,
+                timeOfTakingList = timeOfTakingListLive.value!!
+            )
+            if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
+                medicinePlanEntity.endDate = endDateLive.value
+            }
+            when (daysTypeLive.value) {
+                MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanEntity.daysOfWeek = daysOfWeekLive.value
+                MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> medicinePlanEntity.intervalOfDays = intervalOfDaysLive.value
+            }
+            viewModelScope.launch {
+                if (editMedicinePlanID != null) {
+                    AppRepository.updateMedicinePlan(medicinePlanEntity.copy(medicinePlanID = editMedicinePlanID!!))
+                } else {
+                    AppRepository.insertMedicinePlan(medicinePlanEntity)
+                }
+            }
+            return true
         }
-        viewModelScope.launch {
-            AppRepository.insertMedicinePlan(medicinePlan)
-        }
+        return false
     }
 
     fun addDoseHour() {
@@ -114,6 +142,10 @@ class AddMedicinePlanViewModel : ViewModel() {
             medicineState = "${medicineItem.currState}/${medicineItem.packageSize} ${medicineItem.medicineUnit}",
             medicineImageFile = medicineItem.photoFilePath?.let { File(it) }
         )
+    }
+
+    private fun validateInputData(): Boolean {
+        return false
     }
 
     private fun loadDefaultData() {
