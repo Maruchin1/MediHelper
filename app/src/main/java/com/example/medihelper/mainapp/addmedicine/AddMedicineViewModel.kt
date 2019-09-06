@@ -6,10 +6,8 @@ import android.util.Log
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
-import androidx.lifecycle.Observer
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicineEntity
-import com.example.medihelper.localdatabase.pojos.MedicineEditData
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
@@ -17,92 +15,62 @@ import java.util.*
 class AddMedicineViewModel : ViewModel() {
     private val TAG = AddMedicineViewModel::class.simpleName
 
-    val medicineUnitListLive = AppRepository.getMedicineUnitListLive()
+    val medicineUnitList = AppRepository.getMedicineUnitList()
 
     val medicineNameLive = MutableLiveData<String>()
-    val medicineUnitLive = MutableLiveData<String>()
-    val packageSizeLive = MutableLiveData<String>()
-    val currStateLive = MutableLiveData<String>()
     val expireDateLive = MutableLiveData<Date>()
+    val medicineUnitLive = MutableLiveData<String>()
+    val packageSizeLive = MutableLiveData<Float>()
+    val currStateLive = MutableLiveData<Float>()
     val commentsLive = MutableLiveData<String>()
     val photoFileLive = MutableLiveData<File>()
+    val errorMedicineNameLive = MutableLiveData<String>()
+    val errorExpireDateLive = MutableLiveData<String>()
+    val errorCurrStateLive = MutableLiveData<String>()
+    private var editMedicineID: Int? = null
 
-    private val selectedMedicineIDLive = MutableLiveData<Int>()
-    private val selectedMedicineEditDataLive: LiveData<MedicineEditData>
-    private val selectedMedicineEditDataObserver: Observer<MedicineEditData>
-
-    init {
-        selectedMedicineEditDataLive = Transformations.switchMap(selectedMedicineIDLive) { medicineId ->
-            AppRepository.getMedicineEditDataLive(medicineId)
-        }
-        selectedMedicineEditDataObserver = Observer { medicineEditData ->
-            medicineEditData?.run {
-                medicineNameLive.value = medicineName
-                medicineUnitLive.value = medicineUnit
-                packageSizeLive.value = packageSize.toString()
-                currStateLive.value = currState.toString()
-                expireDateLive.value = expireDate
-                commentsLive.value = comments
-                photoFileLive.value = photoFilePath?.let { photoFilePath ->
-                    File(photoFilePath)
-                }
+    fun setArgs(args: AddMedicineFragmentArgs) = viewModelScope.launch {
+        if (args.editMedicineID != -1) {
+            editMedicineID = args.editMedicineID
+            AppRepository.getMedicineDetails(args.editMedicineID).run {
+                medicineNameLive.postValue(medicineName)
+                expireDateLive.postValue(expireDate)
+                medicineUnitLive.postValue(medicineUnit)
+                packageSizeLive.postValue(packageSize)
+                currStateLive.postValue(currState)
+                commentsLive.postValue(comments)
+                photoFileLive.postValue(photoFilePath?.let { File(it) })
             }
         }
-        selectedMedicineEditDataLive.observeForever(selectedMedicineEditDataObserver)
-    }
-
-    fun setSelectedMedicineID(medicineID: Int) {
-        selectedMedicineIDLive.value = medicineID
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        selectedMedicineEditDataLive.removeObserver(selectedMedicineEditDataObserver)
     }
 
     fun setMedicineType(position: Int) {
-        medicineUnitListLive.value?.let { medicineUnitList ->
-            medicineUnitLive.value = medicineUnitList[position]
-        }
+        medicineUnitLive.value = medicineUnitList[position]
     }
 
     fun saveMedicine(): Boolean {
-        Log.d(TAG, "onClickSaveNewMedicine")
-        val medicineName = medicineNameLive.value
-        val medicineUnit = medicineUnitLive.value
-        val packageSize = packageSizeLive.value
-        val currState = currStateLive.value
-        val photoFilePath = photoFileLive.value?.let { photoFile ->
-            AppRepository.createPhotoFileFromTemp(photoFile).absolutePath
-        }
-        val expireDate = expireDateLive.value
-        val comments = commentsLive.value
-
-        if (medicineName == null || medicineUnit == null) {
-            return false
-        }
-
-        val medicineEntity = MedicineEntity(
-            medicineName = medicineName,
-            medicineUnit = medicineUnit,
-            packageSize = packageSize?.toFloat(),
-            currState = currState?.toFloat(),
-            photoFilePath = photoFilePath,
-            expireDate = expireDate,
-            comments = comments
-        )
-        selectedMedicineEditDataLive.value?.let { medicineEditData ->
-            val medicineEntityToUpdate = medicineEntity.copy(medicineID = medicineEditData.medicineID)
+        if (validateInputData()) {
+            val medicineEntity = MedicineEntity(
+                medicineName = medicineNameLive.value!!,
+                expireDate = expireDateLive.value!!,
+                medicineUnit = medicineUnitLive.value!!,
+                packageSize = packageSizeLive.value,
+                currState = currStateLive.value,
+                comments = commentsLive.value,
+                photoFilePath = photoFileLive.value?.let { photoFile ->
+                    AppRepository.createPhotoFileFromTemp(photoFile).absolutePath
+                }
+            )
             viewModelScope.launch {
-                AppRepository.updateMedicine(medicineEntityToUpdate)
+                if (editMedicineID != null) {
+                    AppRepository.updateMedicine(medicineEntity.copy(medicineID = editMedicineID!!))
+                } else {
+                    AppRepository.insertMedicine(medicineEntity)
+                }
             }
             return true
         }
-
-        viewModelScope.launch {
-            AppRepository.insertMedicine(medicineEntity)
-        }
-        return true
+        return false
     }
 
     fun takePhotoIntent(activity: FragmentActivity): Intent {
@@ -132,5 +100,31 @@ class AddMedicineViewModel : ViewModel() {
         ).forEach { field ->
             field.value = null
         }
+    }
+
+    private fun validateInputData(): Boolean {
+        var inputDataValid = true
+        if (medicineNameLive.value.isNullOrEmpty()) {
+            errorMedicineNameLive.value = "Pole jest wymagane"
+            inputDataValid = false
+        } else {
+            errorMedicineNameLive.value = null
+        }
+        if (expireDateLive.value == null) {
+            errorExpireDateLive.value = "Pole jest wymagane"
+            inputDataValid = false
+        } else {
+            errorExpireDateLive.value = null
+        }
+        if (packageSizeLive.value != null &&
+            currStateLive.value != null &&
+            currStateLive.value!! > packageSizeLive.value!!
+        ) {
+            errorCurrStateLive.value = "Większe niż rozmiar opakowania"
+            inputDataValid = false
+        } else {
+            errorCurrStateLive.value = null
+        }
+        return inputDataValid
     }
 }

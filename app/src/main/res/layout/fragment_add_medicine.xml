@@ -41,9 +41,9 @@
                     android:layout_height="?actionBarSize"
                     android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:title="Dodaj lek"
                     app:menu="@menu/toolbar_menu_add_edit"
-                    app:navigationIcon="@drawable/round_close_24"/>
+                    app:navigationIcon="@drawable/round_close_24"
+                    app:title="Dodaj lek" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -62,7 +62,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/AppTheme.CardView"
+                    style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -84,35 +84,83 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginBottom="16dp"
                             android:text="Podstawowe informacje"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor="@color/colorPrimary" />
+                            android:textAppearance="@style/AppTheme.Text.Form.CardHeader" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:layout_marginEnd="16dp"
                                 android:src="@drawable/round_local_offer_black_24"
-                                android:tint="@android:color/darker_gray" />
+                                android:tint="@color/colorTextTertiary" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etx_medicine_name"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/in_lay"
+                                style="@style/Widget.Design.TextInputLayout"
+                                inLayError="@{viewModel.errorMedicineNameLive}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Nazwa leku"
-                                android:text="@={viewModel.medicineNameLive}" />
+                                app:hintEnabled="false">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etx_medicine_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Nazwa leku"
+                                    android:text="@={viewModel.medicineNameLive}" />
+                            </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="24dp"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="20dp"
+                                android:src="@drawable/round_event_white_24"
+                                android:tint="@color/colorTextTertiary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="16dp"
+                                android:text="Data ważności:"
+                                android:textAppearance="@style/AppTheme.Text.Form.Subtitle" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/in_lay_expire_date"
+                                style="@style/Widget.Design.TextInputLayout"
+                                inLayError="@{viewModel.errorExpireDateLive}"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:hintEnabled="false">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:clickable="true"
+                                    android:focusable="false"
+                                    android:hint="nie określono"
+                                    android:onClick="@{() -> handler.onClickSelectExpireDate()}"
+                                    android:text='@{AppDateTime.dateToString(viewModel.expireDateLive)}' />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
                             android:orientation="horizontal">
 
                             <ImageView
@@ -120,32 +168,26 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginEnd="20dp"
-                                android:src="@drawable/round_local_offer_black_24"
-                                android:tint="@android:color/darker_gray" />
+                                android:src="@drawable/ic_pill_black_24dp"
+                                android:tint="@color/colorTextTertiary" />
 
                             <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Jednostka"
+                                android:textAppearance="@style/AppTheme.Text.Form.Subtitle" />
+
+                            <Spinner
+                                android:id="@+id/spin_medicine_type"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="16dp"
-                                android:text="Data ważności:"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:textColor="@android:color/tertiary_text_dark" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:onClick="@{handler::onClickExpireDate}"
-                                android:text='@{viewModel.expireDateLive != null ? AppDateTime.dateToString(viewModel.expireDateLive) : "Nie określono"}'
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                                android:layout_height="wrap_content" />
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/AppTheme.CardView"
+                    style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -168,8 +210,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginBottom="24dp"
                             android:text="Opakowanie"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor="@color/colorPrimary" />
+                            android:textAppearance="@style/AppTheme.Text.Form.CardHeader" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -179,57 +220,55 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Jednostka"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:textColor="@android:color/tertiary_text_dark" />
+                                android:layout_weight="2"
+                                android:text="Rozmiar opakowania"
+                                android:textAppearance="@style/AppTheme.Text.Form.Subtitle" />
 
-                            <Spinner
-                                android:id="@+id/spin_medicine_type"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Design.TextInputLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:hintEnabled="false">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etx_package_size"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:text='@{viewModel.packageSizeLive}' />
+                            </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="3"
-                                android:text="Całkowita ilość leku"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:textColor="@android:color/tertiary_text_dark" />
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:inputType="number"
-                                android:text='@={viewModel.packageSizeLive}' />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="3"
+                                android:layout_weight="2"
                                 android:text="Aktualna ilość leku"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:textColor="@android:color/tertiary_text_dark" />
+                                android:textAppearance="@style/AppTheme.Text.Form.Subtitle" />
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Design.TextInputLayout"
+                                inLayError="@{viewModel.errorCurrStateLive}"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:inputType="number"
-                                android:text='@={viewModel.currStateLive}' />
+                                app:hintEnabled="false">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etx_curr_state"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:text='@{viewModel.currStateLive}' />
+                            </com.google.android.material.textfield.TextInputLayout>
+
                         </LinearLayout>
 
                     </LinearLayout>
@@ -237,7 +276,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_comment"
-                    style="@style/AppTheme.CardView"
+                    style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -259,8 +298,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginBottom="24dp"
                             android:text="Uwagi"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor="@color/colorPrimary" />
+                            android:textAppearance="@style/AppTheme.Text.Form.CardHeader" />
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etx_comment"
@@ -274,7 +312,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/AppTheme.CardView"
+                    style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -297,8 +335,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginBottom="24dp"
                             android:text="Zdjecie opakowania"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor="@color/colorPrimary" />
+                            android:textAppearance="@style/AppTheme.Text.Form.CardHeader" />
 
                         <ImageButton
                             android:layout_width="wrap_content"

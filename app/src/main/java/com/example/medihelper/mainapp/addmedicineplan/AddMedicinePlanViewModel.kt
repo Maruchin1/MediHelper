@@ -50,7 +50,7 @@ class AddMedicinePlanViewModel : ViewModel() {
             "${medicineDetails.currState}/${medicineDetails.packageSize} ${medicineDetails.medicineUnit}"
         }
         selectedMedicineExpireDate = Transformations.map(selectedMedicineDetailsLive) { medicineDetails ->
-            medicineDetails.expireDate?.let { AppDateTime.dateToString(it) }
+            AppDateTime.dateToString(medicineDetails.expireDate)
         }
         loadDefaultData()
     }

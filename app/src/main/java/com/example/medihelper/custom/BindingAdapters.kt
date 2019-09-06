@@ -14,11 +14,15 @@ import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.widget.*
+import androidx.databinding.InverseBindingAdapter
+import androidx.lifecycle.MutableLiveData
 import com.example.medihelper.BR
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 
 @BindingAdapter("android:layout_weight")
@@ -101,3 +105,17 @@ fun setImageViewTintColor(imageView: ImageView, colorResId: Int?) {
     }
 }
 
+@BindingAdapter("inLayError")
+fun setTextInputError(inLay: TextInputLayout, errorMessage: String?) {
+    inLay.apply {
+        error = errorMessage
+        isErrorEnabled = errorMessage != null
+    }
+}
+
+@BindingAdapter("android:text")
+fun setFloatText(editText: TextInputEditText, newValue: Float?) {
+    if (newValue != null && editText.text.toString() != newValue.toString()) {
+        editText.setText(newValue.toString())
+    }
+}

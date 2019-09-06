@@ -59,10 +59,18 @@
     </style>
 
     <!-- AppTheme-->
-    <style name="AppTheme.CardView" parent="Widget.MaterialComponents.CardView">
+    <style name="AppTheme.Widget.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">@color/colorWhite</item>
         <item name="cardCornerRadius">8dp</item>
         <item name="cardElevation">4dp</item>
+    </style>
+
+    <style name="AppTheme.Text.Form.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textColor">@color/colorTextTertiary</item>
+    </style>
+
+    <style name="AppTheme.Text.Form.CardHeader" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
     <!--    fragment_medicine_details-->
@@ -76,9 +84,10 @@
         <item name="android:textColor">@color/colorTextTertiary</item>
     </style>
 
-    <style name="MedicineDetailFragment.TextAppearance.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle2">
+    <style name="MedicineDetailFragment.Text.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
+
 
 </resources>

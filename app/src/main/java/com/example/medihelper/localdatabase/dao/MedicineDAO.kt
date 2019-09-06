@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
-import com.example.medihelper.localdatabase.pojos.MedicineEditData
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 
 @Dao
@@ -22,6 +21,9 @@ interface MedicineDAO {
     @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
     suspend fun getEntity(medicineID: Int): MedicineEntity
 
+    @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
+    suspend fun getMedicineDetails(medicineID: Int): MedicineDetails
+
     @Query("SELECT * FROM medicines")
     fun getItemListLive(): LiveData<List<MedicineItem>>
 
@@ -30,9 +32,6 @@ interface MedicineDAO {
 
     @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
     fun getItemLive(medicineID: Int): LiveData<MedicineItem>
-
-    @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
-    fun getEditDataLive(medicineID: Int): LiveData<MedicineEditData>
 
     @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
     fun getMedicineDetailsLive(medicineID: Int): LiveData<MedicineDetails>

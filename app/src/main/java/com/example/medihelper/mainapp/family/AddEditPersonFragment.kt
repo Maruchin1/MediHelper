@@ -54,12 +54,6 @@ class AddEditPersonFragment : AppFullScreenDialog() {
             val adapter = recycler_view_color.adapter as PersonColorAdapter
             adapter.updateItemsList(personColorDisplayDataList)
         })
-        viewModel.errorPersonNameLive.observe(viewLifecycleOwner, Observer { errorMessage ->
-            in_lay_person_name.apply {
-                error = errorMessage
-                isErrorEnabled = errorMessage != null
-            }
-        })
     }
 
     private fun setupToolbar() {

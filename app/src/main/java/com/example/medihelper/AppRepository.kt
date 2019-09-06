@@ -36,8 +36,6 @@ object AppRepository {
     }
 
     private lateinit var sharedPreferences: SharedPreferences
-    private val medicineUnitListLive = MutableLiveData<List<String>>()
-
     private lateinit var medicineDao: MedicineDAO
     private lateinit var medicinePlanDao: MedicinePlanDAO
     private lateinit var plannedMedicineDao: PlannedMedicineDAO
@@ -60,7 +58,9 @@ object AppRepository {
     }
 
     // SharedPreferences
-    fun getMedicineUnitListLive(): LiveData<List<String>> = medicineUnitListLive
+    fun getMedicineUnitList(): List<String> {
+        return sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList() ?: emptyList()
+    }
 
     fun getPersonColorResIDList(): List<Int> {
         return sharedPreferences.getStringSet(KEY_PERSON_COLOR_RES_ID_SET, null)?.map { string ->
@@ -77,6 +77,8 @@ object AppRepository {
 
     suspend fun getMedicineEntity(medicineID: Int) = medicineDao.getEntity(medicineID)
 
+    suspend fun getMedicineDetails(medicineID: Int) = medicineDao.getMedicineDetails(medicineID)
+
     suspend fun getPlannedMedicineEntity(plannedMedicineID: Int) = plannedMedicineDao.getEntity(plannedMedicineID)
 
     suspend fun getPersonItem(personID: Int) = personDao.getItem(personID)
@@ -84,8 +86,6 @@ object AppRepository {
     fun getMedicineItemListLive() = medicineDao.getItemListLive()
 
     fun getFilteredMedicineItemListLive(searchQuery: String) = medicineDao.getFilteredItemListLive(searchQuery)
-
-    fun getMedicineEditDataLive(medicineID: Int) = medicineDao.getEditDataLive(medicineID)
 
     fun getMedicineDetailsLive(medicineID: Int) = medicineDao.getMedicineDetailsLive(medicineID)
 
@@ -164,14 +164,12 @@ object AppRepository {
         sharedPreferences = app.getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
-                KEY_MEDICINE_UNIT_SET -> medicineUnitListLive.postValue(sharedPreferences.getStringSet(key, null)?.toList())
                 KEY_MAIN_PERSON_ID -> selectedPersonIDLive.postValue(sharedPreferences.getInt(key, -1))
             }
         }
 
         insertInitialMedicinesTypes()
         insertInitialPersonColorResID()
-        medicineUnitListLive.postValue(sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList())
         selectedPersonIDLive.postValue(sharedPreferences.getInt(KEY_MAIN_PERSON_ID, -1))
     }
 

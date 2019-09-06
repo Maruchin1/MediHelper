@@ -15,7 +15,7 @@ object AppDateTime {
     }
 
     @JvmStatic
-    fun dateToString(date: Date): String = dateFormat().format(date)
+    fun dateToString(date: Date?): String? = date?.let { dateFormat().format(it) }
 
     @JvmStatic
     fun dayMonthString(date: Date): String {

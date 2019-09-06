@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -22,6 +23,7 @@ import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.databinding.FragmentAddMedicineBinding
 import com.example.medihelper.mainapp.MainActivity
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_add_medicine.*
 import java.io.File
 
@@ -30,8 +32,8 @@ class AddMedicineFragment : AppFullScreenDialog() {
     private val TAG = AddMedicineFragment::class.simpleName
     private val REQUEST_IMAGE_CAPTURE = 1
 
-    private lateinit var viewModel: AddMedicineViewModel
-    private lateinit var medicineTypeAdapter: ArrayAdapter<String>
+    private val viewModel: AddMedicineViewModel by viewModels()
+    private val args: AddMedicineFragmentArgs by navArgs()
 
     fun onClickTakePhoto() {
         activity?.let {
@@ -40,21 +42,13 @@ class AddMedicineFragment : AppFullScreenDialog() {
         }
     }
 
-    fun onClickExpireDate(view: View) {
+    fun onClickSelectExpireDate() {
         val dialog = SelectDateDialog()
         dialog.defaultDate = viewModel.expireDateLive.value
         dialog.setDateSelectedListener { date ->
             viewModel.expireDateLive.value = date
         }
         dialog.show(childFragmentManager, dialog.TAG)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this).get(AddMedicineViewModel::class.java)
-            medicineTypeAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1)
-        } ?: throw Exception("Invalid Activity")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -68,8 +62,9 @@ class AddMedicineFragment : AppFullScreenDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.resetViewModel()
+        viewModel.setArgs(args)
         setupToolbar()
+        setupTextFieldsFocusListener()
         observeViewModel()
         setupSpinMedicineType()
     }
@@ -79,11 +74,6 @@ class AddMedicineFragment : AppFullScreenDialog() {
             photoFileLive.observe(viewLifecycleOwner, Observer { photoFile ->
                 Log.d(TAG, "photoFile change = $photoFile")
                 setPhotoImage(photoFile)
-            })
-            medicineUnitListLive.observe(viewLifecycleOwner, Observer { medicineUnitList ->
-                if (medicineUnitList != null) {
-                    setMedicineTypeSpinnerItems(medicineUnitList)
-                }
             })
         }
     }
@@ -98,30 +88,35 @@ class AddMedicineFragment : AppFullScreenDialog() {
     }
 
     private fun setupSpinMedicineType() {
-        spin_medicine_type.adapter = medicineTypeAdapter
-        spin_medicine_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        context?.run {
+            spin_medicine_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
 
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                viewModel.setMedicineType(position)
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.setMedicineType(position)
+                }
+            }
+            spin_medicine_type.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1).apply {
+                addAll(viewModel.medicineUnitList)
             }
         }
     }
 
-    private fun setMedicineTypeSpinnerItems(list: List<String>) {
-        val medicineTypesNamesList = ArrayList<String>()
-        list.forEach { medicineUnit ->
-            medicineTypesNamesList.add(medicineUnit)
+    private fun setupTextFieldsFocusListener() {
+        etx_package_size.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.packageSizeLive.value = (view as TextInputEditText).text?.toString()?.toFloatOrNull()
+            }
         }
-        medicineTypeAdapter.apply {
-            clear()
-            addAll(medicineTypesNamesList)
-            notifyDataSetChanged()
+        etx_curr_state.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.currStateLive.value = (view as TextInputEditText).text?.toString()?.toFloatOrNull()
+            }
         }
     }
 
@@ -130,8 +125,10 @@ class AddMedicineFragment : AppFullScreenDialog() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {
-                    viewModel.saveMedicine()
-                    dismiss()
+                    val medicineSaved = viewModel.saveMedicine()
+                    if (medicineSaved) {
+                        dismiss()
+                    }
                 }
             }
             true

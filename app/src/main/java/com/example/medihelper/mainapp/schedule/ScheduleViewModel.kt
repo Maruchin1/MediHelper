@@ -97,7 +97,7 @@ class ScheduleViewModel : ViewModel() {
                 MedicinePlanEntity.DurationType.CONTINUOUS -> "Leczenie ciągłe"
             },
             startDate = when (medicinePlanItem.durationType) {
-                MedicinePlanEntity.DurationType.ONCE -> AppDateTime.dateToString(medicinePlanItem.startDate)
+                MedicinePlanEntity.DurationType.ONCE -> AppDateTime.dateToString(medicinePlanItem.startDate) ?: "--"
                 else -> "Od ${AppDateTime.dateToString(medicinePlanItem.startDate)}"
             },
             endDate = when (medicinePlanItem.durationType) {
