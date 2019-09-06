@@ -11,7 +11,7 @@
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.family.AddPersonViewModel.PersonColorDisplayData" />
+            type="com.example.medihelper.mainapp.family.AddEditPersonViewModel.PersonColorDisplayData" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_add_edit_person.*
 
 class AddEditPersonFragment : AppFullScreenDialog() {
 
-    private val viewModel: AddPersonViewModel by viewModels()
+    private val viewModel: AddEditPersonViewModel by viewModels()
     private val args: AddEditPersonFragmentArgs by navArgs()
 
     fun onClickSelectColor(colorResID: Int) {
@@ -78,9 +78,9 @@ class AddEditPersonFragment : AppFullScreenDialog() {
     }
 
     // Inner classes
-    inner class PersonColorAdapter : RecyclerAdapter<AddPersonViewModel.PersonColorDisplayData>(
+    inner class PersonColorAdapter : RecyclerAdapter<AddEditPersonViewModel.PersonColorDisplayData>(
         R.layout.recycler_item_person_color,
-        object : DiffCallback<AddPersonViewModel.PersonColorDisplayData>() {
+        object : DiffCallback<AddEditPersonViewModel.PersonColorDisplayData>() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 return oldList[oldItemPosition].colorResID == newList[newItemPosition].colorResID
             }

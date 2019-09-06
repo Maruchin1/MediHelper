@@ -28,7 +28,7 @@ class MedicinesFragment : Fragment() {
 
     fun onClickOpenMedicineDetails(medicineID: Int)  = findNavController().navigate(directions.toMedicineDetailsFragment(medicineID))
 
-    fun onClickAddMedicine() = findNavController().navigate(directions.toAddMedicineFragment())
+    fun onClickAddMedicine() = findNavController().navigate(directions.toAddEditMedicineFragment())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentMedicinesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_medicines, container, false)

@@ -30,7 +30,7 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
         dismiss()
     }
 
-    fun onClickAddNewMedicine() = findNavController().navigate(directions.toAddMedicineFragment())
+    fun onClickAddNewMedicine() = findNavController().navigate(directions.toAddEditMedicineFragment())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: DialogSelectMedicineBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_select_medicine, container, false)

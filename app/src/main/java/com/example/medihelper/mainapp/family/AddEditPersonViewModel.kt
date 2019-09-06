@@ -3,11 +3,10 @@ package com.example.medihelper.mainapp.family
 import androidx.lifecycle.*
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.PersonEntity
-import com.example.medihelper.localdatabase.pojos.PersonItem
 import kotlinx.coroutines.launch
 
-class AddPersonViewModel : ViewModel() {
-    private val TAG = AddPersonViewModel::class.simpleName
+class AddEditPersonViewModel : ViewModel() {
+    private val TAG = AddEditPersonViewModel::class.simpleName
 
     val personColorDisplayDataListLive: LiveData<List<PersonColorDisplayData>>
     val personNameLive = MutableLiveData<String>()

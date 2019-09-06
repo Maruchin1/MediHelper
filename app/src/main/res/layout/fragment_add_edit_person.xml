@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.family.AddPersonViewModel" />
+            type="com.example.medihelper.mainapp.family.AddEditPersonViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

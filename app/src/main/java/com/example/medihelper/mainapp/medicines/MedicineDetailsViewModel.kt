@@ -25,7 +25,7 @@ class MedicineDetailsViewModel : ViewModel() {
     val comments: LiveData<String>
     val stateAvailableLive: LiveData<Boolean>
     val personItemTakingMedicineLive: LiveData<List<PersonItem>>
-    private val selectedMedicineIDLive = MutableLiveData<Int>()
+    val selectedMedicineIDLive = MutableLiveData<Int>()
     private val medicineDetailsLive: LiveData<MedicineDetails>
 
     init {

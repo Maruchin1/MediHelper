@@ -31,8 +31,8 @@
         android:name="com.example.medihelper.mainapp.medicines.MedicinesFragment"
         tools:layout="@layout/fragment_medicines">
         <action
-            android:id="@+id/toAddMedicineFragment"
-            app:destination="@id/addMedicineFragment" />
+            android:id="@+id/toAddEditMedicineFragment"
+            app:destination="@id/addEditMedicineFragment" />
         <action
             android:id="@+id/toMedicineDetailsFragment"
             app:destination="@id/medicineDetailsFragment" />
@@ -53,11 +53,11 @@
         android:name="com.example.medihelper.mainapp.family.PersonDialog"
         tools:layout="@layout/dialog_person">
         <action
-            android:id="@+id/toAddPersonFragment"
-            app:destination="@id/addPersonFragment" />
+            android:id="@+id/toAddEditPersonFragment"
+            app:destination="@id/addEditPersonFragment" />
     </dialog>
     <dialog
-        android:id="@+id/addPersonFragment"
+        android:id="@+id/addEditPersonFragment"
         android:name="com.example.medihelper.mainapp.family.AddEditPersonFragment"
         tools:layout="@layout/fragment_add_edit_person">
         <argument
@@ -81,12 +81,12 @@
         android:name="com.example.medihelper.mainapp.addmedicineplan.SelectMedicineDialog"
         tools:layout="@layout/dialog_select_medicine">
         <action
-            android:id="@+id/toAddMedicineFragment"
-            app:destination="@id/addMedicineFragment" />
+            android:id="@+id/toAddEditMedicineFragment"
+            app:destination="@id/addEditMedicineFragment" />
     </dialog>
     <dialog
-        android:id="@+id/addMedicineFragment"
-        android:name="com.example.medihelper.mainapp.addmedicine.AddMedicineFragment"
+        android:id="@+id/addEditMedicineFragment"
+        android:name="com.example.medihelper.mainapp.addmedicine.AddEditMedicineFragment"
         tools:layout="@layout/fragment_add_medicine" >
         <argument
             android:name="editMedicineID"
@@ -101,8 +101,8 @@
             android:name="medicineID"
             app:argType="integer" />
         <action
-            android:id="@+id/toAddMedicineFragment"
-            app:destination="@id/addMedicineFragment" />
+            android:id="@+id/toAddEditMedicineFragment"
+            app:destination="@id/addEditMedicineFragment" />
     </dialog>
     <dialog
         android:id="@+id/plannedMedicineOptionsDialog"

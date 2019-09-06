@@ -3,7 +3,6 @@ package com.example.medihelper.mainapp.addmedicine
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,28 +11,23 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.databinding.FragmentAddMedicineBinding
-import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_add_medicine.*
 import java.io.File
 
 
-class AddMedicineFragment : AppFullScreenDialog() {
-    private val TAG = AddMedicineFragment::class.simpleName
+class AddEditMedicineFragment : AppFullScreenDialog() {
+    private val TAG = AddEditMedicineFragment::class.simpleName
     private val REQUEST_IMAGE_CAPTURE = 1
 
-    private val viewModel: AddMedicineViewModel by viewModels()
-    private val args: AddMedicineFragmentArgs by navArgs()
+    private val viewModel: AddEditMedicineViewModel by viewModels()
+    private val args: AddEditMedicineFragmentArgs by navArgs()
 
     fun onClickTakePhoto() {
         activity?.let {

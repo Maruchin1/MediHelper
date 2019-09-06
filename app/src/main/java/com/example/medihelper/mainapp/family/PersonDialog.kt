@@ -33,7 +33,7 @@ class PersonDialog : BottomSheetDialogFragment() {
         dismiss()
     }
 
-    fun onClickAddNewPerson() = findNavController().navigate(directions.toAddPersonFragment())
+    fun onClickAddNewPerson() = findNavController().navigate(directions.toAddEditPersonFragment())
 
     fun onClickOpenOptions(personID: Int) {
         viewModel.optionsEnabledPersonIDLive.value = personID
@@ -48,7 +48,7 @@ class PersonDialog : BottomSheetDialogFragment() {
         viewModel.deletePerson(personID)
     }
 
-    fun onClickEditPerson(personID: Int) = findNavController().navigate(directions.toAddPersonFragment(personID))
+    fun onClickEditPerson(personID: Int) = findNavController().navigate(directions.toAddEditPersonFragment(personID))
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: DialogPersonBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_person, container, false)

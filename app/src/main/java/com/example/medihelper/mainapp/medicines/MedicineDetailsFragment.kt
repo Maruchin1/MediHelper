@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.bumptech.glide.Glide
@@ -29,6 +30,7 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
 
     private val viewModel: MedicineDetailsViewModel by activityViewModels()
     private val args: MedicineDetailsFragmentArgs by navArgs()
+    private val directions by lazyOf(MedicineDetailsFragmentDirections)
 
     fun onClickTake() {
         val dialog = SelectFloatNumberDialog().apply {
@@ -42,7 +44,9 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
     }
 
     fun onClickEdit() {
-
+        viewModel.selectedMedicineIDLive.value?.let { medicineID ->
+            findNavController().navigate(directions.toAddEditMedicineFragment(medicineID))
+        }
     }
 
     fun onClickDelete() {
