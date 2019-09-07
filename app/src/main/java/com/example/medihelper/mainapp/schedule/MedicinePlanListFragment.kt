@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -35,17 +36,20 @@ import kotlinx.android.synthetic.main.recycler_item_planned_medicine_for_plan_it
 class MedicinePlanListFragment : Fragment() {
 
     var medicinePlanType: ScheduleViewModel.MedicinePlanType? = null
-    set(value) {
-        field = value
-        when (medicinePlanType) {
-            ScheduleViewModel.MedicinePlanType.ENDED -> unavailableMessage =  "Brak zakończonych planów"
-            ScheduleViewModel.MedicinePlanType.ONGOING -> unavailableMessage =  "Brak trwających planów"
+        set(value) {
+            field = value
+            when (medicinePlanType) {
+                ScheduleViewModel.MedicinePlanType.ENDED -> unavailableMessage = "Brak zakończonych planów"
+                ScheduleViewModel.MedicinePlanType.ONGOING -> unavailableMessage = "Brak trwających planów"
+            }
         }
-    }
     var unavailableMessage = ""
     val medicinePlanAvailableLive = MutableLiveData(false)
-    private lateinit var viewModel: ScheduleViewModel
+    private val viewModel: ScheduleViewModel by activityViewModels()
+    private val directions by lazyOf(ScheduleFragmentDirections)
 
+    fun onClickEditMedicinePlan(medicinePlanID: Int) =
+        findNavController().navigate(directions.toAddEditMedicinePlanFragment(medicinePlanID))
 
     fun onClickDeleteMedicinePlan(medicinePlanID: Int) {
         val dialog = ConfirmDialog().apply {
@@ -57,13 +61,6 @@ class MedicinePlanListFragment : Fragment() {
             }
         }
         dialog.show(childFragmentManager, ConfirmDialog.TAG)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.run {
-            viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

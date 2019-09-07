@@ -1,5 +1,6 @@
 package com.example.medihelper.mainapp.addeditmedicineplan
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.custom.FieldMutableLiveData
@@ -50,7 +51,7 @@ class AddEditMedicinePlanViewModel : ViewModel() {
             medicineID != null
         }
         selectedMedicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
-            AppRepository.getMedicineDetailsLive(medicineID)
+            medicineID?.let { AppRepository.getMedicineDetailsLive(medicineID) }
         }
         selectedMedicineName = Transformations.map(selectedMedicineDetailsLive) { medicineDetails ->
             medicineDetails.medicineName
@@ -61,10 +62,10 @@ class AddEditMedicinePlanViewModel : ViewModel() {
         selectedMedicineExpireDate = Transformations.map(selectedMedicineDetailsLive) { medicineDetails ->
             AppDateTime.dateToString(medicineDetails.expireDate)
         }
-        loadDefaultData()
     }
 
     fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
+        Log.d(TAG, "medicinePlanID = ${args.editMedicinePlanID}")
         if (args.editMedicinePlanID != -1) {
             editMedicinePlanID = args.editMedicinePlanID
             AppRepository.getMedicinePlanEntity(args.editMedicinePlanID).run {
@@ -81,6 +82,18 @@ class AddEditMedicinePlanViewModel : ViewModel() {
 
                 timeOfTakingListLive.postValue(timeOfTakingList.toMutableList())
             }
+        } else {
+            selectedMedicineIDLive.postValue(null)
+
+            durationTypeLive.postValue(MedicinePlanEntity.DurationType.ONCE)
+            startDateLive.postValue(AppDateTime.getCurrCalendar().time)
+            endDateLive.postValue(null)
+
+            daysTypeLive.postValue(MedicinePlanEntity.DaysType.NONE)
+            daysOfWeekLive.postValue(MedicinePlanEntity.DaysOfWeek())
+            intervalOfDaysLive.postValue(1)
+
+            timeOfTakingListLive.postValue(arrayListOf(MedicinePlanEntity.TimeOfTaking()))
         }
     }
 
@@ -185,20 +198,11 @@ class AddEditMedicinePlanViewModel : ViewModel() {
                 val daysArray = arrayOf(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
                 if (daysArray.none { daySelected -> daySelected }) {
                     errorShowMessageAction.sendAction("Nie wybrano dni tygodnia")
+                    inputDataValid = false
                 }
             }
         }
-        return false
-    }
-
-    private fun loadDefaultData() {
-        durationTypeLive.value = MedicinePlanEntity.DurationType.ONCE
-        startDateLive.value = AppDateTime.getCurrCalendar().time
-        endDateLive.value = null
-        daysTypeLive.value = MedicinePlanEntity.DaysType.NONE
-        daysOfWeekLive.value = MedicinePlanEntity.DaysOfWeek()
-        intervalOfDaysLive.value = 1
-        timeOfTakingListLive.value = arrayListOf(MedicinePlanEntity.TimeOfTaking())
+        return inputDataValid
     }
 
     data class TimeOfTakingDisplayData(
@@ -214,10 +218,4 @@ class AddEditMedicinePlanViewModel : ViewModel() {
         val medicineState: String,
         val medicineImageFile: File?
     )
-
-    companion object {
-        const val TEXT_STATE_GOOD = "Duży zapas"
-        const val TEXT_STATE_MEDIUM = "Średnia ilość"
-        const val TEXT_STATE_SMALL = "Blisko końca"
-    }
 }
