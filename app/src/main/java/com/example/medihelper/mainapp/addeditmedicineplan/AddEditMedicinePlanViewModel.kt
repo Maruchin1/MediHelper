@@ -36,6 +36,8 @@ class AddEditMedicinePlanViewModel : ViewModel() {
     val timeOfTakingListLive = MutableLiveData<MutableList<MedicinePlanEntity.TimeOfTaking>>()
 
     val errorSelectedMedicineAction = ActionLiveData()
+    val errorStartDateLive = MutableLiveData<String>()
+    val errorEndDateLive = MutableLiveData<String>()
 
     private val selectedMedicineDetailsLive: LiveData<MedicineDetails>
     private var editMedicinePlanID: Int? = null
@@ -155,6 +157,28 @@ class AddEditMedicinePlanViewModel : ViewModel() {
         if (selectedMedicineIDLive.value == null) {
             errorSelectedMedicineAction.sendAction()
             inputDataValid = false
+        }
+        if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
+            if (startDateLive.value == null) {
+                errorStartDateLive.value = "Pole wymagane"
+                inputDataValid = false
+            } else {
+                errorStartDateLive.value = null
+            }
+            if (endDateLive.value == null) {
+                errorEndDateLive.value = "Pole wymagane"
+                inputDataValid = false
+            } else {
+                errorEndDateLive.value = null
+            }
+            if (startDateLive.value != null && endDateLive.value != null) {
+                if (AppDateTime.compareDates(startDateLive.value!!, endDateLive.value!!) != 2) {
+                    arrayOf(errorStartDateLive, errorEndDateLive).forEach { it.value = "Zła kolejność dat" }
+                    inputDataValid = false
+                } else {
+                    arrayOf(errorStartDateLive, errorEndDateLive).forEach { it.value = null }
+                }
+            }
         }
         return false
     }
