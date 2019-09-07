@@ -30,6 +30,7 @@ import com.example.medihelper.mainapp.addeditmedicineplan.daystype.IntervalOfDay
 import com.example.medihelper.mainapp.addeditmedicineplan.durationtype.ContinuousFragment
 import com.example.medihelper.mainapp.addeditmedicineplan.durationtype.PeriodFragment
 import com.example.medihelper.mainapp.addeditmedicineplan.durationtype.OnceFragment
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.toolbar
 
@@ -93,8 +94,10 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {
-                    viewModel.saveMedicinePlan()
-                    dismiss()
+                    val medicinePlanSaved = viewModel.saveMedicinePlan()
+                    if (medicinePlanSaved) {
+                        dismiss()
+                    }
                 }
             }
             true
@@ -134,11 +137,8 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
                 dialog?.window?.statusBarColor = ContextCompat.getColor(this, colorResID)
             }
         })
-        viewModel.startDateLive.observe(viewLifecycleOwner, Observer { startDate ->
-            Log.d(TAG, "startDate change = $startDate")
-        })
-        viewModel.endDateLive.observe(viewLifecycleOwner, Observer { endDate ->
-            Log.d(TAG, "endDate change = $endDate")
+        viewModel.errorSelectedMedicineAction.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(root_lay, "Nie wybrano leku", Snackbar.LENGTH_SHORT).show()
         })
     }
 

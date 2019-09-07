@@ -1,6 +1,5 @@
 package com.example.medihelper.mainapp.medicines
 
-import android.os.AsyncTask
 import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.R

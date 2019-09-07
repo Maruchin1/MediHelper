@@ -220,7 +220,7 @@
                             android:id="@+id/txv_title_schedule_type"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Czas przyjmowania"
+                            android:text="Czas trwania"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                             android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
 

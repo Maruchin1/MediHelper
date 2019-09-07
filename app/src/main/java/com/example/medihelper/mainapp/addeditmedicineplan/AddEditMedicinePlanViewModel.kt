@@ -4,13 +4,13 @@ import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.AppRepository
+import com.example.medihelper.custom.ActionLiveData
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 
 class AddEditMedicinePlanViewModel : ViewModel() {
     private val TAG = AddEditMedicinePlanViewModel::class.simpleName
@@ -34,6 +34,8 @@ class AddEditMedicinePlanViewModel : ViewModel() {
     val intervalOfDaysLive = MutableLiveData<Int>()
 
     val timeOfTakingListLive = MutableLiveData<MutableList<MedicinePlanEntity.TimeOfTaking>>()
+
+    val errorSelectedMedicineAction = ActionLiveData()
 
     private val selectedMedicineDetailsLive: LiveData<MedicineDetails>
     private var editMedicinePlanID: Int? = null
@@ -149,6 +151,11 @@ class AddEditMedicinePlanViewModel : ViewModel() {
     }
 
     private fun validateInputData(): Boolean {
+        var inputDataValid = true
+        if (selectedMedicineIDLive.value == null) {
+            errorSelectedMedicineAction.sendAction()
+            inputDataValid = false
+        }
         return false
     }
 
