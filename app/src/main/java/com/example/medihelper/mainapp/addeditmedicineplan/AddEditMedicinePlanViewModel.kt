@@ -35,7 +35,7 @@ class AddEditMedicinePlanViewModel : ViewModel() {
 
     val timeOfTakingListLive = MutableLiveData<MutableList<MedicinePlanEntity.TimeOfTaking>>()
 
-    val errorSelectedMedicineAction = ActionLiveData()
+    val errorShowMessageAction = ActionLiveData<String>()
     val errorStartDateLive = MutableLiveData<String>()
     val errorEndDateLive = MutableLiveData<String>()
 
@@ -155,7 +155,7 @@ class AddEditMedicinePlanViewModel : ViewModel() {
     private fun validateInputData(): Boolean {
         var inputDataValid = true
         if (selectedMedicineIDLive.value == null) {
-            errorSelectedMedicineAction.sendAction()
+            errorShowMessageAction.sendAction("Nie wybrano leku")
             inputDataValid = false
         }
         if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
@@ -177,6 +177,14 @@ class AddEditMedicinePlanViewModel : ViewModel() {
                     inputDataValid = false
                 } else {
                     arrayOf(errorStartDateLive, errorEndDateLive).forEach { it.value = null }
+                }
+            }
+        }
+        if (daysTypeLive.value == MedicinePlanEntity.DaysType.DAYS_OF_WEEK) {
+            daysOfWeekLive.value?.run {
+                val daysArray = arrayOf(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
+                if (daysArray.none { daySelected -> daySelected }) {
+                    errorShowMessageAction.sendAction("Nie wybrano dni tygodnia")
                 }
             }
         }

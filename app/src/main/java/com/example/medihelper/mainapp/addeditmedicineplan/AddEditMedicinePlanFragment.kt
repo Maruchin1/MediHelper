@@ -137,8 +137,8 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
                 dialog?.window?.statusBarColor = ContextCompat.getColor(this, colorResID)
             }
         })
-        viewModel.errorSelectedMedicineAction.observe(viewLifecycleOwner, Observer {
-            Snackbar.make(root_lay, "Nie wybrano leku", Snackbar.LENGTH_SHORT).show()
+        viewModel.errorShowMessageAction.observe(viewLifecycleOwner, Observer { errorMessage ->
+            Snackbar.make(root_lay, errorMessage, Snackbar.LENGTH_SHORT).show()
         })
     }
 
