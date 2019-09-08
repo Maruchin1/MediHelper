@@ -36,10 +36,12 @@ fun setLayoutWeight(view: View, weight: Float?) {
 
 @BindingAdapter("srcFile")
 fun setImageViewFile(imageView: ImageView, imageFile: File?) {
-    Glide.with(imageView.context)
-        .load(imageFile)
-        .centerCrop()
-        .into(imageView)
+    if (imageFile != null) {
+        Glide.with(imageView.context)
+            .load(imageFile)
+            .centerCrop()
+            .into(imageView)
+    }
 }
 
 @BindingAdapter("android:textColor")

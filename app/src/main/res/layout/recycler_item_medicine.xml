@@ -29,35 +29,69 @@
         android:foreground="?selectableItemBackground"
         android:onClick="@{() -> handler.onClickOpenMedicineDetails(displayData.medicineID)}">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorDarkerGray">
+
+                <ImageView
+                    android:id="@+id/img_photo"
+                    srcFile="@{displayData.medicineImageFile}"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ic_pill_white_48dp"
+                    android:scaleType="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="4:3"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="24dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/img_photo">
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txv_medicine_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text='@{displayData.medicineName, default="Nazwa leku"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textColor="@color/colorTextSecondary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{displayData.medicineUnit, default=jednostka}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:textColor="@color/colorTextTertiary" />
+
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:visibility="@{displayData.stateAvailable ? View.VISIBLE : View.GONE}"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:id="@+id/lay_curr_state_line"
                     android:layout_width="match_parent"
-                    android:layout_height="12dp"
-                    android:layout_marginTop="24dp"
-                    android:orientation="horizontal"
-                    android:visibility="@{displayData.stateAvailable ? View.VISIBLE : View.GONE}">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
                     <View
                         android:id="@+id/line_state"
@@ -73,50 +107,8 @@
                         android:layout_weight="@{displayData.emptyLayoutWeight, default=3}"
                         android:background="@color/colorBackground" />
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <LinearLayout
-                    android:id="@+id/lay_curr_state_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    android:visibility="@{displayData.stateAvailable ? View.VISIBLE : View.GONE}">
-
-                    <TextView
-                        android:id="@+id/txv_state"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
-                        android:text='@{displayData.medicineState, default="00/00"}'
-                        android:textAlignment="viewEnd"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                        android:textColor="@android:color/tertiary_text_dark" />
-
-
-                    <TextView
-                        android:id="@+id/txv_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="4dp"
-                        android:text='@{displayData.medicineUnit, default="pigułki"}'
-                        android:textAlignment="viewStart"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                        android:textColor="@android:color/tertiary_text_dark" />
-                </LinearLayout>
-            </LinearLayout>
-
-
-            <ImageView
-                android:id="@+id/img_photo"
-                srcFile="@{displayData.medicineImageFile}"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:src="@drawable/ic_pill_grey600_48dp"
-                app:layout_constraintDimensionRatio="4:3"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

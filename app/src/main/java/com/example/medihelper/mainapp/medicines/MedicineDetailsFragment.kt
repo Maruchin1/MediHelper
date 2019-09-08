@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.R
 import com.example.medihelper.custom.*
@@ -20,7 +18,6 @@ import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
 import com.example.medihelper.dialogs.SelectFloatNumberDialog
 import com.example.medihelper.localdatabase.pojos.PersonItem
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
-import java.io.File
 
 
 class MedicineDetailsFragment : AppFullScreenDialog() {
@@ -88,7 +85,7 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
     }
 
     private fun observeViewModel() {
-        viewModel.personItemTakingMedicineLive.observe(viewLifecycleOwner, Observer { personItemList ->
+        viewModel.personItemListTakingMedicineLive.observe(viewLifecycleOwner, Observer { personItemList ->
             val adapter = recycler_view_persons.adapter as PersonAdapter
             adapter.updateItemsList(personItemList)
         })

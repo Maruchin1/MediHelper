@@ -215,7 +215,7 @@ object AppRepository {
     private fun insertInitialMedicinesTypes() = AsyncTask.execute {
         val medicineUnitSet = sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)
         if (medicineUnitSet.isNullOrEmpty()) {
-            val unitSet = mutableSetOf("pigułki", "ml", "g", "mg", "krople")
+            val unitSet = mutableSetOf("dawki", "pigułki", "ml", "g", "mg", "krople")
             sharedPreferences.edit {
                 putStringSet(KEY_MEDICINE_UNIT_SET, unitSet)
                 apply()

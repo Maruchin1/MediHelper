@@ -42,7 +42,7 @@ class MedicinesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupMainActivity()
         setupRecyclerView()
-        setupSearchView()
+        setupToolbar()
         observeViewModel()
     }
 
@@ -65,8 +65,10 @@ class MedicinesFragment : Fragment() {
         }
     }
 
-    private fun setupSearchView() {
-        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+    private fun setupToolbar() {
+        val itemSearch = toolbar.menu.findItem(R.id.btn_search)
+        val searchView = itemSearch.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
@@ -75,7 +77,6 @@ class MedicinesFragment : Fragment() {
                 viewModel.searchQueryLive.value = newText
                 return true
             }
-
         })
     }
 

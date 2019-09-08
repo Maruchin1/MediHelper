@@ -71,7 +71,6 @@
         <item name="chipStrokeColor">@color/colorDarkerGray</item>
         <item name="chipStrokeWidth">1dp</item>
         <item name="iconStartPadding">4dp</item>
-<!--        <item name="rippleColor">@color/colorTextTertiary</item>-->
         <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
 
@@ -98,5 +97,8 @@
         <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
 
+    <style name="MedicineDetailFragment.Text.Body" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/colorTextTertiary</item>
+    </style>
 
 </resources>

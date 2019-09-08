@@ -11,8 +11,10 @@ import java.io.File
 
 class MedicineDetailsViewModel : ViewModel() {
 
+    val selectedMedicineIDLive = MutableLiveData<Int>()
     val photoFileLive: LiveData<File>
     val medicineNameLive: LiveData<String>
+    val medicineUnitLive: LiveData<String>
     val stateWeightLive: LiveData<Float>
     val emptyWeightLive: LiveData<Float>
     val stateNumberStringLive: LiveData<String>
@@ -23,8 +25,8 @@ class MedicineDetailsViewModel : ViewModel() {
     val daysRemainsLive: LiveData<String>
     val comments: LiveData<String>
     val stateAvailableLive: LiveData<Boolean>
-    val personItemTakingMedicineLive: LiveData<List<PersonItem>>
-    val selectedMedicineIDLive = MutableLiveData<Int>()
+    val personItemListTakingMedicineLive: LiveData<List<PersonItem>>
+    val personItemListTakingMedicineAvailableLive: LiveData<Boolean>
     private val medicineDetailsLive: LiveData<MedicineDetails>
 
     init {
@@ -39,6 +41,9 @@ class MedicineDetailsViewModel : ViewModel() {
         }
         medicineNameLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
             medicineDetails?.medicineName
+        }
+        medicineUnitLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
+            medicineDetails.medicineUnit
         }
         stateNumberStringLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
             "${medicineDetails.currState}/${medicineDetails.packageSize}"
@@ -69,8 +74,11 @@ class MedicineDetailsViewModel : ViewModel() {
         stateColorResIdLive = Transformations.map(stateWeightLive) { state ->
             state?.let { stateColorResId(it) }
         }
-        personItemTakingMedicineLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
+        personItemListTakingMedicineLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
             AppRepository.getPersonItemListLiveByMedicineID(medicineID)
+        }
+        personItemListTakingMedicineAvailableLive = Transformations.map(personItemListTakingMedicineLive) { personItemList ->
+            personItemList != null && personItemList.isNotEmpty()
         }
     }
 
