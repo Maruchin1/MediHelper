@@ -28,8 +28,6 @@ class AddEditPersonViewModel : ViewModel() {
                 }
             }
         }
-        personNameLive.value = ""
-        personColorResIDLive.value = personColorResIDList[0]
     }
 
     fun setArgs(args: AddEditPersonFragmentArgs) = viewModelScope.launch {
@@ -39,6 +37,9 @@ class AddEditPersonViewModel : ViewModel() {
                 personNameLive.postValue(personItem.personName)
                 personColorResIDLive.postValue(personItem.personColorResID)
             }
+        } else {
+            personNameLive.postValue("")
+            personColorResIDLive.postValue(personColorResIDList[0])
         }
     }
 

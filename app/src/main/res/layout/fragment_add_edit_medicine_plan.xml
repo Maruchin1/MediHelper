@@ -307,36 +307,24 @@
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chip_everyday"
-                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                style="@style/AppTheme.Widget.Chip.Choice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Każdego dnia"
-                                android:textColor="@color/chip_single_select_text_color"
-                                app:chipBackgroundColor="@color/chip_single_select_bg"
-                                app:chipStrokeColor="@android:color/darker_gray"
-                                app:chipStrokeWidth="2dp" />
+                                android:text="Każdego dnia" />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chip_days_of_week"
-                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                style="@style/AppTheme.Widget.Chip.Choice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Wybrane dni tygodnia"
-                                android:textColor="@color/chip_single_select_text_color"
-                                app:chipBackgroundColor="@color/chip_single_select_bg"
-                                app:chipStrokeColor="@android:color/darker_gray"
-                                app:chipStrokeWidth="2dp" />
+                                android:text="Wybrane dni tygodnia" />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chip_interval_of_days"
-                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                style="@style/AppTheme.Widget.Chip.Choice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Odstęp w dniach"
-                                android:textColor="@color/chip_single_select_text_color"
-                                app:chipBackgroundColor="@color/chip_single_select_bg"
-                                app:chipStrokeColor="@android:color/darker_gray"
-                                app:chipStrokeWidth="2dp" />
+                                android:text="Odstęp w dniach" />
 
                         </com.google.android.material.chip.ChipGroup>
 
@@ -379,7 +367,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/recycler_item_time_of_taking"/>
 
                         <ImageButton
                             android:layout_width="wrap_content"

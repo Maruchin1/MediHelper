@@ -11,7 +11,7 @@ import java.io.File
 
 class MedicineDetailsViewModel : ViewModel() {
 
-    val photoLive: LiveData<File>
+    val photoFileLive: LiveData<File>
     val medicineNameLive: LiveData<String>
     val stateWeightLive: LiveData<Float>
     val emptyWeightLive: LiveData<Float>
@@ -34,7 +34,7 @@ class MedicineDetailsViewModel : ViewModel() {
         stateAvailableLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
             medicineDetails?.packageSize != null || medicineDetails?.currState != null
         }
-        photoLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
+        photoFileLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
             medicineDetails.photoFilePath?.let { File(it) }
         }
         medicineNameLive = Transformations.map(medicineDetailsLive) { medicineDetails ->

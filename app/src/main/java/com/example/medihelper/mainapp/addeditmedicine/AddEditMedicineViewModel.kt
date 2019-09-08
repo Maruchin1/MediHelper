@@ -40,6 +40,18 @@ class AddEditMedicineViewModel : ViewModel() {
                 commentsLive.postValue(comments)
                 photoFileLive.postValue(photoFilePath?.let { File(it) })
             }
+        } else {
+            arrayOf(
+                medicineNameLive,
+                medicineUnitLive,
+                packageSizeLive,
+                currStateLive,
+                expireDateLive,
+                commentsLive,
+                photoFileLive
+            ).forEach { field ->
+                field.postValue(null)
+            }
         }
     }
 
@@ -84,20 +96,6 @@ class AddEditMedicineViewModel : ViewModel() {
                 )
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
             }
-        }
-    }
-
-    fun resetViewModel() {
-        arrayOf(
-            medicineNameLive,
-            medicineUnitLive,
-            packageSizeLive,
-            currStateLive,
-            expireDateLive,
-            commentsLive,
-            photoFileLive
-        ).forEach { field ->
-            field.value = null
         }
     }
 

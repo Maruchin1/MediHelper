@@ -6,15 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.bumptech.glide.Glide
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.R
@@ -91,52 +88,10 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
     }
 
     private fun observeViewModel() {
-        viewModel.photoLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                setMedicinePicture(it)
-            } else {
-                setMedicinePictureEmpty()
-            }
-        })
-        viewModel.stateColorResIdLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) setStateColor(it)
-        })
-        viewModel.stateWeightLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) setViewWeight(line_state, it)
-        })
-        viewModel.emptyWeightLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) setViewWeight(line_empty, it)
-        })
         viewModel.personItemTakingMedicineLive.observe(viewLifecycleOwner, Observer { personItemList ->
             val adapter = recycler_view_persons.adapter as PersonAdapter
             adapter.updateItemsList(personItemList)
         })
-    }
-
-    private fun setViewWeight(view: View, weight: Float) {
-        view.layoutParams = LinearLayout.LayoutParams(
-            0,
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            weight
-        )
-    }
-
-    private fun setMedicinePicture(photoFile: File) {
-        Glide.with(this)
-            .load(photoFile)
-            .centerCrop()
-            .into(img_medicine_picture)
-    }
-
-    private fun setMedicinePictureEmpty() {
-        Glide.with(this)
-            .load(R.drawable.ic_pill_white_48dp)
-            .into(img_medicine_picture)
-    }
-
-    private fun setStateColor(colorResId: Int) {
-        txv_curr_state_text.setTextColor(resources.getColor(colorResId))
-        line_state.setBackgroundResource(colorResId)
     }
 
     private fun setupPersonRecyclerView() {
