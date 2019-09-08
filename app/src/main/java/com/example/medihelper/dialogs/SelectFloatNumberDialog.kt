@@ -9,13 +9,14 @@ import androidx.lifecycle.MutableLiveData
 import com.example.medihelper.R
 import com.example.medihelper.databinding.DialogSelectFloatNumberBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.textfield.TextInputEditText
+import kotlinx.android.synthetic.main.dialog_select_float_number.*
 
 class SelectFloatNumberDialog : BottomSheetDialogFragment() {
 
     var title: String? = null
     var iconResID: Int? = null
     var defaultNumber: Float? = null
-    val selectedNumberLive = MutableLiveData(1f)
     private var numberSelectedListener: ((number: Float) -> Unit)? = null
 
     fun setNumberSelectedListener(listener: (number: Float) -> Unit) {
@@ -23,27 +24,25 @@ class SelectFloatNumberDialog : BottomSheetDialogFragment() {
     }
 
     fun onClickIncrementNumber() {
-        selectedNumberLive.value?.let { currValue ->
-            selectedNumberLive.value = currValue + 1
-        }
+        val currValue = etx_number.text?.toString()?.toFloat() ?: 0f
+        val newValue = currValue + 1
+        etx_number.setText(newValue.toString())
     }
 
     fun onClickDecrementNumber() {
-        selectedNumberLive.value?.let { currValue ->
-            val newValue = currValue - 1f
-            if (newValue >= 0) {
-                selectedNumberLive.value = newValue
-            }
+        val currValue = etx_number.text?.toString()?.toFloat() ?: 0f
+        val newValue = currValue - 1
+        if (newValue >= 0) {
+            etx_number.setText(newValue.toString())
         }
     }
 
     fun onClickCancel() = dismiss()
 
     fun onClickConfirm() {
-        selectedNumberLive.value?.let { selectedNumber ->
-            numberSelectedListener?.invoke(selectedNumber)
-            dismiss()
-        }
+        val selectedNumber = etx_number.text?.toString()?.toFloat() ?: 0f
+        numberSelectedListener?.invoke(selectedNumber)
+        dismiss()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

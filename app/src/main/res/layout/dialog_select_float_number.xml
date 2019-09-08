@@ -41,8 +41,6 @@
                 android:textColor="@color/colorPrimary" />
         </LinearLayout>
 
-        <include layout="@layout/line_horizontal" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,14 +57,22 @@
                 android:src="@drawable/round_remove_white_36"
                 android:tint="@color/colorTextSecondary" />
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Design.TextInputLayout"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text='@={"" + handler.selectedNumberLive, default="1.0"}'
-                android:textAlignment="center"
-                android:inputType="numberDecimal"/>
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etx_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:text="1.0"
+                    android:textAlignment="center" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
                 android:layout_width="wrap_content"

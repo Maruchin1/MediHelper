@@ -18,6 +18,14 @@ class SelectDateDialog : BottomSheetDialogFragment() {
     var defaultDate: Date? = null
     private var dateSelectedListener: ((date: Date) -> Unit)? = null
 
+    fun onClickCancel() = dismiss()
+
+    fun onClickConfirm() {
+        val selectedDate = AppDateTime.makeDate(calendar_view.date)
+        dateSelectedListener?.invoke(selectedDate)
+        dismiss()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: DialogSelectDateBinding = DataBindingUtil.inflate(inflater,
             R.layout.dialog_select_date, container, false)
@@ -41,8 +49,7 @@ class SelectDateDialog : BottomSheetDialogFragment() {
         }
         calendar_view.setOnDateChangeListener { _, year, month, day ->
             val selectedDate = AppDateTime.makeDate(day, month, year)
-            dateSelectedListener?.invoke(selectedDate)
-            dismiss()
+            calendar_view.date = selectedDate.time
         }
     }
 }

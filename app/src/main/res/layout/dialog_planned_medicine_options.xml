@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp">
 
             <LinearLayout
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.medicineNameLive, default=Nazwa}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-                    android:textColor="@color/colorTextPrimary" />
+                    android:textColor="@color/colorTextSecondary" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -84,7 +84,7 @@
                     android:layout_marginTop="8dp"
                     android:text='@{viewModel.doseSizeLive + " " + viewModel.medicineUnitLive, default=dawka}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textColor="@color/colorTextTertiary" />
+                    android:textColor="@color/colorDarkerGray" />
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
