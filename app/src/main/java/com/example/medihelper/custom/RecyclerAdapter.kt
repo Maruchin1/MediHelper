@@ -9,10 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 
 abstract class RecyclerAdapter<T>(
     private val layoutResId: Int,
-    private val diffCallback: DiffCallback<T>?
+    areItemsTheSameFun: ((oldItem: T, newItem: T) -> Boolean)? = null
 ) : RecyclerView.Adapter<RecyclerItemViewHolder>() {
 
     protected val itemsList = mutableListOf<T>()
+    private var diffCallback: DiffCallback<T>? = null
+
+    init {
+        if (areItemsTheSameFun != null) {
+            diffCallback = DiffCallback(areItemsTheSameFun)
+        }
+    }
 
     open fun updateItemsList(newList: List<T>?) {
         when {
@@ -26,8 +33,8 @@ abstract class RecyclerAdapter<T>(
                 notifyDataSetChanged()
             }
             else -> {
-                diffCallback.setLists(oldList = itemsList, newList = newList)
-                val diffResult = DiffUtil.calculateDiff(diffCallback)
+                diffCallback!!.setLists(oldList = itemsList, newList = newList)
+                val diffResult = DiffUtil.calculateDiff(diffCallback!!)
                 itemsList.clear()
                 itemsList.addAll(newList)
                 diffResult.dispatchUpdatesTo(this)

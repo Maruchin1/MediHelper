@@ -98,12 +98,8 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
     }
 
     inner class PersonAdapter : RecyclerAdapter<PersonItem>(
-        R.layout.recycler_item_person_taking_medicine,
-        object : DiffCallback<PersonItem>() {
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return oldList[oldItemPosition].personID == newList[newItemPosition].personID
-            }
-        }
+        layoutResId = R.layout.recycler_item_person_taking_medicine,
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.personID == newItem.personID }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val personItem = itemsList[position]

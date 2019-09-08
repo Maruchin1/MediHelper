@@ -2,10 +2,10 @@ package com.example.medihelper.custom
 
 import androidx.recyclerview.widget.DiffUtil
 
-abstract class DiffCallback<T> : DiffUtil.Callback() {
+open class DiffCallback<T>(private val areItemsTheSameFun: (oldItem: T, newItem: T) -> Boolean) : DiffUtil.Callback() {
 
-    protected var oldList: List<T> = emptyList()
-    protected var newList: List<T> = emptyList()
+    private var oldList: List<T> = emptyList()
+    private var newList: List<T> = emptyList()
 
     fun setLists(oldList: List<T>, newList: List<T>) {
         this.oldList = oldList
@@ -21,7 +21,7 @@ abstract class DiffCallback<T> : DiffUtil.Callback() {
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition] == newList[newItemPosition]
+        return areItemsTheSameFun.invoke(oldList[oldItemPosition], newList[newItemPosition])
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

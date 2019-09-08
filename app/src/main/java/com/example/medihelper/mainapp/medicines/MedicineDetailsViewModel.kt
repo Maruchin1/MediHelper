@@ -23,7 +23,8 @@ class MedicineDetailsViewModel : ViewModel() {
     val typeNameLive: LiveData<String>
     val expireDateLive: LiveData<String>
     val daysRemainsLive: LiveData<String>
-    val comments: LiveData<String>
+    val commentsLive: LiveData<String>
+    val commentsAvailableLive: LiveData<Boolean>
     val stateAvailableLive: LiveData<Boolean>
     val personItemListTakingMedicineLive: LiveData<List<PersonItem>>
     val personItemListTakingMedicineAvailableLive: LiveData<Boolean>
@@ -59,8 +60,11 @@ class MedicineDetailsViewModel : ViewModel() {
         daysRemainsLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
             medicineDetails?.let { daysRemainsString(it) }
         }
-        comments = Transformations.map(medicineDetailsLive) { medicine ->
+        commentsLive = Transformations.map(medicineDetailsLive) { medicine ->
             medicine?.comments
+        }
+        commentsAvailableLive = Transformations.map(commentsLive) { comments ->
+            comments != null && comments.isNotEmpty()
         }
         stateWeightLive = Transformations.map(medicineDetailsLive) { medicine ->
             medicine?.let { stateWeight(it) }

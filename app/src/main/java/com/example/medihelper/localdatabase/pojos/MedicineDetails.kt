@@ -27,6 +27,6 @@ class MedicineDetails(
     @ColumnInfo(name = "expire_date")
     val expireDate: Date?,
 
-    @ColumnInfo(name = "comments")
+    @ColumnInfo(name = "commentsLive")
     val comments: String?
 )

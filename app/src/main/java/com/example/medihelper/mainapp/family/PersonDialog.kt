@@ -89,12 +89,8 @@ class PersonDialog : BottomSheetDialogFragment() {
 
     // Inner classes
     inner class PersonAdapter : RecyclerAdapter<PersonItem>(
-        R.layout.recycler_item_person,
-        object : DiffCallback<PersonItem>() {
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return oldList[oldItemPosition].personID == newList[newItemPosition].personID
-            }
-        }
+        layoutResId = R.layout.recycler_item_person,
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.personID == newItem.personID }
     ) {
         private var optionsEnabledPosition = -1
 

@@ -82,7 +82,7 @@
     </style>
 
     <style name="AppTheme.Text.Form.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="android:textColor">@color/colorTextTertiary</item>
+        <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
 
     <style name="AppTheme.Text.Form.CardHeader" parent="TextAppearance.MaterialComponents.Subtitle2">
@@ -96,8 +96,16 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
-    <style name="MedicineDetailFragment.Text.Body" parent="TextAppearance.MaterialComponents.Body1">
+    <style name="MedicineDetailFragment.Text.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
 
+    <style name="MedicineDetailFragment.Text.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textColor">@color/colorTextSecondary</item>
+    </style>
+
+    <!--    fragment_add_edit_medicine_plan-->
+    <style name="AddEditMedicinePlanFragment.Text.MedicineData" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textColor">@color/colorTextSecondary</item>
+    </style>
 </resources>

@@ -65,12 +65,8 @@ class ScheduleDayFragment : Fragment() {
 
     // Inner classes
     inner class PlannedMedicineAdapter : RecyclerAdapter<PlannedMedicineItem>(
-        R.layout.recycler_item_planned_medicine,
-        object : DiffCallback<PlannedMedicineItem>() {
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return oldList[oldItemPosition].plannedMedicineID == newList[newItemPosition].plannedMedicineID
-            }
-        }
+        layoutResId = R.layout.recycler_item_planned_medicine,
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedMedicineID == newItem.plannedMedicineID }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val plannedMedicine = itemsList[position]

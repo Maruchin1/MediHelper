@@ -9,9 +9,9 @@
             name="handler"
             type="com.example.medihelper.mainapp.schedule.MedicinePlanListFragment" />
 
-        <variable
-            name="displayData"
-            type="com.example.medihelper.mainapp.schedule.ScheduleViewModel.PlannedMedicineCheckboxDisplayData" />
+<!--        <variable-->
+<!--            name="displayData"-->
+<!--            type="com.example.medihelper.mainapp.schedule.ScheduleViewModel.PlannedMedicineCheckboxDisplayData" />-->
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,13 +29,13 @@
             android:foreground="?selectableItemBackground"
             app:cardCornerRadius="16dp">
 
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="@{displayData.statusColorResID}"
-                android:padding="4dp"
-                android:src="@{displayData.statusIconResID}"
-                android:tint="@color/colorWhite" />
+<!--            <ImageView-->
+<!--                android:layout_width="32dp"-->
+<!--                android:layout_height="32dp"-->
+<!--                android:background="@{displayData.statusColorResID}"-->
+<!--                android:padding="4dp"-->
+<!--                android:src="@{displayData.statusIconResID}"-->
+<!--                android:tint="@color/colorWhite" />-->
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>

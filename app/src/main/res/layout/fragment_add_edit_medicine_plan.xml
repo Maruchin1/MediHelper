@@ -161,38 +161,39 @@
                             <TableRow>
 
                                 <TextView
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Aktualny stan"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                    android:textColor="@color/colorTextTertiary"/>
+                                    android:text="Lek ważny do"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                                    android:textColor="@color/colorTextSecondary" />
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="32dp"
-                                    android:text='@{viewModel.selectedMedicineCurrState ?? "--", default=stan}'
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                    android:textColor="@color/colorTextTertiary"/>
+                                    android:text='@{viewModel.selectedMedicineExpireDate, default=data}'
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                                    android:textColor="@color/colorTextSecondary" />
                             </TableRow>
 
                             <TableRow android:layout_marginTop="8dp">
 
                                 <TextView
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Lek ważny do"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                    android:textColor="@color/colorTextTertiary" />
+                                    android:text="Jednostka"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                                    android:textColor="@color/colorTextSecondary" />
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="32dp"
-                                    android:text='@{viewModel.selectedMedicineExpireDate ?? "--", default=data}'
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                    android:textColor="@color/colorTextTertiary"/>
+                                    android:text='@{viewModel.selectedMedicineUnitLive, default=stan}'
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                                    android:textColor="@color/colorTextSecondary" />
                             </TableRow>
+
                         </TableLayout>
 
 
@@ -368,7 +369,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:listitem="@layout/recycler_item_time_of_taking"/>
+                            tools:listitem="@layout/recycler_item_time_of_taking" />
 
                         <ImageButton
                             android:layout_width="wrap_content"

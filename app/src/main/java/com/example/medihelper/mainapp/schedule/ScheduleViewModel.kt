@@ -3,15 +3,11 @@ package com.example.medihelper.mainapp.schedule
 import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.AppRepository
-import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
-import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
-import com.example.medihelper.localdatabase.pojos.PlannedMedicineCheckbox
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ScheduleViewModel : ViewModel() {
 
@@ -84,84 +80,102 @@ class ScheduleViewModel : ViewModel() {
         }
     }
 
-    fun getMedicinePlanDisplayData(medicinePlanItem: MedicinePlanItem): MedicinePlanDisplayData {
-        return MedicinePlanDisplayData(
-            medicinePlanID = medicinePlanItem.medicinePlanID,
-            medicineName = medicinePlanItem.medicineName,
-            durationType = when (medicinePlanItem.durationType) {
-                MedicinePlanEntity.DurationType.ONCE -> "Jednorazowo"
-                MedicinePlanEntity.DurationType.PERIOD -> "Przez ${AppDateTime.daysBetween(
-                    medicinePlanItem.startDate,
-                    medicinePlanItem.endDate!!
-                )} dni"
-                MedicinePlanEntity.DurationType.CONTINUOUS -> "Leczenie ciągłe"
-            },
-            startDate = when (medicinePlanItem.durationType) {
-                MedicinePlanEntity.DurationType.ONCE -> AppDateTime.dateToString(medicinePlanItem.startDate) ?: "--"
-                else -> "Od ${AppDateTime.dateToString(medicinePlanItem.startDate)}"
-            },
-            endDate = when (medicinePlanItem.durationType) {
-                MedicinePlanEntity.DurationType.PERIOD -> "Do ${AppDateTime.dateToString(medicinePlanItem.endDate!!)}"
-                else -> ""
-            },
-            daysType = when (medicinePlanItem.daysType) {
-                MedicinePlanEntity.DaysType.NONE -> ""
-                MedicinePlanEntity.DaysType.EVERYDAY -> "Codziennie"
-                MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanItem.daysOfWeek?.getSelectedDaysString() ?: "--"
-                MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> "Co ${medicinePlanItem.intervalOfDays ?: "--"} dni"
-            },
-            timeOfTaking = StringBuilder().run {
-                medicinePlanItem.timeOfTakingList.forEach { timeOfTaking ->
-                    append(AppDateTime.timeToString(timeOfTaking.time))
-                    append(" - ")
-                    append(timeOfTaking.doseSize)
-                    append(" ")
-                    append(medicinePlanItem.medicineUnit)
-                    append("\n")
-                }
-                toString()
-            }
-        )
-    }
+    fun getMedicinePlanDisplayData(medicinePlanItem: MedicinePlanItem) = MedicinePlanDisplayData(
+        medicinePlanID = medicinePlanItem.medicinePlanID,
+        colorPrimaryResID = colorPrimaryLive.value!!,
+        medicineName = medicinePlanItem.medicineName,
+        planDuration = when (medicinePlanItem.durationType) {
+            MedicinePlanEntity.DurationType.ONCE -> "Jednorazowo ${AppDateTime.dateToString(medicinePlanItem.startDate)}"
+            MedicinePlanEntity.DurationType.PERIOD -> "Od ${AppDateTime.dateToString(medicinePlanItem.startDate)} " +
+                    "do ${AppDateTime.dateToString(medicinePlanItem.endDate)}"
+            MedicinePlanEntity.DurationType.CONTINUOUS -> "Pzyjmowanie ciągłe od ${AppDateTime.dateToString(medicinePlanItem.startDate)}"
+        },
+        daysType = when (medicinePlanItem.daysType) {
+            MedicinePlanEntity.DaysType.NONE -> null
+            MedicinePlanEntity.DaysType.EVERYDAY -> "Codziennie"
+            MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanItem.daysOfWeek?.getSelectedDaysString() ?: "--"
+            MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> "Co ${medicinePlanItem.intervalOfDays ?: "--"} dni"
+        }
+    )
+
+//    fun getMedicinePlanDisplayData(medicinePlanItem: MedicinePlanItem): MedicinePlanDisplayData {
+//        return MedicinePlanDisplayData(
+//            medicinePlanID = medicinePlanItem.medicinePlanID,
+//            medicineName = medicinePlanItem.medicineName,
+//            durationType = when (medicinePlanItem.durationType) {
+//                MedicinePlanEntity.DurationType.ONCE -> "Jednorazowo"
+//                MedicinePlanEntity.DurationType.PERIOD -> "Przez ${AppDateTime.daysBetween(
+//                    medicinePlanItem.startDate,
+//                    medicinePlanItem.endDate!!
+//                )} dni"
+//                MedicinePlanEntity.DurationType.CONTINUOUS -> "Leczenie ciągłe"
+//            },
+//            startDate = when (medicinePlanItem.durationType) {
+//                MedicinePlanEntity.DurationType.ONCE -> AppDateTime.dateToString(medicinePlanItem.startDate) ?: "--"
+//                else -> "Od ${AppDateTime.dateToString(medicinePlanItem.startDate)}"
+//            },
+//            endDate = when (medicinePlanItem.durationType) {
+//                MedicinePlanEntity.DurationType.PERIOD -> "Do ${AppDateTime.dateToString(medicinePlanItem.endDate!!)}"
+//                else -> ""
+//            },
+//            daysType = when (medicinePlanItem.daysType) {
+//                MedicinePlanEntity.DaysType.NONE -> "--"
+//                MedicinePlanEntity.DaysType.EVERYDAY -> "Codziennie"
+//                MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanItem.daysOfWeek?.getSelectedDaysString() ?: "--"
+//                MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> "Co ${medicinePlanItem.intervalOfDays ?: "--"} dni"
+//            },
+//            timeOfTaking = StringBuilder().run {
+//                medicinePlanItem.timeOfTakingList.forEach { timeOfTaking ->
+//                    append(AppDateTime.timeToString(timeOfTaking.time))
+//                    append(" - ")
+//                    append(timeOfTaking.doseSize)
+//                    append(" ")
+//                    append(medicinePlanItem.medicineUnit)
+//                    append("\n")
+//                }
+//                toString()
+//            }
+//        )
+//    }
 
     fun deleteMedicinePlan(medicinePlanID: Int) = viewModelScope.launch {
         AppRepository.deleteMedicinePlan(medicinePlanID)
     }
 
-    fun getPlannedMedicinesGroupedByDateList(plannedMedicineList: List<PlannedMedicineCheckbox>): List<PlannedMedicineCheckboxGroupedByDate> {
-        val distinctDatesArrayList = ArrayList<Date>()
-        plannedMedicineList.forEach { plannedMedicineForPlanItem ->
-            val plannedDate = plannedMedicineForPlanItem.plannedDate
-            if (!distinctDatesArrayList.contains(plannedDate)) {
-                distinctDatesArrayList.add(plannedDate)
-            }
-        }
-        val plannedMedicinesGroupedByDateArrayList = ArrayList<PlannedMedicineCheckboxGroupedByDate>()
-        distinctDatesArrayList.forEach { date ->
-            val plannedMedicinesByDate = plannedMedicineList.filter { plannedMedicine ->
-                AppDateTime.compareDates(plannedMedicine.plannedDate, date) == 0
-            }
-            plannedMedicinesGroupedByDateArrayList.add(
-                PlannedMedicineCheckboxGroupedByDate(
-                    date = date,
-                    plannedMedicineCheckboxList = plannedMedicinesByDate
-                )
-            )
-        }
-        return plannedMedicinesGroupedByDateArrayList
-    }
+//    fun getPlannedMedicinesGroupedByDateList(plannedMedicineList: List<PlannedMedicineCheckbox>): List<PlannedMedicineCheckboxGroupedByDate> {
+//        val distinctDatesArrayList = ArrayList<Date>()
+//        plannedMedicineList.forEach { plannedMedicineForPlanItem ->
+//            val plannedDate = plannedMedicineForPlanItem.plannedDate
+//            if (!distinctDatesArrayList.contains(plannedDate)) {
+//                distinctDatesArrayList.add(plannedDate)
+//            }
+//        }
+//        val plannedMedicinesGroupedByDateArrayList = ArrayList<PlannedMedicineCheckboxGroupedByDate>()
+//        distinctDatesArrayList.forEach { date ->
+//            val plannedMedicinesByDate = plannedMedicineList.filter { plannedMedicine ->
+//                AppDateTime.compareDates(plannedMedicine.plannedDate, date) == 0
+//            }
+//            plannedMedicinesGroupedByDateArrayList.add(
+//                PlannedMedicineCheckboxGroupedByDate(
+//                    date = date,
+//                    plannedMedicineCheckboxList = plannedMedicinesByDate
+//                )
+//            )
+//        }
+//        return plannedMedicinesGroupedByDateArrayList
+//    }
 
-    fun getPlannedMedicineCheckboxDisplayData(plannedMedicineCheckbox: PlannedMedicineCheckbox): PlannedMedicineCheckboxDisplayData {
-        return PlannedMedicineCheckboxDisplayData(
-            plannedMedicineID = plannedMedicineCheckbox.plannedMedicineID,
-            statusColorResID = plannedMedicineCheckbox.statusOfTaking.colorResID,
-            statusIconResID = when (plannedMedicineCheckbox.statusOfTaking) {
-                PlannedMedicineEntity.StatusOfTaking.TAKEN -> R.drawable.baseline_check_white_24
-                PlannedMedicineEntity.StatusOfTaking.NOT_TAKEN -> R.drawable.round_close_black_24
-                PlannedMedicineEntity.StatusOfTaking.WAITING -> null
-            }
-        )
-    }
+//    fun getPlannedMedicineCheckboxDisplayData(plannedMedicineCheckbox: PlannedMedicineCheckbox): PlannedMedicineCheckboxDisplayData {
+//        return PlannedMedicineCheckboxDisplayData(
+//            plannedMedicineID = plannedMedicineCheckbox.plannedMedicineID,
+//            statusColorResID = plannedMedicineCheckbox.statusOfTaking.colorResID,
+//            statusIconResID = when (plannedMedicineCheckbox.statusOfTaking) {
+//                PlannedMedicineEntity.StatusOfTaking.TAKEN -> R.drawable.baseline_check_white_24
+//                PlannedMedicineEntity.StatusOfTaking.NOT_TAKEN -> R.drawable.round_close_black_24
+//                PlannedMedicineEntity.StatusOfTaking.WAITING -> null
+//            }
+//        )
+//    }
 
     private fun getMedicinePlanType(medicinePlanItem: MedicinePlanItem): MedicinePlanType {
         val currDate = AppDateTime.getCurrCalendar().time
@@ -184,24 +198,32 @@ class ScheduleViewModel : ViewModel() {
 
     data class MedicinePlanDisplayData(
         val medicinePlanID: Int,
+        val colorPrimaryResID: Int,
         val medicineName: String,
-        val durationType: String,
-        val startDate: String,
-        val endDate: String,
-        val daysType: String,
-        val timeOfTaking: String
+        val planDuration: String,
+        val daysType: String?
     )
 
-    data class PlannedMedicineCheckboxGroupedByDate(
-        val date: Date,
-        val plannedMedicineCheckboxList: List<PlannedMedicineCheckbox>
-    )
-
-    data class PlannedMedicineCheckboxDisplayData(
-        val plannedMedicineID: Int,
-        val statusColorResID: Int,
-        val statusIconResID: Int?
-    )
+//    data class MedicinePlanDisplayData(
+//        val medicinePlanID: Int,
+//        val medicineName: String,
+//        val durationType: String,
+//        val startDate: String,
+//        val endDate: String,
+//        val daysType: String,
+//        val timeOfTaking: String
+//    )
+//
+//    data class PlannedMedicineCheckboxGroupedByDate(
+//        val date: Date,
+//        val plannedMedicineCheckboxList: List<PlannedMedicineCheckbox>
+//    )
+//
+//    data class PlannedMedicineCheckboxDisplayData(
+//        val plannedMedicineID: Int,
+//        val statusColorResID: Int,
+//        val statusIconResID: Int?
+//    )
 
     enum class MedicinePlanType(val pageTitle: String) {
         ENDED("Zakończone"),

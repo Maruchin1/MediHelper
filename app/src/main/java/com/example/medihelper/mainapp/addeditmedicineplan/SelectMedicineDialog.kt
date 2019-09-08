@@ -62,12 +62,8 @@ class SelectMedicineDialog : BottomSheetDialogFragment() {
 
     // Inner classes -------------------------------------------------------------------------------
     inner class MedicineAdapter : RecyclerAdapter<MedicineItem>(
-        R.layout.recycler_item_select_medicine,
-        object : DiffCallback<MedicineItem>() {
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return oldList[oldItemPosition].medicineID == newList[newItemPosition].medicineID
-            }
-        }
+        layoutResId = R.layout.recycler_item_select_medicine,
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.medicineID == newItem.medicineID }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicineItem = itemsList[position]

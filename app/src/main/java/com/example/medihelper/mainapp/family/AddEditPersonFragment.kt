@@ -79,12 +79,8 @@ class AddEditPersonFragment : AppFullScreenDialog() {
 
     // Inner classes
     inner class PersonColorAdapter : RecyclerAdapter<AddEditPersonViewModel.PersonColorDisplayData>(
-        R.layout.recycler_item_person_color,
-        object : DiffCallback<AddEditPersonViewModel.PersonColorDisplayData>() {
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return oldList[oldItemPosition].colorResID == newList[newItemPosition].colorResID
-            }
-        }
+        layoutResId = R.layout.recycler_item_person_color,
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.colorResID == newItem.colorResID }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val personColorDisplayData = itemsList[position]

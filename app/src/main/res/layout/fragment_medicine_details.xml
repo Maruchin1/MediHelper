@@ -137,7 +137,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Lek ważny do"
-                                            android:textAppearance="@style/MedicineDetailFragment.Text.Body" />
+                                            android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
 
                                         <TextView
                                             android:id="@+id/txv_expire_date"
@@ -145,7 +145,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginStart="16dp"
                                             android:text='@{viewModel.expireDateLive ?? "--", default=data}'
-                                            android:textAppearance="@style/MedicineDetailFragment.Text.Body" />
+                                            android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
                                     </TableRow>
 
                                     <TableRow android:layout_marginTop="8dp">
@@ -155,14 +155,14 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Pozostało"
-                                            android:textAppearance="@style/MedicineDetailFragment.Text.Body" />
+                                            android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginStart="16dp"
                                             android:text='@{viewModel.daysRemainsLive ?? "--", default=dni}'
-                                            android:textAppearance="@style/MedicineDetailFragment.Text.Body" />
+                                            android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
                                     </TableRow>
 
                                     <TableRow android:layout_marginTop="8dp">
@@ -171,14 +171,14 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Jednostka"
-                                            android:textAppearance="@style/MedicineDetailFragment.Text.Body" />
+                                            android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginStart="16dp"
                                             android:text="@{viewModel.medicineUnitLive, default=jednostka}"
-                                            android:textAppearance="@style/MedicineDetailFragment.Text.Body" />
+                                            android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
                                     </TableRow>
                                 </TableLayout>
 
@@ -352,7 +352,7 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="16dp"
                                 android:text="Lek nie jest przyjmowany przez żadną osobę"
-                                android:textAppearance="@style/MedicineDetailFragment.Text.Body"
+                                android:textAppearance="@style/MedicineDetailFragment.Text.Body2"
                                 android:visibility="@{viewModel.personItemListTakingMedicineAvailableLive ? View.GONE : View.VISIBLE, default=gone}" />
                         </FrameLayout>
                     </LinearLayout>
@@ -383,14 +383,26 @@
                             android:text="Dodatkowe informacje"
                             android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle" />
 
-                        <TextView
-                            android:id="@+id/txv_extra_info"
+                        <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text='@{viewModel.comments ?? "Brak dodatkowych informacji", default="Brak dodatkowych informacji"}'
-                            android:textAppearance="@style/MedicineDetailFragment.Text.Body" />
+                            android:layout_marginTop="16dp">
 
+                            <TextView
+                                android:id="@+id/txv_extra_info"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text='@{viewModel.commentsLive, default=informacje}'
+                                android:textAppearance="@style/MedicineDetailFragment.Text.Body1"
+                                android:visibility="@{viewModel.commentsAvailableLive ? View.VISIBLE : View.GONE}" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Brak dodatkowych informacji"
+                                android:textAppearance="@style/MedicineDetailFragment.Text.Body2"
+                                android:visibility="@{viewModel.commentsAvailableLive ? View.GONE : View.VISIBLE, default=gone}" />
+                        </FrameLayout>
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>

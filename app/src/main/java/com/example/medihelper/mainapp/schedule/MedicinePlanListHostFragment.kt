@@ -56,8 +56,11 @@ class MedicinePlanListHostFragment : Fragment() {
     }
 
     private fun setupToolbarMenu() {
-        toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.btn_schedule -> findNavController().popBackStack()
+            }
+            true
         }
     }
 
