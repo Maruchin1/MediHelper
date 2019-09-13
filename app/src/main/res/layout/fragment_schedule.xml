@@ -128,9 +128,12 @@
                 android:id="@+id/recycler_view_timeline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:visibility="@{viewModel.calendarLayoutVisibleLive ? View.GONE : View.VISIBLE}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/toolbar" />
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                tools:listitem="@layout/recycler_item_schedule_timeline" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

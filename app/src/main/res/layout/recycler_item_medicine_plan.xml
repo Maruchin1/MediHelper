@@ -8,11 +8,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.schedule.MedicinePlanListFragment" />
+            type="com.example.medihelper.mainapp.medicineplanlist.MedicinePlanListFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.schedule.ScheduleViewModel.MedicinePlanDisplayData" />
+            type="com.example.medihelper.mainapp.medicineplanlist.MedicinePlanListViewModel.MedicinePlanDisplayData" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -87,6 +87,7 @@
                     style="@style/AppTheme.Widget.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="@{() -> handler.onClickMedicinePlanHistory(displayData.medicinePlanID)}"
                     android:text="Historia"
                     app:chipIcon="@drawable/round_history_24" />
 

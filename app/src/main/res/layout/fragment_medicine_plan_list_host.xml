@@ -5,11 +5,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.schedule.MedicinePlanListHostFragment" />
+            type="com.example.medihelper.mainapp.medicineplanlist.MedicinePlanListHostFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.schedule.ScheduleViewModel" />
+            type="com.example.medihelper.mainapp.medicineplanlist.MedicinePlanListViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
         android:fitsSystemWindows="true"
-        tools:context=".mainapp.schedule.MedicinePlanListHostFragment">
+        tools:context=".mainapp.medicineplanlist.MedicinePlanListHostFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"

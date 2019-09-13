@@ -150,7 +150,7 @@ class AddEditMedicinePlanViewModel : ViewModel() {
     fun getTimeOfTakingDisplayData(timeOfTaking: MedicinePlanEntity.TimeOfTaking): TimeOfTakingDisplayData {
         return TimeOfTakingDisplayData(
             timeOfTakingRef = timeOfTaking,
-            time = AppDateTime.timeToString(timeOfTaking.time),
+            time = AppDateTime.timeToString(timeOfTaking.time) ?: "--",
             doseSize = timeOfTaking.doseSize.toString(),
             medicineTypeName = selectedMedicineDetailsLive.value?.medicineUnit ?: "--"
         )

@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule
+package com.example.medihelper.mainapp.medicineplanlist
 
 
 import android.os.Bundle
@@ -10,19 +10,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentMedicinePlanListHostBinding
-import com.example.medihelper.mainapp.family.PersonDialog
 import com.example.medihelper.mainapp.MainActivity
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list_host.*
 
 class MedicinePlanListHostFragment : Fragment() {
 
-    private val viewModel: ScheduleViewModel by activityViewModels()
+    private val viewModel: MedicinePlanListViewModel by activityViewModels()
     private val directions by lazyOf(MedicinePlanListHostFragmentDirections)
 
     fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddEditMedicinePlanFragment())
@@ -73,8 +69,12 @@ class MedicinePlanListHostFragment : Fragment() {
     inner class MedicinePlanListPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         private val pagesList = listOf(
-            MedicinePlanListFragment().apply { medicinePlanType = ScheduleViewModel.MedicinePlanType.ONGOING},
-            MedicinePlanListFragment().apply { medicinePlanType = ScheduleViewModel.MedicinePlanType.ENDED }
+            MedicinePlanListFragment().apply { medicinePlanType =
+                MedicinePlanListViewModel.MedicinePlanType.ONGOING
+            },
+            MedicinePlanListFragment().apply { medicinePlanType =
+                MedicinePlanListViewModel.MedicinePlanType.ENDED
+            }
         )
 
         override fun getCount(): Int {

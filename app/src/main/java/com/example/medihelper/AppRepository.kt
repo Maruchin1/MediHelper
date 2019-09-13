@@ -93,6 +93,8 @@ object AppRepository {
 
     fun getMedicinePlanItemListLive(personID: Int) = medicinePlanDao.getMedicinePlanItemListLive(personID)
 
+    fun getMedicinePlanHistoryLive(medicinePlanID: Int) = medicinePlanDao.getMedicinePlanHistoryLive(medicinePlanID)
+
     fun getPlannedMedicineDetailsLive(plannedMedicineID: Int) = plannedMedicineDao.getDetailsLive(plannedMedicineID)
 
     fun getPlannedMedicineItemListLiveByDate(date: Date, personID: Int) = plannedMedicineDao.getItemByDateListLive(date, personID)

@@ -90,7 +90,7 @@ object AppDateTime {
     }
 
     @JvmStatic
-    fun timeToString(time: Time): String = timeFormat().format(time)
+    fun timeToString(time: Time?): String? = time?.let { timeFormat().format(it) }
 
     fun compareTimes(time1: Time, time2: Time): Int {
         val hour1 = time1.hours

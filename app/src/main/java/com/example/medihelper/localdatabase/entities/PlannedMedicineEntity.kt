@@ -70,9 +70,9 @@ data class PlannedMedicineEntity(
         }
     }
 
-    enum class StatusOfTaking(val shortString: String, val colorResID: Int) {
-        WAITING("oczekujący", R.color.colorDarkerGray),
-        TAKEN("przyjęty", R.color.colorStateGood),
-        NOT_TAKEN("nieprzyjęty", R.color.colorStateSmall)
+    enum class StatusOfTaking(val shortString: String, val colorResID: Int, val iconResID: Int?) {
+        WAITING("oczekujący", R.color.colorDarkerGray, null),
+        TAKEN("przyjęty", R.color.colorStateGood, R.drawable.baseline_check_24),
+        NOT_TAKEN("nieprzyjęty", R.color.colorStateSmall, R.drawable.round_close_24)
     }
 }

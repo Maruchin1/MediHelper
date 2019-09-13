@@ -7,7 +7,7 @@ import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import java.util.*
 
-class MedicinePlanItem(
+data class MedicinePlanItem(
     @ColumnInfo(name = "medicine_plan_id")
     val medicinePlanID: Int,
 
@@ -33,14 +33,5 @@ class MedicinePlanItem(
     val intervalOfDays: Int? = null,
 
     @ColumnInfo(name = "schedule_days")
-    val daysType: MedicinePlanEntity.DaysType,
-
-    @ColumnInfo(name = "dose_hour_list")
-    val timeOfTakingList: List<MedicinePlanEntity.TimeOfTaking>,
-
-    @Relation(
-        entity = PlannedMedicineEntity::class,
-        parentColumn = "medicine_plan_id",
-        entityColumn = "medicine_plan_id")
-    val plannedMedicineList: List<PlannedMedicineCheckbox>
+    val daysType: MedicinePlanEntity.DaysType
 )

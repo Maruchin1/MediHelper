@@ -5,7 +5,7 @@ import androidx.room.Relation
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import java.util.*
 
-class MedicineDetails(
+data class MedicineDetails(
     @ColumnInfo(name = "medicine_id")
     val medicineID: Int,
 

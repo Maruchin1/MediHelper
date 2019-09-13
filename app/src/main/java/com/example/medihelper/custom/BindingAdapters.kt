@@ -121,3 +121,11 @@ fun setFloatText(editText: TextInputEditText, newValue: Float?) {
         editText.setText(newValue.toString())
     }
 }
+
+
+@BindingAdapter("app:chipBackgroundColor")
+fun setChipBackgroundColor(chip: Chip, colorResId: Int?) {
+    if (colorResId != null && colorResId != 0) {
+        chip.setChipBackgroundColorResource(colorResId)
+    }
+}
