@@ -11,9 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.medihelper.AppDateTime
 import com.example.medihelper.BR
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppDialog
@@ -23,7 +20,6 @@ import com.example.medihelper.databinding.DialogMedicinePlanHistoryBinding
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import kotlinx.android.synthetic.main.dialog_medicine_plan_history.*
 import kotlinx.android.synthetic.main.recycler_item_history.view.*
-import kotlinx.android.synthetic.main.view_history_hour.view.*
 
 class MedicinePlanHistoryDialog : AppDialog() {
 

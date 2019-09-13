@@ -30,32 +30,31 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/lay_header"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorDarkerGray"
+                android:gravity="end|center_vertical"
                 android:paddingStart="16dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="4dp"
-                app:backgroundResource="@{displayData.statusOfTaking.colorResID}"
-                app:layout_constraintTop_toTopOf="parent">
+                app:backgroundResource="@{displayData.statusOfTaking.colorResID}">
 
                 <TextView
                     android:id="@+id/txv_scheduled_time"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
                     android:text='@{AppDateTime.timeToString(displayData.plannedTime), default="00:00"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textColor="@color/colorWhite"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:textColor="@color/colorWhite" />
 
                 <TextView
                     android:id="@+id/txv_schedule_status"
@@ -63,47 +62,35 @@
                     android:layout_height="wrap_content"
                     android:text='@{displayData.statusOfTaking.shortString, default="status"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                    android:textColor="@color/colorWhite"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:textColor="@color/colorWhite" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/txv_medicine_name"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text='@{displayData.medicineName, default="Nazwa leku"}'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/ver_guideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lay_header" />
+                android:layout_margin="16dp">
 
-            <TextView
-                android:id="@+id/txv_scheduled_dose"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:text='@{"Dawka: " + displayData.plannedDoseSize + " " + displayData.medicineUnit, default="Dawka do przyjęcia"}'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                android:textColor="@color/colorTextTertiary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/ver_guideline"
-                app:layout_constraintTop_toBottomOf="@id/lay_header" />
+                <TextView
+                    android:id="@+id/txv_medicine_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text='@{displayData.medicineName, default="Nazwa leku"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textColor="@color/colorTextSecondary" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/ver_guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5" />
+                <TextView
+                    android:id="@+id/txv_scheduled_dose"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="2"
+                    android:text='@{displayData.plannedDoseSize + " " + displayData.medicineUnit, default="Dawka "}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textColor="@color/colorTextTertiary" />
+            </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
 </layout>

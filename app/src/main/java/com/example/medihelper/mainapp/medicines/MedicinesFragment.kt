@@ -8,22 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
-import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicinesBinding
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.mainapp.MainActivity
 import kotlinx.android.synthetic.main.fragment_medicines.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MedicinesFragment : Fragment() {
 
-    private val viewModel: MedicinesViewModel by viewModels()
+    private val viewModel: MedicinesViewModel by viewModel()
     private val directions by lazyOf(MedicinesFragmentDirections)
 
     fun onClickOpenMedicineDetails(medicineID: Int)  = findNavController().navigate(directions.toMedicineDetailsFragment(medicineID))

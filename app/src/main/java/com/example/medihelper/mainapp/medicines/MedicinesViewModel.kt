@@ -5,12 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.AppRepository
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.pojos.MedicineItem
+import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import java.io.File
 
-class MedicinesViewModel : ViewModel() {
+class MedicinesViewModel(private val medicineRepository: MedicineRepository) : ViewModel() {
     private val TAG = MedicinesViewModel::class.simpleName
 
     val searchQueryLive = MutableLiveData("")
@@ -21,9 +21,9 @@ class MedicinesViewModel : ViewModel() {
         medicineItemListLive = Transformations.switchMap(searchQueryLive) { searchQuery ->
             Log.d(TAG, "searchQuery change = $searchQuery")
             if (searchQuery.isNullOrEmpty()) {
-                AppRepository.getMedicineItemListLive()
+                medicineRepository.getItemListLive()
             } else {
-                AppRepository.getMedicineItemFilteredListLive(searchQuery)
+                medicineRepository.getFilteredItemListLive(searchQuery)
             }
         }
         medicineAvailableLive = Transformations.map(medicineItemListLive) { list ->

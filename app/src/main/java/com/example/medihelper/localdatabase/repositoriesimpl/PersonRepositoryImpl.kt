@@ -1,13 +1,31 @@
-package com.example.medihelper.localdatabase.dao
+package com.example.medihelper.localdatabase.repositoriesimpl
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import com.example.medihelper.localdatabase.entities.PersonEntity
-import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.localdatabase.pojos.PersonItem
+import com.example.medihelper.localdatabase.repositories.PersonRepository
+
+class PersonRepositoryImpl(private val personDao: PersonDao) : PersonRepository {
+
+    override suspend fun insert(personEntity: PersonEntity) = personDao.insert(personEntity)
+
+    override suspend fun update(personEntity: PersonEntity) = personDao.update(personEntity)
+
+    override suspend fun delete(personID: Int) = personDao.delete(personID)
+
+    override suspend fun getItem(personID: Int) = personDao.getItem(personID)
+
+    override fun getItemListLive() = personDao.getItemListLive()
+
+    override fun getItemListLiveByMedicineID(medicineID: Int) = personDao.getItemListLiveByMedicineID(medicineID)
+}
 
 @Dao
-interface PersonDAO {
+interface PersonDao {
 
     @Insert
     suspend fun insert(person: PersonEntity): Long

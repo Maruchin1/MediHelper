@@ -10,17 +10,17 @@ import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.example.medihelper.localdatabase.LocalDatabase
+import com.example.medihelper.localdatabase.AppDatabase
 import com.example.medihelper.localdatabase.PlannedMedicineScheduler
-import com.example.medihelper.localdatabase.dao.MedicineDAO
-import com.example.medihelper.localdatabase.dao.MedicinePlanDAO
-import com.example.medihelper.localdatabase.dao.PersonDAO
-import com.example.medihelper.localdatabase.dao.PlannedMedicineDAO
 import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PersonItem
+import com.example.medihelper.localdatabase.repositoriesimpl.MedicineDao
+import com.example.medihelper.localdatabase.repositoriesimpl.MedicinePlanDao
+import com.example.medihelper.localdatabase.repositoriesimpl.PersonDao
+import com.example.medihelper.localdatabase.repositoriesimpl.PlannedMedicineDao
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
@@ -36,10 +36,10 @@ object AppRepository {
     }
 
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var medicineDao: MedicineDAO
-    private lateinit var medicinePlanDao: MedicinePlanDAO
-    private lateinit var plannedMedicineDao: PlannedMedicineDAO
-    private lateinit var personDao: PersonDAO
+    private lateinit var medicineDao: MedicineDao
+    private lateinit var medicinePlanDao: MedicinePlanDao
+    private lateinit var plannedMedicineDao: PlannedMedicineDao
+    private lateinit var personDao: PersonDao
     private var photosDir: File? = null
 
     fun init(app: Application) {
@@ -74,10 +74,9 @@ object AppRepository {
 
     // Database
     // Get
-
     suspend fun getMedicineEntity(medicineID: Int) = medicineDao.getEntity(medicineID)
 
-    suspend fun getMedicineDetails(medicineID: Int) = medicineDao.getMedicineDetails(medicineID)
+    suspend fun getMedicineDetails(medicineID: Int) = medicineDao.getDetails(medicineID)
 
     suspend fun getMedicinePlanEntity(medicinePlanID: Int) = medicinePlanDao.getEntity(medicinePlanID)
 
@@ -89,15 +88,15 @@ object AppRepository {
 
     fun getMedicineItemFilteredListLive(searchQuery: String) = medicineDao.getFilteredItemListLive(searchQuery)
 
-    fun getMedicineDetailsLive(medicineID: Int) = medicineDao.getMedicineDetailsLive(medicineID)
+    fun getMedicineDetailsLive(medicineID: Int) = medicineDao.getDetailsLive(medicineID)
 
-    fun getMedicinePlanItemListLive(personID: Int) = medicinePlanDao.getMedicinePlanItemListLive(personID)
+    fun getMedicinePlanItemListLive(personID: Int) = medicinePlanDao.getItemListLive(personID)
 
-    fun getMedicinePlanHistoryLive(medicinePlanID: Int) = medicinePlanDao.getMedicinePlanHistoryLive(medicinePlanID)
+    fun getMedicinePlanHistoryLive(medicinePlanID: Int) = medicinePlanDao.getHistoryLive(medicinePlanID)
 
     fun getPlannedMedicineDetailsLive(plannedMedicineID: Int) = plannedMedicineDao.getDetailsLive(plannedMedicineID)
 
-    fun getPlannedMedicineItemListLiveByDate(date: Date, personID: Int) = plannedMedicineDao.getItemByDateListLive(date, personID)
+    fun getPlannedMedicineItemListLiveByDate(date: Date, personID: Int) = plannedMedicineDao.getItemListLiveByDate(date, personID)
 
     fun getPersonItemListLive() = personDao.getItemListLive()
 
@@ -158,7 +157,7 @@ object AppRepository {
     }
 
     private suspend fun initDatabaseData(app: Application) {
-        val database = LocalDatabase.getInstance(app.applicationContext)
+        val database = AppDatabase.getInstance(app.applicationContext)
         medicineDao = database.medicineDao()
         medicinePlanDao = database.medicinePlanDao()
         plannedMedicineDao = database.plannedMedicineDao()

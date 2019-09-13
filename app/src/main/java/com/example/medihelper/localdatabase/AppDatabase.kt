@@ -5,9 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.medihelper.localdatabase.dao.*
-import com.example.medihelper.localdatabase.dao.PlannedMedicineDAO
 import com.example.medihelper.localdatabase.entities.*
+import com.example.medihelper.localdatabase.repositoriesimpl.MedicineDao
+import com.example.medihelper.localdatabase.repositoriesimpl.MedicinePlanDao
+import com.example.medihelper.localdatabase.repositoriesimpl.PersonDao
+import com.example.medihelper.localdatabase.repositoriesimpl.PlannedMedicineDao
 
 @Database(
     entities = [
@@ -20,18 +22,18 @@ import com.example.medihelper.localdatabase.entities.*
     exportSchema = false
 )
 @TypeConverters(Converters::class)
-abstract class LocalDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun medicineDao(): MedicineDAO
-    abstract fun medicinePlanDao(): MedicinePlanDAO
-    abstract fun plannedMedicineDao(): PlannedMedicineDAO
-    abstract fun personDao(): PersonDAO
+    abstract fun medicineDao(): MedicineDao
+    abstract fun medicinePlanDao(): MedicinePlanDao
+    abstract fun plannedMedicineDao(): PlannedMedicineDao
+    abstract fun personDao(): PersonDao
 
     companion object {
-        private const val DATABASE_NAME = "local-database"
+        const val DATABASE_NAME = "local-database"
 
         @Volatile
-        private var instance: LocalDatabase? = null
+        private var instance: AppDatabase? = null
 
         fun getInstance(context: Context) = instance ?: synchronized(this) {
             instance ?: buildDatabase(context).also {
@@ -39,8 +41,8 @@ abstract class LocalDatabase : RoomDatabase() {
             }
         }
 
-        private fun buildDatabase(context: Context): LocalDatabase {
-            return Room.databaseBuilder(context, LocalDatabase::class.java, DATABASE_NAME)
+        private fun buildDatabase(context: Context): AppDatabase {
+            return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build()
         }
