@@ -27,7 +27,7 @@ interface PersonDAO {
     @Query("SELECT * FROM persons")
     fun getItemListLive(): LiveData<List<PersonItem>>
 
-    @Query("SELECT * FROM persons p JOIN medicines_plans mp ON p.person_id = mp.person_id JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE m.medicine_id = :medicineID")
+    @Query("SELECT * FROM persons p JOIN medicines_plans mp ON p.person_id = mp.person_id JOIN medicines m ON mp.medicine_id = m.medicine_id GROUP BY p.person_id HAVING m.medicine_id = :medicineID")
     fun getItemListLiveByMedicineID(medicineID: Int): LiveData<List<PersonItem>>
 
     @Query("SELECT * FROM persons WHERE person_id = :personID")

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View" />
 
         <import type="com.example.medihelper.AppDateTime" />
 
@@ -10,40 +13,67 @@
             type="com.example.medihelper.mainapp.medicineplanlist.MedicinePlanHistoryViewModel.HistoryItemDisplayData" />
     </data>
 
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{AppDateTime.dayOfWeekString(displayData.plannedDate), default=dzień}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{AppDateTime.dayMonthString(displayData.plannedDate), default=Data}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-            android:textColor="@color/colorTextTertiary"/>
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/lay_history_checkboxes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:layout_marginTop="16dp">
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <include layout="@layout/view_history_checkbox" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{AppDateTime.dayOfWeekString(displayData.plannedDate), default=dzień}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
-            <include layout="@layout/view_history_checkbox" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{AppDateTime.dayMonthString(displayData.plannedDate), default=Data}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:textColor="@color/colorTextTertiary" />
 
-            <include layout="@layout/view_history_checkbox" />
+            <LinearLayout
+                android:id="@+id/lay_history_checkboxes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <include layout="@layout/view_history_checkbox" />
+
+                <include layout="@layout/view_history_checkbox" />
+
+                <include layout="@layout/view_history_checkbox" />
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:visibility="@{displayData.isToday ? View.VISIBLE : View.GONE}"
+            app:cardBackgroundColor="@color/colorTransparent"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/colorDarkerGray"
+            app:strokeWidth="2dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
