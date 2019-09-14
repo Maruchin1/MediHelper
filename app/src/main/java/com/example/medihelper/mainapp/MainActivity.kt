@@ -2,15 +2,16 @@ package com.example.medihelper.mainapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.medihelper.AppRepository
 import com.example.medihelper.R
+import com.example.medihelper.services.MedicineSchedulerService
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,7 +25,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         GlobalScope.launch {
-            AppRepository.updatePlannedMedicinesStatuses()
+            val medicineSchedulerService: MedicineSchedulerService = get()
+            medicineSchedulerService.updatePlannedMedicinesStatuses()
         }
     }
 

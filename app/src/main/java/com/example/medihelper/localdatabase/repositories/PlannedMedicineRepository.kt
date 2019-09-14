@@ -10,11 +10,17 @@ interface PlannedMedicineRepository {
 
     suspend fun insert(plannedMedicineEntity: PlannedMedicineEntity)
 
+    suspend fun insert(plannedMedicineEntityList: List<PlannedMedicineEntity>)
+
     suspend fun update(plannedMedicineEntity: PlannedMedicineEntity)
+
+    suspend fun update(plannedMedicineEntityList: List<PlannedMedicineEntity>)
 
     suspend fun delete(plannedMedicineID: Int)
 
     suspend fun getEntity(plannedMedicineID: Int): PlannedMedicineEntity
+
+    suspend fun getEntityList(): List<PlannedMedicineEntity>
 
     fun getDetailsLive(plannedMedicineID: Int): LiveData<PlannedMedicineDetails>
 

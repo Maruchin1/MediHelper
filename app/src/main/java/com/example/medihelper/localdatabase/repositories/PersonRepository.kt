@@ -10,13 +10,15 @@ import com.example.medihelper.localdatabase.pojos.PersonItem
 
 interface PersonRepository {
 
-    suspend fun insert(personEntity: PersonEntity): Long
+    suspend fun insert(personEntity: PersonEntity): Int
 
     suspend fun update(personEntity: PersonEntity)
 
     suspend fun delete(personID: Int)
 
     suspend fun getItem(personID: Int): PersonItem
+
+    fun getItemLive(personID: Int): LiveData<PersonItem>
 
     fun getItemListLive(): LiveData<List<PersonItem>>
 

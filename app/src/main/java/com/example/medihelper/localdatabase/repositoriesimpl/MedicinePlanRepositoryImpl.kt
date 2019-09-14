@@ -10,18 +10,11 @@ import com.example.medihelper.localdatabase.pojos.MedicinePlanHistory
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 
-class MedicinePlanRepositoryImpl (private val medicinePlanDao: MedicinePlanDao):
-    MedicinePlanRepository {
+class MedicinePlanRepositoryImpl (private val medicinePlanDao: MedicinePlanDao): MedicinePlanRepository {
 
-    override suspend fun insert(medicinePlanEntity: MedicinePlanEntity) {
-        medicinePlanDao.insert(medicinePlanEntity)
-        //todo dodać również do bazy planned medicines
-    }
+    override suspend fun insert(medicinePlanEntity: MedicinePlanEntity) = medicinePlanDao.insert(medicinePlanEntity).toInt()
 
-    override suspend fun update(medicinePlanEntity: MedicinePlanEntity) {
-        medicinePlanDao.update(medicinePlanEntity)
-        //todo aktualizować planned medicines
-    }
+    override suspend fun update(medicinePlanEntity: MedicinePlanEntity) = medicinePlanDao.update(medicinePlanEntity)
 
     override suspend fun delete(medicinePlanID: Int) = medicinePlanDao.delete(medicinePlanID)
 

@@ -3,25 +3,27 @@ package com.example.medihelper.mainapp.addeditmedicineplan
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
-import com.example.medihelper.custom.FieldMutableLiveData
-import com.example.medihelper.AppRepository
 import com.example.medihelper.custom.ActionLiveData
+import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
-import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
-import kotlinx.coroutines.launch
-import java.io.File
+import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
+import com.example.medihelper.services.MedicineSchedulerService
+import com.example.medihelper.services.PersonProfileService
+import kotlinx.coroutines.*
 import java.util.*
 
 class AddEditMedicinePlanViewModel(
     private val medicineRepository: MedicineRepository,
-    private val medicinePlanRepository: MedicinePlanRepository
+    private val medicinePlanRepository: MedicinePlanRepository,
+    private val medicineSchedulerService: MedicineSchedulerService,
+    private val personProfileService: PersonProfileService
 ) : ViewModel() {
     private val TAG = AddEditMedicinePlanViewModel::class.simpleName
 
-    val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
+    val selectedPersonItemLive = personProfileService.getCurrPersonItemLive()
     val colorPrimaryLive: LiveData<Int>
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
@@ -67,6 +69,15 @@ class AddEditMedicinePlanViewModel(
         selectedMedicineUnitLive = Transformations.map(selectedMedicineDetailsLive) { medicineDetails ->
             medicineDetails.medicineUnit
         }
+
+        selectedMedicineIDLive.postValue(null)
+        durationTypeLive.postValue(MedicinePlanEntity.DurationType.ONCE)
+        startDateLive.postValue(AppDateTime.getCurrCalendar().time)
+        endDateLive.postValue(null)
+        daysTypeLive.postValue(MedicinePlanEntity.DaysType.NONE)
+        daysOfWeekLive.postValue(MedicinePlanEntity.DaysOfWeek())
+        intervalOfDaysLive.postValue(1)
+        timeOfTakingListLive.postValue(arrayListOf(MedicinePlanEntity.TimeOfTaking()))
     }
 
     fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
@@ -75,7 +86,7 @@ class AddEditMedicinePlanViewModel(
             editMedicinePlanID = args.editMedicinePlanID
             medicinePlanRepository.getEntity(args.editMedicinePlanID).run {
                 selectedMedicineIDLive.postValue(medicineID)
-                AppRepository.setSelectedPerson(personID)
+                personProfileService.selectCurrPerson(personID)
 
                 durationTypeLive.postValue(durationType)
                 startDateLive.postValue(startDate)
@@ -87,18 +98,6 @@ class AddEditMedicinePlanViewModel(
 
                 timeOfTakingListLive.postValue(timeOfTakingList.toMutableList())
             }
-        } else {
-            selectedMedicineIDLive.postValue(null)
-
-            durationTypeLive.postValue(MedicinePlanEntity.DurationType.ONCE)
-            startDateLive.postValue(AppDateTime.getCurrCalendar().time)
-            endDateLive.postValue(null)
-
-            daysTypeLive.postValue(MedicinePlanEntity.DaysType.NONE)
-            daysOfWeekLive.postValue(MedicinePlanEntity.DaysOfWeek())
-            intervalOfDaysLive.postValue(1)
-
-            timeOfTakingListLive.postValue(arrayListOf(MedicinePlanEntity.TimeOfTaking()))
         }
     }
 
@@ -119,11 +118,14 @@ class AddEditMedicinePlanViewModel(
                 MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanEntity.daysOfWeek = daysOfWeekLive.value
                 MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> medicinePlanEntity.intervalOfDays = intervalOfDaysLive.value
             }
-            viewModelScope.launch {
-                if (editMedicinePlanID != null) {
+            if (editMedicinePlanID != null) {
+                GlobalScope.launch {
                     medicinePlanRepository.update(medicinePlanEntity.copy(medicinePlanID = editMedicinePlanID!!))
-                } else {
-                    medicinePlanRepository.insert(medicinePlanEntity)
+                }
+            } else {
+                GlobalScope.launch {
+                    val insertedMedicinePlanID = medicinePlanRepository.insert(medicinePlanEntity)
+                    medicineSchedulerService.addPlannedMedicines(insertedMedicinePlanID)
                 }
             }
             return true

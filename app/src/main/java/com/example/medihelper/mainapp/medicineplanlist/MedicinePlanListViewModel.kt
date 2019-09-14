@@ -9,12 +9,16 @@ import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
+import com.example.medihelper.services.PersonProfileService
 import kotlinx.coroutines.launch
 
-class MedicinePlanListViewModel(private val medicinePlanRepository: MedicinePlanRepository) : ViewModel() {
+class MedicinePlanListViewModel(
+    private val medicinePlanRepository: MedicinePlanRepository,
+    personProfileService: PersonProfileService
+) : ViewModel() {
 
     val colorPrimaryLive: LiveData<Int>
-    val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
+    val selectedPersonItemLive = personProfileService.getCurrPersonItemLive()
     private val medicinePlanItemListLive: LiveData<List<MedicinePlanItem>>
     private val medicinePlanItemOngoingListLive: LiveData<List<MedicinePlanItem>>
     private val medicinePlanItemEndedListLive: LiveData<List<MedicinePlanItem>>

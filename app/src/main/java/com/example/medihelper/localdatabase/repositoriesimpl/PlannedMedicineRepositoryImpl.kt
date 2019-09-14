@@ -12,11 +12,17 @@ class PlannedMedicineRepositoryImpl(private val plannedMedicineDao: PlannedMedic
 
     override suspend fun insert(plannedMedicineEntity: PlannedMedicineEntity) = plannedMedicineDao.insert(plannedMedicineEntity)
 
+    override suspend fun insert(plannedMedicineEntityList: List<PlannedMedicineEntity>) = plannedMedicineDao.insert(plannedMedicineEntityList)
+
     override suspend fun update(plannedMedicineEntity: PlannedMedicineEntity) = plannedMedicineDao.update(plannedMedicineEntity)
+
+    override suspend fun update(plannedMedicineEntityList: List<PlannedMedicineEntity>) = plannedMedicineDao.update(plannedMedicineEntityList)
 
     override suspend fun delete(plannedMedicineID: Int) = plannedMedicineDao.delete(plannedMedicineID)
 
     override suspend fun getEntity(plannedMedicineID: Int) = plannedMedicineDao.getEntity(plannedMedicineID)
+
+    override suspend fun getEntityList() = plannedMedicineDao.getEntityList()
 
     override fun getDetailsLive(plannedMedicineID: Int) = plannedMedicineDao.getDetailsLive(plannedMedicineID)
 
@@ -41,11 +47,11 @@ interface PlannedMedicineDao {
     @Query("DELETE FROM planned_medicines WHERE planned_medicine_id = :plannedMedicineID")
     suspend fun delete(plannedMedicineID: Int)
 
-    @Query("SELECT * FROM planned_medicines")
-    suspend fun getEntityList(): List<PlannedMedicineEntity>
-
     @Query("SELECT * FROM planned_medicines WHERE planned_medicine_id = :plannedMedicineID")
     suspend fun getEntity(plannedMedicineID: Int): PlannedMedicineEntity
+
+    @Query("SELECT * FROM planned_medicines")
+    suspend fun getEntityList(): List<PlannedMedicineEntity>
 
     @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE pm.planned_medicine_id = :plannedMedicineID")
     fun getDetailsLive(plannedMedicineID: Int): LiveData<PlannedMedicineDetails>

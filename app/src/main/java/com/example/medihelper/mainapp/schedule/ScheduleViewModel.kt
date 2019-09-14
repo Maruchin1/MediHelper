@@ -7,15 +7,19 @@ import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
+import com.example.medihelper.services.PersonProfileService
 import kotlinx.coroutines.launch
 import java.util.*
 
-class ScheduleViewModel(private val plannedMedicineRepository: PlannedMedicineRepository) : ViewModel() {
+class ScheduleViewModel(
+    private val plannedMedicineRepository: PlannedMedicineRepository,
+    personProfileService: PersonProfileService
+) : ViewModel() {
 
     val timelineDaysCount = 10000
     val initialDatePosition = timelineDaysCount / 2
 
-    val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
+    val selectedPersonItemLive = personProfileService.getCurrPersonItemLive()
     val colorPrimaryLive: LiveData<Int>
     val calendarLayoutVisibleLive = MutableLiveData(false)
     val selectedDateLive = MutableLiveData<Date>()

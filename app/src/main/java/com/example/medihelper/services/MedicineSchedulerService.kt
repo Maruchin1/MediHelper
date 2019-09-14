@@ -1,14 +1,33 @@
-package com.example.medihelper.localdatabase
+package com.example.medihelper.services
 
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
+import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
+import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PlannedMedicineScheduler {
+class MedicineSchedulerService(
+    private val medicinePlanRepository: MedicinePlanRepository,
+    private val plannedMedicineRepository: PlannedMedicineRepository
+) {
+    suspend fun updatePlannedMedicinesStatuses() {
+        val updatedPlannedMedicineEntityList = plannedMedicineRepository.getEntityList().map { plannedMedicineEntity ->
+            plannedMedicineEntity.apply {
+                updateStatusByCurrDate()
+            }
+        }
+        plannedMedicineRepository.update(updatedPlannedMedicineEntityList)
+    }
 
-    fun getPlannedMedicineList(medicinePlanEntity: MedicinePlanEntity): List<PlannedMedicineEntity> {
+    suspend fun addPlannedMedicines(medicinePlanID: Int) {
+        val medicinePlanEntity = medicinePlanRepository.getEntity(medicinePlanID)
+        val plannedMedicineList = getPlannedMedicineList(medicinePlanEntity)
+        plannedMedicineRepository.insert(plannedMedicineList)
+    }
+
+    private fun getPlannedMedicineList(medicinePlanEntity: MedicinePlanEntity): List<PlannedMedicineEntity> {
         return when (medicinePlanEntity.durationType) {
             MedicinePlanEntity.DurationType.ONCE -> getForDate(
                 medicinePlanID = medicinePlanEntity.medicinePlanID,

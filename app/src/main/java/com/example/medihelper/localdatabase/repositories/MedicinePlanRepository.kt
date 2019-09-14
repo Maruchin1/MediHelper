@@ -7,7 +7,7 @@ import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 
 interface MedicinePlanRepository {
 
-    suspend fun insert(medicinePlanEntity: MedicinePlanEntity)
+    suspend fun insert(medicinePlanEntity: MedicinePlanEntity): Int
 
     suspend fun update(medicinePlanEntity: MedicinePlanEntity)
 

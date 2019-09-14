@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.medihelper.R
 import com.example.medihelper.databinding.DialogPlannedMedicineOptionsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
     val TAG = PlannedMedicineOptionsDialog::class.simpleName
 
-    private val viewModel: PlannedMedicineOptionsViewModel by viewModels()
+    private val viewModel: PlannedMedicineOptionsViewModel by viewModel()
     private val args: PlannedMedicineOptionsDialogArgs by navArgs()
 
     fun onClickCloseDialog() = dismiss()

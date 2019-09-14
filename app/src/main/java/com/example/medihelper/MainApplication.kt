@@ -2,6 +2,7 @@ package com.example.medihelper
 
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.example.medihelper.localdatabase.AppDatabase
@@ -21,6 +22,11 @@ import com.example.medihelper.mainapp.medicines.MedicineDetailsViewModel
 import com.example.medihelper.mainapp.medicines.MedicinesViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
+import com.example.medihelper.services.MedicineSchedulerService
+import com.example.medihelper.services.PersonProfileService
+import com.example.medihelper.services.SharedPrefService
+import kotlinx.coroutines.runBlocking
+import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -38,7 +44,18 @@ class MainApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
-            modules(listOf(repositoryModule, viewModelModule))
+            modules(
+                listOf(
+                    repositoryModule,
+                    preferencesModule,
+                    viewModelModule,
+                    serviceModule
+                )
+            )
+        }
+        runBlocking {
+            val sharedPrefService: SharedPrefService = get()
+            sharedPrefService.checkInitialDataLoaded()
         }
     }
 }
@@ -63,16 +80,30 @@ val repositoryModule = module {
     }
 }
 
+val preferencesModule = module {
+    single {
+        androidContext().getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE)
+    }
+}
+
 val viewModelModule = module {
     viewModel { MedicinesViewModel(get()) }
-    viewModel { AddEditMedicineViewModel(get()) }
-    viewModel { AddEditPersonViewModel(get()) }
-    viewModel { PersonViewModel(get()) }
-    viewModel { MedicinePlanHistoryViewModel(get()) }
-    viewModel { MedicinePlanListViewModel(get()) }
+    viewModel { AddEditMedicineViewModel(get(), get()) }
+    viewModel { AddEditPersonViewModel(get(), get()) }
+    viewModel { PersonViewModel(get(), get()) }
+    viewModel { MedicinePlanHistoryViewModel(get(), get()) }
+    viewModel { MedicinePlanListViewModel(get(), get()) }
     viewModel { MedicineDetailsViewModel(get(), get()) }
-    viewModel { AddEditMedicinePlanViewModel(get(), get()) }
+    viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get()) }
     viewModel { SelectMedicineViewModel(get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get()) }
-    viewModel { ScheduleViewModel(get()) }
+    viewModel { ScheduleViewModel(get(), get()) }
 }
+
+val serviceModule = module {
+    single { SharedPrefService(get(), get()) }
+    single { PersonProfileService(get(), get()) }
+    single { MedicineSchedulerService(get(), get()) }
+}
+
+private const val APP_SHARED_PREFERENCES = "app-shared-preferences"

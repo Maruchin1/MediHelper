@@ -4,16 +4,19 @@ import androidx.lifecycle.*
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.repositories.PersonRepository
+import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
 
-class AddEditPersonViewModel(private val personRepository: PersonRepository) : ViewModel() {
-    private val TAG = AddEditPersonViewModel::class.simpleName
+class AddEditPersonViewModel(
+    private val personRepository: PersonRepository,
+    sharedPrefService: SharedPrefService
+) : ViewModel() {
 
     val personColorDisplayDataListLive: LiveData<List<PersonColorDisplayData>>
     val personNameLive = MutableLiveData<String>()
     val personColorResIDLive = MutableLiveData<Int>()
     val errorPersonNameLive = MutableLiveData<String>()
-    private val personColorResIDList = AppRepository.getPersonColorResIDList()
+    private val personColorResIDList = sharedPrefService.getPersonColorResIDList()
     private var editPersonID: Int? = null
 
     init {

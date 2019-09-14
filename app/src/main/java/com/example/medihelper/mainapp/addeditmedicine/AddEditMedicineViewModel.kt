@@ -9,14 +9,18 @@ import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
+import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
-class AddEditMedicineViewModel(private val medicineRepository: MedicineRepository) : ViewModel() {
+class AddEditMedicineViewModel(
+    private val medicineRepository: MedicineRepository,
+    sharedPrefService: SharedPrefService
+) : ViewModel() {
     private val TAG = AddEditMedicineViewModel::class.simpleName
 
-    val medicineUnitList = AppRepository.getMedicineUnitList()
+    val medicineUnitList = sharedPrefService.getMedicineUnitList()
 
     val medicineNameLive = MutableLiveData<String>()
     val expireDateLive = MutableLiveData<Date>()
