@@ -9,16 +9,20 @@ import com.example.medihelper.custom.ActionLiveData
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.MedicineItem
+import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
+import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
-class AddEditMedicinePlanViewModel : ViewModel() {
+class AddEditMedicinePlanViewModel(
+    private val medicineRepository: MedicineRepository,
+    private val medicinePlanRepository: MedicinePlanRepository
+) : ViewModel() {
     private val TAG = AddEditMedicinePlanViewModel::class.simpleName
 
     val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
     val colorPrimaryLive: LiveData<Int>
-    val medicineItemListLive = AppRepository.getMedicineItemListLive()
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
     val selectedMedicineAvailableLive: LiveData<Boolean>
@@ -44,6 +48,7 @@ class AddEditMedicinePlanViewModel : ViewModel() {
     private var editMedicinePlanID: Int? = null
 
     init {
+        Log.i(TAG, "init")
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
             personItem.personColorResID
         }
@@ -51,7 +56,7 @@ class AddEditMedicinePlanViewModel : ViewModel() {
             medicineID != null
         }
         selectedMedicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
-            medicineID?.let { AppRepository.getMedicineDetailsLive(medicineID) }
+            medicineID?.let { medicineRepository.getDetailsLive(medicineID) }
         }
         selectedMedicineName = Transformations.map(selectedMedicineDetailsLive) { medicineDetails ->
             medicineDetails.medicineName
@@ -68,7 +73,7 @@ class AddEditMedicinePlanViewModel : ViewModel() {
         Log.d(TAG, "medicinePlanID = ${args.editMedicinePlanID}")
         if (args.editMedicinePlanID != -1) {
             editMedicinePlanID = args.editMedicinePlanID
-            AppRepository.getMedicinePlanEntity(args.editMedicinePlanID).run {
+            medicinePlanRepository.getEntity(args.editMedicinePlanID).run {
                 selectedMedicineIDLive.postValue(medicineID)
                 AppRepository.setSelectedPerson(personID)
 
@@ -116,9 +121,9 @@ class AddEditMedicinePlanViewModel : ViewModel() {
             }
             viewModelScope.launch {
                 if (editMedicinePlanID != null) {
-                    AppRepository.updateMedicinePlan(medicinePlanEntity.copy(medicinePlanID = editMedicinePlanID!!))
+                    medicinePlanRepository.update(medicinePlanEntity.copy(medicinePlanID = editMedicinePlanID!!))
                 } else {
-                    AppRepository.insertMedicinePlan(medicinePlanEntity)
+                    medicinePlanRepository.insert(medicinePlanEntity)
                 }
             }
             return true
@@ -153,15 +158,6 @@ class AddEditMedicinePlanViewModel : ViewModel() {
             time = AppDateTime.timeToString(timeOfTaking.time) ?: "--",
             doseSize = timeOfTaking.doseSize.toString(),
             medicineTypeName = selectedMedicineDetailsLive.value?.medicineUnit ?: "--"
-        )
-    }
-
-    fun getMedicineDisplayData(medicineItem: MedicineItem): MedicineItemDisplayData {
-        return MedicineItemDisplayData(
-            medicineID = medicineItem.medicineID,
-            medicineName = medicineItem.medicineName,
-            medicineState = "${medicineItem.currState}/${medicineItem.packageSize} ${medicineItem.medicineUnit}",
-            medicineImageFile = medicineItem.photoFilePath?.let { File(it) }
         )
     }
 
@@ -210,12 +206,5 @@ class AddEditMedicinePlanViewModel : ViewModel() {
         val time: String,
         val doseSize: String,
         val medicineTypeName: String
-    )
-
-    data class MedicineItemDisplayData(
-        val medicineID: Int,
-        val medicineName: String,
-        val medicineState: String,
-        val medicineImageFile: File?
     )
 }

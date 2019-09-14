@@ -1,35 +1,38 @@
-package com.example.medihelper.mainapp.addeditmedicineplan
+package com.example.medihelper.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.medihelper.R
-import com.example.medihelper.custom.DiffCallback
+import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogSelectMedicineBinding
 import com.example.medihelper.localdatabase.pojos.MedicineItem
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_medicine.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SelectMedicineDialog : BottomSheetDialogFragment() {
-    val TAG = SelectMedicineDialog::class.simpleName
+class SelectMedicineDialog : AppBottomSheetDialog() {
+    override val TAG = "SelectMedicineDialog"
 
-    private val viewModel: AddEditMedicinePlanViewModel by activityViewModels()
-    private val directions by lazyOf(SelectMedicineDialogDirections)
+    private val viewModel: SelectMedicineViewModel by viewModel()
+    private var medicineSelectedListener: ((medicineID: Int) -> Unit)? = null
 
     fun onClickSelectMedicine(medicineID: Int) {
-        viewModel.selectedMedicineIDLive.value = medicineID
+        medicineSelectedListener?.invoke(medicineID)
         dismiss()
     }
 
-    fun onClickAddNewMedicine() = findNavController().navigate(directions.toAddEditMedicineFragment())
+    fun onClickAddNewMedicine() = findNavController().navigate(R.id.addEditMedicineFragment)
+
+    fun setMedicineSelectedListener(listener: (medicineID: Int) -> Unit) {
+        medicineSelectedListener = listener
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: DialogSelectMedicineBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_select_medicine, container, false)

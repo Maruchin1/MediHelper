@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -20,10 +19,11 @@ import com.example.medihelper.databinding.DialogMedicinePlanHistoryBinding
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import kotlinx.android.synthetic.main.dialog_medicine_plan_history.*
 import kotlinx.android.synthetic.main.recycler_item_history.view.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MedicinePlanHistoryDialog : AppDialog() {
 
-    val viewModel: MedicinePlanHistoryViewModel by viewModels()
+    val viewModel: MedicinePlanHistoryViewModel by viewModel()
     val args: MedicinePlanHistoryDialogArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

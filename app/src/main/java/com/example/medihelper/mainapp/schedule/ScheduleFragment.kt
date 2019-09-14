@@ -9,9 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,16 +19,16 @@ import com.example.medihelper.custom.CenterLayoutManager
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
-import com.example.medihelper.mainapp.family.PersonDialog
 import com.example.medihelper.mainapp.MainActivity
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.recycler_item_schedule_timeline.view.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ScheduleFragment : Fragment() {
     private val TAG = ScheduleFragment::class.simpleName
 
-    private val viewModel: ScheduleViewModel by activityViewModels()
+    private val viewModel: ScheduleViewModel by viewModel()
     private val directions by lazyOf(ScheduleFragmentDirections)
 
     fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddEditMedicinePlanFragment())

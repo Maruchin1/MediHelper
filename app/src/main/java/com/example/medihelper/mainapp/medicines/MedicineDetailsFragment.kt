@@ -18,11 +18,12 @@ import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
 import com.example.medihelper.dialogs.SelectFloatNumberDialog
 import com.example.medihelper.localdatabase.pojos.PersonItem
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MedicineDetailsFragment : AppFullScreenDialog() {
 
-    private val viewModel: MedicineDetailsViewModel by activityViewModels()
+    private val viewModel: MedicineDetailsViewModel by viewModel()
     private val args: MedicineDetailsFragmentArgs by navArgs()
     private val directions by lazyOf(MedicineDetailsFragmentDirections)
 

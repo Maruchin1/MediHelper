@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import com.example.medihelper.R
+import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.databinding.DialogSelectFloatNumberBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.dialog_select_float_number.*
 
-class SelectFloatNumberDialog : BottomSheetDialogFragment() {
+class SelectFloatNumberDialog : AppBottomSheetDialog() {
+    override val TAG = "SelectFloatNumberDialog"
 
     var title: String? = null
     var iconResID: Int? = null

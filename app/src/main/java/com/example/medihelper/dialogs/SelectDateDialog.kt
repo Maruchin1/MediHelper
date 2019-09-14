@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
+import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.databinding.DialogSelectDateBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_date.*
 import java.util.*
 
-class SelectDateDialog : BottomSheetDialogFragment() {
-    val TAG = SelectDateDialog::class.simpleName
+class SelectDateDialog : AppBottomSheetDialog() {
+    override val TAG = "SelectDateDialog"
 
     var defaultDate: Date? = null
     private var dateSelectedListener: ((date: Date) -> Unit)? = null

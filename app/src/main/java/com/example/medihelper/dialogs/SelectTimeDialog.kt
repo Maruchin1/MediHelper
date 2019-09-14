@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.medihelper.R
+import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.databinding.DialogSelectTimeBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_time.*
 import java.sql.Time
 
-class SelectTimeDialog : BottomSheetDialogFragment() {
+class SelectTimeDialog : AppBottomSheetDialog() {
+    override val TAG = "SelectTimeDialog"
 
     var defaultTime: Time? = null
     private var timeSelectedListener: ((time: Time) -> Unit)? = null

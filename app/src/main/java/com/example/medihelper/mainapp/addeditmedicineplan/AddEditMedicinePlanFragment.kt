@@ -9,22 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.transition.ChangeBounds
-import androidx.transition.TransitionManager
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.custom.TAG
 import com.example.medihelper.databinding.FragmentAddEditMedicinePlanBinding
-import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.dialogs.SelectFloatNumberDialog
+import com.example.medihelper.dialogs.SelectMedicineDialog
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.mainapp.addeditmedicineplan.daystype.DaysOfWeekFragment
 import com.example.medihelper.mainapp.addeditmedicineplan.daystype.IntervalOfDaysFragment
@@ -34,40 +30,39 @@ import com.example.medihelper.mainapp.addeditmedicineplan.durationtype.OnceFragm
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.toolbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class AddEditMedicinePlanFragment : AppFullScreenDialog() {
 
-    private val viewModel: AddEditMedicinePlanViewModel by activityViewModels()
+    private val viewModel: AddEditMedicinePlanViewModel by viewModel()
     private val args: AddEditMedicinePlanFragmentArgs by navArgs()
     private val directions by lazyOf(AddEditMedicinePlanFragmentDirections)
 
-    fun onClickSelectMedicine() = findNavController().navigate(directions.toSelectMedicineDialog())
+    fun onClickSelectMedicine() = SelectMedicineDialog().apply {
+        setMedicineSelectedListener { medicineID ->
+            viewModel.selectedMedicineIDLive.value = medicineID
+        }
+    }.show(childFragmentManager)
 
     fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
 
-    fun onClickSelectTime(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
-        val dialog = SelectTimeDialog().apply {
-            defaultTime = timeOfTaking.time
-            setTimeSelectedListener { time ->
-                viewModel.updateTimeOfTaking(position, timeOfTaking.copy(time = time))
-            }
+    fun onClickSelectTime(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) = SelectTimeDialog().apply {
+        defaultTime = timeOfTaking.time
+        setTimeSelectedListener { time ->
+            viewModel.updateTimeOfTaking(position, timeOfTaking.copy(time = time))
         }
-        dialog.show(childFragmentManager, SelectTimeDialog.TAG)
-    }
+    }.show(childFragmentManager)
 
-    fun onClickSelectDoseSize(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
-        val dialog = SelectFloatNumberDialog().apply {
-            title = "Wybierz dawkę leku"
-            iconResID = R.drawable.ic_pill_black_36dp
-            defaultNumber = timeOfTaking.doseSize
-            setNumberSelectedListener { number ->
-                Log.d(TAG, "numberSelected")
-                viewModel.updateTimeOfTaking(position, timeOfTaking.copy(doseSize = number))
-            }
+    fun onClickSelectDoseSize(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) = SelectFloatNumberDialog().apply {
+        title = "Wybierz dawkę leku"
+        iconResID = R.drawable.ic_pill_black_36dp
+        defaultNumber = timeOfTaking.doseSize
+        setNumberSelectedListener { number ->
+            Log.d(TAG, "numberSelected")
+            viewModel.updateTimeOfTaking(position, timeOfTaking.copy(doseSize = number))
         }
-        dialog.show(childFragmentManager, SelectNumberDialog.TAG)
-    }
+    }.show(childFragmentManager)
 
     fun onClickRemoveTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) = viewModel.removeTimeOfTaking(timeOfTaking)
 

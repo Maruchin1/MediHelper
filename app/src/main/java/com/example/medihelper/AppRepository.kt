@@ -73,53 +73,8 @@ object AppRepository {
     }
 
     // Database
-    // Get
-    suspend fun getMedicineEntity(medicineID: Int) = medicineDao.getEntity(medicineID)
-
-    suspend fun getMedicineDetails(medicineID: Int) = medicineDao.getDetails(medicineID)
-
-    suspend fun getMedicinePlanEntity(medicinePlanID: Int) = medicinePlanDao.getEntity(medicinePlanID)
-
-    suspend fun getPlannedMedicineEntity(plannedMedicineID: Int) = plannedMedicineDao.getEntity(plannedMedicineID)
-
-    suspend fun getPersonItem(personID: Int) = personDao.getItem(personID)
-
-    fun getMedicineItemListLive() = medicineDao.getItemListLive()
-
-    fun getMedicineItemFilteredListLive(searchQuery: String) = medicineDao.getFilteredItemListLive(searchQuery)
-
-    fun getMedicineDetailsLive(medicineID: Int) = medicineDao.getDetailsLive(medicineID)
-
-    fun getMedicinePlanItemListLive(personID: Int) = medicinePlanDao.getItemListLive(personID)
-
-    fun getMedicinePlanHistoryLive(medicinePlanID: Int) = medicinePlanDao.getHistoryLive(medicinePlanID)
-
-    fun getPlannedMedicineDetailsLive(plannedMedicineID: Int) = plannedMedicineDao.getDetailsLive(plannedMedicineID)
-
-    fun getPlannedMedicineItemListLiveByDate(date: Date, personID: Int) = plannedMedicineDao.getItemListLiveByDate(date, personID)
-
-    fun getPersonItemListLive() = personDao.getItemListLive()
-
-    fun getPersonItemListLiveByMedicineID(medicineID: Int) = personDao.getItemListLiveByMedicineID(medicineID)
-
-    // Delete
-    suspend fun deleteMedicine(medicineID: Int) = medicineDao.delete(medicineID)
-
-    suspend fun deleteMedicinePlan(medicinePlanID: Int) = medicinePlanDao.delete(medicinePlanID)
-
-    suspend fun deletePerson(personID: Int) = personDao.delete(personID)
-
-    // Update
-    suspend fun updateMedicine(medicineEntity: MedicineEntity) = medicineDao.update(medicineEntity)
-
-    suspend fun updateMedicinePlan(medicinePlanEntity: MedicinePlanEntity) = medicinePlanDao.update(medicinePlanEntity)
-
-    suspend fun updatePlannedMedicine(plannedMedicineEntity: PlannedMedicineEntity) = plannedMedicineDao.update(plannedMedicineEntity)
-
-    suspend fun updatePerson(personEntity: PersonEntity) = personDao.update(personEntity)
 
     // Insert
-    suspend fun insertMedicine(medicineEntity: MedicineEntity) = medicineDao.insert(medicineEntity)
 
     suspend fun insertMedicinePlan(medicinePlanEntity: MedicinePlanEntity) {
         val addedMedicinePlanID = medicinePlanDao.insert(medicinePlanEntity)
@@ -128,8 +83,6 @@ object AppRepository {
         plannedMedicineDao.insert(plannedMedicineList)
         updatePlannedMedicinesStatuses()
     }
-
-    suspend fun insertPerson(personEntity: PersonEntity) = personDao.insert(personEntity)
 
     // Other
     fun createTempPhotoFile(): File {
@@ -151,9 +104,11 @@ object AppRepository {
     }
 
     suspend fun updatePlannedMedicinesStatuses() {
-        plannedMedicineDao.getEntityList().forEach { plannedMedicine ->
+        val updatedPlannedMedicineList = plannedMedicineDao.getEntityList().map { plannedMedicine ->
             plannedMedicine.updateStatusByCurrDate()
+            plannedMedicine
         }
+        plannedMedicineDao.update(plannedMedicineEntityList = updatedPlannedMedicineList)
     }
 
     private suspend fun initDatabaseData(app: Application) {

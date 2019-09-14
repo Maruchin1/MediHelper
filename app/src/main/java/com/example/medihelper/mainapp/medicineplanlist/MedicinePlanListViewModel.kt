@@ -8,9 +8,10 @@ import com.example.medihelper.AppDateTime
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
+import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import kotlinx.coroutines.launch
 
-class MedicinePlanListViewModel : ViewModel() {
+class MedicinePlanListViewModel(private val medicinePlanRepository: MedicinePlanRepository) : ViewModel() {
 
     val colorPrimaryLive: LiveData<Int>
     val selectedPersonItemLive = AppRepository.getSelectedPersonItemLive()
@@ -23,7 +24,7 @@ class MedicinePlanListViewModel : ViewModel() {
             personItem.personColorResID
         }
         medicinePlanItemListLive = Transformations.switchMap(selectedPersonItemLive) { personItem ->
-            AppRepository.getMedicinePlanItemListLive(personItem.personID)
+            medicinePlanRepository.getItemListLive(personItem.personID)
         }
         medicinePlanItemOngoingListLive = Transformations.map(medicinePlanItemListLive) { medicinePlanItemList ->
             medicinePlanItemList.filter { medicinePlanItem ->
@@ -45,7 +46,7 @@ class MedicinePlanListViewModel : ViewModel() {
     }
 
     fun deleteMedicinePlan(medicinePlanID: Int) = viewModelScope.launch {
-        AppRepository.deleteMedicinePlan(medicinePlanID)
+        medicinePlanRepository.delete(medicinePlanID)
     }
 
     fun getMedicinePlanDisplayData(medicinePlanItem: MedicinePlanItem) = MedicinePlanDisplayData(

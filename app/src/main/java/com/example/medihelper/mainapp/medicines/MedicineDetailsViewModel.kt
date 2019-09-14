@@ -3,13 +3,17 @@ package com.example.medihelper.mainapp.medicines
 import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
-import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.PersonItem
+import com.example.medihelper.localdatabase.repositories.MedicineRepository
+import com.example.medihelper.localdatabase.repositories.PersonRepository
 import kotlinx.coroutines.launch
 import java.io.File
 
-class MedicineDetailsViewModel : ViewModel() {
+class MedicineDetailsViewModel(
+    private val medicineRepository: MedicineRepository,
+    private val personRepository: PersonRepository
+) : ViewModel() {
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
     val photoFileLive: LiveData<File>
@@ -32,7 +36,7 @@ class MedicineDetailsViewModel : ViewModel() {
 
     init {
         medicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
-            AppRepository.getMedicineDetailsLive(medicineID)
+            medicineRepository.getDetailsLive(medicineID)
         }
         stateAvailableLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
             medicineDetails?.packageSize != null || medicineDetails?.currState != null
@@ -79,7 +83,7 @@ class MedicineDetailsViewModel : ViewModel() {
             state?.let { stateColorResId(it) }
         }
         personItemListTakingMedicineLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
-            AppRepository.getPersonItemListLiveByMedicineID(medicineID)
+            personRepository.getItemListLiveByMedicineID(medicineID)
         }
         personItemListTakingMedicineAvailableLive = Transformations.map(personItemListTakingMedicineLive) { personItemList ->
             personItemList != null && personItemList.isNotEmpty()
@@ -88,7 +92,7 @@ class MedicineDetailsViewModel : ViewModel() {
 
     fun deleteMedicine() = viewModelScope.launch {
         medicineDetailsLive.value?.let { medicineDetails ->
-            AppRepository.deleteMedicine(medicineDetails.medicineID)
+            medicineRepository.delete(medicineDetails.medicineID)
         }
     }
 
@@ -98,9 +102,9 @@ class MedicineDetailsViewModel : ViewModel() {
 
     fun takeMedicineDose(doseSize: Float) = viewModelScope.launch {
         selectedMedicineIDLive.value?.let { medicineID ->
-            val medicineEntity = AppRepository.getMedicineEntity(medicineID)
+            val medicineEntity = medicineRepository.getEntity(medicineID)
             medicineEntity.reduceCurrState(doseSize)
-            AppRepository.updateMedicine(medicineEntity)
+            medicineRepository.update(medicineEntity)
         }
     }
 

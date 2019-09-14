@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -19,6 +18,7 @@ import com.example.medihelper.databinding.FragmentAddEditMedicineBinding
 import com.example.medihelper.dialogs.SelectDateDialog
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
 
@@ -26,7 +26,7 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
     private val TAG = AddEditMedicineFragment::class.simpleName
     private val REQUEST_IMAGE_CAPTURE = 1
 
-    private val viewModel: AddEditMedicineViewModel by viewModels()
+    private val viewModel: AddEditMedicineViewModel by viewModel()
     private val args: AddEditMedicineFragmentArgs by navArgs()
 
     fun onClickTakePhoto() {
@@ -36,14 +36,12 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
         }
     }
 
-    fun onClickSelectExpireDate() {
-        val dialog = SelectDateDialog()
-        dialog.defaultDate = viewModel.expireDateLive.value
-        dialog.setDateSelectedListener { date ->
+    fun onClickSelectExpireDate()  = SelectDateDialog().apply {
+        defaultDate = viewModel.expireDateLive.value
+        setDateSelectedListener { date ->
             viewModel.expireDateLive.value = date
         }
-        dialog.show(childFragmentManager, dialog.TAG)
-    }
+    }.show(childFragmentManager)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentAddEditMedicineBinding =

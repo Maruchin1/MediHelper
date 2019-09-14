@@ -5,11 +5,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.addeditmedicineplan.SelectMedicineDialog" />
+            type="com.example.medihelper.dialogs.SelectMedicineDialog" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel.MedicineItemDisplayData" />
+            type="com.example.medihelper.dialogs.SelectMedicineViewModel.MedicineItemDisplayData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

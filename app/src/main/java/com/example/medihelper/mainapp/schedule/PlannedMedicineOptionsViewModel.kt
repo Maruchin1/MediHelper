@@ -1,19 +1,20 @@
 package com.example.medihelper.mainapp.schedule
 
-import android.os.AsyncTask
 import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.AppRepository
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import com.example.medihelper.localdatabase.repositories.MedicineRepository
+import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 
-class PlannedMedicineOptionsViewModel : ViewModel() {
+class PlannedMedicineOptionsViewModel(
+    private val plannedMedicineRepository: PlannedMedicineRepository,
+    private val medicineRepository: MedicineRepository
+) : ViewModel() {
 
     val medicineNameLive: LiveData<String>
     val medicineUnitLive: LiveData<String>
@@ -31,7 +32,7 @@ class PlannedMedicineOptionsViewModel : ViewModel() {
 
     init {
         plannedMedicineDetailsLive = Transformations.switchMap(plannedMedicineIDLive) { plannedMedicineID ->
-            AppRepository.getPlannedMedicineDetailsLive(plannedMedicineID)
+            plannedMedicineRepository.getDetailsLive(plannedMedicineID)
         }
 
         medicineNameLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
@@ -87,8 +88,8 @@ class PlannedMedicineOptionsViewModel : ViewModel() {
 
     fun changePlannedMedicineStatus() = viewModelScope.launch {
         plannedMedicineDetailsLive.value?.let { plannedMedicineDetails ->
-            val plannedMedicineEntity = AppRepository.getPlannedMedicineEntity(plannedMedicineDetails.plannedMedicineID)
-            val medicineEntity = AppRepository.getMedicineEntity(plannedMedicineDetails.medicineID)
+            val plannedMedicineEntity = plannedMedicineRepository.getEntity(plannedMedicineDetails.plannedMedicineID)
+            val medicineEntity = medicineRepository.getEntity(plannedMedicineDetails.medicineID)
 
             if (plannedMedicineDetails.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
                 plannedMedicineEntity.setMedicineTaken(false)
@@ -98,8 +99,8 @@ class PlannedMedicineOptionsViewModel : ViewModel() {
                 medicineEntity.reduceCurrState(plannedMedicineDetails.plannedDoseSize)
             }
 
-            AppRepository.updatePlannedMedicine(plannedMedicineEntity)
-            AppRepository.updateMedicine(medicineEntity)
+            plannedMedicineRepository.update(plannedMedicineEntity)
+            medicineRepository.update(medicineEntity)
         }
     }
 }

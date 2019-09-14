@@ -7,11 +7,13 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicineEntity
+import com.example.medihelper.localdatabase.repositories.MedicineRepository
+import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
-class AddEditMedicineViewModel : ViewModel() {
+class AddEditMedicineViewModel(private val medicineRepository: MedicineRepository) : ViewModel() {
     private val TAG = AddEditMedicineViewModel::class.simpleName
 
     val medicineUnitList = AppRepository.getMedicineUnitList()
@@ -31,7 +33,7 @@ class AddEditMedicineViewModel : ViewModel() {
     fun setArgs(args: AddEditMedicineFragmentArgs) = viewModelScope.launch {
         if (args.editMedicineID != -1) {
             editMedicineID = args.editMedicineID
-            AppRepository.getMedicineDetails(args.editMedicineID).run {
+            medicineRepository.getDetails(args.editMedicineID).run {
                 medicineNameLive.postValue(medicineName)
                 expireDateLive.postValue(expireDate)
                 medicineUnitLive.postValue(medicineUnit)
@@ -74,9 +76,9 @@ class AddEditMedicineViewModel : ViewModel() {
             )
             viewModelScope.launch {
                 if (editMedicineID != null) {
-                    AppRepository.updateMedicine(medicineEntity.copy(medicineID = editMedicineID!!))
+                    medicineRepository.update(medicineEntity.copy(medicineID = editMedicineID!!))
                 } else {
-                    AppRepository.insertMedicine(medicineEntity)
+                    medicineRepository.insert(medicineEntity)
                 }
             }
             return true

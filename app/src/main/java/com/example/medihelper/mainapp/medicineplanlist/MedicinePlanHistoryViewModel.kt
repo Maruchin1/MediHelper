@@ -6,9 +6,10 @@ import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanHistory
 import com.example.medihelper.localdatabase.pojos.MedicinePlanHistoryCheckbox
+import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import java.util.*
 
-class MedicinePlanHistoryViewModel : ViewModel() {
+class MedicinePlanHistoryViewModel(private val medicinePlanRepository: MedicinePlanRepository) : ViewModel() {
 
     val colorPrimaryLive: LiveData<Int>
     val medicineNameLive: LiveData<String>
@@ -22,7 +23,7 @@ class MedicinePlanHistoryViewModel : ViewModel() {
             personItem.personColorResID
         }
         medicinePlanHistoryLive = Transformations.switchMap(selectedMedicinePlanIDLive) { medicinePlanID ->
-            AppRepository.getMedicinePlanHistoryLive(medicinePlanID)
+            medicinePlanRepository.getHistoryLive(medicinePlanID)
         }
         medicineNameLive = Transformations.map(medicinePlanHistoryLive) { medicinePlanHistory ->
             medicinePlanHistory.medicineName

@@ -3,6 +3,7 @@ package com.example.medihelper.custom
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.example.medihelper.R
 
 abstract class AppDialog : DialogFragment() {

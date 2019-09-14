@@ -6,20 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
-import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentAddEditPersonBinding
 import kotlinx.android.synthetic.main.fragment_add_edit_person.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddEditPersonFragment : AppFullScreenDialog() {
 
-    private val viewModel: AddEditPersonViewModel by viewModels()
+    private val viewModel: AddEditPersonViewModel by viewModel()
     private val args: AddEditPersonFragmentArgs by navArgs()
 
     fun onClickSelectColor(colorResID: Int) {

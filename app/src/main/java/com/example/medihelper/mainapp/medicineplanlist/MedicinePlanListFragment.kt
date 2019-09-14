@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -17,8 +16,8 @@ import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicinePlanListBinding
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
-import com.example.medihelper.mainapp.schedule.ScheduleFragmentDirections
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class MedicinePlanListFragment : Fragment() {
@@ -33,7 +32,7 @@ class MedicinePlanListFragment : Fragment() {
         }
     var unavailableMessage = ""
     val medicinePlanAvailableLive = MutableLiveData(false)
-    private val viewModel: MedicinePlanListViewModel by activityViewModels()
+    private val viewModel: MedicinePlanListViewModel by sharedViewModel(from = { parentFragment!! })
     private val directions by lazyOf(MedicinePlanListHostFragmentDirections)
 
     fun onClickMedicinePlanHistory(medicinePlanID: Int) =

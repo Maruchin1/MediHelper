@@ -6,14 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.R
-import com.example.medihelper.custom.DiffCallback
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogPersonBinding
@@ -21,11 +16,12 @@ import com.example.medihelper.localdatabase.pojos.PersonItem
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_person.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PersonDialog : BottomSheetDialogFragment() {
     val TAG = PersonDialog::class.simpleName
 
-    private val viewModel: PersonViewModel by viewModels()
+    private val viewModel: PersonViewModel by viewModel()
     private val directions by lazyOf(PersonDialogDirections)
 
     fun onClickSelectPerson(personID: Int) {

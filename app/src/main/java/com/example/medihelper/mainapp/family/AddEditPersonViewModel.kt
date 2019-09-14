@@ -3,9 +3,10 @@ package com.example.medihelper.mainapp.family
 import androidx.lifecycle.*
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.PersonEntity
+import com.example.medihelper.localdatabase.repositories.PersonRepository
 import kotlinx.coroutines.launch
 
-class AddEditPersonViewModel : ViewModel() {
+class AddEditPersonViewModel(private val personRepository: PersonRepository) : ViewModel() {
     private val TAG = AddEditPersonViewModel::class.simpleName
 
     val personColorDisplayDataListLive: LiveData<List<PersonColorDisplayData>>
@@ -33,7 +34,7 @@ class AddEditPersonViewModel : ViewModel() {
     fun setArgs(args: AddEditPersonFragmentArgs) = viewModelScope.launch {
         if (args.editPersonID != -1) {
             editPersonID = args.editPersonID
-            AppRepository.getPersonItem(args.editPersonID).let { personItem ->
+            personRepository.getItem(args.editPersonID).let { personItem ->
                 personNameLive.postValue(personItem.personName)
                 personColorResIDLive.postValue(personItem.personColorResID)
             }
@@ -51,9 +52,9 @@ class AddEditPersonViewModel : ViewModel() {
             )
             viewModelScope.launch {
                 if (editPersonID != null) {
-                    AppRepository.updatePerson(personEntity.copy(personID = editPersonID!!))
+                    personRepository.update(personEntity.copy(personID = editPersonID!!))
                 } else {
-                    AppRepository.insertPerson(personEntity)
+                    personRepository.insert(personEntity)
                 }
             }
             return true

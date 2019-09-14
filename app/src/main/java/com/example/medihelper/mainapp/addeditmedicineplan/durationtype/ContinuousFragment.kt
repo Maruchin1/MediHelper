@@ -12,10 +12,12 @@ import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentContinuousBinding
 import com.example.medihelper.dialogs.SelectDateDialog
 import com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ContinuousFragment : Fragment() {
 
-    private val viewModel: AddEditMedicinePlanViewModel by activityViewModels()
+    private val viewModel: AddEditMedicinePlanViewModel by sharedViewModel(from = { parentFragment!! })
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentContinuousBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_continuous, container, false)

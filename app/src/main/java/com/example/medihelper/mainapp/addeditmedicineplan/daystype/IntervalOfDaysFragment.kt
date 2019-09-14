@@ -7,35 +7,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
 
 import com.example.medihelper.R
 import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.databinding.FragmentIntervalOfDaysBinding
 import com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class IntervalOfDaysFragment : Fragment() {
     private val TAG = IntervalOfDaysFragment::class.simpleName
 
-    private lateinit var planViewModel: AddEditMedicinePlanViewModel
+    private val viewModel: AddEditMedicinePlanViewModel by sharedViewModel(from = { parentFragment!! })
 
     fun onClickSelectInterval() {
         val dialog = SelectNumberDialog().apply {
             title = "Wybierz odstęp dni"
             iconResID = R.drawable.round_access_time_black_36
-            defaultNumber = planViewModel.intervalOfDaysLive.value
+            defaultNumber = viewModel.intervalOfDaysLive.value
             setNumberSelectedListener { number ->
-                planViewModel.intervalOfDaysLive.value = number.toInt()
+                viewModel.intervalOfDaysLive.value = number.toInt()
             }
         }
         dialog.show(childFragmentManager, SelectNumberDialog.TAG)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.run {
-            planViewModel = ViewModelProviders.of(this).get(AddEditMedicinePlanViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
     }
 
     override fun onCreateView(
@@ -48,7 +42,7 @@ class IntervalOfDaysFragment : Fragment() {
     private fun bindLayout(inflater: LayoutInflater, container: ViewGroup?): View {
         val binding: FragmentIntervalOfDaysBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_interval_of_days, container, false)
-        binding.viewModel = planViewModel
+        binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root

@@ -38,21 +38,19 @@ data class PlannedMedicineEntity(
     @ColumnInfo(name = "status_of_taking")
     var statusOfTaking: StatusOfTaking = StatusOfTaking.WAITING
 ) {
-    suspend fun setMedicineTaken(taken: Boolean) {
+    fun setMedicineTaken(taken: Boolean) {
         statusOfTaking = if (taken) {
             StatusOfTaking.TAKEN
         } else {
             statusOfTakingByCurrDate()
         }
-        AppRepository.updatePlannedMedicine(this)
     }
 
-    suspend fun updateStatusByCurrDate() {
+    fun updateStatusByCurrDate() {
         if (statusOfTaking != StatusOfTaking.TAKEN) {
             val newStatus = statusOfTakingByCurrDate()
             if (newStatus != statusOfTaking) {
                 statusOfTaking = newStatus
-                AppRepository.updatePlannedMedicine(this)
             }
         }
     }

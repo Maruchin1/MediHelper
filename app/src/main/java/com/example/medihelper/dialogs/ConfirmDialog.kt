@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.medihelper.R
+import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.databinding.DialogConfirmBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class ConfirmDialog : BottomSheetDialogFragment() {
+class ConfirmDialog : AppBottomSheetDialog() {
+    override val TAG = "ConfirmDialog"
 
     var title = ""
     var message = ""

@@ -5,11 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.pojos.PersonItem
+import com.example.medihelper.localdatabase.repositories.PersonRepository
 import kotlinx.coroutines.launch
 
-class PersonViewModel : ViewModel() {
+class PersonViewModel(private val personRepository: PersonRepository) : ViewModel() {
 
-    val personItemListLive = AppRepository.getPersonItemListLive()
+    val personItemListLive = personRepository.getItemListLive()
     val optionsEnabledPersonIDLive = MutableLiveData<Int>()
 
     fun selectPerson(personID: Int) = AppRepository.setSelectedPerson(personID)
@@ -19,7 +20,7 @@ class PersonViewModel : ViewModel() {
             AppRepository.setSelectedPerson(AppRepository.getMainPersonID())
         }
         viewModelScope.launch {
-            AppRepository.deletePerson(personID)
+            personRepository.delete(personID)
         }
     }
 

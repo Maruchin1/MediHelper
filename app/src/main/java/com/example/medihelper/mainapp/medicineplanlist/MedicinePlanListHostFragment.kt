@@ -8,17 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentMedicinePlanListHostBinding
 import com.example.medihelper.mainapp.MainActivity
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list_host.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MedicinePlanListHostFragment : Fragment() {
 
-    private val viewModel: MedicinePlanListViewModel by activityViewModels()
+    private val viewModel: MedicinePlanListViewModel by viewModel()
     private val directions by lazyOf(MedicinePlanListHostFragmentDirections)
 
     fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddEditMedicinePlanFragment())

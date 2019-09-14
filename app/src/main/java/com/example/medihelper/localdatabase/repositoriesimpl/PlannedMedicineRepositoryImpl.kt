@@ -35,6 +35,9 @@ interface PlannedMedicineDao {
     @Update
     suspend fun update(plannedMedicineEntity: PlannedMedicineEntity)
 
+    @Update
+    suspend fun update(plannedMedicineEntityList: List<PlannedMedicineEntity>)
+
     @Query("DELETE FROM planned_medicines WHERE planned_medicine_id = :plannedMedicineID")
     suspend fun delete(plannedMedicineID: Int)
 

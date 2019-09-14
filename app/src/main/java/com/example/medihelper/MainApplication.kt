@@ -10,7 +10,17 @@ import com.example.medihelper.localdatabase.repositoriesimpl.MedicinePlanReposit
 import com.example.medihelper.localdatabase.repositoriesimpl.MedicineRepositoryImpl
 import com.example.medihelper.localdatabase.repositoriesimpl.PersonRepositoryImpl
 import com.example.medihelper.localdatabase.repositoriesimpl.PlannedMedicineRepositoryImpl
+import com.example.medihelper.mainapp.addeditmedicine.AddEditMedicineViewModel
+import com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel
+import com.example.medihelper.dialogs.SelectMedicineViewModel
+import com.example.medihelper.mainapp.family.AddEditPersonViewModel
+import com.example.medihelper.mainapp.family.PersonViewModel
+import com.example.medihelper.mainapp.medicineplanlist.MedicinePlanHistoryViewModel
+import com.example.medihelper.mainapp.medicineplanlist.MedicinePlanListViewModel
+import com.example.medihelper.mainapp.medicines.MedicineDetailsViewModel
 import com.example.medihelper.mainapp.medicines.MedicinesViewModel
+import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
+import com.example.medihelper.mainapp.schedule.ScheduleViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -30,10 +40,6 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
             modules(listOf(repositoryModule, viewModelModule))
         }
-    }
-
-    companion object {
-        val TAG = MainApplication::class.simpleName
     }
 }
 
@@ -59,4 +65,14 @@ val repositoryModule = module {
 
 val viewModelModule = module {
     viewModel { MedicinesViewModel(get()) }
+    viewModel { AddEditMedicineViewModel(get()) }
+    viewModel { AddEditPersonViewModel(get()) }
+    viewModel { PersonViewModel(get()) }
+    viewModel { MedicinePlanHistoryViewModel(get()) }
+    viewModel { MedicinePlanListViewModel(get()) }
+    viewModel { MedicineDetailsViewModel(get(), get()) }
+    viewModel { AddEditMedicinePlanViewModel(get(), get()) }
+    viewModel { SelectMedicineViewModel(get()) }
+    viewModel { PlannedMedicineOptionsViewModel(get(), get()) }
+    viewModel { ScheduleViewModel(get()) }
 }
