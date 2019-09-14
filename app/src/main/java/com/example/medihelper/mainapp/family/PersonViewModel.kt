@@ -3,7 +3,6 @@ package com.example.medihelper.mainapp.family
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.pojos.PersonItem
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.services.PersonProfileService

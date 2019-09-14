@@ -2,7 +2,6 @@ package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
-import com.example.medihelper.AppRepository
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails

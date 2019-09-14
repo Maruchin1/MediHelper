@@ -3,7 +3,7 @@ package com.example.medihelper
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
+import android.os.Environment
 import androidx.room.Room
 import com.example.medihelper.localdatabase.AppDatabase
 import com.example.medihelper.localdatabase.repositories.*
@@ -24,6 +24,7 @@ import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
 import com.example.medihelper.services.MedicineSchedulerService
 import com.example.medihelper.services.PersonProfileService
+import com.example.medihelper.services.PhotoFileService
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.get
@@ -35,19 +36,15 @@ import org.koin.dsl.module
 
 
 class MainApplication : Application() {
-    private val TAG = MainApplication::class.simpleName
 
     override fun onCreate() {
         super.onCreate()
-        Log.d(TAG, "onCreate")
-        AppRepository.init(this)
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
             modules(
                 listOf(
                     repositoryModule,
-                    preferencesModule,
                     viewModelModule,
                     serviceModule
                 )
@@ -80,15 +77,9 @@ val repositoryModule = module {
     }
 }
 
-val preferencesModule = module {
-    single {
-        androidContext().getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE)
-    }
-}
-
 val viewModelModule = module {
     viewModel { MedicinesViewModel(get()) }
-    viewModel { AddEditMedicineViewModel(get(), get()) }
+    viewModel { AddEditMedicineViewModel(get(), get(), get()) }
     viewModel { AddEditPersonViewModel(get(), get()) }
     viewModel { PersonViewModel(get(), get()) }
     viewModel { MedicinePlanHistoryViewModel(get(), get()) }
@@ -101,9 +92,10 @@ val viewModelModule = module {
 }
 
 val serviceModule = module {
-    single { SharedPrefService(get(), get()) }
+    single { SharedPrefService(androidContext().getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE), get()) }
     single { PersonProfileService(get(), get()) }
     single { MedicineSchedulerService(get(), get()) }
+    single { PhotoFileService(androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)) }
 }
 
 private const val APP_SHARED_PREFERENCES = "app-shared-preferences"

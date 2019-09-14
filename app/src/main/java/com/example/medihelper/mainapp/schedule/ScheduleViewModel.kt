@@ -2,13 +2,9 @@ package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
-import com.example.medihelper.AppRepository
-import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
-import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import com.example.medihelper.services.PersonProfileService
-import kotlinx.coroutines.launch
 import java.util.*
 
 class ScheduleViewModel(

@@ -2,9 +2,7 @@ package com.example.medihelper.localdatabase.entities
 
 import androidx.room.*
 import com.example.medihelper.AppDateTime
-import com.example.medihelper.AppRepository
 import com.example.medihelper.R
-import kotlinx.coroutines.coroutineScope
 import java.sql.Time
 import java.util.*
 

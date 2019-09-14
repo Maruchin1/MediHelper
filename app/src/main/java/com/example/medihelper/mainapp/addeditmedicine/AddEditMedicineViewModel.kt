@@ -5,10 +5,9 @@ import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
-import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
-import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
+import com.example.medihelper.services.PhotoFileService
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
 import java.io.File
@@ -16,6 +15,7 @@ import java.util.*
 
 class AddEditMedicineViewModel(
     private val medicineRepository: MedicineRepository,
+    private val photoFileService: PhotoFileService,
     sharedPrefService: SharedPrefService
 ) : ViewModel() {
     private val TAG = AddEditMedicineViewModel::class.simpleName
@@ -75,7 +75,7 @@ class AddEditMedicineViewModel(
                 currState = currStateLive.value,
                 comments = commentsLive.value,
                 photoFilePath = photoFileLive.value?.let { photoFile ->
-                    AppRepository.createPhotoFileFromTemp(photoFile).absolutePath
+                    photoFileService.createPhotoFileFromTemp(photoFile).absolutePath
                 }
             )
             viewModelScope.launch {
@@ -93,7 +93,7 @@ class AddEditMedicineViewModel(
     fun takePhotoIntent(activity: FragmentActivity): Intent {
         return Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(activity.packageManager)?.also {
-                val photoFile = AppRepository.createTempPhotoFile()
+                val photoFile = photoFileService.createTempPhotoFile()
                 photoFileLive.value = photoFile
                 val photoURI = FileProvider.getUriForFile(
                     activity,

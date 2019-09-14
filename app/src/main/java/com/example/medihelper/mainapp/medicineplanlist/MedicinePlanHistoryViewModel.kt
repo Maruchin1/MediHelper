@@ -2,8 +2,6 @@ package com.example.medihelper.mainapp.medicineplanlist
 
 import androidx.lifecycle.*
 import com.example.medihelper.AppDateTime
-import com.example.medihelper.AppRepository
-import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanHistory
 import com.example.medihelper.localdatabase.pojos.MedicinePlanHistoryCheckbox
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository

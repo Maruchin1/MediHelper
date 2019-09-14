@@ -5,7 +5,6 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.AppDateTime
-import com.example.medihelper.AppRepository
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
