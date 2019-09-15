@@ -50,7 +50,7 @@
                     android:hint="nie wybrano"
                     android:inputType="date"
                     android:onClick="@{(v) -> handler.onClickSelectDate(v)}"
-                    android:text="@{AppDateTime.dateToString(viewModel.startDateLive)}" />
+                    android:text="@{viewModel.startDateLive.formatString}" />
 
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -85,7 +85,7 @@
                     android:hint="nie wybrano"
                     android:inputType="date"
                     android:onClick="@{(v) -> handler.onClickSelectDate(v)}"
-                    android:text="@{AppDateTime.dateToString(viewModel.endDateLive)}" />
+                    android:text="@{viewModel.endDateLive.formatString}" />
 
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>

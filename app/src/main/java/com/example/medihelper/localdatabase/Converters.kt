@@ -1,6 +1,7 @@
 package com.example.medihelper.localdatabase
 
 import androidx.room.TypeConverter
+import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.google.gson.Gson
@@ -13,13 +14,13 @@ class Converters {
 
     // Date
     @TypeConverter
-    fun dateToLong(date: Date?): Long? {
+    fun appDateToLong(date: AppDate?): Long? {
         return date?.time
     }
 
     @TypeConverter
-    fun longToDate(long: Long?): Date? {
-        return long?.let { Date(long) }
+    fun longToAppDate(long: Long?): AppDate? {
+        return long?.let { AppDate(long) }
     }
 
     // Time

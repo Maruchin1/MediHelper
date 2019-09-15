@@ -5,13 +5,13 @@ import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
+import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.services.PhotoFileService
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
 import java.io.File
-import java.sql.Date
 
 
 class AddEditMedicineViewModel(
@@ -24,7 +24,7 @@ class AddEditMedicineViewModel(
     val medicineUnitList = sharedPrefService.getMedicineUnitList()
 
     val medicineNameLive = MutableLiveData<String>()
-    val expireDateLive = MutableLiveData<Date>()
+    val expireDateLive = MutableLiveData<AppDate>()
     val medicineUnitLive = MutableLiveData<String>()
     val packageSizeLive = MutableLiveData<Float>()
     val currStateLive = MutableLiveData<Float>()

@@ -33,13 +33,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{AppDateTime.dayOfWeekString(displayData.plannedDate), default=dzień}"
+                android:text="@{displayData.plannedDate.dayOfWeekString, default=dzień}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{AppDateTime.dayMonthString(displayData.plannedDate), default=Data}"
+                android:text="@{displayData.plannedDate.dayMonthString, default=Data}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:textColor="@color/colorTextTertiary" />
 

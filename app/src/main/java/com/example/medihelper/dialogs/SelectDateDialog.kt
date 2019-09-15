@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.example.medihelper.AppDate
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
@@ -16,18 +17,18 @@ import java.sql.Date
 class SelectDateDialog : AppBottomSheetDialog() {
     override val TAG = "SelectDateDialog"
 
-    var defaultDate: Date? = null
-    private var dateSelectedListener: ((date: Date) -> Unit)? = null
+    var defaultDate: AppDate? = null
+    private var dateSelectedListener: ((date: AppDate) -> Unit)? = null
 
     fun onClickCancel() = dismiss()
 
     fun onClickConfirm() {
-        val selectedDate = AppDateTime.makeDate(calendar_view.date)
+        val selectedDate = AppDate(calendar_view.date)
         dateSelectedListener?.invoke(selectedDate)
         dismiss()
     }
 
-    fun setDateSelectedListener(listener: (date: Date) -> Unit) {
+    fun setDateSelectedListener(listener: (date: AppDate) -> Unit) {
         dateSelectedListener = listener
     }
 
@@ -49,7 +50,7 @@ class SelectDateDialog : AppBottomSheetDialog() {
             calendar_view.date = defaultDate!!.time
         }
         calendar_view.setOnDateChangeListener { _, year, month, day ->
-            val selectedDate = AppDateTime.makeDate(day, month, year)
+            val selectedDate = AppDate(year, month, day)
             calendar_view.date = selectedDate.time
         }
     }

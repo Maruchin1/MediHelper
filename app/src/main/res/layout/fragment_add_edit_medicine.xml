@@ -154,7 +154,7 @@
                                     android:focusable="false"
                                     android:hint="nie wybrano"
                                     android:onClick="@{() -> handler.onClickSelectExpireDate()}"
-                                    android:text='@{AppDateTime.dateToString(viewModel.expireDateLive)}' />
+                                    android:text='@{viewModel.expireDateLive.formatString}' />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 

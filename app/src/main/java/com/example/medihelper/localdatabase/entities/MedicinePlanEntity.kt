@@ -4,6 +4,7 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.room.*
+import com.example.medihelper.AppDate
 import java.sql.Date
 import java.sql.Time
 
@@ -37,10 +38,10 @@ data class MedicinePlanEntity(
     var personID: Int,
 
     @ColumnInfo(name = "start_date")
-    var startDate: Date,
+    var startDate: AppDate,
 
     @ColumnInfo(name = "end_date")
-    var endDate: Date? = null,
+    var endDate: AppDate? = null,
 
     @ColumnInfo(name = "schedule_type")
     var durationType: DurationType,

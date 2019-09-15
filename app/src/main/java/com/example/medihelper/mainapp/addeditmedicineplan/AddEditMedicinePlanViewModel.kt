@@ -2,6 +2,7 @@ package com.example.medihelper.mainapp.addeditmedicineplan
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.medihelper.AppDate
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.custom.ActionLiveData
 import com.example.medihelper.custom.FieldMutableLiveData
@@ -12,7 +13,6 @@ import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.services.MedicineSchedulerService
 import com.example.medihelper.services.PersonProfileService
 import kotlinx.coroutines.*
-import java.sql.Date
 
 
 class AddEditMedicinePlanViewModel(
@@ -33,8 +33,8 @@ class AddEditMedicinePlanViewModel(
     val selectedMedicineUnitLive: LiveData<String>
 
     val durationTypeLive = MutableLiveData<MedicinePlanEntity.DurationType>()
-    val startDateLive = MutableLiveData<Date>()
-    val endDateLive = MutableLiveData<Date>()
+    val startDateLive = MutableLiveData<AppDate>()
+    val endDateLive = MutableLiveData<AppDate>()
 
     val daysTypeLive = MutableLiveData<MedicinePlanEntity.DaysType>()
     val daysOfWeekLive = FieldMutableLiveData<MedicinePlanEntity.DaysOfWeek>()
@@ -64,7 +64,7 @@ class AddEditMedicinePlanViewModel(
             medicineDetails.medicineName
         }
         selectedMedicineExpireDate = Transformations.map(selectedMedicineDetailsLive) { medicineDetails ->
-            AppDateTime.dateToString(medicineDetails.expireDate)
+            medicineDetails.expireDate?.formatString
         }
         selectedMedicineUnitLive = Transformations.map(selectedMedicineDetailsLive) { medicineDetails ->
             medicineDetails.medicineUnit
@@ -72,7 +72,7 @@ class AddEditMedicinePlanViewModel(
 
         selectedMedicineIDLive.postValue(null)
         durationTypeLive.postValue(MedicinePlanEntity.DurationType.ONCE)
-        startDateLive.postValue(AppDateTime.getCurrDate())
+        startDateLive.postValue(AppDate.currDate())
         endDateLive.postValue(null)
         daysTypeLive.postValue(MedicinePlanEntity.DaysType.NONE)
         daysOfWeekLive.postValue(MedicinePlanEntity.DaysOfWeek())
@@ -183,7 +183,7 @@ class AddEditMedicinePlanViewModel(
                 errorEndDateLive.value = null
             }
             if (startDateLive.value != null && endDateLive.value != null) {
-                if (AppDateTime.compareDates(startDateLive.value!!, endDateLive.value!!) != 2) {
+                if (AppDate.compareDates(startDateLive.value!!, endDateLive.value!!) != 2) {
                     arrayOf(errorStartDateLive, errorEndDateLive).forEach { it.value = "Zła kolejność dat" }
                     inputDataValid = false
                 } else {

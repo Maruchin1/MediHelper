@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.medihelper.AppDate
 import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
@@ -24,7 +25,7 @@ import java.sql.Date
 class ScheduleDayFragment : Fragment() {
     private val TAG = ScheduleDayFragment::class.simpleName
 
-    var date: Date? = null
+    var date: AppDate? = null
     val plannedMedicinesAvailableLive = MutableLiveData(false)
     private val viewModel: ScheduleViewModel by sharedViewModel(from = { parentFragment!! })
     private val directions by lazyOf(ScheduleFragmentDirections)
@@ -48,8 +49,8 @@ class ScheduleDayFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        date?.let { dayDate ->
-            viewModel.getPlannedMedicineItemListByDateLive(dayDate).observe(viewLifecycleOwner, Observer { plannedMedicineList ->
+        if (date != null) {
+            viewModel.getPlannedMedicineItemListByDateLive(date!!).observe(viewLifecycleOwner, Observer { plannedMedicineList ->
                 Log.d(TAG, "date = $date, scheduledMedicinesList change = $plannedMedicineList")
                 val adapter = recycler_view_scheduled_medicine_for_day.adapter as PlannedMedicineAdapter
                 adapter.updateItemsList(plannedMedicineList)

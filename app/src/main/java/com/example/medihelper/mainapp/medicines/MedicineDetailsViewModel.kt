@@ -1,6 +1,7 @@
 package com.example.medihelper.mainapp.medicines
 
 import androidx.lifecycle.*
+import com.example.medihelper.AppDate
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
@@ -57,9 +58,7 @@ class MedicineDetailsViewModel(
             medicineDetails.medicineUnit
         }
         expireDateLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
-            medicineDetails?.expireDate?.let { expireDate ->
-                AppDateTime.dateToString(expireDate)
-            }
+            medicineDetails?.expireDate?.formatString
         }
         daysRemainsLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
             medicineDetails?.let { daysRemainsString(it) }
@@ -138,8 +137,8 @@ class MedicineDetailsViewModel(
 
     private fun daysRemainsString(medicineDetails: MedicineDetails): String? {
         return medicineDetails.expireDate?.let { expireDate ->
-            val currDate = AppDateTime.getCurrDate()
-            val daysBetween = AppDateTime.daysBetween(currDate, expireDate)
+            val currDate = AppDate.currDate()
+            val daysBetween = AppDate.daysBetween(currDate, expireDate)
             "$daysBetween dni"
         }
     }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.medihelper.AppDate
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
@@ -57,10 +58,10 @@ class MedicinePlanListViewModel(
         colorPrimaryResID = colorPrimaryLive.value!!,
         medicineName = medicinePlanItem.medicineName,
         planDuration = when (medicinePlanItem.durationType) {
-            MedicinePlanEntity.DurationType.ONCE -> "Jednorazowo ${AppDateTime.dateToString(medicinePlanItem.startDate)}"
-            MedicinePlanEntity.DurationType.PERIOD -> "Od ${AppDateTime.dateToString(medicinePlanItem.startDate)} " +
-                    "do ${AppDateTime.dateToString(medicinePlanItem.endDate)}"
-            MedicinePlanEntity.DurationType.CONTINUOUS -> "Pzyjmowanie ciągłe od ${AppDateTime.dateToString(medicinePlanItem.startDate)}"
+            MedicinePlanEntity.DurationType.ONCE -> "Jednorazowo ${medicinePlanItem.startDate.formatString}"
+            MedicinePlanEntity.DurationType.PERIOD -> "Od ${medicinePlanItem.startDate.formatString} " +
+                    "do ${medicinePlanItem.endDate?.formatString}"
+            MedicinePlanEntity.DurationType.CONTINUOUS -> "Pzyjmowanie ciągłe od ${medicinePlanItem.startDate.formatString}"
         },
         daysType = when (medicinePlanItem.daysType) {
             MedicinePlanEntity.DaysType.NONE -> null
@@ -71,16 +72,16 @@ class MedicinePlanListViewModel(
     )
 
     private fun getMedicinePlanType(medicinePlanItem: MedicinePlanItem): MedicinePlanType {
-        val currDate = AppDateTime.getCurrDate()
+        val currDate = AppDate.currDate()
         return when (medicinePlanItem.durationType) {
             MedicinePlanEntity.DurationType.ONCE -> {
-                when (AppDateTime.compareDates(currDate, medicinePlanItem.startDate)) {
+                when (AppDate.compareDates(currDate, medicinePlanItem.startDate)) {
                     1 -> MedicinePlanType.ENDED
                     else -> MedicinePlanType.ONGOING
                 }
             }
             MedicinePlanEntity.DurationType.PERIOD -> {
-                when (AppDateTime.compareDates(currDate, medicinePlanItem.endDate!!)) {
+                when (AppDate.compareDates(currDate, medicinePlanItem.endDate!!)) {
                     1 -> MedicinePlanType.ENDED
                     else -> MedicinePlanType.ONGOING
                 }

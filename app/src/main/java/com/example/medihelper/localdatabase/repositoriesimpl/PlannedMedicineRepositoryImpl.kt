@@ -2,11 +2,11 @@ package com.example.medihelper.localdatabase.repositoriesimpl
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
-import java.sql.Date
 
 
 class PlannedMedicineRepositoryImpl(private val plannedMedicineDao: PlannedMedicineDao) : PlannedMedicineRepository {
@@ -27,7 +27,7 @@ class PlannedMedicineRepositoryImpl(private val plannedMedicineDao: PlannedMedic
 
     override fun getDetailsLive(plannedMedicineID: Int) = plannedMedicineDao.getDetailsLive(plannedMedicineID)
 
-    override fun getItemListLiveByDate(date: Date, personID: Int) = plannedMedicineDao.getItemListLiveByDate(date, personID)
+    override fun getItemListLiveByDate(date: AppDate, personID: Int) = plannedMedicineDao.getItemListLiveByDate(date, personID)
 }
 
 @Dao
@@ -58,5 +58,5 @@ interface PlannedMedicineDao {
     fun getDetailsLive(plannedMedicineID: Int): LiveData<PlannedMedicineDetails>
 
     @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN medicines m ON mp.medicine_id = m.medicine_id JOIN persons p ON mp.person_id = p.person_id WHERE pm.planned_date = :date AND p.person_id = :personID")
-    fun getItemListLiveByDate(date: Date, personID: Int): LiveData<List<PlannedMedicineItem>>
+    fun getItemListLiveByDate(date: AppDate, personID: Int): LiveData<List<PlannedMedicineItem>>
 }

@@ -1,6 +1,7 @@
 package com.example.medihelper.localdatabase.entities
 
 import androidx.room.*
+import com.example.medihelper.AppDate
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import java.sql.Date
@@ -25,7 +26,7 @@ data class PlannedMedicineEntity(
     val medicinePlanID: Int,
 
     @ColumnInfo(name = "planned_date")
-    var plannedDate: Date,
+    var plannedDate: AppDate,
 
     @ColumnInfo(name = "planned_time")
     var plannedTime: Time,
@@ -54,9 +55,9 @@ data class PlannedMedicineEntity(
     }
 
     private fun statusOfTakingByCurrDate(): StatusOfTaking {
-        val currDate = AppDateTime.getCurrDate()
+        val currDate = AppDate.currDate()
         val currTime = AppDateTime.getCurrTime()
-        return when (AppDateTime.compareDates(currDate, plannedDate)) {
+        return when (AppDate.compareDates(currDate, plannedDate)) {
             2 -> StatusOfTaking.WAITING
             1 -> StatusOfTaking.NOT_TAKEN
             else -> when (AppDateTime.compareTimes(currTime, plannedTime)) {

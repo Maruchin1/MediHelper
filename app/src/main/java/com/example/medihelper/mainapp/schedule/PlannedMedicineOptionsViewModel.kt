@@ -48,7 +48,7 @@ class PlannedMedicineOptionsViewModel(
             }
         }
         plannedDateLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            plannedMedicine?.let { AppDateTime.dateToString(it.plannedDate) }
+            plannedMedicine?.plannedDate?.formatString
         }
         plannedTimeLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
             plannedMedicine?.let { AppDateTime.timeToString(it.plannedTime) }

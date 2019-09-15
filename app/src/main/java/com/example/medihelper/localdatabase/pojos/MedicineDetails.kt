@@ -1,7 +1,7 @@
 package com.example.medihelper.localdatabase.pojos
 
 import androidx.room.ColumnInfo
-import java.sql.Date
+import com.example.medihelper.AppDate
 
 
 data class MedicineDetails(
@@ -24,7 +24,7 @@ data class MedicineDetails(
     val photoFilePath: String?,
 
     @ColumnInfo(name = "expire_date")
-    val expireDate: Date?,
+    val expireDate: AppDate?,
 
     @ColumnInfo(name = "commentsLive")
     val comments: String?

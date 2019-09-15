@@ -1,6 +1,7 @@
 package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.*
+import com.example.medihelper.AppDate
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
@@ -30,10 +31,10 @@ class ScheduleViewModel(
 
     fun selectDate(position: Int) = selectDate(getDateForPosition(position))
 
-    fun selectDate(date: Date) {
+    fun selectDate(date: AppDate) {
         val currDate = selectedDateLive.value
         if (currDate != null) {
-            if (AppDateTime.compareDates(date, currDate) != 0) {
+            if (AppDate.compareDates(date, currDate) != 0) {
                 selectedDateLive.value = date
             }
         } else {
@@ -41,18 +42,18 @@ class ScheduleViewModel(
         }
     }
 
-    fun getDateForPosition(position: Int): Date {
+    fun getDateForPosition(position: Int): AppDate {
         val calendar = AppDateTime.getCurrCalendar()
         calendar.add(Calendar.DAY_OF_YEAR, position - (timelineDaysCount / 2))
-        return Date(calendar.timeInMillis)
+        return AppDate(calendar.timeInMillis)
     }
 
     fun getPositionForDate(date: Date): Int {
-        val daysDiff = AppDateTime.daysBetween(AppDateTime.getCurrDate(), date)
+        val daysDiff = AppDate.daysBetween(AppDate.currDate(), date)
         return (timelineDaysCount / 2) + daysDiff.toInt()
     }
 
-    fun getPlannedMedicineItemListByDateLive(date: Date): LiveData<List<PlannedMedicineItem>> {
+    fun getPlannedMedicineItemListByDateLive(date: AppDate): LiveData<List<PlannedMedicineItem>> {
         return Transformations.switchMap(selectedPersonItemLive) { personItem ->
             plannedMedicineRepository.getItemListLiveByDate(date, personItem.personID)
         }

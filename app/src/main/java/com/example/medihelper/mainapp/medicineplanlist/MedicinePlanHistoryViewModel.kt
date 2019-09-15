@@ -1,12 +1,12 @@
 package com.example.medihelper.mainapp.medicineplanlist
 
 import androidx.lifecycle.*
-import com.example.medihelper.AppDateTime
+import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.pojos.MedicinePlanHistory
 import com.example.medihelper.localdatabase.pojos.MedicinePlanHistoryCheckbox
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import com.example.medihelper.services.PersonProfileService
-import java.sql.Date
+
 
 class MedicinePlanHistoryViewModel(
     private val medicinePlanRepository: MedicinePlanRepository,
@@ -35,12 +35,12 @@ class MedicinePlanHistoryViewModel(
                 medicinePlanHistory.medicinePlanHistoryCheckboxList.groupBy { medicinePlanHistoryCheckbox ->
                     medicinePlanHistoryCheckbox.plannedDate
                 }.forEach { entry ->
-                    val currDate = AppDateTime.getCurrDate()
+                    val currDate = AppDate.currDate()
                     this.add(
                         HistoryItemDisplayData(
                             plannedDate = entry.key,
                             historyCheckboxList = entry.value,
-                            isToday = AppDateTime.compareDates(currDate, entry.key) == 0
+                            isToday = AppDate.compareDates(currDate, entry.key) == 0
                         )
                     )
                 }
@@ -53,7 +53,7 @@ class MedicinePlanHistoryViewModel(
     }
 
     data class HistoryItemDisplayData(
-        val plannedDate: Date,
+        val plannedDate: AppDate,
         val historyCheckboxList: List<MedicinePlanHistoryCheckbox>,
         val isToday: Boolean
     )

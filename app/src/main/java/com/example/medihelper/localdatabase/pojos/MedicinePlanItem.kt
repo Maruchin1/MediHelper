@@ -2,8 +2,8 @@ package com.example.medihelper.localdatabase.pojos
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
+import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
-import java.sql.Date
 
 
 data class MedicinePlanItem(
@@ -17,10 +17,10 @@ data class MedicinePlanItem(
     val medicineUnit: String,
 
     @ColumnInfo(name = "start_date")
-    val startDate: Date,
+    val startDate: AppDate,
 
     @ColumnInfo(name = "end_date")
-    val endDate: Date? = null,
+    val endDate: AppDate? = null,
 
     @ColumnInfo(name = "schedule_type")
     val durationType: MedicinePlanEntity.DurationType,

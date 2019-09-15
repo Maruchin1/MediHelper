@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
+import com.example.medihelper.AppDate
 import com.example.medihelper.custom.CenterLayoutManager
 import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
@@ -79,8 +80,8 @@ class ScheduleFragment : Fragment() {
                 view_pager_dates.currentItem = position
             }
 
-            val calendarCurrDate = AppDateTime.makeDate(calendar_view.date)
-            if (AppDateTime.compareDates(calendarCurrDate, selectedDate) != 0) {
+            val calendarCurrDate = AppDate(calendar_view.date)
+            if (AppDate.compareDates(calendarCurrDate, selectedDate) != 0) {
                 calendar_view.date = selectedDate.time
             }
         })
@@ -131,7 +132,7 @@ class ScheduleFragment : Fragment() {
     private fun setupCalendarView() {
         calendar_view.setOnDateChangeListener { _, year, month, day ->
             Log.d(TAG, "calendar date change")
-            viewModel.selectDate(AppDateTime.makeDate(day, month, year))
+            viewModel.selectDate(AppDate(year, month, day))
             TransitionManager.beginDelayedTransition(root_lay)
             viewModel.calendarLayoutVisibleLive.value = false
         }
@@ -208,12 +209,12 @@ class ScheduleFragment : Fragment() {
 
             holder.view.apply {
                 txv_day.apply {
-                    text = AppDateTime.dayMonthString(date)
+                    text = date.dayMonthString
                     alpha = textAlpha
                     setTextColor(resources.getColor(textColorID))
                 }
                 txv_day_of_week.apply {
-                    text = AppDateTime.dayOfWeekString(date)
+                    text = date.dayOfWeekString
                     alpha = textAlpha
                     setTextColor(resources.getColor(textColorID))
                 }
