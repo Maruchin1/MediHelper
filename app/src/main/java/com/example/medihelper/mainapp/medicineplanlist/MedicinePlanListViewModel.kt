@@ -74,14 +74,14 @@ class MedicinePlanListViewModel(
         val currDate = AppDate.currDate()
         return when (medicinePlanItem.durationType) {
             MedicinePlanEntity.DurationType.ONCE -> {
-                when (AppDate.compareDates(currDate, medicinePlanItem.startDate)) {
-                    1 -> MedicinePlanType.ENDED
+                when {
+                    currDate > medicinePlanItem.startDate -> MedicinePlanType.ENDED
                     else -> MedicinePlanType.ONGOING
                 }
             }
             MedicinePlanEntity.DurationType.PERIOD -> {
-                when (AppDate.compareDates(currDate, medicinePlanItem.endDate!!)) {
-                    1 -> MedicinePlanType.ENDED
+                when {
+                    currDate > medicinePlanItem.endDate!! -> MedicinePlanType.ENDED
                     else -> MedicinePlanType.ONGOING
                 }
             }

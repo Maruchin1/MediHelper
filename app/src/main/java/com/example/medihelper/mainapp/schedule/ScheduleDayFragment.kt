@@ -50,11 +50,11 @@ class ScheduleDayFragment : Fragment() {
 
     private fun observeViewModel() {
         if (date != null) {
-            viewModel.getPlannedMedicineItemListByDateLive(date!!).observe(viewLifecycleOwner, Observer { plannedMedicineList ->
-                Log.d(TAG, "date = $date, scheduledMedicinesList change = $plannedMedicineList")
+            viewModel.getPlannedMedicineItemListByDateLive(date!!).observe(viewLifecycleOwner, Observer { plannedMedicineItemList ->
+                Log.d(TAG, "date = $date, scheduledMedicinesList change = $plannedMedicineItemList")
                 val adapter = recycler_view_scheduled_medicine_for_day.adapter as PlannedMedicineAdapter
-                adapter.updateItemsList(plannedMedicineList)
-                plannedMedicinesAvailableLive.value = !plannedMedicineList.isNullOrEmpty()
+                adapter.updateItemsList(plannedMedicineItemList.sortedBy { plannedMedicineItem -> plannedMedicineItem.plannedTime })
+                plannedMedicinesAvailableLive.value = !plannedMedicineItemList.isNullOrEmpty()
             })
         }
     }

@@ -55,11 +55,11 @@ data class PlannedMedicineEntity(
     private fun statusOfTakingByCurrDate(): StatusOfTaking {
         val currDate = AppDate.currDate()
         val currTime = AppTime.currTime()
-        return when (AppDate.compareDates(currDate, plannedDate)) {
-            2 -> StatusOfTaking.WAITING
-            1 -> StatusOfTaking.NOT_TAKEN
-            else -> when (AppTime.compareTimes(currTime, plannedTime)) {
-                1 -> StatusOfTaking.NOT_TAKEN
+        return when {
+            plannedDate > currDate -> StatusOfTaking.WAITING
+            plannedDate < currDate -> StatusOfTaking.NOT_TAKEN
+            else -> when {
+                currTime > plannedTime -> StatusOfTaking.NOT_TAKEN
                 else -> StatusOfTaking.WAITING
             }
         }

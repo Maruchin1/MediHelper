@@ -31,7 +31,7 @@ class ScheduleViewModel(
     fun selectDate(date: AppDate) {
         val currDate = selectedDateLive.value
         if (currDate != null) {
-            if (AppDate.compareDates(date, currDate) != 0) {
+            if (date != currDate) {
                 selectedDateLive.value = date
             }
         } else {

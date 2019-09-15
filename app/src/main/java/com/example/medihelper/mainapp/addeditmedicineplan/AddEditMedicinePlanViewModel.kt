@@ -182,7 +182,7 @@ class AddEditMedicinePlanViewModel(
                 errorEndDateLive.value = null
             }
             if (startDateLive.value != null && endDateLive.value != null) {
-                if (AppDate.compareDates(startDateLive.value!!, endDateLive.value!!) != 2) {
+                if (startDateLive.value!! >= endDateLive.value!!) {
                     arrayOf(errorStartDateLive, errorEndDateLive).forEach { it.value = "Zła kolejność dat" }
                     inputDataValid = false
                 } else {

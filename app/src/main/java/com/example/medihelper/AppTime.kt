@@ -3,7 +3,7 @@ package com.example.medihelper
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AppTime {
+class AppTime : Comparable<AppTime> {
 
     val timeInMillis: Long
         get() = timeCalendar.timeInMillis
@@ -35,14 +35,6 @@ class AppTime {
 
     companion object {
         fun currTime() = AppTime(Calendar.getInstance().timeInMillis)
-
-        fun compareTimes(time1: AppTime, time2: AppTime) = when {
-            time1.hour > time2.hour -> 1
-            time1.hour < time2.hour -> 2
-            time1.minute > time2.minute -> 1
-            time1.minute < time2.minute -> 2
-            else -> 0
-        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -60,5 +52,13 @@ class AppTime {
         return timeCalendar.hashCode()
     }
 
-
+    override fun compareTo(other: AppTime): Int {
+        return when {
+            hour > other.hour -> 1
+            hour < other.hour -> -1
+            minute > other.minute -> 1
+            minute < other.minute -> -1
+            else -> 0
+        }
+    }
 }

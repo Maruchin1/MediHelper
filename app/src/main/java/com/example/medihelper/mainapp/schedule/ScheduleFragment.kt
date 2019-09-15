@@ -80,7 +80,7 @@ class ScheduleFragment : Fragment() {
             }
 
             val currDate = AppDate(calendar_view.date)
-            if (AppDate.compareDates(currDate, selectedDate) != 0) {
+            if (currDate == selectedDate) {
                 calendar_view.date = selectedDate.timeInMillis
             }
         })

@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AppDate {
+class AppDate : Comparable<AppDate> {
 
     val timeInMillis: Long
         get() = dateCalendar.timeInMillis
@@ -55,16 +55,6 @@ class AppDate {
             val daysDiff = days2 - days1
             return daysDiff
         }
-
-        fun compareDates(date1: AppDate, date2: AppDate) = when {
-            date1.year > date2.year -> 1
-            date1.year < date2.year -> 2
-            date1.month > date2.month -> 1
-            date1.month < date2.month -> 2
-            date1.day > date2.day -> 1
-            date1.day < date2.day -> 2
-            else -> 0
-        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -80,5 +70,17 @@ class AppDate {
 
     override fun hashCode(): Int {
         return dateCalendar.hashCode()
+    }
+
+    override fun compareTo(other: AppDate): Int {
+        return when {
+            year > other.year -> 1
+            year < other.year -> -1
+            month > other.month -> 1
+            month < other.month -> -1
+            day > other.day -> 1
+            day < other.day -> -1
+            else -> 0
+        }
     }
 }

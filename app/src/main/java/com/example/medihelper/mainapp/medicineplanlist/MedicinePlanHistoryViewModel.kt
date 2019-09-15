@@ -40,7 +40,7 @@ class MedicinePlanHistoryViewModel(
                         HistoryItemDisplayData(
                             plannedDate = entry.key,
                             historyCheckboxList = entry.value,
-                            isToday = AppDate.compareDates(currDate, entry.key) == 0
+                            isToday = currDate == entry.key
                         )
                     )
                 }

@@ -59,7 +59,7 @@ class MedicineSchedulerService(
         val plannedMedicineArrayList = ArrayList<PlannedMedicineEntity>()
         val currDate = medicinePlanEntity.startDate.copy()
 
-        while (AppDate.compareDates(currDate, medicinePlanEntity.endDate!!) != 1) {
+        while (currDate <= medicinePlanEntity.endDate!!) {
             plannedMedicineArrayList.addAll(
                 getForDate(
                     medicinePlanID = medicinePlanEntity.medicinePlanID,
@@ -76,7 +76,7 @@ class MedicineSchedulerService(
         val plannedMedicineArrayList = ArrayList<PlannedMedicineEntity>()
         val currDate = medicinePlanEntity.startDate.copy()
 
-        while (AppDate.compareDates(currDate, medicinePlanEntity.endDate!!) != 1) {
+        while (currDate <= medicinePlanEntity.endDate!!) {
             if (medicinePlanEntity.daysOfWeek?.isDaySelected(currDate.dayOfWeek) == true) {
                 plannedMedicineArrayList.addAll(
                     getForDate(
@@ -95,7 +95,7 @@ class MedicineSchedulerService(
         val plannedMedicineArrayList = ArrayList<PlannedMedicineEntity>()
         val currDate = medicinePlanEntity.startDate.copy()
 
-        while (AppDate.compareDates(currDate, medicinePlanEntity.endDate!!) != 1) {
+        while (currDate <= medicinePlanEntity.endDate!!) {
             plannedMedicineArrayList.addAll(
                 getForDate(
                     medicinePlanID = medicinePlanEntity.medicinePlanID,
