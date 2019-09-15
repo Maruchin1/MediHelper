@@ -3,7 +3,6 @@ package com.example.medihelper.mainapp.addeditmedicineplan
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
-import com.example.medihelper.AppDateTime
 import com.example.medihelper.custom.ActionLiveData
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
@@ -157,7 +156,7 @@ class AddEditMedicinePlanViewModel(
     fun getTimeOfTakingDisplayData(timeOfTaking: MedicinePlanEntity.TimeOfTaking): TimeOfTakingDisplayData {
         return TimeOfTakingDisplayData(
             timeOfTakingRef = timeOfTaking,
-            time = AppDateTime.timeToString(timeOfTaking.time) ?: "--",
+            time = timeOfTaking.time.formatString,
             doseSize = timeOfTaking.doseSize.toString(),
             medicineTypeName = selectedMedicineDetailsLive.value?.medicineUnit ?: "--"
         )

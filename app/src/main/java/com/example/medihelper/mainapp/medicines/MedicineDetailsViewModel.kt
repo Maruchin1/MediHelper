@@ -2,7 +2,6 @@ package com.example.medihelper.mainapp.medicines
 
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
-import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.PersonItem

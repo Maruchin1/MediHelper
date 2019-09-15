@@ -3,8 +3,6 @@
 
     <data>
 
-        <import type="com.example.medihelper.AppDateTime" />
-
         <variable
             name="displayData"
             type="com.example.medihelper.localdatabase.pojos.MedicinePlanHistoryCheckbox" />
@@ -21,7 +19,7 @@
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{AppDateTime.timeToString(displayData.plannedTime), default="00:00"}'
+            android:text='@{displayData.plannedTime.formatString, default="00:00"}'
             android:textColor="@color/colorWhite"
             app:chipBackgroundColor='@{displayData.statusOfTaking.colorResID, default="@color/colorDarkerGray"}' />
 

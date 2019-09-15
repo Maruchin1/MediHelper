@@ -1,7 +1,6 @@
 package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.*
-import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
@@ -51,7 +50,7 @@ class PlannedMedicineOptionsViewModel(
             plannedMedicine?.plannedDate?.formatString
         }
         plannedTimeLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            plannedMedicine?.let { AppDateTime.timeToString(it.plannedTime) }
+            plannedMedicine?.plannedTime?.formatString
         }
         doseSizeLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
             plannedMedicine.plannedDoseSize.toString()

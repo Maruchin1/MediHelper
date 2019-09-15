@@ -5,6 +5,7 @@ import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.room.*
 import com.example.medihelper.AppDate
+import com.example.medihelper.AppTime
 import java.sql.Date
 import java.sql.Time
 
@@ -68,7 +69,7 @@ data class MedicinePlanEntity(
 
     data class TimeOfTaking(
         var doseSize: Float = 1.0f,
-        var time: Time = Time(8, 0, 0)
+        var time: AppTime = AppTime(8, 0)
     )
 
     class DaysOfWeek : BaseObservable() {

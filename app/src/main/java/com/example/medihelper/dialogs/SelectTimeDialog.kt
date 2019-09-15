@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.example.medihelper.AppTime
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.databinding.DialogSelectTimeBinding
@@ -15,17 +16,17 @@ import java.sql.Time
 class SelectTimeDialog : AppBottomSheetDialog() {
     override val TAG = "SelectTimeDialog"
 
-    var defaultTime: Time? = null
-    private var timeSelectedListener: ((time: Time) -> Unit)? = null
+    var defaultTime: AppTime? = null
+    private var timeSelectedListener: ((time: AppTime) -> Unit)? = null
 
-    fun setTimeSelectedListener(listener: (time: Time) -> Unit) {
+    fun setTimeSelectedListener(listener: (time: AppTime) -> Unit) {
         timeSelectedListener = listener
     }
 
     fun onClickCancel() = dismiss()
 
     fun onClickConfirm() {
-        val selectedTime = Time(time_picker.currentHour, time_picker.currentMinute, 0)
+        val selectedTime = AppTime(time_picker.currentHour, time_picker.currentMinute)
         timeSelectedListener?.invoke(selectedTime)
         dismiss()
     }
@@ -49,8 +50,8 @@ class SelectTimeDialog : AppBottomSheetDialog() {
 
     private fun setupTimePicker() {
         time_picker.setIs24HourView(true)
-        defaultTime?.hours?.let { time_picker.currentHour = it }
-        defaultTime?.minutes?.let { time_picker.currentMinute = it }
+        defaultTime?.hour?.let { time_picker.currentHour = it }
+        defaultTime?.minute?.let { time_picker.currentMinute = it }
     }
 
     companion object {

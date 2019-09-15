@@ -6,8 +6,6 @@
 
         <import type="android.view.View" />
 
-        <import type="com.example.medihelper.AppDateTime" />
-
         <variable
             name="displayData"
             type="com.example.medihelper.mainapp.medicineplanlist.MedicinePlanHistoryViewModel.HistoryItemDisplayData" />

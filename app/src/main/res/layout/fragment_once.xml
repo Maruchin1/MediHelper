@@ -5,8 +5,6 @@
 
     <data>
 
-        <import type="com.example.medihelper.AppDateTime" />
-
         <variable
             name="viewModel"
             type="com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel" />

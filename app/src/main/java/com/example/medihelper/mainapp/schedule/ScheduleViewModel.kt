@@ -2,12 +2,9 @@ package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
-import com.example.medihelper.AppDateTime
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import com.example.medihelper.services.PersonProfileService
-import java.sql.Date
-import java.util.*
 
 
 class ScheduleViewModel(
@@ -42,10 +39,8 @@ class ScheduleViewModel(
         }
     }
 
-    fun getDateForPosition(position: Int): AppDate {
-        val calendar = AppDateTime.getCurrCalendar()
-        calendar.add(Calendar.DAY_OF_YEAR, position - (timelineDaysCount / 2))
-        return AppDate(calendar.timeInMillis)
+    fun getDateForPosition(position: Int) = AppDate.currDate().apply {
+        addDays(position - (timelineDaysCount / 2))
     }
 
     fun getPositionForDate(date: AppDate): Int {

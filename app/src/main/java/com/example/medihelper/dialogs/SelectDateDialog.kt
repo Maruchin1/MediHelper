@@ -6,12 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.medihelper.AppDate
-import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.databinding.DialogSelectDateBinding
 import kotlinx.android.synthetic.main.dialog_select_date.*
-import java.sql.Date
 
 
 class SelectDateDialog : AppBottomSheetDialog() {

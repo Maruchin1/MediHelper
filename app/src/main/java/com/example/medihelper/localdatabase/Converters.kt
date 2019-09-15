@@ -2,6 +2,7 @@ package com.example.medihelper.localdatabase
 
 import androidx.room.TypeConverter
 import com.example.medihelper.AppDate
+import com.example.medihelper.AppTime
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.google.gson.Gson
@@ -25,13 +26,13 @@ class Converters {
 
     // Time
     @TypeConverter
-    fun timeToLong(time: Time): Long {
-        return time.time
+    fun appTimeToLong(time: AppTime): Long {
+        return time.timeInMillis
     }
 
     @TypeConverter
-    fun longToTime(long: Long): Time {
-        return Time(long)
+    fun longToAppTime(long: Long): AppTime {
+        return AppTime(long)
     }
 
     // DurationType
