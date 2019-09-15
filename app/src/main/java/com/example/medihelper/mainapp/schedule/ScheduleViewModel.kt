@@ -21,7 +21,7 @@ class ScheduleViewModel(
     val selectedPersonItemLive = personProfileService.getCurrPersonItemLive()
     val colorPrimaryLive: LiveData<Int>
     val calendarLayoutVisibleLive = MutableLiveData(false)
-    val selectedDateLive = MutableLiveData<Date>()
+    val selectedDateLive = MutableLiveData<AppDate>()
 
     init {
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
@@ -48,7 +48,7 @@ class ScheduleViewModel(
         return AppDate(calendar.timeInMillis)
     }
 
-    fun getPositionForDate(date: Date): Int {
+    fun getPositionForDate(date: AppDate): Int {
         val daysDiff = AppDate.daysBetween(AppDate.currDate(), date)
         return (timelineDaysCount / 2) + daysDiff.toInt()
     }

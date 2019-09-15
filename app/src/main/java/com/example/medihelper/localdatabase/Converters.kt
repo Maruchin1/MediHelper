@@ -15,7 +15,7 @@ class Converters {
     // Date
     @TypeConverter
     fun appDateToLong(date: AppDate?): Long? {
-        return date?.time
+        return date?.timeInMillis
     }
 
     @TypeConverter

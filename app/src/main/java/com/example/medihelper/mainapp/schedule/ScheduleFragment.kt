@@ -17,7 +17,6 @@ import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
 import com.example.medihelper.AppDate
 import com.example.medihelper.custom.CenterLayoutManager
-import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
 import com.example.medihelper.mainapp.MainActivity
@@ -80,9 +79,9 @@ class ScheduleFragment : Fragment() {
                 view_pager_dates.currentItem = position
             }
 
-            val calendarCurrDate = AppDate(calendar_view.date)
-            if (AppDate.compareDates(calendarCurrDate, selectedDate) != 0) {
-                calendar_view.date = selectedDate.time
+            val currDate = AppDate(calendar_view.date)
+            if (AppDate.compareDates(currDate, selectedDate) != 0) {
+                calendar_view.date = selectedDate.timeInMillis
             }
         })
     }

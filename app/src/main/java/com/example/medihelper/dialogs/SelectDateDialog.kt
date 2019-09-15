@@ -47,11 +47,11 @@ class SelectDateDialog : AppBottomSheetDialog() {
 
     private fun setupCalendar() {
         if (defaultDate != null) {
-            calendar_view.date = defaultDate!!.time
+            calendar_view.date = defaultDate!!.timeInMillis
         }
         calendar_view.setOnDateChangeListener { _, year, month, day ->
             val selectedDate = AppDate(year, month, day)
-            calendar_view.date = selectedDate.time
+            calendar_view.date = selectedDate.timeInMillis
         }
     }
 }
