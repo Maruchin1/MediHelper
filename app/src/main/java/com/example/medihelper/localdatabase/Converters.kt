@@ -2,12 +2,12 @@ package com.example.medihelper.localdatabase
 
 import androidx.room.TypeConverter
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
-import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.sql.Date
 import java.sql.Time
-import java.util.*
+
 
 class Converters {
 

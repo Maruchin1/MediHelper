@@ -1,9 +1,8 @@
 package com.example.medihelper.localdatabase.pojos
 
 import androidx.room.ColumnInfo
-import androidx.room.Relation
-import com.example.medihelper.localdatabase.entities.PersonEntity
-import java.util.*
+import java.sql.Date
+
 
 data class MedicineDetails(
     @ColumnInfo(name = "medicine_id")

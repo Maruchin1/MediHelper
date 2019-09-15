@@ -6,7 +6,7 @@ import com.example.medihelper.localdatabase.pojos.MedicinePlanHistory
 import com.example.medihelper.localdatabase.pojos.MedicinePlanHistoryCheckbox
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import com.example.medihelper.services.PersonProfileService
-import java.util.*
+import java.sql.Date
 
 class MedicinePlanHistoryViewModel(
     private val medicinePlanRepository: MedicinePlanRepository,
@@ -35,7 +35,7 @@ class MedicinePlanHistoryViewModel(
                 medicinePlanHistory.medicinePlanHistoryCheckboxList.groupBy { medicinePlanHistoryCheckbox ->
                     medicinePlanHistoryCheckbox.plannedDate
                 }.forEach { entry ->
-                    val currDate = AppDateTime.getCurrCalendar().time
+                    val currDate = AppDateTime.getCurrDate()
                     this.add(
                         HistoryItemDisplayData(
                             plannedDate = entry.key,

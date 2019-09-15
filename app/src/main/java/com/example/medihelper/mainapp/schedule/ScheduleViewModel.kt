@@ -5,7 +5,9 @@ import com.example.medihelper.AppDateTime
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import com.example.medihelper.services.PersonProfileService
+import java.sql.Date
 import java.util.*
+
 
 class ScheduleViewModel(
     private val plannedMedicineRepository: PlannedMedicineRepository,
@@ -42,12 +44,11 @@ class ScheduleViewModel(
     fun getDateForPosition(position: Int): Date {
         val calendar = AppDateTime.getCurrCalendar()
         calendar.add(Calendar.DAY_OF_YEAR, position - (timelineDaysCount / 2))
-        return calendar.time
+        return Date(calendar.timeInMillis)
     }
 
     fun getPositionForDate(date: Date): Int {
-        val currCalendar = AppDateTime.getCurrCalendar()
-        val daysDiff = AppDateTime.daysBetween(currCalendar.time, date)
+        val daysDiff = AppDateTime.daysBetween(AppDateTime.getCurrDate(), date)
         return (timelineDaysCount / 2) + daysDiff.toInt()
     }
 

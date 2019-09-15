@@ -76,7 +76,7 @@
                 android:layout_marginTop="8dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:onClick="@{() -> handler.onClickOpenOptions(displayData.personID)}"
-                android:src="@drawable/round_more_horiz_black_36"
+                android:src="@drawable/round_more_horiz_white_36"
                 android:tint="@color/colorWhite"
                 android:visibility="@{displayData.isMainPerson ? View.INVISIBLE : View.VISIBLE}"/>
 

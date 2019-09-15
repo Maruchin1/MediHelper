@@ -1,7 +1,7 @@
 package com.example.medihelper.localdatabase.entities
 
 import androidx.room.*
-import java.util.*
+import java.sql.Date
 
 @Entity(tableName = "medicines")
 data class MedicineEntity(

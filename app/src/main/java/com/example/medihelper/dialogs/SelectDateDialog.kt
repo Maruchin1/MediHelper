@@ -9,9 +9,9 @@ import com.example.medihelper.AppDateTime
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.databinding.DialogSelectDateBinding
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_select_date.*
-import java.util.*
+import java.sql.Date
+
 
 class SelectDateDialog : AppBottomSheetDialog() {
     override val TAG = "SelectDateDialog"

@@ -2,8 +2,9 @@ package com.example.medihelper.localdatabase.pojos
 
 import androidx.room.ColumnInfo
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
+import java.sql.Date
 import java.sql.Time
-import java.util.*
+
 
 data class MedicinePlanHistoryCheckbox(
     @ColumnInfo(name = "planned_medicine_id")

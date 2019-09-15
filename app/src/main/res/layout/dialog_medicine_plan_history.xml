@@ -47,8 +47,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/round_history_black_36"
-                        android:tint="@color/colorWhite" />
+                        android:src="@drawable/round_history_white_36" />
 
                     <TextView
                         android:layout_width="wrap_content"

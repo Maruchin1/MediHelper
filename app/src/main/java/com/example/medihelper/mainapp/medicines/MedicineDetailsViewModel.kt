@@ -138,7 +138,7 @@ class MedicineDetailsViewModel(
 
     private fun daysRemainsString(medicineDetails: MedicineDetails): String? {
         return medicineDetails.expireDate?.let { expireDate ->
-            val currDate = AppDateTime.getCurrCalendar().time
+            val currDate = AppDateTime.getCurrDate()
             val daysBetween = AppDateTime.daysBetween(currDate, expireDate)
             "$daysBetween dni"
         }

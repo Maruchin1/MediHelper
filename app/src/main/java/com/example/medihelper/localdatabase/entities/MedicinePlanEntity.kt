@@ -4,8 +4,8 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.room.*
+import java.sql.Date
 import java.sql.Time
-import java.util.*
 
 @Entity(
     tableName = "medicines_plans",

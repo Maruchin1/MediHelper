@@ -1,5 +1,6 @@
 package com.example.medihelper
 
+import java.sql.Date
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
@@ -12,6 +13,11 @@ object AppDateTime {
         set(Calendar.MINUTE, 0)
         set(Calendar.SECOND, 0)
         set(Calendar.MILLISECOND, 0)
+    }
+
+    fun getCurrDate(): Date {
+        val currCalendar = getCurrCalendar()
+        return Date(currCalendar.timeInMillis)
     }
 
     @JvmStatic
@@ -37,7 +43,7 @@ object AppDateTime {
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }
-        return calendar.time
+        return Date(calendar.timeInMillis)
     }
 
     fun makeDate(day: Int, month: Int, year: Int): Date {
@@ -45,7 +51,7 @@ object AppDateTime {
             set(year, month, day, 0, 0, 0)
             set(Calendar.MILLISECOND, 0)
         }
-        return calendar.time
+        return Date(calendar.timeInMillis)
     }
 
     fun daysBetween(date1: Date, date2: Date): Long {

@@ -71,7 +71,7 @@ class MedicinePlanListViewModel(
     )
 
     private fun getMedicinePlanType(medicinePlanItem: MedicinePlanItem): MedicinePlanType {
-        val currDate = AppDateTime.getCurrCalendar().time
+        val currDate = AppDateTime.getCurrDate()
         return when (medicinePlanItem.durationType) {
             MedicinePlanEntity.DurationType.ONCE -> {
                 when (AppDateTime.compareDates(currDate, medicinePlanItem.startDate)) {

@@ -18,7 +18,7 @@ import com.example.medihelper.databinding.FragmentScheduleDayBinding
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import java.util.*
+import java.sql.Date
 
 
 class ScheduleDayFragment : Fragment() {
