@@ -92,44 +92,16 @@ class AddEditMedicinePlanViewModel(
                 endDateLive.postValue(endDate)
 
                 daysTypeLive.postValue(daysType)
-                daysOfWeekLive.postValue(daysOfWeek)
-                intervalOfDaysLive.postValue(intervalOfDays)
+                if (daysOfWeek != null) {
+                    daysOfWeekLive.postValue(daysOfWeek)
+                }
+                if (intervalOfDays != null) {
+                    intervalOfDaysLive.postValue(intervalOfDays)
+                }
 
                 timeOfTakingListLive.postValue(timeOfTakingList.toMutableList())
             }
         }
-    }
-
-    fun saveMedicinePlan(): Boolean {
-        if (validateInputData()) {
-            val medicinePlanEntity = MedicinePlanEntity(
-                medicineID = selectedMedicineIDLive.value!!,
-                personID = selectedPersonItemLive.value!!.personID,
-                startDate = startDateLive.value!!,
-                durationType = durationTypeLive.value!!,
-                daysType = daysTypeLive.value!!,
-                timeOfTakingList = timeOfTakingListLive.value!!
-            )
-            if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
-                medicinePlanEntity.endDate = endDateLive.value
-            }
-            when (daysTypeLive.value) {
-                MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanEntity.daysOfWeek = daysOfWeekLive.value
-                MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> medicinePlanEntity.intervalOfDays = intervalOfDaysLive.value
-            }
-            if (editMedicinePlanID != null) {
-                GlobalScope.launch {
-                    medicinePlanRepository.update(medicinePlanEntity.copy(medicinePlanID = editMedicinePlanID!!))
-                }
-            } else {
-                GlobalScope.launch {
-                    val insertedMedicinePlanID = medicinePlanRepository.insert(medicinePlanEntity)
-                    medicineSchedulerService.addPlannedMedicines(insertedMedicinePlanID)
-                }
-            }
-            return true
-        }
-        return false
     }
 
     fun addDoseHour() {
@@ -160,6 +132,39 @@ class AddEditMedicinePlanViewModel(
             doseSize = timeOfTaking.doseSize.toString(),
             medicineTypeName = selectedMedicineDetailsLive.value?.medicineUnit ?: "--"
         )
+    }
+
+    fun saveMedicinePlan(): Boolean {
+        if (validateInputData()) {
+            val medicinePlanEntity = MedicinePlanEntity(
+                medicineID = selectedMedicineIDLive.value!!,
+                personID = selectedPersonItemLive.value!!.personID,
+                startDate = startDateLive.value!!,
+                durationType = durationTypeLive.value!!,
+                daysType = daysTypeLive.value!!,
+                timeOfTakingList = timeOfTakingListLive.value!!
+            )
+            if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
+                medicinePlanEntity.endDate = endDateLive.value
+            }
+            when (daysTypeLive.value) {
+                MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanEntity.daysOfWeek = daysOfWeekLive.value
+                MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> medicinePlanEntity.intervalOfDays = intervalOfDaysLive.value
+            }
+            if (editMedicinePlanID != null) {
+                GlobalScope.launch {
+                    medicinePlanRepository.update(medicinePlanEntity.copy(medicinePlanID = editMedicinePlanID!!))
+                    medicineSchedulerService.updatePlannedMedicines(editMedicinePlanID!!)
+                }
+            } else {
+                GlobalScope.launch {
+                    val insertedMedicinePlanID = medicinePlanRepository.insert(medicinePlanEntity)
+                    medicineSchedulerService.addPlannedMedicines(insertedMedicinePlanID)
+                }
+            }
+            return true
+        }
+        return false
     }
 
     private fun validateInputData(): Boolean {

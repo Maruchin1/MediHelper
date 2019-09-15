@@ -224,7 +224,7 @@
                             android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
 
                         <com.google.android.material.chip.ChipGroup
-                            android:id="@+id/chip_group_schedule_type"
+                            android:id="@+id/chip_group_duration_type"
                             style="@style/Widget.MaterialComponents.ChipGroup"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -264,7 +264,7 @@
                             android:layout_marginEnd="8dp"
                             android:layout_marginBottom="16dp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/chip_group_schedule_type" />
+                            app:layout_constraintTop_toBottomOf="@id/chip_group_duration_type" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -296,7 +296,7 @@
                             android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
 
                         <com.google.android.material.chip.ChipGroup
-                            android:id="@+id/chip_group_schedule_days"
+                            android:id="@+id/chip_group_days_type"
                             style="@style/Widget.MaterialComponents.ChipGroup"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

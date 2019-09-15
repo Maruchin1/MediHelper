@@ -20,6 +20,8 @@ interface PlannedMedicineRepository {
 
     suspend fun delete(plannedMedicineID: Int)
 
+    suspend fun deleteFromDateByMedicinePlanID(date: AppDate, medicinePlanID: Int)
+
     suspend fun getEntity(plannedMedicineID: Int): PlannedMedicineEntity
 
     suspend fun getEntityList(): List<PlannedMedicineEntity>

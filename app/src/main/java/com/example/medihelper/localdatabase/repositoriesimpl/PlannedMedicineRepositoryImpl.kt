@@ -13,13 +13,18 @@ class PlannedMedicineRepositoryImpl(private val plannedMedicineDao: PlannedMedic
 
     override suspend fun insert(plannedMedicineEntity: PlannedMedicineEntity) = plannedMedicineDao.insert(plannedMedicineEntity)
 
-    override suspend fun insert(plannedMedicineEntityList: List<PlannedMedicineEntity>) = plannedMedicineDao.insert(plannedMedicineEntityList)
+    override suspend fun insert(plannedMedicineEntityList: List<PlannedMedicineEntity>) =
+        plannedMedicineDao.insert(plannedMedicineEntityList)
 
     override suspend fun update(plannedMedicineEntity: PlannedMedicineEntity) = plannedMedicineDao.update(plannedMedicineEntity)
 
-    override suspend fun update(plannedMedicineEntityList: List<PlannedMedicineEntity>) = plannedMedicineDao.update(plannedMedicineEntityList)
+    override suspend fun update(plannedMedicineEntityList: List<PlannedMedicineEntity>) =
+        plannedMedicineDao.update(plannedMedicineEntityList)
 
     override suspend fun delete(plannedMedicineID: Int) = plannedMedicineDao.delete(plannedMedicineID)
+
+    override suspend fun deleteFromDateByMedicinePlanID(date: AppDate, medicinePlanID: Int) =
+        plannedMedicineDao.deleteFromDateByPlanID(date, medicinePlanID)
 
     override suspend fun getEntity(plannedMedicineID: Int) = plannedMedicineDao.getEntity(plannedMedicineID)
 
@@ -47,6 +52,9 @@ interface PlannedMedicineDao {
 
     @Query("DELETE FROM planned_medicines WHERE planned_medicine_id = :plannedMedicineID")
     suspend fun delete(plannedMedicineID: Int)
+
+    @Query("DELETE FROM planned_medicines WHERE medicine_plan_id = :medicinePlanID AND planned_date >= :date")
+    suspend fun deleteFromDateByPlanID(date: AppDate, medicinePlanID: Int)
 
     @Query("SELECT * FROM planned_medicines WHERE planned_medicine_id = :plannedMedicineID")
     suspend fun getEntity(plannedMedicineID: Int): PlannedMedicineEntity

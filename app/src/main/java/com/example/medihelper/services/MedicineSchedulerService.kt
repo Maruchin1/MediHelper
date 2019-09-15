@@ -24,6 +24,17 @@ class MedicineSchedulerService(
         val medicinePlanEntity = medicinePlanRepository.getEntity(medicinePlanID)
         val plannedMedicineList = getPlannedMedicineList(medicinePlanEntity)
         plannedMedicineRepository.insert(plannedMedicineList)
+        updatePlannedMedicinesStatuses()
+    }
+
+    suspend fun updatePlannedMedicines(medicinePlanID: Int) {
+        val currDate = AppDate.currDate()
+        plannedMedicineRepository.deleteFromDateByMedicinePlanID(currDate, medicinePlanID)
+        val medicinePlanEntity = medicinePlanRepository.getEntity(medicinePlanID)
+        val updatedPartOfMedicinePlan = medicinePlanEntity.copy(startDate = currDate)
+        val plannedMedicineList = getPlannedMedicineList(updatedPartOfMedicinePlan)
+        plannedMedicineRepository.insert(plannedMedicineList)
+        updatePlannedMedicinesStatuses()
     }
 
     private fun getPlannedMedicineList(medicinePlanEntity: MedicinePlanEntity): List<PlannedMedicineEntity> {

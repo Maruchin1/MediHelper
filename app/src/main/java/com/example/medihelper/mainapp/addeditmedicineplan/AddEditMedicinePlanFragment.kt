@@ -80,8 +80,8 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         Log.d(TAG, "onViewCreated")
         viewModel.setArgs(args)
         setupToolbar()
-        setupScheduleTypeChipGroup()
-        setupScheduleDaysChipGroup()
+        setupDurationTypeChipGroup()
+        setupDaysTypeChipGroup()
         setupTimeOfTakingRecyclerView()
         observeViewModel()
     }
@@ -108,9 +108,18 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         viewModel.durationTypeLive.observe(viewLifecycleOwner, Observer { scheduleType ->
             if (scheduleType != null) {
                 when (scheduleType) {
-                    MedicinePlanEntity.DurationType.ONCE -> changeScheduleTypeFragment(onceFragment)
-                    MedicinePlanEntity.DurationType.PERIOD -> changeScheduleTypeFragment(periodFragment)
-                    MedicinePlanEntity.DurationType.CONTINUOUS -> changeScheduleTypeFragment(continuousFragment)
+                    MedicinePlanEntity.DurationType.ONCE -> {
+                        checkDurationTypeChipGroupItem(R.id.chip_once)
+                        changeScheduleTypeFragment(onceFragment)
+                    }
+                    MedicinePlanEntity.DurationType.PERIOD -> {
+                        checkDurationTypeChipGroupItem(R.id.chip_period)
+                        changeScheduleTypeFragment(periodFragment)
+                    }
+                    MedicinePlanEntity.DurationType.CONTINUOUS -> {
+                        checkDurationTypeChipGroupItem(R.id.chip_continuous)
+                        changeScheduleTypeFragment(continuousFragment)
+                    }
                 }
             }
         })
@@ -119,9 +128,18 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         viewModel.daysTypeLive.observe(viewLifecycleOwner, Observer { scheduleDays ->
             if (scheduleDays != null) {
                 when (scheduleDays) {
-                    MedicinePlanEntity.DaysType.EVERYDAY -> changeScheduleDaysFragment(null)
-                    MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> changeScheduleDaysFragment(daysOfWeekFragment)
-                    MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> changeScheduleDaysFragment(intervalOfDaysFragment)
+                    MedicinePlanEntity.DaysType.EVERYDAY -> {
+                        checkDaysTypeChipGroupItem(R.id.chip_everyday)
+                        changeScheduleDaysFragment(null)
+                    }
+                    MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> {
+                        checkDaysTypeChipGroupItem(R.id.chip_days_of_week)
+                        changeScheduleDaysFragment(daysOfWeekFragment)
+                    }
+                    MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> {
+                        checkDaysTypeChipGroupItem(R.id.chip_interval_of_days)
+                        changeScheduleDaysFragment(intervalOfDaysFragment)
+                    }
                 }
             }
         })
@@ -159,8 +177,20 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         }
     }
 
-    private fun setupScheduleTypeChipGroup() {
-        chip_group_schedule_type.setOnCheckedChangeListener { group, checkedId ->
+    private fun checkDurationTypeChipGroupItem(itemID: Int) {
+        if (chip_group_duration_type.checkedChipId != itemID) {
+            chip_group_duration_type.check(itemID)
+        }
+    }
+
+    private fun checkDaysTypeChipGroupItem(itemID: Int) {
+        if (chip_group_days_type.checkedChipId != itemID) {
+            chip_group_days_type.check(itemID)
+        }
+    }
+
+    private fun setupDurationTypeChipGroup() {
+        chip_group_duration_type.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.chip_once -> {
                     viewModel.durationTypeLive.value = MedicinePlanEntity.DurationType.ONCE
@@ -169,20 +199,20 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
                 R.id.chip_period -> {
                     viewModel.durationTypeLive.value = MedicinePlanEntity.DurationType.PERIOD
                     viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.EVERYDAY
-                    chip_group_schedule_days.check(R.id.chip_everyday)
+//                    chip_group_days_type.check(R.id.chip_everyday)
                 }
                 R.id.chip_continuous -> {
                     viewModel.durationTypeLive.value = MedicinePlanEntity.DurationType.CONTINUOUS
                     viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.EVERYDAY
-                    chip_group_schedule_days.check(R.id.chip_everyday)
+//                    chip_group_days_type.check(R.id.chip_everyday)
                 }
             }
         }
-        chip_group_schedule_type.check(R.id.chip_once)
+//        chip_group_duration_type.check(R.id.chip_once)
     }
 
-    private fun setupScheduleDaysChipGroup() {
-        chip_group_schedule_days.setOnCheckedChangeListener { group, checkedId ->
+    private fun setupDaysTypeChipGroup() {
+        chip_group_days_type.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.chip_everyday -> viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.EVERYDAY
                 R.id.chip_days_of_week -> viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.DAYS_OF_WEEK
