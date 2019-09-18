@@ -15,7 +15,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:orientation="vertical"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="E-mail"
-            android:textAppearance="@style/AppTheme.Text.Form.CardHeader" />
+            android:textAppearance="@style/LoginRegisterFragment.Text.TextFieldLabel" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.Design.TextInputLayout"
@@ -50,7 +50,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="24dp"
             android:text="Hasło"
-            android:textAppearance="@style/AppTheme.Text.Form.CardHeader" />
+            android:textAppearance="@style/LoginRegisterFragment.Text.TextFieldLabel" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.Design.TextInputLayout"
@@ -73,7 +73,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="24dp"
             android:text="Potwierdź hasło"
-            android:textAppearance="@style/AppTheme.Text.Form.CardHeader" />
+            android:textAppearance="@style/LoginRegisterFragment.Text.TextFieldLabel" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.Design.TextInputLayout"
@@ -95,13 +95,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:onClick="@{() -> viewModel.registerNewUser()}"
+            android:onClick="@{() -> viewModel.registerNewUser(context)}"
             android:text="Zarejestruj" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:gravity="center_horizontal">
 
             <TextView

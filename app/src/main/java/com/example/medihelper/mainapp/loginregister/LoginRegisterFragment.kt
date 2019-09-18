@@ -11,12 +11,14 @@ import androidx.lifecycle.Observer
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentLoginRegisterBinding
+import com.example.medihelper.dialogs.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_login_register.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginRegisterFragment : AppFullScreenDialog() {
 
     private val viewModel: LoginRegisterViewModel by viewModel()
+    private var loadingDialog: LoadingDialog? = null
 
     fun onClickOpenRegisterFragment() = childFragmentManager.beginTransaction()
         .replace(R.id.frame_fragments, LoginRegisterInputFragment().apply { fragmentMode = LoginRegisterInputFragment.Mode.REGISTER })
@@ -43,16 +45,33 @@ class LoginRegisterFragment : AppFullScreenDialog() {
     }
 
     private fun observeViewModel() {
+        viewModel.loadingStartedAction.observe(viewLifecycleOwner, Observer { loadingStarted ->
+            if (loadingStarted == true) {
+                showLoadingDialog()
+            }
+        })
         viewModel.loginSuccessfulAction.observe(viewLifecycleOwner, Observer { loginSuccessful ->
+            dismissLoadingDialog()
             if (loginSuccessful == true) {
                 dismiss()
             }
         })
         viewModel.registrationSuccessfulAction.observe(viewLifecycleOwner, Observer { registrationSuccessful ->
+            dismissLoadingDialog()
             if (registrationSuccessful == true) {
                 dismiss()
             }
         })
+    }
+
+    private fun showLoadingDialog() {
+        loadingDialog = LoadingDialog()
+        loadingDialog?.show(childFragmentManager)
+    }
+
+    private fun dismissLoadingDialog() {
+        loadingDialog?.dismiss()
+        loadingDialog = null
     }
 
     private fun setTransparentStatusBar() {

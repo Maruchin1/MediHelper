@@ -1,6 +1,8 @@
 package com.example.medihelper.mainapp.loginregister
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +11,7 @@ import com.example.medihelper.remotedatabase.RegisteredUserRemoteRepository
 import com.example.medihelper.remotedatabase.pojos.UserCredentialsDto
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
 
 class LoginRegisterViewModel(
     private val registeredUserRemoteRepository: RegisteredUserRemoteRepository,
@@ -24,29 +27,46 @@ class LoginRegisterViewModel(
     val errorPasswordConfirmationLive = MutableLiveData<String>()
     val loginSuccessfulAction = ActionLiveData<Boolean>()
     val registrationSuccessfulAction = ActionLiveData<Boolean>()
+    val loadingStartedAction = ActionLiveData<Boolean>()
 
-    fun loginUser() = viewModelScope.launch {
+    fun loginUser(context: Context) = viewModelScope.launch {
         Log.i(TAG, "loginUser")
         if (validateInputData(Mode.LOGIN)) {
+            loadingStartedAction.postValue(true)
             val userCredentials = UserCredentialsDto(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
-            val authToken = registeredUserRemoteRepository.loginUser(userCredentials)
-            Log.i(TAG, "authToken = $authToken")
-            sharedPrefService.saveLoggedUserAuthToken(authToken)
-            loginSuccessfulAction.postValue(true)
+            var authToken: String? = null
+            try {
+                authToken = registeredUserRemoteRepository.loginUser(userCredentials)
+            } catch (e: SocketTimeoutException) {
+                Toast.makeText(context, "Przekroczono czas oczekiwania", Toast.LENGTH_LONG).show()
+            }
+            if (authToken != null) {
+                Log.i(TAG, "authToken = $authToken")
+                sharedPrefService.saveLoggedUserAuthToken(authToken)
+                loginSuccessfulAction.postValue(true)
+            } else {
+                loginSuccessfulAction.postValue(false)
+            }
         }
     }
 
-    fun registerNewUser() = viewModelScope.launch {
+    fun registerNewUser(context: Context) = viewModelScope.launch {
         if (validateInputData(Mode.REGISTER)) {
+            loadingStartedAction.postValue(true)
             val userCredentials = UserCredentialsDto(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
-            registeredUserRemoteRepository.registerNewUser(userCredentials)
-            registrationSuccessfulAction.sendAction(true)
+            try {
+                registeredUserRemoteRepository.registerNewUser(userCredentials)
+                registrationSuccessfulAction.sendAction(true)
+            } catch (e: SocketTimeoutException) {
+                Toast.makeText(context, "Przekroczono czas oczekiwania", Toast.LENGTH_LONG).show()
+                registrationSuccessfulAction.sendAction(false)
+            }
         }
     }
 

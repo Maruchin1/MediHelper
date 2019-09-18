@@ -58,7 +58,7 @@ class LoginRegisterInputFragment : Fragment() {
         }
         enterTransition = Slide(Gravity.BOTTOM).apply {
             duration = 500
-            startDelay = 700
+            startDelay = 800
         }
     }
 
