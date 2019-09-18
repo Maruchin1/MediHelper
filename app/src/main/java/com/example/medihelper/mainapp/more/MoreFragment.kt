@@ -21,10 +21,6 @@ class MoreFragment : Fragment() {
 
     fun onClickLogin() = findNavController().navigate(directions.toLoginRegisterFragment())
 
-    fun onClickRegister() {
-
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentMoreBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_more, container, false)
         binding.handler = this

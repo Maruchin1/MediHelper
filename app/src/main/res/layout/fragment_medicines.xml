@@ -26,13 +26,13 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:titleEnabled="false">
 
@@ -41,7 +41,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:menu="@menu/toolbar_menu_search"
-                    app:title="Apteczka" />
+                    app:title="Apteczka"
+                    app:titleTextAppearance="@style/AppTheme.Text.ToolbarTitle.Main" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>

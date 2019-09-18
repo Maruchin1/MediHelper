@@ -109,6 +109,10 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="AppTheme.Text.ToolbarTitle.Main" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">34sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
 
     <!--    fragment_medicine_details-->
 
@@ -132,5 +136,9 @@
     <!--    login_register-->
     <style name="LoginRegisterFragment.Text.TextFieldLabel" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:textColor">@color/colorTextSecondary</item>
+    </style>
+
+    <style name="MoreFragment.Text.CardHeader" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 </resources>
