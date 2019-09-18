@@ -77,17 +77,17 @@
             app:destination="@id/personDialog" />
         <argument
             android:name="editMedicinePlanID"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
     </dialog>
     <dialog
         android:id="@+id/addEditMedicineFragment"
         android:name="com.example.medihelper.mainapp.addeditmedicine.AddEditMedicineFragment"
-        tools:layout="@layout/fragment_add_edit_medicine" >
+        tools:layout="@layout/fragment_add_edit_medicine">
         <argument
             android:name="editMedicineID"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
     </dialog>
     <dialog
         android:id="@+id/medicineDetailsFragment"
@@ -111,9 +111,22 @@
     <dialog
         android:id="@+id/medicinePlanHistoryDialog"
         android:name="com.example.medihelper.mainapp.medicineplanlist.MedicinePlanHistoryDialog"
-        tools:layout="@layout/dialog_medicine_plan_history" >
+        tools:layout="@layout/dialog_medicine_plan_history">
         <argument
             android:name="medicinePlanID"
             app:argType="integer" />
     </dialog>
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="com.example.medihelper.mainapp.more.MoreFragment"
+        tools:layout="@layout/fragment_more" >
+        <action
+            android:id="@+id/toLoginRegisterFragment"
+            app:destination="@id/loginRegisterFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/loginRegisterFragment"
+        android:name="com.example.medihelper.mainapp.loginregister.LoginRegisterFragment"
+        android:label="LoginRegisterFragment"
+        tools:layout="@layout/fragment_login_register" />
 </navigation>

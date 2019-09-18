@@ -16,7 +16,7 @@
         android:title="Lekarze" />
 
     <item
-        android:id="@+id/other_destination"
-        android:icon="@drawable/round_settings_black_48"
-        android:title="Inne" />
+        android:id="@+id/moreFragment"
+        android:icon="@drawable/round_menu_white_48"
+        android:title="Więcej" />
 </menu>

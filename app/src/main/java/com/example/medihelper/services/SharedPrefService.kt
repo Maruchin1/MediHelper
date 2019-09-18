@@ -23,6 +23,12 @@ class SharedPrefService(
         stringValue.toInt()
     } ?: emptyList()
 
+    fun getLoggedUserAuthToken() = sharedPreferences.getString(KEY_LOGGED_USER_AUTH_TOKEN, "")
+
+    fun saveLoggedUserAuthToken(newAuthToken: String) = sharedPreferences.edit(true) {
+        putString(KEY_LOGGED_USER_AUTH_TOKEN, newAuthToken)
+    }
+
     fun checkInitialDataLoaded() {
         val initialDataLoaded = sharedPreferences.getBoolean(KEY_INITIAL_DATA_LOADED, false)
         if (!initialDataLoaded) {
@@ -68,5 +74,6 @@ class SharedPrefService(
         private const val KEY_MAIN_PERSON_ID = "key-main-person-id"
         private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
         private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-array"
+        private const val KEY_LOGGED_USER_AUTH_TOKEN = "key-logged-user-auth-token"
     }
 }

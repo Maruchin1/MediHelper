@@ -91,6 +91,16 @@
         <item name="chipStrokeWidth">1dp</item>
     </style>
 
+    <style name="AppTheme.Widget.Button" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="AppTheme.Widget.Button.Big" parent="Widget.MaterialComponents.Button">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="cornerRadius">24dp</item>
+    </style>
+
     <style name="AppTheme.Text.Form.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
