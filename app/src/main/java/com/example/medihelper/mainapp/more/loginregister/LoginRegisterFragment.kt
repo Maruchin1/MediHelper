@@ -12,6 +12,9 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentLoginRegisterBinding
 import com.example.medihelper.dialogs.LoadingDialog
+import com.example.medihelper.mainapp.MainActivity
+import com.example.medihelper.remotedatabase.ApiResponse
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_login_register.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,14 +24,16 @@ class LoginRegisterFragment : AppFullScreenDialog() {
     private var loadingDialog: LoadingDialog? = null
 
     fun onClickOpenRegisterFragment() = childFragmentManager.beginTransaction()
-        .replace(R.id.frame_fragments, LoginRegisterInputFragment().apply { fragmentMode =
-            LoginRegisterInputFragment.Mode.REGISTER
+        .replace(R.id.frame_fragments, LoginRegisterInputFragment().apply {
+            fragmentMode =
+                LoginRegisterInputFragment.Mode.REGISTER
         })
         .commit()
 
     fun onClickOpenLoginFragment() = childFragmentManager.beginTransaction()
-        .replace(R.id.frame_fragments, LoginRegisterInputFragment().apply { fragmentMode =
-            LoginRegisterInputFragment.Mode.LOGIN
+        .replace(R.id.frame_fragments, LoginRegisterInputFragment().apply {
+            fragmentMode =
+                LoginRegisterInputFragment.Mode.LOGIN
         })
         .commit()
 
@@ -54,16 +59,23 @@ class LoginRegisterFragment : AppFullScreenDialog() {
                 showLoadingDialog()
             }
         })
-        viewModel.loginSuccessfulAction.observe(viewLifecycleOwner, Observer { loginSuccessful ->
+        viewModel.loginResponseAction.observe(viewLifecycleOwner, Observer { response ->
             dismissLoadingDialog()
-            if (loginSuccessful == true) {
-                dismiss()
+            when (response) {
+                ApiResponse.OK -> {
+                    dismiss()
+                    (requireActivity() as MainActivity).showSnackbar("Zalogowano pomyślnie")
+                }
+                ApiResponse.BAD_REQUEST -> showSnackbar("Niepoprawne dane logowania")
+                else -> showSnackbar(response.message)
             }
         })
-        viewModel.registrationSuccessfulAction.observe(viewLifecycleOwner, Observer { registrationSuccessful ->
+        viewModel.registrationResponseAction.observe(viewLifecycleOwner, Observer { response ->
             dismissLoadingDialog()
-            if (registrationSuccessful == true) {
-                onClickOpenLoginFragment()
+            when (response) {
+                ApiResponse.OK -> onClickOpenLoginFragment()
+                ApiResponse.BAD_REQUEST -> showSnackbar("Konto o podanym adresie e-mail już istnieje")
+                else -> showSnackbar(response.message)
             }
         })
     }
@@ -90,4 +102,7 @@ class LoginRegisterFragment : AppFullScreenDialog() {
             dismiss()
         }
     }
+
+    private fun showSnackbar(message: String) = Snackbar.make(root_lay, message, Snackbar.LENGTH_SHORT)
+        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show()
 }

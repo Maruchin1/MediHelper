@@ -1,18 +1,14 @@
 package com.example.medihelper.mainapp.more.loginregister
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.custom.ActionLiveData
 import com.example.medihelper.remotedatabase.RegisteredUserRemoteRepository
+import com.example.medihelper.remotedatabase.ApiResponse
 import com.example.medihelper.remotedatabase.pojos.UserCredentialsDto
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.net.SocketTimeoutException
 
 class LoginRegisterViewModel(
     private val registeredUserRemoteRepository: RegisteredUserRemoteRepository,
@@ -26,9 +22,9 @@ class LoginRegisterViewModel(
     val errorEmailLive = MutableLiveData<String>()
     val errorPasswordLive = MutableLiveData<String>()
     val errorPasswordConfirmationLive = MutableLiveData<String>()
-    val loginSuccessfulAction = ActionLiveData<Boolean>()
-    val registrationSuccessfulAction = ActionLiveData<Boolean>()
     val loadingStartedAction = ActionLiveData<Boolean>()
+    val loginResponseAction = ActionLiveData<ApiResponse>()
+    val registrationResponseAction = ActionLiveData<ApiResponse>()
 
     fun resetViewModel() {
         listOf(
@@ -43,48 +39,41 @@ class LoginRegisterViewModel(
         }
     }
 
-    fun loginUser(context: Context) = viewModelScope.launch {
+    fun loginUser() = viewModelScope.launch {
         if (validateInputData(Mode.LOGIN)) {
             loadingStartedAction.postValue(true)
             val userCredentials = UserCredentialsDto(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
-            var loginSuccessful = false
-            var authToken = ""
-            try {
-                authToken = registeredUserRemoteRepository.loginUser(userCredentials)
-                loginSuccessful = true
-            } catch (e: SocketTimeoutException) {
-                Toast.makeText(context, "Przekroczono czas oczekiwania", Toast.LENGTH_LONG).show()
-            } catch (e: HttpException) {
-                Toast.makeText(context, "Error ${e.code()}, ${e.message()}", Toast.LENGTH_LONG).show()
+            val response = try {
+                val authToken = registeredUserRemoteRepository.loginUser(userCredentials)
+                sharedPrefService.run {
+                    saveLoggedUserAuthToken(authToken)
+                    saveLoggedUserEmail(userCredentials.email)
+                }
+                ApiResponse.OK
+            } catch (e: Exception) {
+                ApiResponse.getResponseByException(e)
             }
-            sharedPrefService.run {
-                saveLoggedUserAuthToken(authToken)
-                saveLoggedUserEmail(userCredentials.email)
-            }
-            loginSuccessfulAction.sendAction(loginSuccessful)
+            loginResponseAction.sendAction(response)
         }
     }
 
-    fun registerNewUser(context: Context) = viewModelScope.launch {
+    fun registerNewUser() = viewModelScope.launch {
         if (validateInputData(Mode.REGISTER)) {
             loadingStartedAction.postValue(true)
             val userCredentials = UserCredentialsDto(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
-            var registrationSuccessful = false
-            try {
+            val response = try {
                 registeredUserRemoteRepository.registerNewUser(userCredentials)
-                registrationSuccessful = true
-            } catch (e: SocketTimeoutException) {
-                Toast.makeText(context, "Przekroczono czas oczekiwania", Toast.LENGTH_LONG).show()
-            } catch (e: HttpException) {
-                Toast.makeText(context, "Error ${e.code()}, ${e.message()}", Toast.LENGTH_LONG).show()
+                ApiResponse.OK
+            } catch (e: Exception) {
+                ApiResponse.getResponseByException(e)
             }
-            registrationSuccessfulAction.sendAction(registrationSuccessful)
+            registrationResponseAction.sendAction(response)
         }
     }
 

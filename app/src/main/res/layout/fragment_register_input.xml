@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:onClick="@{() -> viewModel.registerNewUser(context)}"
+            android:onClick="@{() -> viewModel.registerNewUser()}"
             android:text="Zarejestruj" />
 
         <LinearLayout

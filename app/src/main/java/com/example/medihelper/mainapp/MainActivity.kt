@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
 import com.example.medihelper.services.MedicineSchedulerService
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -33,6 +34,9 @@ class MainActivity : AppCompatActivity() {
     fun setStatusBarColor(colorResID: Int) {
         window.statusBarColor = ContextCompat.getColor(this, colorResID)
     }
+
+    fun showSnackbar(message: String) = Snackbar.make(root_lay, message, Snackbar.LENGTH_SHORT)
+        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show()
 
     private fun setupBottomNav() {
         val navController = findNavController(R.id.nav_host_fragment)

@@ -8,16 +8,14 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentLoggedUserBinding
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.dialogs.LoadingDialog
+import com.example.medihelper.mainapp.MainActivity
+import com.example.medihelper.remotedatabase.ApiResponse
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*
-import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.root_lay
-import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.toolbar
 import kotlinx.android.synthetic.main.fragment_logged_user.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,18 +26,18 @@ class LoggedUserFragment : AppFullScreenDialog() {
 
     fun onClickChangePassword() = NewPasswordDialog().apply {
         setNewPasswordSelectedListener { newPassword ->
-            viewModel.changeUserPassword(requireContext(), newPassword)
+            viewModel.changeUserPassword(newPassword)
         }
     }.show(childFragmentManager)
 
     fun onClickLogoutUser() = ConfirmDialog().apply {
         title = "Wyloguj"
-        message =
-            "Wylogowanie sprawi, że twoje dane nie będą synchronizowane z chmurą oraz aplikacjami podopiecznych. Czy chcesz kontynuować?"
+        message = "Wylogowanie sprawi, że twoje dane nie będą synchronizowane z chmurą oraz aplikacjami podopiecznych. Czy chcesz kontynuować?"
         iconResId = R.drawable.baseline_account_circle_white_36
         setOnConfirmClickListener {
             viewModel.logoutUser()
             this@LoggedUserFragment.dismiss()
+            (requireActivity() as MainActivity).showSnackbar("Wylogowano z konta MediHelper")
         }
     }.show(childFragmentManager)
 
@@ -65,11 +63,11 @@ class LoggedUserFragment : AppFullScreenDialog() {
                 showLoadingDialog()
             }
         })
-        viewModel.changePasswordSuccessfulAction.observe(viewLifecycleOwner, Observer { changePasswordSuccessful ->
+        viewModel.changePasswordResponseAction.observe(viewLifecycleOwner, Observer { response ->
             dismissLoadingDialog()
-            if (changePasswordSuccessful == true) {
-                Snackbar.make(root_lay, "Hasło zostało pomyślnie zmienione", Snackbar.LENGTH_SHORT)
-                    .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show()
+            when (response) {
+                ApiResponse.OK -> showSnackbar("Hasło zostało pomyślnie zmienione")
+                else -> showSnackbar(response.message)
             }
         })
     }
@@ -96,4 +94,7 @@ class LoggedUserFragment : AppFullScreenDialog() {
             dismiss()
         }
     }
+
+    private fun showSnackbar(message: String) = Snackbar.make(root_lay, message, Snackbar.LENGTH_SHORT)
+        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show()
 }
