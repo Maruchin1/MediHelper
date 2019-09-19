@@ -19,7 +19,7 @@ class MoreFragment : Fragment() {
     private val viewModel: MoreViewModel by viewModel()
     private val directions by lazy { MoreFragmentDirections }
 
-    fun onClickLogin() = findNavController().navigate(directions.toLoginRegisterFragment())
+    fun onClickMediHelperAccount() = findNavController().navigate(directions.toLoginRegisterFragment())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentMoreBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_more, container, false)

@@ -11,6 +11,7 @@ import com.example.medihelper.remotedatabase.RegisteredUserRemoteRepository
 import com.example.medihelper.remotedatabase.pojos.UserCredentialsDto
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.net.SocketTimeoutException
 
 class LoginRegisterViewModel(
@@ -42,10 +43,13 @@ class LoginRegisterViewModel(
                 authToken = registeredUserRemoteRepository.loginUser(userCredentials)
             } catch (e: SocketTimeoutException) {
                 Toast.makeText(context, "Przekroczono czas oczekiwania", Toast.LENGTH_LONG).show()
+            } catch (e: HttpException) {
+                Toast.makeText(context, "Error ${e.code()}, ${e.message()}", Toast.LENGTH_LONG).show()
             }
             if (authToken != null) {
                 Log.i(TAG, "authToken = $authToken")
                 sharedPrefService.saveLoggedUserAuthToken(authToken)
+                sharedPrefService.saveLoggedUserEmail(userCredentials.email)
                 loginSuccessfulAction.postValue(true)
             } else {
                 loginSuccessfulAction.postValue(false)
@@ -66,6 +70,8 @@ class LoginRegisterViewModel(
             } catch (e: SocketTimeoutException) {
                 Toast.makeText(context, "Przekroczono czas oczekiwania", Toast.LENGTH_LONG).show()
                 registrationSuccessfulAction.sendAction(false)
+            } catch (e: HttpException) {
+                Toast.makeText(context, "Error ${e.code()}, ${e.message()}", Toast.LENGTH_LONG).show()
             }
         }
     }

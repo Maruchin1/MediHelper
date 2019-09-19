@@ -4,6 +4,7 @@ package com.example.medihelper
 import android.app.Application
 import android.content.Context
 import android.os.Environment
+import android.preference.PreferenceManager
 import androidx.room.Room
 import com.example.medihelper.localdatabase.AppDatabase
 import com.example.medihelper.localdatabase.repositories.*
@@ -106,16 +107,15 @@ val viewModelModule = module {
     viewModel { SelectMedicineViewModel(get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get()) }
     viewModel { ScheduleViewModel(get(), get()) }
-    viewModel { MoreViewModel() }
+    viewModel { MoreViewModel(get()) }
     viewModel { LoginRegisterViewModel(get(), get()) }
 }
 
 val serviceModule = module {
-    single { SharedPrefService(androidContext().getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE), get()) }
+    single { SharedPrefService(PreferenceManager.getDefaultSharedPreferences(androidContext()), get()) }
     single { PersonProfileService(get(), get()) }
     single { MedicineSchedulerService(get(), get()) }
     single { PhotoFileService(androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)) }
 }
 
-private const val APP_SHARED_PREFERENCES = "app-shared-preferences"
 private const val REGISTERED_USER_REMOTE_REPOSITORY_URL = "https://medihelper-api.herokuapp.com/registered-users/"

@@ -1,9 +1,12 @@
 package com.example.medihelper.services
 
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import android.util.Log
 import androidx.core.content.edit
+import androidx.lifecycle.LiveData
 import com.example.medihelper.R
+import com.example.medihelper.custom.SharedPrefLiveData
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import kotlinx.coroutines.GlobalScope
@@ -23,10 +26,14 @@ class SharedPrefService(
         stringValue.toInt()
     } ?: emptyList()
 
-    fun getLoggedUserAuthToken() = sharedPreferences.getString(KEY_LOGGED_USER_AUTH_TOKEN, "")
+    fun getLoggedUserEmailLive(): LiveData<String> = SharedPrefLiveData(sharedPreferences, KEY_LOOGED_USER_EMAIL, "")
 
     fun saveLoggedUserAuthToken(newAuthToken: String) = sharedPreferences.edit(true) {
         putString(KEY_LOGGED_USER_AUTH_TOKEN, newAuthToken)
+    }
+
+    fun saveLoggedUserEmail(newEmail: String) = sharedPreferences.edit(true) {
+        putString(KEY_LOOGED_USER_EMAIL,newEmail)
     }
 
     fun checkInitialDataLoaded() {
@@ -37,16 +44,16 @@ class SharedPrefService(
     }
 
     private fun loadInitialData() = GlobalScope.launch {
-            val initialPersonID = personRepository.insert(getInitialPerson()).toInt()
-            Log.i(TAG, "initialPersonID = $initialPersonID")
-            sharedPreferences.edit {
-                putInt(KEY_MAIN_PERSON_ID, initialPersonID)
-                putStringSet(KEY_MEDICINE_UNIT_SET, getInitialMedicineUnitSet())
-                putStringSet(KEY_PERSON_COLOR_RES_ID_SET, getInitialPersonColorResIDSet())
-                putBoolean(KEY_INITIAL_DATA_LOADED, true)
-                commit()
-            }
+        val initialPersonID = personRepository.insert(getInitialPerson()).toInt()
+        Log.i(TAG, "initialPersonID = $initialPersonID")
+        sharedPreferences.edit {
+            putInt(KEY_MAIN_PERSON_ID, initialPersonID)
+            putStringSet(KEY_MEDICINE_UNIT_SET, getInitialMedicineUnitSet())
+            putStringSet(KEY_PERSON_COLOR_RES_ID_SET, getInitialPersonColorResIDSet())
+            putBoolean(KEY_INITIAL_DATA_LOADED, true)
+            commit()
         }
+    }
 
     private fun getInitialPerson() = PersonEntity(
         personName = "Ja",
@@ -75,5 +82,6 @@ class SharedPrefService(
         private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
         private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-array"
         private const val KEY_LOGGED_USER_AUTH_TOKEN = "key-logged-user-auth-token"
+        private const val KEY_LOOGED_USER_EMAIL = "key-logged-user-email"
     }
 }

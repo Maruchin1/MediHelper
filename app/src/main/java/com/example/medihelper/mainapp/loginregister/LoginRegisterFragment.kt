@@ -59,7 +59,7 @@ class LoginRegisterFragment : AppFullScreenDialog() {
         viewModel.registrationSuccessfulAction.observe(viewLifecycleOwner, Observer { registrationSuccessful ->
             dismissLoadingDialog()
             if (registrationSuccessful == true) {
-                dismiss()
+                onClickOpenLoginFragment()
             }
         })
     }

@@ -16,7 +16,6 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.custom.TAG
 import com.example.medihelper.databinding.FragmentAddEditMedicinePlanBinding
 import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.dialogs.SelectFloatNumberDialog
@@ -77,7 +76,6 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated")
         viewModel.setArgs(args)
         setupToolbar()
         setupDurationTypeChipGroup()
