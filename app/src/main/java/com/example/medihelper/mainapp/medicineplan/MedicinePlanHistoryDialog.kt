@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.medicineplanlist
+package com.example.medihelper.mainapp.medicineplan
 
 import android.os.Bundle
 import android.view.Gravity
@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.BR
 import com.example.medihelper.R

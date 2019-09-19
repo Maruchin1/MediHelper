@@ -26,6 +26,8 @@ class SharedPrefService(
         stringValue.toInt()
     } ?: emptyList()
 
+    fun getLoggedUserAuthToken() = sharedPreferences.getString(KEY_LOGGED_USER_AUTH_TOKEN, null)
+
     fun getLoggedUserEmailLive(): LiveData<String> = SharedPrefLiveData(sharedPreferences, KEY_LOOGED_USER_EMAIL, "")
 
     fun saveLoggedUserAuthToken(newAuthToken: String) = sharedPreferences.edit(true) {

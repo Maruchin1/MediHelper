@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.addeditmedicineplan.durationtype
+package com.example.medihelper.mainapp.medicineplan.durationtype
 
 
 import android.os.Bundle
@@ -7,13 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentContinuousBinding
 import com.example.medihelper.dialogs.SelectDateDialog
-import com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel
+import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ContinuousFragment : Fragment() {
 

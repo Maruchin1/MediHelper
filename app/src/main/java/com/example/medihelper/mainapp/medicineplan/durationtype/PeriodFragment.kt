@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.addeditmedicineplan.durationtype
+package com.example.medihelper.mainapp.medicineplan.durationtype
 
 
 import android.os.Bundle
@@ -8,29 +8,33 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.medihelper.R
-import com.example.medihelper.databinding.FragmentOnceBinding
+import com.example.medihelper.databinding.FragmentPeriodBinding
 import com.example.medihelper.dialogs.SelectDateDialog
-import com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel
+import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-
-class OnceFragment : Fragment() {
+class PeriodFragment : Fragment() {
 
     private val viewModel: AddEditMedicinePlanViewModel by sharedViewModel(from = { parentFragment!! })
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentOnceBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_once, container, false)
+        val binding: FragmentPeriodBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_period, container, false)
         binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
-    fun onClickSelectDate() {
+    fun onClickSelectDate(view: View) {
+        val selectedDateLive = when (view.id) {
+            R.id.etx_start_date -> viewModel.startDateLive
+            R.id.etx_end_date -> viewModel.endDateLive
+            else -> null
+        }
         val dialog = SelectDateDialog()
-        dialog.defaultDate = viewModel.startDateLive.value
+        selectedDateLive?.let { dialog.defaultDate = it.value }
         dialog.setDateSelectedListener { date ->
-            viewModel.startDateLive.value = date
+            selectedDateLive?.value = date
         }
         dialog.show(childFragmentManager, dialog.TAG)
     }

@@ -7,11 +7,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.family.AddEditPersonFragment" />
+            type="com.example.medihelper.mainapp.persons.AddEditPersonFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.family.AddEditPersonViewModel.PersonColorDisplayData" />
+            type="com.example.medihelper.mainapp.persons.AddEditPersonViewModel.PersonColorDisplayData" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

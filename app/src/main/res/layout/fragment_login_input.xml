@@ -2,17 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".mainapp.loginregister.LoginRegisterInputFragment">
+    tools:context=".mainapp.more.loginregister.LoginRegisterInputFragment">
 
     <data>
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.loginregister.LoginRegisterFragment" />
+            type="com.example.medihelper.mainapp.more.loginregister.LoginRegisterFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.loginregister.LoginRegisterViewModel" />
+            type="com.example.medihelper.mainapp.more.loginregister.LoginRegisterViewModel" />
     </data>
 
     <LinearLayout

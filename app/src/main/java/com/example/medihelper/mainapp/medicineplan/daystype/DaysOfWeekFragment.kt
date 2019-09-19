@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.addeditmedicineplan.daystype
+package com.example.medihelper.mainapp.medicineplan.daystype
 
 
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentDaysOfWeekBinding
-import com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel
+import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class DaysOfWeekFragment : Fragment() {

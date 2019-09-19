@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.loginregister
+package com.example.medihelper.mainapp.more.loginregister
 
 
 import android.os.Bundle
@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.transition.Fade
 import androidx.transition.Slide
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentLoginInputBinding
@@ -49,7 +48,7 @@ class LoginRegisterInputFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupAnimations()
+        viewModel.resetViewModel()
     }
 
     private fun setupAnimations() {

@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.loginregister
+package com.example.medihelper.mainapp.more.loginregister
 
 import android.os.Build
 import android.os.Bundle
@@ -21,11 +21,15 @@ class LoginRegisterFragment : AppFullScreenDialog() {
     private var loadingDialog: LoadingDialog? = null
 
     fun onClickOpenRegisterFragment() = childFragmentManager.beginTransaction()
-        .replace(R.id.frame_fragments, LoginRegisterInputFragment().apply { fragmentMode = LoginRegisterInputFragment.Mode.REGISTER })
+        .replace(R.id.frame_fragments, LoginRegisterInputFragment().apply { fragmentMode =
+            LoginRegisterInputFragment.Mode.REGISTER
+        })
         .commit()
 
     fun onClickOpenLoginFragment() = childFragmentManager.beginTransaction()
-        .replace(R.id.frame_fragments, LoginRegisterInputFragment().apply { fragmentMode = LoginRegisterInputFragment.Mode.LOGIN })
+        .replace(R.id.frame_fragments, LoginRegisterInputFragment().apply { fragmentMode =
+            LoginRegisterInputFragment.Mode.LOGIN
+        })
         .commit()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

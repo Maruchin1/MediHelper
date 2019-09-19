@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.addeditmedicineplan.daystype
+package com.example.medihelper.mainapp.medicineplan.daystype
 
 
 import android.os.Bundle
@@ -11,9 +11,8 @@ import androidx.databinding.DataBindingUtil
 import com.example.medihelper.R
 import com.example.medihelper.dialogs.SelectNumberDialog
 import com.example.medihelper.databinding.FragmentIntervalOfDaysBinding
-import com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel
+import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class IntervalOfDaysFragment : Fragment() {
     private val TAG = IntervalOfDaysFragment::class.simpleName

@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/medicinePlanListHostFragment"
-        android:name="com.example.medihelper.mainapp.medicineplanlist.MedicinePlanListHostFragment"
+        android:name="com.example.medihelper.mainapp.medicineplan.MedicinePlanListHostFragment"
         tools:layout="@layout/fragment_medicine_plan_list_host">
         <action
             android:id="@+id/toPersonDialog"
@@ -43,7 +43,7 @@
     </fragment>
     <dialog
         android:id="@+id/personDialog"
-        android:name="com.example.medihelper.mainapp.family.PersonDialog"
+        android:name="com.example.medihelper.mainapp.persons.PersonDialog"
         tools:layout="@layout/dialog_person">
         <action
             android:id="@+id/toAddEditPersonFragment"
@@ -51,7 +51,7 @@
     </dialog>
     <dialog
         android:id="@+id/addEditPersonFragment"
-        android:name="com.example.medihelper.mainapp.family.AddEditPersonFragment"
+        android:name="com.example.medihelper.mainapp.persons.AddEditPersonFragment"
         tools:layout="@layout/fragment_add_edit_person">
         <argument
             android:name="editPersonID"
@@ -60,7 +60,7 @@
     </dialog>
     <dialog
         android:id="@+id/addEditMedicinePlanFragment"
-        android:name="com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanFragment"
+        android:name="com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanFragment"
         tools:layout="@layout/fragment_add_edit_medicine_plan">
         <action
             android:id="@+id/toPersonDialog"
@@ -72,7 +72,7 @@
     </dialog>
     <dialog
         android:id="@+id/addEditMedicineFragment"
-        android:name="com.example.medihelper.mainapp.addeditmedicine.AddEditMedicineFragment"
+        android:name="com.example.medihelper.mainapp.medicines.AddEditMedicineFragment"
         tools:layout="@layout/fragment_add_edit_medicine">
         <argument
             android:name="editMedicineID"
@@ -100,7 +100,7 @@
     </dialog>
     <dialog
         android:id="@+id/medicinePlanHistoryDialog"
-        android:name="com.example.medihelper.mainapp.medicineplanlist.MedicinePlanHistoryDialog"
+        android:name="com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryDialog"
         tools:layout="@layout/dialog_medicine_plan_history">
         <argument
             android:name="medicinePlanID"
@@ -119,11 +119,11 @@
     </fragment>
     <dialog
         android:id="@+id/loginRegisterFragment"
-        android:name="com.example.medihelper.mainapp.loginregister.LoginRegisterFragment"
+        android:name="com.example.medihelper.mainapp.more.loginregister.LoginRegisterFragment"
         android:label="LoginRegisterFragment"
         tools:layout="@layout/fragment_login_register" />
     <dialog
         android:id="@+id/loggedUserFragment"
-        android:name="com.example.medihelper.mainapp.more.LoggedUserFragment"
+        android:name="com.example.medihelper.mainapp.more.loggeduser.LoggedUserFragment"
         tools:layout="@layout/fragment_logged_user" />
 </navigation>

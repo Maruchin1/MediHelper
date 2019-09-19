@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.medicineplanlist
+package com.example.medihelper.mainapp.medicineplan
 
 
 import android.os.Bundle

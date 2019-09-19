@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.family
+package com.example.medihelper.mainapp.persons
 
 import androidx.lifecycle.*
 import com.example.medihelper.localdatabase.entities.PersonEntity

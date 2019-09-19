@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.addeditmedicineplan
+package com.example.medihelper.mainapp.medicineplan
 
 import android.util.Log
 import androidx.lifecycle.*

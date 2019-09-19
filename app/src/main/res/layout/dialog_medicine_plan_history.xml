@@ -7,11 +7,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicineplanlist.MedicinePlanHistoryDialog" />
+            type="com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryDialog" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.medicineplanlist.MedicinePlanHistoryViewModel" />
+            type="com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel" />
     </data>
 
     <FrameLayout

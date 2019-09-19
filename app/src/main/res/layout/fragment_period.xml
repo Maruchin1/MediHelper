@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel" />
+            type="com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.addeditmedicineplan.durationtype.PeriodFragment" />
+            type="com.example.medihelper.mainapp.medicineplan.durationtype.PeriodFragment" />
     </data>
 
     <LinearLayout

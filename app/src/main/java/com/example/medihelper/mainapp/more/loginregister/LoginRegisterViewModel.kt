@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.loginregister
+package com.example.medihelper.mainapp.more.loginregister
 
 import android.content.Context
 import android.util.Log
@@ -30,30 +30,41 @@ class LoginRegisterViewModel(
     val registrationSuccessfulAction = ActionLiveData<Boolean>()
     val loadingStartedAction = ActionLiveData<Boolean>()
 
+    fun resetViewModel() {
+        listOf(
+            emailLive,
+            passwordLive,
+            passwordConfirmationLive,
+            errorEmailLive,
+            errorPasswordLive,
+            errorPasswordConfirmationLive
+        ).forEach { liveData ->
+            liveData.postValue(null)
+        }
+    }
+
     fun loginUser(context: Context) = viewModelScope.launch {
-        Log.i(TAG, "loginUser")
         if (validateInputData(Mode.LOGIN)) {
             loadingStartedAction.postValue(true)
             val userCredentials = UserCredentialsDto(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
-            var authToken: String? = null
+            var loginSuccessful = false
+            var authToken = ""
             try {
                 authToken = registeredUserRemoteRepository.loginUser(userCredentials)
+                loginSuccessful = true
             } catch (e: SocketTimeoutException) {
                 Toast.makeText(context, "Przekroczono czas oczekiwania", Toast.LENGTH_LONG).show()
             } catch (e: HttpException) {
                 Toast.makeText(context, "Error ${e.code()}, ${e.message()}", Toast.LENGTH_LONG).show()
             }
-            if (authToken != null) {
-                Log.i(TAG, "authToken = $authToken")
-                sharedPrefService.saveLoggedUserAuthToken(authToken)
-                sharedPrefService.saveLoggedUserEmail(userCredentials.email)
-                loginSuccessfulAction.postValue(true)
-            } else {
-                loginSuccessfulAction.postValue(false)
+            sharedPrefService.run {
+                saveLoggedUserAuthToken(authToken)
+                saveLoggedUserEmail(userCredentials.email)
             }
+            loginSuccessfulAction.sendAction(loginSuccessful)
         }
     }
 
@@ -64,15 +75,16 @@ class LoginRegisterViewModel(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
+            var registrationSuccessful = false
             try {
                 registeredUserRemoteRepository.registerNewUser(userCredentials)
-                registrationSuccessfulAction.sendAction(true)
+                registrationSuccessful = true
             } catch (e: SocketTimeoutException) {
                 Toast.makeText(context, "Przekroczono czas oczekiwania", Toast.LENGTH_LONG).show()
-                registrationSuccessfulAction.sendAction(false)
             } catch (e: HttpException) {
                 Toast.makeText(context, "Error ${e.code()}, ${e.message()}", Toast.LENGTH_LONG).show()
             }
+            registrationSuccessfulAction.sendAction(registrationSuccessful)
         }
     }
 
@@ -99,7 +111,7 @@ class LoginRegisterViewModel(
             }
             if (!passwordLive.value.isNullOrEmpty() && !passwordConfirmationLive.value.isNullOrEmpty()) {
                 if (passwordLive.value != passwordConfirmationLive.value) {
-                    val errorMessage = "Hasła nie są takie saem"
+                    val errorMessage = "Hasła nie są takie same"
                     errorPasswordLive.postValue(errorMessage)
                     errorPasswordConfirmationLive.postValue(errorMessage)
                     inputDataValid = false

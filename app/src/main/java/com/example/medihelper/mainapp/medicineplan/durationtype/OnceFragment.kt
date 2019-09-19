@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.addeditmedicineplan.durationtype
+package com.example.medihelper.mainapp.medicineplan.durationtype
 
 
 import android.os.Bundle
@@ -7,35 +7,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import com.example.medihelper.R
-import com.example.medihelper.databinding.FragmentPeriodBinding
+import com.example.medihelper.databinding.FragmentOnceBinding
 import com.example.medihelper.dialogs.SelectDateDialog
-import com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel
+import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class PeriodFragment : Fragment() {
+
+class OnceFragment : Fragment() {
 
     private val viewModel: AddEditMedicinePlanViewModel by sharedViewModel(from = { parentFragment!! })
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentPeriodBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_period, container, false)
+        val binding: FragmentOnceBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_once, container, false)
         binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
-    fun onClickSelectDate(view: View) {
-        val selectedDateLive = when (view.id) {
-            R.id.etx_start_date -> viewModel.startDateLive
-            R.id.etx_end_date -> viewModel.endDateLive
-            else -> null
-        }
+    fun onClickSelectDate() {
         val dialog = SelectDateDialog()
-        selectedDateLive?.let { dialog.defaultDate = it.value }
+        dialog.defaultDate = viewModel.startDateLive.value
         dialog.setDateSelectedListener { date ->
-            selectedDateLive?.value = date
+            viewModel.startDateLive.value = date
         }
         dialog.show(childFragmentManager, dialog.TAG)
     }

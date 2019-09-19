@@ -9,11 +9,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.addeditmedicine.AddEditMedicineViewModel" />
+            type="com.example.medihelper.mainapp.medicines.AddEditMedicineViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.addeditmedicine.AddEditMedicineFragment" />
+            type="com.example.medihelper.mainapp.medicines.AddEditMedicineFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

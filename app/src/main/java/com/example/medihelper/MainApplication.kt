@@ -2,7 +2,6 @@ package com.example.medihelper
 
 
 import android.app.Application
-import android.content.Context
 import android.os.Environment
 import android.preference.PreferenceManager
 import androidx.room.Room
@@ -12,18 +11,19 @@ import com.example.medihelper.localdatabase.repositoriesimpl.MedicinePlanReposit
 import com.example.medihelper.localdatabase.repositoriesimpl.MedicineRepositoryImpl
 import com.example.medihelper.localdatabase.repositoriesimpl.PersonRepositoryImpl
 import com.example.medihelper.localdatabase.repositoriesimpl.PlannedMedicineRepositoryImpl
-import com.example.medihelper.mainapp.addeditmedicine.AddEditMedicineViewModel
-import com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel
+import com.example.medihelper.mainapp.medicines.AddEditMedicineViewModel
+import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.dialogs.SelectMedicineViewModel
-import com.example.medihelper.mainapp.family.AddEditPersonViewModel
-import com.example.medihelper.mainapp.family.PersonViewModel
-import com.example.medihelper.mainapp.loginregister.LoginRegisterViewModel
-import com.example.medihelper.mainapp.medicineplanlist.MedicinePlanHistoryViewModel
-import com.example.medihelper.mainapp.medicineplanlist.MedicinePlanListViewModel
+import com.example.medihelper.mainapp.persons.AddEditPersonViewModel
+import com.example.medihelper.mainapp.persons.PersonViewModel
+import com.example.medihelper.mainapp.more.loginregister.LoginRegisterViewModel
+import com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel
+import com.example.medihelper.mainapp.medicineplan.MedicinePlanListViewModel
 import com.example.medihelper.mainapp.medicines.MedicineDetailsViewModel
 import com.example.medihelper.mainapp.medicines.MedicinesViewModel
-import com.example.medihelper.mainapp.more.LoggedUserViewModel
+import com.example.medihelper.mainapp.more.loggeduser.LoggedUserViewModel
 import com.example.medihelper.mainapp.more.MoreViewModel
+import com.example.medihelper.mainapp.more.loggeduser.NewPasswordViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
 import com.example.medihelper.remotedatabase.RegisteredUserRemoteRepository
@@ -110,7 +110,8 @@ val viewModelModule = module {
     viewModel { ScheduleViewModel(get(), get()) }
     viewModel { MoreViewModel(get()) }
     viewModel { LoginRegisterViewModel(get(), get()) }
-    viewModel { LoggedUserViewModel(get()) }
+    viewModel { LoggedUserViewModel(get(), get()) }
+    viewModel { NewPasswordViewModel() }
 }
 
 val serviceModule = module {

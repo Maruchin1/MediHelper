@@ -7,11 +7,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.family.AddEditPersonFragment" />
+            type="com.example.medihelper.mainapp.persons.AddEditPersonFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.family.AddEditPersonViewModel" />
+            type="com.example.medihelper.mainapp.persons.AddEditPersonViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

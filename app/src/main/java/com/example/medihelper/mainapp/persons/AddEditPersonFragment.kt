@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.family
+package com.example.medihelper.mainapp.persons
 
 import android.os.Bundle
 import android.view.LayoutInflater

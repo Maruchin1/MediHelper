@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.addeditmedicineplan.AddEditMedicinePlanViewModel" />
+            type="com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.addeditmedicineplan.durationtype.OnceFragment" />
+            type="com.example.medihelper.mainapp.medicineplan.durationtype.OnceFragment" />
 
     </data>
 

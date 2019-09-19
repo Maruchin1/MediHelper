@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.addeditmedicineplan
+package com.example.medihelper.mainapp.medicineplan
 
 
 import android.os.Bundle
@@ -21,11 +21,11 @@ import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.dialogs.SelectFloatNumberDialog
 import com.example.medihelper.dialogs.SelectMedicineDialog
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
-import com.example.medihelper.mainapp.addeditmedicineplan.daystype.DaysOfWeekFragment
-import com.example.medihelper.mainapp.addeditmedicineplan.daystype.IntervalOfDaysFragment
-import com.example.medihelper.mainapp.addeditmedicineplan.durationtype.ContinuousFragment
-import com.example.medihelper.mainapp.addeditmedicineplan.durationtype.PeriodFragment
-import com.example.medihelper.mainapp.addeditmedicineplan.durationtype.OnceFragment
+import com.example.medihelper.mainapp.medicineplan.daystype.DaysOfWeekFragment
+import com.example.medihelper.mainapp.medicineplan.daystype.IntervalOfDaysFragment
+import com.example.medihelper.mainapp.medicineplan.durationtype.ContinuousFragment
+import com.example.medihelper.mainapp.medicineplan.durationtype.PeriodFragment
+import com.example.medihelper.mainapp.medicineplan.durationtype.OnceFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.toolbar
@@ -44,7 +44,7 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         }
     }.show(childFragmentManager)
 
-    fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
+    fun onClickSelectPerson() = findNavController().navigate(AddEditMedicinePlanFragmentDirections.toPersonDialog())
 
     fun onClickSelectTime(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) = SelectTimeDialog().apply {
         defaultTime = timeOfTaking.time

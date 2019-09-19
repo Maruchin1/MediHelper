@@ -6,11 +6,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.loginregister.LoginRegisterFragment" />
+            type="com.example.medihelper.mainapp.more.loginregister.LoginRegisterFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.loginregister.LoginRegisterViewModel" />
+            type="com.example.medihelper.mainapp.more.loginregister.LoginRegisterViewModel" />
     </data>
 
     <LinearLayout
