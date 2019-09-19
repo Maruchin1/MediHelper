@@ -36,6 +36,14 @@ class SharedPrefService(
         putString(KEY_LOOGED_USER_EMAIL,newEmail)
     }
 
+    fun deleteLoggedUserAuthToken() = sharedPreferences.edit(true) {
+        putString(KEY_LOGGED_USER_AUTH_TOKEN, null)
+    }
+
+    fun deleteLoggedUserEmail() = sharedPreferences.edit(true) {
+        putString(KEY_LOOGED_USER_EMAIL, null)
+    }
+
     fun checkInitialDataLoaded() {
         val initialDataLoaded = sharedPreferences.getBoolean(KEY_INITIAL_DATA_LOADED, false)
         if (!initialDataLoaded) {

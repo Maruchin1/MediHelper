@@ -22,6 +22,7 @@ import com.example.medihelper.mainapp.medicineplanlist.MedicinePlanHistoryViewMo
 import com.example.medihelper.mainapp.medicineplanlist.MedicinePlanListViewModel
 import com.example.medihelper.mainapp.medicines.MedicineDetailsViewModel
 import com.example.medihelper.mainapp.medicines.MedicinesViewModel
+import com.example.medihelper.mainapp.more.LoggedUserViewModel
 import com.example.medihelper.mainapp.more.MoreViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
@@ -109,6 +110,7 @@ val viewModelModule = module {
     viewModel { ScheduleViewModel(get(), get()) }
     viewModel { MoreViewModel(get()) }
     viewModel { LoginRegisterViewModel(get(), get()) }
+    viewModel { LoggedUserViewModel(get()) }
 }
 
 val serviceModule = module {

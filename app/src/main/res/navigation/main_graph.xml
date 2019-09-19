@@ -109,14 +109,21 @@
     <fragment
         android:id="@+id/moreFragment"
         android:name="com.example.medihelper.mainapp.more.MoreFragment"
-        tools:layout="@layout/fragment_more" >
+        tools:layout="@layout/fragment_more">
         <action
             android:id="@+id/toLoginRegisterFragment"
             app:destination="@id/loginRegisterFragment" />
+        <action
+            android:id="@+id/toLoggedUserFragment"
+            app:destination="@id/loggedUserFragment" />
     </fragment>
     <dialog
         android:id="@+id/loginRegisterFragment"
         android:name="com.example.medihelper.mainapp.loginregister.LoginRegisterFragment"
         android:label="LoginRegisterFragment"
         tools:layout="@layout/fragment_login_register" />
+    <dialog
+        android:id="@+id/loggedUserFragment"
+        android:name="com.example.medihelper.mainapp.more.LoggedUserFragment"
+        tools:layout="@layout/fragment_logged_user" />
 </navigation>

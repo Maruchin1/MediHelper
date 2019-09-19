@@ -5,7 +5,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.services.SharedPrefService
 
-class MoreViewModel(private val sharedPrefService: SharedPrefService) : ViewModel() {
+class MoreViewModel(sharedPrefService: SharedPrefService) : ViewModel() {
 
     val loggedUserInfoLive: LiveData<String>
     private val loggedUserEmailLive = sharedPrefService.getLoggedUserEmailLive()
@@ -15,4 +15,6 @@ class MoreViewModel(private val sharedPrefService: SharedPrefService) : ViewMode
             if (email.isNullOrEmpty()) "Nie zalogowano" else email
         }
     }
+
+    fun isUserLogged() = !loggedUserEmailLive.value.isNullOrEmpty()
 }
