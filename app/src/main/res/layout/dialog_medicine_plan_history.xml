@@ -23,10 +23,8 @@
 
         <com.google.android.material.card.MaterialCardView
             style="@style/AppTheme.Widget.CardView"
-            cardBackgroundColorResID="@{viewModel.colorPrimaryLive}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/colorPrimary"
             app:cardElevation="0dp">
 
             <LinearLayout
@@ -47,34 +45,27 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/round_history_white_36" />
+                        android:src="@drawable/round_history_white_36"
+                        android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text='@{viewModel.medicineNameLive + " - historia", default="Nazwa - historia"}'
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                        android:textColor="@color/colorWhite" />
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
                 </LinearLayout>
 
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/AppTheme.Widget.CardView"
-                    android:layout_width="match_parent"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_history"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardElevation="0dp">
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_view_history"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/recycler_item_history" />
-                </com.google.android.material.card.MaterialCardView>
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/recycler_item_history" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

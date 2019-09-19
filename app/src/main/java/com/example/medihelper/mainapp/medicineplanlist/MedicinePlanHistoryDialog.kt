@@ -10,9 +10,11 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.BR
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppDialog
+import com.example.medihelper.custom.CenterLayoutManager
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogMedicinePlanHistoryBinding
@@ -52,8 +54,8 @@ class MedicinePlanHistoryDialog : AppDialog() {
     private fun setupHistoryRecyclerView() {
         recycler_view_history.apply {
             adapter = HistoryAdapter()
-            GravitySnapHelper(Gravity.START).attachToRecyclerView(this)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+            layoutManager = CenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            GravitySnapHelper(Gravity.CENTER).attachToRecyclerView(this)
         }
     }
 

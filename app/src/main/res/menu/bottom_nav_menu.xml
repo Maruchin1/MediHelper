@@ -2,7 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/scheduleFragment"
-        android:icon="@drawable/round_event_white_48"
+        android:icon="@drawable/round_event_note_black_48"
+        android:title="Kalendarz" />
+
+    <item
+        android:id="@+id/medicinePlanListHostFragment"
+        android:icon="@drawable/round_format_list_bulleted_white_48"
         android:title="Plan" />
 
     <item
@@ -17,6 +22,6 @@
 
     <item
         android:id="@+id/moreFragment"
-        android:icon="@drawable/round_menu_white_48"
+        android:icon="@drawable/round_more_horiz_white_48"
         android:title="Więcej" />
 </menu>

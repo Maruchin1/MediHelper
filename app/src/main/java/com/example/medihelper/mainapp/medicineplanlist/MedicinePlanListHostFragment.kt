@@ -37,7 +37,6 @@ class MedicinePlanListHostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupTabs()
-        setupToolbarMenu()
         observeViewModel()
     }
 
@@ -49,15 +48,6 @@ class MedicinePlanListHostFragment : Fragment() {
                 }
             }
         })
-    }
-
-    private fun setupToolbarMenu() {
-        toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.btn_schedule -> findNavController().popBackStack()
-            }
-            true
-        }
     }
 
     private fun setupTabs() {

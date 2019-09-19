@@ -29,22 +29,13 @@
             android:background="@color/colorPrimary"
             android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:titleEnabled="false">
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:menu="@menu/toolbar_menu_search"
-                    app:title="Apteczka"
-                    app:titleTextAppearance="@style/AppTheme.Text.ToolbarTitle.Main" />
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
+                app:menu="@menu/toolbar_menu_search"
+                app:title="Apteczka"
+                app:titleTextAppearance="@style/AppTheme.Text.ToolbarTitle.Main" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView

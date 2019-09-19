@@ -54,11 +54,11 @@ class LoginRegisterInputFragment : Fragment() {
 
     private fun setupAnimations() {
         exitTransition = Slide(Gravity.BOTTOM).apply {
-            duration = 500
+            duration = 300
         }
         enterTransition = Slide(Gravity.BOTTOM).apply {
-            duration = 500
-            startDelay = 800
+            duration = 300
+            startDelay = 600
         }
     }
 

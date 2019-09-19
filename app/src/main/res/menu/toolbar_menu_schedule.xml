@@ -8,10 +8,4 @@
         app:showAsAction="always"
         android:orderInCategory="1" />
 
-    <item
-        android:id="@+id/btn_list"
-        android:icon="@drawable/round_format_list_bulleted_white_36"
-        android:title="List"
-        app:showAsAction="always"
-        android:orderInCategory="2"/>
 </menu>

@@ -37,5 +37,10 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNav() {
         val navController = findNavController(R.id.nav_host_fragment)
         bottom_nav.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            if (destination.id in arrayOf(R.id.medicinesFragment, R.id.moreFragment)) {
+                setStatusBarColor(R.color.colorPrimary)
+            }
+        }
     }
 }

@@ -31,8 +31,6 @@ class ScheduleFragment : Fragment() {
     private val viewModel: ScheduleViewModel by viewModel()
     private val directions by lazyOf(ScheduleFragmentDirections)
 
-    fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddEditMedicinePlanFragment())
-
     fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -93,7 +91,6 @@ class ScheduleFragment : Fragment() {
                     TransitionManager.beginDelayedTransition(root_lay)
                     viewModel.calendarLayoutVisibleLive.value = true
                 }
-                R.id.btn_list -> findNavController().navigate(directions.toMedicinePlanListHostFragment())
             }
             true
         }

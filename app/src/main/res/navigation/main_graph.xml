@@ -10,18 +10,8 @@
         android:name="com.example.medihelper.mainapp.schedule.ScheduleFragment"
         tools:layout="@layout/fragment_schedule">
         <action
-            android:id="@+id/toMedicinePlanListHostFragment"
-            app:destination="@id/medicinePlanListHostFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
             android:id="@+id/toPersonDialog"
             app:destination="@id/personDialog" />
-        <action
-            android:id="@+id/toAddEditMedicinePlanFragment"
-            app:destination="@id/addEditMedicinePlanFragment" />
         <action
             android:id="@+id/toPlannedMedicineOptionsDialog"
             app:destination="@id/plannedMedicineOptionsDialog" />

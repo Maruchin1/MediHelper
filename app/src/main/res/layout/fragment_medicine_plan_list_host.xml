@@ -42,8 +42,7 @@
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="?actionBarSize"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:menu="@menu/toolbar_menu_medicine_plan_list" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_avatar"
