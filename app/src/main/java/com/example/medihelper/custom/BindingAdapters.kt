@@ -14,6 +14,7 @@ import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.InverseBindingAdapter
 import androidx.lifecycle.MutableLiveData
 import com.example.medihelper.BR
@@ -128,4 +129,9 @@ fun setChipBackgroundColor(chip: Chip, colorResId: Int?) {
     if (colorResId != null && colorResId != 0) {
         chip.setChipBackgroundColorResource(colorResId)
     }
+}
+
+@BindingAdapter("toolbarNavigationOnClick")
+fun setToolbarNavigationOnClickListener(toolbar: Toolbar, function: () -> Unit) {
+    toolbar.setNavigationOnClickListener { function.invoke() }
 }

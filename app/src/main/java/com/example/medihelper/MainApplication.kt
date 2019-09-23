@@ -26,12 +26,11 @@ import com.example.medihelper.mainapp.more.MoreViewModel
 import com.example.medihelper.mainapp.more.loggeduser.NewPasswordViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
+import com.example.medihelper.remotedatabase.MedicineRemoteRepository
+import com.example.medihelper.remotedatabase.PersonRemoteRepository
 import com.example.medihelper.remotedatabase.RegisteredUserRemoteRepository
-import com.example.medihelper.services.MedicineSchedulerService
-import com.example.medihelper.services.PersonProfileService
-import com.example.medihelper.services.PhotoFileService
-import com.example.medihelper.services.SharedPrefService
-import com.google.gson.GsonBuilder
+import com.example.medihelper.services.*
+import com.google.gson.*
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
@@ -41,6 +40,9 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.reflect.Type
+import java.nio.charset.Charset
+import java.util.*
 
 
 class MainApplication : Application() {
@@ -60,8 +62,8 @@ class MainApplication : Application() {
             )
         }
         runBlocking {
-            val sharedPrefService: SharedPrefService = get()
-            sharedPrefService.checkInitialDataLoaded()
+            val initialDataService: InitialDataService = get()
+            initialDataService.checkInitialData()
         }
     }
 }
@@ -89,36 +91,72 @@ val repositoryModule = module {
 val remoteRepositoryModule = module {
     single<RegisteredUserRemoteRepository> {
         Retrofit.Builder()
-            .baseUrl(REGISTERED_USER_REMOTE_REPOSITORY_URL)
+            .baseUrl(API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
             .build()
             .create(RegisteredUserRemoteRepository::class.java)
     }
+    single<MedicineRemoteRepository> {
+        Retrofit.Builder()
+            .baseUrl(API_BASE_URL)
+            .addConverterFactory(
+                GsonConverterFactory.create(
+                    GsonBuilder()
+                        .registerTypeHierarchyAdapter(ByteArray::class.java, byteArrayToStringTypeAdapter)
+                        .setLenient()
+                        .create()
+                )
+            )
+            .build()
+            .create(MedicineRemoteRepository::class.java)
+    }
+    single {
+        Retrofit.Builder()
+            .baseUrl(API_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+            .build()
+            .create(PersonRemoteRepository::class.java)
+    }
 }
 
 val viewModelModule = module {
-    viewModel { MedicinesViewModel(get()) }
-    viewModel { AddEditMedicineViewModel(get(), get(), get()) }
+    viewModel { MedicinesViewModel(androidContext().filesDir, get()) }
+    viewModel { AddEditMedicineViewModel(androidContext().filesDir, get(), get(), get()) }
     viewModel { AddEditPersonViewModel(get(), get()) }
     viewModel { PersonViewModel(get(), get()) }
     viewModel { MedicinePlanHistoryViewModel(get(), get()) }
     viewModel { MedicinePlanListViewModel(get(), get()) }
-    viewModel { MedicineDetailsViewModel(get(), get()) }
+    viewModel { MedicineDetailsViewModel(androidContext().filesDir, get(), get()) }
     viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get()) }
-    viewModel { SelectMedicineViewModel(get()) }
+    viewModel { SelectMedicineViewModel(androidContext().filesDir, get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get()) }
     viewModel { ScheduleViewModel(get(), get()) }
     viewModel { MoreViewModel(get()) }
-    viewModel { LoginRegisterViewModel(get(), get()) }
+    viewModel { LoginRegisterViewModel(get(), get(), get()) }
     viewModel { LoggedUserViewModel(get(), get()) }
     viewModel { NewPasswordViewModel() }
 }
 
 val serviceModule = module {
-    single { SharedPrefService(PreferenceManager.getDefaultSharedPreferences(androidContext()), get()) }
-    single { PersonProfileService(get(), get()) }
+    single { SharedPrefService(PreferenceManager.getDefaultSharedPreferences(androidContext())) }
+    single { PersonProfileService(get()) }
     single { MedicineSchedulerService(get(), get()) }
-    single { PhotoFileService(androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)) }
+    single { MedicineImageService(androidContext().filesDir, androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)) }
+    single { ServerSyncService(androidContext().filesDir, get(), get(), get(), get()) }
+    single { InitialDataService(get(), get()) }
 }
 
-private const val REGISTERED_USER_REMOTE_REPOSITORY_URL = "https://medihelper-api.herokuapp.com/registered-users/"
+private val byteArrayToStringTypeAdapter by lazy {
+    object : JsonSerializer<ByteArray>, JsonDeserializer<ByteArray> {
+        override fun serialize(src: ByteArray?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+            return JsonPrimitive(src?.let { String(src) })
+        }
+
+        override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): ByteArray {
+            return json?.asString?.toByteArray() ?: byteArrayOf()
+        }
+
+    }
+}
+
+private const val API_BASE_URL = "https://medihelper-api.herokuapp.com/"

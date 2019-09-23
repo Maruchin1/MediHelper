@@ -12,15 +12,25 @@ interface PersonRepository {
 
     suspend fun insert(personEntity: PersonEntity): Int
 
+    suspend fun insert(personEntityList: List<PersonEntity>)
+
     suspend fun update(personEntity: PersonEntity)
 
     suspend fun delete(personID: Int)
 
+    suspend fun deleteAll()
+
+    suspend fun getEntityList(): List<PersonEntity>
+
     suspend fun getItem(personID: Int): PersonItem
+
+    suspend fun getMainPersonID(): Int?
 
     fun getItemLive(personID: Int): LiveData<PersonItem>
 
     fun getItemListLive(): LiveData<List<PersonItem>>
 
     fun getItemListLiveByMedicineID(medicineID: Int): LiveData<List<PersonItem>>
+
+    fun getMainPersonIDLive(): LiveData<Int>
 }

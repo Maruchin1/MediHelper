@@ -15,11 +15,17 @@ class MedicineRepositoryImpl(private val medicineDao: MedicineDao) :
 
     override suspend fun insert(medicineEntity: MedicineEntity) = medicineDao.insert(medicineEntity)
 
+    override suspend fun insert(medicineEntityList: List<MedicineEntity>) = medicineDao.insert(medicineEntityList)
+
     override suspend fun update(medicineEntity: MedicineEntity) = medicineDao.update(medicineEntity)
 
     override suspend fun delete(medicineID: Int) = medicineDao.delete(medicineID)
 
+    override suspend fun deleteAll() = medicineDao.deleteAll()
+
     override suspend fun getEntity(medicineID: Int) = medicineDao.getEntity(medicineID)
+
+    override suspend fun getEntityList() = medicineDao.getEntityList()
 
     override suspend fun getDetails(medicineID: Int) = medicineDao.getDetails(medicineID)
 
@@ -38,14 +44,23 @@ interface MedicineDao {
     @Insert
     suspend fun insert(medicineEntity: MedicineEntity)
 
+    @Insert
+    suspend fun insert(medicineEntityList: List<MedicineEntity>)
+
     @Update
     suspend fun update(medicineEntity: MedicineEntity)
 
     @Query("DELETE FROM medicines WHERE medicine_id = :medicineID")
     suspend fun delete(medicineID: Int)
 
+    @Query("DELETE FROM medicines")
+    suspend fun deleteAll()
+
     @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
     suspend fun getEntity(medicineID: Int): MedicineEntity
+
+    @Query("SELECT * FROM medicines")
+    suspend fun getEntityList(): List<MedicineEntity>
 
     @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
     suspend fun getDetails(medicineID: Int): MedicineDetails

@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 class MedicineDetailsViewModel(
+    private val appFilesDir: File,
     private val medicineRepository: MedicineRepository,
     private val personRepository: PersonRepository
 ) : ViewModel() {
@@ -42,7 +43,7 @@ class MedicineDetailsViewModel(
             medicineDetails?.packageSize != null || medicineDetails?.currState != null
         }
         photoFileLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
-            medicineDetails.photoFilePath?.let { File(it) }
+            medicineDetails.imageName?.let { File(appFilesDir, it) }
         }
         medicineNameLive = Transformations.map(medicineDetailsLive) { medicineDetails ->
             medicineDetails?.medicineName
@@ -63,7 +64,7 @@ class MedicineDetailsViewModel(
             medicineDetails?.let { daysRemainsString(it) }
         }
         commentsLive = Transformations.map(medicineDetailsLive) { medicine ->
-            medicine?.comments
+            medicine?.additionalInfo
         }
         commentsAvailableLive = Transformations.map(commentsLive) { comments ->
             comments != null && comments.isNotEmpty()

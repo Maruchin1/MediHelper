@@ -13,36 +13,55 @@ class PersonRepositoryImpl(private val personDao: PersonDao) : PersonRepository 
 
     override suspend fun insert(personEntity: PersonEntity) = personDao.insert(personEntity).toInt()
 
+    override suspend fun insert(personEntityList: List<PersonEntity>) = personDao.insert(personEntityList)
+
     override suspend fun update(personEntity: PersonEntity) = personDao.update(personEntity)
 
     override suspend fun delete(personID: Int) = personDao.delete(personID)
 
+    override suspend fun deleteAll() = personDao.deleteAll()
+
+    override suspend fun getEntityList() = personDao.getEntityList()
+
     override suspend fun getItem(personID: Int) = personDao.getItem(personID)
+
+    override suspend fun getMainPersonID() = personDao.getMainPersonID()
 
     override fun getItemLive(personID: Int) = personDao.getItemLive(personID)
 
     override fun getItemListLive() = personDao.getItemListLive()
 
     override fun getItemListLiveByMedicineID(medicineID: Int) = personDao.getItemListLiveByMedicineID(medicineID)
+
+    override fun getMainPersonIDLive() = personDao.getMainPersonIdLive()
 }
 
 @Dao
 interface PersonDao {
 
     @Insert
-    suspend fun insert(person: PersonEntity): Long
+    suspend fun insert(personEntity: PersonEntity): Long
+
+    @Insert
+    suspend fun insert(personEntityList: List<PersonEntity>)
 
     @Update
-    suspend fun update(person: PersonEntity)
+    suspend fun update(personEntity: PersonEntity)
 
     @Query("DELETE FROM persons WHERE person_id = :personID")
     suspend fun delete(personID: Int)
 
+    @Query("DELETE FROM persons")
+    suspend fun deleteAll()
+
+    @Query("SELECT * FROM persons")
+    suspend fun getEntityList(): List<PersonEntity>
+
     @Query("SELECT * FROM persons WHERE person_id = :personID")
     suspend fun getItem(personID: Int): PersonItem
 
-    @Query("SELECT COUNT(*) FROM persons")
-    suspend fun getCount(): Int
+    @Query("SELECT person_id FROM persons WHERE main_person = 1")
+    suspend fun getMainPersonID(): Int?
 
     @Query("SELECT * FROM persons WHERE person_id = :personID")
     fun getItemLive(personID: Int): LiveData<PersonItem>
@@ -52,4 +71,7 @@ interface PersonDao {
 
     @Query("SELECT * FROM persons p JOIN medicines_plans mp ON p.person_id = mp.person_id JOIN medicines m ON mp.medicine_id = m.medicine_id GROUP BY p.person_id HAVING m.medicine_id = :medicineID")
     fun getItemListLiveByMedicineID(medicineID: Int): LiveData<List<PersonItem>>
+
+    @Query("SELECT person_id FROM persons WHERE main_person = 1")
+    fun getMainPersonIdLive(): LiveData<Int>
 }

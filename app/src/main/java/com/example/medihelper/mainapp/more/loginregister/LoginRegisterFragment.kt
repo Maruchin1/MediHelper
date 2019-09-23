@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentLoginRegisterBinding
@@ -74,7 +75,6 @@ class LoginRegisterFragment : AppFullScreenDialog() {
             dismissLoadingDialog()
             when (response) {
                 ApiResponse.OK -> onClickOpenLoginFragment()
-                ApiResponse.BAD_REQUEST -> showSnackbar("Konto o podanym adresie e-mail już istnieje")
                 else -> showSnackbar(response.message)
             }
         })

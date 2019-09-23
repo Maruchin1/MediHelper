@@ -2,19 +2,20 @@ package com.example.medihelper.remotedatabase
 
 import com.example.medihelper.remotedatabase.pojos.NewPasswordDto
 import com.example.medihelper.remotedatabase.pojos.UserCredentialsDto
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface RegisteredUserRemoteRepository {
 
-    @PUT("change-password")
+    @PUT("registered-users/change-password")
     suspend fun changeUserPassword(@Header("Authorization") authToken: String, @Body newPassword: NewPasswordDto)
 
-    @POST("login")
+    @POST("registered-users/login")
     suspend fun loginUser(@Body userCredentials: UserCredentialsDto): String
 
-    @POST("register")
+    @POST("registered-users/register")
     suspend fun registerNewUser(@Body userCredentials: UserCredentialsDto)
+
+    @GET("registered-users/has-data")
+    suspend fun hasData(@Header("Authorization") authToken: String): Boolean
+
 }

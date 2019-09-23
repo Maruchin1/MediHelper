@@ -1,5 +1,6 @@
 package com.example.medihelper.mainapp.more.loginregister
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,12 +8,14 @@ import com.example.medihelper.custom.ActionLiveData
 import com.example.medihelper.remotedatabase.RegisteredUserRemoteRepository
 import com.example.medihelper.remotedatabase.ApiResponse
 import com.example.medihelper.remotedatabase.pojos.UserCredentialsDto
+import com.example.medihelper.services.ServerSyncService
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
 
 class LoginRegisterViewModel(
     private val registeredUserRemoteRepository: RegisteredUserRemoteRepository,
-    private val sharedPrefService: SharedPrefService
+    private val sharedPrefService: SharedPrefService,
+    private val serverSyncService: ServerSyncService
 ) : ViewModel() {
     private val TAG = "LoginRegisterViewModel"
 
@@ -25,6 +28,7 @@ class LoginRegisterViewModel(
     val loadingStartedAction = ActionLiveData<Boolean>()
     val loginResponseAction = ActionLiveData<ApiResponse>()
     val registrationResponseAction = ActionLiveData<ApiResponse>()
+
 
     fun resetViewModel() {
         listOf(
@@ -47,13 +51,20 @@ class LoginRegisterViewModel(
                 password = passwordLive.value!!
             )
             val response = try {
-                val authToken = registeredUserRemoteRepository.loginUser(userCredentials)
+                val tempAuthToken = registeredUserRemoteRepository.loginUser(userCredentials)
+                val hasRemoteData = registeredUserRemoteRepository.hasData(tempAuthToken)
+                if (!hasRemoteData) {
+                    serverSyncService.overwriteRemote(tempAuthToken)
+                } else {
+                    serverSyncService.overwriteLocal(tempAuthToken)
+                }
                 sharedPrefService.run {
-                    saveLoggedUserAuthToken(authToken)
+                    saveLoggedUserAuthToken(tempAuthToken)
                     saveLoggedUserEmail(userCredentials.email)
                 }
                 ApiResponse.OK
             } catch (e: Exception) {
+                Log.i(TAG, "login error = $e")
                 ApiResponse.getResponseByException(e)
             }
             loginResponseAction.sendAction(response)
@@ -71,6 +82,7 @@ class LoginRegisterViewModel(
                 registeredUserRemoteRepository.registerNewUser(userCredentials)
                 ApiResponse.OK
             } catch (e: Exception) {
+                Log.i(TAG, "register error = $e")
                 ApiResponse.getResponseByException(e)
             }
             registrationResponseAction.sendAction(response)

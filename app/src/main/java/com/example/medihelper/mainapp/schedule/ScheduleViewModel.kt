@@ -22,7 +22,7 @@ class ScheduleViewModel(
 
     init {
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
-            personItem.personColorResID
+            personItem?.personColorResID
         }
     }
 
@@ -50,7 +50,7 @@ class ScheduleViewModel(
 
     fun getPlannedMedicineItemListByDateLive(date: AppDate): LiveData<List<PlannedMedicineItem>> {
         return Transformations.switchMap(selectedPersonItemLive) { personItem ->
-            plannedMedicineRepository.getItemListLiveByDate(date, personItem.personID)
+            personItem?.let { plannedMedicineRepository.getItemListLiveByDate(date, it.personID) }
         }
     }
 

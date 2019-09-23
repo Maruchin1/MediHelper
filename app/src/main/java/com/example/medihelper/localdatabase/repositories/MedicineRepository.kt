@@ -9,11 +9,17 @@ import com.example.medihelper.localdatabase.pojos.MedicineItem
 interface MedicineRepository {
     suspend fun insert(medicineEntity: MedicineEntity)
 
+    suspend fun insert(medicineEntityList: List<MedicineEntity>)
+
     suspend fun update(medicineEntity: MedicineEntity)
 
     suspend fun delete(medicineID: Int)
 
+    suspend fun deleteAll()
+
     suspend fun getEntity(medicineID: Int): MedicineEntity
+
+    suspend fun getEntityList(): List<MedicineEntity>
 
     suspend fun getDetails(medicineID: Int): MedicineDetails
 

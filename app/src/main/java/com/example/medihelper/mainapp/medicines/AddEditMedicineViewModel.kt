@@ -8,15 +8,16 @@ import androidx.lifecycle.*
 import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
-import com.example.medihelper.services.PhotoFileService
+import com.example.medihelper.services.MedicineImageService
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
 import java.io.File
 
 
 class AddEditMedicineViewModel(
+    private val appFileDir: File,
     private val medicineRepository: MedicineRepository,
-    private val photoFileService: PhotoFileService,
+    private val medicineImageService: MedicineImageService,
     sharedPrefService: SharedPrefService
 ) : ViewModel() {
     private val TAG = AddEditMedicineViewModel::class.simpleName
@@ -29,7 +30,7 @@ class AddEditMedicineViewModel(
     val packageSizeLive = MutableLiveData<Float>()
     val currStateLive = MutableLiveData<Float>()
     val commentsLive = MutableLiveData<String>()
-    val photoFileLive = MutableLiveData<File>()
+    val imageFileLive = MutableLiveData<File>()
     val errorMedicineNameLive = MutableLiveData<String>()
     val errorExpireDateLive = MutableLiveData<String>()
     val errorCurrStateLive = MutableLiveData<String>()
@@ -44,8 +45,8 @@ class AddEditMedicineViewModel(
                 medicineUnitLive.postValue(medicineUnit)
                 packageSizeLive.postValue(packageSize)
                 currStateLive.postValue(currState)
-                commentsLive.postValue(comments)
-                photoFileLive.postValue(photoFilePath?.let { File(it) })
+                commentsLive.postValue(additionalInfo)
+                imageFileLive.postValue(imageName?.let { File(appFileDir, it) })
             }
         } else {
             arrayOf(
@@ -55,7 +56,7 @@ class AddEditMedicineViewModel(
                 currStateLive,
                 expireDateLive,
                 commentsLive,
-                photoFileLive
+                imageFileLive
             ).forEach { field ->
                 field.postValue(null)
             }
@@ -74,9 +75,9 @@ class AddEditMedicineViewModel(
                 medicineUnit = medicineUnitLive.value!!,
                 packageSize = packageSizeLive.value,
                 currState = currStateLive.value,
-                comments = commentsLive.value,
-                photoFilePath = photoFileLive.value?.let { photoFile ->
-                    photoFileService.createPhotoFileFromTemp(photoFile).absolutePath
+                additionalInfo = commentsLive.value,
+                imageName = imageFileLive.value?.let { imageFile ->
+                    medicineImageService.saveTmpFile(medicineNameLive.value!!, imageFile)
                 }
             )
             viewModelScope.launch {
@@ -94,12 +95,12 @@ class AddEditMedicineViewModel(
     fun takePhotoIntent(activity: FragmentActivity): Intent {
         return Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(activity.packageManager)?.also {
-                val photoFile = photoFileService.createTempPhotoFile()
-                photoFileLive.value = photoFile
+                val imageFile = medicineImageService.createTempImageFile()
+                imageFileLive.value = imageFile
                 val photoURI = FileProvider.getUriForFile(
                     activity,
                     "com.example.medihelper.fileprovider",
-                    photoFile
+                    imageFile
                 )
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
             }

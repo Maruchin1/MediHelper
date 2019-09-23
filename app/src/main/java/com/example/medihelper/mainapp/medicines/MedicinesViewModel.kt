@@ -10,7 +10,10 @@ import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import java.io.File
 
-class MedicinesViewModel(private val medicineRepository: MedicineRepository) : ViewModel() {
+class MedicinesViewModel(
+    private val appFilesDir: File,
+    private val medicineRepository: MedicineRepository
+) : ViewModel() {
     private val TAG = MedicinesViewModel::class.simpleName
 
     val searchQueryLive = MutableLiveData("")
@@ -48,7 +51,7 @@ class MedicinesViewModel(private val medicineRepository: MedicineRepository) : V
                     else -> R.color.colorStateSmall
                 }
             },
-            medicineImageFile = medicineItem.photoFilePath?.let { File(it) }
+            medicineImageFile = medicineItem.imageName?.let { File(appFilesDir, it) }
         )
     }
 

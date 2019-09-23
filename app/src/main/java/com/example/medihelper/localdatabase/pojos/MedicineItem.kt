@@ -18,8 +18,8 @@ data class MedicineItem(
     @ColumnInfo(name = "curr_state")
     val currState: Float?,
 
-    @ColumnInfo(name = "photo_file_path")
-    val photoFilePath: String?
+    @ColumnInfo(name = "image_name")
+    var imageName: String?
 ) {
     fun calcMedicineState(): Float? {
         return packageSize?.let { packageSize ->

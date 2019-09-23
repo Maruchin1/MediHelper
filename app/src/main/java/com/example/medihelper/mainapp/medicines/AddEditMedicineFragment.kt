@@ -63,7 +63,7 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
 
     private fun observeViewModel() {
         viewModel.run {
-            photoFileLive.observe(viewLifecycleOwner, Observer { photoFile ->
+            imageFileLive.observe(viewLifecycleOwner, Observer { photoFile ->
                 Log.d(TAG, "photoFile change = $photoFile")
                 setPhotoImage(photoFile)
             })

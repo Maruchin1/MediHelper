@@ -5,7 +5,10 @@ import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import java.io.File
 
-class SelectMedicineViewModel(private val medicineRepository: MedicineRepository) : ViewModel() {
+class SelectMedicineViewModel(
+    private val appFilesDir: File,
+    private val medicineRepository: MedicineRepository
+) : ViewModel() {
 
     val medicineItemListLive = medicineRepository.getItemListLive()
 
@@ -14,7 +17,7 @@ class SelectMedicineViewModel(private val medicineRepository: MedicineRepository
             medicineID = medicineItem.medicineID,
             medicineName = medicineItem.medicineName,
             medicineState = "${medicineItem.currState}/${medicineItem.packageSize} ${medicineItem.medicineUnit}",
-            medicineImageFile = medicineItem.photoFilePath?.let { File(it) }
+            medicineImageFile = medicineItem.imageName?.let { File(appFilesDir, it) }
         )
     }
 

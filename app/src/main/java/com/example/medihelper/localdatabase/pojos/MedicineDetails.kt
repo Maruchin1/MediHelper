@@ -14,18 +14,18 @@ data class MedicineDetails(
     @ColumnInfo(name = "medicine_unit")
     val medicineUnit: String,
 
+    @ColumnInfo(name = "expire_date")
+    val expireDate: AppDate?,
+
     @ColumnInfo(name = "package_size")
     val packageSize: Float?,
 
     @ColumnInfo(name = "curr_state")
     val currState: Float?,
 
-    @ColumnInfo(name = "photo_file_path")
-    val photoFilePath: String?,
+    @ColumnInfo(name = "additional_info")
+    val additionalInfo: String?,
 
-    @ColumnInfo(name = "expire_date")
-    val expireDate: AppDate?,
-
-    @ColumnInfo(name = "commentsLive")
-    val comments: String?
+    @ColumnInfo(name = "image_name")
+    var imageName: String?
 )

@@ -111,7 +111,7 @@ class PersonDialog : BottomSheetDialogFragment() {
                 if (newList != null) {
                     addAll(newList)
                 }
-                add(PersonItem(personID = -1, personName = "", personColorResID = 0))
+                add(PersonItem(personID = -1, personName = "", personColorResID = 0, mainPerson = false))
             }
             super.updateItemsList(listWithOneEmptyItem.toList())
         }

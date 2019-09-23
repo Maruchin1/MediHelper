@@ -20,7 +20,7 @@ class PersonViewModel(
 
     fun deletePerson(personID: Int) {
         if (personID == personProfileService.getCurrPersonItemLive().value?.personID) {
-            personProfileService.selectMainPerson()
+            personProfileService.selectMainPersonAsCurrent()
         }
         viewModelScope.launch {
             personRepository.delete(personID)
@@ -31,7 +31,7 @@ class PersonViewModel(
         personID = personItem.personID,
         personName = personItem.personName,
         personColorResID = personItem.personColorResID,
-        isMainPerson = personProfileService.isMainPerson(personItem.personID),
+        isMainPerson = personItem.mainPerson,
         optionsEnabled = false
     )
 
