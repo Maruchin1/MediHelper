@@ -23,6 +23,10 @@ interface MedicineRepository {
 
     suspend fun getDetails(medicineID: Int): MedicineDetails
 
+    suspend fun getRemoteID(medicineID: Int): Long
+
+    suspend fun getIDByRemoteID(medicineRemoteID: Long): Int
+
     fun getItemListLive(): LiveData<List<MedicineItem>>
 
     fun getFilteredItemListLive(searchQuery: String): LiveData<List<MedicineItem>>

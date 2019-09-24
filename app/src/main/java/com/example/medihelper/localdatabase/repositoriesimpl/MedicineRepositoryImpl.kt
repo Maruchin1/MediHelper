@@ -10,8 +10,7 @@ import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 
-class MedicineRepositoryImpl(private val medicineDao: MedicineDao) :
-    MedicineRepository {
+class MedicineRepositoryImpl(private val medicineDao: MedicineDao) : MedicineRepository {
 
     override suspend fun insert(medicineEntity: MedicineEntity) = medicineDao.insert(medicineEntity)
 
@@ -28,6 +27,10 @@ class MedicineRepositoryImpl(private val medicineDao: MedicineDao) :
     override suspend fun getEntityList() = medicineDao.getEntityList()
 
     override suspend fun getDetails(medicineID: Int) = medicineDao.getDetails(medicineID)
+
+    override suspend fun getRemoteID(medicineID: Int) = medicineDao.getRemoteID(medicineID)
+
+    override suspend fun getIDByRemoteID(medicineRemoteID: Long) = medicineDao.getIDByRemoteID(medicineRemoteID)
 
     override fun getItemListLive(): LiveData<List<MedicineItem>> = medicineDao.getItemListLive()
 
@@ -64,6 +67,12 @@ interface MedicineDao {
 
     @Query("SELECT * FROM medicines WHERE medicine_id = :medicineID")
     suspend fun getDetails(medicineID: Int): MedicineDetails
+
+    @Query("SELECT medicine_remote_id FROM medicines WHERE medicine_id = :medicineID")
+    suspend fun getRemoteID(medicineID: Int): Long
+
+    @Query("SELECT medicine_id FROM medicines WHERE medicine_remote_id = :medicineRemoteID")
+    suspend fun getIDByRemoteID(medicineRemoteID: Long): Int
 
     @Query("SELECT * FROM medicines")
     fun getItemListLive(): LiveData<List<MedicineItem>>

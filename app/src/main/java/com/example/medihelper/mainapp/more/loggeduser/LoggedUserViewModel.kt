@@ -3,9 +3,9 @@ package com.example.medihelper.mainapp.more.loggeduser
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.custom.ActionLiveData
-import com.example.medihelper.remotedatabase.RegisteredUserRemoteRepository
+import com.example.medihelper.remotedatabase.remoterepositories.RegisteredUserRemoteRepository
 import com.example.medihelper.remotedatabase.ApiResponse
-import com.example.medihelper.remotedatabase.pojos.NewPasswordDto
+import com.example.medihelper.remotedatabase.pojos.registereduser.NewPasswordDto
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
 
@@ -31,7 +31,9 @@ class LoggedUserViewModel(
         if (authToken != null) {
             loadingStartedAction.postValue(true)
             val response = try {
-                registeredUserRemoteRepository.changeUserPassword(authToken, NewPasswordDto(value = newPassword))
+                registeredUserRemoteRepository.changeUserPassword(authToken,
+                    NewPasswordDto(value = newPassword)
+                )
                 ApiResponse.OK
             } catch (e: Exception) {
                 ApiResponse.getResponseByException(e)

@@ -1,4 +1,4 @@
-package com.example.medihelper.remotedatabase.pojos
+package com.example.medihelper.remotedatabase.pojos.registereduser
 
 import com.google.gson.annotations.SerializedName
 

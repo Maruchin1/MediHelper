@@ -1,11 +1,11 @@
-package com.example.medihelper.remotedatabase.pojos
+package com.example.medihelper.remotedatabase.pojos.person
 
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.google.gson.annotations.SerializedName
 
 data class PersonGetDto(
-    @SerializedName(value = "personId")
-    val personId: Long,
+    @SerializedName(value = "personRemoteId")
+    val personRemoteId: Long,
 
     @SerializedName(value = "personName")
     val personName: String,
@@ -17,7 +17,7 @@ data class PersonGetDto(
     val mainPerson: Boolean
 ) {
     fun toPersonEntity() = PersonEntity(
-        personRemoteID = personId,
+        personRemoteID = personRemoteId,
         personName = personName,
         personColorResID = personColorResId,
         mainPerson = mainPerson

@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.custom.ActionLiveData
-import com.example.medihelper.remotedatabase.RegisteredUserRemoteRepository
+import com.example.medihelper.remotedatabase.remoterepositories.RegisteredUserRemoteRepository
 import com.example.medihelper.remotedatabase.ApiResponse
-import com.example.medihelper.remotedatabase.pojos.UserCredentialsDto
+import com.example.medihelper.remotedatabase.pojos.registereduser.UserCredentialsDto
 import com.example.medihelper.services.ServerSyncService
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
@@ -65,6 +65,7 @@ class LoginRegisterViewModel(
                 ApiResponse.OK
             } catch (e: Exception) {
                 Log.i(TAG, "login error = $e")
+                e.printStackTrace()
                 ApiResponse.getResponseByException(e)
             }
             loginResponseAction.sendAction(response)

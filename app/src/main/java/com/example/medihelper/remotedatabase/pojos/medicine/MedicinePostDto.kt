@@ -1,14 +1,13 @@
-package com.example.medihelper.remotedatabase.pojos
+package com.example.medihelper.remotedatabase.pojos.medicine
 
-import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.google.gson.annotations.SerializedName
 import java.io.File
-import java.util.*
 
-data class MedicineGetDto(
-    @SerializedName(value = "medicineId")
-    val medicineId: Long,
+
+data class MedicinePostDto(
+    @SerializedName(value = "medicineLocalId")
+    val medicineLocalId: Int,
 
     @SerializedName(value = "medicineName")
     val medicineName: String,
@@ -31,26 +30,26 @@ data class MedicineGetDto(
     @SerializedName(value = "image")
     val image: ByteArray?
 ) {
-    fun toMedicineEntity(appFilesDir: File) = MedicineEntity(
-        medicineRemoteID = medicineId,
-        medicineName = medicineName,
-        medicineUnit = medicineUnit,
-        expireDate = expireDate?.let { AppDate(it) },
-        packageSize = packageSize,
-        currState = currState,
-        additionalInfo = additionalInfo,
-        imageName = image?.let { byteArray ->
-            File(appFilesDir, Date().toString()).apply { writeBytes(byteArray) }.absolutePath
-        }
-    )
+    companion object {
+        fun fromMedicineEntity(medicineEntity: MedicineEntity, appFilesDir: File) = MedicinePostDto(
+            medicineLocalId = medicineEntity.medicineID,
+            medicineName = medicineEntity.medicineName,
+            medicineUnit = medicineEntity.medicineUnit,
+            expireDate = medicineEntity.expireDate?.jsonFormatString,
+            packageSize = medicineEntity.packageSize,
+            currState = medicineEntity.currState,
+            additionalInfo = medicineEntity.additionalInfo,
+            image = medicineEntity.imageName?.let { File(appFilesDir, it).readBytes() }
+        )
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as MedicineGetDto
+        other as MedicinePostDto
 
-        if (medicineId != other.medicineId) return false
+        if (medicineLocalId != other.medicineLocalId) return false
         if (medicineName != other.medicineName) return false
         if (medicineUnit != other.medicineUnit) return false
         if (expireDate != other.expireDate) return false
@@ -66,7 +65,7 @@ data class MedicineGetDto(
     }
 
     override fun hashCode(): Int {
-        var result = medicineId.hashCode()
+        var result = medicineLocalId
         result = 31 * result + medicineName.hashCode()
         result = 31 * result + medicineUnit.hashCode()
         result = 31 * result + (expireDate?.hashCode() ?: 0)

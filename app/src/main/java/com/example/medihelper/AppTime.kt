@@ -14,6 +14,8 @@ class AppTime : Comparable<AppTime> {
 
     val formatString: String
         get() = SimpleDateFormat("HH:mm", Locale.getDefault()).format(timeCalendar.time)
+    val jsonFormatString: String
+        get() = SimpleDateFormat("HH:mm", Locale.getDefault()).format(timeCalendar.time)
 
     private val timeCalendar: Calendar
 
@@ -30,6 +32,16 @@ class AppTime : Comparable<AppTime> {
         timeCalendar = Calendar.getInstance().apply {
             set(0, 0, 0, hour, minute, 0)
             set(Calendar.MILLISECOND, 0)
+        }
+    }
+
+    constructor(jsonFormatString: String) {
+        val time = SimpleDateFormat("HH:mm", Locale.getDefault()).parse(jsonFormatString)
+        timeCalendar = Calendar.getInstance().apply {
+            this.time = time
+            listOf(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.SECOND, Calendar.MILLISECOND).forEach { calendarField ->
+                set(calendarField, 0)
+            }
         }
     }
 

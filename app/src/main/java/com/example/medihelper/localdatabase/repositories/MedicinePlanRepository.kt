@@ -9,11 +9,17 @@ interface MedicinePlanRepository {
 
     suspend fun insert(medicinePlanEntity: MedicinePlanEntity): Int
 
+    suspend fun insert(medicinePlanEntityList: List<MedicinePlanEntity>)
+
     suspend fun update(medicinePlanEntity: MedicinePlanEntity)
 
     suspend fun delete(medicinePlanID: Int)
 
+    suspend fun deleteAll()
+
     suspend fun getEntity(medicinePlanID: Int): MedicinePlanEntity
+
+    suspend fun getEntityList(): List<MedicinePlanEntity>
 
     fun getItemListLive(personID: Int): LiveData<List<MedicinePlanItem>>
 

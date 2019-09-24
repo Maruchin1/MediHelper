@@ -20,11 +20,17 @@ interface PersonRepository {
 
     suspend fun deleteAll()
 
+    suspend fun getEntity(personID: Int): PersonEntity
+
     suspend fun getEntityList(): List<PersonEntity>
 
     suspend fun getItem(personID: Int): PersonItem
 
     suspend fun getMainPersonID(): Int?
+
+    suspend fun getRemoteID(personID: Int): Long
+
+    suspend fun getIDByRemoteID(personRemoteID: Long): Int
 
     fun getItemLive(personID: Int): LiveData<PersonItem>
 

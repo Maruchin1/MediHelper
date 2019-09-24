@@ -6,6 +6,7 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.room.*
 import com.example.medihelper.AppDate
 import com.example.medihelper.AppTime
+import com.google.gson.annotations.SerializedName
 import java.sql.Date
 import java.sql.Time
 
@@ -31,6 +32,9 @@ data class MedicinePlanEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "medicine_plan_id")
     val medicinePlanID: Int = 0,
+
+    @ColumnInfo(name = "medicine_plan_remote_id")
+    var medicinePlanRemoteID: Long = 0,
 
     @ColumnInfo(name = "medicine_id")
     var medicineID: Int,
@@ -74,6 +78,7 @@ data class MedicinePlanEntity(
 
     class DaysOfWeek : BaseObservable() {
         @Bindable
+        @SerializedName("monday")
         var monday: Boolean = false
             set(value) {
                 field = value
@@ -81,6 +86,7 @@ data class MedicinePlanEntity(
             }
 
         @Bindable
+        @SerializedName("tuesday")
         var tuesday: Boolean = false
             set(value) {
                 field = value
@@ -88,6 +94,7 @@ data class MedicinePlanEntity(
             }
 
         @Bindable
+        @SerializedName("wednesday")
         var wednesday: Boolean = false
             set(value) {
                 field = value
@@ -95,6 +102,7 @@ data class MedicinePlanEntity(
             }
 
         @Bindable
+        @SerializedName("thursday")
         var thursday: Boolean = false
             set(value) {
                 field = value
@@ -102,6 +110,7 @@ data class MedicinePlanEntity(
             }
 
         @Bindable
+        @SerializedName("friday")
         var friday: Boolean = false
             set(value) {
                 field = value
@@ -109,6 +118,7 @@ data class MedicinePlanEntity(
             }
 
         @Bindable
+        @SerializedName("saturday")
         var saturday: Boolean = false
             set(value) {
                 field = value
@@ -116,6 +126,7 @@ data class MedicinePlanEntity(
             }
 
         @Bindable
+        @SerializedName("sunday")
         var sunday: Boolean = false
             set(value) {
                 field = value

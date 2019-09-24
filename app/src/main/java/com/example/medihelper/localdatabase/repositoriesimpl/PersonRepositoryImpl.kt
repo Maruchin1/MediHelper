@@ -21,11 +21,17 @@ class PersonRepositoryImpl(private val personDao: PersonDao) : PersonRepository 
 
     override suspend fun deleteAll() = personDao.deleteAll()
 
+    override suspend fun getEntity(personID: Int) = personDao.getEntity(personID)
+
     override suspend fun getEntityList() = personDao.getEntityList()
 
     override suspend fun getItem(personID: Int) = personDao.getItem(personID)
 
     override suspend fun getMainPersonID() = personDao.getMainPersonID()
+
+    override suspend fun getRemoteID(personID: Int) = personDao.getRemoteID(personID)
+
+    override suspend fun getIDByRemoteID(personRemoteID: Long) = personDao.getIDByRemoteID(personRemoteID)
 
     override fun getItemLive(personID: Int) = personDao.getItemLive(personID)
 
@@ -54,6 +60,9 @@ interface PersonDao {
     @Query("DELETE FROM persons")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM persons WHERE person_id = :personID")
+    suspend fun getEntity(personID: Int): PersonEntity
+
     @Query("SELECT * FROM persons")
     suspend fun getEntityList(): List<PersonEntity>
 
@@ -62,6 +71,12 @@ interface PersonDao {
 
     @Query("SELECT person_id FROM persons WHERE main_person = 1")
     suspend fun getMainPersonID(): Int?
+
+    @Query("SELECT person_remote_id FROM persons WHERE person_id = :personID")
+    suspend fun getRemoteID(personID: Int): Long
+
+    @Query("SELECT person_id FROM persons WHERE person_remote_id = :personRemoteID")
+    suspend fun getIDByRemoteID(personRemoteID: Long): Int
 
     @Query("SELECT * FROM persons WHERE person_id = :personID")
     fun getItemLive(personID: Int): LiveData<PersonItem>

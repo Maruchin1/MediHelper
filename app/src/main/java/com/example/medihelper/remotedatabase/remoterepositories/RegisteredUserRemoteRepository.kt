@@ -1,7 +1,7 @@
-package com.example.medihelper.remotedatabase
+package com.example.medihelper.remotedatabase.remoterepositories
 
-import com.example.medihelper.remotedatabase.pojos.NewPasswordDto
-import com.example.medihelper.remotedatabase.pojos.UserCredentialsDto
+import com.example.medihelper.remotedatabase.pojos.registereduser.NewPasswordDto
+import com.example.medihelper.remotedatabase.pojos.registereduser.UserCredentialsDto
 import retrofit2.http.*
 
 interface RegisteredUserRemoteRepository {

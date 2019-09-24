@@ -1,7 +1,7 @@
-package com.example.medihelper.remotedatabase
+package com.example.medihelper.remotedatabase.remoterepositories
 
-import com.example.medihelper.remotedatabase.pojos.PersonGetDto
-import com.example.medihelper.remotedatabase.pojos.PersonPostDto
+import com.example.medihelper.remotedatabase.pojos.person.PersonGetDto
+import com.example.medihelper.remotedatabase.pojos.person.PersonPostDto
 import com.example.medihelper.remotedatabase.pojos.PostResponseDto
 import retrofit2.http.Body
 import retrofit2.http.GET

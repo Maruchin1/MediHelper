@@ -26,9 +26,10 @@ import com.example.medihelper.mainapp.more.MoreViewModel
 import com.example.medihelper.mainapp.more.loggeduser.NewPasswordViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
-import com.example.medihelper.remotedatabase.MedicineRemoteRepository
-import com.example.medihelper.remotedatabase.PersonRemoteRepository
-import com.example.medihelper.remotedatabase.RegisteredUserRemoteRepository
+import com.example.medihelper.remotedatabase.remoterepositories.MedicinePlanRemoteRepository
+import com.example.medihelper.remotedatabase.remoterepositories.MedicineRemoteRepository
+import com.example.medihelper.remotedatabase.remoterepositories.PersonRemoteRepository
+import com.example.medihelper.remotedatabase.remoterepositories.RegisteredUserRemoteRepository
 import com.example.medihelper.services.*
 import com.google.gson.*
 import kotlinx.coroutines.runBlocking
@@ -41,8 +42,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
-import java.nio.charset.Charset
-import java.util.*
 
 
 class MainApplication : Application() {
@@ -89,13 +88,7 @@ val repositoryModule = module {
 }
 
 val remoteRepositoryModule = module {
-    single<RegisteredUserRemoteRepository> {
-        Retrofit.Builder()
-            .baseUrl(API_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
-            .build()
-            .create(RegisteredUserRemoteRepository::class.java)
-    }
+    single<RegisteredUserRemoteRepository> { appRetrofit.create(RegisteredUserRemoteRepository::class.java) }
     single<MedicineRemoteRepository> {
         Retrofit.Builder()
             .baseUrl(API_BASE_URL)
@@ -110,13 +103,8 @@ val remoteRepositoryModule = module {
             .build()
             .create(MedicineRemoteRepository::class.java)
     }
-    single {
-        Retrofit.Builder()
-            .baseUrl(API_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
-            .build()
-            .create(PersonRemoteRepository::class.java)
-    }
+    single { appRetrofit.create(PersonRemoteRepository::class.java) }
+    single { appRetrofit.create(MedicinePlanRemoteRepository::class.java) }
 }
 
 val viewModelModule = module {
@@ -142,8 +130,15 @@ val serviceModule = module {
     single { PersonProfileService(get()) }
     single { MedicineSchedulerService(get(), get()) }
     single { MedicineImageService(androidContext().filesDir, androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)) }
-    single { ServerSyncService(androidContext().filesDir, get(), get(), get(), get()) }
+    single { ServerSyncService(androidContext().filesDir, get(), get(), get(), get(), get(), get()) }
     single { InitialDataService(get(), get()) }
+}
+
+private val appRetrofit: Retrofit by lazy {
+    Retrofit.Builder()
+        .baseUrl(API_BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+        .build()
 }
 
 private val byteArrayToStringTypeAdapter by lazy {
