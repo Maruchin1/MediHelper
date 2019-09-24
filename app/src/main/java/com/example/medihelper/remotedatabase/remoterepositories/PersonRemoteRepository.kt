@@ -16,6 +16,6 @@ interface PersonRemoteRepository  {
     @POST("persons/overwrite")
     suspend fun overwritePersons(
         @Header("Authorization") authToken: String,
-        @Body personPostDtoList: List<PersonPostDto>
+        @Body postDtoList: List<PersonPostDto>
     ): List<PostResponseDto>
 }

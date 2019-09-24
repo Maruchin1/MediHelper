@@ -24,7 +24,7 @@ class MedicinePlanListViewModel(
 
     init {
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
-            personItem.personColorResID
+            personItem?.personColorResID
         }
         medicinePlanItemListLive = Transformations.switchMap(selectedPersonItemLive) { personItem ->
             medicinePlanRepository.getItemListLive(personItem.personID)

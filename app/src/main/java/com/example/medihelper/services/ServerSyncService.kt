@@ -1,22 +1,19 @@
 package com.example.medihelper.services
 
 import android.util.Log
-import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PersonRepository
-import com.example.medihelper.remotedatabase.pojos.PostResponseDto
+import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import com.example.medihelper.remotedatabase.remoterepositories.MedicinePlanRemoteRepository
 import com.example.medihelper.remotedatabase.remoterepositories.MedicineRemoteRepository
 import com.example.medihelper.remotedatabase.remoterepositories.PersonRemoteRepository
 import com.example.medihelper.remotedatabase.pojos.medicine.MedicinePostDto
-import com.example.medihelper.remotedatabase.pojos.medicineplan.MedicinePlanGetDto
 import com.example.medihelper.remotedatabase.pojos.medicineplan.MedicinePlanPostDto
-import com.example.medihelper.remotedatabase.pojos.medicineplan.TimeOfTakingDto
 import com.example.medihelper.remotedatabase.pojos.person.PersonPostDto
+import com.example.medihelper.remotedatabase.pojos.plannedmedicine.PlannedMedicinePostDto
+import com.example.medihelper.remotedatabase.remoterepositories.PlannedMedicineRemoteRepository
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
 class ServerSyncService(
     private val appFilesDir: File,
@@ -25,7 +22,9 @@ class ServerSyncService(
     private val personRepository: PersonRepository,
     private val personRemoteRepository: PersonRemoteRepository,
     private val medicinePlanRepository: MedicinePlanRepository,
-    private val medicinePlanRemoteRepository: MedicinePlanRemoteRepository
+    private val medicinePlanRemoteRepository: MedicinePlanRemoteRepository,
+    private val plannedMedicineRepository: PlannedMedicineRepository,
+    private val plannedMedicineRemoteRepository: PlannedMedicineRemoteRepository
 ) {
     private val TAG = "ServerSyncService"
 
@@ -34,7 +33,7 @@ class ServerSyncService(
 
         medicineRemoteRepository.overwriteMedicines(
             authToken = authToken,
-            medicinePostDtoList = medicineRepository.getEntityList().map { MedicinePostDto.fromMedicineEntity(it, appFilesDir) }
+            postDtoList = medicineRepository.getEntityList().map { MedicinePostDto.fromMedicineEntity(it, appFilesDir) }
         ).forEach { postResponseDto ->
             val medicineEntity = medicineRepository.getEntity(postResponseDto.localId)
             medicineEntity.medicineRemoteID = postResponseDto.remoteId
@@ -43,7 +42,7 @@ class ServerSyncService(
 
         personRemoteRepository.overwritePersons(
             authToken = authToken,
-            personPostDtoList = personRepository.getEntityList().map { PersonPostDto.fromPersonEntity(it) }
+            postDtoList = personRepository.getEntityList().map { PersonPostDto.fromPersonEntity(it) }
         ).forEach { postResponseDto ->
             val personEntity = personRepository.getEntity(postResponseDto.localId)
             personEntity.personRemoteID = postResponseDto.remoteId
@@ -52,7 +51,7 @@ class ServerSyncService(
 
         medicinePlanRemoteRepository.overwriteMedicinesPlans(
             authToken = authToken,
-            medicinePlanPostDtoList = medicinePlanRepository.getEntityList().map {
+            postDtoList = medicinePlanRepository.getEntityList().map {
                 MedicinePlanPostDto.fromMedicinePlanEntity(it, medicineRepository, personRepository)
             }
         ).forEach { postResponseDto ->
@@ -61,6 +60,16 @@ class ServerSyncService(
             medicinePlanRepository.update(medicinePlanEntity)
         }
 
+        plannedMedicineRemoteRepository.overwritePlannedMedicines(
+            authToken = authToken,
+            postDtoList = plannedMedicineRepository.getEntityList().map {
+                PlannedMedicinePostDto.fromPlannedMedicineEntity(it, medicinePlanRepository)
+            }
+        ).forEach { postResponseDto ->
+            val plannedMedicineEntity = plannedMedicineRepository.getEntity(postResponseDto.localId)
+            plannedMedicineEntity.plannedMedicineRemoteID = postResponseDto.remoteId
+            plannedMedicineRepository.update(plannedMedicineEntity)
+        }
     }
 
     suspend fun overwriteLocal(authToken: String) {
@@ -79,5 +88,10 @@ class ServerSyncService(
             it.toMedicinePlanEntity(medicineRepository, personRepository)
         }
         medicinePlanRepository.insert(medicinePlanEntityList)
+
+        val plannedMedicineEntityList = plannedMedicineRemoteRepository.getAllPlannedMedicines(authToken).map {
+            it.toPlannedMedicineEntity(medicinePlanRepository)
+        }
+        plannedMedicineRepository.insert(plannedMedicineEntityList)
     }
 }

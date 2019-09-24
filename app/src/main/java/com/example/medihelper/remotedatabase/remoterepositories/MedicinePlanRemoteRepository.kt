@@ -11,13 +11,11 @@ import retrofit2.http.POST
 interface MedicinePlanRemoteRepository {
 
     @GET("medicines-plans")
-    suspend fun getAllMedicinesPlans(
-        @Header("Authorization") authToken: String
-    ): List<MedicinePlanGetDto>
+    suspend fun getAllMedicinesPlans(@Header("Authorization") authToken: String): List<MedicinePlanGetDto>
 
     @POST("medicines-plans/overwrite")
     suspend fun overwriteMedicinesPlans(
         @Header("Authorization") authToken: String,
-        @Body medicinePlanPostDtoList: List<MedicinePlanPostDto>
+        @Body postDtoList: List<MedicinePlanPostDto>
     ): List<PostResponseDto>
 }

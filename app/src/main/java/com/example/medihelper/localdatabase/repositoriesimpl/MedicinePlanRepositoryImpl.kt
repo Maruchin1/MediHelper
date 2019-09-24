@@ -26,6 +26,10 @@ class MedicinePlanRepositoryImpl(private val medicinePlanDao: MedicinePlanDao) :
 
     override suspend fun getEntityList() = medicinePlanDao.getEntityList()
 
+    override suspend fun getRemoteID(medicinePlanID: Int) = medicinePlanDao.getRemoteID(medicinePlanID)
+
+    override suspend fun getIDByRemoteID(medicinePlanRemoteID: Long) = medicinePlanDao.getIDByRemoteID(medicinePlanRemoteID)
+
     override fun getItemListLive(personID: Int) = medicinePlanDao.getItemListLive(personID)
 
     override fun getHistoryLive(medicinePlanID: Int) = medicinePlanDao.getHistoryLive(medicinePlanID)
@@ -54,6 +58,12 @@ interface MedicinePlanDao {
 
     @Query("SELECT * FROM medicines_plans")
     suspend fun getEntityList(): List<MedicinePlanEntity>
+
+    @Query("SELECT medicine_plan_remote_id FROM medicines_plans WHERE medicine_plan_id = :medicinePlanID")
+    suspend fun getRemoteID(medicinePlanID: Int): Long
+
+    @Query("SELECT medicine_plan_id FROM medicines_plans WHERE medicine_plan_remote_id = :medicinePlanRemoteID")
+    suspend fun getIDByRemoteID(medicinePlanRemoteID: Long): Int
 
     @Query("SELECT * FROM medicines_plans mp JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE person_id = :personID")
     fun getItemListLive(personID: Int): LiveData<List<MedicinePlanItem>>

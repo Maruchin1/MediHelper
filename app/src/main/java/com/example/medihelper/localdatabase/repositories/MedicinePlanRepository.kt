@@ -21,6 +21,10 @@ interface MedicinePlanRepository {
 
     suspend fun getEntityList(): List<MedicinePlanEntity>
 
+    suspend fun getRemoteID(medicinePlanID: Int): Long
+
+    suspend fun getIDByRemoteID(medicinePlanRemoteID: Long): Int
+
     fun getItemListLive(personID: Int): LiveData<List<MedicinePlanItem>>
 
     fun getHistoryLive(medicinePlanID: Int): LiveData<MedicinePlanHistory>

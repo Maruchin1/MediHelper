@@ -16,7 +16,7 @@ import com.example.medihelper.localdatabase.repositoriesimpl.PlannedMedicineDao
         PlannedMedicineEntity::class,
         PersonEntity::class
     ],
-    version = 33,
+    version = 34,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

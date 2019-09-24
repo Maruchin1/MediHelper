@@ -26,10 +26,7 @@ import com.example.medihelper.mainapp.more.MoreViewModel
 import com.example.medihelper.mainapp.more.loggeduser.NewPasswordViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
-import com.example.medihelper.remotedatabase.remoterepositories.MedicinePlanRemoteRepository
-import com.example.medihelper.remotedatabase.remoterepositories.MedicineRemoteRepository
-import com.example.medihelper.remotedatabase.remoterepositories.PersonRemoteRepository
-import com.example.medihelper.remotedatabase.remoterepositories.RegisteredUserRemoteRepository
+import com.example.medihelper.remotedatabase.remoterepositories.*
 import com.example.medihelper.services.*
 import com.google.gson.*
 import kotlinx.coroutines.runBlocking
@@ -105,6 +102,7 @@ val remoteRepositoryModule = module {
     }
     single { appRetrofit.create(PersonRemoteRepository::class.java) }
     single { appRetrofit.create(MedicinePlanRemoteRepository::class.java) }
+    single { appRetrofit.create(PlannedMedicineRemoteRepository::class.java) }
 }
 
 val viewModelModule = module {
@@ -130,7 +128,7 @@ val serviceModule = module {
     single { PersonProfileService(get()) }
     single { MedicineSchedulerService(get(), get()) }
     single { MedicineImageService(androidContext().filesDir, androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)) }
-    single { ServerSyncService(androidContext().filesDir, get(), get(), get(), get(), get(), get()) }
+    single { ServerSyncService(androidContext().filesDir, get(), get(), get(), get(), get(), get(), get(), get()) }
     single { InitialDataService(get(), get()) }
 }
 

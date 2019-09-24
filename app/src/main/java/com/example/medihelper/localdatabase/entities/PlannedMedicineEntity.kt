@@ -20,6 +20,9 @@ data class PlannedMedicineEntity(
     @ColumnInfo(name = "planned_medicine_id")
     val plannedMedicineID: Int = 0,
 
+    @ColumnInfo(name = "planned_medicine_remote_id")
+    var plannedMedicineRemoteID: Long = 0,
+
     @ColumnInfo(name = "medicine_plan_id")
     val medicinePlanID: Int,
 
