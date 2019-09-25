@@ -38,7 +38,7 @@ data class MedicinePlanGetDto(
     val timeOfTakingList: List<TimeOfTakingDto>
 ) {
     suspend fun toMedicinePlanEntity(medicineRepository: MedicineRepository, personRepository: PersonRepository): MedicinePlanEntity {
-        val medicineID = medicineRepository.getIDByRemoteID(medicineRemoteId)
+        val medicineID = medicineRepository.getIDByRemoteID(medicineRemoteId)!!
         val personID = personRepository.getIDByRemoteID(personRemoteId)
         return MedicinePlanEntity(
             medicinePlanRemoteID = medicinePlanRemoteId,

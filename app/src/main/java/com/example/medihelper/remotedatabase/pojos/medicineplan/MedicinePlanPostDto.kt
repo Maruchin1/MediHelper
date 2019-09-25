@@ -43,8 +43,8 @@ data class MedicinePlanPostDto(
             personRepository: PersonRepository
         ) = MedicinePlanPostDto(
             medicinePlanLocalId = medicinePlanEntity.medicinePlanID,
-            medicineRemoteId = medicineRepository.getRemoteID(medicinePlanEntity.medicineID),
-            personRemoteId = personRepository.getRemoteID(medicinePlanEntity.personID),
+            medicineRemoteId = medicineRepository.getRemoteID(medicinePlanEntity.medicineID)!!,
+            personRemoteId = personRepository.getRemoteID(medicinePlanEntity.personID)!!,
             startDate = medicinePlanEntity.startDate.jsonFormatString,
             endDate = medicinePlanEntity.endDate?.jsonFormatString,
             durationType = medicinePlanEntity.durationType.toString(),

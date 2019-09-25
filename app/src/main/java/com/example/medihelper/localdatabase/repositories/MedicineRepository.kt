@@ -21,11 +21,17 @@ interface MedicineRepository {
 
     suspend fun getEntityList(): List<MedicineEntity>
 
+    suspend fun getEntityListToSync(): List<MedicineEntity>
+
     suspend fun getDetails(medicineID: Int): MedicineDetails
 
-    suspend fun getRemoteID(medicineID: Int): Long
+    suspend fun getRemoteID(medicineID: Int): Long?
 
-    suspend fun getIDByRemoteID(medicineRemoteID: Long): Int
+    suspend fun getIDByRemoteID(medicineRemoteID: Long): Int?
+
+    suspend fun getDeletedRemoteIDList(): List<Long>
+
+    suspend fun clearDeletedRemoteIDList()
 
     fun getItemListLive(): LiveData<List<MedicineItem>>
 

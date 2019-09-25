@@ -24,13 +24,19 @@ interface PersonRepository {
 
     suspend fun getEntityList(): List<PersonEntity>
 
+    suspend fun getEntityListToSync(): List<PersonEntity>
+
     suspend fun getItem(personID: Int): PersonItem
 
     suspend fun getMainPersonID(): Int?
 
-    suspend fun getRemoteID(personID: Int): Long
+    suspend fun getRemoteID(personID: Int): Long?
 
     suspend fun getIDByRemoteID(personRemoteID: Long): Int
+
+    suspend fun getDeletedRemoteIDList(): List<Long>
+
+    suspend fun clearDeletedRemoteIDList()
 
     fun getItemLive(personID: Int): LiveData<PersonItem>
 

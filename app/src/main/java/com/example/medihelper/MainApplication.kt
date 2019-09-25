@@ -71,7 +71,7 @@ val repositoryModule = module {
             .build()
     }
     single<MedicineRepository> {
-        MedicineRepositoryImpl(get<AppDatabase>().medicineDao())
+        MedicineRepositoryImpl(get<AppDatabase>().medicineDao(), get<AppDatabase>().deletedEntityDao())
     }
     single<MedicinePlanRepository> {
         MedicinePlanRepositoryImpl(get<AppDatabase>().medicinePlanDao())
@@ -80,7 +80,7 @@ val repositoryModule = module {
         PlannedMedicineRepositoryImpl(get<AppDatabase>().plannedMedicineDao())
     }
     single<PersonRepository> {
-        PersonRepositoryImpl(get<AppDatabase>().personDao())
+        PersonRepositoryImpl(get<AppDatabase>().personDao(), get<AppDatabase>().deletedEntityDao())
     }
 }
 

@@ -5,6 +5,9 @@ import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
+import com.example.medihelper.remotedatabase.pojos.MedicineDto
+import com.example.medihelper.remotedatabase.pojos.PersonDto
+import com.example.medihelper.remotedatabase.pojos.SyncRequestDto
 import com.example.medihelper.remotedatabase.remoterepositories.MedicinePlanRemoteRepository
 import com.example.medihelper.remotedatabase.remoterepositories.MedicineRemoteRepository
 import com.example.medihelper.remotedatabase.remoterepositories.PersonRemoteRepository
@@ -94,4 +97,57 @@ class ServerSyncService(
         }
         plannedMedicineRepository.insert(plannedMedicineEntityList)
     }
+
+    suspend fun syncWithServer(authToken: String) {
+        val medicinesSyncRequestDto = SyncRequestDto(
+            deleteRemoteIdList = medicineRepository.getDeletedRemoteIDList(),
+            insertUpdateDtoList = medicineRepository.getEntityListToSync().map { MedicineDto.fromMedicineEntity(it, appFilesDir) }
+        )
+        val remoteMedicineDtoList = medicineRemoteRepository.synchronizeMedicines(authToken, medicinesSyncRequestDto)
+        medicineRepository.run {
+            deleteAll()
+            insert(remoteMedicineDtoList.map { it.toMedicineEntity(appFilesDir) })
+            clearDeletedRemoteIDList()
+        }
+
+        val personsSyncRequestDto = SyncRequestDto(
+            deleteRemoteIdList = personRepository.getDeletedRemoteIDList(),
+            insertUpdateDtoList = personRepository.getEntityListToSync().map { PersonDto.fromPersonEntity(it) }
+        )
+        val remotePersonDtoList = personRemoteRepository.synchronizePersons(authToken, personsSyncRequestDto)
+        personRepository.run {
+            deleteAll()
+            insert(remotePersonDtoList.map { it.toPersonEntity() })
+            clearDeletedRemoteIDList()
+        }
+    }
+
+//    private suspend fun syncMedicines(authToken: String) {
+//        val medicinesSyncRequestDto = SyncRequestDto(
+//            deleteRemoteIdList = medicineRepository.getDeletedRemoteIDList(),
+//            insertUpdateDtoList = medicineRepository.getEntityListToSync().map { MedicineDto.fromMedicineEntity(it, appFilesDir) }
+//        )
+//        val remoteMedicineDtoList = medicineRemoteRepository.synchronizeMedicines(authToken, medicinesSyncRequestDto)
+//        remoteMedicineDtoList.forEach { medicineDto ->
+//            if (medicineDto.medicineLocalId != null) {
+//                val medicineEntity = medicineDto.toMedicineEntity(
+//                    medicineID = medicineDto.medicineLocalId,
+//                    appFilesDir = appFilesDir)
+//                medicineRepository.update(medicineEntity)
+//            } else {
+//                val existingMedicineID = medicineRepository.getIDByRemoteID(medicineDto.medicineRemoteId!!)
+//                val medicineEntity = medicineDto.toMedicineEntity(
+//                    medicineID = existingMedicineID ?: 0,
+//                    appFilesDir = appFilesDir)
+//                if (existingMedicineID == null) {
+//                    medicineRepository.insert(medicineEntity)
+//                } else {
+//                    medicineRepository.update(medicineEntity)
+//                }
+//            }
+//        }
+//
+//        val medicineRemoteIdList = remoteMedicineDtoList.map { it.medicineRemoteId!! }
+//        medicineRepository.deleteAllByRemoteIDNotIn(medicineRemoteIdList)
+//    }
 }

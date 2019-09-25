@@ -3,6 +3,7 @@ package com.example.medihelper.localdatabase
 import androidx.room.TypeConverter
 import com.example.medihelper.AppDate
 import com.example.medihelper.AppTime
+import com.example.medihelper.localdatabase.entities.DeletedEntity
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.google.gson.Gson
@@ -78,5 +79,16 @@ class Converters {
     @TypeConverter
     fun stringToStatusOfTaking(string: String): PlannedMedicineEntity.StatusOfTaking {
         return PlannedMedicineEntity.StatusOfTaking.valueOf(string)
+    }
+
+    // EntityType
+    @TypeConverter
+    fun entityTypeToString(entityType: DeletedEntity.EntityType): String {
+        return entityType.toString()
+    }
+
+    @TypeConverter
+    fun stringToEntityType(string: String): DeletedEntity.EntityType {
+        return DeletedEntity.EntityType.valueOf(string)
     }
 }

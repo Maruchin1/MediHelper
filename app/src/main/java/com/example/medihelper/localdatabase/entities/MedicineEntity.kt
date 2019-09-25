@@ -13,7 +13,7 @@ data class MedicineEntity(
     val medicineID: Int = 0,
 
     @ColumnInfo(name = "medicine_remote_id")
-    var medicineRemoteID: Long = 0,
+    var medicineRemoteID: Long? = null,
 
     @ColumnInfo(name = "medicine_name")
     var medicineName: String,
@@ -34,7 +34,10 @@ data class MedicineEntity(
     var additionalInfo: String? = null,
 
     @ColumnInfo(name = "image_name")
-    var imageName: String?
+    var imageName: String?,
+
+    @ColumnInfo(name = "synchronized_with_server")
+    var synchronizedWithServer: Boolean = false
 ) {
     fun reduceCurrState(doseSize: Float) {
         currState?.let { currState ->

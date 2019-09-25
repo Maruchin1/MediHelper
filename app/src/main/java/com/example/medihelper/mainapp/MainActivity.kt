@@ -8,12 +8,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
 import com.example.medihelper.services.MedicineSchedulerService
 import com.example.medihelper.services.ServerSyncService
+import com.example.medihelper.services.SharedPrefService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
-import org.koin.android.ext.android.inject
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +29,13 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch {
             val medicineSchedulerService: MedicineSchedulerService = get()
             medicineSchedulerService.updatePlannedMedicinesStatuses()
+
+            val sharedPrefService: SharedPrefService = get()
+            val serverSyncService: ServerSyncService = get()
+            val authToken = sharedPrefService.getLoggedUserAuthToken()
+            if (!authToken.isNullOrEmpty()) {
+                serverSyncService.syncWithServer(authToken)
+            }
         }
     }
 

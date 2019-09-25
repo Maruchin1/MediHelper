@@ -10,6 +10,7 @@ import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.services.MedicineImageService
 import com.example.medihelper.services.SharedPrefService
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -69,22 +70,34 @@ class AddEditMedicineViewModel(
 
     fun saveMedicine(): Boolean {
         if (validateInputData()) {
-            val medicineEntity = MedicineEntity(
-                medicineName = medicineNameLive.value!!,
-                expireDate = expireDateLive.value!!,
-                medicineUnit = medicineUnitLive.value!!,
-                packageSize = packageSizeLive.value,
-                currState = currStateLive.value,
-                additionalInfo = commentsLive.value,
-                imageName = imageFileLive.value?.let { imageFile ->
-                    medicineImageService.saveTmpFile(medicineNameLive.value!!, imageFile)
-                }
-            )
-            viewModelScope.launch {
+            GlobalScope.launch {
                 if (editMedicineID != null) {
-                    medicineRepository.update(medicineEntity.copy(medicineID = editMedicineID!!))
+                    val existingMedicineEntity = medicineRepository.getEntity(editMedicineID!!)
+                    val updatedMedicineEntity = existingMedicineEntity.copy(
+                        medicineName = medicineNameLive.value!!,
+                        medicineUnit = medicineUnitLive.value!!,
+                        expireDate = expireDateLive.value!!,
+                        packageSize = packageSizeLive.value,
+                        currState = currStateLive.value,
+                        additionalInfo = commentsLive.value,
+                        imageName = imageFileLive.value?.let { imageFile ->
+                            medicineImageService.saveTmpFile(medicineNameLive.value!!, imageFile)
+                        }
+                    )
+                    medicineRepository.update(updatedMedicineEntity)
                 } else {
-                    medicineRepository.insert(medicineEntity)
+                    val newMedicineEntity = MedicineEntity(
+                        medicineName = medicineNameLive.value!!,
+                        expireDate = expireDateLive.value!!,
+                        medicineUnit = medicineUnitLive.value!!,
+                        packageSize = packageSizeLive.value,
+                        currState = currStateLive.value,
+                        additionalInfo = commentsLive.value,
+                        imageName = imageFileLive.value?.let { imageFile ->
+                            medicineImageService.saveTmpFile(medicineNameLive.value!!, imageFile)
+                        }
+                    )
+                    medicineRepository.insert(newMedicineEntity)
                 }
             }
             return true

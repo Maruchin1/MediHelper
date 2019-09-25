@@ -7,6 +7,7 @@ import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.PersonItem
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PersonRepository
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -89,7 +90,7 @@ class MedicineDetailsViewModel(
         }
     }
 
-    fun deleteMedicine() = viewModelScope.launch {
+    fun deleteMedicine() = GlobalScope.launch {
         medicineDetailsLive.value?.let { medicineDetails ->
             medicineRepository.delete(medicineDetails.medicineID)
         }

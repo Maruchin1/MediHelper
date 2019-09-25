@@ -12,7 +12,7 @@ data class PersonEntity(
     val personID: Int = 0,
 
     @ColumnInfo(name = "person_remote_id")
-    var personRemoteID: Long = 0,
+    var personRemoteID: Long? = null,
 
     @ColumnInfo(name = "person_name")
     var personName: String,
@@ -21,5 +21,8 @@ data class PersonEntity(
     var personColorResID: Int,
 
     @ColumnInfo(name = "main_person")
-    var mainPerson: Boolean = false
+    var mainPerson: Boolean = false,
+
+    @ColumnInfo(name = "synchronized_with_server")
+    var synchronizedWithServer: Boolean = false
 )

@@ -1,4 +1,4 @@
-package com.example.medihelper.remotedatabase.pojos.medicine
+package com.example.medihelper.remotedatabase.pojos
 
 import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entities.MedicineEntity
@@ -6,9 +6,12 @@ import com.google.gson.annotations.SerializedName
 import java.io.File
 import java.util.*
 
-data class MedicineGetDto(
+data class MedicineDto(
+    @SerializedName(value = "medicineLocalId")
+    val medicineLocalId: Int?,
+
     @SerializedName(value = "medicineRemoteId")
-    val medicineRemoteId: Long,
+    val medicineRemoteId: Long?,
 
     @SerializedName(value = "medicineName")
     val medicineName: String,
@@ -39,18 +42,33 @@ data class MedicineGetDto(
         packageSize = packageSize,
         currState = currState,
         additionalInfo = additionalInfo,
-        imageName = image?.let { byteArray ->
-            File(appFilesDir, Date().toString()).apply { writeBytes(byteArray) }.absolutePath
+        imageName = image?.let { bytes ->
+            File(appFilesDir, Date().toString()).apply { writeBytes(bytes) }.absolutePath
         },
         synchronizedWithServer = true
     )
+
+    companion object {
+        fun fromMedicineEntity(medicineEntity: MedicineEntity, appFilesDir: File) = MedicineDto(
+            medicineLocalId = medicineEntity.medicineID,
+            medicineRemoteId = medicineEntity.medicineRemoteID,
+            medicineName = medicineEntity.medicineName,
+            medicineUnit = medicineEntity.medicineUnit,
+            expireDate = medicineEntity.expireDate?.jsonFormatString,
+            packageSize = medicineEntity.packageSize,
+            currState = medicineEntity.currState,
+            additionalInfo = medicineEntity.additionalInfo,
+            image = medicineEntity.imageName?.let { File(appFilesDir, it).readBytes() }
+        )
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as MedicineGetDto
+        other as MedicineDto
 
+        if (medicineLocalId != other.medicineLocalId) return false
         if (medicineRemoteId != other.medicineRemoteId) return false
         if (medicineName != other.medicineName) return false
         if (medicineUnit != other.medicineUnit) return false
@@ -67,7 +85,8 @@ data class MedicineGetDto(
     }
 
     override fun hashCode(): Int {
-        var result = medicineRemoteId.hashCode()
+        var result = medicineLocalId ?: 0
+        result = 31 * result + (medicineRemoteId?.hashCode() ?: 0)
         result = 31 * result + medicineName.hashCode()
         result = 31 * result + medicineUnit.hashCode()
         result = 31 * result + (expireDate?.hashCode() ?: 0)
