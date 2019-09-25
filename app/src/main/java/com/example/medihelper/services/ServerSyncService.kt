@@ -6,6 +6,7 @@ import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import com.example.medihelper.remotedatabase.pojos.MedicineDto
+import com.example.medihelper.remotedatabase.pojos.MedicinePlanDto
 import com.example.medihelper.remotedatabase.pojos.PersonDto
 import com.example.medihelper.remotedatabase.pojos.SyncRequestDto
 import com.example.medihelper.remotedatabase.remoterepositories.MedicinePlanRemoteRepository
@@ -103,21 +104,35 @@ class ServerSyncService(
             deleteRemoteIdList = medicineRepository.getDeletedRemoteIDList(),
             insertUpdateDtoList = medicineRepository.getEntityListToSync().map { MedicineDto.fromMedicineEntity(it, appFilesDir) }
         )
+        val personsSyncRequestDto = SyncRequestDto(
+            deleteRemoteIdList = personRepository.getDeletedRemoteIDList(),
+            insertUpdateDtoList = personRepository.getEntityListToSync().map { PersonDto.fromPersonEntity(it) }
+        )
+        val medicinePlanSyncRequestDto = SyncRequestDto(
+            deleteRemoteIdList = medicinePlanRepository.getDeletedRemoteIDList(),
+            insertUpdateDtoList = medicinePlanRepository.getEntityListToSync().map {
+                MedicinePlanDto.fromMedicinePlanEntity(it, medicineRepository, personRepository)
+            }
+        )
+
+
         val remoteMedicineDtoList = medicineRemoteRepository.synchronizeMedicines(authToken, medicinesSyncRequestDto)
+        val remotePersonDtoList = personRemoteRepository.synchronizePersons(authToken, personsSyncRequestDto)
+        val remoteMedicinePlanDtoList = medicinePlanRemoteRepository.synchronizeMedicinesPlans(authToken, medicinePlanSyncRequestDto)
+
         medicineRepository.run {
             deleteAll()
             insert(remoteMedicineDtoList.map { it.toMedicineEntity(appFilesDir) })
             clearDeletedRemoteIDList()
         }
-
-        val personsSyncRequestDto = SyncRequestDto(
-            deleteRemoteIdList = personRepository.getDeletedRemoteIDList(),
-            insertUpdateDtoList = personRepository.getEntityListToSync().map { PersonDto.fromPersonEntity(it) }
-        )
-        val remotePersonDtoList = personRemoteRepository.synchronizePersons(authToken, personsSyncRequestDto)
         personRepository.run {
             deleteAll()
             insert(remotePersonDtoList.map { it.toPersonEntity() })
+            clearDeletedRemoteIDList()
+        }
+        medicinePlanRepository.run {
+            deleteAll()
+            insert(remoteMedicinePlanDtoList.map { it.toMedicinePlanEntity(medicineRepository, personRepository) })
             clearDeletedRemoteIDList()
         }
     }

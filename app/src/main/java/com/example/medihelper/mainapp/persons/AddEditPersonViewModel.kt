@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.services.SharedPrefService
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AddEditPersonViewModel(
@@ -48,15 +49,22 @@ class AddEditPersonViewModel(
 
     fun saveNewPerson(): Boolean {
         if (validateInputData()) {
-            val personEntity = PersonEntity(
-                personName = personNameLive.value!!,
-                personColorResID = personColorResIDLive.value!!
-            )
-            viewModelScope.launch {
-                if (editPersonID != null) {
-                    personRepository.update(personEntity.copy(personID = editPersonID!!))
-                } else {
-                    personRepository.insert(personEntity)
+            if (editPersonID != null) {
+                GlobalScope.launch {
+                    val existingPersonEntity = personRepository.getEntity(editPersonID!!)
+                    val updatedPersonEntity = existingPersonEntity.copy(
+                        personName = personNameLive.value!!,
+                        personColorResID = personColorResIDLive.value!!
+                    )
+                    personRepository.update(updatedPersonEntity)
+                }
+            } else {
+                GlobalScope.launch {
+                    val newPersonEntity = PersonEntity(
+                        personName = personNameLive.value!!,
+                        personColorResID = personColorResIDLive.value!!
+                    )
+                    personRepository.insert(newPersonEntity)
                 }
             }
             return true

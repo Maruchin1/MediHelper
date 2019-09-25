@@ -34,7 +34,7 @@ data class MedicinePlanEntity(
     val medicinePlanID: Int = 0,
 
     @ColumnInfo(name = "medicine_plan_remote_id")
-    var medicinePlanRemoteID: Long = 0,
+    var medicinePlanRemoteID: Long? = null,
 
     @ColumnInfo(name = "medicine_id")
     var medicineID: Int,
@@ -61,7 +61,10 @@ data class MedicinePlanEntity(
     var daysType: DaysType,
 
     @ColumnInfo(name = "dose_hour_list")
-    var timeOfTakingList: List<TimeOfTaking>
+    var timeOfTakingList: List<TimeOfTaking>,
+
+    @ColumnInfo(name = "synchronized_with_server")
+    var synchronizedWithServer: Boolean = false
 ) {
     enum class DurationType {
         ONCE, PERIOD, CONTINUOUS

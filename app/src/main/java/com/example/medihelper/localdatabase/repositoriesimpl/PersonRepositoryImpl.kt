@@ -45,10 +45,10 @@ class PersonRepositoryImpl(
 
     override suspend fun getIDByRemoteID(personRemoteID: Long) = personDao.getIDByRemoteID(personRemoteID)
 
-    override suspend fun getDeletedRemoteIDList() = deletedEntityDao.getDeletedRemoteIDListByEntityType(DeletedEntity.EntityType.PERSON)
+    override suspend fun getDeletedRemoteIDList() = deletedEntityDao.getDeletedRemoteIDList(DeletedEntity.EntityType.PERSON)
 
     override suspend fun clearDeletedRemoteIDList() =
-        deletedEntityDao.deleteDeleterRemoteIDListByEntityType(DeletedEntity.EntityType.PERSON)
+        deletedEntityDao.deleteDeleterRemoteIDList(DeletedEntity.EntityType.PERSON)
 
     override fun getItemLive(personID: Int) = personDao.getItemLive(personID)
 

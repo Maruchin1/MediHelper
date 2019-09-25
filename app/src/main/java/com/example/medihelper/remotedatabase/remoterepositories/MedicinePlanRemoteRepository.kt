@@ -1,12 +1,11 @@
 package com.example.medihelper.remotedatabase.remoterepositories
 
+import com.example.medihelper.remotedatabase.pojos.MedicinePlanDto
 import com.example.medihelper.remotedatabase.pojos.medicineplan.MedicinePlanGetDto
 import com.example.medihelper.remotedatabase.pojos.medicineplan.MedicinePlanPostDto
 import com.example.medihelper.remotedatabase.pojos.PostResponseDto
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import com.example.medihelper.remotedatabase.pojos.SyncRequestDto
+import retrofit2.http.*
 
 interface MedicinePlanRemoteRepository {
 
@@ -18,4 +17,10 @@ interface MedicinePlanRemoteRepository {
         @Header("Authorization") authToken: String,
         @Body postDtoList: List<MedicinePlanPostDto>
     ): List<PostResponseDto>
+
+    @PUT("medicines-plans/synchronize")
+    suspend fun synchronizeMedicinesPlans(
+        @Header("Authorization") authToken: String,
+        @Body syncRequestDto: SyncRequestDto<MedicinePlanDto>
+    ): List<MedicinePlanDto>
 }

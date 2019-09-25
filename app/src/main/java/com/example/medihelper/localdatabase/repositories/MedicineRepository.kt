@@ -27,7 +27,7 @@ interface MedicineRepository {
 
     suspend fun getRemoteID(medicineID: Int): Long?
 
-    suspend fun getIDByRemoteID(medicineRemoteID: Long): Int?
+    suspend fun getIDByRemoteID(medicineRemoteID: Long): Int
 
     suspend fun getDeletedRemoteIDList(): List<Long>
 

@@ -14,8 +14,8 @@ interface DeletedEntityDao {
     suspend fun insert(deletedEntity: DeletedEntity)
 
     @Query("SELECT entity_remote_id FROM deleted_entities WHERE entity_type = :entityType")
-    suspend fun getDeletedRemoteIDListByEntityType(entityType: DeletedEntity.EntityType): List<Long>
+    suspend fun getDeletedRemoteIDList(entityType: DeletedEntity.EntityType): List<Long>
 
     @Query("DELETE FROM deleted_entities WHERE entity_type = :entityType")
-    suspend fun deleteDeleterRemoteIDListByEntityType(entityType: DeletedEntity.EntityType)
+    suspend fun deleteDeleterRemoteIDList(entityType: DeletedEntity.EntityType)
 }

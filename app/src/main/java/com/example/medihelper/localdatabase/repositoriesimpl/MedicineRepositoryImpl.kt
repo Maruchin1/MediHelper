@@ -44,10 +44,9 @@ class MedicineRepositoryImpl(
 
     override suspend fun getIDByRemoteID(medicineRemoteID: Long) = medicineDao.getIDByRemoteID(medicineRemoteID)
 
-    override suspend fun getDeletedRemoteIDList() = deletedEntityDao.getDeletedRemoteIDListByEntityType(DeletedEntity.EntityType.MEDICINE)
+    override suspend fun getDeletedRemoteIDList() = deletedEntityDao.getDeletedRemoteIDList(DeletedEntity.EntityType.MEDICINE)
 
-    override suspend fun clearDeletedRemoteIDList() =
-        deletedEntityDao.deleteDeleterRemoteIDListByEntityType(DeletedEntity.EntityType.MEDICINE)
+    override suspend fun clearDeletedRemoteIDList() = deletedEntityDao.deleteDeleterRemoteIDList(DeletedEntity.EntityType.MEDICINE)
 
     override fun getItemListLive(): LiveData<List<MedicineItem>> = medicineDao.getItemListLive()
 
@@ -92,7 +91,7 @@ interface MedicineDao {
     suspend fun getRemoteID(medicineID: Int): Long?
 
     @Query("SELECT medicine_id FROM medicines WHERE medicine_remote_id = :medicineRemoteID")
-    suspend fun getIDByRemoteID(medicineRemoteID: Long): Int?
+    suspend fun getIDByRemoteID(medicineRemoteID: Long): Int
 
     @Query("SELECT * FROM medicines")
     fun getItemListLive(): LiveData<List<MedicineItem>>

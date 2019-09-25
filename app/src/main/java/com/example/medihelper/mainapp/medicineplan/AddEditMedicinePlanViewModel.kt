@@ -136,29 +136,45 @@ class AddEditMedicinePlanViewModel(
 
     fun saveMedicinePlan(): Boolean {
         if (validateInputData()) {
-            val medicinePlanEntity = MedicinePlanEntity(
-                medicineID = selectedMedicineIDLive.value!!,
-                personID = selectedPersonItemLive.value!!.personID,
-                startDate = startDateLive.value!!,
-                durationType = durationTypeLive.value!!,
-                daysType = daysTypeLive.value!!,
-                timeOfTakingList = timeOfTakingListLive.value!!
-            )
-            if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
-                medicinePlanEntity.endDate = endDateLive.value
-            }
-            when (daysTypeLive.value) {
-                MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanEntity.daysOfWeek = daysOfWeekLive.value
-                MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> medicinePlanEntity.intervalOfDays = intervalOfDaysLive.value
-            }
             if (editMedicinePlanID != null) {
                 GlobalScope.launch {
-                    medicinePlanRepository.update(medicinePlanEntity.copy(medicinePlanID = editMedicinePlanID!!))
-                    medicineSchedulerService.updatePlannedMedicines(editMedicinePlanID!!)
+                    val existingMedicinePlanEntity = medicinePlanRepository.getEntity(editMedicinePlanID!!)
+                    val updatedMedicinePlanEntity = existingMedicinePlanEntity.copy(
+                        medicineID = selectedMedicineIDLive.value!!,
+                        personID = selectedPersonItemLive.value!!.personID,
+                        startDate = startDateLive.value!!,
+                        durationType = durationTypeLive.value!!,
+                        daysType = daysTypeLive.value!!,
+                        timeOfTakingList = timeOfTakingListLive.value!!
+                    )
+                    if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
+                        updatedMedicinePlanEntity.endDate = endDateLive.value
+                    }
+                    when (daysTypeLive.value) {
+                        MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> updatedMedicinePlanEntity.daysOfWeek = daysOfWeekLive.value
+                        MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> updatedMedicinePlanEntity.intervalOfDays = intervalOfDaysLive.value
+                    }
+                    medicinePlanRepository.update(updatedMedicinePlanEntity)
+                    medicineSchedulerService.updatePlannedMedicines(updatedMedicinePlanEntity.medicinePlanID)
                 }
             } else {
                 GlobalScope.launch {
-                    val insertedMedicinePlanID = medicinePlanRepository.insert(medicinePlanEntity)
+                    val newMedicinePlanEntity = MedicinePlanEntity(
+                        medicineID = selectedMedicineIDLive.value!!,
+                        personID = selectedPersonItemLive.value!!.personID,
+                        startDate = startDateLive.value!!,
+                        durationType = durationTypeLive.value!!,
+                        daysType = daysTypeLive.value!!,
+                        timeOfTakingList = timeOfTakingListLive.value!!
+                    )
+                    if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
+                        newMedicinePlanEntity.endDate = endDateLive.value
+                    }
+                    when (daysTypeLive.value) {
+                        MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> newMedicinePlanEntity.daysOfWeek = daysOfWeekLive.value
+                        MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> newMedicinePlanEntity.intervalOfDays = intervalOfDaysLive.value
+                    }
+                    val insertedMedicinePlanID = medicinePlanRepository.insert(newMedicinePlanEntity)
                     medicineSchedulerService.addPlannedMedicines(insertedMedicinePlanID)
                 }
             }

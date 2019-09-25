@@ -74,7 +74,7 @@ val repositoryModule = module {
         MedicineRepositoryImpl(get<AppDatabase>().medicineDao(), get<AppDatabase>().deletedEntityDao())
     }
     single<MedicinePlanRepository> {
-        MedicinePlanRepositoryImpl(get<AppDatabase>().medicinePlanDao())
+        MedicinePlanRepositoryImpl(get<AppDatabase>().medicinePlanDao(), get<AppDatabase>().deletedEntityDao())
     }
     single<PlannedMedicineRepository> {
         PlannedMedicineRepositoryImpl(get<AppDatabase>().plannedMedicineDao())

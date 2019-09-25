@@ -17,7 +17,7 @@ class PersonProfileService(
 
     init {
         currPersonItemLive = Transformations.switchMap(currPersonIDLive) { personID ->
-            personRepository.getItemLive(personID)
+            personID?.let { personRepository.getItemLive(it) }
         }
         currPersonIDLive.apply {
             addSource(personRepository.getMainPersonIDLive()) { mainPersonID ->

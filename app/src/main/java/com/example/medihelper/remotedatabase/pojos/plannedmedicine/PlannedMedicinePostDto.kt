@@ -29,7 +29,7 @@ data class PlannedMedicinePostDto(
             medicinePlanRepository: MedicinePlanRepository
         ) = PlannedMedicinePostDto(
             plannedMedicineLocalId = plannedMedicineEntity.plannedMedicineID,
-            medicinePlanRemoteId = medicinePlanRepository.getRemoteID(plannedMedicineEntity.medicinePlanID),
+            medicinePlanRemoteId = medicinePlanRepository.getRemoteID(plannedMedicineEntity.medicinePlanID)!!,
             plannedDate = plannedMedicineEntity.plannedDate.jsonFormatString,
             plannedTime = plannedMedicineEntity.plannedTime.jsonFormatString,
             plannedDoseSize = plannedMedicineEntity.plannedDoseSize,

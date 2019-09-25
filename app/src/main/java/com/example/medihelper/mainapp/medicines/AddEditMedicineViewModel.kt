@@ -70,8 +70,8 @@ class AddEditMedicineViewModel(
 
     fun saveMedicine(): Boolean {
         if (validateInputData()) {
-            GlobalScope.launch {
-                if (editMedicineID != null) {
+            if (editMedicineID != null) {
+                GlobalScope.launch {
                     val existingMedicineEntity = medicineRepository.getEntity(editMedicineID!!)
                     val updatedMedicineEntity = existingMedicineEntity.copy(
                         medicineName = medicineNameLive.value!!,
@@ -85,7 +85,9 @@ class AddEditMedicineViewModel(
                         }
                     )
                     medicineRepository.update(updatedMedicineEntity)
-                } else {
+                }
+            } else {
+                GlobalScope.launch {
                     val newMedicineEntity = MedicineEntity(
                         medicineName = medicineNameLive.value!!,
                         expireDate = expireDateLive.value!!,
