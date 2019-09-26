@@ -15,6 +15,8 @@ interface MedicinePlanRepository {
 
     suspend fun delete(medicinePlanID: Int)
 
+    suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>)
+
     suspend fun deleteAll()
 
     suspend fun getEntity(medicinePlanID: Int): MedicinePlanEntity
@@ -25,7 +27,7 @@ interface MedicinePlanRepository {
 
     suspend fun getRemoteID(medicinePlanID: Int): Long?
 
-    suspend fun getIDByRemoteID(medicinePlanRemoteID: Long): Int
+    suspend fun getIDByRemoteID(medicinePlanRemoteID: Long): Int?
 
     suspend fun getDeletedRemoteIDList(): List<Long>
 

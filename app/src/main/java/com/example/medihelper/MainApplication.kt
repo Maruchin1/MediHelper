@@ -26,7 +26,7 @@ import com.example.medihelper.mainapp.more.MoreViewModel
 import com.example.medihelper.mainapp.more.loggeduser.NewPasswordViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
-import com.example.medihelper.remotedatabase.remoterepositories.*
+import com.example.medihelper.remotedatabase.api.*
 import com.example.medihelper.services.*
 import com.google.gson.*
 import kotlinx.coroutines.runBlocking
@@ -50,8 +50,8 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
             modules(
                 listOf(
-                    repositoryModule,
-                    remoteRepositoryModule,
+                    localDatabaseModule,
+                    remoteDatabaseModule,
                     viewModelModule,
                     serviceModule
                 )
@@ -64,7 +64,7 @@ class MainApplication : Application() {
     }
 }
 
-val repositoryModule = module {
+val localDatabaseModule = module {
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, AppDatabase.DATABASE_NAME)
             .fallbackToDestructiveMigration()
@@ -77,32 +77,16 @@ val repositoryModule = module {
         MedicinePlanRepositoryImpl(get<AppDatabase>().medicinePlanDao(), get<AppDatabase>().deletedEntityDao())
     }
     single<PlannedMedicineRepository> {
-        PlannedMedicineRepositoryImpl(get<AppDatabase>().plannedMedicineDao())
+        PlannedMedicineRepositoryImpl(get<AppDatabase>().plannedMedicineDao(), get<AppDatabase>().deletedEntityDao())
     }
     single<PersonRepository> {
         PersonRepositoryImpl(get<AppDatabase>().personDao(), get<AppDatabase>().deletedEntityDao())
     }
 }
 
-val remoteRepositoryModule = module {
-    single<RegisteredUserRemoteRepository> { appRetrofit.create(RegisteredUserRemoteRepository::class.java) }
-    single<MedicineRemoteRepository> {
-        Retrofit.Builder()
-            .baseUrl(API_BASE_URL)
-            .addConverterFactory(
-                GsonConverterFactory.create(
-                    GsonBuilder()
-                        .registerTypeHierarchyAdapter(ByteArray::class.java, byteArrayToStringTypeAdapter)
-                        .setLenient()
-                        .create()
-                )
-            )
-            .build()
-            .create(MedicineRemoteRepository::class.java)
-    }
-    single { appRetrofit.create(PersonRemoteRepository::class.java) }
-    single { appRetrofit.create(MedicinePlanRemoteRepository::class.java) }
-    single { appRetrofit.create(PlannedMedicineRemoteRepository::class.java) }
+val remoteDatabaseModule = module {
+    single { appRetrofit.create(AuthenticationApi::class.java) }
+    single { appRetrofit.create(RegisteredUserApi::class.java) }
 }
 
 val viewModelModule = module {
@@ -118,7 +102,7 @@ val viewModelModule = module {
     viewModel { PlannedMedicineOptionsViewModel(get(), get()) }
     viewModel { ScheduleViewModel(get(), get()) }
     viewModel { MoreViewModel(get()) }
-    viewModel { LoginRegisterViewModel(get(), get(), get()) }
+    viewModel { LoginRegisterViewModel(get(), get()) }
     viewModel { LoggedUserViewModel(get(), get()) }
     viewModel { NewPasswordViewModel() }
 }
@@ -128,14 +112,21 @@ val serviceModule = module {
     single { PersonProfileService(get()) }
     single { MedicineSchedulerService(get(), get()) }
     single { MedicineImageService(androidContext().filesDir, androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)) }
-    single { ServerSyncService(androidContext().filesDir, get(), get(), get(), get(), get(), get(), get(), get()) }
+    single { ServerSyncService(androidContext().filesDir, get(), get(), get(), get(), get()) }
     single { InitialDataService(get(), get()) }
 }
 
 private val appRetrofit: Retrofit by lazy {
     Retrofit.Builder()
-        .baseUrl(API_BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+        .baseUrl("https://medihelper-api.herokuapp.com/")
+        .addConverterFactory(
+            GsonConverterFactory.create(
+                GsonBuilder()
+                    .registerTypeHierarchyAdapter(ByteArray::class.java, byteArrayToStringTypeAdapter)
+                    .setLenient()
+                    .create()
+            )
+        )
         .build()
 }
 
@@ -151,5 +142,3 @@ private val byteArrayToStringTypeAdapter by lazy {
 
     }
 }
-
-private const val API_BASE_URL = "https://medihelper-api.herokuapp.com/"

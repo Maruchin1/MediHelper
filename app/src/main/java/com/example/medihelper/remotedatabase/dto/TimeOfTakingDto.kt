@@ -1,4 +1,4 @@
-package com.example.medihelper.remotedatabase.pojos.medicineplan
+package com.example.medihelper.remotedatabase.dto
 
 import com.example.medihelper.AppTime
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
@@ -17,9 +17,10 @@ data class TimeOfTakingDto(
     )
 
     companion object {
-        fun fromTimeOfTakingEntity(timeOfTaking: MedicinePlanEntity.TimeOfTaking) = TimeOfTakingDto(
-            doseSize = timeOfTaking.doseSize,
-            time = timeOfTaking.time.jsonFormatString
-        )
+        fun fromTimeOfTakingEntity(timeOfTaking: MedicinePlanEntity.TimeOfTaking) =
+            TimeOfTakingDto(
+                doseSize = timeOfTaking.doseSize,
+                time = timeOfTaking.time.jsonFormatString
+            )
     }
 }

@@ -1,4 +1,4 @@
-package com.example.medihelper.remotedatabase.pojos
+package com.example.medihelper.remotedatabase.dto
 
 import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entities.MedicineEntity
@@ -34,7 +34,8 @@ data class MedicineDto(
     @SerializedName(value = "image")
     val image: ByteArray?
 ) {
-    fun toMedicineEntity(appFilesDir: File) = MedicineEntity(
+    fun toEntity(appFilesDir: File) = MedicineEntity(
+        medicineID = medicineLocalId ?: 0,
         medicineRemoteID = medicineRemoteId,
         medicineName = medicineName,
         medicineUnit = medicineUnit,
@@ -48,27 +49,12 @@ data class MedicineDto(
         synchronizedWithServer = true
     )
 
-    companion object {
-        fun fromMedicineEntity(medicineEntity: MedicineEntity, appFilesDir: File) = MedicineDto(
-            medicineLocalId = medicineEntity.medicineID,
-            medicineRemoteId = medicineEntity.medicineRemoteID,
-            medicineName = medicineEntity.medicineName,
-            medicineUnit = medicineEntity.medicineUnit,
-            expireDate = medicineEntity.expireDate?.jsonFormatString,
-            packageSize = medicineEntity.packageSize,
-            currState = medicineEntity.currState,
-            additionalInfo = medicineEntity.additionalInfo,
-            image = medicineEntity.imageName?.let { File(appFilesDir, it).readBytes() }
-        )
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
         other as MedicineDto
 
-        if (medicineLocalId != other.medicineLocalId) return false
         if (medicineRemoteId != other.medicineRemoteId) return false
         if (medicineName != other.medicineName) return false
         if (medicineUnit != other.medicineUnit) return false
@@ -85,8 +71,7 @@ data class MedicineDto(
     }
 
     override fun hashCode(): Int {
-        var result = medicineLocalId ?: 0
-        result = 31 * result + (medicineRemoteId?.hashCode() ?: 0)
+        var result = medicineRemoteId?.hashCode() ?: 0
         result = 31 * result + medicineName.hashCode()
         result = 31 * result + medicineUnit.hashCode()
         result = 31 * result + (expireDate?.hashCode() ?: 0)
@@ -96,4 +81,19 @@ data class MedicineDto(
         result = 31 * result + (image?.contentHashCode() ?: 0)
         return result
     }
+
+    companion object {
+        fun fromEntity(medicineEntity: MedicineEntity, appFilesDir: File) = MedicineDto(
+            medicineLocalId = medicineEntity.medicineID,
+            medicineRemoteId = medicineEntity.medicineRemoteID,
+            medicineName = medicineEntity.medicineName,
+            medicineUnit = medicineEntity.medicineUnit,
+            expireDate = medicineEntity.expireDate?.jsonFormatString,
+            packageSize = medicineEntity.packageSize,
+            currState = medicineEntity.currState,
+            additionalInfo = medicineEntity.additionalInfo,
+            image = medicineEntity.imageName?.let { File(appFilesDir, it).readBytes() }
+        )
+    }
+
 }

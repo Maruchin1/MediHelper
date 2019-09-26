@@ -5,17 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.custom.ActionLiveData
-import com.example.medihelper.remotedatabase.remoterepositories.RegisteredUserRemoteRepository
 import com.example.medihelper.remotedatabase.ApiResponse
-import com.example.medihelper.remotedatabase.pojos.registereduser.UserCredentialsDto
+import com.example.medihelper.remotedatabase.api.AuthenticationApi
+import com.example.medihelper.remotedatabase.dto.UserCredentialsDto
 import com.example.medihelper.services.ServerSyncService
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
 
 class LoginRegisterViewModel(
-    private val registeredUserRemoteRepository: RegisteredUserRemoteRepository,
-    private val sharedPrefService: SharedPrefService,
-    private val serverSyncService: ServerSyncService
+    private val authenticationApi: AuthenticationApi,
+    private val sharedPrefService: SharedPrefService
 ) : ViewModel() {
     private val TAG = "LoginRegisterViewModel"
 
@@ -45,26 +44,25 @@ class LoginRegisterViewModel(
 
     fun loginUser() = viewModelScope.launch {
         if (validateInputData(Mode.LOGIN)) {
-            loadingStartedAction.postValue(true)
+            loadingStartedAction.sendAction(true)
             val userCredentials = UserCredentialsDto(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
             val response = try {
-                val tempAuthToken = registeredUserRemoteRepository.loginUser(userCredentials)
-                val hasRemoteData = registeredUserRemoteRepository.hasData(tempAuthToken)
-                if (!hasRemoteData) {
-                    serverSyncService.overwriteRemote(tempAuthToken)
-                } else {
-                    serverSyncService.overwriteLocal(tempAuthToken)
-                }
+                val tempAuthToken = authenticationApi.loginUser(userCredentials)
+//                val hasRemoteData = authenticationApi.hasData(tempAuthToken)
+//                if (!hasRemoteData) {
+//                    serverSyncService.overwriteRemote(tempAuthToken)
+//                } else {
+//                    serverSyncService.overwriteLocal(tempAuthToken)
+//                }
                 sharedPrefService.run {
                     saveLoggedUserAuthToken(tempAuthToken)
                     saveLoggedUserEmail(userCredentials.email)
                 }
                 ApiResponse.OK
             } catch (e: Exception) {
-                Log.i(TAG, "login error = $e")
                 e.printStackTrace()
                 ApiResponse.getResponseByException(e)
             }
@@ -74,16 +72,16 @@ class LoginRegisterViewModel(
 
     fun registerNewUser() = viewModelScope.launch {
         if (validateInputData(Mode.REGISTER)) {
-            loadingStartedAction.postValue(true)
+            loadingStartedAction.sendAction(true)
             val userCredentials = UserCredentialsDto(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
             val response = try {
-                registeredUserRemoteRepository.registerNewUser(userCredentials)
+                authenticationApi.registerNewUser(userCredentials)
                 ApiResponse.OK
             } catch (e: Exception) {
-                Log.i(TAG, "register error = $e")
+                e.printStackTrace()
                 ApiResponse.getResponseByException(e)
             }
             registrationResponseAction.sendAction(response)

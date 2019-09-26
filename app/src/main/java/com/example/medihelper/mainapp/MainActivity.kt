@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             val serverSyncService: ServerSyncService = get()
             val authToken = sharedPrefService.getLoggedUserAuthToken()
             if (!authToken.isNullOrEmpty()) {
-                serverSyncService.syncWithServer(authToken)
+                serverSyncService.synchronizeData(authToken)
             }
         }
     }

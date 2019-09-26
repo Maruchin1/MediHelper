@@ -3,32 +3,59 @@ package com.example.medihelper.localdatabase.repositoriesimpl
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.medihelper.AppDate
+import com.example.medihelper.localdatabase.entities.DeletedEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
+import java.net.IDN
 
 
-class PlannedMedicineRepositoryImpl(private val plannedMedicineDao: PlannedMedicineDao) : PlannedMedicineRepository {
+class PlannedMedicineRepositoryImpl(
+    private val plannedMedicineDao: PlannedMedicineDao,
+    private val deletedEntityDao: DeletedEntityDao
+) : PlannedMedicineRepository {
 
     override suspend fun insert(plannedMedicineEntity: PlannedMedicineEntity) = plannedMedicineDao.insert(plannedMedicineEntity)
 
     override suspend fun insert(plannedMedicineEntityList: List<PlannedMedicineEntity>) =
         plannedMedicineDao.insert(plannedMedicineEntityList)
 
-    override suspend fun update(plannedMedicineEntity: PlannedMedicineEntity) = plannedMedicineDao.update(plannedMedicineEntity)
+    override suspend fun update(plannedMedicineEntity: PlannedMedicineEntity) =
+        plannedMedicineDao.update(plannedMedicineEntity.apply { synchronizedWithServer = false })
 
     override suspend fun update(plannedMedicineEntityList: List<PlannedMedicineEntity>) =
-        plannedMedicineDao.update(plannedMedicineEntityList)
+        plannedMedicineDao.update(plannedMedicineEntityList.map { it.apply { synchronizedWithServer = false } })
 
-    override suspend fun delete(plannedMedicineID: Int) = plannedMedicineDao.delete(plannedMedicineID)
+    override suspend fun delete(plannedMedicineIDList: List<Int>) {
+        plannedMedicineIDList.forEach { plannedMedicineID ->
+            plannedMedicineDao.getRemoteID(plannedMedicineID)?.let { remoteID ->
+                deletedEntityDao.insert(DeletedEntity(DeletedEntity.EntityType.PLANNED_MEDICINE, remoteID))
+            }
+        }
+        plannedMedicineDao.delete(plannedMedicineIDList)
+    }
 
-    override suspend fun deleteFromDateByMedicinePlanID(date: AppDate, medicinePlanID: Int) =
-        plannedMedicineDao.deleteFromDateByPlanID(date, medicinePlanID)
+    override suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>) = plannedMedicineDao.deleteByRemoteIDNotIn(remoteIDList)
+
+    override suspend fun deleteAll() = plannedMedicineDao.deleteAll()
 
     override suspend fun getEntity(plannedMedicineID: Int) = plannedMedicineDao.getEntity(plannedMedicineID)
 
     override suspend fun getEntityList() = plannedMedicineDao.getEntityList()
+
+    override suspend fun getEntityListToSync() = plannedMedicineDao.getEntityListToSync()
+
+    override suspend fun getRemoteID(plannedMedicineID: Int) = plannedMedicineDao.getRemoteID(plannedMedicineID)
+
+    override suspend fun getIDByRemoteID(plannedMedicineRemoteID: Long) = plannedMedicineDao.getIDByRemoteID(plannedMedicineRemoteID)
+
+    override suspend fun getIDListFromDateByMedicinePlanID(date: AppDate, medicinePlanID: Int) =
+        plannedMedicineDao.getIDListFromDataByMedicinePlanID(date, medicinePlanID)
+
+    override suspend fun getDeletedRemoteIDList() = deletedEntityDao.getDeletedRemoteIDList(DeletedEntity.EntityType.PLANNED_MEDICINE)
+
+    override suspend fun clearDeletedRemoteIDList() = deletedEntityDao.deleteDeleterRemoteIDList(DeletedEntity.EntityType.PLANNED_MEDICINE)
 
     override fun getDetailsLive(plannedMedicineID: Int) = plannedMedicineDao.getDetailsLive(plannedMedicineID)
 
@@ -50,17 +77,32 @@ interface PlannedMedicineDao {
     @Update
     suspend fun update(plannedMedicineEntityList: List<PlannedMedicineEntity>)
 
-    @Query("DELETE FROM planned_medicines WHERE planned_medicine_id = :plannedMedicineID")
-    suspend fun delete(plannedMedicineID: Int)
+    @Query("DELETE FROM planned_medicines WHERE planned_medicine_id IN (:plannedMedicineIDList)")
+    suspend fun delete(plannedMedicineIDList: List<Int>)
 
-    @Query("DELETE FROM planned_medicines WHERE medicine_plan_id = :medicinePlanID AND planned_date >= :date")
-    suspend fun deleteFromDateByPlanID(date: AppDate, medicinePlanID: Int)
+    @Query("DELETE FROM planned_medicines WHERE planned_medicine_remote_id NOT IN (:remoteIDList)")
+    suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>)
+
+    @Query("DELETE FROM planned_medicines")
+    suspend fun deleteAll()
 
     @Query("SELECT * FROM planned_medicines WHERE planned_medicine_id = :plannedMedicineID")
     suspend fun getEntity(plannedMedicineID: Int): PlannedMedicineEntity
 
     @Query("SELECT * FROM planned_medicines")
     suspend fun getEntityList(): List<PlannedMedicineEntity>
+
+    @Query("SELECT * FROM planned_medicines WHERE synchronized_with_server = 0")
+    suspend fun getEntityListToSync(): List<PlannedMedicineEntity>
+
+    @Query("SELECT planned_medicine_remote_id FROM planned_medicines WHERE planned_medicine_id = :plannedMedicineID")
+    suspend fun getRemoteID(plannedMedicineID: Int): Long?
+
+    @Query("SELECT planned_medicine_id FROM planned_medicines WHERE planned_medicine_remote_id = :plannedMedicineRemoteID")
+    suspend fun getIDByRemoteID(plannedMedicineRemoteID: Long): Int?
+
+    @Query("SELECT planned_medicine_id FROM planned_medicines WHERE medicine_plan_id = :medicinePlanID AND planned_date >= :date")
+    suspend fun getIDListFromDataByMedicinePlanID(date: AppDate, medicinePlanID: Int): List<Int>
 
     @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE pm.planned_medicine_id = :plannedMedicineID")
     fun getDetailsLive(plannedMedicineID: Int): LiveData<PlannedMedicineDetails>

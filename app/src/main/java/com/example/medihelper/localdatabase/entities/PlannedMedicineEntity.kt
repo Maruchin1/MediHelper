@@ -21,7 +21,7 @@ data class PlannedMedicineEntity(
     val plannedMedicineID: Int = 0,
 
     @ColumnInfo(name = "planned_medicine_remote_id")
-    var plannedMedicineRemoteID: Long = 0,
+    var plannedMedicineRemoteID: Long? = null,
 
     @ColumnInfo(name = "medicine_plan_id")
     val medicinePlanID: Int,
@@ -36,7 +36,10 @@ data class PlannedMedicineEntity(
     var plannedDoseSize: Float,
 
     @ColumnInfo(name = "status_of_taking")
-    var statusOfTaking: StatusOfTaking = StatusOfTaking.WAITING
+    var statusOfTaking: StatusOfTaking = StatusOfTaking.WAITING,
+
+    @ColumnInfo(name = "synchronized_with_server")
+    var synchronizedWithServer: Boolean = false
 ) {
     fun setMedicineTaken(taken: Boolean) {
         statusOfTaking = if (taken) {

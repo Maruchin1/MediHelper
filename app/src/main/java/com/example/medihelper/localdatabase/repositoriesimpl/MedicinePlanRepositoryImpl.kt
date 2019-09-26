@@ -30,6 +30,8 @@ class MedicinePlanRepositoryImpl(
         medicinePlanDao.delete(medicinePlanID)
     }
 
+    override suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>) = medicinePlanDao.deleteByRemoteIDNotIn(remoteIDList)
+
     override suspend fun deleteAll() = medicinePlanDao.deleteAll()
 
     override suspend fun getEntity(medicinePlanID: Int) = medicinePlanDao.getEntity(medicinePlanID)
@@ -66,6 +68,9 @@ interface MedicinePlanDao {
     @Query("DELETE FROM medicines_plans WHERE medicine_plan_id = :medicinePlanID")
     suspend fun delete(medicinePlanID: Int)
 
+    @Query("DELETE FROM medicines_plans WHERE medicine_plan_remote_id NOT IN (:remoteIDList)")
+    suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>)
+
     @Query("DELETE FROM medicines_plans")
     suspend fun deleteAll()
 
@@ -82,7 +87,7 @@ interface MedicinePlanDao {
     suspend fun getRemoteID(medicinePlanID: Int): Long?
 
     @Query("SELECT medicine_plan_id FROM medicines_plans WHERE medicine_plan_remote_id = :medicinePlanRemoteID")
-    suspend fun getIDByRemoteID(medicinePlanRemoteID: Long): Int
+    suspend fun getIDByRemoteID(medicinePlanRemoteID: Long): Int?
 
     @Query("SELECT * FROM medicines_plans mp JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE person_id = :personID")
     fun getItemListLive(personID: Int): LiveData<List<MedicinePlanItem>>

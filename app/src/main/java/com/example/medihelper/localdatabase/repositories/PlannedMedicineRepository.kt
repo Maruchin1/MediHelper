@@ -18,13 +18,27 @@ interface PlannedMedicineRepository {
 
     suspend fun update(plannedMedicineEntityList: List<PlannedMedicineEntity>)
 
-    suspend fun delete(plannedMedicineID: Int)
+    suspend fun delete(plannedMedicineIDList: List<Int>)
 
-    suspend fun deleteFromDateByMedicinePlanID(date: AppDate, medicinePlanID: Int)
+    suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>)
+
+    suspend fun deleteAll()
 
     suspend fun getEntity(plannedMedicineID: Int): PlannedMedicineEntity
 
     suspend fun getEntityList(): List<PlannedMedicineEntity>
+
+    suspend fun getEntityListToSync(): List<PlannedMedicineEntity>
+
+    suspend fun getRemoteID(plannedMedicineID: Int): Long?
+
+    suspend fun getIDByRemoteID(plannedMedicineRemoteID: Long): Int?
+
+    suspend fun getIDListFromDateByMedicinePlanID(date: AppDate, medicinePlanID: Int): List<Int>
+
+    suspend fun getDeletedRemoteIDList(): List<Long>
+
+    suspend fun clearDeletedRemoteIDList()
 
     fun getDetailsLive(plannedMedicineID: Int): LiveData<PlannedMedicineDetails>
 

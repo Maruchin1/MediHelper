@@ -18,6 +18,8 @@ interface PersonRepository {
 
     suspend fun delete(personID: Int)
 
+    suspend fun deleteByRemoteIDNotIn(personRemoteIDList: List<Long>)
+
     suspend fun deleteAll()
 
     suspend fun getEntity(personID: Int): PersonEntity
@@ -32,7 +34,7 @@ interface PersonRepository {
 
     suspend fun getRemoteID(personID: Int): Long?
 
-    suspend fun getIDByRemoteID(personRemoteID: Long): Int
+    suspend fun getIDByRemoteID(personRemoteID: Long): Int?
 
     suspend fun getDeletedRemoteIDList(): List<Long>
 

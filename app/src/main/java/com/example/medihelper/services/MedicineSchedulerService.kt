@@ -29,7 +29,9 @@ class MedicineSchedulerService(
 
     suspend fun updatePlannedMedicines(medicinePlanID: Int) {
         val currDate = AppDate.currDate()
-        plannedMedicineRepository.deleteFromDateByMedicinePlanID(currDate, medicinePlanID)
+        plannedMedicineRepository.getIDListFromDateByMedicinePlanID(currDate, medicinePlanID).let { idList ->
+            plannedMedicineRepository.delete(idList)
+        }
         val medicinePlanEntity = medicinePlanRepository.getEntity(medicinePlanID)
         val updatedPartOfMedicinePlan = medicinePlanEntity.copy(startDate = currDate)
         val plannedMedicineList = getPlannedMedicineList(updatedPartOfMedicinePlan)

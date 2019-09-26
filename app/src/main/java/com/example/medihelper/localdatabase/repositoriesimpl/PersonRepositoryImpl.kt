@@ -29,6 +29,8 @@ class PersonRepositoryImpl(
         personDao.delete(personID)
     }
 
+    override suspend fun deleteByRemoteIDNotIn(personRemoteIDList: List<Long>) = personDao.deleteByRemoteIDNotIn(personRemoteIDList)
+
     override suspend fun deleteAll() = personDao.deleteAll()
 
     override suspend fun getEntity(personID: Int) = personDao.getEntity(personID)
@@ -74,6 +76,9 @@ interface PersonDao {
     @Query("DELETE FROM persons WHERE person_id = :personID")
     suspend fun delete(personID: Int)
 
+    @Query("DELETE FROM persons WHERE person_remote_id NOT IN (:personRemoteIDList)")
+    suspend fun deleteByRemoteIDNotIn(personRemoteIDList: List<Long>)
+
     @Query("DELETE FROM persons")
     suspend fun deleteAll()
 
@@ -96,7 +101,7 @@ interface PersonDao {
     suspend fun getRemoteID(personID: Int): Long?
 
     @Query("SELECT person_id FROM persons WHERE person_remote_id = :personRemoteID")
-    suspend fun getIDByRemoteID(personRemoteID: Long): Int
+    suspend fun getIDByRemoteID(personRemoteID: Long): Int?
 
     @Query("SELECT * FROM persons WHERE person_id = :personID")
     fun getItemLive(personID: Int): LiveData<PersonItem>

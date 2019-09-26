@@ -1,168 +1,134 @@
 package com.example.medihelper.services
 
-import android.util.Log
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
-import com.example.medihelper.remotedatabase.pojos.MedicineDto
-import com.example.medihelper.remotedatabase.pojos.MedicinePlanDto
-import com.example.medihelper.remotedatabase.pojos.PersonDto
-import com.example.medihelper.remotedatabase.pojos.SyncRequestDto
-import com.example.medihelper.remotedatabase.remoterepositories.MedicinePlanRemoteRepository
-import com.example.medihelper.remotedatabase.remoterepositories.MedicineRemoteRepository
-import com.example.medihelper.remotedatabase.remoterepositories.PersonRemoteRepository
-import com.example.medihelper.remotedatabase.pojos.medicine.MedicinePostDto
-import com.example.medihelper.remotedatabase.pojos.medicineplan.MedicinePlanPostDto
-import com.example.medihelper.remotedatabase.pojos.person.PersonPostDto
-import com.example.medihelper.remotedatabase.pojos.plannedmedicine.PlannedMedicinePostDto
-import com.example.medihelper.remotedatabase.remoterepositories.PlannedMedicineRemoteRepository
+import com.example.medihelper.remotedatabase.api.RegisteredUserApi
+import com.example.medihelper.remotedatabase.dto.*
 import java.io.File
 
 class ServerSyncService(
     private val appFilesDir: File,
     private val medicineRepository: MedicineRepository,
-    private val medicineRemoteRepository: MedicineRemoteRepository,
     private val personRepository: PersonRepository,
-    private val personRemoteRepository: PersonRemoteRepository,
     private val medicinePlanRepository: MedicinePlanRepository,
-    private val medicinePlanRemoteRepository: MedicinePlanRemoteRepository,
     private val plannedMedicineRepository: PlannedMedicineRepository,
-    private val plannedMedicineRemoteRepository: PlannedMedicineRemoteRepository
+    private val registeredUserApi: RegisteredUserApi
 ) {
     private val TAG = "ServerSyncService"
 
-    suspend fun overwriteRemote(authToken: String) {
-        Log.i(TAG, "overwriteRemote")
-
-        medicineRemoteRepository.overwriteMedicines(
-            authToken = authToken,
-            postDtoList = medicineRepository.getEntityList().map { MedicinePostDto.fromMedicineEntity(it, appFilesDir) }
-        ).forEach { postResponseDto ->
-            val medicineEntity = medicineRepository.getEntity(postResponseDto.localId)
-            medicineEntity.medicineRemoteID = postResponseDto.remoteId
-            medicineRepository.update(medicineEntity)
-        }
-
-        personRemoteRepository.overwritePersons(
-            authToken = authToken,
-            postDtoList = personRepository.getEntityList().map { PersonPostDto.fromPersonEntity(it) }
-        ).forEach { postResponseDto ->
-            val personEntity = personRepository.getEntity(postResponseDto.localId)
-            personEntity.personRemoteID = postResponseDto.remoteId
-            personRepository.update(personEntity)
-        }
-
-        medicinePlanRemoteRepository.overwriteMedicinesPlans(
-            authToken = authToken,
-            postDtoList = medicinePlanRepository.getEntityList().map {
-                MedicinePlanPostDto.fromMedicinePlanEntity(it, medicineRepository, personRepository)
-            }
-        ).forEach { postResponseDto ->
-            val medicinePlanEntity = medicinePlanRepository.getEntity(postResponseDto.localId)
-            medicinePlanEntity.medicinePlanRemoteID = postResponseDto.remoteId
-            medicinePlanRepository.update(medicinePlanEntity)
-        }
-
-        plannedMedicineRemoteRepository.overwritePlannedMedicines(
-            authToken = authToken,
-            postDtoList = plannedMedicineRepository.getEntityList().map {
-                PlannedMedicinePostDto.fromPlannedMedicineEntity(it, medicinePlanRepository)
-            }
-        ).forEach { postResponseDto ->
-            val plannedMedicineEntity = plannedMedicineRepository.getEntity(postResponseDto.localId)
-            plannedMedicineEntity.plannedMedicineRemoteID = postResponseDto.remoteId
-            plannedMedicineRepository.update(plannedMedicineEntity)
-        }
-    }
-
-    suspend fun overwriteLocal(authToken: String) {
-        Log.i(TAG, "overwriteLocal")
-        medicineRepository.deleteAll()
-        personRepository.deleteAll()
-        medicinePlanRepository.deleteAll()
-
-        val medicineEntityList = medicineRemoteRepository.getAllMedicines(authToken).map { it.toMedicineEntity(appFilesDir) }
-        medicineRepository.insert(medicineEntityList)
-
-        val personEntityList = personRemoteRepository.getAllPersons(authToken).map { it.toPersonEntity() }
-        personRepository.insert(personEntityList)
-
-        val medicinePlanEntityList = medicinePlanRemoteRepository.getAllMedicinesPlans(authToken).map {
-            it.toMedicinePlanEntity(medicineRepository, personRepository)
-        }
-        medicinePlanRepository.insert(medicinePlanEntityList)
-
-        val plannedMedicineEntityList = plannedMedicineRemoteRepository.getAllPlannedMedicines(authToken).map {
-            it.toPlannedMedicineEntity(medicinePlanRepository)
-        }
-        plannedMedicineRepository.insert(plannedMedicineEntityList)
-    }
-
-    suspend fun syncWithServer(authToken: String) {
+    suspend fun synchronizeData(authToken: String) {
         val medicinesSyncRequestDto = SyncRequestDto(
-            deleteRemoteIdList = medicineRepository.getDeletedRemoteIDList(),
-            insertUpdateDtoList = medicineRepository.getEntityListToSync().map { MedicineDto.fromMedicineEntity(it, appFilesDir) }
+            insertUpdateDtoList = medicineRepository.getEntityListToSync().map { MedicineDto.fromEntity(it, appFilesDir) },
+            deleteRemoteIdList = medicineRepository.getDeletedRemoteIDList()
         )
+        val responseMedicineDtoList = registeredUserApi.synchronizeMedicines(authToken, medicinesSyncRequestDto)
+        dispatchMedicinesChanges(responseMedicineDtoList)
+
         val personsSyncRequestDto = SyncRequestDto(
-            deleteRemoteIdList = personRepository.getDeletedRemoteIDList(),
-            insertUpdateDtoList = personRepository.getEntityListToSync().map { PersonDto.fromPersonEntity(it) }
+            insertUpdateDtoList = personRepository.getEntityListToSync().map { PersonDto.fromEntity(it) },
+            deleteRemoteIdList = personRepository.getDeletedRemoteIDList()
         )
-        val medicinePlanSyncRequestDto = SyncRequestDto(
-            deleteRemoteIdList = medicinePlanRepository.getDeletedRemoteIDList(),
+        val responsePersonDtoList = registeredUserApi.synchronizePersons(authToken, personsSyncRequestDto)
+        dispatchPersonsChanges(responsePersonDtoList)
+
+        val medicinesPlansSyncRequestDto = SyncRequestDto(
             insertUpdateDtoList = medicinePlanRepository.getEntityListToSync().map {
-                MedicinePlanDto.fromMedicinePlanEntity(it, medicineRepository, personRepository)
-            }
+                MedicinePlanDto.fromEntity(it, medicineRepository, personRepository)
+            },
+            deleteRemoteIdList = medicinePlanRepository.getDeletedRemoteIDList()
         )
+        val responseMedicinePlanDtoList = registeredUserApi.synchronizeMedicinesPlans(authToken, medicinesPlansSyncRequestDto)
+        dispatchMedicinesPlansChanges(responseMedicinePlanDtoList)
 
-
-        val remoteMedicineDtoList = medicineRemoteRepository.synchronizeMedicines(authToken, medicinesSyncRequestDto)
-        val remotePersonDtoList = personRemoteRepository.synchronizePersons(authToken, personsSyncRequestDto)
-        val remoteMedicinePlanDtoList = medicinePlanRemoteRepository.synchronizeMedicinesPlans(authToken, medicinePlanSyncRequestDto)
-
-        medicineRepository.run {
-            deleteAll()
-            insert(remoteMedicineDtoList.map { it.toMedicineEntity(appFilesDir) })
-            clearDeletedRemoteIDList()
-        }
-        personRepository.run {
-            deleteAll()
-            insert(remotePersonDtoList.map { it.toPersonEntity() })
-            clearDeletedRemoteIDList()
-        }
-        medicinePlanRepository.run {
-            deleteAll()
-            insert(remoteMedicinePlanDtoList.map { it.toMedicinePlanEntity(medicineRepository, personRepository) })
-            clearDeletedRemoteIDList()
-        }
+        val plannedMedicinesSyncRequestDto = SyncRequestDto(
+            insertUpdateDtoList = plannedMedicineRepository.getEntityListToSync().map {
+                PlannedMedicineDto.fromEntity(it, medicinePlanRepository)
+            },
+            deleteRemoteIdList = plannedMedicineRepository.getDeletedRemoteIDList()
+        )
+        val responsePlannedMedicineDtoList = registeredUserApi.synchronizePlannedMedicines(authToken, plannedMedicinesSyncRequestDto)
+        dispatchPlannedMedicinesChanges(responsePlannedMedicineDtoList)
     }
 
-//    private suspend fun syncMedicines(authToken: String) {
-//        val medicinesSyncRequestDto = SyncRequestDto(
-//            deleteRemoteIdList = medicineRepository.getDeletedRemoteIDList(),
-//            insertUpdateDtoList = medicineRepository.getEntityListToSync().map { MedicineDto.fromMedicineEntity(it, appFilesDir) }
-//        )
-//        val remoteMedicineDtoList = medicineRemoteRepository.synchronizeMedicines(authToken, medicinesSyncRequestDto)
-//        remoteMedicineDtoList.forEach { medicineDto ->
-//            if (medicineDto.medicineLocalId != null) {
-//                val medicineEntity = medicineDto.toMedicineEntity(
-//                    medicineID = medicineDto.medicineLocalId,
-//                    appFilesDir = appFilesDir)
-//                medicineRepository.update(medicineEntity)
-//            } else {
-//                val existingMedicineID = medicineRepository.getIDByRemoteID(medicineDto.medicineRemoteId!!)
-//                val medicineEntity = medicineDto.toMedicineEntity(
-//                    medicineID = existingMedicineID ?: 0,
-//                    appFilesDir = appFilesDir)
-//                if (existingMedicineID == null) {
-//                    medicineRepository.insert(medicineEntity)
-//                } else {
-//                    medicineRepository.update(medicineEntity)
-//                }
-//            }
-//        }
-//
-//        val medicineRemoteIdList = remoteMedicineDtoList.map { it.medicineRemoteId!! }
-//        medicineRepository.deleteAllByRemoteIDNotIn(medicineRemoteIdList)
-//    }
+    private suspend fun dispatchMedicinesChanges(medicineDtoList: List<MedicineDto>) {
+        val remoteIdList = medicineDtoList.map { it.medicineRemoteId!! }
+        medicineRepository.deleteByRemoteIDNotIn(remoteIdList)
+
+        medicineDtoList.forEach { medicineDto ->
+            val medicineEntity = medicineDto.toEntity(appFilesDir)
+            if (medicineEntity.medicineID != 0) {
+                medicineRepository.update(medicineEntity)
+            } else {
+                val existingMedicineID = medicineRepository.getIDByRemoteID(medicineEntity.medicineRemoteID!!)
+                if (existingMedicineID != null) {
+                    medicineRepository.update(medicineEntity.copy(medicineID = existingMedicineID))
+                } else {
+                    medicineRepository.insert(medicineEntity)
+                }
+            }
+        }
+        medicineRepository.clearDeletedRemoteIDList()
+    }
+
+    private suspend fun dispatchPersonsChanges(personDtoList: List<PersonDto>) {
+        val remoteIdList = personDtoList.map { it.personRemoteId!! }
+        personRepository.deleteByRemoteIDNotIn(remoteIdList)
+
+        personDtoList.forEach { personDto ->
+            val personEntity = personDto.toEntity()
+            if (personEntity.personID != 0) {
+                personRepository.update(personEntity)
+            } else {
+                val existingPersonID = personRepository.getIDByRemoteID(personEntity.personRemoteID!!)
+                if (existingPersonID != null) {
+                    personRepository.update(personEntity.copy(personID = existingPersonID))
+                } else {
+                    personRepository.insert(personEntity)
+                }
+            }
+        }
+        personRepository.clearDeletedRemoteIDList()
+    }
+
+    private suspend fun dispatchMedicinesPlansChanges(medicinePlanDtoList: List<MedicinePlanDto>) {
+        val remoteIdList = medicinePlanDtoList.map { it.medicinePlanRemoteId!! }
+        medicinePlanRepository.deleteByRemoteIDNotIn(remoteIdList)
+
+        medicinePlanDtoList.forEach { medicinePlanDto ->
+            val medicinePlanEntity = medicinePlanDto.toEntity(medicineRepository, personRepository)
+            if (medicinePlanEntity.medicinePlanID != 0) {
+                medicinePlanRepository.update(medicinePlanEntity)
+            } else {
+                val existingMedicinePlanID = medicinePlanRepository.getIDByRemoteID(medicinePlanEntity.medicinePlanRemoteID!!)
+                if (existingMedicinePlanID != null) {
+                    medicinePlanRepository.update(medicinePlanEntity.copy(medicinePlanID = existingMedicinePlanID))
+                } else {
+                    medicinePlanRepository.insert(medicinePlanEntity)
+                }
+            }
+        }
+        medicinePlanRepository.clearDeletedRemoteIDList()
+    }
+
+    private suspend fun dispatchPlannedMedicinesChanges(plannedMedicineDtoList: List<PlannedMedicineDto>) {
+        val remoteIdList = plannedMedicineDtoList.map { it.plannedMedicineRemoteId!! }
+        plannedMedicineRepository.deleteByRemoteIDNotIn(remoteIdList)
+
+        plannedMedicineDtoList.forEach { plannedMedicineDto ->
+            val plannedMedicineEntity = plannedMedicineDto.toEntity(medicinePlanRepository)
+            if (plannedMedicineEntity.plannedMedicineID != 0) {
+                plannedMedicineRepository.update(plannedMedicineEntity)
+            } else {
+                val existingPlannedMedicineID = plannedMedicineRepository.getIDByRemoteID(plannedMedicineEntity.plannedMedicineRemoteID!!)
+                if (existingPlannedMedicineID != null) {
+                    plannedMedicineRepository.update(plannedMedicineEntity.copy(plannedMedicineID = existingPlannedMedicineID))
+                } else {
+                    plannedMedicineRepository.insert(plannedMedicineEntity)
+                }
+            }
+        }
+        plannedMedicineRepository.clearDeletedRemoteIDList()
+    }
 }
