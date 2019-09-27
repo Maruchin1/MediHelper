@@ -5,6 +5,7 @@ import android.app.Application
 import android.os.Environment
 import android.preference.PreferenceManager
 import androidx.room.Room
+import androidx.work.WorkManager
 import com.example.medihelper.localdatabase.AppDatabase
 import com.example.medihelper.localdatabase.repositories.*
 import com.example.medihelper.localdatabase.repositoriesimpl.MedicinePlanRepositoryImpl
@@ -112,8 +113,9 @@ val serviceModule = module {
     single { PersonProfileService(get()) }
     single { MedicineSchedulerService(get(), get()) }
     single { MedicineImageService(androidContext().filesDir, androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)) }
-    single { ServerSyncService(androidContext().filesDir, get(), get(), get(), get(), get()) }
+    single { ServerSyncService(WorkManager.getInstance(androidContext())) }
     single { InitialDataService(get(), get()) }
+    single { NotificationService(androidContext()) }
 }
 
 private val appRetrofit: Retrofit by lazy {

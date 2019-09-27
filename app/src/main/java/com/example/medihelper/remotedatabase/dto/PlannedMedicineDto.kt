@@ -31,7 +31,7 @@ data class PlannedMedicineDto(
     suspend fun toEntity(medicinePlanRepository: MedicinePlanRepository) = PlannedMedicineEntity(
         plannedMedicineID = plannedMedicineLocalId ?: 0,
         plannedMedicineRemoteID = plannedMedicineRemoteId,
-        medicinePlanID = medicinePlanRepository.getIDByRemoteID(medicinePlanRemoteId)!!,
+        medicinePlanID = medicinePlanRepository.getLocalIDByRemoteID(medicinePlanRemoteId)!!,
         plannedDate = AppDate(plannedDate),
         plannedTime = AppTime(plannedTime),
         plannedDoseSize = plannedDoseSize,

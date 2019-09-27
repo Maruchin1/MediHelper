@@ -49,6 +49,20 @@ data class MedicineDto(
         synchronizedWithServer = true
     )
 
+    companion object {
+        fun fromEntity(medicineEntity: MedicineEntity, appFilesDir: File) = MedicineDto(
+            medicineLocalId = medicineEntity.medicineID,
+            medicineRemoteId = medicineEntity.medicineRemoteID,
+            medicineName = medicineEntity.medicineName,
+            medicineUnit = medicineEntity.medicineUnit,
+            expireDate = medicineEntity.expireDate?.jsonFormatString,
+            packageSize = medicineEntity.packageSize,
+            currState = medicineEntity.currState,
+            additionalInfo = medicineEntity.additionalInfo,
+            image = medicineEntity.imageName?.let { File(appFilesDir, it).readBytes() }
+        )
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -81,19 +95,4 @@ data class MedicineDto(
         result = 31 * result + (image?.contentHashCode() ?: 0)
         return result
     }
-
-    companion object {
-        fun fromEntity(medicineEntity: MedicineEntity, appFilesDir: File) = MedicineDto(
-            medicineLocalId = medicineEntity.medicineID,
-            medicineRemoteId = medicineEntity.medicineRemoteID,
-            medicineName = medicineEntity.medicineName,
-            medicineUnit = medicineEntity.medicineUnit,
-            expireDate = medicineEntity.expireDate?.jsonFormatString,
-            packageSize = medicineEntity.packageSize,
-            currState = medicineEntity.currState,
-            additionalInfo = medicineEntity.additionalInfo,
-            image = medicineEntity.imageName?.let { File(appFilesDir, it).readBytes() }
-        )
-    }
-
 }

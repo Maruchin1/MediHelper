@@ -6,34 +6,19 @@ import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 
 
-interface MedicineRepository {
-    suspend fun insert(medicineEntity: MedicineEntity)
+interface MedicineRepository : ServerSyncRepository<MedicineEntity> {
 
-    suspend fun insert(medicineEntityList: List<MedicineEntity>)
+    suspend fun insert(medicineEntity: MedicineEntity)
 
     suspend fun update(medicineEntity: MedicineEntity)
 
     suspend fun delete(medicineID: Int)
 
-    suspend fun deleteByRemoteIDNotIn(medicineRemoteIDList: List<Long>)
-
-    suspend fun deleteAll()
-
     suspend fun getEntity(medicineID: Int): MedicineEntity
 
     suspend fun getEntityList(): List<MedicineEntity>
 
-    suspend fun getEntityListToSync(): List<MedicineEntity>
-
     suspend fun getDetails(medicineID: Int): MedicineDetails
-
-    suspend fun getRemoteID(medicineID: Int): Long?
-
-    suspend fun getIDByRemoteID(medicineRemoteID: Long): Int?
-
-    suspend fun getDeletedRemoteIDList(): List<Long>
-
-    suspend fun clearDeletedRemoteIDList()
 
     fun getItemListLive(): LiveData<List<MedicineItem>>
 

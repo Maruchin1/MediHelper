@@ -8,37 +8,21 @@ import androidx.room.Update
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.pojos.PersonItem
 
-interface PersonRepository {
+interface PersonRepository : ServerSyncRepository<PersonEntity> {
 
     suspend fun insert(personEntity: PersonEntity): Int
-
-    suspend fun insert(personEntityList: List<PersonEntity>)
 
     suspend fun update(personEntity: PersonEntity)
 
     suspend fun delete(personID: Int)
 
-    suspend fun deleteByRemoteIDNotIn(personRemoteIDList: List<Long>)
-
-    suspend fun deleteAll()
-
     suspend fun getEntity(personID: Int): PersonEntity
 
     suspend fun getEntityList(): List<PersonEntity>
 
-    suspend fun getEntityListToSync(): List<PersonEntity>
-
     suspend fun getItem(personID: Int): PersonItem
 
     suspend fun getMainPersonID(): Int?
-
-    suspend fun getRemoteID(personID: Int): Long?
-
-    suspend fun getIDByRemoteID(personRemoteID: Long): Int?
-
-    suspend fun getDeletedRemoteIDList(): List<Long>
-
-    suspend fun clearDeletedRemoteIDList()
 
     fun getItemLive(personID: Int): LiveData<PersonItem>
 

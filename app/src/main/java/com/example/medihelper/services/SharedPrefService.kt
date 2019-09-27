@@ -17,8 +17,6 @@ class SharedPrefService(
     private val TAG = "SharedPrefService"
 
     // Get
-//    fun getMainPersonID() = sharedPreferences.getInt(KEY_MAIN_PERSON_ID, -1)
-
     fun getMedicineUnitList() = sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList() ?: emptyList()
 
     fun getPersonColorResIDList() = sharedPreferences.getStringSet(KEY_PERSON_COLOR_RES_ID_SET, null)?.map { stringValue ->
@@ -30,10 +28,6 @@ class SharedPrefService(
     fun getLoggedUserEmailLive(): LiveData<String> = SharedPrefLiveData(sharedPreferences, KEY_LOGGED_USER_EMAIL, "")
 
     // Save
-//    fun saveMainPersonID(newMainPersonID: Int) = sharedPreferences.edit(true) {
-//        putInt(KEY_MAIN_PERSON_ID, newMainPersonID)
-//    }
-
     fun saveMedicineUnitList(newMedicineUnitList: List<String>) = sharedPreferences.edit(true) {
         putStringSet(KEY_MEDICINE_UNIT_SET, newMedicineUnitList.toMutableSet())
     }
@@ -65,7 +59,6 @@ class SharedPrefService(
     }
 
     companion object {
-//        private const val KEY_MAIN_PERSON_ID = "key-main-person-id"
         private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
         private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-array"
         private const val KEY_LOGGED_USER_AUTH_TOKEN = "key-logged-user-auth-token"

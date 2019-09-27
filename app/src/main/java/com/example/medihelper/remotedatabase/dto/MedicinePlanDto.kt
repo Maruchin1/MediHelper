@@ -4,7 +4,6 @@ import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PersonRepository
-import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import com.google.gson.annotations.SerializedName
 
 data class MedicinePlanDto(
@@ -44,8 +43,8 @@ data class MedicinePlanDto(
     suspend fun toEntity(medicineRepository: MedicineRepository, personRepository: PersonRepository) = MedicinePlanEntity(
         medicinePlanID = medicinePlanLocalId ?: 0,
         medicinePlanRemoteID = medicinePlanRemoteId,
-        medicineID = medicineRepository.getIDByRemoteID(medicineRemoteId)!!,
-        personID = personRepository.getIDByRemoteID(personRemoteId)!!,
+        medicineID = medicineRepository.getLocalIDByRemoteID(medicineRemoteId)!!,
+        personID = personRepository.getLocalIDByRemoteID(personRemoteId)!!,
         startDate = AppDate(startDate),
         endDate = endDate?.let { AppDate(it) },
         durationType = MedicinePlanEntity.DurationType.valueOf(durationType),

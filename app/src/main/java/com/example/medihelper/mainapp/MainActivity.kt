@@ -14,9 +14,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
 
 
 class MainActivity : AppCompatActivity() {
+
+    private val medicineSchedulerService: MedicineSchedulerService by inject()
+    private val sharedPrefService: SharedPrefService by inject()
+    private val serverSyncService: ServerSyncService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +32,17 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         GlobalScope.launch {
-            val medicineSchedulerService: MedicineSchedulerService = get()
             medicineSchedulerService.updatePlannedMedicinesStatuses()
+        }
+        sharedPrefService.getLoggedUserAuthToken()?.let { authToken ->
+            serverSyncService.synchronizeData(authToken)
+        }
+    }
 
-            val sharedPrefService: SharedPrefService = get()
-            val serverSyncService: ServerSyncService = get()
-            val authToken = sharedPrefService.getLoggedUserAuthToken()
-            if (!authToken.isNullOrEmpty()) {
-                serverSyncService.synchronizeData(authToken)
-            }
+    override fun onPause() {
+        super.onPause()
+        sharedPrefService.getLoggedUserAuthToken()?.let { authToken ->
+            serverSyncService.synchronizeData(authToken)
         }
     }
 

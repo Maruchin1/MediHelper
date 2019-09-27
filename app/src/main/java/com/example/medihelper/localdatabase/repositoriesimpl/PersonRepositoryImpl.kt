@@ -17,8 +17,6 @@ class PersonRepositoryImpl(
 
     override suspend fun insert(personEntity: PersonEntity) = personDao.insert(personEntity).toInt()
 
-    override suspend fun insert(personEntityList: List<PersonEntity>) = personDao.insert(personEntityList)
-
     override suspend fun update(personEntity: PersonEntity) =
         personDao.update(personEntity.apply { synchronizedWithServer = false })
 
@@ -29,28 +27,13 @@ class PersonRepositoryImpl(
         personDao.delete(personID)
     }
 
-    override suspend fun deleteByRemoteIDNotIn(personRemoteIDList: List<Long>) = personDao.deleteByRemoteIDNotIn(personRemoteIDList)
-
-    override suspend fun deleteAll() = personDao.deleteAll()
-
     override suspend fun getEntity(personID: Int) = personDao.getEntity(personID)
 
     override suspend fun getEntityList() = personDao.getEntityList()
 
-    override suspend fun getEntityListToSync() = personDao.getEntityListToSync()
-
     override suspend fun getItem(personID: Int) = personDao.getItem(personID)
 
     override suspend fun getMainPersonID() = personDao.getMainPersonID()
-
-    override suspend fun getRemoteID(personID: Int) = personDao.getRemoteID(personID)
-
-    override suspend fun getIDByRemoteID(personRemoteID: Long) = personDao.getIDByRemoteID(personRemoteID)
-
-    override suspend fun getDeletedRemoteIDList() = deletedEntityDao.getDeletedRemoteIDList(DeletedEntity.EntityType.PERSON)
-
-    override suspend fun clearDeletedRemoteIDList() =
-        deletedEntityDao.deleteDeleterRemoteIDList(DeletedEntity.EntityType.PERSON)
 
     override fun getItemLive(personID: Int) = personDao.getItemLive(personID)
 
@@ -59,6 +42,24 @@ class PersonRepositoryImpl(
     override fun getItemListLiveByMedicineID(medicineID: Int) = personDao.getItemListLiveByMedicineID(medicineID)
 
     override fun getMainPersonIDLive() = personDao.getMainPersonIdLive()
+
+    // ServerSyncRepository
+
+    override suspend fun insertSynchronized(entityList: List<PersonEntity>) = personDao.insert(entityList)
+
+    override suspend fun updateSynchronized(entityList: List<PersonEntity>) = personDao.update(entityList)
+
+    override suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>) = personDao.deleteByRemoteIDNotIn(remoteIDList)
+
+    override suspend fun clearDeletedRemoteIDList() = deletedEntityDao.deleteDeletedRemoteIDList(DeletedEntity.EntityType.PERSON)
+
+    override suspend fun getEntityListToSync() = personDao.getEntityListToSync()
+
+    override suspend fun getDeletedRemoteIDList() = deletedEntityDao.getDeletedRemoteIDList(DeletedEntity.EntityType.PERSON)
+
+    override suspend fun getRemoteID(localID: Int) = personDao.getRemoteID(localID)
+
+    override suspend fun getLocalIDByRemoteID(remoteID: Long) = personDao.getIDByRemoteID(remoteID)
 }
 
 @Dao
@@ -72,6 +73,9 @@ interface PersonDao {
 
     @Update
     suspend fun update(personEntity: PersonEntity)
+
+    @Update
+    suspend fun update(personEntityList: List<PersonEntity>)
 
     @Query("DELETE FROM persons WHERE person_id = :personID")
     suspend fun delete(personID: Int)
