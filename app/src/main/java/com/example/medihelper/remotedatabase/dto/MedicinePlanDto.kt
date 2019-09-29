@@ -17,7 +17,7 @@ data class MedicinePlanDto(
     val medicineRemoteId: Long,
 
     @SerializedName(value = "personRemoteId")
-    val personRemoteId: Long,
+    val personRemoteId: Long?,
 
     @SerializedName(value = "startDate")
     val startDate: String,
@@ -40,19 +40,24 @@ data class MedicinePlanDto(
     @SerializedName(value = "timeOfTakingDtoList")
     val timeOfTakingList: List<TimeOfTakingDto>
 ) {
-    suspend fun toEntity(medicineRepository: MedicineRepository, personRepository: PersonRepository) = MedicinePlanEntity(
-        medicinePlanID = medicinePlanLocalId ?: 0,
-        medicinePlanRemoteID = medicinePlanRemoteId,
-        medicineID = medicineRepository.getLocalIDByRemoteID(medicineRemoteId)!!,
-        personID = personRepository.getLocalIDByRemoteID(personRemoteId)!!,
-        startDate = AppDate(startDate),
-        endDate = endDate?.let { AppDate(it) },
-        durationType = MedicinePlanEntity.DurationType.valueOf(durationType),
-        daysOfWeek = daysOfWeek,
-        intervalOfDays = intervalOfDays,
-        daysType = MedicinePlanEntity.DaysType.valueOf(daysType),
-        timeOfTakingList = timeOfTakingList.map { it.toTimeOfTakingEntity() }
-    )
+    suspend fun toEntity(medicineRepository: MedicineRepository, personRepository: PersonRepository) =
+        MedicinePlanEntity(
+            medicinePlanID = medicinePlanLocalId ?: 0,
+            medicinePlanRemoteID = medicinePlanRemoteId,
+            medicineID = medicineRepository.getLocalIDByRemoteID(medicineRemoteId)!!,
+            personID = if (personRemoteId != null) {
+                personRepository.getLocalIDByRemoteID(personRemoteId)!!
+            } else {
+                personRepository.getMainPersonID()!!
+            },
+            startDate = AppDate(startDate),
+            endDate = endDate?.let { AppDate(it) },
+            durationType = MedicinePlanEntity.DurationType.valueOf(durationType),
+            daysOfWeek = daysOfWeek,
+            intervalOfDays = intervalOfDays,
+            daysType = MedicinePlanEntity.DaysType.valueOf(daysType),
+            timeOfTakingList = timeOfTakingList.map { it.toTimeOfTakingEntity() }
+        )
 
     companion object {
         suspend fun fromEntity(
@@ -63,7 +68,7 @@ data class MedicinePlanDto(
             medicinePlanLocalId = medicinePlanEntity.medicinePlanID,
             medicinePlanRemoteId = medicinePlanEntity.medicinePlanRemoteID,
             medicineRemoteId = medicineRepository.getRemoteID(medicinePlanEntity.medicineID)!!,
-            personRemoteId = personRepository.getRemoteID(medicinePlanEntity.personID)!!,
+            personRemoteId = personRepository.getRemoteID(medicinePlanEntity.personID),
             startDate = medicinePlanEntity.startDate.jsonFormatString,
             endDate = medicinePlanEntity.endDate?.jsonFormatString,
             durationType = medicinePlanEntity.durationType.toString(),

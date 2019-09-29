@@ -14,17 +14,13 @@ data class PersonDto(
     val personName: String,
 
     @SerializedName(value = "personColorResId")
-    val personColorResId: Int,
-
-    @SerializedName(value = "mainPerson")
-    val mainPerson: Boolean
+    val personColorResId: Int
 ) {
     fun toEntity() = PersonEntity(
         personID = personLocalId ?: 0,
         personRemoteID = personRemoteId,
         personName = personName,
         personColorResID = personColorResId,
-        mainPerson = mainPerson,
         synchronizedWithServer = true
     )
 
@@ -33,8 +29,7 @@ data class PersonDto(
             personLocalId = personEntity.personID,
             personRemoteId = personEntity.personRemoteID,
             personName = personEntity.personName,
-            personColorResId = personEntity.personColorResID,
-            mainPerson = personEntity.mainPerson
+            personColorResId = personEntity.personColorResID
         )
     }
 }

@@ -88,7 +88,7 @@ interface PersonDao {
     @Query("DELETE FROM persons WHERE person_id = :personID")
     suspend fun delete(personID: Int)
 
-    @Query("DELETE FROM persons WHERE person_remote_id NOT IN (:personRemoteIDList)")
+    @Query("DELETE FROM persons WHERE person_remote_id NOT IN (:personRemoteIDList) AND main_person = 0")
     suspend fun deleteByRemoteIDNotIn(personRemoteIDList: List<Long>)
 
     @Query("DELETE FROM persons WHERE main_person = 0")
@@ -100,7 +100,7 @@ interface PersonDao {
     @Query("SELECT * FROM persons")
     suspend fun getEntityList(): List<PersonEntity>
 
-    @Query("SELECT * FROM persons WHERE synchronized_with_server = 0")
+    @Query("SELECT * FROM persons WHERE synchronized_with_server = 0 AND main_person = 0")
     suspend fun getEntityListToSync(): List<PersonEntity>
 
     @Query("SELECT * FROM persons WHERE person_id = :personID")
