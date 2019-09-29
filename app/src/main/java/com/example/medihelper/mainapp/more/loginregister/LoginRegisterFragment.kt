@@ -8,13 +8,11 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentLoginRegisterBinding
 import com.example.medihelper.dialogs.LoadingDialog
 import com.example.medihelper.mainapp.MainActivity
-import com.example.medihelper.remotedatabase.ApiResponse
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_login_register.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -60,30 +58,23 @@ class LoginRegisterFragment : AppFullScreenDialog() {
     }
 
     private fun observeViewModel() {
-        viewModel.loadingStartedAction.observe(viewLifecycleOwner, Observer { loadingStarted ->
-            if (loadingStarted == true) {
-                showLoadingDialog()
+        viewModel.loadingStartedAction.observe(viewLifecycleOwner, Observer { showLoadingDialog() })
+        viewModel.remoteDataIsAvailableAction.observe(viewLifecycleOwner, Observer { openLocalOrRemoteDataDialog() })
+        viewModel.loginErrorAction.observe(viewLifecycleOwner, Observer { errorMessageId ->
+            dismissLoadingDialog()
+            if (errorMessageId == null) {
+                dismiss()
+                (requireActivity() as MainActivity).showSnackbar("Zalogowano pomyślnie")
+            } else {
+                showSnackbar(resources.getString(errorMessageId))
             }
         })
-        viewModel.isRemoteDataAvailableAction.observe(viewLifecycleOwner, Observer { authToken ->
-            openLocalOrRemoteDataDialog()
-        })
-        viewModel.loginResponseAction.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.registerErrorAction.observe(viewLifecycleOwner, Observer { errorMessageId ->
             dismissLoadingDialog()
-            when (response) {
-                ApiResponse.OK -> {
-                    dismiss()
-                    (requireActivity() as MainActivity).showSnackbar("Zalogowano pomyślnie")
-                }
-                ApiResponse.BAD_REQUEST -> showSnackbar("Niepoprawne dane logowania")
-                else -> showSnackbar(response.message)
-            }
-        })
-        viewModel.registrationResponseAction.observe(viewLifecycleOwner, Observer { response ->
-            dismissLoadingDialog()
-            when (response) {
-                ApiResponse.OK -> onClickOpenLoginFragment()
-                else -> showSnackbar(response.message)
+            if (errorMessageId == null) {
+                onClickOpenLoginFragment()
+            } else {
+                showSnackbar(resources.getString(errorMessageId))
             }
         })
     }

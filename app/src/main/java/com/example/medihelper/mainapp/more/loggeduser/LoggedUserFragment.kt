@@ -14,7 +14,6 @@ import com.example.medihelper.databinding.FragmentLoggedUserBinding
 import com.example.medihelper.dialogs.ConfirmDialog
 import com.example.medihelper.dialogs.LoadingDialog
 import com.example.medihelper.mainapp.MainActivity
-import com.example.medihelper.remotedatabase.ApiResponse
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_logged_user.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -32,7 +31,8 @@ class LoggedUserFragment : AppFullScreenDialog() {
 
     fun onClickLogoutUser() = ConfirmDialog().apply {
         title = "Wyloguj"
-        message = "Wylogowanie sprawi, że twoje dane nie będą synchronizowane z chmurą oraz aplikacjami podopiecznych. Czy chcesz kontynuować?"
+        message =
+            "Wylogowanie sprawi, że twoje dane nie będą synchronizowane z chmurą oraz aplikacjami podopiecznych. Czy chcesz kontynuować?"
         iconResId = R.drawable.baseline_account_circle_white_36
         setOnConfirmClickListener {
             viewModel.logoutUser()
@@ -43,7 +43,8 @@ class LoggedUserFragment : AppFullScreenDialog() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentLoggedUserBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_logged_user, container, false)
+        val binding: FragmentLoggedUserBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_logged_user, container, false)
         binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
@@ -58,17 +59,10 @@ class LoggedUserFragment : AppFullScreenDialog() {
     }
 
     private fun observeViewModel() {
-        viewModel.loadingStartedAction.observe(viewLifecycleOwner, Observer { loadingStarted ->
-            if (loadingStarted == true) {
-                showLoadingDialog()
-            }
-        })
-        viewModel.changePasswordResponseAction.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.loadingStartedAction.observe(viewLifecycleOwner, Observer { showLoadingDialog() })
+        viewModel.changePasswordErrorAction.observe(viewLifecycleOwner, Observer { errorMessageId ->
             dismissLoadingDialog()
-            when (response) {
-                ApiResponse.OK -> showSnackbar("Hasło zostało pomyślnie zmienione")
-                else -> showSnackbar(response.message)
-            }
+            showSnackbar(resources.getString(errorMessageId))
         })
     }
 

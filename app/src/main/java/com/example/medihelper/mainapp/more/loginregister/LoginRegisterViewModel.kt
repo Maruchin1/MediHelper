@@ -3,12 +3,12 @@ package com.example.medihelper.mainapp.more.loginregister
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.medihelper.R
 import com.example.medihelper.custom.ActionLiveData
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
-import com.example.medihelper.remotedatabase.ApiResponse
 import com.example.medihelper.remotedatabase.api.AuthenticationApi
 import com.example.medihelper.remotedatabase.api.RegisteredUserApi
 import com.example.medihelper.remotedatabase.dto.UserCredentialsDto
@@ -16,6 +16,8 @@ import com.example.medihelper.services.WorkerService
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 class LoginRegisterViewModel(
     private val sharedPrefService: SharedPrefService,
@@ -35,10 +37,10 @@ class LoginRegisterViewModel(
     val errorEmailLive = MutableLiveData<String>()
     val errorPasswordLive = MutableLiveData<String>()
     val errorPasswordConfirmationLive = MutableLiveData<String>()
-    val loadingStartedAction = ActionLiveData<Boolean>()
-    val isRemoteDataAvailableAction = ActionLiveData<Boolean>()
-    val loginResponseAction = ActionLiveData<ApiResponse>()
-    val registrationResponseAction = ActionLiveData<ApiResponse>()
+    val loadingStartedAction = ActionLiveData<Nothing>()
+    val remoteDataIsAvailableAction = ActionLiveData<Nothing>()
+    val loginErrorAction = ActionLiveData<Int>()
+    val registerErrorAction = ActionLiveData<Int>()
 
     private var tempAuthToken = ""
     private var tempUserEmail = ""
@@ -58,7 +60,7 @@ class LoginRegisterViewModel(
 
     fun loginUser() = viewModelScope.launch {
         if (validateInputData(Mode.LOGIN)) {
-            loadingStartedAction.sendAction(true)
+            loadingStartedAction.sendAction()
             val userCredentialsDto = UserCredentialsDto(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
@@ -68,31 +70,32 @@ class LoginRegisterViewModel(
                 tempUserEmail = userCredentialsDto.email
                 val isRemoteDataAvailable = registeredUserApi.isDataAvailable(tempAuthToken)
                 if (isRemoteDataAvailable) {
-                    isRemoteDataAvailableAction.sendAction(true)
+                    remoteDataIsAvailableAction.sendAction()
+                } else {
+                    saveLoginDataAndSync()
+                    loginErrorAction.sendAction()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                loginErrorAction.sendAction(getErrorMessage(e))
             }
-            //todo coś zrobić z tą absługą błędów
-            loginResponseAction.sendAction(ApiResponse.OK)
         }
     }
 
     fun registerNewUser() = viewModelScope.launch {
         if (validateInputData(Mode.REGISTER)) {
-            loadingStartedAction.sendAction(true)
+            loadingStartedAction.sendAction()
             val userCredentials = UserCredentialsDto(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
-            val response = try {
+            try {
                 authenticationApi.registerNewUser(userCredentials)
-                ApiResponse.OK
+                registerErrorAction.sendAction()
             } catch (e: Exception) {
                 e.printStackTrace()
-                ApiResponse.getResponseByException(e)
+                registerErrorAction.sendAction(getErrorMessage(e))
             }
-            registrationResponseAction.sendAction(response)
         }
     }
 
@@ -105,24 +108,41 @@ class LoginRegisterViewModel(
         ).forEach {
             it.deleteAll()
         }
-        saveLoginData()
-        workerService.enqueueSynchronizeData()
+        saveLoginDataAndSync()
     }
 
     fun useLocalDataAfterLogin() = viewModelScope.launch {
+        loadingStartedAction.sendAction()
         try {
             registeredUserApi.deleteAllData(tempAuthToken)
+            loginErrorAction.sendAction()
         } catch (e: Exception) {
             e.printStackTrace()
+            loginErrorAction.sendAction(getErrorMessage(e))
         }
-        saveLoginData()
+        saveLoginDataAndSync()
+    }
+
+    private fun saveLoginDataAndSync() {
+        sharedPrefService.run {
+            saveLoggedUserAuthToken(tempAuthToken)
+            saveLoggedUserEmail(tempUserEmail)
+        }
         workerService.enqueueSynchronizeData()
     }
 
-    private fun saveLoginData() = sharedPrefService.run {
-        saveLoggedUserAuthToken(tempAuthToken)
-        saveLoggedUserEmail(tempUserEmail)
+    private fun getErrorMessage(e: Exception) = when (e) {
+        is SocketTimeoutException -> R.string.error_timeout
+        is HttpException -> when (e.code()) {
+                422 -> R.string.error_incorrect_credentials
+                409 -> R.string.error_user_exists
+                404 -> R.string.error_user_not_found
+                else -> R.string.error_connection
+
+        }
+        else -> R.string.error_connection
     }
+
 
     private fun validateInputData(viewModelMode: Mode): Boolean {
         var inputDataValid = true

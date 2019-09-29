@@ -21,7 +21,7 @@ class ActionLiveData<T> : MutableLiveData<T>() {
     }
 
     @MainThread
-    fun sendAction(value: T) {
+    fun sendAction(value: T? = null) {
         this.value = value
     }
 }

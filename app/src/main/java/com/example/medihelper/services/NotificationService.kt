@@ -33,7 +33,10 @@ class NotificationService(context: Context) {
         NotificationCompat.Builder(context, SERVER_SYNC_CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setContentTitle("Synchronizacja danych nieudana")
-            .setContentText("Podczas synchronizacji danych wystąpił problem. Sprawdź połączenie z internetem.")
+            .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+            .setStyle(
+                NotificationCompat.BigTextStyle().setBigContentTitle("Podczas synchronizacji danych wystąpił problem. Sprawdż połącznie z internetem")
+            )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
     }
@@ -42,18 +45,22 @@ class NotificationService(context: Context) {
         createServerSyncNotificationChannel(context)
     }
 
-    fun showServerSyncNotification() = notificationManagerCompat.notify(SERVER_SYNC_NOTIFICATION_ID, serverSyncNotification)
+    fun showServerSyncNotification() =
+        notificationManagerCompat.notify(SERVER_SYNC_NOTIFICATION_ID, serverSyncNotification)
 
     fun showServerSyncFailureNotification() =
         notificationManagerCompat.notify(SERVER_SYNC_FAILURE_NOTIFICATION_ID, serverSyncFailureNotification)
 
-    fun cancelServerSyncNotification() = notificationManagerCompat.cancel(SERVER_SYNC_NOTIFICATION_ID)
+    fun cancelServerSyncNotification() =
+        notificationManagerCompat.cancel(SERVER_SYNC_NOTIFICATION_ID)
 
     private fun createServerSyncNotificationChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(SERVER_SYNC_CHANNEL_ID, SERVER_SYNC_CHANNEL_NAME, importance)
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val channel =
+                NotificationChannel(SERVER_SYNC_CHANNEL_ID, SERVER_SYNC_CHANNEL_NAME, importance)
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
