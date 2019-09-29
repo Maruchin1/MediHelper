@@ -58,10 +58,11 @@ class LoginRegisterFragment : AppFullScreenDialog() {
     }
 
     private fun observeViewModel() {
-        viewModel.loadingStartedAction.observe(viewLifecycleOwner, Observer { showLoadingDialog() })
+        viewModel.loadingInProgressLive.observe(viewLifecycleOwner, Observer { inProgress ->
+            if (inProgress) showLoadingDialog() else dismissLoadingDialog()
+        })
         viewModel.remoteDataIsAvailableAction.observe(viewLifecycleOwner, Observer { openLocalOrRemoteDataDialog() })
-        viewModel.loginErrorAction.observe(viewLifecycleOwner, Observer { errorMessageId ->
-            dismissLoadingDialog()
+        viewModel.loginErrorLive.observe(viewLifecycleOwner, Observer { errorMessageId ->
             if (errorMessageId == null) {
                 dismiss()
                 (requireActivity() as MainActivity).showSnackbar("Zalogowano pomyślnie")
@@ -69,8 +70,7 @@ class LoginRegisterFragment : AppFullScreenDialog() {
                 showSnackbar(resources.getString(errorMessageId))
             }
         })
-        viewModel.registerErrorAction.observe(viewLifecycleOwner, Observer { errorMessageId ->
-            dismissLoadingDialog()
+        viewModel.registerErrorLive.observe(viewLifecycleOwner, Observer { errorMessageId ->
             if (errorMessageId == null) {
                 onClickOpenLoginFragment()
             } else {
@@ -82,13 +82,17 @@ class LoginRegisterFragment : AppFullScreenDialog() {
     private fun openLocalOrRemoteDataDialog() = LocalOrRemoteDataDialog().show(childFragmentManager)
 
     private fun showLoadingDialog() {
-        loadingDialog = LoadingDialog()
-        loadingDialog?.show(childFragmentManager)
+        if (loadingDialog == null) {
+            loadingDialog = LoadingDialog()
+            loadingDialog?.show(childFragmentManager)
+        }
     }
 
     private fun dismissLoadingDialog() {
-        loadingDialog?.dismiss()
-        loadingDialog = null
+        if (loadingDialog != null) {
+            loadingDialog?.dismiss()
+            loadingDialog = null
+        }
     }
 
     private fun setTransparentStatusBar() {

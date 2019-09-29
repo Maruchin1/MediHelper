@@ -60,7 +60,7 @@ class LoggedUserFragment : AppFullScreenDialog() {
 
     private fun observeViewModel() {
         viewModel.loadingStartedAction.observe(viewLifecycleOwner, Observer { showLoadingDialog() })
-        viewModel.changePasswordErrorAction.observe(viewLifecycleOwner, Observer { errorMessageId ->
+        viewModel.changePasswordErrorLive.observe(viewLifecycleOwner, Observer { errorMessageId ->
             dismissLoadingDialog()
             showSnackbar(resources.getString(errorMessageId))
         })

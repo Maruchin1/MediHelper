@@ -104,7 +104,7 @@ val viewModelModule = module {
     viewModel { ScheduleViewModel(get(), get()) }
     viewModel { MoreViewModel(get()) }
     viewModel { LoginRegisterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { LoggedUserViewModel(get(), get()) }
+    viewModel { LoggedUserViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { NewPasswordViewModel() }
 }
 

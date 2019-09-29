@@ -42,6 +42,8 @@ class MedicinePlanRepositoryImpl(
 
     override suspend fun updateSynchronized(entityList: List<MedicinePlanEntity>) = medicinePlanDao.update(entityList)
 
+    override suspend fun resetSynchronizationData() = medicinePlanDao.resetSynchronizationData()
+
     override suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>) = medicinePlanDao.deleteByRemoteIDNotIn(remoteIDList)
 
     override suspend fun deleteAll() = medicinePlanDao.deleteAll()
@@ -71,6 +73,9 @@ interface MedicinePlanDao {
 
     @Update
     suspend fun update(medicinePlanEntityList: List<MedicinePlanEntity>)
+
+    @Query("UPDATE medicines_plans SET synchronized_with_server = 0, medicine_plan_remote_id = null")
+    suspend fun resetSynchronizationData()
 
     @Query("DELETE FROM medicines_plans WHERE medicine_plan_id = :medicinePlanID")
     suspend fun delete(medicinePlanID: Int)

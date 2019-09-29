@@ -150,7 +150,7 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
                 dialog?.window?.statusBarColor = ContextCompat.getColor(this, colorResID)
             }
         })
-        viewModel.errorShowMessageAction.observe(viewLifecycleOwner, Observer { errorMessage ->
+        viewModel.errorMessageLive.observe(viewLifecycleOwner, Observer { errorMessage ->
             Snackbar.make(root_lay, errorMessage, Snackbar.LENGTH_SHORT).show()
         })
     }

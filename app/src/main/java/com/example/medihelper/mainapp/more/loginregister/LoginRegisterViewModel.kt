@@ -1,5 +1,6 @@
 package com.example.medihelper.mainapp.more.loginregister
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,10 +38,10 @@ class LoginRegisterViewModel(
     val errorEmailLive = MutableLiveData<String>()
     val errorPasswordLive = MutableLiveData<String>()
     val errorPasswordConfirmationLive = MutableLiveData<String>()
-    val loadingStartedAction = ActionLiveData<Nothing>()
-    val remoteDataIsAvailableAction = ActionLiveData<Nothing>()
-    val loginErrorAction = ActionLiveData<Int>()
-    val registerErrorAction = ActionLiveData<Int>()
+    val loadingInProgressLive = MutableLiveData<Boolean>()
+    val remoteDataIsAvailableAction = ActionLiveData()
+    val loginErrorLive = MutableLiveData<Int>()
+    val registerErrorLive = MutableLiveData<Int>()
 
     private var tempAuthToken = ""
     private var tempUserEmail = ""
@@ -59,8 +60,9 @@ class LoginRegisterViewModel(
     }
 
     fun loginUser() = viewModelScope.launch {
+        Log.i(TAG, "loginUser")
         if (validateInputData(Mode.LOGIN)) {
-            loadingStartedAction.sendAction()
+            loadingInProgressLive.postValue(true)
             val userCredentialsDto = UserCredentialsDto(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
@@ -73,29 +75,31 @@ class LoginRegisterViewModel(
                     remoteDataIsAvailableAction.sendAction()
                 } else {
                     saveLoginDataAndSync()
-                    loginErrorAction.sendAction()
+                    loginErrorLive.postValue(null)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                loginErrorAction.sendAction(getErrorMessage(e))
+                loginErrorLive.postValue(getErrorMessage(e))
             }
+            loadingInProgressLive.postValue(false)
         }
     }
 
     fun registerNewUser() = viewModelScope.launch {
         if (validateInputData(Mode.REGISTER)) {
-            loadingStartedAction.sendAction()
+            loadingInProgressLive.postValue(true)
             val userCredentials = UserCredentialsDto(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
             try {
                 authenticationApi.registerNewUser(userCredentials)
-                registerErrorAction.sendAction()
+                registerErrorLive.postValue(null)
             } catch (e: Exception) {
                 e.printStackTrace()
-                registerErrorAction.sendAction(getErrorMessage(e))
+                registerErrorLive.postValue(getErrorMessage(e))
             }
+            loadingInProgressLive.postValue(false)
         }
     }
 
@@ -109,18 +113,20 @@ class LoginRegisterViewModel(
             it.deleteAll()
         }
         saveLoginDataAndSync()
+        loginErrorLive.postValue(null)
     }
 
     fun useLocalDataAfterLogin() = viewModelScope.launch {
-        loadingStartedAction.sendAction()
+        loadingInProgressLive.postValue(true)
         try {
             registeredUserApi.deleteAllData(tempAuthToken)
-            loginErrorAction.sendAction()
+            saveLoginDataAndSync()
+            loginErrorLive.postValue(null)
         } catch (e: Exception) {
             e.printStackTrace()
-            loginErrorAction.sendAction(getErrorMessage(e))
+            loginErrorLive.postValue(getErrorMessage(e))
         }
-        saveLoginDataAndSync()
+        loadingInProgressLive.postValue(false)
     }
 
     private fun saveLoginDataAndSync() {

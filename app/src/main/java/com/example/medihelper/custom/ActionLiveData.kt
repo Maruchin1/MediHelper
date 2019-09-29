@@ -5,10 +5,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 
-class ActionLiveData<T> : MutableLiveData<T>() {
+class ActionLiveData : MutableLiveData<Boolean>() {
 
     @MainThread
-    override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
+    override fun observe(owner: LifecycleOwner, observer: Observer<in Boolean>) {
         if (hasObservers()) {
             throw Throwable("Only one observer at a time may subscribe to ActionLiveData")
         }
@@ -21,7 +21,7 @@ class ActionLiveData<T> : MutableLiveData<T>() {
     }
 
     @MainThread
-    fun sendAction(value: T? = null) {
-        this.value = value
+    fun sendAction() {
+        value = true
     }
 }

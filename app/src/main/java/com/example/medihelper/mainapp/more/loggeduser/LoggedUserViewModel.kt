@@ -1,30 +1,49 @@
 package com.example.medihelper.mainapp.more.loggeduser
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.R
 import com.example.medihelper.custom.ActionLiveData
+import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
+import com.example.medihelper.localdatabase.repositories.MedicineRepository
+import com.example.medihelper.localdatabase.repositories.PersonRepository
+import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import com.example.medihelper.remotedatabase.api.RegisteredUserApi
 import com.example.medihelper.remotedatabase.dto.NewPasswordDto
 import com.example.medihelper.services.SharedPrefService
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 
 class LoggedUserViewModel(
     private val sharedPrefService: SharedPrefService,
-    private val registeredUserApi: RegisteredUserApi
+    private val registeredUserApi: RegisteredUserApi,
+    private val medicineRepository: MedicineRepository,
+    private val personRepository: PersonRepository,
+    private val medicinePlanRepository: MedicinePlanRepository,
+    private val plannedMedicineRepository: PlannedMedicineRepository
 ) : ViewModel() {
 
     val loggedUserEmailLive = sharedPrefService.getLoggedUserEmailLive()
 
-    val loadingStartedAction = ActionLiveData<Nothing>()
-    val changePasswordErrorAction = ActionLiveData<Int>()
+    val loadingStartedAction = ActionLiveData()
+    val changePasswordErrorLive = MutableLiveData<Int>()
 
-    fun logoutUser() {
+    fun logoutUser() = GlobalScope.launch {
         sharedPrefService.run {
             deleteLoggedUserAuthToken()
             deleteLoggedUserEmail()
+        }
+        listOf(
+            medicineRepository,
+            personRepository,
+            medicinePlanRepository,
+            plannedMedicineRepository
+        ).forEach {
+            it.clearDeletedRemoteIDList()
+            it.resetSynchronizationData()
         }
     }
 
@@ -34,10 +53,10 @@ class LoggedUserViewModel(
             loadingStartedAction.sendAction()
             try {
                 registeredUserApi.changeUserPassword(authToken, NewPasswordDto(value = newPassword))
-                changePasswordErrorAction.sendAction()
+                changePasswordErrorLive.postValue(null)
             } catch (e: Exception) {
                 e.printStackTrace()
-                changePasswordErrorAction.sendAction(getErrorMessage(e))
+                changePasswordErrorLive.postValue(getErrorMessage(e))
             }
         }
     }

@@ -44,8 +44,9 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, colorResID)
     }
 
-    fun showSnackbar(message: String) = Snackbar.make(root_lay, message, Snackbar.LENGTH_SHORT)
-        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show()
+    fun showSnackbar(message: String) = Snackbar.make(frame_fragments, message, Snackbar.LENGTH_SHORT)
+        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+        .show()
 
     private fun setupBottomNav() {
         val navController = findNavController(R.id.nav_host_fragment)

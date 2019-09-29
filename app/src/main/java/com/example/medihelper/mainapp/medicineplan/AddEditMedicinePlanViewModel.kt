@@ -3,7 +3,6 @@ package com.example.medihelper.mainapp.medicineplan
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
-import com.example.medihelper.custom.ActionLiveData
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
@@ -41,7 +40,7 @@ class AddEditMedicinePlanViewModel(
 
     val timeOfTakingListLive = MutableLiveData<MutableList<MedicinePlanEntity.TimeOfTaking>>()
 
-    val errorShowMessageAction = ActionLiveData<String>()
+    val errorMessageLive = MutableLiveData<String>()
     val errorStartDateLive = MutableLiveData<String>()
     val errorEndDateLive = MutableLiveData<String>()
 
@@ -186,7 +185,7 @@ class AddEditMedicinePlanViewModel(
     private fun validateInputData(): Boolean {
         var inputDataValid = true
         if (selectedMedicineIDLive.value == null) {
-            errorShowMessageAction.sendAction("Nie wybrano leku")
+            errorMessageLive.postValue("Nie wybrano leku")
             inputDataValid = false
         }
         if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
@@ -215,7 +214,7 @@ class AddEditMedicinePlanViewModel(
             daysOfWeekLive.value?.run {
                 val daysArray = arrayOf(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
                 if (daysArray.none { daySelected -> daySelected }) {
-                    errorShowMessageAction.sendAction("Nie wybrano dni tygodnia")
+                    errorMessageLive.postValue("Nie wybrano dni tygodnia")
                     inputDataValid = false
                 }
             }

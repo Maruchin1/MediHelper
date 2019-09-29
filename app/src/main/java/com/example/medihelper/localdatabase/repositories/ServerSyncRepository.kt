@@ -6,6 +6,8 @@ interface ServerSyncRepository<T> {
 
     suspend fun updateSynchronized(entityList: List<T>)
 
+    suspend fun resetSynchronizationData()
+
     suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>)
 
     suspend fun deleteAll()

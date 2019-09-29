@@ -49,6 +49,9 @@ class PersonRepositoryImpl(
 
     override suspend fun updateSynchronized(entityList: List<PersonEntity>) = personDao.update(entityList)
 
+
+    override suspend fun resetSynchronizationData() = personDao.resetSynchronizationData()
+
     override suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>) = personDao.deleteByRemoteIDNotIn(remoteIDList)
 
     override suspend fun deleteAll() = personDao.deleteAll()
@@ -78,6 +81,9 @@ interface PersonDao {
 
     @Update
     suspend fun update(personEntityList: List<PersonEntity>)
+
+    @Query("UPDATE persons SET synchronized_with_server = 0, person_remote_id = null")
+    suspend fun resetSynchronizationData()
 
     @Query("DELETE FROM persons WHERE person_id = :personID")
     suspend fun delete(personID: Int)
