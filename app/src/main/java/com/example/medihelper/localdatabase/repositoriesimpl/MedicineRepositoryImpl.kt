@@ -50,6 +50,8 @@ class MedicineRepositoryImpl(
 
     override suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>) = medicineDao.deleteByRemoteIDNotIn(remoteIDList)
 
+    override suspend fun deleteAll() = medicineDao.deleteAll()
+
     override suspend fun clearDeletedRemoteIDList() = deletedEntityDao.deleteDeletedRemoteIDList(DeletedEntity.EntityType.MEDICINE)
 
     override suspend fun getEntityListToSync() = medicineDao.getEntityListToSync()

@@ -1,17 +1,13 @@
 package com.example.medihelper.services
 
 import androidx.work.*
+import com.example.medihelper.localdatabase.repositories.*
 
-class ServerSyncService(
-    private val workManager: WorkManager
-) {
-    private val TAG = "ServerSyncService"
+class WorkerService(private val workManager: WorkManager) {
+    private val TAG = "WorkerService"
 
-    fun synchronizeData(authToken: String) {
+    fun enqueueSynchronizeData() {
         val serverSyncWork = OneTimeWorkRequestBuilder<ServerSyncWorker>()
-            .setInputData(
-                workDataOf(ServerSyncWorker.KEY_AUTH_TOKEN to authToken)
-            )
             .setConstraints(
                 Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -20,6 +16,4 @@ class ServerSyncService(
             .build()
         workManager.enqueue(serverSyncWork)
     }
-
-
 }

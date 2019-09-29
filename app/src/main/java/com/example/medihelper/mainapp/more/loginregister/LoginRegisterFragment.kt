@@ -38,8 +38,13 @@ class LoginRegisterFragment : AppFullScreenDialog() {
         })
         .commit()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentLoginRegisterBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login_register, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding: FragmentLoginRegisterBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_login_register, container, false)
         binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
@@ -59,6 +64,9 @@ class LoginRegisterFragment : AppFullScreenDialog() {
             if (loadingStarted == true) {
                 showLoadingDialog()
             }
+        })
+        viewModel.isRemoteDataAvailableAction.observe(viewLifecycleOwner, Observer { authToken ->
+            openLocalOrRemoteDataDialog()
         })
         viewModel.loginResponseAction.observe(viewLifecycleOwner, Observer { response ->
             dismissLoadingDialog()
@@ -80,6 +88,8 @@ class LoginRegisterFragment : AppFullScreenDialog() {
         })
     }
 
+    private fun openLocalOrRemoteDataDialog() = LocalOrRemoteDataDialog().show(childFragmentManager)
+
     private fun showLoadingDialog() {
         loadingDialog = LoadingDialog()
         loadingDialog?.show(childFragmentManager)
@@ -92,7 +102,8 @@ class LoginRegisterFragment : AppFullScreenDialog() {
 
     private fun setTransparentStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            dialog?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorTransparent)
+            dialog?.window?.statusBarColor =
+                ContextCompat.getColor(requireContext(), R.color.colorTransparent)
             dialog?.window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
     }
@@ -103,6 +114,7 @@ class LoginRegisterFragment : AppFullScreenDialog() {
         }
     }
 
-    private fun showSnackbar(message: String) = Snackbar.make(root_lay, message, Snackbar.LENGTH_SHORT)
-        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show()
+    private fun showSnackbar(message: String) =
+        Snackbar.make(root_lay, message, Snackbar.LENGTH_SHORT)
+            .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show()
 }

@@ -15,7 +15,8 @@ class PlannedMedicineRepositoryImpl(
     private val deletedEntityDao: DeletedEntityDao
 ) : PlannedMedicineRepository {
 
-    override suspend fun insert(plannedMedicineEntity: PlannedMedicineEntity) = plannedMedicineDao.insert(plannedMedicineEntity)
+    override suspend fun insert(plannedMedicineEntity: PlannedMedicineEntity) =
+        plannedMedicineDao.insert(plannedMedicineEntity)
 
     override suspend fun insert(plannedMedicineEntityList: List<PlannedMedicineEntity>) =
         plannedMedicineDao.insert(plannedMedicineEntityList)
@@ -24,45 +25,65 @@ class PlannedMedicineRepositoryImpl(
         plannedMedicineDao.update(plannedMedicineEntity.apply { synchronizedWithServer = false })
 
     override suspend fun update(plannedMedicineEntityList: List<PlannedMedicineEntity>) =
-        plannedMedicineDao.update(plannedMedicineEntityList.map { it.apply { synchronizedWithServer = false } })
+        plannedMedicineDao.update(plannedMedicineEntityList.map {
+            it.apply {
+                synchronizedWithServer = false
+            }
+        })
 
     override suspend fun delete(plannedMedicineIDList: List<Int>) {
         plannedMedicineIDList.forEach { plannedMedicineID ->
             plannedMedicineDao.getRemoteID(plannedMedicineID)?.let { remoteID ->
-                deletedEntityDao.insert(DeletedEntity(DeletedEntity.EntityType.PLANNED_MEDICINE, remoteID))
+                deletedEntityDao.insert(
+                    DeletedEntity(
+                        DeletedEntity.EntityType.PLANNED_MEDICINE,
+                        remoteID
+                    )
+                )
             }
         }
         plannedMedicineDao.delete(plannedMedicineIDList)
     }
 
-    override suspend fun getEntity(plannedMedicineID: Int) = plannedMedicineDao.getEntity(plannedMedicineID)
+    override suspend fun getEntity(plannedMedicineID: Int) =
+        plannedMedicineDao.getEntity(plannedMedicineID)
 
     override suspend fun getEntityList() = plannedMedicineDao.getEntityList()
 
     override suspend fun getIDListFromDateByMedicinePlanID(date: AppDate, medicinePlanID: Int) =
         plannedMedicineDao.getIDListFromDataByMedicinePlanID(date, medicinePlanID)
 
-    override fun getDetailsLive(plannedMedicineID: Int) = plannedMedicineDao.getDetailsLive(plannedMedicineID)
+    override fun getDetailsLive(plannedMedicineID: Int) =
+        plannedMedicineDao.getDetailsLive(plannedMedicineID)
 
-    override fun getItemListLiveByDate(date: AppDate, personID: Int) = plannedMedicineDao.getItemListLiveByDate(date, personID)
+    override fun getItemListLiveByDate(date: AppDate, personID: Int) =
+        plannedMedicineDao.getItemListLiveByDate(date, personID)
 
     // ServerSyncRepository
 
-    override suspend fun insertSynchronized(entityList: List<PlannedMedicineEntity>) = plannedMedicineDao.insert(entityList)
+    override suspend fun insertSynchronized(entityList: List<PlannedMedicineEntity>) =
+        plannedMedicineDao.insert(entityList)
 
-    override suspend fun updateSynchronized(entityList: List<PlannedMedicineEntity>) = plannedMedicineDao.update(entityList)
+    override suspend fun updateSynchronized(entityList: List<PlannedMedicineEntity>) =
+        plannedMedicineDao.update(entityList)
 
-    override suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>) = plannedMedicineDao.deleteByRemoteIDNotIn(remoteIDList)
+    override suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>) =
+        plannedMedicineDao.deleteByRemoteIDNotIn(remoteIDList)
 
-    override suspend fun clearDeletedRemoteIDList() = deletedEntityDao.deleteDeletedRemoteIDList(DeletedEntity.EntityType.PLANNED_MEDICINE)
+    override suspend fun deleteAll() = plannedMedicineDao.deleteAll()
+
+    override suspend fun clearDeletedRemoteIDList() =
+        deletedEntityDao.deleteDeletedRemoteIDList(DeletedEntity.EntityType.PLANNED_MEDICINE)
 
     override suspend fun getEntityListToSync() = plannedMedicineDao.getEntityListToSync()
 
-    override suspend fun getDeletedRemoteIDList() = deletedEntityDao.getDeletedRemoteIDList(DeletedEntity.EntityType.PLANNED_MEDICINE)
+    override suspend fun getDeletedRemoteIDList() =
+        deletedEntityDao.getDeletedRemoteIDList(DeletedEntity.EntityType.PLANNED_MEDICINE)
 
     override suspend fun getRemoteID(localID: Int) = plannedMedicineDao.getRemoteID(localID)
 
-    override suspend fun getLocalIDByRemoteID(remoteID: Long) = plannedMedicineDao.getIDByRemoteID(remoteID)
+    override suspend fun getLocalIDByRemoteID(remoteID: Long) =
+        plannedMedicineDao.getIDByRemoteID(remoteID)
 }
 
 @Dao

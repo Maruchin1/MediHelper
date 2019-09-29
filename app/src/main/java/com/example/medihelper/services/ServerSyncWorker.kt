@@ -13,13 +13,11 @@ import com.example.medihelper.remotedatabase.dto.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class ServerSyncWorker(private val context: Context, params: WorkerParameters) : CoroutineWorker(context, params), KoinComponent {
-
-    companion object {
-        const val KEY_AUTH_TOKEN = "key-auth-token"
-    }
+class ServerSyncWorker(private val context: Context, params: WorkerParameters) :
+    CoroutineWorker(context, params), KoinComponent {
 
     private val appFilesDir by lazy { context.filesDir }
+    private val sharedPrefService: SharedPrefService by inject()
     private val medicineRepository: MedicineRepository by inject()
     private val personRepository: PersonRepository by inject()
     private val medicinePlanRepository: MedicinePlanRepository by inject()
@@ -30,7 +28,7 @@ class ServerSyncWorker(private val context: Context, params: WorkerParameters) :
     override suspend fun doWork(): Result {
         notificationService.showServerSyncNotification()
         var result = Result.failure()
-        inputData.getString(KEY_AUTH_TOKEN)?.let { authToken ->
+        sharedPrefService.getLoggedUserAuthToken()?.let { authToken ->
             try {
                 synchronizeData(authToken)
                 result = Result.success()
@@ -45,17 +43,23 @@ class ServerSyncWorker(private val context: Context, params: WorkerParameters) :
 
     private suspend fun synchronizeData(authToken: String) {
         val medicinesSyncRequestDto = SyncRequestDto(
-            insertUpdateDtoList = medicineRepository.getEntityListToSync().map { MedicineDto.fromEntity(it, appFilesDir) },
+            insertUpdateDtoList = medicineRepository.getEntityListToSync().map {
+                MedicineDto.fromEntity(it, appFilesDir)
+            },
             deleteRemoteIdList = medicineRepository.getDeletedRemoteIDList()
         )
-        val responseMedicineDtoList = registeredUserApi.synchronizeMedicines(authToken, medicinesSyncRequestDto)
+        val responseMedicineDtoList =
+            registeredUserApi.synchronizeMedicines(authToken, medicinesSyncRequestDto)
         dispatchMedicinesChanges(responseMedicineDtoList)
 
         val personsSyncRequestDto = SyncRequestDto(
-            insertUpdateDtoList = personRepository.getEntityListToSync().map { PersonDto.fromEntity(it) },
+            insertUpdateDtoList = personRepository.getEntityListToSync().map {
+                PersonDto.fromEntity(it)
+            },
             deleteRemoteIdList = personRepository.getDeletedRemoteIDList()
         )
-        val responsePersonDtoList = registeredUserApi.synchronizePersons(authToken, personsSyncRequestDto)
+        val responsePersonDtoList =
+            registeredUserApi.synchronizePersons(authToken, personsSyncRequestDto)
         dispatchPersonsChanges(responsePersonDtoList)
 
         val medicinesPlansSyncRequestDto = SyncRequestDto(
@@ -64,7 +68,8 @@ class ServerSyncWorker(private val context: Context, params: WorkerParameters) :
             },
             deleteRemoteIdList = medicinePlanRepository.getDeletedRemoteIDList()
         )
-        val responseMedicinePlanDtoList = registeredUserApi.synchronizeMedicinesPlans(authToken, medicinesPlansSyncRequestDto)
+        val responseMedicinePlanDtoList =
+            registeredUserApi.synchronizeMedicinesPlans(authToken, medicinesPlansSyncRequestDto)
         dispatchMedicinesPlansChanges(responseMedicinePlanDtoList)
 
         val plannedMedicinesSyncRequestDto = SyncRequestDto(
@@ -73,7 +78,8 @@ class ServerSyncWorker(private val context: Context, params: WorkerParameters) :
             },
             deleteRemoteIdList = plannedMedicineRepository.getDeletedRemoteIDList()
         )
-        val responsePlannedMedicineDtoList = registeredUserApi.synchronizePlannedMedicines(authToken, plannedMedicinesSyncRequestDto)
+        val responsePlannedMedicineDtoList =
+            registeredUserApi.synchronizePlannedMedicines(authToken, plannedMedicinesSyncRequestDto)
         dispatchPlannedMedicinesChanges(responsePlannedMedicineDtoList)
     }
 
@@ -86,7 +92,8 @@ class ServerSyncWorker(private val context: Context, params: WorkerParameters) :
             if (medicineEntity.medicineID != 0) {
                 updateList.add(medicineEntity)
             } else {
-                val existingMedicineID = medicineRepository.getLocalIDByRemoteID(medicineEntity.medicineRemoteID!!)
+                val existingMedicineID =
+                    medicineRepository.getLocalIDByRemoteID(medicineEntity.medicineRemoteID!!)
                 if (existingMedicineID != null) {
                     updateList.add(medicineEntity.copy(medicineID = existingMedicineID))
                 } else {
@@ -106,7 +113,8 @@ class ServerSyncWorker(private val context: Context, params: WorkerParameters) :
             if (personEntity.personID != 0) {
                 updateList.add(personEntity)
             } else {
-                val existingPersonID = personRepository.getLocalIDByRemoteID(personEntity.personRemoteID!!)
+                val existingPersonID =
+                    personRepository.getLocalIDByRemoteID(personEntity.personRemoteID!!)
                 if (existingPersonID != null) {
                     updateList.add(personEntity.copy(personID = existingPersonID))
                 } else {
@@ -126,7 +134,8 @@ class ServerSyncWorker(private val context: Context, params: WorkerParameters) :
             if (medicinePlanEntity.medicinePlanID != 0) {
                 updateList.add(medicinePlanEntity)
             } else {
-                val existingMedicinePlanID = medicinePlanRepository.getLocalIDByRemoteID(medicinePlanEntity.medicinePlanRemoteID!!)
+                val existingMedicinePlanID =
+                    medicinePlanRepository.getLocalIDByRemoteID(medicinePlanEntity.medicinePlanRemoteID!!)
                 if (existingMedicinePlanID != null) {
                     updateList.add(medicinePlanEntity.copy(medicinePlanID = existingMedicinePlanID))
                 } else {
@@ -146,7 +155,8 @@ class ServerSyncWorker(private val context: Context, params: WorkerParameters) :
             if (plannedMedicineEntity.plannedMedicineID != 0) {
                 updateList.add(plannedMedicineEntity)
             } else {
-                val existingPlannedMedicineID = plannedMedicineRepository.getLocalIDByRemoteID(plannedMedicineEntity.plannedMedicineRemoteID!!)
+                val existingPlannedMedicineID =
+                    plannedMedicineRepository.getLocalIDByRemoteID(plannedMedicineEntity.plannedMedicineRemoteID!!)
                 if (existingPlannedMedicineID != null) {
                     updateList.add(plannedMedicineEntity.copy(plannedMedicineID = existingPlannedMedicineID))
                 } else {

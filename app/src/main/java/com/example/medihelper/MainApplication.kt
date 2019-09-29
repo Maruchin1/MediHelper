@@ -103,7 +103,7 @@ val viewModelModule = module {
     viewModel { PlannedMedicineOptionsViewModel(get(), get()) }
     viewModel { ScheduleViewModel(get(), get()) }
     viewModel { MoreViewModel(get()) }
-    viewModel { LoginRegisterViewModel(get(), get()) }
+    viewModel { LoginRegisterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { LoggedUserViewModel(get(), get()) }
     viewModel { NewPasswordViewModel() }
 }
@@ -113,7 +113,7 @@ val serviceModule = module {
     single { PersonProfileService(get()) }
     single { MedicineSchedulerService(get(), get()) }
     single { MedicineImageService(androidContext().filesDir, androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)) }
-    single { ServerSyncService(WorkManager.getInstance(androidContext())) }
+    single { WorkerService(WorkManager.getInstance(androidContext())) }
     single { InitialDataService(get(), get()) }
     single { NotificationService(androidContext()) }
 }

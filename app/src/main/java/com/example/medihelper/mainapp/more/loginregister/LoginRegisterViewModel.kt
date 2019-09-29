@@ -1,20 +1,31 @@
 package com.example.medihelper.mainapp.more.loginregister
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.custom.ActionLiveData
+import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
+import com.example.medihelper.localdatabase.repositories.MedicineRepository
+import com.example.medihelper.localdatabase.repositories.PersonRepository
+import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import com.example.medihelper.remotedatabase.ApiResponse
 import com.example.medihelper.remotedatabase.api.AuthenticationApi
+import com.example.medihelper.remotedatabase.api.RegisteredUserApi
 import com.example.medihelper.remotedatabase.dto.UserCredentialsDto
-import com.example.medihelper.services.ServerSyncService
+import com.example.medihelper.services.WorkerService
 import com.example.medihelper.services.SharedPrefService
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class LoginRegisterViewModel(
+    private val sharedPrefService: SharedPrefService,
     private val authenticationApi: AuthenticationApi,
-    private val sharedPrefService: SharedPrefService
+    private val registeredUserApi: RegisteredUserApi,
+    private val workerService: WorkerService,
+    private val medicineRepository: MedicineRepository,
+    private val personRepository: PersonRepository,
+    private val medicinePlanRepository: MedicinePlanRepository,
+    private val plannedMedicineRepository: PlannedMedicineRepository
 ) : ViewModel() {
     private val TAG = "LoginRegisterViewModel"
 
@@ -25,9 +36,12 @@ class LoginRegisterViewModel(
     val errorPasswordLive = MutableLiveData<String>()
     val errorPasswordConfirmationLive = MutableLiveData<String>()
     val loadingStartedAction = ActionLiveData<Boolean>()
+    val isRemoteDataAvailableAction = ActionLiveData<Boolean>()
     val loginResponseAction = ActionLiveData<ApiResponse>()
     val registrationResponseAction = ActionLiveData<ApiResponse>()
 
+    private var tempAuthToken = ""
+    private var tempUserEmail = ""
 
     fun resetViewModel() {
         listOf(
@@ -45,28 +59,22 @@ class LoginRegisterViewModel(
     fun loginUser() = viewModelScope.launch {
         if (validateInputData(Mode.LOGIN)) {
             loadingStartedAction.sendAction(true)
-            val userCredentials = UserCredentialsDto(
+            val userCredentialsDto = UserCredentialsDto(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
-            val response = try {
-                val tempAuthToken = authenticationApi.loginUser(userCredentials)
-//                val hasRemoteData = authenticationApi.hasData(tempAuthToken)
-//                if (!hasRemoteData) {
-//                    serverSyncService.overwriteRemote(tempAuthToken)
-//                } else {
-//                    serverSyncService.overwriteLocal(tempAuthToken)
-//                }
-                sharedPrefService.run {
-                    saveLoggedUserAuthToken(tempAuthToken)
-                    saveLoggedUserEmail(userCredentials.email)
+            try {
+                tempAuthToken = authenticationApi.loginUser(userCredentialsDto)
+                tempUserEmail = userCredentialsDto.email
+                val isRemoteDataAvailable = registeredUserApi.isDataAvailable(tempAuthToken)
+                if (isRemoteDataAvailable) {
+                    isRemoteDataAvailableAction.sendAction(true)
                 }
-                ApiResponse.OK
             } catch (e: Exception) {
                 e.printStackTrace()
-                ApiResponse.getResponseByException(e)
             }
-            loginResponseAction.sendAction(response)
+            //todo coś zrobić z tą absługą błędów
+            loginResponseAction.sendAction(ApiResponse.OK)
         }
     }
 
@@ -86,6 +94,34 @@ class LoginRegisterViewModel(
             }
             registrationResponseAction.sendAction(response)
         }
+    }
+
+    fun useRemoteDataAfterLogin() = GlobalScope.launch {
+        listOf(
+            medicineRepository,
+            personRepository,
+            medicinePlanRepository,
+            plannedMedicineRepository
+        ).forEach {
+            it.deleteAll()
+        }
+        saveLoginData()
+        workerService.enqueueSynchronizeData()
+    }
+
+    fun useLocalDataAfterLogin() = viewModelScope.launch {
+        try {
+            registeredUserApi.deleteAllData(tempAuthToken)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        saveLoginData()
+        workerService.enqueueSynchronizeData()
+    }
+
+    private fun saveLoginData() = sharedPrefService.run {
+        saveLoggedUserAuthToken(tempAuthToken)
+        saveLoggedUserEmail(tempUserEmail)
     }
 
     private fun validateInputData(viewModelMode: Mode): Boolean {

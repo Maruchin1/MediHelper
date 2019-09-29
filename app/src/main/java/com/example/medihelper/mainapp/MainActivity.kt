@@ -7,21 +7,19 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
 import com.example.medihelper.services.MedicineSchedulerService
-import com.example.medihelper.services.ServerSyncService
+import com.example.medihelper.services.WorkerService
 import com.example.medihelper.services.SharedPrefService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 
 
 class MainActivity : AppCompatActivity() {
 
     private val medicineSchedulerService: MedicineSchedulerService by inject()
-    private val sharedPrefService: SharedPrefService by inject()
-    private val serverSyncService: ServerSyncService by inject()
+    private val workerService: WorkerService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +32,12 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch {
             medicineSchedulerService.updatePlannedMedicinesStatuses()
         }
-        sharedPrefService.getLoggedUserAuthToken()?.let { authToken ->
-            serverSyncService.synchronizeData(authToken)
-        }
+        workerService.enqueueSynchronizeData()
     }
 
     override fun onPause() {
         super.onPause()
-        sharedPrefService.getLoggedUserAuthToken()?.let { authToken ->
-            serverSyncService.synchronizeData(authToken)
-        }
+        workerService.enqueueSynchronizeData()
     }
 
     fun setStatusBarColor(colorResID: Int) {

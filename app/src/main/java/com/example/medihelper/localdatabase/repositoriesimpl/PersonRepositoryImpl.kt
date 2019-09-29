@@ -51,6 +51,8 @@ class PersonRepositoryImpl(
 
     override suspend fun deleteByRemoteIDNotIn(remoteIDList: List<Long>) = personDao.deleteByRemoteIDNotIn(remoteIDList)
 
+    override suspend fun deleteAll() = personDao.deleteAll()
+
     override suspend fun clearDeletedRemoteIDList() = deletedEntityDao.deleteDeletedRemoteIDList(DeletedEntity.EntityType.PERSON)
 
     override suspend fun getEntityListToSync() = personDao.getEntityListToSync()
@@ -83,7 +85,7 @@ interface PersonDao {
     @Query("DELETE FROM persons WHERE person_remote_id NOT IN (:personRemoteIDList)")
     suspend fun deleteByRemoteIDNotIn(personRemoteIDList: List<Long>)
 
-    @Query("DELETE FROM persons")
+    @Query("DELETE FROM persons WHERE main_person = 0")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM persons WHERE person_id = :personID")

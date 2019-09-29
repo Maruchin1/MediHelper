@@ -21,7 +21,7 @@ class NotificationService(context: Context) {
     private val notificationManagerCompat by lazy { NotificationManagerCompat.from(context) }
     private val serverSyncNotification by lazy {
         NotificationCompat.Builder(context, SERVER_SYNC_CHANNEL_ID)
-            .setSmallIcon(R.drawable.round_sync_24)
+            .setSmallIcon(R.mipmap.ic_launcher_round)
             .setContentTitle("Synchronizacja danych")
             .setOngoing(true)
             .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
@@ -31,7 +31,7 @@ class NotificationService(context: Context) {
     }
     private val serverSyncFailureNotification by lazy {
         NotificationCompat.Builder(context, SERVER_SYNC_CHANNEL_ID)
-            .setSmallIcon(R.drawable.round_sync_problem_24)
+            .setSmallIcon(R.mipmap.ic_launcher_round)
             .setContentTitle("Synchronizacja danych nieudana")
             .setContentText("Podczas synchronizacji danych wystąpił problem. Sprawdź połączenie z internetem.")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
