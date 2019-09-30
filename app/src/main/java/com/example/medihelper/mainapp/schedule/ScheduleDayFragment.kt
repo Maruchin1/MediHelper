@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -18,6 +19,7 @@ import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentScheduleDayBinding
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
+import kotlinx.android.synthetic.main.recycler_item_planned_medicine.view.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.sql.Date
 
@@ -36,7 +38,8 @@ class ScheduleDayFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentScheduleDayBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_day, container, false)
+        val binding: FragmentScheduleDayBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_day, container, false)
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
@@ -50,12 +53,13 @@ class ScheduleDayFragment : Fragment() {
 
     private fun observeViewModel() {
         if (date != null) {
-            viewModel.getPlannedMedicineItemListByDateLive(date!!).observe(viewLifecycleOwner, Observer { plannedMedicineItemList ->
-                Log.d(TAG, "date = $date, scheduledMedicinesList change = $plannedMedicineItemList")
-                val adapter = recycler_view_scheduled_medicine_for_day.adapter as PlannedMedicineAdapter
-                adapter.updateItemsList(plannedMedicineItemList.sortedBy { plannedMedicineItem -> plannedMedicineItem.plannedTime })
-                plannedMedicinesAvailableLive.value = !plannedMedicineItemList.isNullOrEmpty()
-            })
+            viewModel.getPlannedMedicineItemListByDateLive(date!!)
+                .observe(viewLifecycleOwner, Observer { plannedMedicineItemList ->
+                    Log.d(TAG, "date = $date, scheduledMedicinesList change = $plannedMedicineItemList")
+                    val adapter = recycler_view_scheduled_medicine_for_day.adapter as PlannedMedicineAdapter
+                    adapter.updateItemsList(plannedMedicineItemList.sortedBy { plannedMedicineItem -> plannedMedicineItem.plannedTime })
+                    plannedMedicinesAvailableLive.value = !plannedMedicineItemList.isNullOrEmpty()
+                })
         }
     }
 
@@ -71,6 +75,12 @@ class ScheduleDayFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val plannedMedicine = itemsList[position]
             holder.bind(plannedMedicine, this@ScheduleDayFragment)
+            holder.view.txv_status_of_taking.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    plannedMedicine.statusOfTaking.colorResID
+                )
+            )
         }
     }
 }

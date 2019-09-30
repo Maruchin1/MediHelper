@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="handler"
             type="com.example.medihelper.mainapp.schedule.ScheduleDayFragment" />
@@ -33,59 +35,81 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorDarkerGray"
-                android:gravity="end|center_vertical"
-                android:paddingStart="16dp"
+                android:paddingStart="8dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="16dp"
-                android:paddingBottom="4dp"
-                app:backgroundResource="@{displayData.statusOfTaking.colorResID}">
+                android:paddingBottom="4dp">
 
-                <TextView
-                    android:id="@+id/txv_scheduled_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="1"
-                    android:text='@{displayData.plannedTime.formatString, default="00:00"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textColor="@color/colorWhite" />
-
-                <TextView
-                    android:id="@+id/txv_schedule_status"
+                <ImageView
+                    android:id="@+id/img_event_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{displayData.statusOfTaking.shortString, default="status"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                    android:textColor="@color/colorWhite" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                    android:src="@drawable/ic_pill_grey600_24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txv_medicine_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="32dp"
                     android:text='@{displayData.medicineName, default="Nazwa leku"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                    android:textColor="@color/colorTextSecondary" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:textColor="@color/colorTextSecondary"
+                    app:layout_constraintBottom_toTopOf="@id/txv_dose_size"
+                    app:layout_constraintEnd_toStartOf="@id/txv_time"
+                    app:layout_constraintStart_toEndOf="@id/img_event_icon"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/txv_scheduled_dose"
+                    android:id="@+id/txv_dose_size"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="2"
-                    android:text='@{displayData.plannedDoseSize + " " + displayData.medicineUnit, default="Dawka "}'
+                    android:layout_marginTop="4dp"
+                    android:text='@{"Przyjmij " + displayData.plannedDoseSize + " " + displayData.medicineUnit, default="Przyjmij 2 pigułki"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    app:layout_constraintEnd_toEndOf="@id/txv_medicine_name"
+                    app:layout_constraintStart_toStartOf="@id/txv_medicine_name"
+                    app:layout_constraintTop_toBottomOf="@id/txv_medicine_name" />
+
+                <TextView
+                    android:id="@+id/txv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{displayData.plannedTime.formatString, default="00:00"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                    android:textColor="@color/colorTextTertiary" />
+                    app:layout_constraintBottom_toBottomOf="@id/txv_medicine_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/txv_medicine_name" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginEnd="4dp"
+                    android:src='@{displayData.statusOfTaking.iconResID}'
+                    android:tint='@{displayData.statusOfTaking.colorResID, default="@color/colorDarkerGray"}'
+                    android:visibility="@{displayData.statusOfTaking.iconResID == null ? View.GONE : View.VISIBLE, default=gone}" />
+
+                <TextView
+                    android:id="@+id/txv_status_of_taking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{displayData.statusOfTaking.string, default="status"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    android:textColor="@color/colorDarkerGray" />
             </LinearLayout>
 
         </LinearLayout>

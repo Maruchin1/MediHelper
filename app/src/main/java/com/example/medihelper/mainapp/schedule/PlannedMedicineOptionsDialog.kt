@@ -17,8 +17,6 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
     private val viewModel: PlannedMedicineOptionsViewModel by viewModel()
     private val args: PlannedMedicineOptionsDialogArgs by navArgs()
 
-    fun onClickCloseDialog() = dismiss()
-
     fun onClickChangePlannedMedicineStatus() = viewModel.changePlannedMedicineStatus()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

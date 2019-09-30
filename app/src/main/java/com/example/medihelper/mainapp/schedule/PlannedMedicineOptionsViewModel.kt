@@ -37,7 +37,7 @@ class PlannedMedicineOptionsViewModel(
             plannedMedicine.medicineName
         }
         statusOfTakingLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            plannedMedicine.statusOfTaking.shortString
+            plannedMedicine.statusOfTaking.string
         }
         statusOfTakingColorIdLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
             when (plannedMedicine.statusOfTaking) {
