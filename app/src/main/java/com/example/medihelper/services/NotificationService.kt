@@ -33,10 +33,8 @@ class NotificationService(context: Context) {
         NotificationCompat.Builder(context, SERVER_SYNC_CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setContentTitle("Synchronizacja danych nieudana")
+            .setContentText("Podczas synchronizacji danych wystąpił błąd")
             .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-            .setStyle(
-                NotificationCompat.BigTextStyle().setBigContentTitle("Podczas synchronizacji danych wystąpił problem. Sprawdż połącznie z internetem")
-            )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
     }

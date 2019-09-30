@@ -39,6 +39,8 @@ class ScheduleViewModel(
         }
     }
 
+    fun selectTodayDate() = selectDate(AppDate.currDate())
+
     fun getDateForPosition(position: Int) = AppDate.currDate().apply {
         addDays(position - (timelineDaysCount / 2))
     }

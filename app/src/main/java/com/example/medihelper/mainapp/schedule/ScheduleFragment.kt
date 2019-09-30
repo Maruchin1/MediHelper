@@ -87,6 +87,9 @@ class ScheduleFragment : Fragment() {
     private fun setupToolbarMenu() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
+                R.id.btn_today -> {
+                    viewModel.selectTodayDate()
+                }
                 R.id.btn_calendar -> {
                     TransitionManager.beginDelayedTransition(root_lay)
                     viewModel.calendarLayoutVisibleLive.value = true
