@@ -12,6 +12,8 @@ class CenterLayoutManager(context: Context, orientation: Int, reverseLayout: Boo
         reverseLayout
     ) {
 
+    var isScrollEnabled = true
+
     override fun smoothScrollToPosition(
         recyclerView: RecyclerView,
         state: RecyclerView.State,
@@ -30,5 +32,9 @@ class CenterLayoutManager(context: Context, orientation: Int, reverseLayout: Boo
             boxEnd: Int,
             snapPreference: Int
         ): Int = (boxStart + (boxEnd - boxStart) / 2) - (viewStart + (viewEnd - viewStart) / 2)
+    }
+
+    override fun canScrollHorizontally(): Boolean {
+        return isScrollEnabled && super.canScrollHorizontally()
     }
 }

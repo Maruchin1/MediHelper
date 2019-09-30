@@ -1,6 +1,7 @@
 package com.example.medihelper.mainapp.persons
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.R
+import com.example.medihelper.custom.CenterLayoutManager
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogPersonBinding
@@ -46,6 +49,10 @@ class PersonDialog : BottomSheetDialogFragment() {
 
     fun onClickEditPerson(personID: Int) = findNavController().navigate(directions.toAddEditPersonFragment(personID))
 
+    fun onClickConnectApps(personID: Int) {
+
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: DialogPersonBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_person, container, false)
         binding.handler = this
@@ -59,13 +66,9 @@ class PersonDialog : BottomSheetDialogFragment() {
         observeData()
     }
 
-    private fun setupPersonRecyclerView() {
-        context?.let { context ->
-            recycler_view_persons.apply {
-                adapter = PersonAdapter()
-                GravitySnapHelper(Gravity.START).attachToRecyclerView(this)
-            }
-        }
+    private fun setupPersonRecyclerView() = recycler_view_persons.apply {
+        adapter = PersonAdapter()
+        layoutManager = CenterLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun observeData() {
@@ -98,9 +101,11 @@ class PersonDialog : BottomSheetDialogFragment() {
             optionsEnabledPosition = newPosition
             notifyItemChanged(prevPosition)
             notifyItemChanged(newPosition)
+
         }
 
         fun closeItemOptions() {
+            setIsScrollEnable(true)
             val prevPosition = optionsEnabledPosition
             optionsEnabledPosition = -1
             notifyItemChanged(prevPosition)
@@ -120,9 +125,16 @@ class PersonDialog : BottomSheetDialogFragment() {
             val personItem = itemsList[position]
             val personItemDisplayData = viewModel.getPersonItemDisplayData(personItem)
             if (position == optionsEnabledPosition) {
+                recycler_view_persons.smoothScrollToPosition(position)
                 personItemDisplayData.optionsEnabled = true
+                Handler().postDelayed({ setIsScrollEnable(false) }, 500)
             }
             holder.bind(personItemDisplayData, this@PersonDialog)
         }
+
+        private fun setIsScrollEnable(enabled: Boolean) {
+            (recycler_view_persons.layoutManager as CenterLayoutManager).isScrollEnabled = enabled
+        }
+
     }
 }

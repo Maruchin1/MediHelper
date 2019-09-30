@@ -1,6 +1,5 @@
 package com.example.medihelper.custom
 
-import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -8,19 +7,11 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import java.io.File
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.res.ColorStateList
-import android.view.LayoutInflater
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import androidx.databinding.InverseBindingAdapter
-import androidx.lifecycle.MutableLiveData
-import com.example.medihelper.BR
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -134,4 +125,17 @@ fun setChipBackgroundColor(chip: Chip, colorResId: Int?) {
 @BindingAdapter("toolbarNavigationOnClick")
 fun setToolbarNavigationOnClickListener(toolbar: Toolbar, function: () -> Unit) {
     toolbar.setNavigationOnClickListener { function.invoke() }
+}
+
+@BindingAdapter("android:layout_width")
+fun setViewWidth(view: View, width: String) {
+    view.layoutParams.width = when (width) {
+        "match_parent" -> ViewGroup.LayoutParams.MATCH_PARENT
+        "wrap_content" -> ViewGroup.LayoutParams.WRAP_CONTENT
+        else -> {
+            val scale = view.context.resources.displayMetrics.density
+            (width.toInt() * scale + 0.5f).toInt()
+        }
+    }
+    view.requestLayout()
 }

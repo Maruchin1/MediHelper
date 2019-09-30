@@ -17,7 +17,7 @@
 
     <com.google.android.material.card.MaterialCardView
         cardBackgroundColorResID='@{displayData.personColorResID, default="@color/colorPrimary"}'
-        android:layout_width="130dp"
+        android:layout_width='@{displayData.optionsEnabled ? "match_parent" : "130", default="130"}'
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
-            android:clickable="true"
+            android:clickable="@{displayData.optionsEnabled ? false : true}"
             android:focusable="true"
             android:gravity="center_horizontal"
             android:onClick="@{() -> handler.onClickSelectPerson(displayData.personID)}"
@@ -78,7 +78,7 @@
                 android:onClick="@{() -> handler.onClickOpenOptions(displayData.personID)}"
                 android:src="@drawable/round_more_horiz_white_36"
                 android:tint="@color/colorWhite"
-                android:visibility="@{displayData.isMainPerson ? View.INVISIBLE : View.VISIBLE}"/>
+                android:visibility="@{displayData.isMainPerson ? View.INVISIBLE : View.VISIBLE}" />
 
         </LinearLayout>
 
@@ -120,51 +120,130 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@id/btn_close"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="match_parent"
+                <FrameLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:onClick="@{() -> handler.onClickEditPerson(displayData.personID)}"
-                    android:text="Edytuj"
-                    android:textColor="@color/colorWhite"
-                    app:icon="@drawable/round_edit_24"
-                    app:iconTint="@color/colorWhite" />
+                    android:layout_weight="1">
 
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:onClick="@{() -> handler.onClickConnectApps(displayData.personID)}"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/round_people_white_36"
+                            android:tint="@color/colorWhite" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Połącz apliakcje"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                            android:textColor="@color/colorWhite" />
+                    </LinearLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:onClick="@{() -> handler.onClickDeletePerson(displayData.personID)}"
-                    android:text="Usuń"
-                    android:textColor="@color/colorWhite"
-                    app:icon="@drawable/round_delete_black_24"
-                    app:iconTint="@color/colorWhite" />
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:onClick="@{() -> handler.onClickEditPerson(displayData.personID)}"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/round_edit_black_36"
+                            android:tint="@color/colorWhite" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Edytuj"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                            android:textColor="@color/colorWhite" />
+                    </LinearLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:onClick="@{() -> handler.onClickDeletePerson(displayData.personID)}"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/round_delete_black_36"
+                            android:tint="@color/colorWhite" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Usuń"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                            android:textColor="@color/colorWhite" />
+                    </LinearLayout>
+                </FrameLayout>
             </LinearLayout>
 
             <ImageButton
                 android:id="@+id/btn_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:onClick="@{() -> handler.onClickCloseOptions()}"
-                android:src="@drawable/round_close_black_36"
+                android:src="@drawable/round_close_black_24"
                 android:tint="@color/colorWhite"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
