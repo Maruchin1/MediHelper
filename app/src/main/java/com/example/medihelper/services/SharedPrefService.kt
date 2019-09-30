@@ -4,12 +4,15 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.example.medihelper.R
 import com.example.medihelper.custom.SharedPrefLiveData
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SharedPrefService(
     private val sharedPreferences: SharedPreferences
@@ -19,13 +22,19 @@ class SharedPrefService(
     // Get
     fun getMedicineUnitList() = sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList() ?: emptyList()
 
-    fun getPersonColorResIDList() = sharedPreferences.getStringSet(KEY_PERSON_COLOR_RES_ID_SET, null)?.map { stringValue ->
-        stringValue.toInt()
-    } ?: emptyList()
+    fun getPersonColorResIDList() =
+        sharedPreferences.getStringSet(KEY_PERSON_COLOR_RES_ID_SET, null)?.map { stringValue ->
+            stringValue.toInt()
+        } ?: emptyList()
 
     fun getLoggedUserAuthToken() = sharedPreferences.getString(KEY_LOGGED_USER_AUTH_TOKEN, null)
 
     fun getLoggedUserEmailLive(): LiveData<String> = SharedPrefLiveData(sharedPreferences, KEY_LOGGED_USER_EMAIL, "")
+
+    fun getLastSyncTimeLive(): LiveData<Date> =
+        Transformations.map(SharedPrefLiveData(sharedPreferences, KEY_LAST_SYNC_TIME, "")) { dateString ->
+            if (dateString != "") SimpleDateFormat.getDateTimeInstance().parse(dateString) else null
+        }
 
     // Save
     fun saveMedicineUnitList(newMedicineUnitList: List<String>) = sharedPreferences.edit(true) {
@@ -49,6 +58,13 @@ class SharedPrefService(
         putString(KEY_LOGGED_USER_EMAIL, newEmail)
     }
 
+    fun saveLastSyncTimeLive(dateTime: Date) {
+        val dateString = SimpleDateFormat.getDateTimeInstance().format(dateTime)
+        sharedPreferences.edit(true) {
+            putString(KEY_LAST_SYNC_TIME, dateString)
+        }
+    }
+
     // Delete
     fun deleteLoggedUserAuthToken() = sharedPreferences.edit(true) {
         putString(KEY_LOGGED_USER_AUTH_TOKEN, null)
@@ -63,5 +79,6 @@ class SharedPrefService(
         private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-array"
         private const val KEY_LOGGED_USER_AUTH_TOKEN = "key-logged-user-auth-token"
         private const val KEY_LOGGED_USER_EMAIL = "key-logged-user-email"
+        private const val KEY_LAST_SYNC_TIME = "key-last-sync_time"
     }
 }

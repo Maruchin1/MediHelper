@@ -1,8 +1,6 @@
 package com.example.medihelper.mainapp.more.loggeduser
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.medihelper.R
 import com.example.medihelper.custom.ActionLiveData
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
@@ -16,6 +14,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
+import java.text.SimpleDateFormat
 
 class LoggedUserViewModel(
     private val sharedPrefService: SharedPrefService,
@@ -27,9 +26,16 @@ class LoggedUserViewModel(
 ) : ViewModel() {
 
     val loggedUserEmailLive = sharedPrefService.getLoggedUserEmailLive()
+    val lastSyncTimeStringLive: LiveData<String>
 
     val loadingStartedAction = ActionLiveData()
     val changePasswordErrorLive = MutableLiveData<Int>()
+
+    init {
+        lastSyncTimeStringLive = Transformations.map(sharedPrefService.getLastSyncTimeLive()) { dateTime ->
+            dateTime?.let { SimpleDateFormat.getDateTimeInstance().format(it) }
+        }
+    }
 
     fun logoutUser() = GlobalScope.launch {
         sharedPrefService.run {

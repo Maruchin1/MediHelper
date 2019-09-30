@@ -12,6 +12,7 @@ import com.example.medihelper.remotedatabase.api.RegisteredUserApi
 import com.example.medihelper.remotedatabase.dto.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.util.*
 
 class ServerSyncWorker(private val context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params), KoinComponent {
@@ -32,6 +33,7 @@ class ServerSyncWorker(private val context: Context, params: WorkerParameters) :
             try {
                 synchronizeData(authToken)
                 result = Result.success()
+                sharedPrefService.saveLastSyncTimeLive(Date())
             } catch (e: Exception) {
                 e.printStackTrace()
                 notificationService.showServerSyncFailureNotification()

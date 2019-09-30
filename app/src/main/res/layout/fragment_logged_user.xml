@@ -113,7 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="19 wrz 2019 13:26"
+                    android:text='@{viewModel.lastSyncTimeStringLive ?? "--", default="30 wrz 2019 16:08"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     android:textColor="@color/colorTextTertiary" />
 
