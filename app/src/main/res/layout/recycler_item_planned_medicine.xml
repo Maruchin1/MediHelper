@@ -35,13 +35,30 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
+                android:background='@{displayData.statusOfTaking.colorResID, default="@color/colorDarkerGray"}'
+                android:gravity="center"
+                android:paddingTop="4dp">
+
+                <TextView
+                    android:id="@+id/txv_status_of_taking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{displayData.statusOfTaking.string, default="status"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    android:textColor="@color/colorWhite" />
+            </LinearLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="8dp"
-                android:paddingTop="4dp"
+                android:paddingTop="8dp"
                 android:paddingEnd="16dp"
-                android:paddingBottom="4dp">
+                android:paddingBottom="8dp">
 
                 <ImageView
                     android:id="@+id/img_event_icon"
@@ -73,6 +90,7 @@
                     android:layout_marginTop="4dp"
                     android:text='@{"Przyjmij " + displayData.plannedDoseSize + " " + displayData.medicineUnit, default="Przyjmij 2 pigułki"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/txv_medicine_name"
                     app:layout_constraintStart_toStartOf="@id/txv_medicine_name"
                     app:layout_constraintTop_toBottomOf="@id/txv_medicine_name" />
@@ -87,30 +105,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/txv_medicine_name" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginEnd="4dp"
-                    android:src='@{displayData.statusOfTaking.iconResID}'
-                    android:tint='@{displayData.statusOfTaking.colorResID, default="@color/colorDarkerGray"}'
-                    android:visibility="@{displayData.statusOfTaking.iconResID == null ? View.GONE : View.VISIBLE, default=gone}" />
-
-                <TextView
-                    android:id="@+id/txv_status_of_taking"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text='@{displayData.statusOfTaking.string, default="status"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                    android:textColor="@color/colorDarkerGray" />
-            </LinearLayout>
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

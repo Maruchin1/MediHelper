@@ -19,95 +19,78 @@
         android:background="@drawable/bg_bottom_dialog"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_bottom_dialog"
             android:backgroundTint='@{viewModel.statusOfTakingColorIdLive, default="@color/colorDarkerGray"}'
-            android:paddingStart="16dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="4dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text='@{viewModel.plannedTimeLive, default="00:00"}'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="@color/colorWhite"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text='@{viewModel.statusOfTakingLive, default="status"}'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp">
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/txv_medicine_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/card_medicine_picture"
+                android:layout_marginEnd="32dp"
+                android:text="@{viewModel.medicineNameLive, default=Nazwa}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/txv_dose_size"
+                app:layout_constraintEnd_toStartOf="@id/txv_time"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0">
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.medicineNameLive, default=Nazwa}"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-                    android:textColor="@color/colorTextSecondary" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text='@{viewModel.doseSizeLive + " " + viewModel.medicineUnitLive, default=dawka}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textColor="@color/colorDarkerGray" />
-            </LinearLayout>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_medicine_picture"
+            <TextView
+                android:id="@+id/txv_dose_size"
                 android:layout_width="0dp"
-                android:layout_height="100dp"
-                app:cardCornerRadius="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text='@{"Przyjmij " + viewModel.doseSizeLive + " " + viewModel.medicineUnitLive, default="Przyjmij 2 pigułki"}'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="4:3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0">
+                app:layout_constraintEnd_toEndOf="@id/txv_medicine_name"
+                app:layout_constraintStart_toStartOf="@id/txv_medicine_name"
+                app:layout_constraintTop_toBottomOf="@id/txv_medicine_name" />
 
-                <ImageView
-                    srcFile="@{viewModel.medicineImageFileLive}"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </com.google.android.material.card.MaterialCardView>
+            <TextView
+                android:id="@+id/txv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{viewModel.plannedTimeLive, default="00:00"}'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@id/txv_medicine_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/txv_medicine_name" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_marginTop="16dp"
             android:background="?selectableItemBackground"
             android:clickable="true"
@@ -117,23 +100,22 @@
             android:padding="16dp">
 
             <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src='@{viewModel.takeMedicineBtnIcon, default="@drawable/baseline_check_white_36"}'
                 android:tint="@color/colorPrimary" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="32dp"
                 android:text='@{viewModel.takeMedicineBtnText, default="Przyjmij lek"}'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                android:textColor="@color/colorTextSecondary" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:background="?selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
@@ -141,18 +123,42 @@
             android:padding="16dp">
 
             <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src='@drawable/baseline_access_time_black_36'
                 android:tint="@color/colorPrimary" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="32dp"
                 android:text='Przełóż na później'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                android:textColor="@color/colorTextSecondary" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> handler.onClickNavigateToMedicineDetails()}"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src='@drawable/ic_pill_black_36dp'
+                android:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:text='Szczegóły leku'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
         </LinearLayout>
 
     </LinearLayout>

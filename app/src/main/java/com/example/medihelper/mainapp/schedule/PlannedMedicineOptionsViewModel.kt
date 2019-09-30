@@ -25,6 +25,9 @@ class PlannedMedicineOptionsViewModel(
     val takeMedicineBtnText: LiveData<String>
     val takeMedicineBtnIcon: LiveData<Int>
 
+    val medicineID: Int?
+        get() = plannedMedicineDetailsLive.value?.medicineID
+
     private val plannedMedicineIDLive = MutableLiveData<Int>()
     private val plannedMedicineDetailsLive: LiveData<PlannedMedicineDetails>
 

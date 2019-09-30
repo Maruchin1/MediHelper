@@ -97,6 +97,9 @@
         <argument
             android:name="plannedMedicineID"
             app:argType="integer" />
+        <action
+            android:id="@+id/toMedicineDetailsFragment"
+            app:destination="@id/medicineDetailsFragment" />
     </dialog>
     <dialog
         android:id="@+id/medicinePlanHistoryDialog"

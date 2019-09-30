@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.medihelper.R
 import com.example.medihelper.databinding.DialogPlannedMedicineOptionsBinding
@@ -16,8 +17,13 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
 
     private val viewModel: PlannedMedicineOptionsViewModel by viewModel()
     private val args: PlannedMedicineOptionsDialogArgs by navArgs()
+    private val directions by lazy { PlannedMedicineOptionsDialogDirections }
 
     fun onClickChangePlannedMedicineStatus() = viewModel.changePlannedMedicineStatus()
+
+    fun onClickNavigateToMedicineDetails() = viewModel.medicineID?.let {
+        findNavController().navigate(directions.toMedicineDetailsFragment(it))
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel.setArgs(args)

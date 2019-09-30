@@ -75,12 +75,6 @@ class ScheduleDayFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val plannedMedicine = itemsList[position]
             holder.bind(plannedMedicine, this@ScheduleDayFragment)
-            holder.view.txv_status_of_taking.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    plannedMedicine.statusOfTaking.colorResID
-                )
-            )
         }
     }
 }
