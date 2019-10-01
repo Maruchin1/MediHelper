@@ -44,6 +44,6 @@ interface RegisteredUserApi {
     @GET("registered-users/persons/{id}/temp-key")
     suspend fun getPersonTempKey(
         @Header("Authorization") authToken: String,
-        @Path("id") personID: Int
+        @Path("id") personRemoteID: Long
     ): String
 }

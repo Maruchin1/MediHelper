@@ -34,24 +34,7 @@ class PersonDialog : BottomSheetDialogFragment() {
 
     fun onClickAddNewPerson() = findNavController().navigate(directions.toAddEditPersonFragment())
 
-    fun onClickOpenOptions(personID: Int) {
-        viewModel.optionsEnabledPersonIDLive.value = personID
-    }
-
-    fun onClickCloseOptions() {
-        viewModel.optionsEnabledPersonIDLive.value = null
-    }
-
-    fun onClickDeletePerson(personID: Int) {
-        viewModel.optionsEnabledPersonIDLive.value = null
-        viewModel.deletePerson(personID)
-    }
-
-    fun onClickEditPerson(personID: Int) = findNavController().navigate(directions.toAddEditPersonFragment(personID))
-
-    fun onClickConnectApps(personID: Int) {
-
-    }
+    fun onClickOpenOptions(personID: Int) = findNavController().navigate(directions.toPersonOptionsFragment(personID))
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: DialogPersonBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_person, container, false)
@@ -76,14 +59,6 @@ class PersonDialog : BottomSheetDialogFragment() {
             val adapter = recycler_view_persons.adapter as PersonAdapter
             adapter.updateItemsList(personItemList)
         })
-        viewModel.optionsEnabledPersonIDLive.observe(viewLifecycleOwner, Observer { personID ->
-            val adapter = recycler_view_persons.adapter as PersonAdapter
-            if (personID != null) {
-                adapter.openItemOptions(personID)
-            } else {
-                adapter.closeItemOptions()
-            }
-        })
     }
 
     // Inner classes
@@ -91,25 +66,6 @@ class PersonDialog : BottomSheetDialogFragment() {
         layoutResId = R.layout.recycler_item_person,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.personID == newItem.personID }
     ) {
-        private var optionsEnabledPosition = -1
-
-        fun openItemOptions(personID: Int) {
-            val prevPosition = optionsEnabledPosition
-            val newPosition = itemsList.indexOfFirst { personItem ->
-                personItem.personID == personID
-            }
-            optionsEnabledPosition = newPosition
-            notifyItemChanged(prevPosition)
-            notifyItemChanged(newPosition)
-
-        }
-
-        fun closeItemOptions() {
-            setIsScrollEnable(true)
-            val prevPosition = optionsEnabledPosition
-            optionsEnabledPosition = -1
-            notifyItemChanged(prevPosition)
-        }
 
         override fun updateItemsList(newList: List<PersonItem>?) {
             val listWithOneEmptyItem = mutableListOf<PersonItem>().apply {
@@ -124,17 +80,7 @@ class PersonDialog : BottomSheetDialogFragment() {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val personItem = itemsList[position]
             val personItemDisplayData = viewModel.getPersonItemDisplayData(personItem)
-            if (position == optionsEnabledPosition) {
-                recycler_view_persons.smoothScrollToPosition(position)
-                personItemDisplayData.optionsEnabled = true
-                Handler().postDelayed({ setIsScrollEnable(false) }, 500)
-            }
             holder.bind(personItemDisplayData, this@PersonDialog)
         }
-
-        private fun setIsScrollEnable(enabled: Boolean) {
-            (recycler_view_persons.layoutManager as CenterLayoutManager).isScrollEnabled = enabled
-        }
-
     }
 }

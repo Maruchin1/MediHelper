@@ -115,6 +115,13 @@
         <item name="android:paddingBottom">12dp</item>
     </style>
 
+    <style name="AppTheme.Widget.Button.Outlined.Big.Dark" parent="AppTheme.Widget.Button.Outlined.Big">
+        <item name="strokeColor">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="iconTint">@color/colorWhite</item>
+        <item name="rippleColor">@color/colorWhite</item>
+    </style>
+
     <style name="AppTheme.Text.Form.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textColor">@color/colorTextSecondary</item>
     </style>

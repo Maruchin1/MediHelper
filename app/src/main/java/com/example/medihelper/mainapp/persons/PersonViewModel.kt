@@ -1,6 +1,5 @@
 package com.example.medihelper.mainapp.persons
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.localdatabase.pojos.PersonItem
@@ -14,32 +13,20 @@ class PersonViewModel(
 ) : ViewModel() {
 
     val personItemListLive = personRepository.getItemListLive()
-    val optionsEnabledPersonIDLive = MutableLiveData<Int>()
 
     fun selectPerson(personID: Int) = personProfileService.selectCurrPerson(personID)
-
-    fun deletePerson(personID: Int) {
-        if (personID == personProfileService.getCurrPersonItemLive().value?.personID) {
-            personProfileService.selectMainPersonAsCurrent()
-        }
-        viewModelScope.launch {
-            personRepository.delete(personID)
-        }
-    }
 
     fun getPersonItemDisplayData(personItem: PersonItem) = PersonItemDisplayData(
         personID = personItem.personID,
         personName = personItem.personName,
         personColorResID = personItem.personColorResID,
-        isMainPerson = personItem.mainPerson,
-        optionsEnabled = false
+        isMainPerson = personItem.mainPerson
     )
 
     data class PersonItemDisplayData(
         val personID: Int,
         val personName: String,
         val personColorResID: Int,
-        val isMainPerson: Boolean,
-        var optionsEnabled: Boolean
+        val isMainPerson: Boolean
     )
 }

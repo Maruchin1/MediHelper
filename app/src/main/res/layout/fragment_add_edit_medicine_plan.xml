@@ -72,8 +72,6 @@
                             app:cardBackgroundColor="@color/colorTransparent"
                             app:cardCornerRadius="24dp"
                             app:cardElevation="0dp"
-                            app:layout_anchor="@id/card_person_data"
-                            app:layout_anchorGravity="top|center_horizontal"
                             app:strokeColor="@color/colorWhite"
                             app:strokeWidth="3dp">
 

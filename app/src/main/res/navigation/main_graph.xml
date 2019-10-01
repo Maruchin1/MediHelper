@@ -46,6 +46,9 @@
         android:name="com.example.medihelper.mainapp.persons.PersonDialog"
         tools:layout="@layout/dialog_person">
         <action
+            android:id="@+id/toPersonOptionsFragment"
+            app:destination="@id/personOptionsFragment" />
+        <action
             android:id="@+id/toAddEditPersonFragment"
             app:destination="@id/addEditPersonFragment" />
     </dialog>
@@ -129,4 +132,15 @@
         android:id="@+id/loggedUserFragment"
         android:name="com.example.medihelper.mainapp.more.loggeduser.LoggedUserFragment"
         tools:layout="@layout/fragment_logged_user" />
+    <dialog
+        android:id="@+id/personOptionsFragment"
+        android:name="com.example.medihelper.mainapp.persons.PersonOptionsFragment"
+        tools:layout="@layout/fragment_person_options" >
+        <action
+            android:id="@+id/toAddEditPersonFragment"
+            app:destination="@id/addEditPersonFragment" />
+        <argument
+            android:name="personID"
+            app:argType="integer" />
+    </dialog>
 </navigation>

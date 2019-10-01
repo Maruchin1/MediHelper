@@ -25,6 +25,7 @@ import com.example.medihelper.mainapp.medicines.MedicinesViewModel
 import com.example.medihelper.mainapp.more.loggeduser.LoggedUserViewModel
 import com.example.medihelper.mainapp.more.MoreViewModel
 import com.example.medihelper.mainapp.more.loggeduser.NewPasswordViewModel
+import com.example.medihelper.mainapp.persons.PersonOptionsViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
 import com.example.medihelper.remotedatabase.api.*
@@ -106,6 +107,7 @@ val viewModelModule = module {
     viewModel { LoginRegisterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { LoggedUserViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { NewPasswordViewModel() }
+    viewModel { PersonOptionsViewModel(get(), get(), get()) }
 }
 
 val serviceModule = module {
