@@ -14,7 +14,7 @@ import com.example.medihelper.localdatabase.repositoriesimpl.*
         PersonEntity::class,
         DeletedEntity::class
     ],
-    version = 39,
+    version = 40,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

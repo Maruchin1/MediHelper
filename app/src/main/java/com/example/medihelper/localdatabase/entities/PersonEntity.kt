@@ -23,6 +23,9 @@ data class PersonEntity(
     @ColumnInfo(name = "main_person")
     var mainPerson: Boolean = false,
 
+    @ColumnInfo(name = "connection_key")
+    var connectionKey: String? = null,
+
     @ColumnInfo(name = "synchronized_with_server")
     var synchronizedWithServer: Boolean = false
 )

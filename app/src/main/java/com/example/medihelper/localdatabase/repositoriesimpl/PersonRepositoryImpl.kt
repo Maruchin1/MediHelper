@@ -8,6 +8,7 @@ import androidx.room.Update
 import com.example.medihelper.localdatabase.entities.DeletedEntity
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.pojos.PersonItem
+import com.example.medihelper.localdatabase.pojos.PersonOptionsData
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 
 class PersonRepositoryImpl(
@@ -36,6 +37,8 @@ class PersonRepositoryImpl(
     override suspend fun getMainPersonID() = personDao.getMainPersonID()
 
     override fun getItemLive(personID: Int) = personDao.getItemLive(personID)
+
+    override fun getOptionsDataLive(personID: Int) = personDao.getOptionsDataLive(personID)
 
     override fun getItemListLive() = personDao.getItemListLive()
 
@@ -117,6 +120,9 @@ interface PersonDao {
 
     @Query("SELECT * FROM persons WHERE person_id = :personID")
     fun getItemLive(personID: Int): LiveData<PersonItem>
+
+    @Query("SELECT * FROM persons WHERE person_id = :personID")
+    fun getOptionsDataLive(personID: Int): LiveData<PersonOptionsData>
 
     @Query("SELECT * FROM persons")
     fun getItemListLive(): LiveData<List<PersonItem>>

@@ -111,7 +111,7 @@ val viewModelModule = module {
     viewModel { LoginRegisterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { LoggedUserViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { NewPasswordViewModel() }
-    viewModel { PersonOptionsViewModel(get(), get(), get()) }
+    viewModel { PersonOptionsViewModel(get()) }
     viewModel { PatronConnectViewModel(get()) }
 }
 

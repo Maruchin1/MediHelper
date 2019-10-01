@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.pojos.PersonItem
+import com.example.medihelper.localdatabase.pojos.PersonOptionsData
 
 interface PersonRepository : ServerSyncRepository<PersonEntity> {
 
@@ -25,6 +26,8 @@ interface PersonRepository : ServerSyncRepository<PersonEntity> {
     suspend fun getMainPersonID(): Int?
 
     fun getItemLive(personID: Int): LiveData<PersonItem>
+
+    fun getOptionsDataLive(personID: Int): LiveData<PersonOptionsData>
 
     fun getItemListLive(): LiveData<List<PersonItem>>
 

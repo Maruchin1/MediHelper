@@ -1,9 +1,8 @@
 package com.example.medihelper.localdatabase.pojos
 
 import androidx.room.ColumnInfo
-import com.example.medihelper.localdatabase.entities.PersonEntity
 
-data class PersonItem(
+data class PersonOptionsData(
     @ColumnInfo(name = "person_id")
     val personID: Int,
 
@@ -12,9 +11,6 @@ data class PersonItem(
 
     @ColumnInfo(name = "person_color_res_id")
     val personColorResID: Int,
-
-    @ColumnInfo(name = "main_person")
-    val mainPerson: Boolean,
 
     @ColumnInfo(name = "connection_key")
     var connectionKey: String? = null

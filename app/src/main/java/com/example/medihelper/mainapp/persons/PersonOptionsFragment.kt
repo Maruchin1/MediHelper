@@ -51,7 +51,7 @@ class PersonOptionsFragment : AppFullScreenDialog() {
         setTransparentStatusBar()
         viewModel.setArgs(args)
 
-        viewModel.personTempKeyQRCodeLive.observe(viewLifecycleOwner, Observer {
+        viewModel.connectionKeyQrCodeLive.observe(viewLifecycleOwner, Observer {
             img_qr_code.setImageBitmap(it)
         })
     }

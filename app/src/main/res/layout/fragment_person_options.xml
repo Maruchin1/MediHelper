@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="48dp"
                     android:letterSpacing="0.3"
-                    android:text='@{viewModel.personTempKeyLive, default="123456"}'
+                    android:text='@{viewModel.connectionKeyLive, default="123456"}'
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
                     android:textColor="@color/colorWhite" />

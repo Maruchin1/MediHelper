@@ -40,10 +40,4 @@ interface RegisteredUserApi {
 
     @GET("registered-users/data/available")
     suspend fun isDataAvailable(@Header("Authorization") authToken: String): Boolean
-
-    @GET("registered-users/persons/{id}/temp-key")
-    suspend fun getPersonTempKey(
-        @Header("Authorization") authToken: String,
-        @Path("id") personRemoteID: Long
-    ): String
 }
