@@ -93,7 +93,6 @@
             android:onClick="@{() -> handler.onClickAddMedicine()}"
             android:src="@drawable/round_add_white_48"
             app:backgroundTint="@color/colorPrimary"
-            app:iconTint="@color/colorWhite"
             app:tint="@color/colorWhite" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

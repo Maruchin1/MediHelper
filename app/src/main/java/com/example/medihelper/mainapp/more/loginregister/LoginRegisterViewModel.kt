@@ -10,8 +10,8 @@ import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
-import com.example.medihelper.remotedatabase.api.AuthenticationApi
-import com.example.medihelper.remotedatabase.api.RegisteredUserApi
+import com.example.medihelper.remotedatabase.AuthenticationApi
+import com.example.medihelper.remotedatabase.RegisteredUserApi
 import com.example.medihelper.remotedatabase.dto.UserCredentialsDto
 import com.example.medihelper.services.WorkerService
 import com.example.medihelper.services.SharedPrefService

@@ -1,4 +1,4 @@
-package com.example.medihelper.remotedatabase.api
+package com.example.medihelper.remotedatabase
 
 import com.example.medihelper.remotedatabase.dto.*
 import retrofit2.http.*

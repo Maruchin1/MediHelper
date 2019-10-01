@@ -7,7 +7,7 @@ import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
-import com.example.medihelper.remotedatabase.api.RegisteredUserApi
+import com.example.medihelper.remotedatabase.RegisteredUserApi
 import com.example.medihelper.remotedatabase.dto.NewPasswordDto
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.GlobalScope

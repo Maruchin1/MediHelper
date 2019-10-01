@@ -25,10 +25,13 @@ import com.example.medihelper.mainapp.medicines.MedicinesViewModel
 import com.example.medihelper.mainapp.more.loggeduser.LoggedUserViewModel
 import com.example.medihelper.mainapp.more.MoreViewModel
 import com.example.medihelper.mainapp.more.loggeduser.NewPasswordViewModel
+import com.example.medihelper.mainapp.more.patronconnect.PatronConnectViewModel
 import com.example.medihelper.mainapp.persons.PersonOptionsViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
-import com.example.medihelper.remotedatabase.api.*
+import com.example.medihelper.remotedatabase.AuthenticationApi
+import com.example.medihelper.remotedatabase.PersonApi
+import com.example.medihelper.remotedatabase.RegisteredUserApi
 import com.example.medihelper.services.*
 import com.google.gson.*
 import kotlinx.coroutines.runBlocking
@@ -89,6 +92,7 @@ val localDatabaseModule = module {
 val remoteDatabaseModule = module {
     single { appRetrofit.create(AuthenticationApi::class.java) }
     single { appRetrofit.create(RegisteredUserApi::class.java) }
+    single { appRetrofit.create(PersonApi::class.java) }
 }
 
 val viewModelModule = module {
@@ -108,6 +112,7 @@ val viewModelModule = module {
     viewModel { LoggedUserViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { NewPasswordViewModel() }
     viewModel { PersonOptionsViewModel(get(), get(), get()) }
+    viewModel { PatronConnectViewModel(get()) }
 }
 
 val serviceModule = module {

@@ -122,6 +122,9 @@
         <action
             android:id="@+id/toLoggedUserFragment"
             app:destination="@id/loggedUserFragment" />
+        <action
+            android:id="@+id/toPatronConnectFragment"
+            app:destination="@id/patronConnectFragment" />
     </fragment>
     <dialog
         android:id="@+id/loginRegisterFragment"
@@ -135,7 +138,7 @@
     <dialog
         android:id="@+id/personOptionsFragment"
         android:name="com.example.medihelper.mainapp.persons.PersonOptionsFragment"
-        tools:layout="@layout/fragment_person_options" >
+        tools:layout="@layout/fragment_person_options">
         <action
             android:id="@+id/toAddEditPersonFragment"
             app:destination="@id/addEditPersonFragment" />
@@ -143,4 +146,8 @@
             android:name="personID"
             app:argType="integer" />
     </dialog>
+    <dialog
+        android:id="@+id/patronConnectFragment"
+        android:name="com.example.medihelper.mainapp.more.patronconnect.PatronConnectFragment"
+        tools:layout="@layout/fragment_patron_connect" />
 </navigation>

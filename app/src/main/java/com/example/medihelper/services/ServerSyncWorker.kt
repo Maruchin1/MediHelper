@@ -8,7 +8,7 @@ import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.repositories.*
-import com.example.medihelper.remotedatabase.api.RegisteredUserApi
+import com.example.medihelper.remotedatabase.RegisteredUserApi
 import com.example.medihelper.remotedatabase.dto.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject

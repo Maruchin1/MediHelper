@@ -133,7 +133,8 @@
                     android:layout_marginEnd="16dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:foreground="?selectableItemBackground">
+                    android:foreground="?selectableItemBackground"
+                    android:onClick="@{() -> handler.onClickPatronConnect()}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
