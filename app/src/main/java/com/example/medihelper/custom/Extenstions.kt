@@ -17,18 +17,15 @@ fun <BindingType : ViewDataBinding>Fragment.bind(
     inflater: LayoutInflater,
     layoutResId: Int,
     container: ViewGroup?,
-    handler: Fragment? = null,
-    viewModel: ViewModel? = null,
-    lifecycleOwner: LifecycleOwner
+    handler: Fragment = this,
+    viewModel: ViewModel? = null
 ): View {
     val binding: BindingType = DataBindingUtil.inflate(inflater, layoutResId, container, false)
-    if (handler != null) {
-        binding.setVariable(BR.handler, handler)
-    }
+    binding.setVariable(BR.handler, handler)
+    binding.lifecycleOwner = this.viewLifecycleOwner
     if (viewModel != null) {
         binding.setVariable(BR.viewModel, viewModel)
     }
-    binding.lifecycleOwner = lifecycleOwner
     return binding.root
 }
 

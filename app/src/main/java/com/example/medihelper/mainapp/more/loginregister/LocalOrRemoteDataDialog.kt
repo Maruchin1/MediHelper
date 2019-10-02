@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
+import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.DialogLocalOrRemoteDataBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -30,15 +31,12 @@ class LocalOrRemoteDataDialog : AppBottomSheetDialog() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: DialogLocalOrRemoteDataBinding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.dialog_local_or_remote_data,
-            container,
-            false
+        return bind<DialogLocalOrRemoteDataBinding>(
+            inflater = inflater,
+            layoutResId = R.layout.dialog_local_or_remote_data,
+            container = container,
+            viewModel = viewModel
         )
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

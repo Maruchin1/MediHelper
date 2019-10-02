@@ -22,6 +22,8 @@ class PersonOptionsFragment : AppFullScreenDialog() {
     private val directions by lazy { PersonOptionsFragmentDirections }
     private val args: PersonOptionsFragmentArgs by navArgs()
 
+    fun onClickMediHelperAccount() = findNavController().navigate(directions.toLoginRegisterFragment())
+
     fun onClickEdit() = viewModel.getPersonID()?.let { personID ->
         findNavController().navigate(directions.toAddEditPersonFragment(personID))
     }
@@ -40,9 +42,7 @@ class PersonOptionsFragment : AppFullScreenDialog() {
             inflater = inflater,
             layoutResId = R.layout.fragment_person_options,
             container = container,
-            handler = this,
-            viewModel = viewModel,
-            lifecycleOwner = viewLifecycleOwner
+            viewModel = viewModel
         )
     }
 

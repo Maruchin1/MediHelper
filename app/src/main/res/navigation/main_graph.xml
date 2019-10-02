@@ -145,6 +145,9 @@
         <argument
             android:name="personID"
             app:argType="integer" />
+        <action
+            android:id="@+id/toLoginRegisterFragment"
+            app:destination="@id/loginRegisterFragment" />
     </dialog>
     <dialog
         android:id="@+id/patronConnectFragment"

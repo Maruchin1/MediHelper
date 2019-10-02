@@ -35,9 +35,7 @@ class PatronConnectFragment : AppFullScreenDialog() {
             inflater = inflater,
             layoutResId = R.layout.fragment_patron_connect,
             container = container,
-            handler = this,
-            viewModel = viewModel,
-            lifecycleOwner = viewLifecycleOwner
+            viewModel = viewModel
         )
     }
 

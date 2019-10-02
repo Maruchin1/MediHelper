@@ -33,50 +33,98 @@
                 app:navigationIcon="@drawable/round_close_white_24"
                 app:title='@{viewModel.personNameLive + " - opcje", default="Nazwa osoby - opcje"}' />
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@id/lay_option_buttons"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
                 app:layout_constraintVertical_bias="0.4">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    app:cardCornerRadius="24dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_gravity="center"
+                        app:cardCornerRadius="24dp">
+
+                        <ImageView
+                            android:id="@+id/img_qr_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="48dp"
+                        android:letterSpacing="0.3"
+                        android:text='@{viewModel.connectionKeyLive, default="123456"}'
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                        android:textColor="@color/colorWhite" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:alpha="0.6"
+                        android:text="Wpisz lub zeskanuj kod w drugiej aplikcaji aby połączyć się w trybie podopiecznego"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                        android:textColor="@color/colorWhite" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/img_qr_code"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/round_people_24"
+                        android:tint="@color/colorWhite" />
+
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop" />
-                </com.google.android.material.card.MaterialCardView>
+                        android:layout_height="wrap_content"
+                        android:text="Połącz z aplikacją podopiecznego"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textColor="@color/colorTextPrimaryDark" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="48dp"
-                    android:letterSpacing="0.3"
-                    android:text='@{viewModel.connectionKeyLive, default="123456"}'
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
-                    android:textColor="@color/colorWhite" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Skorzystaj z darmowego konta MediHelper aby połączyć się z aplikacją innej osoby. Będziesz mógł zarządzać jej zaplanowanymi lekami oraz kotrolować czy je przyjmuje"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/MedicineDetailFragment.Text.Body2"
+                        android:textColor="@color/colorTextSecondaryDark" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:alpha="0.6"
-                    android:text="Wpisz lub zeskanuj kod w drugiej aplikcaji aby połączyć się w trybie podopiecznego"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                    android:textColor="@color/colorWhite" />
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/AppTheme.Widget.Button.Outlined.Big.Dark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="64dp"
+                        android:onClick="@{() -> handler.onClickMediHelperAccount()}"
+                        android:text="Konto MediHelper"
+                        app:icon="@drawable/cross_icon"
+                        app:iconSize="24dp" />
 
-            </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
 
             <LinearLayout
                 android:id="@+id/lay_option_buttons"
