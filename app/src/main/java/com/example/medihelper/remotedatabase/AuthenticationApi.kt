@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface AuthenticationApi {
 
-    @GET("authentication/login")
+    @POST("authentication/login")
     suspend fun loginUser(@Body userCredentialsDto: UserCredentialsDto): String
 
     @GET("authentication/patron-connect")
