@@ -11,25 +11,25 @@ interface RegisteredUserApi {
         @Body newPasswordDto: NewPasswordDto
     )
 
-    @PUT("registered-users/synchronization/medicines")
+    @PUT("registered-users/data/medicines")
     suspend fun synchronizeMedicines(
         @Header("Authorization") authToken: String,
         @Body syncRequestDto: SyncRequestDto<MedicineDto>
     ): List<MedicineDto>
 
-    @PUT("registered-users/synchronization/persons")
+    @PUT("registered-users/data/persons")
     suspend fun synchronizePersons(
         @Header("Authorization") authToken: String,
         @Body syncRequestDto: SyncRequestDto<PersonDto>
     ): List<PersonDto>
 
-    @PUT("registered-users/synchronization/medicines-plans")
+    @PUT("registered-users/data/medicines-plans")
     suspend fun synchronizeMedicinesPlans(
         @Header("Authorization") authToken: String,
         @Body syncRequestDto: SyncRequestDto<MedicinePlanDto>
     ): List<MedicinePlanDto>
 
-    @PUT("registered-users/synchronization/planned-medicines")
+    @PUT("registered-users/data/planned-medicines")
     suspend fun synchronizePlannedMedicines(
         @Header("Authorization") authToken: String,
         @Body syncRequestDto: SyncRequestDto<PlannedMedicineDto>

@@ -30,7 +30,7 @@ import com.example.medihelper.mainapp.persons.PersonOptionsViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
 import com.example.medihelper.remotedatabase.AuthenticationApi
-import com.example.medihelper.remotedatabase.PersonApi
+import com.example.medihelper.remotedatabase.ConnectedPersonApi
 import com.example.medihelper.remotedatabase.RegisteredUserApi
 import com.example.medihelper.services.*
 import com.google.gson.*
@@ -92,7 +92,7 @@ val localDatabaseModule = module {
 val remoteDatabaseModule = module {
     single { appRetrofit.create(AuthenticationApi::class.java) }
     single { appRetrofit.create(RegisteredUserApi::class.java) }
-    single { appRetrofit.create(PersonApi::class.java) }
+    single { appRetrofit.create(ConnectedPersonApi::class.java) }
 }
 
 val viewModelModule = module {

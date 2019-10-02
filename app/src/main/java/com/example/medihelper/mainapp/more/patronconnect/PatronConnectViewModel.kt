@@ -4,14 +4,14 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.medihelper.custom.ActionLiveData
 import com.example.medihelper.localdatabase.repositories.PersonRepository
-import com.example.medihelper.remotedatabase.PersonApi
+import com.example.medihelper.remotedatabase.AuthenticationApi
+import com.example.medihelper.remotedatabase.ConnectedPersonApi
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
 
 class PatronConnectViewModel(
-    private val personApi: PersonApi,
+    private val authenticationApi: AuthenticationApi,
     private val personRepository: PersonRepository,
     private val sharedPrefService: SharedPrefService
 ) : ViewModel() {
@@ -44,7 +44,7 @@ class PatronConnectViewModel(
                 charLiveList.forEach { append(it.value!!) }
             }.toString()
             try {
-                val profileDataDto = personApi.getAuthToken(connectionKey)
+                val profileDataDto = authenticationApi.patronConnect(connectionKey)
                 Log.i(TAG, "authToken = $profileDataDto")
                 val updatedMainPerson = personRepository.getMainPersonEntity().apply {
                     personColorResID = profileDataDto.personColorResId
