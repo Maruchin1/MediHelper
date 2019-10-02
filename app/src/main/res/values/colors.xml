@@ -14,8 +14,6 @@
     <color name="colorTextPrimary">@android:color/primary_text_light</color>
     <color name="colorTextSecondary">@android:color/secondary_text_light</color>
     <color name="colorTextTertiary">@android:color/tertiary_text_light</color>
-    <color name="colorTextPrimaryDark">@android:color/primary_text_dark</color>
-    <color name="colorTextSecondaryDark">@android:color/secondary_text_dark</color>
 
     <color name="colorWhite">@android:color/white</color>
     <color name="colorBlack">@android:color/black</color>

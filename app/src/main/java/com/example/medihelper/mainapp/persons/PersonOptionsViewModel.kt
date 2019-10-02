@@ -12,12 +12,16 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class PersonOptionsViewModel(private val personRepository: PersonRepository) : ViewModel() {
+class PersonOptionsViewModel(
+    private val personRepository: PersonRepository,
+    private val sharedPrefService: SharedPrefService
+) : ViewModel() {
 
     val personNameLive: LiveData<String>
     val personColorResIDLive: LiveData<Int>
     val connectionKeyLive: LiveData<String>
     val connectionKeyQrCodeLive: LiveData<Bitmap>
+    val isUserLoggedLive: LiveData<Boolean>
 
     private val personIDLive = MutableLiveData<Int>()
     private val personItemLive: LiveData<PersonOptionsData>
@@ -32,6 +36,7 @@ class PersonOptionsViewModel(private val personRepository: PersonRepository) : V
         connectionKeyQrCodeLive = Transformations.map(connectionKeyLive) { connectionKey ->
             connectionKey?.let { createTempKeyQrCodeBitmap(it) }
         }
+        isUserLoggedLive = Transformations.map(sharedPrefService.getLoggedUserEmailLive()) { !it.isNullOrEmpty() }
     }
 
     fun setArgs(args: PersonOptionsFragmentArgs) {

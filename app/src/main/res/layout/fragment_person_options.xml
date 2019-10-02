@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="handler"
             type="com.example.medihelper.mainapp.persons.PersonOptionsFragment" />
@@ -48,7 +50,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="@{viewModel.isUserLoggedLive() ? View.VISIBLE : View.GONE, default=visible}">
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="200dp"
@@ -88,11 +90,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.isUserLoggedLive() ? View.GONE : View.VISIBLE, default=gone}">
 
                     <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:src="@drawable/round_people_24"
                         android:tint="@color/colorWhite" />
 
@@ -102,16 +105,19 @@
                         android:text="Połącz z aplikacją podopiecznego"
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                        android:textColor="@color/colorTextPrimaryDark" />
+                        android:textColor="@color/colorWhite" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:alpha="0.6"
                         android:text="Skorzystaj z darmowego konta MediHelper aby połączyć się z aplikacją innej osoby. Będziesz mógł zarządzać jej zaplanowanymi lekami oraz kotrolować czy je przyjmuje"
                         android:textAlignment="center"
                         android:textAppearance="@style/MedicineDetailFragment.Text.Body2"
-                        android:textColor="@color/colorTextSecondaryDark" />
+                        android:textColor="@color/colorWhite" />
 
                     <com.google.android.material.button.MaterialButton
                         style="@style/AppTheme.Widget.Button.Outlined.Big.Dark"
