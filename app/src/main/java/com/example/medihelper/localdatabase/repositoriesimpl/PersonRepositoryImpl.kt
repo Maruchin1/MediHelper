@@ -36,6 +36,8 @@ class PersonRepositoryImpl(
 
     override suspend fun getMainPersonID() = personDao.getMainPersonID()
 
+    override suspend fun getMainPersonEntity() = personDao.getMainPersonEntity()
+
     override fun getItemLive(personID: Int) = personDao.getItemLive(personID)
 
     override fun getOptionsDataLive(personID: Int) = personDao.getOptionsDataLive(personID)
@@ -51,7 +53,6 @@ class PersonRepositoryImpl(
     override suspend fun insertSynchronized(entityList: List<PersonEntity>) = personDao.insert(entityList)
 
     override suspend fun updateSynchronized(entityList: List<PersonEntity>) = personDao.update(entityList)
-
 
     override suspend fun resetSynchronizationData() = personDao.resetSynchronizationData()
 
@@ -111,6 +112,9 @@ interface PersonDao {
 
     @Query("SELECT person_id FROM persons WHERE main_person = 1")
     suspend fun getMainPersonID(): Int?
+
+    @Query("SELECT * FROM persons WHERE main_person = 1")
+    suspend fun getMainPersonEntity(): PersonEntity
 
     @Query("SELECT person_remote_id FROM persons WHERE person_id = :personID")
     suspend fun getRemoteID(personID: Int): Long?

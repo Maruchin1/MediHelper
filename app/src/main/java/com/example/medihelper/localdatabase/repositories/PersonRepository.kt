@@ -25,6 +25,8 @@ interface PersonRepository : ServerSyncRepository<PersonEntity> {
 
     suspend fun getMainPersonID(): Int?
 
+    suspend fun getMainPersonEntity(): PersonEntity
+
     fun getItemLive(personID: Int): LiveData<PersonItem>
 
     fun getOptionsDataLive(personID: Int): LiveData<PersonOptionsData>

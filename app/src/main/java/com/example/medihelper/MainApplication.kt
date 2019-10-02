@@ -112,7 +112,7 @@ val viewModelModule = module {
     viewModel { LoggedUserViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { NewPasswordViewModel() }
     viewModel { PersonOptionsViewModel(get(), get()) }
-    viewModel { PatronConnectViewModel(get()) }
+    viewModel { PatronConnectViewModel(get(), get(), get()) }
 }
 
 val serviceModule = module {

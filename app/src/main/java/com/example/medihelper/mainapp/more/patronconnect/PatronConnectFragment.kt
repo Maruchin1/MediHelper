@@ -8,11 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentPatronConnectBinding
-import com.example.medihelper.dialogs.LoadingDialog
 import com.example.medihelper.services.LoadingDialogService
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -25,6 +25,7 @@ class PatronConnectFragment : AppFullScreenDialog() {
     private val TAG = "PatronConnectFragment"
 
     private val viewModel: PatronConnectViewModel by viewModel()
+    private val directions by lazy { PatronConnectFragmentDirections }
     private val loadingDialogService: LoadingDialogService by inject()
 
     fun onClickScanQrCode() {
@@ -35,7 +36,7 @@ class PatronConnectFragment : AppFullScreenDialog() {
         }.initiateScan()
     }
 
-    fun onClickConfirm() = viewModel.loadAuthToken()
+    fun onClickConfirm() = viewModel.loadProfileData()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return bind<FragmentPatronConnectBinding>(
@@ -72,6 +73,11 @@ class PatronConnectFragment : AppFullScreenDialog() {
             } else {
                 loadingDialogService.dismissLoadingDialog()
             }
+        })
+
+        viewModel.connectSuccessfulLive.observe(viewLifecycleOwner, Observer { nameAndColorId ->
+            dismiss()
+            findNavController().navigate(directions.toConnectSuccessDialog(nameAndColorId.first, nameAndColorId.second))
         })
     }
 

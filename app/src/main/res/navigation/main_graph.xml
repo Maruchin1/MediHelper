@@ -152,5 +152,20 @@
     <dialog
         android:id="@+id/patronConnectFragment"
         android:name="com.example.medihelper.mainapp.more.patronconnect.PatronConnectFragment"
-        tools:layout="@layout/fragment_patron_connect" />
+        tools:layout="@layout/fragment_patron_connect" >
+        <action
+            android:id="@+id/toConnectSuccessDialog"
+            app:destination="@id/connectSuccessDialog" />
+    </dialog>
+    <dialog
+        android:id="@+id/connectSuccessDialog"
+        android:name="com.example.medihelper.mainapp.more.patronconnect.ConnectSuccessDialog"
+        tools:layout="@layout/dialog_connect_success" >
+        <argument
+            android:name="personName"
+            app:argType="string" />
+        <argument
+            android:name="personColorResId"
+            app:argType="integer" />
+    </dialog>
 </navigation>
