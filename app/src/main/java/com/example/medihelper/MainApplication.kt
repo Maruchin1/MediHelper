@@ -123,6 +123,7 @@ val serviceModule = module {
     single { WorkerService(WorkManager.getInstance(androidContext())) }
     single { InitialDataService(get(), get()) }
     single { NotificationService(androidContext()) }
+    single { LoadingDialogService() }
 }
 
 private val appRetrofit: Retrofit by lazy {

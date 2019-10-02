@@ -79,32 +79,110 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
+                android:gravity="center_horizontal"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lay_info"
-                app:layout_constraintVertical_bias="0.3">
+                app:layout_constraintVertical_bias="0.4">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Design.TextInputLayout"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
+                        android:id="@+id/etx_key_1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
                         android:backgroundTint="@color/colorWhite"
                         android:inputType="numberDecimal"
-                        android:letterSpacing="0.3"
-                        android:maxLength="6"
-                        android:text="@={viewModel.personTempKeyLive}"
+                        android:maxLength="1"
                         android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
-                        android:textColor="@color/colorWhite" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:textColor="@color/colorWhite"
+                        android:text="@={viewModel.keyChar1Live}"/>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etx_key_2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/colorWhite"
+                        android:inputType="numberDecimal"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:textColor="@color/colorWhite"
+                        android:text="@={viewModel.keyChar2Live}"/>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etx_key_3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/colorWhite"
+                        android:inputType="numberDecimal"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:textColor="@color/colorWhite"
+                        android:text="@={viewModel.keyChar3Live}"/>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etx_key_4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/colorWhite"
+                        android:inputType="numberDecimal"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:textColor="@color/colorWhite"
+                        android:text="@={viewModel.keyChar4Live}"/>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etx_key_5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/colorWhite"
+                        android:inputType="numberDecimal"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:textColor="@color/colorWhite"
+                        android:text="@={viewModel.keyChar5Live}"/>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etx_key_6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/colorWhite"
+                        android:inputType="numberDecimal"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:textColor="@color/colorWhite"
+                        android:text="@={viewModel.keyChar6Live}"/>
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="Kod z aplikacji opiekuna"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
@@ -126,6 +204,7 @@
             android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
             android:layout_marginBottom="32dp"
             android:onClick="@{() -> handler.onClickConfirm()}"
             android:src="@drawable/baseline_check_white_48"
@@ -134,7 +213,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:rippleColor="@color/colorPrimary"
-            app:tint="@color/colorPrimary"
-            android:layout_gravity="center_horizontal|bottom"/>
+            app:tint="@color/colorPrimary" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

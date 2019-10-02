@@ -6,5 +6,5 @@ import retrofit2.http.Query
 interface PersonApi {
 
     @GET("persons/auth-token")
-    suspend fun getAuthToken(@Query("personTempKey") personTempKey: String): String
+    suspend fun getAuthToken(@Query("connectionKey") connectionKey: String): String
 }
