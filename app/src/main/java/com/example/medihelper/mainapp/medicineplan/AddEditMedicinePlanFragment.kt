@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,6 +15,7 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
+import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentAddEditMedicinePlanBinding
 import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.dialogs.SelectFloatNumberDialog
@@ -33,10 +33,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class AddEditMedicinePlanFragment : AppFullScreenDialog() {
+    private val TAG = "AddEditMedicinePlanFra"
 
     private val viewModel: AddEditMedicinePlanViewModel by viewModel()
     private val args: AddEditMedicinePlanFragmentArgs by navArgs()
     private val directions by lazyOf(AddEditMedicinePlanFragmentDirections)
+    private val timeOfTakingAdapter by lazy { recycler_view_time_of_taking.adapter as TimeOfTakingAdapter }
 
     fun onClickSelectMedicine() = SelectMedicineDialog().apply {
         setMedicineSelectedListener { medicineID ->
@@ -53,25 +55,27 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         }
     }.show(childFragmentManager)
 
-    fun onClickSelectDoseSize(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) = SelectFloatNumberDialog().apply {
-        title = "Wybierz dawkę leku"
-        iconResID = R.drawable.ic_pill_black_36dp
-        defaultNumber = timeOfTaking.doseSize
-        setNumberSelectedListener { number ->
-            Log.d(TAG, "numberSelected")
-            viewModel.updateTimeOfTaking(position, timeOfTaking.copy(doseSize = number))
-        }
-    }.show(childFragmentManager)
+    fun onClickSelectDoseSize(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) =
+        SelectFloatNumberDialog().apply {
+            title = "Wybierz dawkę leku"
+            iconResID = R.drawable.ic_pill_black_36dp
+            defaultNumber = timeOfTaking.doseSize
+            setNumberSelectedListener { number ->
+                Log.d(TAG, "numberSelected")
+                viewModel.updateTimeOfTaking(position, timeOfTaking.copy(doseSize = number))
+            }
+        }.show(childFragmentManager)
 
-    fun onClickRemoveTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) = viewModel.removeTimeOfTaking(timeOfTaking)
+    fun onClickRemoveTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) =
+        viewModel.removeTimeOfTaking(timeOfTaking)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentAddEditMedicinePlanBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_add_edit_medicine_plan, container, false)
-        binding.viewModel = viewModel
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        return bind<FragmentAddEditMedicinePlanBinding>(
+            inflater = inflater,
+            layoutResId = R.layout.fragment_add_edit_medicine_plan,
+            container = container,
+            viewModel = viewModel
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -142,16 +146,16 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
             }
         })
         viewModel.timeOfTakingListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
-            val adapter = recycler_view_schedule_hours.adapter as TimeOfTakingAdapter
-            adapter.updateItemsList(doseHourList.toList())
+            timeOfTakingAdapter.updateItemsList(doseHourList)
         })
         viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
-            context?.run {
-                dialog?.window?.statusBarColor = ContextCompat.getColor(this, colorResID)
-            }
+            dialog?.window?.statusBarColor = ContextCompat.getColor(requireContext(), colorResID)
         })
         viewModel.errorMessageLive.observe(viewLifecycleOwner, Observer { errorMessage ->
             Snackbar.make(root_lay, errorMessage, Snackbar.LENGTH_SHORT).show()
+        })
+        viewModel.selectedMedicineAvailableLive.observe(viewLifecycleOwner, Observer {
+            timeOfTakingAdapter.notifyDataSetChanged()
         })
     }
 
@@ -197,16 +201,13 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
                 R.id.chip_period -> {
                     viewModel.durationTypeLive.value = MedicinePlanEntity.DurationType.PERIOD
                     viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.EVERYDAY
-//                    chip_group_days_type.check(R.id.chip_everyday)
                 }
                 R.id.chip_continuous -> {
                     viewModel.durationTypeLive.value = MedicinePlanEntity.DurationType.CONTINUOUS
                     viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.EVERYDAY
-//                    chip_group_days_type.check(R.id.chip_everyday)
                 }
             }
         }
-//        chip_group_duration_type.check(R.id.chip_once)
     }
 
     private fun setupDaysTypeChipGroup() {
@@ -214,18 +215,21 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
             when (checkedId) {
                 R.id.chip_everyday -> viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.EVERYDAY
                 R.id.chip_days_of_week -> viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.DAYS_OF_WEEK
-                R.id.chip_interval_of_days -> viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS
+                R.id.chip_interval_of_days -> viewModel.daysTypeLive.value =
+                    MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS
             }
         }
     }
 
     private fun setupTimeOfTakingRecyclerView() {
-        recycler_view_schedule_hours.adapter = TimeOfTakingAdapter()
+        recycler_view_time_of_taking.adapter = TimeOfTakingAdapter()
     }
 
     // Inner classes
-    inner class TimeOfTakingAdapter : RecyclerAdapter<MedicinePlanEntity.TimeOfTaking>(R.layout.recycler_item_time_of_taking, null) {
-
+    inner class TimeOfTakingAdapter : RecyclerAdapter<MedicinePlanEntity.TimeOfTaking>(
+        R.layout.recycler_item_time_of_taking,
+        null
+    ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val timeOfTaking = itemsList[position]
             val timeOfTakingDisplayData = viewModel.getTimeOfTakingDisplayData(timeOfTaking)

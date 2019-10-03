@@ -360,7 +360,7 @@
                             android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_view_schedule_hours"
+                            android:id="@+id/recycler_view_time_of_taking"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
@@ -373,7 +373,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="8dp"
                             android:background="?selectableItemBackgroundBorderless"
-                            android:onClick="@{() -> viewModel.addDoseHour()}"
+                            android:onClick="@{() -> viewModel.addTimeOfTaking()}"
                             android:src="@drawable/round_add_white_36"
                             android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
                     </LinearLayout>
