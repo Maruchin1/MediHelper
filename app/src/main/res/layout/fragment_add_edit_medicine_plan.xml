@@ -41,7 +41,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="80dp"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
                     app:layout_collapseMode="parallax">
@@ -59,6 +58,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
                         android:background="?selectableItemBackgroundBorderless"
                         android:clickable="true"
                         android:focusable="true"
@@ -98,7 +98,6 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:behavior_overlapTop="82dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <LinearLayout
@@ -122,7 +121,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         android:orientation="vertical">
@@ -130,68 +129,86 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:gravity="center_vertical">
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_pill_black_24dp"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:src="@drawable/pill"
                                 android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
-                                android:text='@{viewModel.selectedMedicineName ?? "Nie wybrano leku", default="Nazwa leku"}'
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                                android:text="Lek do zaplanowania"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                                 android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
                         </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Wybierz z apteczki"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:textColor="@color/colorTextTertiary"
+                            android:visibility="@{viewModel.selectedMedicineAvailableLive ? View.GONE : View.VISIBLE, default=gone}" />
 
                         <TableLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:visibility="@{viewModel.selectedMedicineAvailableLive ? View.VISIBLE : View.GONE}">
+                            android:visibility="@{viewModel.selectedMedicineAvailableLive ? View.VISIBLE : View.GONE, default=visible}">
 
-                            <TableRow>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Lek ważny do"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                                    android:textColor="@color/colorTextSecondary" />
+                            <TableRow android:layout_marginTop="16dp">
 
                                 <TextView
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="32dp"
-                                    android:text='@{viewModel.selectedMedicineExpireDate, default=data}'
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                                    android:textColor="@color/colorTextSecondary" />
+                                    android:text="Nazwa leku"
+                                    android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:text='@{viewModel.selectedMedicineNameLive, default="nazwa"}'
+                                    android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
                             </TableRow>
 
-                            <TableRow android:layout_marginTop="8dp">
+                            <TableRow android:layout_marginTop="16dp">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Jednostka"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                                    android:textColor="@color/colorTextSecondary" />
+                                    android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
 
                                 <TextView
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="32dp"
-                                    android:text='@{viewModel.selectedMedicineUnitLive, default=stan}'
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                                    android:textColor="@color/colorTextSecondary" />
+                                    android:layout_marginStart="16dp"
+                                    android:text='@{viewModel.selectedMedicineUnitLive, default="jednostka"}'
+                                    android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
                             </TableRow>
 
-                        </TableLayout>
+                            <TableRow android:layout_marginTop="16dp">
 
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Ważny do"
+                                    android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:text='@{viewModel.selectedMedicineExpireDateLive.formatString, default="data"}'
+                                    android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
+                            </TableRow>
+                        </TableLayout>
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -213,13 +230,26 @@
                         android:layout_marginBottom="8dp"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/txv_title_schedule_type"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Czas trwania"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:src="@drawable/round_event_24"
+                                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+
+                            <TextView
+                                android:id="@+id/txv_title_schedule_type"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="Czas trwania"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                                android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                        </LinearLayout>
 
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/chip_group_duration_type"
@@ -286,12 +316,25 @@
                         android:layout_marginBottom="8dp"
                         android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Dni przyjmowania"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:src="@drawable/round_event_24"
+                                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="Dni przyjmowania"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                                android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                        </LinearLayout>
 
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/chip_group_days_type"
@@ -352,12 +395,25 @@
                         android:layout_marginBottom="8dp"
                         android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Godziny przyjmowania"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:src="@drawable/round_access_time_24"
+                                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="Godziny przyjmowania"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                                android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                        </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycler_view_time_of_taking"

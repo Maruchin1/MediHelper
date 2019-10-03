@@ -26,9 +26,9 @@ class AddEditMedicinePlanViewModel(
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
     val selectedMedicineAvailableLive: LiveData<Boolean>
-    val selectedMedicineName: LiveData<String>
-    val selectedMedicineExpireDate: LiveData<String>
+    val selectedMedicineNameLive: LiveData<String>
     val selectedMedicineUnitLive: LiveData<String>
+    val selectedMedicineExpireDateLive: LiveData<AppDate>
 
     val durationTypeLive = MutableLiveData<MedicinePlanEntity.DurationType>()
     val startDateLive = MutableLiveData<AppDate>()
@@ -56,9 +56,9 @@ class AddEditMedicinePlanViewModel(
             medicineID?.let { medicineRepository.getDetailsLive(medicineID) }
         }
         selectedMedicineAvailableLive = Transformations.map(selectedMedicineDetailsLive) { it != null }
-        selectedMedicineName = Transformations.map(selectedMedicineDetailsLive) { it.medicineName }
-        selectedMedicineExpireDate = Transformations.map(selectedMedicineDetailsLive) { it.expireDate?.formatString }
+        selectedMedicineNameLive = Transformations.map(selectedMedicineDetailsLive) { it.medicineName }
         selectedMedicineUnitLive = Transformations.map(selectedMedicineDetailsLive) { it.medicineUnit }
+        selectedMedicineExpireDateLive = Transformations.map(selectedMedicineDetailsLive) { it.expireDate }
 
         selectedMedicineIDLive.postValue(null)
         durationTypeLive.postValue(MedicinePlanEntity.DurationType.ONCE)

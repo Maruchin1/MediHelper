@@ -6,7 +6,7 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class selectedMedicineName to the JavaScript interface
+# and specify the fully qualified class selectedMedicineNameLive to the JavaScript interface
 # class:
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
@@ -17,5 +17,5 @@
 #-keepattributes SourceFile,LineNumberTable
 
 # If you keep the line doseSize information, uncomment this to
-# hide the original source file selectedMedicineName.
+# hide the original source file selectedMedicineNameLive.
 #-renamesourcefileattribute SourceFile
