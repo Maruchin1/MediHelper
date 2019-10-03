@@ -28,22 +28,14 @@
             android:layout_height="?actionBarSize"
             android:background="@color/colorPrimary">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways">
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:menu="@menu/toolbar_menu_add_edit"
-                    app:navigationIcon="@drawable/round_close_24"
-                    app:title="Dodaj lek" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+                app:menu="@menu/toolbar_menu_add_edit"
+                app:navigationIcon="@drawable/round_close_24"
+                app:title='@{viewModel.titleLive, default="Dodaj lek"}' />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -87,8 +79,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -110,8 +102,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="Nazwa leku"
-                                    android:text="@={viewModel.medicineNameLive}"
-                                    android:inputType="text"/>
+                                    android:inputType="text"
+                                    android:text="@={viewModel.medicineNameLive}" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
@@ -120,8 +112,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="24dp"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -242,8 +234,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="0dp"

@@ -87,7 +87,7 @@
                     app:layout_collapseMode="pin"
                     app:menu="@menu/toolbar_menu_add_edit"
                     app:navigationIcon="@drawable/round_close_24"
-                    app:title="Zaplanuj lek" />
+                    app:title='@{viewModel.titleLive, default="Zaplanuj lek"}' />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>

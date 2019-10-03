@@ -12,6 +12,7 @@ class AddEditPersonViewModel(
     sharedPrefService: SharedPrefService
 ) : ViewModel() {
 
+    val titleLive = MutableLiveData("Dodaj osobę")
     val personColorDisplayDataListLive: LiveData<List<PersonColorDisplayData>>
     val personNameLive = MutableLiveData<String>()
     val personColorResIDLive = MutableLiveData<Int>()
@@ -37,6 +38,7 @@ class AddEditPersonViewModel(
     fun setArgs(args: AddEditPersonFragmentArgs) = viewModelScope.launch {
         if (args.editPersonID != -1) {
             editPersonID = args.editPersonID
+            titleLive.postValue("Edytuj osobę")
             personRepository.getItem(args.editPersonID).let { personItem ->
                 personNameLive.postValue(personItem.personName)
                 personColorResIDLive.postValue(personItem.personColorResID)

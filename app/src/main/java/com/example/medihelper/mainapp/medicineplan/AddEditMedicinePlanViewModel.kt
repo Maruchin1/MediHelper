@@ -21,6 +21,8 @@ class AddEditMedicinePlanViewModel(
 ) : ViewModel() {
     private val TAG = AddEditMedicinePlanViewModel::class.simpleName
 
+    val titleLive = MutableLiveData("Zaplanuj lek")
+
     val selectedPersonItemLive = personProfileService.getCurrPersonItemLive()
     val colorPrimaryLive: LiveData<Int>
 
@@ -74,6 +76,7 @@ class AddEditMedicinePlanViewModel(
         Log.d(TAG, "medicinePlanID = ${args.editMedicinePlanID}")
         if (args.editMedicinePlanID != -1) {
             editMedicinePlanID = args.editMedicinePlanID
+            titleLive.postValue("Edytuj plan")
             medicinePlanRepository.getEntity(args.editMedicinePlanID).run {
                 selectedMedicineIDLive.postValue(medicineID)
                 personProfileService.selectCurrPerson(personID)

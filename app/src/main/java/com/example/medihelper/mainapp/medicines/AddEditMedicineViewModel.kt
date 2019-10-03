@@ -25,6 +25,7 @@ class AddEditMedicineViewModel(
 
     val medicineUnitList = sharedPrefService.getMedicineUnitList()
 
+    val titleLive = MutableLiveData("Dodaj lek")
     val medicineNameLive = MutableLiveData<String>()
     val expireDateLive = MutableLiveData<AppDate>()
     val medicineUnitLive = MutableLiveData<String>(medicineUnitList[0])
@@ -40,6 +41,7 @@ class AddEditMedicineViewModel(
     fun setArgs(args: AddEditMedicineFragmentArgs) = viewModelScope.launch {
         if (args.editMedicineID != -1) {
             editMedicineID = args.editMedicineID
+            titleLive.postValue("Edytuj lek")
             medicineRepository.getDetails(args.editMedicineID).run {
                 medicineNameLive.postValue(medicineName)
                 expireDateLive.postValue(expireDate)
