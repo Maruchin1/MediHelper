@@ -42,7 +42,8 @@
                 android:hint="nie wybrano"
                 android:inputType="date"
                 android:onClick="@{() -> handler.onClickSelectDate()}"
-                android:text="@{viewModel.startDateLive.formatString}" />
+                android:text="@{viewModel.startDateLive.formatString}"
+                android:textAlignment="center"/>
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

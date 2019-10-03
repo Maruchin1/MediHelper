@@ -34,54 +34,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/lay_dose_size"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Design.TextInputLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="@{() -> handler.onClickSelectDoseSize(position, displayData.timeOfTakingRef)}"
-            android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="4dp"
+            android:layout_marginEnd="48dp"
+            app:hintEnabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_delete"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@id/chip_hour"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dawka:"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-
-            <TextView
-                android:id="@+id/txv_dose_size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text='@{displayData.doseSize, default="0"}'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-
-            <TextView
-                android:id="@+id/txv_medicine_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text='@{displayData.medicineTypeName, default="typ leku"}'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/colorDarkerGray"
-            app:layout_constraintEnd_toEndOf="@id/lay_dose_size"
-            app:layout_constraintStart_toStartOf="@id/lay_dose_size"
-            app:layout_constraintTop_toBottomOf="@id/lay_dose_size" />
+                android:clickable="true"
+                android:focusable="false"
+                android:onClick="@{() -> handler.onClickSelectTime(position, displayData.timeOfTakingRef)}"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text='@{displayData.doseSize + "   " + displayData.medicineUnit, default="1.0 pigulki"}' />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton
             android:id="@+id/btn_delete"

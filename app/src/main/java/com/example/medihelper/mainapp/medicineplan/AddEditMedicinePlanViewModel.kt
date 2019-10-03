@@ -120,7 +120,7 @@ class AddEditMedicinePlanViewModel(
         timeOfTakingRef = timeOfTaking,
         time = timeOfTaking.time.formatString,
         doseSize = timeOfTaking.doseSize.toString(),
-        medicineTypeName = selectedMedicineDetailsLive.value?.medicineUnit ?: "--"
+        medicineUnit = selectedMedicineDetailsLive.value?.medicineUnit ?: "--"
     )
 
     fun saveMedicinePlan(): Boolean {
@@ -220,6 +220,6 @@ class AddEditMedicinePlanViewModel(
         val timeOfTakingRef: MedicinePlanEntity.TimeOfTaking,
         val time: String,
         val doseSize: String,
-        val medicineTypeName: String
+        val medicineUnit: String
     )
 }
