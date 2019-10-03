@@ -27,7 +27,7 @@ class AddEditMedicineViewModel(
 
     val medicineNameLive = MutableLiveData<String>()
     val expireDateLive = MutableLiveData<AppDate>()
-    val medicineUnitLive = MutableLiveData<String>()
+    val medicineUnitLive = MutableLiveData<String>(medicineUnitList[0])
     val packageSizeLive = MutableLiveData<Float>()
     val currStateLive = MutableLiveData<Float>()
     val commentsLive = MutableLiveData<String>()
@@ -48,18 +48,6 @@ class AddEditMedicineViewModel(
                 currStateLive.postValue(currState)
                 commentsLive.postValue(additionalInfo)
                 imageFileLive.postValue(imageName?.let { File(appFileDir, it) })
-            }
-        } else {
-            arrayOf(
-                medicineNameLive,
-                medicineUnitLive,
-                packageSizeLive,
-                currStateLive,
-                expireDateLive,
-                commentsLive,
-                imageFileLive
-            ).forEach { field ->
-                field.postValue(null)
             }
         }
     }
