@@ -23,169 +23,171 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_medicine_picture"
-            android:layout_width="0dp"
-            android:layout_height="54dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="4:3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_medicine_picture"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="4:3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                srcFile="@{viewModel.medicineImageFileLive}"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_pill_grey600_48dp" />
-        </com.google.android.material.card.MaterialCardView>
+                <ImageView
+                    srcFile="@{viewModel.medicineImageFileLive}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_pill_grey600_48dp" />
+            </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/txv_medicine_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:maxLines="1"
-            android:text='@{viewModel.medicineNameLive, default="Nazwa leku"}'
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            app:layout_constraintEnd_toStartOf="@id/lay_status"
-            app:layout_constraintStart_toEndOf="@id/card_medicine_picture"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/txv_medicine_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:maxLines="1"
+                android:text='@{viewModel.medicineNameLive, default="Nazwa leku"}'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                app:layout_constraintEnd_toStartOf="@id/lay_status"
+                app:layout_constraintStart_toEndOf="@id/card_medicine_picture"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/txv_medicine_name"
+                app:layout_constraintTop_toBottomOf="@id/txv_medicine_name">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text='@{"Zaplanowano na " + viewModel.plannedDateLive.formatString + " godz. " + viewModel.plannedTimeLive.formatString, default="Zaplanowano na 01 sty 2019 godz. 08:00"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:textColor="@color/colorTextTertiary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text='@{"Do przyjęcia " + viewModel.doseSizeLive + " " + viewModel.medicineUnitLive, default="Do przyjęcia 2.0 pigułki"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:textColor="@color/colorTextTertiary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lay_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@{viewModel.statusOfTakingLive, default=status}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    app:cardCornerRadius="8dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background='@{viewModel.statusOfTakingColorIdLive, default="@color/colorStateGood"}' />
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include layout="@layout/line_horizontal" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/txv_medicine_name"
-            app:layout_constraintStart_toStartOf="@id/txv_medicine_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp">
-
-        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text='@{"Zaplanowano na " + viewModel.plannedDateLive.formatString + " godz. " + viewModel.plannedTimeLive.formatString, default="Zaplanowano na 01 sty 2019 godz. 08:00"}'
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="@color/colorTextTertiary" />
+            android:layout_height="56dp"
+            android:layout_marginTop="24dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> handler.onClickChangePlannedMedicineStatus()}"
+            android:padding="16dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text='@{"Do przyjęcia " + viewModel.doseSizeLive + " " + viewModel.medicineUnitLive, default="dawka do przyjęcia"}'
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="@color/colorTextTertiary" />
-    </LinearLayout>
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src='@{viewModel.takeMedicineBtnIcon, default="@drawable/baseline_check_white_36"}'
+                android:tint="@color/colorPrimary" />
 
-    <LinearLayout
-        android:id="@+id/lay_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center_vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="@{viewModel.statusOfTakingLive, default=status}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            app:cardCornerRadius="8dp">
-
-            <FrameLayout
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background='@{viewModel.statusOfTakingColorIdLive, default="@color/colorStateGood"}' />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:text='@{viewModel.takeMedicineBtnText, default="Przyjmij lek"}'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src='@drawable/baseline_access_time_black_36'
+                android:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:text='Przełóż na później'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> handler.onClickNavigateToMedicineDetails()}"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src='@drawable/ic_pill_black_36dp'
+                android:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:text='Szczegóły leku'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+        </LinearLayout>
+
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
-
-<include layout="@layout/line_horizontal" />
-
-<LinearLayout
-android:background="?selectableItemBackground"
-android:clickable="true"
-android:focusable="true"
-android:gravity="center_vertical"
-android:layout_height="56dp"
-android:layout_width="match_parent"
-android:onClick="@{() -> handler.onClickChangePlannedMedicineStatus()}"
-android:padding="16dp">
-
-<ImageView
-    android:layout_height="24dp"
-    android:layout_width="24dp"
-    android:src='@{viewModel.takeMedicineBtnIcon, default="@drawable/baseline_check_white_36"}'
-    android:tint="@color/colorPrimary" />
-
-<TextView
-    android:layout_height="wrap_content"
-    android:layout_marginStart="32dp"
-    android:layout_width="match_parent"
-    android:text='@{viewModel.takeMedicineBtnText, default="Przyjmij lek"}'
-    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
-</LinearLayout>
-
-<LinearLayout
-android:background="?selectableItemBackground"
-android:clickable="true"
-android:focusable="true"
-android:gravity="center_vertical"
-android:layout_height="56dp"
-android:layout_width="match_parent"
-android:padding="16dp">
-
-<ImageView
-    android:layout_height="24dp"
-    android:layout_width="24dp"
-    android:src='@drawable/baseline_access_time_black_36'
-    android:tint="@color/colorPrimary" />
-
-<TextView
-    android:layout_height="wrap_content"
-    android:layout_marginStart="32dp"
-    android:layout_width="match_parent"
-    android:text='Przełóż na później'
-    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
-</LinearLayout>
-
-<LinearLayout
-android:background="?selectableItemBackground"
-android:clickable="true"
-android:focusable="true"
-android:gravity="center_vertical"
-android:layout_height="56dp"
-android:layout_width="match_parent"
-android:onClick="@{() -> handler.onClickNavigateToMedicineDetails()}"
-android:paddingEnd="16dp"
-android:paddingStart="16dp">
-
-<ImageView
-    android:layout_height="24dp"
-    android:layout_width="24dp"
-    android:src='@drawable/ic_pill_black_36dp'
-    android:tint="@color/colorPrimary" />
-
-<TextView
-    android:layout_height="wrap_content"
-    android:layout_marginStart="32dp"
-    android:layout_width="match_parent"
-    android:text='Szczegóły leku'
-    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
-</LinearLayout>
-
-    </LinearLayout></layout>
+</layout>
