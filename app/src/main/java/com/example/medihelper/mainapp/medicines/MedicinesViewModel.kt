@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.R
+import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import java.io.File
@@ -14,7 +14,7 @@ class MedicinesViewModel(
     private val appFilesDir: File,
     private val medicineRepository: MedicineRepository
 ) : ViewModel() {
-    private val TAG = MedicinesViewModel::class.simpleName
+    private val TAG = "MedicinesViewModel"
 
     val searchQueryLive = MutableLiveData("")
     val medicineItemListLive: LiveData<List<MedicineItem>>
@@ -35,28 +35,17 @@ class MedicinesViewModel(
     }
 
     fun getMedicineKitItemDisplayData(medicineItem: MedicineItem): MedicineItemDisplayData {
-        val medicineState = medicineItem.calcMedicineState()
+        val medicineStateData = MedicineEntity.StateData(medicineItem.packageSize, medicineItem.currState)
         return MedicineItemDisplayData(
             medicineID = medicineItem.medicineID,
             medicineName = medicineItem.medicineName,
             medicineUnit = medicineItem.medicineUnit,
-            stateAvailable = medicineState != null,
-            stateLayoutWeight = medicineState,
-            emptyLayoutWeight = medicineState?.let { 1 - it },
-            stateColorId = medicineState?.let {
-                when {
-                    medicineState >= STATE_GOOD_LIMIT -> R.color.colorStateGood
-                    medicineState > STATE_MEDIUM_LIMIT -> R.color.colorStateMedium
-                    else -> R.color.colorStateSmall
-                }
-            },
+            stateAvailable = medicineStateData.stateAvailable,
+            stateLayoutWeight = medicineStateData.stateWeight,
+            emptyLayoutWeight = medicineStateData.emptyWeight,
+            stateColorId = medicineStateData.colorId,
             medicineImageFile = medicineItem.imageName?.let { File(appFilesDir, it) }
         )
-    }
-
-    companion object {
-        const val STATE_GOOD_LIMIT = 0.75f
-        const val STATE_MEDIUM_LIMIT = 0.4f
     }
 
     data class MedicineItemDisplayData(

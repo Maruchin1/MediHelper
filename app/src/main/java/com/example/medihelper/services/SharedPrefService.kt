@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
 import com.example.medihelper.R
 import com.example.medihelper.custom.SharedPrefLiveData
@@ -27,7 +28,24 @@ class SharedPrefService(
             stringValue.toInt()
         } ?: emptyList()
 
-    fun getLoggedUserAuthToken() = sharedPreferences.getString(KEY_LOGGED_USER_AUTH_TOKEN, null)
+    fun getLoggedUserAuthToken(): String? = sharedPreferences.getString(KEY_LOGGED_USER_AUTH_TOKEN, null)
+
+    fun getAppModeLive(): LiveData<AppMode> {
+        val authTokenLive = SharedPrefLiveData(sharedPreferences, KEY_LOGGED_USER_AUTH_TOKEN, "")
+        val emailLive = SharedPrefLiveData(sharedPreferences, KEY_LOGGED_USER_EMAIL, "")
+        var authToken = ""
+        var email = ""
+        val appModeLive = MediatorLiveData<AppMode>()
+        appModeLive.addSource(authTokenLive) { newAuthToken ->
+            authToken = newAuthToken
+            appModeLive.postValue(AppMode.getAppMode(authToken, email))
+        }
+        appModeLive.addSource(emailLive) { newEmail ->
+            email = newEmail
+            appModeLive.postValue(AppMode.getAppMode(authToken, email))
+        }
+        return appModeLive
+    }
 
     fun getLoggedUserEmailLive(): LiveData<String> = SharedPrefLiveData(sharedPreferences, KEY_LOGGED_USER_EMAIL, "")
 
@@ -80,5 +98,17 @@ class SharedPrefService(
         private const val KEY_LOGGED_USER_AUTH_TOKEN = "key-logged-user-auth-token"
         private const val KEY_LOGGED_USER_EMAIL = "key-logged-user-email"
         private const val KEY_LAST_SYNC_TIME = "key-last-sync_time"
+    }
+
+    enum class AppMode {
+        OFFLINE, LOGGED, CONNECTED;
+
+        companion object {
+            fun getAppMode(authToken: String, email: String) = when {
+                authToken.isNotEmpty() && email.isNotEmpty() -> LOGGED
+                authToken.isNotEmpty() && email.isEmpty() -> CONNECTED
+                else -> OFFLINE
+            }
+        }
     }
 }

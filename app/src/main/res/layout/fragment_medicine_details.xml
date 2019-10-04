@@ -226,7 +226,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:visibility="@{viewModel.stateAvailableLive ? View.VISIBLE : View.GONE}">
+                    android:visibility="@{viewModel.medicineStateDataLive.stateAvailable ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -242,9 +242,9 @@
                             android:id="@+id/txv_curr_state_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.stateTextLive, default=Stan}"
+                            android:text="@{viewModel.medicineStateDataLive.text, default=Stan}"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor='@{viewModel.stateColorResIdLive, default="@color/colorStateGood"}'
+                            android:textColor='@{viewModel.medicineStateDataLive.colorId, default="@color/colorStateGood"}'
                             android:textSize="16sp" />
 
                         <com.google.android.material.card.MaterialCardView
@@ -264,14 +264,14 @@
                                     android:id="@+id/line_state"
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
-                                    android:layout_weight="@{viewModel.stateWeightLive, default=7}"
-                                    android:background='@{viewModel.stateColorResIdLive, default="@android:color/holo_green_light"}' />
+                                    android:layout_weight="@{viewModel.medicineStateDataLive.stateWeight, default=7}"
+                                    android:background='@{viewModel.medicineStateDataLive.colorId, default="@android:color/holo_green_light"}' />
 
                                 <View
                                     android:id="@+id/line_empty"
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
-                                    android:layout_weight="@{viewModel.emptyWeightLive, default=3}"
+                                    android:layout_weight="@{viewModel.medicineStateDataLive.emptyWeight, default=3}"
                                     android:background="@color/colorBackground" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
@@ -288,7 +288,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="4dp"
-                                android:text="@{viewModel.stateNumberStringLive, default=stan}"
+                                android:text="@{viewModel.medicineStateDataLive.numberText, default=stan}"
                                 android:textAlignment="viewEnd"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                                 android:textColor="@color/colorTextTertiary" />
@@ -299,7 +299,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="4dp"
-                                android:text="@{viewModel.typeNameLive, default=typ}"
+                                android:text="@{viewModel.medicineUnitLive, default=typ}"
                                 android:textAlignment="viewStart"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                                 android:textColor="@color/colorTextTertiary" />

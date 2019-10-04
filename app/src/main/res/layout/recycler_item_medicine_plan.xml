@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/round_event_24"
-                    android:tint="@color/colorPrimary" />
+                    android:tint='@{displayData.colorPrimaryResID, default="@color/colorPrimary"}' />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/pill"
-                    android:tint="@color/colorPrimary" />
+                    android:tint='@{displayData.colorPrimaryResID, default="@color/colorPrimary"}' />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/baseline_check_24"
-                    android:tint="@color/colorPrimary" />
+                    android:tint='@{displayData.colorPrimaryResID, default="@color/colorPrimary"}' />
 
                 <TextView
                     android:layout_width="match_parent"

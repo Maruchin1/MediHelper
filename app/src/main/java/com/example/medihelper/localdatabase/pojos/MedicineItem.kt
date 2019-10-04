@@ -20,10 +20,4 @@ data class MedicineItem(
 
     @ColumnInfo(name = "image_name")
     var imageName: String?
-) {
-    fun calcMedicineState(): Float? {
-        return packageSize?.let { packageSize ->
-            currState?.div(packageSize)
-        }
-    }
-}
+)

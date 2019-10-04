@@ -1,10 +1,9 @@
 package com.example.medihelper.dialogs
 
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.R
+import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
-import com.example.medihelper.mainapp.medicines.MedicinesViewModel
 import java.io.File
 
 class SelectMedicineViewModel(
@@ -15,20 +14,14 @@ class SelectMedicineViewModel(
     val medicineItemListLive = medicineRepository.getItemListLive()
 
     fun getMedicineDisplayData(medicineItem: MedicineItem): MedicineItemDisplayData {
-        val medicineState = medicineItem.calcMedicineState()
+        val medicineStateData = MedicineEntity.StateData(medicineItem.packageSize, medicineItem.currState)
         return MedicineItemDisplayData(
             medicineID = medicineItem.medicineID,
             medicineName = medicineItem.medicineName,
-            stateAvailable = medicineState != null,
-            stateLayoutWeight = medicineState,
-            emptyLayoutWeight = medicineState?.let { 1 - it },
-            stateColorId = medicineState?.let {
-                when {
-                    medicineState >= MedicinesViewModel.STATE_GOOD_LIMIT -> R.color.colorStateGood
-                    medicineState > MedicinesViewModel.STATE_MEDIUM_LIMIT -> R.color.colorStateMedium
-                    else -> R.color.colorStateSmall
-                }
-            },
+            stateAvailable = medicineStateData.stateAvailable,
+            stateLayoutWeight = medicineStateData.stateWeight,
+            emptyLayoutWeight = medicineStateData.emptyWeight,
+            stateColorId = medicineStateData.colorId,
             medicineImageFile = medicineItem.imageName?.let { File(appFilesDir, it) }
         )
     }
