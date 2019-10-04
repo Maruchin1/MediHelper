@@ -31,6 +31,20 @@ class SharedPrefService(
 
     fun getLoggedUserAuthToken(): String? = sharedPreferences.getString(KEY_LOGGED_USER_AUTH_TOKEN, null)
 
+    fun getAppMode(): AppMode {
+        val authToken = sharedPreferences.getString(KEY_LOGGED_USER_AUTH_TOKEN, "") ?: ""
+        val email = sharedPreferences.getString(KEY_LOGGED_USER_EMAIL, "") ?: ""
+//        return AppMode.getAppMode(authToken, email)
+        return AppMode.CONNECTED
+    }
+
+    fun getLoggedUserEmailLive(): LiveData<String> = SharedPrefLiveData(sharedPreferences, KEY_LOGGED_USER_EMAIL, "")
+
+    fun getLastSyncTimeLive(): LiveData<Date> =
+        Transformations.map(SharedPrefLiveData(sharedPreferences, KEY_LAST_SYNC_TIME, "")) { dateString ->
+            if (dateString != "") SimpleDateFormat.getDateTimeInstance().parse(dateString) else null
+        }
+
     fun getAppModeLive(): LiveData<AppMode> {
         val authTokenLive = SharedPrefLiveData(sharedPreferences, KEY_LOGGED_USER_AUTH_TOKEN, "")
         val emailLive = SharedPrefLiveData(sharedPreferences, KEY_LOGGED_USER_EMAIL, "")
@@ -48,13 +62,6 @@ class SharedPrefService(
         val appModeLive = MutableLiveData(AppMode.CONNECTED)
         return appModeLive
     }
-
-    fun getLoggedUserEmailLive(): LiveData<String> = SharedPrefLiveData(sharedPreferences, KEY_LOGGED_USER_EMAIL, "")
-
-    fun getLastSyncTimeLive(): LiveData<Date> =
-        Transformations.map(SharedPrefLiveData(sharedPreferences, KEY_LAST_SYNC_TIME, "")) { dateString ->
-            if (dateString != "") SimpleDateFormat.getDateTimeInstance().parse(dateString) else null
-        }
 
     // Save
     fun saveMedicineUnitList(newMedicineUnitList: List<String>) = sharedPreferences.edit(true) {

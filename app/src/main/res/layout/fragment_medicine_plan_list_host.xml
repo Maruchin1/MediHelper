@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="handler"
             type="com.example.medihelper.mainapp.medicineplan.MedicinePlanListHostFragment" />
@@ -86,7 +88,7 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:background="?selectableItemBackgroundBorderless"
-                        android:clickable="true"
+                        android:clickable="@{viewModel.isAppModeConnectedLive() ? false : true}"
                         android:focusable="true"
                         android:onClick="@{() -> handler.onClickSelectPerson()}"
                         app:layout_constraintBottom_toBottomOf="@id/card_avatar"
@@ -129,8 +131,9 @@
             android:layout_margin="16dp"
             android:onClick="@{() -> handler.onClickAddMedicinePlan()}"
             android:src="@drawable/round_add_white_48"
-            app:iconTint="@color/colorWhite"
+            android:visibility="@{viewModel.isAppModeConnectedLive() ? View.GONE : View.VISIBLE}"
             app:backgroundTint="@color/colorPrimary"
+            app:iconTint="@color/colorWhite"
             app:tint="@color/colorWhite" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

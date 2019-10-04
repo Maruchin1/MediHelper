@@ -9,13 +9,16 @@ import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import com.example.medihelper.services.PersonProfileService
+import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
 
 class MedicinePlanListViewModel(
     private val medicinePlanRepository: MedicinePlanRepository,
-    personProfileService: PersonProfileService
+    private val personProfileService: PersonProfileService,
+    private val sharedPrefService: SharedPrefService
 ) : ViewModel() {
 
+    val isAppModeConnectedLive: LiveData<Boolean>
     val colorPrimaryLive: LiveData<Int>
     val selectedPersonItemLive = personProfileService.getCurrPersonItemLive()
     private val medicinePlanItemListLive: LiveData<List<MedicinePlanItem>>
@@ -23,6 +26,9 @@ class MedicinePlanListViewModel(
     private val medicinePlanItemEndedListLive: LiveData<List<MedicinePlanItem>>
 
     init {
+        isAppModeConnectedLive = Transformations.map(sharedPrefService.getAppModeLive()) {
+            it == SharedPrefService.AppMode.CONNECTED
+        }
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
             personItem?.personColorResID
         }
@@ -67,7 +73,8 @@ class MedicinePlanListViewModel(
             MedicinePlanEntity.DaysType.EVERYDAY -> "Codziennie"
             MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanItem.daysOfWeek?.getSelectedDaysString() ?: "--"
             MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> "Co ${medicinePlanItem.intervalOfDays ?: "--"} dni"
-        }
+        },
+        isAppModeConnected = sharedPrefService.getAppMode() == SharedPrefService.AppMode.CONNECTED
     )
 
     private fun getMedicinePlanType(medicinePlanItem: MedicinePlanItem): MedicinePlanType {
@@ -94,7 +101,8 @@ class MedicinePlanListViewModel(
         val colorPrimaryResID: Int,
         val medicineName: String,
         val planDuration: String,
-        val daysType: String?
+        val daysType: String?,
+        val isAppModeConnected: Boolean
     )
 
     enum class MedicinePlanType(val pageTitle: String) {

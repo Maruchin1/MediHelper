@@ -101,7 +101,7 @@ val viewModelModule = module {
     viewModel { AddEditPersonViewModel(get(), get()) }
     viewModel { PersonViewModel(get(), get()) }
     viewModel { MedicinePlanHistoryViewModel(get(), get()) }
-    viewModel { MedicinePlanListViewModel(get(), get()) }
+    viewModel { MedicinePlanListViewModel(get(), get(), get()) }
     viewModel { MedicineDetailsViewModel(androidContext().filesDir, get(), get(), get()) }
     viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get()) }
     viewModel { SelectMedicineViewModel(androidContext().filesDir, get()) }

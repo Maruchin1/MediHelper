@@ -114,6 +114,7 @@
                     android:layout_height="wrap_content"
                     android:onClick="@{() -> handler.onClickEditMedicinePlan(displayData.medicinePlanID)}"
                     android:text="Edytuj"
+                    android:visibility="@{displayData.isAppModeConnected ? View.GONE : View.VISIBLE}"
                     app:chipIcon="@drawable/round_edit_24" />
 
                 <com.google.android.material.chip.Chip
@@ -122,6 +123,7 @@
                     android:layout_height="wrap_content"
                     android:onClick="@{() -> handler.onClickDeleteMedicinePlan(displayData.medicinePlanID)}"
                     android:text="Usuń"
+                    android:visibility="@{displayData.isAppModeConnected ? View.GONE : View.VISIBLE}"
                     app:chipIcon="@drawable/round_delete_24" />
             </com.google.android.material.chip.ChipGroup>
 
