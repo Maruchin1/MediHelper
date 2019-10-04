@@ -41,7 +41,6 @@ class MedicinesViewModel(
             medicineName = medicineItem.medicineName,
             medicineUnit = medicineItem.medicineUnit,
             stateAvailable = medicineState != null,
-            medicineState = "${medicineItem.currState}/${medicineItem.packageSize}",
             stateLayoutWeight = medicineState,
             emptyLayoutWeight = medicineState?.let { 1 - it },
             stateColorId = medicineState?.let {
@@ -65,7 +64,6 @@ class MedicinesViewModel(
         val medicineName: String,
         val medicineUnit: String,
         val stateAvailable: Boolean,
-        val medicineState: String,
         val stateLayoutWeight: Float?,
         val emptyLayoutWeight: Float?,
         val stateColorId: Int?,
