@@ -8,19 +8,25 @@ import androidx.lifecycle.ViewModel
 import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
+import com.example.medihelper.services.SharedPrefService
 import java.io.File
 
 class MedicinesViewModel(
     private val appFilesDir: File,
-    private val medicineRepository: MedicineRepository
+    private val medicineRepository: MedicineRepository,
+    private val sharedPrefService: SharedPrefService
 ) : ViewModel() {
     private val TAG = "MedicinesViewModel"
 
+    val isAppModeConnectedLive: LiveData<Boolean>
     val searchQueryLive = MutableLiveData("")
     val medicineItemListLive: LiveData<List<MedicineItem>>
     val medicineAvailableLive: LiveData<Boolean>
 
     init {
+        isAppModeConnectedLive = Transformations.map(sharedPrefService.getAppModeLive()) {
+            it == SharedPrefService.AppMode.CONNECTED
+        }
         medicineItemListLive = Transformations.switchMap(searchQueryLive) { searchQuery ->
             Log.d(TAG, "searchQuery change = $searchQuery")
             if (searchQuery.isNullOrEmpty()) {

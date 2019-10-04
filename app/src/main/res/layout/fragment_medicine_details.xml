@@ -194,7 +194,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:onClick="@{() -> handler.onClickTake()}"
-                                        android:text="Zażyj"
+                                        android:text="Przyjmij"
                                         app:chipIcon="@drawable/pill" />
 
                                     <com.google.android.material.chip.Chip
@@ -203,6 +203,7 @@
                                         android:layout_height="wrap_content"
                                         android:onClick="@{() -> handler.onClickEdit()}"
                                         android:text="Edytuj"
+                                        android:visibility="@{viewModel.isAppModeConnected() ? View.GONE : View.VISIBLE}"
                                         app:chipIcon="@drawable/round_edit_black_24" />
 
                                     <com.google.android.material.chip.Chip
@@ -211,6 +212,7 @@
                                         android:layout_height="wrap_content"
                                         android:onClick="@{() -> handler.onClickDelete()}"
                                         android:text="Usuń"
+                                        android:visibility="@{viewModel.isAppModeConnected() ? View.GONE : View.VISIBLE}"
                                         app:chipIcon="@drawable/round_delete_black_24" />
                                 </com.google.android.material.chip.ChipGroup>
                             </LinearLayout>
@@ -313,7 +315,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp">
+                    android:layout_marginEnd="16dp"
+                    android:visibility="@{viewModel.isAppModeConnected() ? View.GONE : View.VISIBLE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -7,6 +7,7 @@ import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.PersonItem
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PersonRepository
+import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
@@ -14,8 +15,11 @@ import java.io.File
 class MedicineDetailsViewModel(
     private val appFilesDir: File,
     private val medicineRepository: MedicineRepository,
-    private val personRepository: PersonRepository
+    private val personRepository: PersonRepository,
+    private val sharedPrefService: SharedPrefService
 ) : ViewModel() {
+
+    val isAppModeConnected: LiveData<Boolean>
 
     val medicineNameLive: LiveData<String>
     val expireDateLive: LiveData<String>
@@ -32,6 +36,9 @@ class MedicineDetailsViewModel(
     private val medicineDetailsLive: LiveData<MedicineDetails>
 
     init {
+        isAppModeConnected = Transformations.map(sharedPrefService.getAppModeLive()) {
+            it == SharedPrefService.AppMode.CONNECTED
+        }
         medicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) {
             medicineRepository.getDetailsLive(it)
         }

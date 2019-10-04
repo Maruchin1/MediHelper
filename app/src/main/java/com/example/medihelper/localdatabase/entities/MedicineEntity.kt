@@ -66,7 +66,7 @@ data class MedicineEntity(
         private val state = packageSize?.let { currState?.div(it) }
 
         init {
-            stateAvailable = state != nulls
+            stateAvailable = state != null
             stateWeight = state
             emptyWeight = state?.let { 1 - it }
             colorId = state?.let {

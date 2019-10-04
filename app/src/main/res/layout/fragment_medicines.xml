@@ -92,6 +92,7 @@
             android:layout_margin="16dp"
             android:onClick="@{() -> handler.onClickAddMedicine()}"
             android:src="@drawable/round_add_white_48"
+            android:visibility="@{viewModel.isAppModeConnectedLive() ? View.GONE : View.VISIBLE}"
             app:backgroundTint="@color/colorPrimary"
             app:tint="@color/colorWhite" />
 

@@ -96,13 +96,13 @@ val remoteDatabaseModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { MedicinesViewModel(androidContext().filesDir, get()) }
+    viewModel { MedicinesViewModel(androidContext().filesDir, get(), get()) }
     viewModel { AddEditMedicineViewModel(androidContext().filesDir, get(), get(), get()) }
     viewModel { AddEditPersonViewModel(get(), get()) }
     viewModel { PersonViewModel(get(), get()) }
     viewModel { MedicinePlanHistoryViewModel(get(), get()) }
     viewModel { MedicinePlanListViewModel(get(), get()) }
-    viewModel { MedicineDetailsViewModel(androidContext().filesDir, get(), get()) }
+    viewModel { MedicineDetailsViewModel(androidContext().filesDir, get(), get(), get()) }
     viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get()) }
     viewModel { SelectMedicineViewModel(androidContext().filesDir, get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get()) }

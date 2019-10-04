@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.medihelper.R
 import com.example.medihelper.custom.SharedPrefLiveData
@@ -35,15 +36,16 @@ class SharedPrefService(
         val emailLive = SharedPrefLiveData(sharedPreferences, KEY_LOGGED_USER_EMAIL, "")
         var authToken = ""
         var email = ""
-        val appModeLive = MediatorLiveData<AppMode>()
-        appModeLive.addSource(authTokenLive) { newAuthToken ->
-            authToken = newAuthToken
-            appModeLive.postValue(AppMode.getAppMode(authToken, email))
-        }
-        appModeLive.addSource(emailLive) { newEmail ->
-            email = newEmail
-            appModeLive.postValue(AppMode.getAppMode(authToken, email))
-        }
+//        val appModeLive = MediatorLiveData<AppMode>()
+//        appModeLive.addSource(authTokenLive) { newAuthToken ->
+//            authToken = newAuthToken
+//            appModeLive.postValue(AppMode.getAppMode(authToken, email))
+//        }
+//        appModeLive.addSource(emailLive) { newEmail ->
+//            email = newEmail
+//            appModeLive.postValue(AppMode.getAppMode(authToken, email))
+//        }
+        val appModeLive = MutableLiveData(AppMode.CONNECTED)
         return appModeLive
     }
 
