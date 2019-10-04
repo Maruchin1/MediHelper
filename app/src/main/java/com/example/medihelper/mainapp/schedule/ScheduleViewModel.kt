@@ -5,22 +5,28 @@ import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import com.example.medihelper.services.PersonProfileService
+import com.example.medihelper.services.SharedPrefService
 
 
 class ScheduleViewModel(
     private val plannedMedicineRepository: PlannedMedicineRepository,
-    personProfileService: PersonProfileService
+    private val personProfileService: PersonProfileService,
+    private val sharedPrefService: SharedPrefService
 ) : ViewModel() {
 
     val timelineDaysCount = 10000
     val initialDatePosition = timelineDaysCount / 2
 
+    val isAppModeConnectedLive: LiveData<Boolean>
     val selectedPersonItemLive = personProfileService.getCurrPersonItemLive()
     val colorPrimaryLive: LiveData<Int>
     val calendarLayoutVisibleLive = MutableLiveData(false)
     val selectedDateLive = MutableLiveData<AppDate>()
 
     init {
+        isAppModeConnectedLive = Transformations.map(sharedPrefService.getAppModeLive()) {
+            it == SharedPrefService.AppMode.CONNECTED
+        }
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
             personItem?.personColorResID
         }

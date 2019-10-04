@@ -97,7 +97,7 @@
                             android:layout_width="0dp"
                             android:layout_height="0dp"
                             android:background="?selectableItemBackgroundBorderless"
-                            android:clickable="true"
+                            android:clickable="@{viewModel.isAppModeConnectedLive() ? false : true}"
                             android:focusable="true"
                             android:onClick="@{() -> handler.onClickSelectPerson()}"
                             app:layout_constraintBottom_toBottomOf="@id/card_avatar"

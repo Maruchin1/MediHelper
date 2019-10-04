@@ -34,8 +34,7 @@ class SharedPrefService(
     fun getAppMode(): AppMode {
         val authToken = sharedPreferences.getString(KEY_LOGGED_USER_AUTH_TOKEN, "") ?: ""
         val email = sharedPreferences.getString(KEY_LOGGED_USER_EMAIL, "") ?: ""
-//        return AppMode.getAppMode(authToken, email)
-        return AppMode.CONNECTED
+        return AppMode.getAppMode(authToken, email)
     }
 
     fun getLoggedUserEmailLive(): LiveData<String> = SharedPrefLiveData(sharedPreferences, KEY_LOGGED_USER_EMAIL, "")
@@ -50,16 +49,15 @@ class SharedPrefService(
         val emailLive = SharedPrefLiveData(sharedPreferences, KEY_LOGGED_USER_EMAIL, "")
         var authToken = ""
         var email = ""
-//        val appModeLive = MediatorLiveData<AppMode>()
-//        appModeLive.addSource(authTokenLive) { newAuthToken ->
-//            authToken = newAuthToken
-//            appModeLive.postValue(AppMode.getAppMode(authToken, email))
-//        }
-//        appModeLive.addSource(emailLive) { newEmail ->
-//            email = newEmail
-//            appModeLive.postValue(AppMode.getAppMode(authToken, email))
-//        }
-        val appModeLive = MutableLiveData(AppMode.CONNECTED)
+        val appModeLive = MediatorLiveData<AppMode>()
+        appModeLive.addSource(authTokenLive) { newAuthToken ->
+            authToken = newAuthToken
+            appModeLive.postValue(AppMode.getAppMode(authToken, email))
+        }
+        appModeLive.addSource(emailLive) { newEmail ->
+            email = newEmail
+            appModeLive.postValue(AppMode.getAppMode(authToken, email))
+        }
         return appModeLive
     }
 
