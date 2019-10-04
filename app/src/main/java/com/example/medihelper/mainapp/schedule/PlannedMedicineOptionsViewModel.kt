@@ -8,13 +8,13 @@ import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
 
 class PlannedMedicineOptionsViewModel(
     private val plannedMedicineRepository: PlannedMedicineRepository,
-    private val medicineRepository: MedicineRepository,
-    private val appFilesDir: File
+    private val medicineRepository: MedicineRepository
 ) : ViewModel() {
 
     val medicineNameLive: LiveData<String>
@@ -24,7 +24,6 @@ class PlannedMedicineOptionsViewModel(
     val plannedDateLive: LiveData<AppDate>
     val plannedTimeLive: LiveData<AppTime>
     val doseSizeLive: LiveData<String>
-    val medicineImageFileLive: LiveData<File>
     val takeMedicineBtnText: LiveData<String>
     val takeMedicineBtnIcon: LiveData<Int>
 
@@ -52,9 +51,6 @@ class PlannedMedicineOptionsViewModel(
         plannedTimeLive = Transformations.map(plannedMedicineDetailsLive) { it?.plannedTime }
         doseSizeLive = Transformations.map(plannedMedicineDetailsLive) { it.plannedDoseSize.toString() }
         medicineUnitLive = Transformations.map(plannedMedicineDetailsLive) { it.medicineUnit }
-        medicineImageFileLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicineDetails ->
-            plannedMedicineDetails.imageName?.let { File(appFilesDir, it) }
-        }
         takeMedicineBtnText = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
             if (plannedMedicine.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
                 "Anuluj przyjecie leku"
@@ -75,7 +71,7 @@ class PlannedMedicineOptionsViewModel(
         plannedMedicineIDLive.value = args.plannedMedicineID
     }
 
-    fun changePlannedMedicineStatus() = viewModelScope.launch {
+    fun changePlannedMedicineStatus() = GlobalScope.launch {
         plannedMedicineDetailsLive.value?.let { plannedMedicineDetails ->
             val plannedMedicineEntity = plannedMedicineRepository.getEntity(plannedMedicineDetails.plannedMedicineID)
             val medicineEntity = medicineRepository.getEntity(plannedMedicineDetails.medicineID)

@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.medihelper.R
+import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.DialogPlannedMedicineOptionsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -19,7 +20,10 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
     private val args: PlannedMedicineOptionsDialogArgs by navArgs()
     private val directions by lazy { PlannedMedicineOptionsDialogDirections }
 
-    fun onClickChangePlannedMedicineStatus() = viewModel.changePlannedMedicineStatus()
+    fun onClickChangePlannedMedicineStatus() {
+        viewModel.changePlannedMedicineStatus()
+        dismiss()
+    }
 
     fun onClickNavigateToMedicineDetails() = viewModel.medicineID?.let {
         findNavController().navigate(directions.toMedicineDetailsFragment(it))
@@ -27,16 +31,12 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel.setArgs(args)
-        val binding: DialogPlannedMedicineOptionsBinding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.dialog_planned_medicine_options,
-            container,
-            false
+        return bind<DialogPlannedMedicineOptionsBinding>(
+            inflater = inflater,
+            container = container,
+            layoutResId = R.layout.dialog_planned_medicine_options,
+            viewModel = viewModel
         )
-        binding.viewModel = viewModel
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
     }
 
 

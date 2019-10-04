@@ -101,14 +101,22 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
     private fun setupTextFieldsFocusListener() {
         etx_package_size.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                viewModel.packageSizeLive.value = (view as TextInputEditText).text?.toString()?.toFloatOrNull()
+                passPackageSizeValueToViewModel()
             }
         }
         etx_curr_state.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                viewModel.currStateLive.value = (view as TextInputEditText).text?.toString()?.toFloatOrNull()
+                passCurrStateValueToViewModel()
             }
         }
+    }
+
+    private fun passPackageSizeValueToViewModel() {
+        viewModel.packageSizeLive.value = etx_package_size.text?.toString()?.toFloatOrNull()
+    }
+
+    private fun passCurrStateValueToViewModel() {
+        viewModel.currStateLive.value = etx_curr_state.text?.toString()?.toFloatOrNull()
     }
 
     private fun setupToolbar() {
@@ -116,6 +124,8 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {
+                    passPackageSizeValueToViewModel()
+                    passCurrStateValueToViewModel()
                     val medicineSaved = viewModel.saveMedicine()
                     if (medicineSaved) {
                         dismiss()
