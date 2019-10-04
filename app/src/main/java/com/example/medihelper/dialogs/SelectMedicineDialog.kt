@@ -12,6 +12,7 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
+import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.DialogSelectMedicineBinding
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 import kotlinx.android.synthetic.main.dialog_select_medicine.*
@@ -35,10 +36,12 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: DialogSelectMedicineBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_select_medicine, container, false)
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        return bind<DialogSelectMedicineBinding>(
+            inflater = inflater,
+            layoutResId = R.layout.dialog_select_medicine,
+            container = container,
+            viewModel = viewModel
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

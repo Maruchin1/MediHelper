@@ -1,6 +1,8 @@
 package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.*
+import com.example.medihelper.AppDate
+import com.example.medihelper.AppTime
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
@@ -11,15 +13,16 @@ import java.io.File
 
 class PlannedMedicineOptionsViewModel(
     private val plannedMedicineRepository: PlannedMedicineRepository,
-    private val medicineRepository: MedicineRepository
+    private val medicineRepository: MedicineRepository,
+    private val appFilesDir: File
 ) : ViewModel() {
 
     val medicineNameLive: LiveData<String>
     val medicineUnitLive: LiveData<String>
     val statusOfTakingLive: LiveData<String>
     val statusOfTakingColorIdLive: LiveData<Int>
-    val plannedDateLive: LiveData<String>
-    val plannedTimeLive: LiveData<String>
+    val plannedDateLive: LiveData<AppDate>
+    val plannedTimeLive: LiveData<AppTime>
     val doseSizeLive: LiveData<String>
     val medicineImageFileLive: LiveData<File>
     val takeMedicineBtnText: LiveData<String>
@@ -36,33 +39,21 @@ class PlannedMedicineOptionsViewModel(
             plannedMedicineRepository.getDetailsLive(plannedMedicineID)
         }
 
-        medicineNameLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            plannedMedicine.medicineName
-        }
-        statusOfTakingLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            plannedMedicine.statusOfTaking.string
-        }
-        statusOfTakingColorIdLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            when (plannedMedicine.statusOfTaking) {
+        medicineNameLive = Transformations.map(plannedMedicineDetailsLive) { it.medicineName }
+        statusOfTakingLive = Transformations.map(plannedMedicineDetailsLive) { it.statusOfTaking.string }
+        statusOfTakingColorIdLive = Transformations.map(plannedMedicineDetailsLive) {
+            when (it.statusOfTaking) {
                 PlannedMedicineEntity.StatusOfTaking.WAITING -> R.color.colorDarkerGray
                 PlannedMedicineEntity.StatusOfTaking.TAKEN -> R.color.colorStateGood
                 PlannedMedicineEntity.StatusOfTaking.NOT_TAKEN -> R.color.colorStateSmall
             }
         }
-        plannedDateLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            plannedMedicine?.plannedDate?.formatString
-        }
-        plannedTimeLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            plannedMedicine?.plannedTime?.formatString
-        }
-        doseSizeLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            plannedMedicine.plannedDoseSize.toString()
-        }
-        medicineUnitLive = Transformations.map(plannedMedicineDetailsLive) { medicineType ->
-            medicineType.medicineUnit
-        }
-        medicineImageFileLive = Transformations.map(plannedMedicineDetailsLive) { medicine ->
-            medicine?.photoFilePath?.let { File(it) }
+        plannedDateLive = Transformations.map(plannedMedicineDetailsLive) { it?.plannedDate }
+        plannedTimeLive = Transformations.map(plannedMedicineDetailsLive) { it?.plannedTime }
+        doseSizeLive = Transformations.map(plannedMedicineDetailsLive) { it.plannedDoseSize.toString() }
+        medicineUnitLive = Transformations.map(plannedMedicineDetailsLive) { it.medicineUnit }
+        medicineImageFileLive = Transformations.map(plannedMedicineDetailsLive) { plannedMedicineDetails ->
+            plannedMedicineDetails.imageName?.let { File(appFilesDir, it) }
         }
         takeMedicineBtnText = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
             if (plannedMedicine.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
@@ -77,9 +68,6 @@ class PlannedMedicineOptionsViewModel(
             } else {
                 R.drawable.baseline_check_white_24
             }
-        }
-        viewModelScope.launch {
-
         }
     }
 

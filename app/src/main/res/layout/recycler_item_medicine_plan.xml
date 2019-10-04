@@ -26,61 +26,78 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp">
+                android:gravity="center_vertical">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_pill_black_36dp"
-                    android:tint='@{displayData.colorPrimaryResID, default="@color/colorPrimary"}' />
+                    android:src="@drawable/round_event_24"
+                    android:tint="@color/colorPrimary" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text='@{displayData.medicineName, default="Nazwa leku"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:layout_marginStart="16dp"
+                    android:text='@{displayData.planDuration, default="01 sty 2019 - 11 sty 2019"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                     android:textColor="@color/colorTextSecondary" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="vertical">
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/pill"
+                    android:tint="@color/colorPrimary" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text='@{displayData.planDuration, default="Czas trwania"}'
+                    android:layout_marginStart="16dp"
+                    android:text='@{displayData.medicineName, default="Nazwa leku"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                     android:textColor="@color/colorTextSecondary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:visibility='@{displayData.daysType != null ? View.VISIBLE : View.GONE}'>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_check_24"
+                    android:tint="@color/colorPrimary" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
                     android:text='@{displayData.daysType, default="Dni przyjmowania"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                    android:textColor="@color/colorTextSecondary"
-                    android:visibility="@{displayData.daysType != null ? View.VISIBLE : View.GONE}" />
+                    android:textColor="@color/colorTextSecondary" />
             </LinearLayout>
 
             <com.google.android.material.chip.ChipGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
                 app:chipSpacingHorizontal="8dp">
 
                 <com.google.android.material.chip.Chip

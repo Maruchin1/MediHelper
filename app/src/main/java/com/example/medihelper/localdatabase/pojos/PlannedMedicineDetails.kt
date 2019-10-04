@@ -19,8 +19,8 @@ data class PlannedMedicineDetails(
     @ColumnInfo(name = "medicine_unit")
     val medicineUnit: String,
 
-    @ColumnInfo(name = "photo_file_path")
-    val photoFilePath: String? = null,
+    @ColumnInfo(name = "image_name")
+    var imageName: String?,
 
     @ColumnInfo(name = "planned_dose_size")
     val plannedDoseSize: Float,
