@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.remotedatabase.AuthenticationApi
-import com.example.medihelper.remotedatabase.ConnectedPersonApi
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
 
@@ -54,8 +53,8 @@ class PatronConnectViewModel(
                     deleteAll()
                 }
                 sharedPrefService.run {
-                    saveLoggedUserAuthToken(profileDataDto.authToken)
-                    deleteLoggedUserEmail()
+                    saveAuthToken(profileDataDto.authToken)
+                    deleteUserEmail()
                 }
                 connectSuccessfulLive.postValue(Pair(profileDataDto.personName, profileDataDto.personColorResId))
             } catch (e: Exception) {

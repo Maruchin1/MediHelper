@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import androidx.lifecycle.*
 import com.example.medihelper.localdatabase.pojos.PersonOptionsData
 import com.example.medihelper.localdatabase.repositories.PersonRepository
-import com.example.medihelper.remotedatabase.RegisteredUserApi
 import com.example.medihelper.services.SharedPrefService
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
@@ -36,7 +35,7 @@ class PersonOptionsViewModel(
         connectionKeyQrCodeLive = Transformations.map(connectionKeyLive) { connectionKey ->
             connectionKey?.let { createTempKeyQrCodeBitmap(it) }
         }
-        isUserLoggedLive = Transformations.map(sharedPrefService.getLoggedUserEmailLive()) { !it.isNullOrEmpty() }
+        isUserLoggedLive = Transformations.map(sharedPrefService.getUserEmailLive()) { !it.isNullOrEmpty() }
     }
 
     fun setArgs(args: PersonOptionsFragmentArgs) {

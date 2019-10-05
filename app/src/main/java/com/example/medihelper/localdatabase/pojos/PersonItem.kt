@@ -14,8 +14,5 @@ data class PersonItem(
     val personColorResID: Int,
 
     @ColumnInfo(name = "main_person")
-    val mainPerson: Boolean,
-
-    @ColumnInfo(name = "connection_key")
-    var connectionKey: String? = null
+    val mainPerson: Boolean
 )

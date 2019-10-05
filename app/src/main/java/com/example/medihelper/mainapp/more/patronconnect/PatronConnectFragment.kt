@@ -74,10 +74,9 @@ class PatronConnectFragment : AppFullScreenDialog() {
                 loadingDialogService.dismissLoadingDialog()
             }
         })
-
         viewModel.connectSuccessfulLive.observe(viewLifecycleOwner, Observer { nameAndColorId ->
+            findNavController().navigate(directions.toConnectedPersonFragment())
             dismiss()
-            findNavController().navigate(directions.toConnectSuccessDialog(nameAndColorId.first, nameAndColorId.second))
         })
     }
 

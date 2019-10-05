@@ -131,8 +131,8 @@ class LoginRegisterViewModel(
 
     private fun saveLoginDataAndSync() {
         sharedPrefService.run {
-            saveLoggedUserAuthToken(tempAuthToken)
-            saveLoggedUserEmail(tempUserEmail)
+            saveAuthToken(tempAuthToken)
+            saveUserEmail(tempUserEmail)
         }
         workerService.enqueueSynchronizeData()
     }

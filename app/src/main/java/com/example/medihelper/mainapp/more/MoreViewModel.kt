@@ -5,16 +5,17 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.services.SharedPrefService
 
-class MoreViewModel(sharedPrefService: SharedPrefService) : ViewModel() {
+class MoreViewModel(private val sharedPrefService: SharedPrefService) : ViewModel() {
 
     val loggedUserInfoLive: LiveData<String>
-    private val loggedUserEmailLive = sharedPrefService.getLoggedUserEmailLive()
+    val isAppModeLogged: Boolean
+        get() = sharedPrefService.getAppMode() == SharedPrefService.AppMode.LOGGED
+    val isAppModeConnected: Boolean
+        get() = sharedPrefService.getAppMode() == SharedPrefService.AppMode.CONNECTED
 
     init {
-        loggedUserInfoLive = Transformations.map(loggedUserEmailLive) { email ->
+        loggedUserInfoLive = Transformations.map(sharedPrefService.getUserEmailLive()) { email ->
             if (email.isNullOrEmpty()) "Nie zalogowano" else email
         }
     }
-
-    fun isUserLogged() = !loggedUserEmailLive.value.isNullOrEmpty()
 }

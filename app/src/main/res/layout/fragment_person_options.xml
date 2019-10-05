@@ -109,11 +109,23 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="32dp"
                         android:alpha="0.6"
-                        android:text="Skorzystaj z darmowego konta MediHelper aby połączyć się z aplikacją innej osoby. Będziesz mógł zarządzać jej zaplanowanymi lekami oraz kotrolować czy je przyjmuje"
+                        android:text="Skorzystaj z darmowego konta MediHelper aby połączyć się z aplikacją innej osoby"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/MedicineDetailFragment.Text.Body2"
+                        android:textColor="@color/colorWhite" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:alpha="0.6"
+                        android:text="Będziesz mógł zarządzać jej zaplanowanymi lekami oraz kotrolować czy je przyjmuje"
                         android:textAlignment="center"
                         android:textAppearance="@style/MedicineDetailFragment.Text.Body2"
                         android:textColor="@color/colorWhite" />
@@ -122,6 +134,8 @@
                         style="@style/AppTheme.Widget.Button.Outlined.Big.Dark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
                         android:layout_marginTop="64dp"
                         android:onClick="@{() -> handler.onClickMediHelperAccount()}"
                         android:text="Konto MediHelper"

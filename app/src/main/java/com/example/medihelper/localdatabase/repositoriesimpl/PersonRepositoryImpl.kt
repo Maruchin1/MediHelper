@@ -48,6 +48,8 @@ class PersonRepositoryImpl(
 
     override fun getMainPersonIDLive() = personDao.getMainPersonIdLive()
 
+    override fun getMainPersonItemLive() = personDao.getMainPersonItemLive()
+    
     // ServerSyncRepository
 
     override suspend fun insertSynchronized(entityList: List<PersonEntity>) = personDao.insert(entityList)
@@ -136,4 +138,7 @@ interface PersonDao {
 
     @Query("SELECT person_id FROM persons WHERE main_person = 1")
     fun getMainPersonIdLive(): LiveData<Int>
+    
+    @Query("SELECT * FROM persons WHERE main_person = 1")
+    fun getMainPersonItemLive(): LiveData<PersonItem>
 }

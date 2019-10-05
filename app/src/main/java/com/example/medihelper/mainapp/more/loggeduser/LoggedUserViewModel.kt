@@ -25,7 +25,7 @@ class LoggedUserViewModel(
     private val plannedMedicineRepository: PlannedMedicineRepository
 ) : ViewModel() {
 
-    val loggedUserEmailLive = sharedPrefService.getLoggedUserEmailLive()
+    val loggedUserEmailLive = sharedPrefService.getUserEmailLive()
     val lastSyncTimeStringLive: LiveData<String>
 
     val loadingStartedAction = ActionLiveData()
@@ -39,8 +39,8 @@ class LoggedUserViewModel(
 
     fun logoutUser() = GlobalScope.launch {
         sharedPrefService.run {
-            deleteLoggedUserAuthToken()
-            deleteLoggedUserEmail()
+            deleteAuthToken()
+            deleteUserEmail()
         }
         listOf(
             medicineRepository,
@@ -54,7 +54,7 @@ class LoggedUserViewModel(
     }
 
     fun changeUserPassword(newPassword: String) = viewModelScope.launch {
-        val authToken = sharedPrefService.getLoggedUserAuthToken()
+        val authToken = sharedPrefService.getAuthToken()
         if (authToken != null) {
             loadingStartedAction.sendAction()
             try {

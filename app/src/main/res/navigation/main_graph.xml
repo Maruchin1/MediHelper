@@ -125,6 +125,9 @@
         <action
             android:id="@+id/toPatronConnectFragment"
             app:destination="@id/patronConnectFragment" />
+        <action
+            android:id="@+id/toConnectedPersonFragment"
+            app:destination="@id/connectedPersonFragment" />
     </fragment>
     <dialog
         android:id="@+id/loginRegisterFragment"
@@ -154,18 +157,11 @@
         android:name="com.example.medihelper.mainapp.more.patronconnect.PatronConnectFragment"
         tools:layout="@layout/fragment_patron_connect" >
         <action
-            android:id="@+id/toConnectSuccessDialog"
-            app:destination="@id/connectSuccessDialog" />
+            android:id="@+id/toConnectedPersonFragment"
+            app:destination="@id/connectedPersonFragment" />
     </dialog>
     <dialog
-        android:id="@+id/connectSuccessDialog"
-        android:name="com.example.medihelper.mainapp.more.patronconnect.ConnectSuccessDialog"
-        tools:layout="@layout/dialog_connect_success" >
-        <argument
-            android:name="personName"
-            app:argType="string" />
-        <argument
-            android:name="personColorResId"
-            app:argType="integer" />
-    </dialog>
+        android:id="@+id/connectedPersonFragment"
+        android:name="com.example.medihelper.mainapp.more.patronconnect.ConnectedPersonFragment"
+        tools:layout="@layout/fragment_connected_person" />
 </navigation>

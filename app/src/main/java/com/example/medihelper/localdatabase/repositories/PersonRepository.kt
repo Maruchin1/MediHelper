@@ -36,4 +36,6 @@ interface PersonRepository : ServerSyncRepository<PersonEntity> {
     fun getItemListLiveByMedicineID(medicineID: Int): LiveData<List<PersonItem>>
 
     fun getMainPersonIDLive(): LiveData<Int>
+
+    fun getMainPersonItemLive(): LiveData<PersonItem>
 }

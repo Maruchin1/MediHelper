@@ -29,7 +29,7 @@ class ServerSyncWorker(private val context: Context, params: WorkerParameters) :
     override suspend fun doWork(): Result {
         notificationService.showServerSyncNotification()
         var result = Result.failure()
-        sharedPrefService.getLoggedUserAuthToken()?.let { authToken ->
+        sharedPrefService.getAuthToken()?.let { authToken ->
             try {
                 synchronizeData(authToken)
                 result = Result.success()

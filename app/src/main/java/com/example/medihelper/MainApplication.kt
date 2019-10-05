@@ -25,6 +25,7 @@ import com.example.medihelper.mainapp.medicines.MedicinesViewModel
 import com.example.medihelper.mainapp.more.loggeduser.LoggedUserViewModel
 import com.example.medihelper.mainapp.more.MoreViewModel
 import com.example.medihelper.mainapp.more.loggeduser.NewPasswordViewModel
+import com.example.medihelper.mainapp.more.patronconnect.ConnectedPersonViewModel
 import com.example.medihelper.mainapp.more.patronconnect.PatronConnectViewModel
 import com.example.medihelper.mainapp.persons.PersonOptionsViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
@@ -113,13 +114,19 @@ val viewModelModule = module {
     viewModel { NewPasswordViewModel() }
     viewModel { PersonOptionsViewModel(get(), get()) }
     viewModel { PatronConnectViewModel(get(), get(), get()) }
+    viewModel { ConnectedPersonViewModel(get(), get()) }
 }
 
 val serviceModule = module {
     single { SharedPrefService(PreferenceManager.getDefaultSharedPreferences(androidContext())) }
     single { PersonProfileService(get()) }
     single { MedicineSchedulerService(get(), get()) }
-    single { MedicineImageService(androidContext().filesDir, androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)) }
+    single {
+        MedicineImageService(
+            androidContext().filesDir,
+            androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        )
+    }
     single { WorkerService(WorkManager.getInstance(androidContext())) }
     single { InitialDataService(get(), get()) }
     single { NotificationService(androidContext()) }

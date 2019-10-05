@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 
 import com.example.medihelper.R
+import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentMoreBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -20,21 +21,28 @@ class MoreFragment : Fragment() {
     private val directions by lazy { MoreFragmentDirections }
 
     fun onClickMediHelperAccount() {
-        if (viewModel.isUserLogged()) {
+        if (viewModel.isAppModeLogged) {
             findNavController().navigate(directions.toLoggedUserFragment())
         } else {
             findNavController().navigate(directions.toLoginRegisterFragment())
         }
     }
 
-    fun onClickPatronConnect() = findNavController().navigate(directions.toPatronConnectFragment())
+    fun onClickPatronConnect() {
+        if (viewModel.isAppModeConnected) {
+            findNavController().navigate(directions.toConnectedPersonFragment())
+        } else {
+            findNavController().navigate(directions.toPatronConnectFragment())
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentMoreBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_more, container, false)
-        binding.handler = this
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        return bind<FragmentMoreBinding>(
+            inflater = inflater,
+            container = container,
+            layoutResId = R.layout.fragment_more,
+            viewModel = viewModel
+        )
     }
 
 
