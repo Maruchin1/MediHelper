@@ -28,76 +28,68 @@
             android:layout_height="wrap_content"
             android:background="@{viewModel.colorPrimaryLive}">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-                app:titleEnabled="false">
+                android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="?actionBarSize"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
 
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_avatar"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    app:cardBackgroundColor="@color/colorTransparent"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="@id/toolbar"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/toolbar"
+                    app:strokeColor="@color/colorWhite"
+                    app:strokeWidth="2dp">
+
+                    <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="?actionBarSize"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_height="match_parent"
+                        android:layout_margin="4dp"
+                        android:src="@drawable/round_person_24"
+                        android:tint="@color/colorWhite" />
+                </com.google.android.material.card.MaterialCardView>
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/card_avatar"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="4dp"
-                        app:cardBackgroundColor="@color/colorTransparent"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp"
-                        app:layout_constraintBottom_toBottomOf="@id/toolbar"
-                        app:layout_constraintDimensionRatio="1:1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/toolbar"
-                        app:strokeColor="@color/colorWhite"
-                        app:strokeWidth="2dp">
+                <TextView
+                    android:id="@+id/txv_person_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text='@{viewModel.selectedPersonItemLive.personName, default="Nazwa  osoby"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintBottom_toBottomOf="@id/card_avatar"
+                    app:layout_constraintStart_toEndOf="@id/card_avatar"
+                    app:layout_constraintTop_toTopOf="@id/card_avatar" />
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="4dp"
-                            android:src="@drawable/round_person_24"
-                            android:tint="@color/colorWhite" />
-                    </com.google.android.material.card.MaterialCardView>
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:clickable="@{viewModel.isAppModeConnectedLive() ? false : true}"
+                    android:focusable="true"
+                    android:onClick="@{() -> handler.onClickSelectPerson()}"
+                    app:layout_constraintBottom_toBottomOf="@id/card_avatar"
+                    app:layout_constraintEnd_toEndOf="@id/txv_person_name"
+                    app:layout_constraintStart_toStartOf="@id/card_avatar"
+                    app:layout_constraintTop_toTopOf="@id/card_avatar" />
 
-                    <TextView
-                        android:id="@+id/txv_person_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:text='@{viewModel.selectedPersonItemLive.personName, default="Nazwa  osoby"}'
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                        android:textColor="@color/colorWhite"
-                        app:layout_constraintBottom_toBottomOf="@id/card_avatar"
-                        app:layout_constraintStart_toEndOf="@id/card_avatar"
-                        app:layout_constraintTop_toTopOf="@id/card_avatar" />
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:clickable="@{viewModel.isAppModeConnectedLive() ? false : true}"
-                        android:focusable="true"
-                        android:onClick="@{() -> handler.onClickSelectPerson()}"
-                        app:layout_constraintBottom_toBottomOf="@id/card_avatar"
-                        app:layout_constraintEnd_toEndOf="@id/txv_person_name"
-                        app:layout_constraintStart_toStartOf="@id/card_avatar"
-                        app:layout_constraintTop_toTopOf="@id/card_avatar" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"

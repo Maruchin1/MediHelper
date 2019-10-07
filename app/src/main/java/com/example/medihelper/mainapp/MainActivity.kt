@@ -5,9 +5,11 @@ import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
+import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.services.MedicineSchedulerService
 import com.example.medihelper.services.WorkerService
 import com.example.medihelper.services.SharedPrefService
@@ -75,11 +77,6 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNav() {
         val navController = findNavController(R.id.nav_host_fragment)
         bottom_nav.setupWithNavController(navController)
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            if (destination.id in arrayOf(R.id.medicinesFragment, R.id.moreFragment)) {
-                setMainColor(R.color.colorPrimary)
-            }
-        }
     }
 
     private fun checkAppModeAndSync() {

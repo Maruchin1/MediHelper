@@ -40,4 +40,6 @@ interface PersonRepository : ServerSyncRepository<PersonEntity> {
     fun getMainPersonIDLive(): LiveData<Int>
 
     fun getMainPersonItemLive(): LiveData<PersonItem>
+
+    fun getMainPersonColorLive(): LiveData<Int>
 }

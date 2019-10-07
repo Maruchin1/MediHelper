@@ -15,10 +15,10 @@
         android:icon="@drawable/ic_pill_black_48dp"
         android:title="Apteczka" />
 
-    <item
-        android:id="@+id/doctors_destination"
-        android:icon="@drawable/ic_doctor_black_48dp"
-        android:title="Lekarze" />
+<!--    <item-->
+<!--        android:id="@+id/doctors_destination"-->
+<!--        android:icon="@drawable/ic_doctor_black_48dp"-->
+<!--        android:title="Lekarze" />-->
 
     <item
         android:id="@+id/moreFragment"
