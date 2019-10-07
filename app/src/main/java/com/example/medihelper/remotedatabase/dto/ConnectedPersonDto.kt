@@ -1,8 +1,9 @@
 package com.example.medihelper.remotedatabase.dto
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-data class PersonProfileDataDto(
+data class ConnectedPersonDto(
     @SerializedName(value = "personName")
     val personName: String,
 
@@ -11,4 +12,4 @@ data class PersonProfileDataDto(
 
     @SerializedName(value = "authToken")
     val authToken: String
-)
+) : Serializable

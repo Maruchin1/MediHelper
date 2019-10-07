@@ -1,6 +1,6 @@
 package com.example.medihelper.remotedatabase
 
-import com.example.medihelper.remotedatabase.dto.PersonProfileDataDto
+import com.example.medihelper.remotedatabase.dto.ConnectedPersonDto
 import com.example.medihelper.remotedatabase.dto.UserCredentialsDto
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -13,7 +13,7 @@ interface AuthenticationApi {
     suspend fun loginUser(@Body userCredentialsDto: UserCredentialsDto): String
 
     @GET("authentication/patron-connect")
-    suspend fun patronConnect(@Query("connectionKey") connectionKey: String): PersonProfileDataDto
+    suspend fun patronConnect(@Query("connectionKey") connectionKey: String): ConnectedPersonDto
 
     @POST("authentication/register")
     suspend fun registerNewUser(@Body userCredentialsDto: UserCredentialsDto)

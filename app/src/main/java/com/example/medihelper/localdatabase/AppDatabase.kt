@@ -14,7 +14,7 @@ import com.example.medihelper.localdatabase.repositoriesimpl.*
         PersonEntity::class,
         DeletedEntity::class
     ],
-    version = 40,
+    version = 41,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -27,6 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun deletedEntityDao(): DeletedEntityDao
 
     companion object {
-        const val DATABASE_NAME = "local-database"
+        const val MAIN_DATABASE_NAME = "main-database-name"
+        const val CONNECTED_PERSON_DATABASE_NAME = "connected-person-database-name"
     }
 }
