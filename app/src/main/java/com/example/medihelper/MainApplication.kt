@@ -2,6 +2,7 @@ package com.example.medihelper
 
 
 import android.app.Application
+import android.content.Intent
 import android.os.Environment
 import android.preference.PreferenceManager
 import androidx.room.Room
@@ -16,6 +17,7 @@ import com.example.medihelper.mainapp.medicines.AddEditMedicineViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.dialogs.SelectMedicineViewModel
 import com.example.medihelper.localdatabase.entities.PersonEntity
+import com.example.medihelper.mainapp.MainActivity
 import com.example.medihelper.mainapp.persons.AddEditPersonViewModel
 import com.example.medihelper.mainapp.persons.PersonViewModel
 import com.example.medihelper.mainapp.more.loginregister.LoginRegisterViewModel
@@ -162,7 +164,7 @@ val viewModelModule = module {
     viewModel { NewPasswordViewModel() }
     viewModel { PersonOptionsViewModel(get(), get()) }
     viewModel { PatronConnectViewModel(get(), get(), get()) }
-    viewModel { ConnectedPersonViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { ConnectedPersonViewModel(get(), get(), get(), get()) }
 }
 
 val serviceModule = module {

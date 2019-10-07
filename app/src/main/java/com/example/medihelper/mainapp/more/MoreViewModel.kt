@@ -20,7 +20,7 @@ class MoreViewModel(
     private val mainPersonItemLive = personRepository.getMainPersonItemLive()
 
     init {
-        colorPrimaryLive = Transformations.map(mainPersonItemLive) { it.personColorResID }
+        colorPrimaryLive = Transformations.map(mainPersonItemLive) { it?.personColorResID }
         loggedUserInfoLive = Transformations.map(sharedPrefService.getUserEmailLive()) { email ->
             if (email.isNullOrEmpty()) "Nie zalogowano" else email
         }

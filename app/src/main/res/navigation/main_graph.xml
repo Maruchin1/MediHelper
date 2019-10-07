@@ -155,11 +155,7 @@
     <dialog
         android:id="@+id/patronConnectFragment"
         android:name="com.example.medihelper.mainapp.more.patronconnect.PatronConnectFragment"
-        tools:layout="@layout/fragment_patron_connect" >
-        <action
-            android:id="@+id/toConnectedPersonFragment"
-            app:destination="@id/connectedPersonFragment" />
-    </dialog>
+        tools:layout="@layout/fragment_patron_connect" />
     <dialog
         android:id="@+id/connectedPersonFragment"
         android:name="com.example.medihelper.mainapp.more.patronconnect.ConnectedPersonFragment"

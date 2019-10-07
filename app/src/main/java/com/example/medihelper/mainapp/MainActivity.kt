@@ -1,5 +1,6 @@
 package com.example.medihelper.mainapp
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,8 +16,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -65,6 +64,13 @@ class MainActivity : AppCompatActivity() {
     fun showSnackbar(message: String) = Snackbar.make(frame_fragments, message, Snackbar.LENGTH_SHORT)
         .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
         .show()
+
+    fun restartActivity() {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        startActivity(intent)
+    }
 
     private fun setupBottomNav() {
         val navController = findNavController(R.id.nav_host_fragment)

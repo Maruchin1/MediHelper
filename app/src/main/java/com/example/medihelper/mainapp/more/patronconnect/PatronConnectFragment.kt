@@ -13,6 +13,7 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentPatronConnectBinding
+import com.example.medihelper.mainapp.MainActivity
 import com.example.medihelper.services.LoadingDialogService
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -25,7 +26,6 @@ class PatronConnectFragment : AppFullScreenDialog() {
     private val TAG = "PatronConnectFragment"
 
     private val viewModel: PatronConnectViewModel by viewModel()
-    private val directions by lazy { PatronConnectFragmentDirections }
     private val loadingDialogService: LoadingDialogService by inject()
 
     fun onClickScanQrCode() {
@@ -75,8 +75,8 @@ class PatronConnectFragment : AppFullScreenDialog() {
             }
         })
         viewModel.patronConnectSuccessfulAction.observe(viewLifecycleOwner, Observer {
-            findNavController().navigate(directions.toConnectedPersonFragment())
             dismiss()
+            (requireActivity() as MainActivity).restartActivity()
         })
         viewModel.patronConnectErrorLive.observe(viewLifecycleOwner, Observer { errorMessageId ->
             if (errorMessageId != null) {

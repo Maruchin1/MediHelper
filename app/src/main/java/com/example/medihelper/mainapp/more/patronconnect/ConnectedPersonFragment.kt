@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.setTransparentStatusBar
 import com.example.medihelper.databinding.FragmentConnectedPersonBinding
+import com.example.medihelper.mainapp.MainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConnectedPersonFragment : AppFullScreenDialog() {
@@ -16,7 +19,7 @@ class ConnectedPersonFragment : AppFullScreenDialog() {
     private val viewModel: ConnectedPersonViewModel by viewModel()
 
     fun onClickCancelConnection() {
-        viewModel.cancelConnection()
+        viewModel.cancelConnection(requireActivity() as MainActivity)
         dismiss()
     }
 

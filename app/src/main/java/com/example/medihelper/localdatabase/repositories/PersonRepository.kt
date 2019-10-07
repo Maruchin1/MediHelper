@@ -17,6 +17,8 @@ interface PersonRepository : ServerSyncRepository<PersonEntity> {
 
     suspend fun delete(personID: Int)
 
+    suspend fun deleteAllWithMain()
+
     suspend fun getEntity(personID: Int): PersonEntity
 
     suspend fun getEntityList(): List<PersonEntity>

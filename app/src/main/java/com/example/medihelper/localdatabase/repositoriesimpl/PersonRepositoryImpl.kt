@@ -28,6 +28,8 @@ class PersonRepositoryImpl(
         personDao.delete(personID)
     }
 
+    override suspend fun deleteAllWithMain()  = personDao.deleteAllWithMain()
+
     override suspend fun getEntity(personID: Int) = personDao.getEntity(personID)
 
     override suspend fun getEntityList() = personDao.getEntityList()
@@ -99,6 +101,9 @@ interface PersonDao {
 
     @Query("DELETE FROM persons WHERE main_person = 0")
     suspend fun deleteAll()
+
+    @Query("DELETE FROM persons")
+    suspend fun deleteAllWithMain()
 
     @Query("SELECT * FROM persons WHERE person_id = :personID")
     suspend fun getEntity(personID: Int): PersonEntity
