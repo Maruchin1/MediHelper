@@ -170,7 +170,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="16dp"
-                            android:text="Nie połączono z opiekunem"
+                            android:text='@{viewModel.connectedPersonInfoLive, default="Nie połączono z opiekunem"}'
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:textColor="@color/colorTextTertiary" />
 

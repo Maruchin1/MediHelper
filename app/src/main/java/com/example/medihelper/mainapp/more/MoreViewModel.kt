@@ -13,6 +13,8 @@ class MoreViewModel(
 
     val colorPrimaryLive: LiveData<Int>
     val loggedUserInfoLive: LiveData<String>
+    val connectedPersonInfoLive: LiveData<String>
+
     val isAppModeLogged: Boolean
         get() = sharedPrefService.getAppMode() == SharedPrefService.AppMode.LOGGED
     val isAppModeConnected: Boolean
@@ -23,6 +25,12 @@ class MoreViewModel(
         colorPrimaryLive = Transformations.map(mainPersonItemLive) { it?.personColorResID }
         loggedUserInfoLive = Transformations.map(sharedPrefService.getUserEmailLive()) { email ->
             if (email.isNullOrEmpty()) "Nie zalogowano" else email
+        }
+        connectedPersonInfoLive = Transformations.map(sharedPrefService.getAppModeLive()) { appMode ->
+            when (appMode) {
+                SharedPrefService.AppMode.CONNECTED -> "Połączono z opiekunem"
+                else -> "Nie połączono z opiekunem"
+            }
         }
     }
 }
