@@ -12,4 +12,5 @@
     <string name="error_user_not_found">Nie znaleziono użytkownika o podanym adresie e-mail</string>
     <string name="error_connection">Błąd połączenia z serwerem</string>
     <string name="error_authorization">Błąd autoryzacji użytkownika. Spróbuj zalogować się ponownie</string>
+    <string name="error_person_not_found">Nie znaleziono wskazanej osoby do połączenia</string>
 </resources>

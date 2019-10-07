@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private val medicineSchedulerService: MedicineSchedulerService by inject()
     private val workerService: WorkerService by inject()
+    private val sharedPrefService: SharedPrefService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +33,12 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch {
             medicineSchedulerService.updatePlannedMedicinesStatuses()
         }
-        workerService.enqueueSynchronizeData()
+        checkAppModeAndSync()
     }
 
     override fun onPause() {
         super.onPause()
-        workerService.enqueueSynchronizeData()
+        checkAppModeAndSync()
     }
 
     fun setStatusBarColor(colorResID: Int) {
@@ -55,6 +56,13 @@ class MainActivity : AppCompatActivity() {
             if (destination.id in arrayOf(R.id.medicinesFragment, R.id.moreFragment)) {
                 setStatusBarColor(R.color.colorPrimary)
             }
+        }
+    }
+
+    private fun checkAppModeAndSync() {
+        when (sharedPrefService.getAppMode()) {
+            SharedPrefService.AppMode.LOGGED -> workerService.enqueueLoggedUserSync()
+            SharedPrefService.AppMode.CONNECTED -> workerService.enqueueConnectedPersonSync()
         }
     }
 }

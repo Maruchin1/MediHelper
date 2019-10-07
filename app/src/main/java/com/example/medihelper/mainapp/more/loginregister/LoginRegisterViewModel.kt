@@ -134,7 +134,7 @@ class LoginRegisterViewModel(
             saveAuthToken(tempAuthToken)
             saveUserEmail(tempUserEmail)
         }
-        workerService.enqueueSynchronizeData()
+        workerService.enqueueLoggedUserSync()
     }
 
     private fun getErrorMessage(e: Exception) = when (e) {

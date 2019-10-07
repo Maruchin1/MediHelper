@@ -4,10 +4,14 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.medihelper.R
+import com.example.medihelper.custom.ActionLiveData
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.remotedatabase.AuthenticationApi
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 class PatronConnectViewModel(
     private val authenticationApi: AuthenticationApi,
@@ -24,7 +28,8 @@ class PatronConnectViewModel(
     val keyChar6Live = MutableLiveData<String>()
     val errorConnectionKeyLive = MutableLiveData<String>()
     val loadingInProgressLive = MutableLiveData<Boolean>()
-    val connectSuccessfulLive = MutableLiveData<Pair<String, Int>>()
+    val connectSuccessfulAction = ActionLiveData()
+    val patronConnectErrorLive = MutableLiveData<Int>()
 
     private val charLiveList by lazy {
         listOf(keyChar1Live, keyChar2Live, keyChar3Live, keyChar4Live, keyChar5Live, keyChar6Live)
@@ -56,9 +61,10 @@ class PatronConnectViewModel(
                     saveAuthToken(profileDataDto.authToken)
                     deleteUserEmail()
                 }
-                connectSuccessfulLive.postValue(Pair(profileDataDto.personName, profileDataDto.personColorResId))
+                connectSuccessfulAction.sendAction()
             } catch (e: Exception) {
                 e.printStackTrace()
+                patronConnectErrorLive.postValue(getErrorMessage(e))
             }
             loadingInProgressLive.postValue(false)
         }
@@ -73,5 +79,14 @@ class PatronConnectViewModel(
             errorConnectionKeyLive.postValue(null)
         }
         return valid
+    }
+
+    private fun getErrorMessage(e: Exception) = when (e) {
+        is SocketTimeoutException -> R.string.error_timeout
+        is HttpException -> when (e.code()) {
+            404 -> R.string.error_person_not_found
+            else -> R.string.error_connection
+        }
+        else -> R.string.error_connection
     }
 }

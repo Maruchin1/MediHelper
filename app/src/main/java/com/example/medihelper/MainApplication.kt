@@ -131,6 +131,7 @@ val serviceModule = module {
     single { InitialDataService(get(), get()) }
     single { NotificationService(androidContext()) }
     single { LoadingDialogService() }
+    single { RepositoryDispatcherService(androidContext().filesDir, get(), get(), get(), get()) }
 }
 
 private val appRetrofit: Retrofit by lazy {

@@ -74,9 +74,14 @@ class PatronConnectFragment : AppFullScreenDialog() {
                 loadingDialogService.dismissLoadingDialog()
             }
         })
-        viewModel.connectSuccessfulLive.observe(viewLifecycleOwner, Observer { nameAndColorId ->
+        viewModel.connectSuccessfulAction.observe(viewLifecycleOwner, Observer {
             findNavController().navigate(directions.toConnectedPersonFragment())
             dismiss()
+        })
+        viewModel.patronConnectErrorLive.observe(viewLifecycleOwner, Observer { errorMessageId ->
+            if (errorMessageId != null) {
+                showSnackbar(resources.getString(errorMessageId))
+            }
         })
     }
 
