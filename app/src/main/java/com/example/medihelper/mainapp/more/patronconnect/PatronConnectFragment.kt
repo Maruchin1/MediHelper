@@ -13,7 +13,6 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentPatronConnectBinding
-import com.example.medihelper.mainapp.MainActivity
 import com.example.medihelper.services.LoadingDialogService
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -75,7 +74,7 @@ class PatronConnectFragment : AppFullScreenDialog() {
                 loadingDialogService.dismissLoadingDialog()
             }
         })
-        viewModel.connectSuccessfulAction.observe(viewLifecycleOwner, Observer {
+        viewModel.patronConnectSuccessfulAction.observe(viewLifecycleOwner, Observer {
             findNavController().navigate(directions.toConnectedPersonFragment())
             dismiss()
         })

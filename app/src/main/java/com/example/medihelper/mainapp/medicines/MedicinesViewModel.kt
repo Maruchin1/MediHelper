@@ -8,12 +8,14 @@ import androidx.lifecycle.ViewModel
 import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicineItem
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
+import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.services.SharedPrefService
 import java.io.File
 
 class MedicinesViewModel(
     private val appFilesDir: File,
     private val medicineRepository: MedicineRepository,
+    private val personRepository: PersonRepository,
     private val sharedPrefService: SharedPrefService
 ) : ViewModel() {
     private val TAG = "MedicinesViewModel"
@@ -22,6 +24,8 @@ class MedicinesViewModel(
     val searchQueryLive = MutableLiveData("")
     val medicineItemListLive: LiveData<List<MedicineItem>>
     val medicineAvailableLive: LiveData<Boolean>
+    val colorPrimaryLive: LiveData<Int>
+    private val mainPersonItemLive = personRepository.getMainPersonItemLive()
 
     init {
         isAppModeConnectedLive = Transformations.map(sharedPrefService.getAppModeLive()) {
@@ -38,6 +42,7 @@ class MedicinesViewModel(
         medicineAvailableLive = Transformations.map(medicineItemListLive) { list ->
             list != null && list.isNotEmpty()
         }
+        colorPrimaryLive = Transformations.map(mainPersonItemLive) { it.personColorResID }
     }
 
     fun getMedicineKitItemDisplayData(medicineItem: MedicineItem): MedicineItemDisplayData {

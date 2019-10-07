@@ -25,12 +25,14 @@ class MedicinesFragment : Fragment() {
     private val viewModel: MedicinesViewModel by viewModel()
     private val directions by lazyOf(MedicinesFragmentDirections)
 
-    fun onClickOpenMedicineDetails(medicineID: Int)  = findNavController().navigate(directions.toMedicineDetailsFragment(medicineID))
+    fun onClickOpenMedicineDetails(medicineID: Int) =
+        findNavController().navigate(directions.toMedicineDetailsFragment(medicineID))
 
     fun onClickAddMedicine() = findNavController().navigate(directions.toAddEditMedicineFragment())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentMedicinesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_medicines, container, false)
+        val binding: FragmentMedicinesBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_medicines, container, false)
         binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
@@ -51,12 +53,13 @@ class MedicinesFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.run {
-            medicineItemListLive.observe(viewLifecycleOwner, Observer { medicineItemList ->
-                val adapter = recycler_view_medicines.adapter as MedicineAdapter
-                adapter.updateItemsList(medicineItemList)
-            })
-        }
+        viewModel.medicineItemListLive.observe(viewLifecycleOwner, Observer { medicineItemList ->
+            val adapter = recycler_view_medicines.adapter as MedicineAdapter
+            adapter.updateItemsList(medicineItemList)
+        })
+        viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResId ->
+            colorResId?.let { (requireActivity() as MainActivity).setMainColor(it) }
+        })
     }
 
     private fun setupToolbar() {

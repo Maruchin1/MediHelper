@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 
 import com.example.medihelper.R
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentMoreBinding
+import com.example.medihelper.mainapp.MainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -45,5 +47,14 @@ class MoreFragment : Fragment() {
         )
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
+    }
 
+    private fun observeViewModel() {
+        viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResId ->
+            colorResId?.let { (requireActivity() as MainActivity).setMainColor(colorResId) }
+        })
+    }
 }

@@ -145,7 +145,7 @@ val remoteDatabaseModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { MedicinesViewModel(get(), get(), get()) }
+    viewModel { MedicinesViewModel(get(), get(), get(), get()) }
     viewModel { AddEditMedicineViewModel(get(), get(), get(), get()) }
     viewModel { AddEditPersonViewModel(get(), get()) }
     viewModel { PersonViewModel(get(), get()) }
@@ -156,13 +156,13 @@ val viewModelModule = module {
     viewModel { SelectMedicineViewModel(get(), get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get()) }
     viewModel { ScheduleViewModel(get(), get(), get()) }
-    viewModel { MoreViewModel(get()) }
+    viewModel { MoreViewModel(get(), get()) }
     viewModel { LoginRegisterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { LoggedUserViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { NewPasswordViewModel() }
     viewModel { PersonOptionsViewModel(get(), get()) }
     viewModel { PatronConnectViewModel(get(), get(), get()) }
-    viewModel { ConnectedPersonViewModel(get(), get(), get()) }
+    viewModel { ConnectedPersonViewModel(get(), get(), get(), get(), get(), get()) }
 }
 
 val serviceModule = module {

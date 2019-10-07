@@ -24,7 +24,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}'
             android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -94,7 +94,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/baseline_account_circle_white_36"
-                                android:tint="@color/colorPrimary" />
+                                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -102,7 +102,7 @@
                                 android:layout_marginStart="8dp"
                                 android:text="Konto MediHelper"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                                android:textColor="@color/colorPrimary" />
+                                android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
                         </LinearLayout>
 
                         <TextView
@@ -153,7 +153,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/round_people_white_36"
-                                android:tint="@color/colorPrimary" />
+                                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                                 android:layout_marginStart="8dp"
                                 android:text="Połącz z opiekunem"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                                android:textColor="@color/colorPrimary" />
+                                android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
                         </LinearLayout>
 
                         <TextView
@@ -210,7 +210,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/round_settings_black_36"
-                                android:tint="@color/colorPrimary" />
+                                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -218,7 +218,7 @@
                                 android:layout_marginStart="8dp"
                                 android:text="Ustawienia aplikacji"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                                android:textColor="@color/colorPrimary" />
+                                android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
                         </LinearLayout>
 
                         <TextView

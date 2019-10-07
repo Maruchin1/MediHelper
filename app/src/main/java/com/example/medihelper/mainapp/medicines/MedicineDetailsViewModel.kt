@@ -19,6 +19,7 @@ class MedicineDetailsViewModel(
     private val sharedPrefService: SharedPrefService
 ) : ViewModel() {
 
+    val colorPrimaryLive: LiveData<Int>
     val isAppModeConnected: LiveData<Boolean>
 
     val medicineNameLive: LiveData<String>
@@ -34,8 +35,10 @@ class MedicineDetailsViewModel(
     val personItemListTakingMedicineLive: LiveData<List<PersonItem>>
     val personItemListTakingMedicineAvailableLive: LiveData<Boolean>
     private val medicineDetailsLive: LiveData<MedicineDetails>
+    private val mainPersonItemLive = personRepository.getMainPersonItemLive()
 
     init {
+        colorPrimaryLive = Transformations.map(mainPersonItemLive) { it.personColorResID }
         isAppModeConnected = Transformations.map(sharedPrefService.getAppModeLive()) {
             it == SharedPrefService.AppMode.CONNECTED
         }

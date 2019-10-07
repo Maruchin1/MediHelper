@@ -1,5 +1,6 @@
 package com.example.medihelper.mainapp
 
+import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
@@ -14,6 +15,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,8 +44,22 @@ class MainActivity : AppCompatActivity() {
         checkAppModeAndSync()
     }
 
-    fun setStatusBarColor(colorResID: Int) {
+    fun setMainColor(colorResID: Int) {
         window.statusBarColor = ContextCompat.getColor(this, colorResID)
+        val states = arrayOf(
+            intArrayOf(-android.R.attr.state_selected), // unchecked
+            intArrayOf(android.R.attr.state_selected)  // pressed
+        )
+        val colors = intArrayOf(
+            ContextCompat.getColor(this, R.color.colorDarkerGray),
+            ContextCompat.getColor(this, colorResID)
+        )
+        val colorStateList = ColorStateList(states, colors)
+        bottom_nav.run {
+            itemIconTintList = colorStateList
+            itemTextColor = colorStateList
+        }
+        bottom_nav.itemIconTintList = ColorStateList(states, colors)
     }
 
     fun showSnackbar(message: String) = Snackbar.make(frame_fragments, message, Snackbar.LENGTH_SHORT)
@@ -54,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         bottom_nav.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             if (destination.id in arrayOf(R.id.medicinesFragment, R.id.moreFragment)) {
-                setStatusBarColor(R.color.colorPrimary)
+                setMainColor(R.color.colorPrimary)
             }
         }
     }

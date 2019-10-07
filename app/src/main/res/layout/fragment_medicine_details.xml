@@ -81,7 +81,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    app:cardBackgroundColor="@color/colorPrimary">
+                    app:cardBackgroundColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}'>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -332,7 +332,8 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="16dp"
                             android:text="Osoby przyjmujące lek"
-                            android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle" />
+                            android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle"
+                            android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}'/>
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -384,7 +385,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Dodatkowe informacje"
-                            android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle" />
+                            android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle"
+                            android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}'/>
 
                         <FrameLayout
                             android:layout_width="match_parent"

@@ -1,22 +1,23 @@
 package com.example.medihelper.mainapp.more.patronconnect
 
 import android.app.Application
-import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.*
+import com.example.medihelper.custom.ActionLiveData
+import com.example.medihelper.localdatabase.entities.PersonEntity
+import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
+import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PersonRepository
+import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import com.example.medihelper.remotedatabase.AuthenticationApi
 import com.example.medihelper.remotedatabase.dto.ConnectedPersonDto
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
-import org.koin.core.context.loadKoinModules
-import org.koin.core.context.unloadKoinModules
-import com.example.medihelper.mainapp.MainActivity
 import org.koin.android.ext.android.get
+import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 
 class PatronConnectViewModel(
@@ -33,8 +34,9 @@ class PatronConnectViewModel(
     val keyChar5Live = MutableLiveData<String>()
     val keyChar6Live = MutableLiveData<String>()
     val errorConnectionKeyLive = MutableLiveData<String>()
+    val patronConnectErrorLive = MutableLiveData<Int>()
     val loadingInProgressLive = MutableLiveData<Boolean>()
-    val connectSuccessfulLive = MutableLiveData<Pair<String, Int>>()
+    val patronConnectSuccessfulAction = ActionLiveData()
 
     private val mainApplication by lazy { application as MainApplication }
     private val charLiveList by lazy {
@@ -54,17 +56,14 @@ class PatronConnectViewModel(
                 charLiveList.forEach { append(it.value!!) }
             }.toString()
             try {
-//                val profileDataDto = authenticationApi.patronConnect(connectionKey)
-                val connectedPersonDto = ConnectedPersonDto(
-                    personName = "Test",
-                    personColorResId = R.color.colorPersonBlue,
-                    authToken = "adsaasgasg"
-                )
+                val connectedPersonDto = authenticationApi.patronConnect(connectionKey)
                 saveConnectedPersonAppMode(connectedPersonDto.authToken)
                 mainApplication.switchToConnectedPersonDatabase()
-                updateMainPersonData(connectedPersonDto)
+                initConnectedPersonDatabase(connectedPersonDto)
+                patronConnectSuccessfulAction.sendAction()
             } catch (e: Exception) {
                 e.printStackTrace()
+                patronConnectErrorLive.postValue(getErrorMessage(e))
             }
             loadingInProgressLive.postValue(false)
         }
@@ -75,13 +74,14 @@ class PatronConnectViewModel(
         deleteUserEmail()
     }
 
-    private suspend fun updateMainPersonData(connectedPersonDto: ConnectedPersonDto) {
+    private suspend fun initConnectedPersonDatabase(connectedPersonDto: ConnectedPersonDto) {
         val personRepository: PersonRepository = mainApplication.get()
-        personRepository.getMainPersonEntity().let { mainPerson ->
-            mainPerson.personName = connectedPersonDto.personName
-            mainPerson.personColorResID = connectedPersonDto.personColorResId
-            personRepository.update(mainPerson)
-        }
+        val mainPerson = PersonEntity(
+            personName = connectedPersonDto.personName,
+            personColorResID = connectedPersonDto.personColorResId,
+            mainPerson = true
+        )
+        personRepository.insert(mainPerson)
     }
 
     private fun validateInputData(): Boolean {
@@ -93,5 +93,14 @@ class PatronConnectViewModel(
             errorConnectionKeyLive.postValue(null)
         }
         return valid
+    }
+
+    private fun getErrorMessage(e: Exception) = when (e) {
+        is SocketTimeoutException -> R.string.error_timeout
+        is HttpException -> when (e.code()) {
+            404 -> R.string.error_person_not_found
+            else -> R.string.error_connection
+        }
+        else -> R.string.error_connection
     }
 }

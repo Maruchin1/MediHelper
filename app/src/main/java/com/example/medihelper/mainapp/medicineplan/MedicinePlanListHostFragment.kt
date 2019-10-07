@@ -43,9 +43,7 @@ class MedicinePlanListHostFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
             if (colorResID != null) {
-                activity?.run {
-                    (this as MainActivity).setStatusBarColor(colorResID)
-                }
+                (requireActivity() as MainActivity).setMainColor(colorResID)
             }
         })
     }

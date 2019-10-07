@@ -24,12 +24,12 @@
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.Toolbar
+                toolbarNavigationOnClick="@{() -> handler.dismiss()}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                 app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/round_close_24"
-                app:title="Połączenie z opiekunem" />
+                app:navigationIcon="@drawable/round_close_24" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -63,14 +63,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text='@{viewModel.personNameLive, default="Nazwa osoby"}'
+                    android:text='@{"Połączono jako " + viewModel.personNameLive, default="Nazwa osoby"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:textColor="@color/colorWhite" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:alpha="0.6"
                     android:text="Aplikacja jest połączona z opiekunem, który zarządza twoim planem."
                     android:textAlignment="center"
@@ -80,7 +80,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:alpha="0.6"
                     android:text="W każdej chwili możesz anulować połączenie i korzystać z aplikacji samodzielnie"
                     android:textAlignment="center"

@@ -53,19 +53,11 @@ class ScheduleFragment : Fragment() {
         observeViewModel()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.colorPrimaryLive.value?.let { colorResId ->
-            (requireActivity() as MainActivity).setStatusBarColor(colorResId)
-        }
-    }
-
     private fun observeViewModel() {
         viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
             if (colorResID != null) {
-                activity?.run {
-                    (this as MainActivity).setStatusBarColor(colorResID)
-                }
+                (requireActivity() as MainActivity).setMainColor(colorResID)
+
             }
         })
         viewModel.selectedDateLive.observe(viewLifecycleOwner, Observer { selectedDate ->
