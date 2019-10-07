@@ -2,7 +2,6 @@ package com.example.medihelper.remotedatabase
 
 import com.example.medihelper.remotedatabase.dto.MedicineDto
 import com.example.medihelper.remotedatabase.dto.MedicinePlanDto
-import com.example.medihelper.remotedatabase.dto.PersonProfileDataDto
 import com.example.medihelper.remotedatabase.dto.PlannedMedicineDto
 import retrofit2.http.*
 

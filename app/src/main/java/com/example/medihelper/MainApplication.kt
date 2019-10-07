@@ -15,6 +15,7 @@ import com.example.medihelper.localdatabase.repositoriesimpl.PlannedMedicineRepo
 import com.example.medihelper.mainapp.medicines.AddEditMedicineViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.dialogs.SelectMedicineViewModel
+import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.example.medihelper.mainapp.persons.AddEditPersonViewModel
 import com.example.medihelper.mainapp.persons.PersonViewModel
 import com.example.medihelper.mainapp.more.loginregister.LoginRegisterViewModel
@@ -37,10 +38,15 @@ import com.example.medihelper.services.*
 import com.google.gson.*
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
+import org.koin.core.context.unloadKoinModules
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -49,6 +55,25 @@ import java.lang.reflect.Type
 
 class MainApplication : Application() {
 
+    private val initialDataService: InitialDataService by inject()
+    private val sharedPrefService: SharedPrefService by inject()
+    private val connectedPersonDatabaseSequence by lazy {
+        listOf(connectedPersonDatabaseModule, repositoryModule, viewModelModule, serviceModule)
+    }
+    private val mainDatabaseSequence by lazy {
+        listOf(mainDatabaseModule, repositoryModule, viewModelModule, serviceModule)
+    }
+
+    fun switchToConnectedPersonDatabase() {
+        unloadKoinModules(mainDatabaseSequence)
+        loadKoinModules(connectedPersonDatabaseSequence)
+    }
+
+    fun switchToMainDatabase() {
+        unloadKoinModules(connectedPersonDatabaseSequence)
+        loadKoinModules(mainDatabaseSequence)
+    }
+
     override fun onCreate() {
         super.onCreate()
         startKoin {
@@ -56,7 +81,8 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
             modules(
                 listOf(
-                    localDatabaseModule,
+                    appModule,
+                    repositoryModule,
                     remoteDatabaseModule,
                     viewModelModule,
                     serviceModule
@@ -64,18 +90,40 @@ class MainApplication : Application() {
             )
         }
         runBlocking {
-            val initialDataService: InitialDataService = get()
+            val databaseModule = when (sharedPrefService.getAppMode()) {
+                SharedPrefService.AppMode.CONNECTED -> connectedPersonDatabaseModule
+                else -> mainDatabaseModule
+            }
+            loadKoinModules(databaseModule)
             initialDataService.checkInitialData()
         }
     }
 }
 
-val localDatabaseModule = module {
-    single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, AppDatabase.DATABASE_NAME)
-            .fallbackToDestructiveMigration()
+private const val EXTERNAL_PICTURES_DIR = "external-pictures-dir"
+
+val appModule = module {
+    single { androidApplication() as MainApplication }
+    single { androidContext().filesDir }
+    single(named(EXTERNAL_PICTURES_DIR)) { androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) }
+    single { PreferenceManager.getDefaultSharedPreferences(androidContext()) }
+    single { WorkManager.getInstance(androidContext()) }
+}
+
+val mainDatabaseModule = module {
+    single(override = true) {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, AppDatabase.MAIN_DATABASE_NAME).build()
+    }
+}
+
+val connectedPersonDatabaseModule = module {
+    single(override = true) {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, AppDatabase.CONNECTED_PERSON_DATABASE_NAME)
             .build()
     }
+}
+
+val repositoryModule = module {
     single<MedicineRepository> {
         MedicineRepositoryImpl(get<AppDatabase>().medicineDao(), get<AppDatabase>().deletedEntityDao())
     }
@@ -97,15 +145,15 @@ val remoteDatabaseModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { MedicinesViewModel(androidContext().filesDir, get(), get()) }
-    viewModel { AddEditMedicineViewModel(androidContext().filesDir, get(), get(), get()) }
+    viewModel { MedicinesViewModel(get(), get(), get()) }
+    viewModel { AddEditMedicineViewModel(get(), get(), get(), get()) }
     viewModel { AddEditPersonViewModel(get(), get()) }
     viewModel { PersonViewModel(get(), get()) }
     viewModel { MedicinePlanHistoryViewModel(get(), get()) }
     viewModel { MedicinePlanListViewModel(get(), get(), get()) }
-    viewModel { MedicineDetailsViewModel(androidContext().filesDir, get(), get(), get()) }
+    viewModel { MedicineDetailsViewModel(get(), get(), get(), get()) }
     viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get()) }
-    viewModel { SelectMedicineViewModel(androidContext().filesDir, get()) }
+    viewModel { SelectMedicineViewModel(get(), get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get()) }
     viewModel { ScheduleViewModel(get(), get(), get()) }
     viewModel { MoreViewModel(get()) }
@@ -114,20 +162,15 @@ val viewModelModule = module {
     viewModel { NewPasswordViewModel() }
     viewModel { PersonOptionsViewModel(get(), get()) }
     viewModel { PatronConnectViewModel(get(), get(), get()) }
-    viewModel { ConnectedPersonViewModel(get(), get()) }
+    viewModel { ConnectedPersonViewModel(get(), get(), get()) }
 }
 
 val serviceModule = module {
-    single { SharedPrefService(PreferenceManager.getDefaultSharedPreferences(androidContext())) }
+    single { SharedPrefService(get()) }
     single { PersonProfileService(get()) }
     single { MedicineSchedulerService(get(), get()) }
-    single {
-        MedicineImageService(
-            androidContext().filesDir,
-            androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        )
-    }
-    single { WorkerService(WorkManager.getInstance(androidContext())) }
+    single { MedicineImageService(get(), get(named(EXTERNAL_PICTURES_DIR))) }
+    single { WorkerService(get()) }
     single { InitialDataService(get(), get()) }
     single { NotificationService(androidContext()) }
     single { LoadingDialogService() }
