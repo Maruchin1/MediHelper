@@ -30,7 +30,9 @@ class RepositoryDispatcherService(
                 val existingMedicineID =
                     medicineRepository.getLocalIDByRemoteID(medicineEntity.medicineRemoteID!!)
                 if (existingMedicineID != null) {
-                    updateList.add(medicineEntity.copy(medicineID = existingMedicineID))
+                    // todo usunąć gdy będzie rozwiązany problem z przesyłaniem zdjeć
+                    val existingEntity = medicineRepository.getEntity(existingMedicineID)
+                    updateList.add(medicineEntity.copy(medicineID = existingMedicineID, imageName = existingEntity.imageName))
                 } else {
                     insertList.add(medicineEntity)
                 }

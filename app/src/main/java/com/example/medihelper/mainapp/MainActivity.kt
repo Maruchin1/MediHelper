@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             intArrayOf(android.R.attr.state_selected)  // pressed
         )
         val colors = intArrayOf(
-            ContextCompat.getColor(this, R.color.colorDarkerGray),
+            ContextCompat.getColor(this, R.color.colorTextTertiary),
             ContextCompat.getColor(this, colorResID)
         )
         val colorStateList = ColorStateList(states, colors)

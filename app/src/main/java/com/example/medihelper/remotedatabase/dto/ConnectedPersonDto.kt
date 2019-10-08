@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class ConnectedPersonDto(
+    @SerializedName(value = "personRemoteId")
+    val personRemoteId: Long,
+
     @SerializedName(value = "personName")
     val personName: String,
 

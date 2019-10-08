@@ -45,16 +45,6 @@ class LoggedUserSyncWorker(private val context: Context, params: WorkerParameter
     }
 
     private suspend fun synchronizeData(authToken: String) {
-        val medicinesSyncRequestDto = SyncRequestDto(
-            insertUpdateDtoList = medicineRepository.getEntityListToSync().map {
-                MedicineDto.fromEntity(it, appFilesDir)
-            },
-            deleteRemoteIdList = medicineRepository.getDeletedRemoteIDList()
-        )
-        val responseMedicineDtoList =
-            registeredUserApi.synchronizeMedicines(authToken, medicinesSyncRequestDto)
-        repositoryDispatcherService.dispatchMedicinesChanges(responseMedicineDtoList)
-
         val personsSyncRequestDto = SyncRequestDto(
             insertUpdateDtoList = personRepository.getEntityListToSync().map {
                 PersonDto.fromEntity(it)
@@ -64,6 +54,16 @@ class LoggedUserSyncWorker(private val context: Context, params: WorkerParameter
         val responsePersonDtoList =
             registeredUserApi.synchronizePersons(authToken, personsSyncRequestDto)
         repositoryDispatcherService.dispatchPersonsChanges(responsePersonDtoList)
+
+        val medicinesSyncRequestDto = SyncRequestDto(
+            insertUpdateDtoList = medicineRepository.getEntityListToSync().map {
+                MedicineDto.fromEntity(it, appFilesDir)
+            },
+            deleteRemoteIdList = medicineRepository.getDeletedRemoteIDList()
+        )
+        val responseMedicineDtoList =
+            registeredUserApi.synchronizeMedicines(authToken, medicinesSyncRequestDto)
+        repositoryDispatcherService.dispatchMedicinesChanges(responseMedicineDtoList)
 
         val medicinesPlansSyncRequestDto = SyncRequestDto(
             insertUpdateDtoList = medicinePlanRepository.getEntityListToSync().map {

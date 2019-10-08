@@ -18,7 +18,6 @@ class ConnectedPersonSyncWorker(context: Context, params: WorkerParameters) : Co
     KoinComponent {
 
     private val sharedPrefService: SharedPrefService by inject()
-    private val medicineRepository: MedicineRepository by inject()
     private val medicinePlanRepository: MedicinePlanRepository by inject()
     private val plannedMedicineRepository: PlannedMedicineRepository by inject()
     private val connectedPersonApi: ConnectedPersonApi by inject()
@@ -46,16 +45,14 @@ class ConnectedPersonSyncWorker(context: Context, params: WorkerParameters) : Co
         val responseMedicineDtoList = connectedPersonApi.getMedicines(authToken)
         repositoryDispatcherService.dispatchMedicinesChanges(responseMedicineDtoList)
 
-        val medicines = medicineRepository.getEntityList()
-
         val responseMedicinePlanDtoList = connectedPersonApi.getMedicinesPlans(authToken)
         repositoryDispatcherService.dispatchMedicinesPlansChanges(responseMedicinePlanDtoList)
-//
-//        val updatedPlannedMedicineDtoList = plannedMedicineRepository.getEntityListToSync().map {
-//            PlannedMedicineDto.fromEntity(it, medicinePlanRepository)
-//        }
-//        val responsePlannedMedicineDtoList =
-//            connectedPersonApi.synchronizePlannedMedicines(authToken, updatedPlannedMedicineDtoList)
-//        repositoryDispatcherService.dispatchPlannedMedicinesChanges(responsePlannedMedicineDtoList)
+
+        val updatedPlannedMedicineDtoList = plannedMedicineRepository.getEntityListToSync().map {
+            PlannedMedicineDto.fromEntity(it, medicinePlanRepository)
+        }
+        val responsePlannedMedicineDtoList =
+            connectedPersonApi.synchronizePlannedMedicines(authToken, updatedPlannedMedicineDtoList)
+        repositoryDispatcherService.dispatchPlannedMedicinesChanges(responsePlannedMedicineDtoList)
     }
 }

@@ -43,9 +43,10 @@ data class MedicineDto(
         packageSize = packageSize,
         currState = currState,
         additionalInfo = additionalInfo,
-        imageName = image?.let { bytes ->
-            File(appFilesDir, Date().toString()).apply { writeBytes(bytes) }.absolutePath
-        },
+//        imageName = image?.let { bytes ->
+//            File(appFilesDir, Date().toString()).apply { writeBytes(bytes) }.absolutePath
+//        },
+        imageName = null,
         synchronizedWithServer = true
     )
 
@@ -59,7 +60,8 @@ data class MedicineDto(
             packageSize = medicineEntity.packageSize,
             currState = medicineEntity.currState,
             additionalInfo = medicineEntity.additionalInfo,
-            image = medicineEntity.imageName?.let { File(appFilesDir, it).readBytes() }
+//            image = medicineEntity.imageName?.let { File(appFilesDir, it).readBytes() }
+        image = null
         )
     }
 

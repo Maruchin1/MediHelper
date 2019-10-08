@@ -77,6 +77,7 @@ class PatronConnectViewModel(
     private suspend fun initConnectedPersonDatabase(connectedPersonDto: ConnectedPersonDto) {
         val personRepository: PersonRepository = mainApplication.get()
         val mainPerson = PersonEntity(
+            personRemoteID = connectedPersonDto.personRemoteId,
             personName = connectedPersonDto.personName,
             personColorResID = connectedPersonDto.personColorResId,
             mainPerson = true
