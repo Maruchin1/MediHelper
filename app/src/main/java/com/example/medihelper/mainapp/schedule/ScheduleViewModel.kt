@@ -61,5 +61,4 @@ class ScheduleViewModel(
             personItem?.let { plannedMedicineRepository.getItemListLiveByDate(date, it.personID) }
         }
     }
-
 }

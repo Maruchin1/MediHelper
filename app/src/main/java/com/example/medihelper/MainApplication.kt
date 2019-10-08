@@ -32,6 +32,7 @@ import com.example.medihelper.mainapp.more.patronconnect.ConnectedPersonViewMode
 import com.example.medihelper.mainapp.more.patronconnect.PatronConnectViewModel
 import com.example.medihelper.mainapp.persons.PersonOptionsViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
+import com.example.medihelper.mainapp.schedule.ScheduleDayViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
 import com.example.medihelper.remotedatabase.AuthenticationApi
 import com.example.medihelper.remotedatabase.ConnectedPersonApi
@@ -165,6 +166,7 @@ val viewModelModule = module {
     viewModel { PersonOptionsViewModel(get(), get()) }
     viewModel { PatronConnectViewModel(get(), get(), get()) }
     viewModel { ConnectedPersonViewModel(get(), get(), get(), get()) }
+    viewModel { ScheduleDayViewModel(get(), get()) }
 }
 
 val serviceModule = module {

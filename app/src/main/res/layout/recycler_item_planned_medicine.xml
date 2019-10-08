@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -14,102 +15,77 @@
             type="com.example.medihelper.localdatabase.pojos.PlannedMedicineItem" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?selectableItemBackground"
         android:onClick="@{() -> handler.onClickOpenPlannedMedicineOptions(displayData.plannedMedicineID)}"
-        android:orientation="vertical"
-        app:cardBackgroundColor="@color/colorWhite"
-        app:cardElevation="8dp">
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <FrameLayout
-                android:id="@+id/lay_status"
-                android:layout_width="match_parent"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_status"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src='@{displayData.statusOfTaking.iconResID, default="@drawable/round_check_circle_black_24"}'
+                    android:tint='@{displayData.statusOfTaking.colorResID, default="@color/colorStateGood"}' />
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background='@{displayData.statusOfTaking.colorResID, default="@color/colorDarkerGray"}'
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/card_status"
+                app:layout_constraintStart_toEndOf="@id/txv_time"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text='@{displayData.statusOfTaking.string, default="status"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-                    android:textColor="@color/colorWhite"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginTop="2dp"/>
-            </FrameLayout>
-
-            <ImageView
-                android:id="@+id/img_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:src="@drawable/ic_pill_grey600_24dp"
-                app:layout_constraintBottom_toBottomOf="@id/lay_hour_and_name"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/lay_hour_and_name" />
-
-            <LinearLayout
-                android:id="@+id/lay_hour_and_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/ver_guideline"
-                app:layout_constraintStart_toEndOf="@id/img_icon"
-                app:layout_constraintTop_toBottomOf="@id/lay_status">
-
-                <TextView
-                    android:id="@+id/txv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text='@{displayData.plannedTime.formatString,  default="08:00"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                    android:text='@{displayData.medicineName, default="Nazwa leku"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:maxLines="1"
-                    android:text='@{displayData.medicineName, default="Nazwa leku"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                    android:textColor="@color/colorTextSecondary" />
+                    android:text='@{displayData.plannedDoseSize + " " + displayData.medicineUnit, default="Dawka do przyjęcia"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/ver_guideline"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.6" />
-
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/txv_time"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text='@{displayData.plannedDoseSize + " " + displayData.medicineUnit, default="2.0 pigułki"}'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                app:layout_constraintBottom_toBottomOf="@id/lay_hour_and_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/ver_guideline"
-                app:layout_constraintTop_toTopOf="@id/lay_hour_and_name"
-                android:textColor="@color/colorTextSecondary"/>
+                android:layout_marginStart="16dp"
+                android:text='@{displayData.plannedTime.formatString, default="00:00"}'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 

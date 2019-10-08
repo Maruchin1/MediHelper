@@ -10,7 +10,6 @@ import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.File
 
 class PlannedMedicineOptionsViewModel(
     private val plannedMedicineRepository: PlannedMedicineRepository,
@@ -19,8 +18,7 @@ class PlannedMedicineOptionsViewModel(
 
     val medicineNameLive: LiveData<String>
     val medicineUnitLive: LiveData<String>
-    val statusOfTakingLive: LiveData<String>
-    val statusOfTakingColorIdLive: LiveData<Int>
+    val statusOfTakingLive: LiveData<PlannedMedicineEntity.StatusOfTaking>
     val plannedDateLive: LiveData<AppDate>
     val plannedTimeLive: LiveData<AppTime>
     val doseSizeLive: LiveData<String>
@@ -39,14 +37,7 @@ class PlannedMedicineOptionsViewModel(
         }
 
         medicineNameLive = Transformations.map(plannedMedicineDetailsLive) { it.medicineName }
-        statusOfTakingLive = Transformations.map(plannedMedicineDetailsLive) { it.statusOfTaking.string }
-        statusOfTakingColorIdLive = Transformations.map(plannedMedicineDetailsLive) {
-            when (it.statusOfTaking) {
-                PlannedMedicineEntity.StatusOfTaking.WAITING -> R.color.colorDarkerGray
-                PlannedMedicineEntity.StatusOfTaking.TAKEN -> R.color.colorStateGood
-                PlannedMedicineEntity.StatusOfTaking.NOT_TAKEN -> R.color.colorStateSmall
-            }
-        }
+        statusOfTakingLive = Transformations.map(plannedMedicineDetailsLive) { it.statusOfTaking }
         plannedDateLive = Transformations.map(plannedMedicineDetailsLive) { it?.plannedDate }
         plannedTimeLive = Transformations.map(plannedMedicineDetailsLive) { it?.plannedTime }
         doseSizeLive = Transformations.map(plannedMedicineDetailsLive) { it.plannedDoseSize.toString() }

@@ -12,15 +12,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.medihelper.AppDate
 import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
+import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentScheduleDayBinding
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import kotlinx.android.synthetic.main.recycler_item_planned_medicine.view.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.sql.Date
 
 
@@ -28,8 +31,8 @@ class ScheduleDayFragment : Fragment() {
     private val TAG = ScheduleDayFragment::class.simpleName
 
     var date: AppDate? = null
-    val plannedMedicinesAvailableLive = MutableLiveData(false)
-    private val viewModel: ScheduleViewModel by sharedViewModel(from = { parentFragment!! })
+
+    private val viewModel: ScheduleDayViewModel by viewModel()
     private val directions by lazyOf(ScheduleFragmentDirections)
 
     fun onClickOpenPlannedMedicineOptions(plannedMedicineID: Int) {
@@ -38,33 +41,40 @@ class ScheduleDayFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentScheduleDayBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_day, container, false)
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        return bind<FragmentScheduleDayBinding>(
+            inflater = inflater,
+            container = container,
+            layoutResId = R.layout.fragment_schedule_day,
+            viewModel = viewModel
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.dateLive.value = date
         setupRecyclerView()
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        if (date != null) {
-            viewModel.getPlannedMedicineItemListByDateLive(date!!)
-                .observe(viewLifecycleOwner, Observer { plannedMedicineItemList ->
-                    Log.d(TAG, "date = $date, scheduledMedicinesList change = $plannedMedicineItemList")
-                    val adapter = recycler_view_scheduled_medicine_for_day.adapter as PlannedMedicineAdapter
-                    adapter.updateItemsList(plannedMedicineItemList.sortedBy { plannedMedicineItem -> plannedMedicineItem.plannedTime })
-                    plannedMedicinesAvailableLive.value = !plannedMedicineItemList.isNullOrEmpty()
-                })
-        }
+        viewModel.morningPlannedMedicineItemListLive.observe(viewLifecycleOwner, Observer {
+            (recycler_view_morning_schedule.adapter as PlannedMedicineAdapter).updateItemsList(it)
+        })
+        viewModel.afternoonPlannedMedicineItemListLive.observe(viewLifecycleOwner, Observer {
+            (recycler_view_afternoon_schedule.adapter as PlannedMedicineAdapter).updateItemsList(it)
+        })
+        viewModel.eveningPlannedMedicineItemListLive.observe(viewLifecycleOwner, Observer {
+            (recycler_view_evening_schedule.adapter as PlannedMedicineAdapter).updateItemsList(it)
+        })
     }
 
-    private fun setupRecyclerView() {
-        recycler_view_scheduled_medicine_for_day.adapter = PlannedMedicineAdapter()
+    private fun setupRecyclerView() = listOf(
+        recycler_view_morning_schedule,
+        recycler_view_afternoon_schedule,
+        recycler_view_evening_schedule
+    ).forEach {
+        it.adapter = PlannedMedicineAdapter()
+        it.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }
 
     // Inner classes
