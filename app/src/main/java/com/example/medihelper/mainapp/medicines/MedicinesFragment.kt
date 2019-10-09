@@ -84,7 +84,7 @@ class MedicinesFragment : Fragment() {
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicineItem = itemsList[position]
-            val medicineDisplayData = viewModel.getMedicineKitItemDisplayData(medicineItem)
+            val medicineDisplayData = viewModel.getMedicineItemDisplayData(medicineItem)
             holder.bind(medicineDisplayData, this@MedicinesFragment)
         }
     }

@@ -2,7 +2,6 @@ package com.example.medihelper
 
 
 import android.app.Application
-import android.content.Intent
 import android.os.Environment
 import android.preference.PreferenceManager
 import androidx.room.Room
@@ -15,9 +14,6 @@ import com.example.medihelper.localdatabase.repositoriesimpl.PersonRepositoryImp
 import com.example.medihelper.localdatabase.repositoriesimpl.PlannedMedicineRepositoryImpl
 import com.example.medihelper.mainapp.medicines.AddEditMedicineViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
-import com.example.medihelper.dialogs.SelectMedicineViewModel
-import com.example.medihelper.localdatabase.entities.PersonEntity
-import com.example.medihelper.mainapp.MainActivity
 import com.example.medihelper.mainapp.persons.AddEditPersonViewModel
 import com.example.medihelper.mainapp.persons.PersonViewModel
 import com.example.medihelper.mainapp.more.loginregister.LoginRegisterViewModel
@@ -40,7 +36,6 @@ import com.example.medihelper.remotedatabase.RegisteredUserApi
 import com.example.medihelper.services.*
 import com.google.gson.*
 import kotlinx.coroutines.runBlocking
-import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -156,7 +151,6 @@ val viewModelModule = module {
     viewModel { MedicinePlanListViewModel(get(), get(), get()) }
     viewModel { MedicineDetailsViewModel(get(), get(), get(), get()) }
     viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get()) }
-    viewModel { SelectMedicineViewModel(get(), get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get()) }
     viewModel { ScheduleViewModel(get(), get(), get()) }
     viewModel { MoreViewModel(get(), get()) }

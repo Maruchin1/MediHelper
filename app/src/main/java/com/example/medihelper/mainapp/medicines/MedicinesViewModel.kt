@@ -45,7 +45,7 @@ class MedicinesViewModel(
         colorPrimaryLive = Transformations.map(mainPersonItemLive) { it.personColorResID }
     }
 
-    fun getMedicineKitItemDisplayData(medicineItem: MedicineItem): MedicineItemDisplayData {
+    fun getMedicineItemDisplayData(medicineItem: MedicineItem): MedicineItemDisplayData {
         val medicineStateData = MedicineEntity.StateData(medicineItem.packageSize, medicineItem.currState)
         return MedicineItemDisplayData(
             medicineID = medicineItem.medicineID,

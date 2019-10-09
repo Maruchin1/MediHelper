@@ -11,103 +11,104 @@
 
         <variable
             name="displayData"
-            type="com.example.medihelper.dialogs.SelectMedicineViewModel.MedicineItemDisplayData" />
+            type="com.example.medihelper.mainapp.medicines.MedicinesViewModel.MedicineItemDisplayData" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/lay_click"
+        style="@style/AppTheme.Widget.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
         android:clickable="true"
         android:focusable="true"
+        android:foreground="?selectableItemBackground"
         android:onClick="@{() -> handler.onClickSelectMedicine(displayData.medicineID)}">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/card_state"
-            app:layout_constraintStart_toEndOf="@id/card_medicine_picture"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txv_medicine_name"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:text='@{displayData.medicineName, default="Nazwa leku"}'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                android:background="@color/colorDarkerGray">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:text="pigułki"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                android:textColor="@color/colorTextTertiary" />
-
-        </LinearLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_medicine_picture"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="4:3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/img_medicine_picture"
-                srcFile="@{displayData.medicineImageFile}"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_pill_grey600_48dp" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_state"
-            android:layout_width="16dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:visibility="@{displayData.stateAvailable ? View.VISIBLE : View.INVISIBLE}"
-            app:cardCornerRadius="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/card_medicine_picture"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/card_medicine_picture"
-            app:cardElevation="0dp">
+                <ImageView
+                    android:id="@+id/img_photo"
+                    srcFile="@{displayData.medicineImageFile}"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ic_pill_white_48dp"
+                    android:scaleType="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="4:3"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
-                android:id="@+id/lay_curr_state_line"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="bottom"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:orientation="vertical">
 
-                <View
-                    android:id="@+id/line_empty"
+                <TextView
+                    android:id="@+id/txv_medicine_name"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="@{displayData.emptyLayoutWeight, default=3}"
-                    android:background="@color/colorBackground" />
+                    android:layout_height="wrap_content"
+                    android:text='@{displayData.medicineName, default="Nazwa leku"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textColor="@color/colorTextSecondary"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
 
-                <View
-                    android:id="@+id/line_state"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="@{displayData.stateLayoutWeight, default=7}"
-                    android:background='@{displayData.stateColorId, default="@android:color/holo_green_light"}' />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{displayData.medicineUnit, default=jednostka}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:textColor="@color/colorTextTertiary" />
+
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:visibility="@{displayData.stateAvailable ? View.VISIBLE : View.GONE}"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:id="@+id/lay_curr_state_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/line_state"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="@{displayData.stateLayoutWeight, default=7}"
+                        android:background='@{displayData.stateColorId, default="@android:color/holo_green_light"}' />
+
+                    <View
+                        android:id="@+id/line_empty"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="@{displayData.emptyLayoutWeight, default=3}"
+                        android:background="@color/colorBackground" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>
