@@ -207,7 +207,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="16dp"
-                                        android:text='@{viewModel.selectedMedicineExpireDateLive.formatString, default="data"}'
+                                        android:text='@{viewModel.selectedMedicineExpireDateLive.monthYearString, default="data"}'
                                         android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
                                 </TableRow>
                             </TableLayout>

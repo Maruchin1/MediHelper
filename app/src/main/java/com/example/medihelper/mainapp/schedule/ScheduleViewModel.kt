@@ -55,10 +55,4 @@ class ScheduleViewModel(
         val daysDiff = AppDate.daysBetween(AppDate.currDate(), date)
         return (timelineDaysCount / 2) + daysDiff.toInt()
     }
-
-    fun getPlannedMedicineItemListByDateLive(date: AppDate): LiveData<List<PlannedMedicineItem>> {
-        return Transformations.switchMap(selectedPersonItemLive) { personItem ->
-            personItem?.let { plannedMedicineRepository.getItemListLiveByDate(date, it.personID) }
-        }
-    }
 }

@@ -23,8 +23,7 @@ class MedicineDetailsViewModel(
     val isAppModeConnected: LiveData<Boolean>
 
     val medicineNameLive: LiveData<String>
-    val expireDateLive: LiveData<String>
-    val daysRemainsLive: LiveData<String>
+    val expireDateLive: LiveData<AppDate>
     val medicineUnitLive: LiveData<String>
 
     val medicineStateDataLive: LiveData<MedicineEntity.StateData>
@@ -46,8 +45,7 @@ class MedicineDetailsViewModel(
             medicineRepository.getDetailsLive(it)
         }
         medicineNameLive = Transformations.map(medicineDetailsLive) { it.medicineName }
-        expireDateLive = Transformations.map(medicineDetailsLive) { it?.expireDate?.formatString }
-        daysRemainsLive = Transformations.map(medicineDetailsLive) { daysRemainsString(it) }
+        expireDateLive = Transformations.map(medicineDetailsLive) { it?.expireDate }
         medicineUnitLive = Transformations.map(medicineDetailsLive) { it.medicineUnit }
 
         medicineStateDataLive = Transformations.map(medicineDetailsLive) {
@@ -84,14 +82,6 @@ class MedicineDetailsViewModel(
             val medicineEntity = medicineRepository.getEntity(medicineID)
             medicineEntity.reduceCurrState(doseSize)
             medicineRepository.update(medicineEntity)
-        }
-    }
-
-    private fun daysRemainsString(medicineDetails: MedicineDetails): String? {
-        return medicineDetails.expireDate?.let { expireDate ->
-            val currDate = AppDate.currDate()
-            val daysBetween = AppDate.daysBetween(currDate, expireDate)
-            "$daysBetween dni"
         }
     }
 }

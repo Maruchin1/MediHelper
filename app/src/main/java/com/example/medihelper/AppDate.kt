@@ -23,6 +23,8 @@ class AppDate : Comparable<AppDate> {
         get() = SimpleDateFormat("dd MMM", Locale.getDefault()).format(dateCalendar.time)
     val dayOfWeekString: String
         get() = SimpleDateFormat("EEE", Locale.getDefault()).format(dateCalendar.time)
+    val monthYearString: String
+        get() = SimpleDateFormat("MM.yyyy", Locale.getDefault()).format(dateCalendar.time)
     val jsonFormatString: String
         get() = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(dateCalendar.time)
 
@@ -94,5 +96,9 @@ class AppDate : Comparable<AppDate> {
             day < other.day -> -1
             else -> 0
         }
+    }
+
+    override fun toString(): String {
+        return formatString
     }
 }

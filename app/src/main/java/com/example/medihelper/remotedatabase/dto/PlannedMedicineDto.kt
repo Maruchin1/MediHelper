@@ -25,7 +25,7 @@ data class PlannedMedicineDto(
     @SerializedName(value = "plannedDoseSize")
     val plannedDoseSize: Float,
 
-    @SerializedName(value = "statusOfTakingLive")
+    @SerializedName(value = "statusOfTaking")
     val statusOfTaking: String
 ) {
     suspend fun toEntity(medicinePlanRepository: MedicinePlanRepository) = PlannedMedicineEntity(

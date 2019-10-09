@@ -17,6 +17,7 @@ import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentAddEditMedicineBinding
 import com.example.medihelper.dialogs.SelectDateDialog
+import com.example.medihelper.dialogs.SelectMonthDateDialog
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,7 +36,7 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
         startActivity(intent)
     }
 
-    fun onClickSelectExpireDate()  = SelectDateDialog().apply {
+    fun onClickSelectExpireDate()  = SelectMonthDateDialog().apply {
         defaultDate = viewModel.expireDateLive.value
         setDateSelectedListener { date ->
             viewModel.expireDateLive.value = date
