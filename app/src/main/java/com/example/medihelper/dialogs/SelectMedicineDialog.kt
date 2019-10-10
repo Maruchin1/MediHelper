@@ -3,6 +3,7 @@ package com.example.medihelper.dialogs
 import android.app.Dialog
 import android.content.res.Resources
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
@@ -24,6 +25,7 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
 
     private val viewModel: MedicinesViewModel by viewModel()
     private var medicineSelectedListener: ((medicineID: Int) -> Unit)? = null
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var binding: DialogSelectMedicineBinding
 
     fun onClickSelectMedicine(medicineID: Int) {
@@ -42,7 +44,7 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
         val bottomSheetDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
         bottomSheetDialog.setContentView(view)
 
-        val bottomSheetBehavior = BottomSheetBehavior.from(view.parent as View)
+        bottomSheetBehavior = BottomSheetBehavior.from(view.parent as View)
         bottomSheetBehavior.peekHeight = (Resources.getSystem().displayMetrics.heightPixels) / 2
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
 
@@ -63,15 +65,23 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
     }
 
     private fun observeData() {
-        viewModel.medicineItemListLive.observe(requireParentFragment().viewLifecycleOwner, Observer { medicineItemList ->
-            val adapter = binding.recyclerViewMedicines.adapter as MedicineAdapter
-            adapter.updateItemsList(medicineItemList)
-        })
+        viewModel.medicineItemListLive.observe(
+            requireParentFragment().viewLifecycleOwner,
+            Observer { medicineItemList ->
+                val adapter = binding.recyclerViewMedicines.adapter as MedicineAdapter
+                adapter.updateItemsList(medicineItemList)
+            })
     }
 
     private fun setupToolbar() {
         val itemSearch = binding.toolbar.menu.findItem(R.id.btn_search)
         val searchView = itemSearch.actionView as SearchView
+        searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
+            when {
+                hasFocus -> bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                else -> bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 return false
