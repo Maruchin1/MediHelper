@@ -43,7 +43,7 @@
     </style>
 
     <style name="AppCalendarView" parent="Theme.AppCompat.Light">
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorDarkerGray</item>
     </style>
 
     <style name="AppCalendarViewDark" parent="Theme.AppCompat">

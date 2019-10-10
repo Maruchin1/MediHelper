@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="false"
-                android:onClick="@{() -> handler.onClickSelectTime(position, displayData.timeOfTakingRef)}"
+                android:onClick="@{() -> handler.onClickSelectDoseSize(position, displayData.timeOfTakingRef)}"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:text='@{displayData.doseSize + "   " + displayData.medicineUnit, default="1.0 pigulki"}' />

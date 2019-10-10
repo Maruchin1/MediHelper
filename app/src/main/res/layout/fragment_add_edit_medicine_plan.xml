@@ -38,45 +38,51 @@
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
                 app:titleEnabled="false">
 
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="?actionBarSize"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center_horizontal"
-                    android:onClick="@{() -> handler.onClickSelectPerson()}"
-                    android:orientation="vertical"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
-                    app:layout_collapseMode="none">
+                    android:layout_marginTop="?actionBarSize">
 
-                    <com.google.android.material.card.MaterialCardView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:cardBackgroundColor="@color/colorTransparent"
-                        app:cardCornerRadius="24dp"
-                        app:cardElevation="0dp"
-                        app:strokeColor="@color/colorWhite"
-                        app:strokeWidth="3dp">
+                        android:layout_gravity="center"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:onClick="@{() -> handler.onClickSelectPerson()}"
+                        android:orientation="vertical"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        app:layout_collapseMode="none">
 
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:layout_margin="8dp"
-                            android:src="@drawable/round_person_24"
-                            android:tint="@color/colorWhite" />
-                    </com.google.android.material.card.MaterialCardView>
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:cardBackgroundColor="@color/colorTransparent"
+                            app:cardCornerRadius="24dp"
+                            app:cardElevation="0dp"
+                            app:strokeColor="@color/colorWhite"
+                            app:strokeWidth="3dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text='@{viewModel.selectedPersonItemLive.personName, default="Nazwa osoby"}'
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                        android:textColor="@color/colorWhite" />
-                </LinearLayout>
+                            <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:layout_margin="8dp"
+                                android:src="@drawable/round_person_24"
+                                android:tint="@color/colorWhite" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text='@{viewModel.selectedPersonItemLive.personName, default="Nazwa osoby"}'
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                            android:textColor="@color/colorWhite" />
+                    </LinearLayout>
+                </FrameLayout>
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -428,9 +434,9 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
                             android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp">
+                            android:layout_marginEnd="8dp"
+                            android:orientation="vertical">
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/recycler_view_time_of_taking"

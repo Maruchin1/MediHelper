@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
@@ -23,6 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SelectMedicineDialog : AppBottomSheetDialog() {
     override val TAG = "SelectMedicineDialog"
 
+    val colorPrimaryLive = MutableLiveData<Int>()
     private val viewModel: MedicinesViewModel by viewModel()
     private var medicineSelectedListener: ((medicineID: Int) -> Unit)? = null
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
@@ -31,6 +33,10 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
     fun onClickSelectMedicine(medicineID: Int) {
         medicineSelectedListener?.invoke(medicineID)
         dismiss()
+    }
+
+    fun setColorPrimary(colorResId: Int) {
+        colorPrimaryLive.value = colorResId
     }
 
     fun setMedicineSelectedListener(listener: (medicineID: Int) -> Unit) {

@@ -31,11 +31,12 @@ class PeriodFragment : Fragment() {
             R.id.etx_end_date -> viewModel.endDateLive
             else -> null
         }
-        val dialog = SelectDateDialog()
-        selectedDateLive?.let { dialog.defaultDate = it.value }
-        dialog.setDateSelectedListener { date ->
-            selectedDateLive?.value = date
-        }
-        dialog.show(childFragmentManager, dialog.TAG)
+        SelectDateDialog().apply {
+            selectedDateLive?.let { defaultDate = it.value }
+            setDateSelectedListener { date ->
+                selectedDateLive?.value = date
+            }
+            viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
+        }.show(requireParentFragment().childFragmentManager)
     }
 }

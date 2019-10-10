@@ -139,3 +139,10 @@ fun setViewWidth(view: View, width: String) {
     }
     view.requestLayout()
 }
+
+@BindingAdapter("app:titleTextColor")
+fun setToolbarTitleColor(toolbar: Toolbar, colorResId: Int?) {
+    if (colorResId != null && colorResId != 0) {
+        toolbar.setTitleTextColor(ContextCompat.getColor(toolbar.context, colorResId))
+    }
+}

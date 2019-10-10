@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import com.example.medihelper.AppDate
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
@@ -16,6 +17,7 @@ class SelectDateDialog : AppBottomSheetDialog() {
     override val TAG = "SelectDateDialog"
 
     var defaultDate: AppDate? = null
+    val colorPrimaryLive = MutableLiveData<Int>()
     private var dateSelectedListener: ((date: AppDate) -> Unit)? = null
 
     fun onClickCancel() = dismiss()
@@ -28,6 +30,10 @@ class SelectDateDialog : AppBottomSheetDialog() {
 
     fun setDateSelectedListener(listener: (date: AppDate) -> Unit) {
         dateSelectedListener = listener
+    }
+
+    fun setColorPrimary(colorResId: Int) {
+        colorPrimaryLive.value = colorResId
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

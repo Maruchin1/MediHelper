@@ -44,6 +44,7 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         setMedicineSelectedListener { medicineID ->
             viewModel.selectedMedicineIDLive.value = medicineID
         }
+        viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
     }.show(childFragmentManager)
 
     fun onClickSelectPerson() = findNavController().navigate(AddEditMedicinePlanFragmentDirections.toPersonDialog())

@@ -25,12 +25,11 @@ class ContinuousFragment : Fragment() {
         return binding.root
     }
 
-    fun onClickSelectDate() {
-        val dialog = SelectDateDialog()
-        dialog.defaultDate = viewModel.startDateLive.value
-        dialog.setDateSelectedListener { date ->
+    fun onClickSelectDate() = SelectDateDialog().apply {
+        defaultDate = viewModel.startDateLive.value
+        setDateSelectedListener { date ->
             viewModel.startDateLive.value = date
         }
-        dialog.show(childFragmentManager, dialog.TAG)
-    }
+        viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
+    }.show(requireParentFragment().childFragmentManager)
 }
