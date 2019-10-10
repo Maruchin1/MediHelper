@@ -17,7 +17,6 @@ class SelectDateDialog : AppBottomSheetDialog() {
     override val TAG = "SelectDateDialog"
 
     var defaultDate: AppDate? = null
-    val colorPrimaryLive = MutableLiveData<Int>()
     private var dateSelectedListener: ((date: AppDate) -> Unit)? = null
 
     fun onClickCancel() = dismiss()
@@ -30,10 +29,6 @@ class SelectDateDialog : AppBottomSheetDialog() {
 
     fun setDateSelectedListener(listener: (date: AppDate) -> Unit) {
         dateSelectedListener = listener
-    }
-
-    fun setColorPrimary(colorResId: Int) {
-        colorPrimaryLive.value = colorResId
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -1,5 +1,6 @@
 package com.example.medihelper.custom
 
+import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -143,6 +144,6 @@ fun setViewWidth(view: View, width: String) {
 @BindingAdapter("app:titleTextColor")
 fun setToolbarTitleColor(toolbar: Toolbar, colorResId: Int?) {
     if (colorResId != null && colorResId != 0) {
-        toolbar.setTitleTextColor(ContextCompat.getColor(toolbar.context, colorResId))
+        toolbar.setTitleTextColor(ColorStateList.valueOf(ContextCompat.getColor(toolbar.context, colorResId)))
     }
 }

@@ -19,17 +19,15 @@ class IntervalOfDaysFragment : Fragment() {
 
     private val viewModel: AddEditMedicinePlanViewModel by sharedViewModel(from = { parentFragment!! })
 
-    fun onClickSelectInterval() {
-        val dialog = SelectNumberDialog().apply {
-            title = "Wybierz odstęp dni"
-            iconResID = R.drawable.round_access_time_white_36
-            defaultNumber = viewModel.intervalOfDaysLive.value
-            setNumberSelectedListener { number ->
-                viewModel.intervalOfDaysLive.value = number.toInt()
-            }
+    fun onClickSelectInterval() = SelectNumberDialog().apply {
+        title = "Wybierz odstęp dni"
+        iconResID = R.drawable.round_access_time_white_36
+        defaultNumber = viewModel.intervalOfDaysLive.value
+        setNumberSelectedListener { number ->
+            viewModel.intervalOfDaysLive.value = number
         }
-        dialog.show(childFragmentManager, SelectNumberDialog.TAG)
-    }
+        viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
+    }.show(requireParentFragment().childFragmentManager)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

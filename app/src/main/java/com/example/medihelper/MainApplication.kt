@@ -151,7 +151,7 @@ val viewModelModule = module {
     viewModel { MedicinePlanListViewModel(get(), get(), get()) }
     viewModel { MedicineDetailsViewModel(get(), get(), get(), get()) }
     viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get()) }
-    viewModel { PlannedMedicineOptionsViewModel(get(), get()) }
+    viewModel { PlannedMedicineOptionsViewModel(get(), get(), get()) }
     viewModel { ScheduleViewModel(get(), get(), get()) }
     viewModel { MoreViewModel(get(), get()) }
     viewModel { LoginRegisterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }

@@ -44,7 +44,7 @@ class MedicinePlanHistoryViewModel(
                         )
                     )
                 }
-            }
+            }.sortedBy { it.plannedDate }
         }
     }
 

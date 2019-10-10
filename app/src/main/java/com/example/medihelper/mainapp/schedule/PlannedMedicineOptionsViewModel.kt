@@ -8,14 +8,17 @@ import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
+import com.example.medihelper.services.PersonProfileService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class PlannedMedicineOptionsViewModel(
     private val plannedMedicineRepository: PlannedMedicineRepository,
-    private val medicineRepository: MedicineRepository
+    private val medicineRepository: MedicineRepository,
+    private val personProfileService: PersonProfileService
 ) : ViewModel() {
 
+    val colorPrimaryLive: LiveData<Int>
     val medicineNameLive: LiveData<String>
     val medicineUnitLive: LiveData<String>
     val statusOfTakingLive: LiveData<PlannedMedicineEntity.StatusOfTaking>
@@ -32,6 +35,7 @@ class PlannedMedicineOptionsViewModel(
     private val plannedMedicineDetailsLive: LiveData<PlannedMedicineDetails>
 
     init {
+        colorPrimaryLive = Transformations.map(personProfileService.getCurrPersonItemLive()) { it.personColorResID }
         plannedMedicineDetailsLive = Transformations.switchMap(plannedMedicineIDLive) { plannedMedicineID ->
             plannedMedicineRepository.getDetailsLive(plannedMedicineID)
         }

@@ -54,7 +54,6 @@ class MedicinePlanHistoryDialog : AppDialog() {
         recycler_view_history.apply {
             adapter = HistoryAdapter()
             layoutManager = CenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            GravitySnapHelper(Gravity.CENTER).attachToRecyclerView(this)
         }
     }
 

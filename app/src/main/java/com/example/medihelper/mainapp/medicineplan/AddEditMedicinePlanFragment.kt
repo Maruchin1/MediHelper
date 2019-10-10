@@ -54,6 +54,7 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         setTimeSelectedListener { time ->
             viewModel.updateTimeOfTaking(position, timeOfTaking.copy(time = time))
         }
+        viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
     }.show(childFragmentManager)
 
     fun onClickSelectDoseSize(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) =
@@ -65,6 +66,7 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
                 Log.d(TAG, "numberSelected")
                 viewModel.updateTimeOfTaking(position, timeOfTaking.copy(doseSize = number))
             }
+            viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
         }.show(childFragmentManager)
 
     fun onClickRemoveTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) =

@@ -71,7 +71,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text='@{displayData.plannedDoseSize + " " + displayData.medicineUnit, default="Dawka do przyjęcia"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:textColor="@color/colorTextTertiary" />
             </LinearLayout>
 
             <TextView

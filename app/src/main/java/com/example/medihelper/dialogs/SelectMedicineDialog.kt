@@ -24,7 +24,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SelectMedicineDialog : AppBottomSheetDialog() {
     override val TAG = "SelectMedicineDialog"
 
-    val colorPrimaryLive = MutableLiveData<Int>()
     private val viewModel: MedicinesViewModel by viewModel()
     private var medicineSelectedListener: ((medicineID: Int) -> Unit)? = null
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
@@ -33,10 +32,6 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
     fun onClickSelectMedicine(medicineID: Int) {
         medicineSelectedListener?.invoke(medicineID)
         dismiss()
-    }
-
-    fun setColorPrimary(colorResId: Int) {
-        colorPrimaryLive.value = colorResId
     }
 
     fun setMedicineSelectedListener(listener: (medicineID: Int) -> Unit) {
