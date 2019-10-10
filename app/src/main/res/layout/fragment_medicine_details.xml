@@ -109,6 +109,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
                                 android:text="@{viewModel.medicineNameLive, default=Nazwa}"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
                                 android:textColor="@color/colorWhite" />
@@ -122,14 +124,14 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="12dp"
-                                android:layout_marginEnd="16dp"
                                 android:orientation="vertical">
 
                                 <TableLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="12dp"
+                                    android:layout_marginEnd="16dp">
 
                                     <TableRow>
 
@@ -169,7 +171,7 @@
                                 <com.google.android.material.chip.ChipGroup
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="24dp"
+                                    android:layout_marginTop="16dp"
                                     app:chipSpacingHorizontal="8dp"
                                     app:singleLine="true">
 
@@ -177,6 +179,7 @@
                                         style="@style/AppTheme.Widget.Chip.Action"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_marginStart="8dp"
                                         android:onClick="@{() -> handler.onClickTake()}"
                                         android:text="Przyjmij"
                                         app:chipIcon="@drawable/pill" />
