@@ -25,20 +25,14 @@
             android:background="@drawable/bg_bottom_dialog"
             app:liftOnScroll="true">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:menu="@menu/menu_select_medicine"
-                    app:title="Wybierz lek"
-                    app:titleTextColor='@{handler.colorPrimaryLive, default="@color/colorPrimary"}' />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="wrap_content"
+                app:menu="@menu/menu_select_medicine"
+                app:title="Apteczka"
+                app:titleTextAppearance="@style/AppTheme.Text.ToolbarTitle.Main"
+                app:titleTextColor='@{handler.colorPrimaryLive, default="@color/colorPrimary"}' />
 
         </com.google.android.material.appbar.AppBarLayout>
 
