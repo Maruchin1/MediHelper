@@ -30,6 +30,11 @@ class SharedPrefService(
         return AppMode.getAppMode(authToken, email)
     }
 
+    fun getMedicineUnitListLive(): LiveData<List<String>> =
+        Transformations.map(SharedPrefLiveData(sharedPreferences, KEY_MEDICINE_UNIT_SET, emptySet<String>())) {
+            it.toList()
+        }
+
     fun getUserEmailLive(): LiveData<String> = SharedPrefLiveData(sharedPreferences, KEY_USER_EMAIL, "")
 
     fun getLastSyncTimeLive(): LiveData<Date> =

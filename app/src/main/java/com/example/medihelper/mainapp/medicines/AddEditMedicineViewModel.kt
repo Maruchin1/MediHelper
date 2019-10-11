@@ -54,10 +54,6 @@ class AddEditMedicineViewModel(
         }
     }
 
-    fun setMedicineType(position: Int) {
-        medicineUnitLive.value = medicineUnitList[position]
-    }
-
     fun saveMedicine(): Boolean {
         if (validateInputData()) {
             if (editMedicineID != null) {

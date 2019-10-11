@@ -47,7 +47,7 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
 
         bottomSheetBehavior = BottomSheetBehavior.from(view.parent as View)
         bottomSheetBehavior.peekHeight = (Resources.getSystem().displayMetrics.heightPixels) / 2
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
         onViewCreated(view, savedInstanceState)
 

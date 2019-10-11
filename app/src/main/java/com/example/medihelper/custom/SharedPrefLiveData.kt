@@ -33,6 +33,7 @@ class SharedPrefLiveData<T> (
             is Float -> postValue(sharedPreferences.getFloat(key, defaultValue) as T)
             is Boolean -> postValue(sharedPreferences.getBoolean(key, defaultValue) as T)
             is String -> postValue(sharedPreferences.getString(key, defaultValue) as T)
+            is Set<*> -> postValue(sharedPreferences.getStringSet(key, defaultValue as Set<String>) as T)
             else -> throw IllegalStateException("Unsupported type")
         }
     }

@@ -17,6 +17,7 @@ import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentAddEditMedicineBinding
 import com.example.medihelper.dialogs.SelectDateDialog
+import com.example.medihelper.dialogs.SelectMedicineUnitDialog
 import com.example.medihelper.dialogs.SelectMonthDateDialog
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine.*
@@ -36,11 +37,13 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
         startActivity(intent)
     }
 
-    fun onClickSelectExpireDate()  = SelectMonthDateDialog().apply {
+    fun onClickSelectExpireDate() = SelectMonthDateDialog().apply {
         defaultDate = viewModel.expireDateLive.value
-        setDateSelectedListener { date ->
-            viewModel.expireDateLive.value = date
-        }
+        setDateSelectedListener { viewModel.expireDateLive.value = it }
+    }.show(childFragmentManager)
+
+    fun onClickSelectMedicineUnit() = SelectMedicineUnitDialog().apply {
+        setMedicineUnitSelectedListener { viewModel.medicineUnitLive.value = it }
     }.show(childFragmentManager)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,7 +61,7 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
         setupToolbar()
         setupTextFieldsFocusListener()
         observeViewModel()
-        setupSpinMedicineType()
+//        setupSpinMedicineType()
     }
 
     private fun observeViewModel() {
@@ -79,25 +82,25 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
         }
     }
 
-    private fun setupSpinMedicineType() {
-        context?.run {
-            spin_medicine_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    viewModel.setMedicineType(position)
-                }
-            }
-            spin_medicine_type.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1).apply {
-                addAll(viewModel.medicineUnitList)
-            }
-        }
-    }
+//    private fun setupSpinMedicineType() {
+//        context?.run {
+//            spin_medicine_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//                override fun onNothingSelected(parent: AdapterView<*>?) {}
+//
+//                override fun onItemSelected(
+//                    parent: AdapterView<*>?,
+//                    view: View?,
+//                    position: Int,
+//                    id: Long
+//                ) {
+//                    viewModel.setMedicineType(position)
+//                }
+//            }
+//            spin_medicine_type.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1).apply {
+//                addAll(viewModel.medicineUnitList)
+//            }
+//        }
+//    }
 
     private fun setupTextFieldsFocusListener() {
         etx_package_size.setOnFocusChangeListener { view, hasFocus ->

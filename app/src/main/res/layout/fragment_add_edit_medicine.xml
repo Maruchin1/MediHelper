@@ -56,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp">
 
                     <LinearLayout
@@ -108,72 +108,83 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
+                        <TableLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:layout_height="wrap_content">
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="20dp"
-                                android:src="@drawable/round_event_white_24"
-                                android:tint="@color/colorTextTertiary" />
+                            <TableRow android:layout_marginTop="24dp">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="16dp"
-                                android:text="Data ważności:"
-                                android:textAppearance="@style/AppTheme.Text.Form.Subtitle" />
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/in_lay_expire_date"
-                                style="@style/Widget.Design.TextInputLayout"
-                                inLayError="@{viewModel.errorExpireDateLive}"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:hintEnabled="false">
-
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:layout_width="match_parent"
+                                <ImageView
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:clickable="true"
-                                    android:focusable="false"
-                                    android:hint="nie wybrano"
-                                    android:onClick="@{() -> handler.onClickSelectExpireDate()}"
-                                    android:text='@{viewModel.expireDateLive.monthYearString}' />
-                            </com.google.android.material.textfield.TextInputLayout>
-                        </LinearLayout>
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="20dp"
+                                    android:src="@drawable/ic_pill_black_24dp"
+                                    android:tint="@color/colorTextTertiary" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
-                            android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Jednostka"
+                                    android:textAppearance="@style/AppTheme.Text.Form.Subtitle" />
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="20dp"
-                                android:src="@drawable/ic_pill_black_24dp"
-                                android:tint="@color/colorTextTertiary" />
+                                <com.google.android.material.textfield.TextInputLayout
+                                    style="@style/Widget.Design.TextInputLayout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:hintEnabled="false">
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Jednostka"
-                                android:textAppearance="@style/AppTheme.Text.Form.Subtitle" />
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:clickable="true"
+                                        android:focusable="false"
+                                        android:onClick="@{() -> handler.onClickSelectMedicineUnit()}"
+                                        android:text="@{viewModel.medicineUnitLive}"
+                                        android:textAlignment="center" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </TableRow>
 
-                            <Spinner
-                                android:id="@+id/spin_medicine_type"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-                        </LinearLayout>
+                            <TableRow
+                                android:layout_marginTop="24dp"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="20dp"
+                                    android:src="@drawable/round_event_white_24"
+                                    android:tint="@color/colorTextTertiary" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="16dp"
+                                    android:text="Data ważności"
+                                    android:textAppearance="@style/AppTheme.Text.Form.Subtitle" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/in_lay_expire_date"
+                                    style="@style/Widget.Design.TextInputLayout"
+                                    inLayError="@{viewModel.errorExpireDateLive}"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:hintEnabled="false">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:clickable="true"
+                                        android:focusable="false"
+                                        android:hint="Nie wybrano"
+                                        android:onClick="@{() -> handler.onClickSelectExpireDate()}"
+                                        android:text='@{viewModel.expireDateLive.monthYearString}'
+                                        android:textAlignment="center" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </TableRow>
+                        </TableLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -182,7 +193,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp">
 
                     <LinearLayout
@@ -271,7 +282,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp">
 
                     <LinearLayout
@@ -307,7 +318,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="100dp">
 
