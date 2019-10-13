@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.example.medihelper.mainapp.AlarmActivity" />
+
+        <variable
+            name="viewModel"
+            type="com.example.medihelper.mainapp.AlarmViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background='@{viewModel.personColorLive, default="@color/colorPrimary"}'
+        android:fitsSystemWindows="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{viewModel.plannedTimeLive.formatString, default="00:00"}'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                android:textColor="@color/colorWhite"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toTopOf="@id/hor_guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text='@{viewModel.personNameLive, default="Nazwa osoby"}'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txv_time" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/hor_guideline"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <LinearLayout
+                android:id="@+id/lay_planned_medicine_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/hor_guideline">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{viewModel.medicineNameLive, default="Nazwa leku"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text='@{viewModel.medicineDoseLive, default="Dawka leku"}'
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:textColor="@color/colorWhite" />
+            </LinearLayout>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:onClick="@{() -> handler.onClickChangeTime()}"
+                android:src="@drawable/round_access_time_white_48"
+                app:layout_constraintBottom_toBottomOf="@id/btn_take_medicine"
+                app:layout_constraintEnd_toStartOf="@id/btn_take_medicine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_take_medicine" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_take_medicine"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginBottom="32dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                android:onClick="@{() -> handler.onClickMedicineTaken()}"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/baseline_check_white_36"
+                    android:tint='@{viewModel.personColorLive, default="@color/colorPrimary"}' />
+            </com.google.android.material.card.MaterialCardView>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:onClick="@{() -> handler.onClickMedicineNotTaken()}"
+                android:src="@drawable/round_close_white_48"
+                app:layout_constraintBottom_toBottomOf="@id/btn_take_medicine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_take_medicine"
+                app:layout_constraintTop_toTopOf="@id/btn_take_medicine" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txv_medicine_taken"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorStateGood"
+            android:fitsSystemWindows="true"
+            android:gravity="center"
+            android:text="Lek przyjęty"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            android:textColor="@color/colorWhite"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/txv_medicine_not_taken"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorStateSmall"
+            android:fitsSystemWindows="true"
+            android:gravity="center"
+            android:text="Lek nieprzyjęty"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            android:textColor="@color/colorWhite"
+            android:visibility="invisible" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lay_time_changed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorStateMedium"
+            android:fitsSystemWindows="true"
+            android:visibility="invisible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{viewModel.changedTimeLive.formatString, default="00:00"}'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                android:textColor="@color/colorWhite"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toTopOf="@id/hor_guideline_2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/hor_guideline_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <TextView
+                android:id="@+id/txv_medicine_time_changed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:text="Przypomnij później"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

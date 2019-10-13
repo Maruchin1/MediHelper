@@ -132,6 +132,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center_vertical"
+            android:onClick="@{() -> handler.onClickChangeForLater()}"
             android:padding="16dp">
 
             <ImageView

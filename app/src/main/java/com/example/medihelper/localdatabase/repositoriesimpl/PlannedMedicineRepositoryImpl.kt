@@ -5,6 +5,7 @@ import androidx.room.*
 import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entities.DeletedEntity
 import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
+import com.example.medihelper.localdatabase.pojos.PlannedMedicineAlarmData
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
@@ -52,6 +53,8 @@ class PlannedMedicineRepositoryImpl(
 
     override suspend fun getIDListFromDateByMedicinePlanID(date: AppDate, medicinePlanID: Int) =
         plannedMedicineDao.getIDListFromDataByMedicinePlanID(date, medicinePlanID)
+
+    override suspend fun getAlarmData(plannedMedicineID: Int) = plannedMedicineDao.getAlarmData(plannedMedicineID)
 
     override fun getDetailsLive(plannedMedicineID: Int) =
         plannedMedicineDao.getDetailsLive(plannedMedicineID)
@@ -132,6 +135,9 @@ interface PlannedMedicineDao {
 
     @Query("SELECT planned_medicine_id FROM planned_medicines WHERE medicine_plan_id = :medicinePlanID AND planned_date >= :date")
     suspend fun getIDListFromDataByMedicinePlanID(date: AppDate, medicinePlanID: Int): List<Int>
+
+    @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN persons p ON mp.person_id = p.person_id JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE pm.planned_medicine_id = :plannedMedicineID")
+    suspend fun getAlarmData(plannedMedicineID: Int): PlannedMedicineAlarmData
 
     @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE pm.planned_medicine_id = :plannedMedicineID")
     fun getDetailsLive(plannedMedicineID: Int): LiveData<PlannedMedicineDetails>

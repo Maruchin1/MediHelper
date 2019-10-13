@@ -12,6 +12,7 @@ import com.example.medihelper.localdatabase.repositoriesimpl.MedicinePlanReposit
 import com.example.medihelper.localdatabase.repositoriesimpl.MedicineRepositoryImpl
 import com.example.medihelper.localdatabase.repositoriesimpl.PersonRepositoryImpl
 import com.example.medihelper.localdatabase.repositoriesimpl.PlannedMedicineRepositoryImpl
+import com.example.medihelper.mainapp.AlarmViewModel
 import com.example.medihelper.mainapp.medicines.AddEditMedicineViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.persons.AddEditPersonViewModel
@@ -151,7 +152,7 @@ val viewModelModule = module {
     viewModel { MedicinePlanListViewModel(get(), get(), get()) }
     viewModel { MedicineDetailsViewModel(get(), get(), get(), get()) }
     viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get()) }
-    viewModel { PlannedMedicineOptionsViewModel(get(), get(), get()) }
+    viewModel { PlannedMedicineOptionsViewModel(get(), get(), get(), get()) }
     viewModel { ScheduleViewModel(get(), get(), get()) }
     viewModel { MoreViewModel(get(), get()) }
     viewModel { LoginRegisterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
@@ -161,6 +162,7 @@ val viewModelModule = module {
     viewModel { PatronConnectViewModel(get(), get(), get()) }
     viewModel { ConnectedPersonViewModel(get(), get(), get(), get()) }
     viewModel { ScheduleDayViewModel(get(), get()) }
+    viewModel { AlarmViewModel(get()) }
 }
 
 val serviceModule = module {
@@ -173,6 +175,7 @@ val serviceModule = module {
     single { NotificationService(androidContext()) }
     single { LoadingDialogService() }
     single { RepositoryDispatcherService(androidContext().filesDir, get(), get(), get(), get()) }
+    single { AlarmService(androidContext(), get()) }
 }
 
 private val appRetrofit: Retrofit by lazy {

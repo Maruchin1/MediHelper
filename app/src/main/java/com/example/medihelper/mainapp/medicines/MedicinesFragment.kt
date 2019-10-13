@@ -10,6 +10,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
@@ -49,6 +50,12 @@ class MedicinesFragment : Fragment() {
     private fun setupRecyclerView() {
         recycler_view_medicines.apply {
             adapter = MedicineAdapter()
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (dy > 0) fab_add.hide() else fab_add.show()
+                    super.onScrolled(recyclerView, dx, dy)
+                }
+            })
         }
     }
 

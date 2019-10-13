@@ -29,6 +29,11 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
         findNavController().navigate(directions.toMedicineDetailsFragment(it))
     }
 
+    fun onClickChangeForLater() {
+        viewModel.setAlarm()
+        dismiss()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel.setArgs(args)
         return bind<DialogPlannedMedicineOptionsBinding>(

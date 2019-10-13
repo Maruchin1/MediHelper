@@ -8,14 +8,17 @@ import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
+import com.example.medihelper.services.AlarmService
 import com.example.medihelper.services.PersonProfileService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 class PlannedMedicineOptionsViewModel(
     private val plannedMedicineRepository: PlannedMedicineRepository,
     private val medicineRepository: MedicineRepository,
-    private val personProfileService: PersonProfileService
+    private val personProfileService: PersonProfileService,
+    private val alarmService: AlarmService
 ) : ViewModel() {
 
     val colorPrimaryLive: LiveData<Int>
@@ -81,6 +84,18 @@ class PlannedMedicineOptionsViewModel(
 
             plannedMedicineRepository.update(plannedMedicineEntity)
             medicineRepository.update(medicineEntity)
+        }
+    }
+
+    fun setAlarm() {
+        val plannedMedicineID = plannedMedicineIDLive.value
+        val plannedMedicineDetails = plannedMedicineDetailsLive.value
+        if (plannedMedicineID != null && plannedMedicineDetails != null) {
+            alarmService.setPlannedMedicineAlarm(
+                plannedMedicineID =  plannedMedicineID,
+                date =  AppDate.currDate(),
+                time =  AppTime(Date().time + 2000)
+            )
         }
     }
 }
