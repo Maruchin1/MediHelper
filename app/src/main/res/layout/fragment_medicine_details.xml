@@ -26,7 +26,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="265dp"
+            android:layout_height="@dimen/header_image_height"
             android:background="@color/colorDarkerGray"
             android:fitsSystemWindows="true">
 
@@ -79,9 +79,9 @@
                     cardBackgroundColorResID='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}'
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/card_main_margin_start"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/card_main_margin_end"
                     app:cardBackgroundColor="@color/colorPrimary">
 
                     <LinearLayout
@@ -168,40 +168,46 @@
                                     </TableRow>
                                 </TableLayout>
 
-                                <com.google.android.material.chip.ChipGroup
+                                <HorizontalScrollView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="16dp"
-                                    app:chipSpacingHorizontal="8dp"
-                                    app:singleLine="true">
+                                    android:scrollbars="none">
 
-                                    <com.google.android.material.chip.Chip
-                                        style="@style/AppTheme.Widget.Chip.Action"
+                                    <com.google.android.material.chip.ChipGroup
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginStart="8dp"
-                                        android:onClick="@{() -> handler.onClickTake()}"
-                                        android:text="Przyjmij"
-                                        app:chipIcon="@drawable/pill" />
+                                        app:chipSpacingHorizontal="8dp"
+                                        app:singleLine="true">
 
-                                    <com.google.android.material.chip.Chip
-                                        style="@style/AppTheme.Widget.Chip.Action"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:onClick="@{() -> handler.onClickEdit()}"
-                                        android:text="Edytuj"
-                                        android:visibility="@{viewModel.isAppModeConnected() ? View.GONE : View.VISIBLE}"
-                                        app:chipIcon="@drawable/round_edit_black_24" />
+                                        <com.google.android.material.chip.Chip
+                                            style="@style/AppTheme.Widget.Chip.Action"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="8dp"
+                                            android:onClick="@{() -> handler.onClickTake()}"
+                                            android:text="Przyjmij"
+                                            app:chipIcon="@drawable/pill" />
 
-                                    <com.google.android.material.chip.Chip
-                                        style="@style/AppTheme.Widget.Chip.Action"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:onClick="@{() -> handler.onClickDelete()}"
-                                        android:text="Usuń"
-                                        android:visibility="@{viewModel.isAppModeConnected() ? View.GONE : View.VISIBLE}"
-                                        app:chipIcon="@drawable/round_delete_black_24" />
-                                </com.google.android.material.chip.ChipGroup>
+                                        <com.google.android.material.chip.Chip
+                                            style="@style/AppTheme.Widget.Chip.Action"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:onClick="@{() -> handler.onClickEdit()}"
+                                            android:text="Edytuj"
+                                            android:visibility="@{viewModel.isAppModeConnected() ? View.GONE : View.VISIBLE}"
+                                            app:chipIcon="@drawable/round_edit_black_24" />
+
+                                        <com.google.android.material.chip.Chip
+                                            style="@style/AppTheme.Widget.Chip.Action"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:onClick="@{() -> handler.onClickDelete()}"
+                                            android:text="Usuń"
+                                            android:visibility="@{viewModel.isAppModeConnected() ? View.GONE : View.VISIBLE}"
+                                            app:chipIcon="@drawable/round_delete_black_24" />
+                                    </com.google.android.material.chip.ChipGroup>
+                                </HorizontalScrollView>
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -212,9 +218,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/card_main_margin_start"
+                    android:layout_marginTop="@dimen/card_main_margin_top"
+                    android:layout_marginEnd="@dimen/card_main_margin_end"
                     android:visibility="@{viewModel.medicineStateDataLive.stateAvailable ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
@@ -300,9 +306,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/card_main_margin_start"
+                    android:layout_marginTop="@dimen/card_main_margin_top"
+                    android:layout_marginEnd="@dimen/card_main_margin_end"
                     android:visibility="@{viewModel.isAppModeConnected() ? View.GONE : View.VISIBLE}">
 
                     <LinearLayout
@@ -353,9 +359,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/card_main_margin_start"
+                    android:layout_marginTop="@dimen/card_main_margin_top"
+                    android:layout_marginEnd="@dimen/card_main_margin_end"
                     android:layout_marginBottom="16dp">
 
                     <LinearLayout

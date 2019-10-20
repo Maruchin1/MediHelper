@@ -61,9 +61,9 @@
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     android:paddingBottom="8dp"
-                    android:visibility='@{viewModel.medicineAvailableLive ? View.VISIBLE : View.GONE, default=visible}'
+                    android:visibility='@{viewModel.medicineAvailableLive ? View.VISIBLE : View.GONE, default=gone}'
                     app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                    app:spanCount="2"
+                    app:spanCount="3"
                     tools:listitem="@layout/recycler_item_medicine" />
 
                 <LinearLayout
@@ -71,7 +71,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:visibility='@{viewModel.medicineAvailableLive ? View.GONE : View.VISIBLE, default=gone}'>
+                    android:visibility='@{viewModel.medicineAvailableLive ? View.GONE : View.VISIBLE, default=visible}'>
 
                     <ImageView
                         android:layout_width="wrap_content"
