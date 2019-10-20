@@ -2,6 +2,7 @@ package com.example.medihelper.mainapp.medicines
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MedicineDetailsFragment : AppFullScreenDialog() {
+    private val TAG = "MedicineDetailsFragment"
 
     private val viewModel: MedicineDetailsViewModel by viewModel()
     private val args: MedicineDetailsFragmentArgs by navArgs()
@@ -89,6 +91,7 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
         viewModel.personItemListTakingMedicineLive.observe(viewLifecycleOwner, Observer { personItemList ->
             val adapter = recycler_view_persons.adapter as PersonAdapter
             adapter.updateItemsList(personItemList)
+            Log.i(TAG, "personsList = $personItemList")
         })
     }
 
