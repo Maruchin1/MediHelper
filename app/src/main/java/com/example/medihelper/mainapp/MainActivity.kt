@@ -43,12 +43,12 @@ class MainActivity : AppCompatActivity() {
         checkAppModeAndSync()
 
         GlobalScope.launch {
-//            val medicineRepository = get<MedicineRepository>()
-//
-//            println("Medicines")
-//            medicineRepository.getEntityList().forEach { println(it.toString()) }
-//            println("Images")
-//            get<File>().list().forEach { println(it) }
+            val medicineRepository = get<MedicineRepository>()
+
+            println("Medicines")
+            medicineRepository.getEntityList().forEach { println(it.toString()) }
+            println("Images")
+            get<File>().list().forEach { println(it) }
 
 //            val med1 = medicineRepository.getEntity(1)
 //            medicineRepository.update(med1.copy(imageName = "Ashwagandha_20191013_1529558666985904986001246.jpg"))
@@ -68,8 +68,8 @@ class MainActivity : AppCompatActivity() {
 //            medicineRepository.update(medicineRepository.getEntity(8).copy(imageName = "No-spa Max_20191013_1539265631687407010602517.jpg"))
 //            medicineRepository.update(medicineRepository.getEntity(9).copy(imageName = "Cirrus duo_20191013_1540136627178333947751025.jpg"))
 //            medicineRepository.update(medicineRepository.getEntity(10).copy(imageName = "Nasonex_20191013_1541127379973368517063892.jpg"))
-//            medicineRepository.update(medicineRepository.getEntity(11).copy(imageName = "Witamina C_20191013_1542268303180432066800638.jpg"))
-//            medicineRepository.update(medicineRepository.getEntity(12).copy(imageName = "Otrivin_20191013_1543424701815135639149280.jpg"))
+            medicineRepository.update(medicineRepository.getEntity(11).copy(imageName = "Witamina C_20191013_1542268303180432066800638.jpg"))
+            medicineRepository.update(medicineRepository.getEntity(12).copy(imageName = "Otrivin_20191013_1543424701815135639149280.jpg"))
         }
     }
 

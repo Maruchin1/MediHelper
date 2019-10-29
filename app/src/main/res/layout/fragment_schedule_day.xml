@@ -36,9 +36,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/schedule_item_margin_hor"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="@dimen/schedule_item_margin_hor"
+                    android:layout_marginEnd="8dp"
                     android:visibility="@{viewModel.morningMedicineAvailableLive ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
@@ -83,9 +83,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/schedule_item_margin_hor"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="@dimen/schedule_item_margin_hor"
+                    android:layout_marginEnd="8dp"
                     android:visibility="@{viewModel.afternoonMedicineAvailableLive ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
@@ -130,9 +130,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/schedule_item_margin_hor"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="@dimen/schedule_item_margin_hor"
+                    android:layout_marginEnd="8dp"
                     android:visibility="@{viewModel.eveningMedicineAvailableLive ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout

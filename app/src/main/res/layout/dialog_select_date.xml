@@ -8,77 +8,69 @@
             type="com.example.medihelper.dialogs.SelectDateDialog" />
     </data>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorTransparent"
-        android:paddingStart="@dimen/bottom_dialog_padding_hor"
-        android:paddingEnd="@dimen/bottom_dialog_padding_hor">
+        android:background="@drawable/bg_bottom_dialog"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/round_event_white_36"
+                android:tint='@{handler.colorPrimaryLive, default="@color/colorPrimary"}' />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Wybierz datę"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor='@{handler.colorPrimaryLive, default="@color/colorPrimary"}' />
+        </LinearLayout>
+
+        <CalendarView
+            android:id="@+id/calendar_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:theme="@style/AppCalendarView" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_bottom_dialog">
+            android:layout_marginBottom="4dp"
+            android:gravity="end"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/round_event_white_36"
-                    android:tint='@{handler.colorPrimaryLive, default="@color/colorPrimary"}' />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Wybierz datę"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textColor='@{handler.colorPrimaryLive, default="@color/colorPrimary"}' />
-            </LinearLayout>
-
-            <CalendarView
-                android:id="@+id/calendar_view"
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:theme="@style/AppCalendarView" />
+                android:layout_marginEnd="16dp"
+                android:onClick="@{() -> handler.onClickCancel()}"
+                android:text="Odrzuć"
+                android:textColor='@{handler.colorPrimaryLive, default="@color/colorPrimary"}'
+                app:cornerRadius="20dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_confirm"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:gravity="end"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_cancel"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:onClick="@{() -> handler.onClickCancel()}"
-                    android:text="Odrzuć"
-                    android:textColor='@{handler.colorPrimaryLive, default="@color/colorPrimary"}'
-                    app:cornerRadius="20dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_confirm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:backgroundTint='@{handler.colorPrimaryLive, default="@color/colorPrimary"}'
-                    android:onClick="@{() -> handler.onClickConfirm()}"
-                    android:text="Zatwierdź"
-                    app:cornerRadius="20dp" />
-            </LinearLayout>
+                android:layout_marginEnd="16dp"
+                android:backgroundTint='@{handler.colorPrimaryLive, default="@color/colorPrimary"}'
+                android:onClick="@{() -> handler.onClickConfirm()}"
+                android:text="Zatwierdź"
+                app:cornerRadius="20dp" />
         </LinearLayout>
-    </FrameLayout>
+    </LinearLayout>
 </layout>
 
