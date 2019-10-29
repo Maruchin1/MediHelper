@@ -46,7 +46,7 @@ class PersonRepositoryImpl(
 
     override fun getItemListLive() = personDao.getItemListLive()
 
-    override fun getItemListLiveByMedicineID(medicineID: Int) = personDao.getItemListLiveByMedicineIDLive(medicineID)
+    override fun getItemListLiveByMedicineID(medicineID: Int) = personDao.getItemListLiveByMedicineID(medicineID)
 
     override fun getMainPersonIDLive() = personDao.getMainPersonIdLive()
 
@@ -140,8 +140,8 @@ interface PersonDao {
     @Query("SELECT * FROM persons")
     fun getItemListLive(): LiveData<List<PersonItem>>
 
-    @Query("SELECT * FROM persons p JOIN medicines_plans mp ON p.person_id = mp.person_id JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE m.medicine_id = :medicineID GROUP BY p.person_id")
-    fun getItemListLiveByMedicineIDLive(medicineID: Int): LiveData<List<PersonItem>>
+    @Query("SELECT * FROM persons p JOIN medicines_plans mp ON p.person_id = mp.person_id JOIN medicines m ON mp.medicine_id = m.medicine_id GROUP BY p.person_id HAVING m.medicine_id = :medicineID")
+    fun getItemListLiveByMedicineID(medicineID: Int): LiveData<List<PersonItem>>
 
     @Query("SELECT person_id FROM persons WHERE main_person = 1")
     fun getMainPersonIdLive(): LiveData<Int>

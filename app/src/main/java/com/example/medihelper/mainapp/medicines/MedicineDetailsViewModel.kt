@@ -1,6 +1,5 @@
 package com.example.medihelper.mainapp.medicines
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entities.MedicineEntity
@@ -19,7 +18,6 @@ class MedicineDetailsViewModel(
     private val personRepository: PersonRepository,
     private val sharedPrefService: SharedPrefService
 ) : ViewModel() {
-    private val TAG = "MedicineDetailsViewMod"
 
     val colorPrimaryLive: LiveData<Int>
     val isAppModeConnected: LiveData<Boolean>
