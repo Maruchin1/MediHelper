@@ -1,4 +1,4 @@
-package com.example.medihelper.localdatabase.entities
+package com.example.medihelper.localdatabase.entity
 
 import androidx.room.*
 import com.example.medihelper.AppDate
@@ -33,7 +33,7 @@ data class MedicineEntity(
     var additionalInfo: String? = null,
 
     @ColumnInfo(name = "image_name")
-    var imageName: String?,
+    var imageName: String? = null,
 
     @ColumnInfo(name = "synchronized_with_server")
     var synchronizedWithServer: Boolean = false

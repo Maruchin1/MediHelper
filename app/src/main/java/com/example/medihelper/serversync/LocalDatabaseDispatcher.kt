@@ -1,18 +1,17 @@
-package com.example.medihelper.services
+package com.example.medihelper.serversync
 
-import com.example.medihelper.localdatabase.entities.MedicineEntity
-import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
-import com.example.medihelper.localdatabase.entities.PersonEntity
-import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
+import com.example.medihelper.localdatabase.entity.MedicineEntity
+import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
+import com.example.medihelper.localdatabase.entity.PersonEntity
+import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.repositories.*
 import com.example.medihelper.remotedatabase.dto.MedicineDto
 import com.example.medihelper.remotedatabase.dto.MedicinePlanDto
 import com.example.medihelper.remotedatabase.dto.PersonDto
 import com.example.medihelper.remotedatabase.dto.PlannedMedicineDto
-import java.io.File
 
-class RepositoryDispatcherService(
-    private val appFilesDir: File,
+class LocalDatabaseDispatcher(
+    private val entityDtoConverter: EntityDtoConverter,
     private val medicineRepository: MedicineRepository,
     private val personRepository: PersonRepository,
     private val medicinePlanRepository: MedicinePlanRepository,
@@ -23,7 +22,7 @@ class RepositoryDispatcherService(
         val updateList = mutableListOf<MedicineEntity>()
         val insertList = mutableListOf<MedicineEntity>()
         medicineDtoList.forEach { medicineDto ->
-            val medicineEntity = medicineDto.toEntity(appFilesDir)
+            val medicineEntity = entityDtoConverter.medicineDtoToEntity(medicineDto)
             if (medicineEntity.medicineID != 0) {
                 updateList.add(medicineEntity)
             } else {
@@ -38,7 +37,7 @@ class RepositoryDispatcherService(
                 }
             }
         }
-        applyChangesToRepository(medicineRepository, remoteIdList, updateList, insertList)
+        applyChangesToLocalDatabase(medicineRepository, remoteIdList, updateList, insertList)
     }
 
     suspend fun dispatchPersonsChanges(personDtoList: List<PersonDto>) {
@@ -46,7 +45,7 @@ class RepositoryDispatcherService(
         val updateList = mutableListOf<PersonEntity>()
         val insertList = mutableListOf<PersonEntity>()
         personDtoList.forEach { personDto ->
-            val personEntity = personDto.toEntity()
+            val personEntity = entityDtoConverter.personDtoToEntity(personDto)
             if (personEntity.personID != 0) {
                 updateList.add(personEntity)
             } else {
@@ -59,7 +58,7 @@ class RepositoryDispatcherService(
                 }
             }
         }
-        applyChangesToRepository(personRepository, remoteIdList, updateList, insertList)
+        applyChangesToLocalDatabase(personRepository, remoteIdList, updateList, insertList)
     }
 
     suspend fun dispatchMedicinesPlansChanges(medicinePlanDtoList: List<MedicinePlanDto>) {
@@ -67,7 +66,7 @@ class RepositoryDispatcherService(
         val updateList = mutableListOf<MedicinePlanEntity>()
         val insertList = mutableListOf<MedicinePlanEntity>()
         medicinePlanDtoList.forEach { medicinePlanDto ->
-            val medicinePlanEntity = medicinePlanDto.toEntity(medicineRepository, personRepository)
+            val medicinePlanEntity = entityDtoConverter.medicinePlanDtoToEntity(medicinePlanDto)
             if (medicinePlanEntity.medicinePlanID != 0) {
                 updateList.add(medicinePlanEntity)
             } else {
@@ -80,7 +79,7 @@ class RepositoryDispatcherService(
                 }
             }
         }
-        applyChangesToRepository(medicinePlanRepository, remoteIdList, updateList, insertList)
+        applyChangesToLocalDatabase(medicinePlanRepository, remoteIdList, updateList, insertList)
     }
 
     suspend fun dispatchPlannedMedicinesChanges(plannedMedicineDtoList: List<PlannedMedicineDto>) {
@@ -88,7 +87,7 @@ class RepositoryDispatcherService(
         val updateList = mutableListOf<PlannedMedicineEntity>()
         val insertList = mutableListOf<PlannedMedicineEntity>()
         plannedMedicineDtoList.forEach { plannedMedicineDto ->
-            val plannedMedicineEntity = plannedMedicineDto.toEntity(medicinePlanRepository)
+            val plannedMedicineEntity = entityDtoConverter.plannedMedicineDtoToEntity(plannedMedicineDto)
             if (plannedMedicineEntity.plannedMedicineID != 0) {
                 updateList.add(plannedMedicineEntity)
             } else {
@@ -101,10 +100,10 @@ class RepositoryDispatcherService(
                 }
             }
         }
-        applyChangesToRepository(plannedMedicineRepository, remoteIdList, updateList, insertList)
+        applyChangesToLocalDatabase(plannedMedicineRepository, remoteIdList, updateList, insertList)
     }
 
-    private suspend fun <T> applyChangesToRepository(
+    private suspend fun <T> applyChangesToLocalDatabase(
         serverSyncRepository: ServerSyncRepository<T>,
         remoteIdList: List<Long>,
         updateEntityList: List<T>,

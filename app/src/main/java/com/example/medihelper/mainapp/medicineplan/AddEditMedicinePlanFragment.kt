@@ -20,7 +20,7 @@ import com.example.medihelper.databinding.FragmentAddEditMedicinePlanBinding
 import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.dialogs.SelectFloatNumberDialog
 import com.example.medihelper.dialogs.SelectMedicineDialog
-import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
+import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
 import com.example.medihelper.mainapp.medicineplan.daystype.DaysOfWeekFragment
 import com.example.medihelper.mainapp.medicineplan.daystype.IntervalOfDaysFragment
 import com.example.medihelper.mainapp.medicineplan.durationtype.ContinuousFragment

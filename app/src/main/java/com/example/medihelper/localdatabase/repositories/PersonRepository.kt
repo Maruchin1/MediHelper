@@ -1,11 +1,7 @@
 package com.example.medihelper.localdatabase.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
-import com.example.medihelper.localdatabase.entities.PersonEntity
+import com.example.medihelper.localdatabase.entity.PersonEntity
 import com.example.medihelper.localdatabase.pojos.PersonItem
 import com.example.medihelper.localdatabase.pojos.PersonOptionsData
 

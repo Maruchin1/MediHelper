@@ -1,7 +1,7 @@
 package com.example.medihelper.services
 
 import com.example.medihelper.R
-import com.example.medihelper.localdatabase.entities.PersonEntity
+import com.example.medihelper.localdatabase.entity.PersonEntity
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 
 class InitialDataService(

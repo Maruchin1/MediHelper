@@ -8,9 +8,8 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
-import com.example.medihelper.services.AlarmService
 import com.example.medihelper.services.MedicineSchedulerService
-import com.example.medihelper.services.WorkerService
+import com.example.medihelper.serversync.ServerSyncWorkManager
 import com.example.medihelper.services.SharedPrefService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,7 +21,7 @@ import org.koin.android.ext.android.inject
 class MainActivity : AppCompatActivity() {
 
     private val medicineSchedulerService: MedicineSchedulerService by inject()
-    private val workerService: WorkerService by inject()
+    private val serverSyncWorkManager: ServerSyncWorkManager by inject()
     private val sharedPrefService: SharedPrefService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,8 +79,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAppModeAndSync() {
         when (sharedPrefService.getAppMode()) {
-            SharedPrefService.AppMode.LOGGED -> workerService.enqueueLoggedUserSync()
-            SharedPrefService.AppMode.CONNECTED -> workerService.enqueueConnectedPersonSync()
+            SharedPrefService.AppMode.LOGGED -> serverSyncWorkManager.enqueueLoggedUserSync()
+            SharedPrefService.AppMode.CONNECTED -> serverSyncWorkManager.enqueueConnectedPersonSync()
         }
     }
 }

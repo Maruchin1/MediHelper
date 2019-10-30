@@ -1,7 +1,7 @@
 package com.example.medihelper.localdatabase.repositories
 
 import androidx.lifecycle.LiveData
-import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
+import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanHistory
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 

@@ -3,7 +3,7 @@ package com.example.medihelper.localdatabase
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.medihelper.localdatabase.entities.*
+import com.example.medihelper.localdatabase.entity.*
 import com.example.medihelper.localdatabase.repositoriesimpl.*
 
 @Database(

@@ -2,7 +2,7 @@ package com.example.medihelper.mainapp.medicines
 
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
-import com.example.medihelper.localdatabase.entities.MedicineEntity
+import com.example.medihelper.localdatabase.entity.MedicineEntity
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.pojos.PersonItem
 import com.example.medihelper.localdatabase.repositories.MedicineRepository

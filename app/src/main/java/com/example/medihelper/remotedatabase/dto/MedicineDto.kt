@@ -1,10 +1,6 @@
 package com.example.medihelper.remotedatabase.dto
 
-import com.example.medihelper.AppDate
-import com.example.medihelper.localdatabase.entities.MedicineEntity
 import com.google.gson.annotations.SerializedName
-import java.io.File
-import java.util.*
 
 data class MedicineDto(
     @SerializedName(value = "medicineLocalId")
@@ -34,37 +30,6 @@ data class MedicineDto(
     @SerializedName(value = "image")
     val image: ByteArray?
 ) {
-    fun toEntity(appFilesDir: File) = MedicineEntity(
-        medicineID = medicineLocalId ?: 0,
-        medicineRemoteID = medicineRemoteId,
-        medicineName = medicineName,
-        medicineUnit = medicineUnit,
-        expireDate = expireDate?.let { AppDate(it) },
-        packageSize = packageSize,
-        currState = currState,
-        additionalInfo = additionalInfo,
-//        imageName = image?.let { bytes ->
-//            File(appFilesDir, Date().toString()).apply { writeBytes(bytes) }.absolutePath
-//        },
-        imageName = null,
-        synchronizedWithServer = true
-    )
-
-    companion object {
-        fun fromEntity(medicineEntity: MedicineEntity, appFilesDir: File) = MedicineDto(
-            medicineLocalId = medicineEntity.medicineID,
-            medicineRemoteId = medicineEntity.medicineRemoteID,
-            medicineName = medicineEntity.medicineName,
-            medicineUnit = medicineEntity.medicineUnit,
-            expireDate = medicineEntity.expireDate?.jsonFormatString,
-            packageSize = medicineEntity.packageSize,
-            currState = medicineEntity.currState,
-            additionalInfo = medicineEntity.additionalInfo,
-//            image = medicineEntity.imageName?.let { File(appFilesDir, it).readBytes() }
-        image = null
-        )
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

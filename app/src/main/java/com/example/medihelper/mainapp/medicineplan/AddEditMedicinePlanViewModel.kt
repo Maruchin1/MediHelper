@@ -4,10 +4,11 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
 import com.example.medihelper.custom.FieldMutableLiveData
-import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
+import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicineDetails
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
+import com.example.medihelper.services.DateTimeService
 import com.example.medihelper.services.MedicineSchedulerService
 import com.example.medihelper.services.PersonProfileService
 import kotlinx.coroutines.*
@@ -17,7 +18,8 @@ class AddEditMedicinePlanViewModel(
     private val medicineRepository: MedicineRepository,
     private val medicinePlanRepository: MedicinePlanRepository,
     private val medicineSchedulerService: MedicineSchedulerService,
-    private val personProfileService: PersonProfileService
+    private val personProfileService: PersonProfileService,
+    private val dateTimeService: DateTimeService
 ) : ViewModel() {
     private val TAG = AddEditMedicinePlanViewModel::class.simpleName
 
@@ -64,7 +66,7 @@ class AddEditMedicinePlanViewModel(
 
         selectedMedicineIDLive.postValue(null)
         durationTypeLive.postValue(MedicinePlanEntity.DurationType.ONCE)
-        startDateLive.postValue(AppDate.currDate())
+        startDateLive.postValue(dateTimeService.getCurrDate())
         endDateLive.postValue(null)
         daysTypeLive.postValue(MedicinePlanEntity.DaysType.NONE)
         daysOfWeekLive.postValue(MedicinePlanEntity.DaysOfWeek())

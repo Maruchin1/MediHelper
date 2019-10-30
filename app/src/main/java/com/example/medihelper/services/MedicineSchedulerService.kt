@@ -1,20 +1,22 @@
 package com.example.medihelper.services
 
 import com.example.medihelper.AppDate
-import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
-import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
+import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
+import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import kotlin.collections.ArrayList
 
 class MedicineSchedulerService(
     private val medicinePlanRepository: MedicinePlanRepository,
-    private val plannedMedicineRepository: PlannedMedicineRepository
+    private val plannedMedicineRepository: PlannedMedicineRepository,
+    private val statusOfTakingService: StatusOfTakingService,
+    private val dateTimeService: DateTimeService
 ) {
     suspend fun updatePlannedMedicinesStatuses() {
         val updatedPlannedMedicineEntityList = plannedMedicineRepository.getEntityList().map { plannedMedicineEntity ->
             plannedMedicineEntity.apply {
-                updateStatusByCurrDate()
+                statusOfTaking = statusOfTakingService.getStatusByCurrDate(this)
             }
         }
         plannedMedicineRepository.update(updatedPlannedMedicineEntityList)
@@ -28,7 +30,7 @@ class MedicineSchedulerService(
     }
 
     suspend fun updatePlannedMedicines(medicinePlanID: Int) {
-        val currDate = AppDate.currDate()
+        val currDate = dateTimeService.getCurrDate()
         plannedMedicineRepository.getIDListFromDateByMedicinePlanID(currDate, medicinePlanID).let { idList ->
             plannedMedicineRepository.delete(idList)
         }

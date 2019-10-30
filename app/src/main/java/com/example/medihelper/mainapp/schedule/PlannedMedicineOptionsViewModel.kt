@@ -4,12 +4,14 @@ import androidx.lifecycle.*
 import com.example.medihelper.AppDate
 import com.example.medihelper.AppTime
 import com.example.medihelper.R
-import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
+import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import com.example.medihelper.services.AlarmService
+import com.example.medihelper.services.DateTimeService
 import com.example.medihelper.services.PersonProfileService
+import com.example.medihelper.services.StatusOfTakingService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -18,7 +20,9 @@ class PlannedMedicineOptionsViewModel(
     private val plannedMedicineRepository: PlannedMedicineRepository,
     private val medicineRepository: MedicineRepository,
     private val personProfileService: PersonProfileService,
-    private val alarmService: AlarmService
+    private val alarmService: AlarmService,
+    private val statusOfTakingService: StatusOfTakingService,
+    private val dateTimeService: DateTimeService
 ) : ViewModel() {
 
     val colorPrimaryLive: LiveData<Int>
@@ -74,11 +78,11 @@ class PlannedMedicineOptionsViewModel(
             val plannedMedicineEntity = plannedMedicineRepository.getEntity(plannedMedicineDetails.plannedMedicineID)
             val medicineEntity = medicineRepository.getEntity(plannedMedicineDetails.medicineID)
 
-            if (plannedMedicineDetails.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
-                plannedMedicineEntity.setMedicineTaken(false)
+            if (plannedMedicineEntity.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
+                plannedMedicineEntity.statusOfTaking = statusOfTakingService.getStatusByTaken(plannedMedicineEntity, false)
                 medicineEntity.increaseCurrState(plannedMedicineDetails.plannedDoseSize)
             } else {
-                plannedMedicineEntity.setMedicineTaken(true)
+                plannedMedicineEntity.statusOfTaking = statusOfTakingService.getStatusByTaken(plannedMedicineEntity, true)
                 medicineEntity.reduceCurrState(plannedMedicineDetails.plannedDoseSize)
             }
 
@@ -93,7 +97,7 @@ class PlannedMedicineOptionsViewModel(
         if (plannedMedicineID != null && plannedMedicineDetails != null) {
             alarmService.setPlannedMedicineAlarm(
                 plannedMedicineID =  plannedMedicineID,
-                date =  AppDate.currDate(),
+                date =  dateTimeService.getCurrDate(),
                 time =  AppTime(Date().time + 2000)
             )
         }

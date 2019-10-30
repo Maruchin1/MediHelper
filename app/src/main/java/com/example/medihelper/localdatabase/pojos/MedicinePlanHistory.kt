@@ -2,7 +2,7 @@ package com.example.medihelper.localdatabase.pojos
 
 import androidx.room.ColumnInfo
 import androidx.room.Relation
-import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
+import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 
 data class MedicinePlanHistory(
     @ColumnInfo(name = "medicine_plan_id")

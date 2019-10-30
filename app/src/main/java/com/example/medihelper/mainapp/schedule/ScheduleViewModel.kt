@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
 import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
+import com.example.medihelper.services.DateTimeService
 import com.example.medihelper.services.PersonProfileService
 import com.example.medihelper.services.SharedPrefService
 
@@ -11,7 +12,8 @@ import com.example.medihelper.services.SharedPrefService
 class ScheduleViewModel(
     private val plannedMedicineRepository: PlannedMedicineRepository,
     private val personProfileService: PersonProfileService,
-    private val sharedPrefService: SharedPrefService
+    private val sharedPrefService: SharedPrefService,
+    private val dateTimeService: DateTimeService
 ) : ViewModel() {
 
     val timelineDaysCount = 10000
@@ -36,23 +38,21 @@ class ScheduleViewModel(
 
     fun selectDate(date: AppDate) {
         val currDate = selectedDateLive.value
-        if (currDate != null) {
-            if (date != currDate) {
-                selectedDateLive.value = date
-            }
-        } else {
+        if (currDate == null) {
+            selectedDateLive.value = date
+        } else if (date != currDate) {
             selectedDateLive.value = date
         }
     }
 
-    fun selectTodayDate() = selectDate(AppDate.currDate())
+    fun selectTodayDate() = selectDate(dateTimeService.getCurrDate())
 
-    fun getDateForPosition(position: Int) = AppDate.currDate().apply {
+    fun getDateForPosition(position: Int) = dateTimeService.getCurrDate().apply {
         addDays(position - (timelineDaysCount / 2))
     }
 
     fun getPositionForDate(date: AppDate): Int {
-        val daysDiff = AppDate.daysBetween(AppDate.currDate(), date)
+        val daysDiff = dateTimeService.daysBetween(dateTimeService.getCurrDate(), date)
         return (timelineDaysCount / 2) + daysDiff.toInt()
     }
 }

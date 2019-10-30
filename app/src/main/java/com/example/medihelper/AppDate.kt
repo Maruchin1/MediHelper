@@ -60,17 +60,6 @@ class AppDate : Comparable<AppDate> {
 
     fun copy() = AppDate(timeInMillis)
 
-    companion object {
-        fun currDate() = AppDate(Calendar.getInstance().timeInMillis)
-
-        fun daysBetween(date1: AppDate, date2: AppDate): Long {
-            val days1 = date1.timeInMillis / (24 * 3600 * 1000)
-            val days2 = date2.timeInMillis / (24 * 3600 * 1000)
-            val daysDiff = days2 - days1
-            return daysDiff
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

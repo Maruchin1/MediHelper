@@ -13,7 +13,7 @@ import com.example.medihelper.localdatabase.repositories.PlannedMedicineReposito
 import com.example.medihelper.remotedatabase.AuthenticationApi
 import com.example.medihelper.remotedatabase.RegisteredUserApi
 import com.example.medihelper.remotedatabase.dto.UserCredentialsDto
-import com.example.medihelper.services.WorkerService
+import com.example.medihelper.serversync.ServerSyncWorkManager
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ class LoginRegisterViewModel(
     private val sharedPrefService: SharedPrefService,
     private val authenticationApi: AuthenticationApi,
     private val registeredUserApi: RegisteredUserApi,
-    private val workerService: WorkerService,
+    private val serverSyncWorkManager: ServerSyncWorkManager,
     private val medicineRepository: MedicineRepository,
     private val personRepository: PersonRepository,
     private val medicinePlanRepository: MedicinePlanRepository,
@@ -134,7 +134,7 @@ class LoginRegisterViewModel(
             saveAuthToken(tempAuthToken)
             saveUserEmail(tempUserEmail)
         }
-        workerService.enqueueLoggedUserSync()
+        serverSyncWorkManager.enqueueLoggedUserSync()
     }
 
     private fun getErrorMessage(e: Exception) = when (e) {

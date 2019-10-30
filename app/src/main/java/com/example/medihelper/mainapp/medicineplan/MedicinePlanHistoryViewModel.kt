@@ -5,12 +5,14 @@ import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.pojos.MedicinePlanHistory
 import com.example.medihelper.localdatabase.pojos.MedicinePlanHistoryCheckbox
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
+import com.example.medihelper.services.DateTimeService
 import com.example.medihelper.services.PersonProfileService
 
 
 class MedicinePlanHistoryViewModel(
     private val medicinePlanRepository: MedicinePlanRepository,
-    personProfileService: PersonProfileService
+    personProfileService: PersonProfileService,
+    private val dateTimeService: DateTimeService
 ) : ViewModel() {
 
     val colorPrimaryLive: LiveData<Int>
@@ -35,7 +37,7 @@ class MedicinePlanHistoryViewModel(
                 medicinePlanHistory.medicinePlanHistoryCheckboxList.groupBy { medicinePlanHistoryCheckbox ->
                     medicinePlanHistoryCheckbox.plannedDate
                 }.forEach { entry ->
-                    val currDate = AppDate.currDate()
+                    val currDate = dateTimeService.getCurrDate()
                     this.add(
                         HistoryItemDisplayData(
                             plannedDate = entry.key,

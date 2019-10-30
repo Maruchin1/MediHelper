@@ -1,7 +1,7 @@
 package com.example.medihelper.mainapp.persons
 
 import androidx.lifecycle.*
-import com.example.medihelper.localdatabase.entities.PersonEntity
+import com.example.medihelper.localdatabase.entity.PersonEntity
 import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.GlobalScope

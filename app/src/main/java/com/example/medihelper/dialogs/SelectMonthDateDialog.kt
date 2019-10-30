@@ -9,7 +9,9 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.DialogSelectMonthDateBinding
+import com.example.medihelper.services.DateTimeService
 import kotlinx.android.synthetic.main.dialog_select_month_date.*
+import org.koin.android.ext.android.inject
 
 class SelectMonthDateDialog : AppBottomSheetDialog() {
     override val TAG = "SelectMontDateDialog"
@@ -20,10 +22,9 @@ class SelectMonthDateDialog : AppBottomSheetDialog() {
 
     var defaultDate: AppDate? = null
     private var dateSelectedListener: ((date: AppDate) -> Unit)? = null
+    private val dateTimeService: DateTimeService by inject()
 
     fun onClickConfirm() {
-        val year = year_picker.value
-        val mont = month_picker.value
         val selectedDate = AppDate(year = year_picker.value, month = month_picker.value - 1, day = 1)
         dateSelectedListener?.invoke(selectedDate)
         dismiss()
@@ -47,7 +48,7 @@ class SelectMonthDateDialog : AppBottomSheetDialog() {
     }
 
     private fun setupNumberPickers() {
-        val curDate = AppDate.currDate()
+        val curDate = dateTimeService.getCurrDate()
         month_picker.run {
             minValue = 1
             maxValue = 12

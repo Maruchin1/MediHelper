@@ -1,4 +1,4 @@
-package com.example.medihelper.localdatabase.entities
+package com.example.medihelper.localdatabase.entity
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
@@ -7,8 +7,6 @@ import androidx.room.*
 import com.example.medihelper.AppDate
 import com.example.medihelper.AppTime
 import com.google.gson.annotations.SerializedName
-import java.sql.Date
-import java.sql.Time
 
 @Entity(
     tableName = "medicines_plans",
@@ -178,7 +176,7 @@ data class MedicinePlanEntity(
         }
 
         override fun toString(): String {
-            return "modnay:$monday, tuesday:$tuesday, wednesday:$wednesday, thursday:$thursday, friday:$friday, saturday:$saturday, sunday:$sunday"
+            return "monday:$monday, tuesday:$tuesday, wednesday:$wednesday, thursday:$thursday, friday:$friday, saturday:$saturday, sunday:$sunday"
         }
     }
 }

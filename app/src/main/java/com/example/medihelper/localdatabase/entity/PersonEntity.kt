@@ -1,4 +1,4 @@
-package com.example.medihelper.localdatabase.entities
+package com.example.medihelper.localdatabase.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

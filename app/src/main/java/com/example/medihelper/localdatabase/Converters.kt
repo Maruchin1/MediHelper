@@ -3,13 +3,11 @@ package com.example.medihelper.localdatabase
 import androidx.room.TypeConverter
 import com.example.medihelper.AppDate
 import com.example.medihelper.AppTime
-import com.example.medihelper.localdatabase.entities.DeletedEntity
-import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
-import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
+import com.example.medihelper.localdatabase.entity.DeletedEntity
+import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
+import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.sql.Date
-import java.sql.Time
 
 
 class Converters {

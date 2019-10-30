@@ -45,10 +45,6 @@ class AppTime : Comparable<AppTime> {
         }
     }
 
-    companion object {
-        fun currTime() = AppTime(Calendar.getInstance().timeInMillis)
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -72,5 +68,9 @@ class AppTime : Comparable<AppTime> {
             minute < other.minute -> -1
             else -> 0
         }
+    }
+
+    override fun toString(): String {
+        return "$hour:$minute"
     }
 }

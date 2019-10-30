@@ -1,6 +1,5 @@
 package com.example.medihelper.remotedatabase.dto
 
-import com.example.medihelper.localdatabase.entities.PersonEntity
 import com.google.gson.annotations.SerializedName
 
 data class PersonDto(
@@ -18,23 +17,4 @@ data class PersonDto(
 
     @SerializedName(value = "connectionKey")
     val connectionKey: String?
-) {
-    fun toEntity() = PersonEntity(
-        personID = personLocalId ?: 0,
-        personRemoteID = personRemoteId,
-        personName = personName,
-        personColorResID = personColorResId,
-        connectionKey = connectionKey,
-        synchronizedWithServer = true
-    )
-
-    companion object {
-        fun fromEntity(personEntity: PersonEntity) = PersonDto(
-            personLocalId = personEntity.personID,
-            personRemoteId = personEntity.personRemoteID,
-            personName = personEntity.personName,
-            personColorResId = personEntity.personColorResID,
-            connectionKey = null
-        )
-    }
-}
+)

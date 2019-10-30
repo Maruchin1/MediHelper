@@ -3,7 +3,7 @@ package com.example.medihelper.localdatabase.pojos
 import androidx.room.ColumnInfo
 import com.example.medihelper.AppDate
 import com.example.medihelper.AppTime
-import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
+import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 
 
 data class PlannedMedicineDetails(

@@ -12,6 +12,7 @@ import com.example.medihelper.localdatabase.repositoriesimpl.MedicinePlanReposit
 import com.example.medihelper.localdatabase.repositoriesimpl.MedicineRepositoryImpl
 import com.example.medihelper.localdatabase.repositoriesimpl.PersonRepositoryImpl
 import com.example.medihelper.localdatabase.repositoriesimpl.PlannedMedicineRepositoryImpl
+import com.example.medihelper.serversync.ServerSyncWorkManager
 import com.example.medihelper.mainapp.AlarmViewModel
 import com.example.medihelper.mainapp.medicines.AddEditMedicineViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
@@ -122,7 +123,15 @@ val connectedPersonDatabaseModule = module {
     }
 }
 
-val repositoryModule = module {
+val testDatabaseModule = module {
+    single(override = true) {
+        Room.inMemoryDatabaseBuilder(get(), AppDatabase::class.java)
+            .allowMainThreadQueries()
+            .build()
+    }
+}
+
+val repositoryModule = module(override = true) {
     single<MedicineRepository> {
         MedicineRepositoryImpl(get<AppDatabase>().medicineDao(), get<AppDatabase>().deletedEntityDao())
     }
@@ -148,12 +157,12 @@ val viewModelModule = module {
     viewModel { AddEditMedicineViewModel(get(), get(), get(), get()) }
     viewModel { AddEditPersonViewModel(get(), get()) }
     viewModel { PersonViewModel(get(), get()) }
-    viewModel { MedicinePlanHistoryViewModel(get(), get()) }
-    viewModel { MedicinePlanListViewModel(get(), get(), get()) }
+    viewModel { MedicinePlanHistoryViewModel(get(), get(), get()) }
+    viewModel { MedicinePlanListViewModel(get(), get(), get(), get()) }
     viewModel { MedicineDetailsViewModel(get(), get(), get(), get()) }
-    viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get()) }
-    viewModel { PlannedMedicineOptionsViewModel(get(), get(), get(), get()) }
-    viewModel { ScheduleViewModel(get(), get(), get()) }
+    viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get(), get()) }
+    viewModel { PlannedMedicineOptionsViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { ScheduleViewModel(get(), get(), get(), get()) }
     viewModel { MoreViewModel(get(), get()) }
     viewModel { LoginRegisterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { LoggedUserViewModel(get(), get(), get(), get(), get(), get()) }
@@ -168,14 +177,15 @@ val viewModelModule = module {
 val serviceModule = module {
     single { SharedPrefService(get()) }
     single { PersonProfileService(get()) }
-    single { MedicineSchedulerService(get(), get()) }
+    single { MedicineSchedulerService(get(), get(), get(), get()) }
     single { MedicineImageService(get(), get(named(EXTERNAL_PICTURES_DIR))) }
-    single { WorkerService(get()) }
+    single { ServerSyncWorkManager(get()) }
     single { InitialDataService(get(), get()) }
     single { NotificationService(androidContext()) }
     single { LoadingDialogService() }
-    single { RepositoryDispatcherService(androidContext().filesDir, get(), get(), get(), get()) }
     single { AlarmService(androidContext(), get()) }
+    single { DateTimeService() }
+    single { StatusOfTakingService(get()) }
 }
 
 private val appRetrofit: Retrofit by lazy {

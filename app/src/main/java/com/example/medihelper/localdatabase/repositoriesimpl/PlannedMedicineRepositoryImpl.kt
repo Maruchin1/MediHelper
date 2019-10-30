@@ -3,8 +3,8 @@ package com.example.medihelper.localdatabase.repositoriesimpl
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.medihelper.AppDate
-import com.example.medihelper.localdatabase.entities.DeletedEntity
-import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
+import com.example.medihelper.localdatabase.entity.DeletedEntity
+import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineAlarmData
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
 import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem

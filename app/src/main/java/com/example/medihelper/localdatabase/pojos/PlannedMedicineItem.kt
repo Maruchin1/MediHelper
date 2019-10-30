@@ -2,8 +2,7 @@ package com.example.medihelper.localdatabase.pojos
 
 import androidx.room.ColumnInfo
 import com.example.medihelper.AppTime
-import com.example.medihelper.localdatabase.entities.PlannedMedicineEntity
-import java.sql.Time
+import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 
 data class PlannedMedicineItem(
     @ColumnInfo(name = "planned_medicine_id")

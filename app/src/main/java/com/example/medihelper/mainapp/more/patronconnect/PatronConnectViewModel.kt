@@ -6,11 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.*
 import com.example.medihelper.custom.ActionLiveData
-import com.example.medihelper.localdatabase.entities.PersonEntity
-import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
-import com.example.medihelper.localdatabase.repositories.MedicineRepository
+import com.example.medihelper.localdatabase.entity.PersonEntity
 import com.example.medihelper.localdatabase.repositories.PersonRepository
-import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
 import com.example.medihelper.remotedatabase.AuthenticationApi
 import com.example.medihelper.remotedatabase.dto.ConnectedPersonDto
 import com.example.medihelper.services.SharedPrefService

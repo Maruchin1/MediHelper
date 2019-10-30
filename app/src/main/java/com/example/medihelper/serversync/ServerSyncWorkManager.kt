@@ -1,9 +1,9 @@
-package com.example.medihelper.services
+package com.example.medihelper.serversync
 
 import androidx.work.*
 
-class WorkerService(private val workManager: WorkManager) {
-    private val TAG = "WorkerService"
+class ServerSyncWorkManager(private val workManager: WorkManager) {
+    private val TAG = "ServerSyncWorkManager"
 
     fun enqueueLoggedUserSync() {
         val syncWork = OneTimeWorkRequestBuilder<LoggedUserSyncWorker>()

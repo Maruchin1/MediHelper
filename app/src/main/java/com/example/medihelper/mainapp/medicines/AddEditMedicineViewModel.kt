@@ -6,7 +6,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
-import com.example.medihelper.localdatabase.entities.MedicineEntity
+import com.example.medihelper.localdatabase.entity.MedicineEntity
 import com.example.medihelper.localdatabase.repositories.MedicineRepository
 import com.example.medihelper.services.MedicineImageService
 import com.example.medihelper.services.SharedPrefService

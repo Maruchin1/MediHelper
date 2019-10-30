@@ -1,7 +1,6 @@
 package com.example.medihelper.localdatabase.pojos
 
 import androidx.room.ColumnInfo
-import com.example.medihelper.localdatabase.entities.PersonEntity
 
 data class PersonItem(
     @ColumnInfo(name = "person_id")

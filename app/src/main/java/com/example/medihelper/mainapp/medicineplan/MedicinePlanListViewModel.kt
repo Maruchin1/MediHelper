@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.medihelper.AppDate
-import com.example.medihelper.localdatabase.entities.MedicinePlanEntity
+import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
 import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
+import com.example.medihelper.services.DateTimeService
 import com.example.medihelper.services.PersonProfileService
 import com.example.medihelper.services.SharedPrefService
 import kotlinx.coroutines.launch
@@ -15,7 +15,8 @@ import kotlinx.coroutines.launch
 class MedicinePlanListViewModel(
     private val medicinePlanRepository: MedicinePlanRepository,
     private val personProfileService: PersonProfileService,
-    private val sharedPrefService: SharedPrefService
+    private val sharedPrefService: SharedPrefService,
+    private val dateTimeService: DateTimeService
 ) : ViewModel() {
 
     val isAppModeConnectedLive: LiveData<Boolean>
@@ -78,7 +79,7 @@ class MedicinePlanListViewModel(
     )
 
     private fun getMedicinePlanType(medicinePlanItem: MedicinePlanItem): MedicinePlanType {
-        val currDate = AppDate.currDate()
+        val currDate = dateTimeService.getCurrDate()
         return when (medicinePlanItem.durationType) {
             MedicinePlanEntity.DurationType.ONCE -> {
                 when {

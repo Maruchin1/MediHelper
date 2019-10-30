@@ -1,4 +1,4 @@
-package com.example.medihelper.localdatabase.entities
+package com.example.medihelper.localdatabase.entity
 
 import androidx.room.*
 import com.example.medihelper.AppDate
@@ -41,36 +41,6 @@ data class PlannedMedicineEntity(
     @ColumnInfo(name = "synchronized_with_server")
     var synchronizedWithServer: Boolean = false
 ) {
-    fun setMedicineTaken(taken: Boolean) {
-        statusOfTaking = if (taken) {
-            StatusOfTaking.TAKEN
-        } else {
-            statusOfTakingByCurrDate()
-        }
-    }
-
-    fun updateStatusByCurrDate() {
-        if (statusOfTaking != StatusOfTaking.TAKEN) {
-            val newStatus = statusOfTakingByCurrDate()
-            if (newStatus != statusOfTaking) {
-                statusOfTaking = newStatus
-            }
-        }
-    }
-
-    private fun statusOfTakingByCurrDate(): StatusOfTaking {
-        val currDate = AppDate.currDate()
-        val currTime = AppTime.currTime()
-        return when {
-            plannedDate > currDate -> StatusOfTaking.WAITING
-            plannedDate < currDate -> StatusOfTaking.NOT_TAKEN
-            else -> when {
-                currTime > plannedTime -> StatusOfTaking.NOT_TAKEN
-                else -> StatusOfTaking.WAITING
-            }
-        }
-    }
-
     enum class StatusOfTaking(val string: String, val colorResID: Int, val iconResID: Int) {
         WAITING("oczekujący", R.color.colorDarkerGray, R.drawable.round_radio_button_unchecked_24),
         TAKEN("przyjęty", R.color.colorStateGood, R.drawable.round_check_circle_24),
