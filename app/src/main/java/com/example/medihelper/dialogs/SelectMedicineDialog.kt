@@ -3,11 +3,9 @@ package com.example.medihelper.dialogs
 import android.app.Dialog
 import android.content.res.Resources
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
@@ -15,7 +13,7 @@ import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogSelectMedicineBinding
-import com.example.medihelper.localdatabase.pojos.MedicineItem
+import com.example.medihelper.localdatabase.pojo.MedicineItem
 import com.example.medihelper.mainapp.medicines.MedicinesViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog

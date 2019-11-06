@@ -2,14 +2,12 @@ package com.example.medihelper.mainapp.persons
 
 import androidx.lifecycle.*
 import com.example.medihelper.localdatabase.entity.PersonEntity
-import com.example.medihelper.localdatabase.repositories.PersonRepository
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.service.PersonService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AddEditPersonViewModel(
-    private val personRepository: PersonRepository,
-    sharedPrefService: SharedPrefService
+    private val personService: PersonService
 ) : ViewModel() {
 
     val titleLive = MutableLiveData("Dodaj osobę")
@@ -17,7 +15,7 @@ class AddEditPersonViewModel(
     val personNameLive = MutableLiveData<String>()
     val personColorResIDLive = MutableLiveData<Int>()
     val errorPersonNameLive = MutableLiveData<String>()
-    private val personColorResIDList = sharedPrefService.getPersonColorResIDList()
+    private val personColorResIDList = personService.getColorResIdList()
     private var editPersonID: Int? = null
 
     init {
@@ -39,7 +37,7 @@ class AddEditPersonViewModel(
         if (args.editPersonID != -1) {
             editPersonID = args.editPersonID
             titleLive.postValue("Edytuj osobę")
-            personRepository.getItem(args.editPersonID).let { personItem ->
+            personService.getItem(args.editPersonID).let { personItem ->
                 personNameLive.postValue(personItem.personName)
                 personColorResIDLive.postValue(personItem.personColorResID)
             }
@@ -53,12 +51,12 @@ class AddEditPersonViewModel(
         if (validateInputData()) {
             if (editPersonID != null) {
                 GlobalScope.launch {
-                    val existingPersonEntity = personRepository.getEntity(editPersonID!!)
+                    val existingPersonEntity = personService.getEntity(editPersonID!!)
                     val updatedPersonEntity = existingPersonEntity.copy(
                         personName = personNameLive.value!!,
                         personColorResID = personColorResIDLive.value!!
                     )
-                    personRepository.update(updatedPersonEntity)
+                    personService.update(updatedPersonEntity)
                 }
             } else {
                 GlobalScope.launch {
@@ -66,7 +64,7 @@ class AddEditPersonViewModel(
                         personName = personNameLive.value!!,
                         personColorResID = personColorResIDLive.value!!
                     )
-                    personRepository.insert(newPersonEntity)
+                    personService.insert(newPersonEntity)
                 }
             }
             return true

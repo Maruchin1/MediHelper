@@ -40,7 +40,9 @@ data class PlannedMedicineEntity(
 
     @ColumnInfo(name = "synchronized_with_server")
     var synchronizedWithServer: Boolean = false
-) {
+)
+
+{
     enum class StatusOfTaking(val string: String, val colorResID: Int, val iconResID: Int) {
         WAITING("oczekujący", R.color.colorDarkerGray, R.drawable.round_radio_button_unchecked_24),
         TAKEN("przyjęty", R.color.colorStateGood, R.drawable.round_check_circle_24),

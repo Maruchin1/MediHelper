@@ -3,26 +3,20 @@ package com.example.medihelper.mainapp.more.patronconnect
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.medihelper.MainApplication
-import com.example.medihelper.custom.ActionLiveData
-import com.example.medihelper.localdatabase.repositories.MedicineRepository
-import com.example.medihelper.localdatabase.repositories.PersonRepository
 import com.example.medihelper.mainapp.MainActivity
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.service.PersonService
+import com.example.medihelper.service.ServerApiService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ConnectedPersonViewModel(
-    private val mainApplication: MainApplication,
-    private val sharedPrefService: SharedPrefService,
-    private val personRepository: PersonRepository,
-    private val medicineRepository: MedicineRepository
+    private val personService: PersonService,
+    private val serverApiService: ServerApiService
 ) : ViewModel() {
 
     val personNameLive: LiveData<String>
     val personColorResID: LiveData<Int>
-    private val mainPersonItemLive = personRepository.getMainPersonItemLive()
+    private val mainPersonItemLive = personService.getMainPersonItemLive()
 
     init {
         personNameLive = Transformations.map(mainPersonItemLive) { it?.personName }
@@ -30,14 +24,7 @@ class ConnectedPersonViewModel(
     }
 
     fun cancelConnection(mainActivity: MainActivity) = GlobalScope.launch {
-        sharedPrefService.deleteAuthToken()
-        resetDatabase()
-        mainApplication.switchToMainDatabase()
+        serverApiService.cancelPatronConnection()
         mainActivity.restartActivity()
-    }
-
-    private suspend fun resetDatabase() {
-        medicineRepository.deleteAll()
-        personRepository.deleteAllWithMain()
     }
 }

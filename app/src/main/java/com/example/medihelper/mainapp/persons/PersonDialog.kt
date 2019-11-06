@@ -1,8 +1,6 @@
 package com.example.medihelper.mainapp.persons
 
 import android.os.Bundle
-import android.os.Handler
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +13,7 @@ import com.example.medihelper.custom.CenterLayoutManager
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogPersonBinding
-import com.example.medihelper.localdatabase.pojos.PersonItem
-import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
+import com.example.medihelper.localdatabase.pojo.PersonItem
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_person.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

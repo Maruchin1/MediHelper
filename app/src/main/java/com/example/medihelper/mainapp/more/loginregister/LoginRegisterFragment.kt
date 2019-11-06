@@ -11,9 +11,8 @@ import androidx.lifecycle.Observer
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentLoginRegisterBinding
-import com.example.medihelper.dialogs.LoadingDialog
 import com.example.medihelper.mainapp.MainActivity
-import com.example.medihelper.services.LoadingDialogService
+import com.example.medihelper.service.LoadingScreenService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_login_register.*
 import org.koin.android.ext.android.inject
@@ -22,7 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class LoginRegisterFragment : AppFullScreenDialog() {
 
     private val viewModel: LoginRegisterViewModel by viewModel()
-    private val loadingDialogService: LoadingDialogService by inject()
+    private val loadingScreenService: LoadingScreenService by inject()
 
     fun onClickOpenRegisterFragment() = childFragmentManager.beginTransaction()
         .replace(R.id.frame_fragments, LoginRegisterInputFragment().apply {
@@ -62,25 +61,25 @@ class LoginRegisterFragment : AppFullScreenDialog() {
     private fun observeViewModel() {
         viewModel.loadingInProgressLive.observe(viewLifecycleOwner, Observer { inProgress ->
             if (inProgress) {
-                loadingDialogService.showLoadingDialog(childFragmentManager)
+                loadingScreenService.showLoadingScreen(childFragmentManager)
             } else {
-                loadingDialogService.dismissLoadingDialog()
+                loadingScreenService.closeLoadingScreen()
             }
         })
         viewModel.remoteDataIsAvailableAction.observe(viewLifecycleOwner, Observer { openLocalOrRemoteDataDialog() })
-        viewModel.loginErrorLive.observe(viewLifecycleOwner, Observer { errorMessageId ->
-            if (errorMessageId == null) {
+        viewModel.loginErrorLive.observe(viewLifecycleOwner, Observer { errorMessage ->
+            if (errorMessage == null) {
                 dismiss()
                 (requireActivity() as MainActivity).showSnackbar("Zalogowano pomyślnie")
             } else {
-                showSnackbar(resources.getString(errorMessageId))
+                showSnackbar(errorMessage)
             }
         })
-        viewModel.registerErrorLive.observe(viewLifecycleOwner, Observer { errorMessageId ->
-            if (errorMessageId == null) {
+        viewModel.registerErrorLive.observe(viewLifecycleOwner, Observer { errorMessage ->
+            if (errorMessage == null) {
                 onClickOpenLoginFragment()
             } else {
-                showSnackbar(resources.getString(errorMessageId))
+                showSnackbar(errorMessage)
             }
         })
     }

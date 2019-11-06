@@ -3,20 +3,21 @@ package com.example.medihelper.mainapp.medicines
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entity.MedicineEntity
-import com.example.medihelper.localdatabase.pojos.MedicineDetails
-import com.example.medihelper.localdatabase.pojos.PersonItem
-import com.example.medihelper.localdatabase.repositories.MedicineRepository
-import com.example.medihelper.localdatabase.repositories.PersonRepository
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.localdatabase.pojo.MedicineDetails
+import com.example.medihelper.localdatabase.pojo.PersonItem
+import com.example.medihelper.service.AppMode
+import com.example.medihelper.service.MedicineService
+import com.example.medihelper.service.PersonService
+import com.example.medihelper.service.ServerApiService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
 
 class MedicineDetailsViewModel(
     private val appFilesDir: File,
-    private val medicineRepository: MedicineRepository,
-    private val personRepository: PersonRepository,
-    private val sharedPrefService: SharedPrefService
+    private val personService: PersonService,
+    private val medicineService: MedicineService,
+    private val serverApiService: ServerApiService
 ) : ViewModel() {
 
     val colorPrimaryLive: LiveData<Int>
@@ -34,15 +35,15 @@ class MedicineDetailsViewModel(
     val personItemListTakingMedicineLive: LiveData<List<PersonItem>>
     val personItemListTakingMedicineAvailableLive: LiveData<Boolean>
     private val medicineDetailsLive: LiveData<MedicineDetails>
-    private val mainPersonItemLive = personRepository.getMainPersonItemLive()
+    private val mainPersonItemLive = personService.getMainPersonItemLive()
 
     init {
         colorPrimaryLive = Transformations.map(mainPersonItemLive) { it.personColorResID }
-        isAppModeConnected = Transformations.map(sharedPrefService.getAppModeLive()) {
-            it == SharedPrefService.AppMode.CONNECTED
+        isAppModeConnected = Transformations.map(serverApiService.getAppModeLive()) {
+            it == AppMode.CONNECTED
         }
         medicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) {
-            medicineRepository.getDetailsLive(it)
+            medicineService.getDetailsLive(it)
         }
         medicineNameLive = Transformations.map(medicineDetailsLive) { it.medicineName }
         expireDateLive = Transformations.map(medicineDetailsLive) { it?.expireDate }
@@ -52,7 +53,7 @@ class MedicineDetailsViewModel(
             MedicineEntity.StateData(it.packageSize, it.currState)
         }
         personItemListTakingMedicineLive = Transformations.switchMap(selectedMedicineIDLive) {
-            personRepository.getItemListLiveByMedicineID(it)
+            personService.getItemListLiveByMedicineID(it)
         }
         personItemListTakingMedicineAvailableLive = Transformations.map(personItemListTakingMedicineLive) {
             it != null && it.isNotEmpty()
@@ -69,7 +70,7 @@ class MedicineDetailsViewModel(
 
     fun deleteMedicine() = GlobalScope.launch {
         medicineDetailsLive.value?.let { medicineDetails ->
-            medicineRepository.delete(medicineDetails.medicineID)
+            medicineService.delete(medicineDetails.medicineID)
         }
     }
 
@@ -79,9 +80,9 @@ class MedicineDetailsViewModel(
 
     fun takeMedicineDose(doseSize: Float) = viewModelScope.launch {
         selectedMedicineIDLive.value?.let { medicineID ->
-            val medicineEntity = medicineRepository.getEntity(medicineID)
+            val medicineEntity = medicineService.getEntity(medicineID)
             medicineEntity.reduceCurrState(doseSize)
-            medicineRepository.update(medicineEntity)
+            medicineService.update(medicineEntity)
         }
     }
 }

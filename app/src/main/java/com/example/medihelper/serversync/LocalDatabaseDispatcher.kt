@@ -1,43 +1,51 @@
 package com.example.medihelper.serversync
 
+import com.example.medihelper.localdatabase.dao.MedicineDao
+import com.example.medihelper.localdatabase.dao.MedicinePlanDao
+import com.example.medihelper.localdatabase.dao.PersonDao
+import com.example.medihelper.localdatabase.dao.PlannedMedicineDao
 import com.example.medihelper.localdatabase.entity.MedicineEntity
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entity.PersonEntity
 import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
-import com.example.medihelper.localdatabase.repositories.*
 import com.example.medihelper.remotedatabase.dto.MedicineDto
 import com.example.medihelper.remotedatabase.dto.MedicinePlanDto
 import com.example.medihelper.remotedatabase.dto.PersonDto
 import com.example.medihelper.remotedatabase.dto.PlannedMedicineDto
 
 class LocalDatabaseDispatcher(
-    private val entityDtoConverter: EntityDtoConverter,
-    private val medicineRepository: MedicineRepository,
-    private val personRepository: PersonRepository,
-    private val medicinePlanRepository: MedicinePlanRepository,
-    private val plannedMedicineRepository: PlannedMedicineRepository
+    private val entityDtoMapper: EntityDtoMapper,
+    private val medicineDao: MedicineDao,
+    private val personDao: PersonDao,
+    private val medicinePlanDao: MedicinePlanDao,
+    private val plannedMedicineDao: PlannedMedicineDao
 ) {
     suspend fun dispatchMedicinesChanges(medicineDtoList: List<MedicineDto>) {
         val remoteIdList = medicineDtoList.map { it.medicineRemoteId!! }
         val updateList = mutableListOf<MedicineEntity>()
         val insertList = mutableListOf<MedicineEntity>()
         medicineDtoList.forEach { medicineDto ->
-            val medicineEntity = entityDtoConverter.medicineDtoToEntity(medicineDto)
+            val medicineEntity = entityDtoMapper.medicineDtoToEntity(medicineDto)
             if (medicineEntity.medicineID != 0) {
                 updateList.add(medicineEntity)
             } else {
                 val existingMedicineID =
-                    medicineRepository.getLocalIDByRemoteID(medicineEntity.medicineRemoteID!!)
+                    medicineDao.getIdByRemoteId(medicineEntity.medicineRemoteID!!)
                 if (existingMedicineID != null) {
                     // todo usunąć gdy będzie rozwiązany problem z przesyłaniem zdjeć
-                    val existingEntity = medicineRepository.getEntity(existingMedicineID)
+                    val existingEntity = medicineDao.getEntity(existingMedicineID)
                     updateList.add(medicineEntity.copy(medicineID = existingMedicineID, imageName = existingEntity.imageName))
                 } else {
                     insertList.add(medicineEntity)
                 }
             }
         }
-        applyChangesToLocalDatabase(medicineRepository, remoteIdList, updateList, insertList)
+        with(medicineDao) {
+            deleteByRemoteIdNotIn(remoteIdList)
+            update(updateList)
+            insert(insertList)
+            //todo czyścić historię
+        }
     }
 
     suspend fun dispatchPersonsChanges(personDtoList: List<PersonDto>) {
@@ -45,12 +53,12 @@ class LocalDatabaseDispatcher(
         val updateList = mutableListOf<PersonEntity>()
         val insertList = mutableListOf<PersonEntity>()
         personDtoList.forEach { personDto ->
-            val personEntity = entityDtoConverter.personDtoToEntity(personDto)
+            val personEntity = entityDtoMapper.personDtoToEntity(personDto)
             if (personEntity.personID != 0) {
                 updateList.add(personEntity)
             } else {
                 val existingPersonID =
-                    personRepository.getLocalIDByRemoteID(personEntity.personRemoteID!!)
+                    personDao.getIdByRemoteId(personEntity.personRemoteID!!)
                 if (existingPersonID != null) {
                     updateList.add(personEntity.copy(personID = existingPersonID))
                 } else {
@@ -58,7 +66,12 @@ class LocalDatabaseDispatcher(
                 }
             }
         }
-        applyChangesToLocalDatabase(personRepository, remoteIdList, updateList, insertList)
+        with(personDao) {
+            deleteByRemoteIdNotIn(remoteIdList)
+            update(updateList)
+            insert(insertList)
+            //todo czyścić historię
+        }
     }
 
     suspend fun dispatchMedicinesPlansChanges(medicinePlanDtoList: List<MedicinePlanDto>) {
@@ -66,12 +79,12 @@ class LocalDatabaseDispatcher(
         val updateList = mutableListOf<MedicinePlanEntity>()
         val insertList = mutableListOf<MedicinePlanEntity>()
         medicinePlanDtoList.forEach { medicinePlanDto ->
-            val medicinePlanEntity = entityDtoConverter.medicinePlanDtoToEntity(medicinePlanDto)
+            val medicinePlanEntity = entityDtoMapper.medicinePlanDtoToEntity(medicinePlanDto)
             if (medicinePlanEntity.medicinePlanID != 0) {
                 updateList.add(medicinePlanEntity)
             } else {
                 val existingMedicinePlanID =
-                    medicinePlanRepository.getLocalIDByRemoteID(medicinePlanEntity.medicinePlanRemoteID!!)
+                    medicinePlanDao.getIdByRemoteId(medicinePlanEntity.medicinePlanRemoteID!!)
                 if (existingMedicinePlanID != null) {
                     updateList.add(medicinePlanEntity.copy(medicinePlanID = existingMedicinePlanID))
                 } else {
@@ -79,7 +92,12 @@ class LocalDatabaseDispatcher(
                 }
             }
         }
-        applyChangesToLocalDatabase(medicinePlanRepository, remoteIdList, updateList, insertList)
+        with(medicinePlanDao) {
+            deleteByRemoteIdNotIn(remoteIdList)
+            update(updateList)
+            insert(insertList)
+            //todo czyścić historię
+        }
     }
 
     suspend fun dispatchPlannedMedicinesChanges(plannedMedicineDtoList: List<PlannedMedicineDto>) {
@@ -87,12 +105,12 @@ class LocalDatabaseDispatcher(
         val updateList = mutableListOf<PlannedMedicineEntity>()
         val insertList = mutableListOf<PlannedMedicineEntity>()
         plannedMedicineDtoList.forEach { plannedMedicineDto ->
-            val plannedMedicineEntity = entityDtoConverter.plannedMedicineDtoToEntity(plannedMedicineDto)
+            val plannedMedicineEntity = entityDtoMapper.plannedMedicineDtoToEntity(plannedMedicineDto)
             if (plannedMedicineEntity.plannedMedicineID != 0) {
                 updateList.add(plannedMedicineEntity)
             } else {
                 val existingPlannedMedicineID =
-                    plannedMedicineRepository.getLocalIDByRemoteID(plannedMedicineEntity.plannedMedicineRemoteID!!)
+                    plannedMedicineDao.getIdByRemoteId(plannedMedicineEntity.plannedMedicineRemoteID!!)
                 if (existingPlannedMedicineID != null) {
                     updateList.add(plannedMedicineEntity.copy(plannedMedicineID = existingPlannedMedicineID))
                 } else {
@@ -100,18 +118,11 @@ class LocalDatabaseDispatcher(
                 }
             }
         }
-        applyChangesToLocalDatabase(plannedMedicineRepository, remoteIdList, updateList, insertList)
-    }
-
-    private suspend fun <T> applyChangesToLocalDatabase(
-        serverSyncRepository: ServerSyncRepository<T>,
-        remoteIdList: List<Long>,
-        updateEntityList: List<T>,
-        insertEntityList: List<T>
-    ) = serverSyncRepository.run {
-        deleteByRemoteIDNotIn(remoteIdList)
-        updateSynchronized(updateEntityList)
-        insertSynchronized(insertEntityList)
-        clearDeletedRemoteIDList()
+        with(plannedMedicineDao) {
+            deleteByRemoteIdNotIn(remoteIdList)
+            update(updateList)
+            insert(insertList)
+            //todo czyścić historię
+        }
     }
 }

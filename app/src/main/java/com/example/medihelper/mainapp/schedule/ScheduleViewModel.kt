@@ -2,32 +2,30 @@ package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
-import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
-import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
-import com.example.medihelper.services.DateTimeService
-import com.example.medihelper.services.PersonProfileService
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.service.AppMode
+import com.example.medihelper.service.DateTimeService
+import com.example.medihelper.service.PersonService
+import com.example.medihelper.service.ServerApiService
 
 
 class ScheduleViewModel(
-    private val plannedMedicineRepository: PlannedMedicineRepository,
-    private val personProfileService: PersonProfileService,
-    private val sharedPrefService: SharedPrefService,
-    private val dateTimeService: DateTimeService
+    private val personService: PersonService,
+    private val dateTimeService: DateTimeService,
+    private val serverApiService: ServerApiService
 ) : ViewModel() {
 
     val timelineDaysCount = 10000
     val initialDatePosition = timelineDaysCount / 2
 
     val isAppModeConnectedLive: LiveData<Boolean>
-    val selectedPersonItemLive = personProfileService.getCurrPersonItemLive()
+    val selectedPersonItemLive = personService.getCurrPersonItemLive()
     val colorPrimaryLive: LiveData<Int>
     val calendarLayoutVisibleLive = MutableLiveData(false)
     val selectedDateLive = MutableLiveData<AppDate>()
 
     init {
-        isAppModeConnectedLive = Transformations.map(sharedPrefService.getAppModeLive()) {
-            it == SharedPrefService.AppMode.CONNECTED
+        isAppModeConnectedLive = Transformations.map(serverApiService.getAppModeLive()) {
+            it == AppMode.CONNECTED
         }
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
             personItem?.personColorResID

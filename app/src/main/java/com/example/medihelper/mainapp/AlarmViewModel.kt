@@ -2,11 +2,11 @@ package com.example.medihelper.mainapp
 
 import androidx.lifecycle.*
 import com.example.medihelper.AppTime
-import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
+import com.example.medihelper.service.PlannedMedicineService
 import kotlinx.coroutines.launch
 
 class AlarmViewModel(
-    private val plannedMedicineRepository: PlannedMedicineRepository
+    private val plannedMedicineService: PlannedMedicineService
 ) : ViewModel() {
     private val TAG = "AlarmViewModel"
 
@@ -19,7 +19,7 @@ class AlarmViewModel(
     val changedTimeLive = MutableLiveData<AppTime>()
 
     fun loadPlannedMedicineID(plannedMedicineID: Int) = viewModelScope.launch {
-        val alarmData = plannedMedicineRepository.getAlarmData(plannedMedicineID)
+        val alarmData = plannedMedicineService.getAlarmData(plannedMedicineID)
         plannedTimeLive.postValue(alarmData.plannedTime)
         personNameLive.postValue(alarmData.personName)
         medicineNameLive.postValue(alarmData.medicineName)

@@ -2,16 +2,16 @@ package com.example.medihelper.mainapp.medicineplan
 
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
-import com.example.medihelper.localdatabase.pojos.MedicinePlanHistory
-import com.example.medihelper.localdatabase.pojos.MedicinePlanHistoryCheckbox
-import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
-import com.example.medihelper.services.DateTimeService
-import com.example.medihelper.services.PersonProfileService
+import com.example.medihelper.localdatabase.pojo.MedicinePlanHistory
+import com.example.medihelper.localdatabase.pojo.MedicinePlanHistoryCheckbox
+import com.example.medihelper.service.DateTimeService
+import com.example.medihelper.service.MedicinePlanService
+import com.example.medihelper.service.PersonService
 
 
 class MedicinePlanHistoryViewModel(
-    private val medicinePlanRepository: MedicinePlanRepository,
-    personProfileService: PersonProfileService,
+    private val personService: PersonService,
+    private val medicinePlanService: MedicinePlanService,
     private val dateTimeService: DateTimeService
 ) : ViewModel() {
 
@@ -20,14 +20,14 @@ class MedicinePlanHistoryViewModel(
     val historyItemDisplayDataListLive: LiveData<List<HistoryItemDisplayData>>
     private val selectedMedicinePlanIDLive = MutableLiveData<Int>()
     private val medicinePlanHistoryLive: LiveData<MedicinePlanHistory>
-    private val selectedPersonItemLive = personProfileService.getCurrPersonItemLive()
+    private val selectedPersonItemLive = personService.getCurrPersonItemLive()
 
     init {
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
             personItem.personColorResID
         }
         medicinePlanHistoryLive = Transformations.switchMap(selectedMedicinePlanIDLive) { medicinePlanID ->
-            medicinePlanRepository.getHistoryLive(medicinePlanID)
+            medicinePlanService.getHistoryLive(medicinePlanID)
         }
         medicineNameLive = Transformations.map(medicinePlanHistoryLive) { medicinePlanHistory ->
             medicinePlanHistory.medicineName

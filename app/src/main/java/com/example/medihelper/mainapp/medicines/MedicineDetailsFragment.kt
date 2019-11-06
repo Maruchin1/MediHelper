@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,7 +15,7 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.*
 import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
 import com.example.medihelper.dialogs.SelectFloatNumberDialog
-import com.example.medihelper.localdatabase.pojos.PersonItem
+import com.example.medihelper.localdatabase.pojo.PersonItem
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

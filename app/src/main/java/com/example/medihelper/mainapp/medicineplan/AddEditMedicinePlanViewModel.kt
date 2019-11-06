@@ -3,29 +3,28 @@ package com.example.medihelper.mainapp.medicineplan
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
+import com.example.medihelper.AppTime
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
-import com.example.medihelper.localdatabase.pojos.MedicineDetails
-import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
-import com.example.medihelper.localdatabase.repositories.MedicineRepository
-import com.example.medihelper.services.DateTimeService
-import com.example.medihelper.services.MedicineSchedulerService
-import com.example.medihelper.services.PersonProfileService
+import com.example.medihelper.localdatabase.entity.TimeDoseEntity
+import com.example.medihelper.localdatabase.pojo.MedicineDetails
+import com.example.medihelper.localdatabase.pojo.MedicinePlanEditData
+import com.example.medihelper.localdatabase.pojo.TimeDoseEditData
+import com.example.medihelper.service.*
 import kotlinx.coroutines.*
 
 
 class AddEditMedicinePlanViewModel(
-    private val medicineRepository: MedicineRepository,
-    private val medicinePlanRepository: MedicinePlanRepository,
-    private val medicineSchedulerService: MedicineSchedulerService,
-    private val personProfileService: PersonProfileService,
+    private val personService: PersonService,
+    private val medicineService: MedicineService,
+    private val medicinePlanService: MedicinePlanService,
     private val dateTimeService: DateTimeService
 ) : ViewModel() {
     private val TAG = AddEditMedicinePlanViewModel::class.simpleName
 
     val titleLive = MutableLiveData("Zaplanuj lek")
 
-    val selectedPersonItemLive = personProfileService.getCurrPersonItemLive()
+    val selectedPersonItemLive = personService.getCurrPersonItemLive()
     val colorPrimaryLive: LiveData<Int>
 
     val selectedMedicineIDLive = MutableLiveData<Int>()
@@ -42,7 +41,7 @@ class AddEditMedicinePlanViewModel(
     val daysOfWeekLive = FieldMutableLiveData<MedicinePlanEntity.DaysOfWeek>()
     val intervalOfDaysLive = MutableLiveData<Int>()
 
-    val timeOfTakingListLive = MutableLiveData<MutableList<MedicinePlanEntity.TimeOfTaking>>()
+    val timeDoseListLive = MutableLiveData<MutableList<TimeDoseEditData>>()
 
     val errorMessageLive = MutableLiveData<String>()
     val errorStartDateLive = MutableLiveData<String>()
@@ -57,7 +56,7 @@ class AddEditMedicinePlanViewModel(
             personItem.personColorResID
         }
         selectedMedicineDetailsLive = Transformations.switchMap(selectedMedicineIDLive) { medicineID ->
-            medicineID?.let { medicineRepository.getDetailsLive(medicineID) }
+            medicineID?.let { medicineService.getDetailsLive(medicineID) }
         }
         selectedMedicineAvailableLive = Transformations.map(selectedMedicineDetailsLive) { it != null }
         selectedMedicineNameLive = Transformations.map(selectedMedicineDetailsLive) { it.medicineName }
@@ -71,7 +70,7 @@ class AddEditMedicinePlanViewModel(
         daysTypeLive.postValue(MedicinePlanEntity.DaysType.NONE)
         daysOfWeekLive.postValue(MedicinePlanEntity.DaysOfWeek())
         intervalOfDaysLive.postValue(1)
-        timeOfTakingListLive.postValue(arrayListOf(MedicinePlanEntity.TimeOfTaking()))
+        timeDoseListLive.postValue(arrayListOf(TimeDoseEditData()))
     }
 
     fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
@@ -79,9 +78,9 @@ class AddEditMedicinePlanViewModel(
         if (args.editMedicinePlanID != -1) {
             editMedicinePlanID = args.editMedicinePlanID
             titleLive.postValue("Edytuj plan")
-            medicinePlanRepository.getEntity(args.editMedicinePlanID).run {
+            medicinePlanService.getEditData(args.editMedicinePlanID).run {
                 selectedMedicineIDLive.postValue(medicineID)
-                personProfileService.selectCurrPerson(personID)
+                personService.selectCurrPerson(personID)
 
                 durationTypeLive.postValue(durationType)
                 startDateLive.postValue(startDate)
@@ -95,86 +94,59 @@ class AddEditMedicinePlanViewModel(
                     intervalOfDaysLive.postValue(intervalOfDays)
                 }
 
-                timeOfTakingListLive.postValue(timeOfTakingList.toMutableList())
+                timeDoseListLive.postValue(timeDoseList.toMutableList())
             }
         }
     }
 
     fun addTimeOfTaking() {
-        timeOfTakingListLive.value?.let { timeOfTakingList ->
-            timeOfTakingList.add(MedicinePlanEntity.TimeOfTaking())
-            timeOfTakingListLive.value = timeOfTakingListLive.value
+        timeDoseListLive.value?.let { timeOfTakingList ->
+            timeOfTakingList.add(TimeDoseEditData())
+            timeDoseListLive.value = timeDoseListLive.value
         }
     }
 
-    fun removeTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
-        timeOfTakingListLive.value?.let { doseHourList ->
-            doseHourList.remove(timeOfTaking)
-            timeOfTakingListLive.value = timeOfTakingListLive.value
+    fun removeTimeOfTaking(timeDoseEditData: TimeDoseEditData) {
+        timeDoseListLive.value?.let { doseHourList ->
+            doseHourList.remove(timeDoseEditData)
+            timeDoseListLive.value = timeDoseListLive.value
         }
     }
 
-    fun updateTimeOfTaking(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) {
-        timeOfTakingListLive.value?.let { doseHourList ->
-            doseHourList[position] = timeOfTaking
-            timeOfTakingListLive.value = timeOfTakingListLive.value
+    fun updateTimeOfTaking(position: Int, timeDoseEditData: TimeDoseEditData) {
+        timeDoseListLive.value?.let { doseHourList ->
+            doseHourList[position] = timeDoseEditData
+            timeDoseListLive.value = timeDoseListLive.value
         }
     }
 
-    fun getTimeOfTakingDisplayData(timeOfTaking: MedicinePlanEntity.TimeOfTaking) = TimeOfTakingDisplayData(
-        timeOfTakingRef = timeOfTaking,
-        time = timeOfTaking.time.formatString,
-        doseSize = timeOfTaking.doseSize.toString(),
+    fun getTimeOfTakingDisplayData(timeDoseEditData: TimeDoseEditData) = TimeDoseDisplayData(
+        timeDoseRef = timeDoseEditData,
+        time = timeDoseEditData.time.formatString,
+        doseSize = timeDoseEditData.doseSize.toString(),
         medicineUnit = selectedMedicineDetailsLive.value?.medicineUnit ?: "--"
     )
 
     fun saveMedicinePlan(): Boolean {
         if (validateInputData()) {
-            if (editMedicinePlanID != null) {
-                GlobalScope.launch {
-                    val existingMedicinePlanEntity = medicinePlanRepository.getEntity(editMedicinePlanID!!)
-                    val updatedMedicinePlanEntity = existingMedicinePlanEntity.copy(
-                        medicineID = selectedMedicineIDLive.value!!,
-                        personID = selectedPersonItemLive.value!!.personID,
-                        startDate = startDateLive.value!!,
-                        durationType = durationTypeLive.value!!,
-                        daysType = daysTypeLive.value!!,
-                        timeOfTakingList = timeOfTakingListLive.value!!
-                    )
-                    if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
-                        updatedMedicinePlanEntity.endDate = endDateLive.value
-                    }
-                    when (daysTypeLive.value) {
-                        MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> updatedMedicinePlanEntity.daysOfWeek =
-                            daysOfWeekLive.value
-                        MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> updatedMedicinePlanEntity.intervalOfDays =
-                            intervalOfDaysLive.value
-                    }
-                    medicinePlanRepository.update(updatedMedicinePlanEntity)
-                    medicineSchedulerService.updatePlannedMedicines(updatedMedicinePlanEntity.medicinePlanID)
-                }
-            } else {
-                GlobalScope.launch {
-                    val newMedicinePlanEntity = MedicinePlanEntity(
-                        medicineID = selectedMedicineIDLive.value!!,
-                        personID = selectedPersonItemLive.value!!.personID,
-                        startDate = startDateLive.value!!,
-                        durationType = durationTypeLive.value!!,
-                        daysType = daysTypeLive.value!!,
-                        timeOfTakingList = timeOfTakingListLive.value!!
-                    )
-                    if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
-                        newMedicinePlanEntity.endDate = endDateLive.value
-                    }
-                    when (daysTypeLive.value) {
-                        MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> newMedicinePlanEntity.daysOfWeek =
-                            daysOfWeekLive.value
-                        MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> newMedicinePlanEntity.intervalOfDays =
-                            intervalOfDaysLive.value
-                    }
-                    val insertedMedicinePlanID = medicinePlanRepository.insert(newMedicinePlanEntity)
-                    medicineSchedulerService.addPlannedMedicines(insertedMedicinePlanID)
-                }
+            val editData = MedicinePlanEditData(
+                medicinePlanID = editMedicinePlanID ?: 0,
+                medicineID = selectedMedicineIDLive.value!!,
+                personID = selectedPersonItemLive.value!!.personID,
+                durationType = durationTypeLive.value!!,
+                startDate = startDateLive.value!!,
+                daysType = daysTypeLive.value!!,
+                timeDoseList = timeDoseListLive.value!!
+            )
+            if (durationTypeLive.value == MedicinePlanEntity.DurationType.PERIOD) {
+                editData.endDate = endDateLive.value
+            }
+            when (daysTypeLive.value) {
+                MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> editData.daysOfWeek = daysOfWeekLive.value
+                MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> editData.intervalOfDays = intervalOfDaysLive.value
+            }
+            GlobalScope.launch {
+                medicinePlanService.save(editData)
             }
             return true
         }
@@ -221,8 +193,8 @@ class AddEditMedicinePlanViewModel(
         return inputDataValid
     }
 
-    data class TimeOfTakingDisplayData(
-        val timeOfTakingRef: MedicinePlanEntity.TimeOfTaking,
+    data class TimeDoseDisplayData(
+        val timeDoseRef: TimeDoseEditData,
         val time: String,
         val doseSize: String,
         val medicineUnit: String

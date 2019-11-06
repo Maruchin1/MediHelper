@@ -8,13 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentPatronConnectBinding
 import com.example.medihelper.mainapp.MainActivity
-import com.example.medihelper.services.LoadingDialogService
+import com.example.medihelper.service.LoadingScreenService
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.zxing.integration.android.IntentIntegrator
@@ -26,7 +25,7 @@ class PatronConnectFragment : AppFullScreenDialog() {
     private val TAG = "PatronConnectFragment"
 
     private val viewModel: PatronConnectViewModel by viewModel()
-    private val loadingDialogService: LoadingDialogService by inject()
+    private val loadingScreenService: LoadingScreenService by inject()
 
     fun onClickScanQrCode() {
         IntentIntegrator.forSupportFragment(this).apply {
@@ -69,18 +68,17 @@ class PatronConnectFragment : AppFullScreenDialog() {
         })
         viewModel.loadingInProgressLive.observe(viewLifecycleOwner, Observer { inProgress ->
             if (inProgress == true) {
-                loadingDialogService.showLoadingDialog(childFragmentManager)
+                loadingScreenService.showLoadingScreen(childFragmentManager)
             } else {
-                loadingDialogService.dismissLoadingDialog()
+                loadingScreenService.closeLoadingScreen()
             }
         })
-        viewModel.patronConnectSuccessfulAction.observe(viewLifecycleOwner, Observer {
-            dismiss()
-            (requireActivity() as MainActivity).restartActivity()
-        })
-        viewModel.patronConnectErrorLive.observe(viewLifecycleOwner, Observer { errorMessageId ->
-            if (errorMessageId != null) {
-                showSnackbar(resources.getString(errorMessageId))
+        viewModel.patronConnectErrorLive.observe(viewLifecycleOwner, Observer { errorMessage ->
+            if (errorMessage == null) {
+                dismiss()
+                (requireActivity() as MainActivity).restartActivity()
+            } else {
+                showSnackbar(errorMessage)
             }
         })
     }

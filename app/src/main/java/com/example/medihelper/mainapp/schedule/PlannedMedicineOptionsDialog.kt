@@ -30,7 +30,7 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
     }
 
     fun onClickChangeForLater() {
-        viewModel.setAlarm()
+//        viewModel.setAlarm()
         dismiss()
     }
 

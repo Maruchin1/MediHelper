@@ -4,31 +4,13 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.medihelper.R
 import com.example.medihelper.custom.ActionLiveData
-import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
-import com.example.medihelper.localdatabase.repositories.MedicineRepository
-import com.example.medihelper.localdatabase.repositories.PersonRepository
-import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
-import com.example.medihelper.remotedatabase.AuthenticationApi
-import com.example.medihelper.remotedatabase.RegisteredUserApi
-import com.example.medihelper.remotedatabase.dto.UserCredentialsDto
-import com.example.medihelper.serversync.ServerSyncWorkManager
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.service.ServerApiService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.net.SocketTimeoutException
 
 class LoginRegisterViewModel(
-    private val sharedPrefService: SharedPrefService,
-    private val authenticationApi: AuthenticationApi,
-    private val registeredUserApi: RegisteredUserApi,
-    private val serverSyncWorkManager: ServerSyncWorkManager,
-    private val medicineRepository: MedicineRepository,
-    private val personRepository: PersonRepository,
-    private val medicinePlanRepository: MedicinePlanRepository,
-    private val plannedMedicineRepository: PlannedMedicineRepository
+    private val serverApiService: ServerApiService
 ) : ViewModel() {
     private val TAG = "LoginRegisterViewModel"
 
@@ -40,11 +22,8 @@ class LoginRegisterViewModel(
     val errorPasswordConfirmationLive = MutableLiveData<String>()
     val loadingInProgressLive = MutableLiveData<Boolean>()
     val remoteDataIsAvailableAction = ActionLiveData()
-    val loginErrorLive = MutableLiveData<Int>()
-    val registerErrorLive = MutableLiveData<Int>()
-
-    private var tempAuthToken = ""
-    private var tempUserEmail = ""
+    val loginErrorLive = MutableLiveData<String>()
+    val registerErrorLive = MutableLiveData<String>()
 
     fun resetViewModel() {
         listOf(
@@ -63,23 +42,21 @@ class LoginRegisterViewModel(
         Log.i(TAG, "loginUser")
         if (validateInputData(Mode.LOGIN)) {
             loadingInProgressLive.postValue(true)
-            val userCredentialsDto = UserCredentialsDto(
+            var errorMessage = serverApiService.loginUser(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
-            try {
-                tempAuthToken = authenticationApi.loginUser(userCredentialsDto)
-                tempUserEmail = userCredentialsDto.email
-                val isRemoteDataAvailable = registeredUserApi.isDataAvailable(tempAuthToken)
-                if (isRemoteDataAvailable) {
+            if (errorMessage != null) {
+                loginErrorLive.postValue(errorMessage)
+            } else {
+                val responsePair = serverApiService.isRemoteDataAvailable()
+                val isAvailable = responsePair.first
+                errorMessage = responsePair.second
+                if (isAvailable == true) {
                     remoteDataIsAvailableAction.sendAction()
                 } else {
-                    saveLoginDataAndSync()
-                    loginErrorLive.postValue(null)
+                    loginErrorLive.postValue(errorMessage)
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                loginErrorLive.postValue(getErrorMessage(e))
             }
             loadingInProgressLive.postValue(false)
         }
@@ -88,67 +65,26 @@ class LoginRegisterViewModel(
     fun registerNewUser() = viewModelScope.launch {
         if (validateInputData(Mode.REGISTER)) {
             loadingInProgressLive.postValue(true)
-            val userCredentials = UserCredentialsDto(
+            val errorMessage = serverApiService.registerNewUser(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
-            try {
-                authenticationApi.registerNewUser(userCredentials)
-                registerErrorLive.postValue(null)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                registerErrorLive.postValue(getErrorMessage(e))
-            }
+            registerErrorLive.postValue(errorMessage)
             loadingInProgressLive.postValue(false)
         }
     }
 
     fun useRemoteDataAfterLogin() = GlobalScope.launch {
-        listOf(
-            medicineRepository,
-            personRepository,
-            medicinePlanRepository,
-            plannedMedicineRepository
-        ).forEach {
-            it.deleteAll()
-        }
-        saveLoginDataAndSync()
+        serverApiService.useRemoteDataAfterLogin()
         loginErrorLive.postValue(null)
     }
 
     fun useLocalDataAfterLogin() = viewModelScope.launch {
         loadingInProgressLive.postValue(true)
-        try {
-            registeredUserApi.deleteAllData(tempAuthToken)
-            saveLoginDataAndSync()
-            loginErrorLive.postValue(null)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            loginErrorLive.postValue(getErrorMessage(e))
-        }
+        val errorMessage = serverApiService.useLocalDataAfterLogin()
+        loginErrorLive.postValue(errorMessage)
         loadingInProgressLive.postValue(false)
     }
-
-    private fun saveLoginDataAndSync() {
-        sharedPrefService.run {
-            saveAuthToken(tempAuthToken)
-            saveUserEmail(tempUserEmail)
-        }
-        serverSyncWorkManager.enqueueLoggedUserSync()
-    }
-
-    private fun getErrorMessage(e: Exception) = when (e) {
-        is SocketTimeoutException -> R.string.error_timeout
-        is HttpException -> when (e.code()) {
-                422 -> R.string.error_incorrect_credentials
-                409 -> R.string.error_user_exists
-                404 -> R.string.error_user_not_found
-                else -> R.string.error_connection
-
-        }
-        else -> R.string.error_connection
-    }
-
 
     private fun validateInputData(viewModelMode: Mode): Boolean {
         var inputDataValid = true

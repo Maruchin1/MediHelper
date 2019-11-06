@@ -3,11 +3,12 @@ package com.example.medihelper.serversync
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.medihelper.localdatabase.repositories.*
+import com.example.medihelper.localdatabase.DeletedHistory
+import com.example.medihelper.localdatabase.dao.*
 import com.example.medihelper.remotedatabase.RegisteredUserApi
 import com.example.medihelper.remotedatabase.dto.*
-import com.example.medihelper.services.NotificationService
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.service.NotificationService
+import com.example.medihelper.service.ServerApiService
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.util.*
@@ -15,29 +16,36 @@ import java.util.*
 class LoggedUserSyncWorker(private val context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params), KoinComponent {
 
+    companion object {
+        const val KEY_AUTH_TOKEN = "key-auth-token"
+    }
+
     private val appFilesDir by lazy { context.filesDir }
-    private val sharedPrefService: SharedPrefService by inject()
-    private val medicineRepository: MedicineRepository by inject()
-    private val personRepository: PersonRepository by inject()
-    private val medicinePlanRepository: MedicinePlanRepository by inject()
-    private val plannedMedicineRepository: PlannedMedicineRepository by inject()
     private val registeredUserApi: RegisteredUserApi by inject()
     private val notificationService: NotificationService by inject()
-
+    private val personDao: PersonDao by inject()
+    private val medicineDao: MedicineDao by inject()
+    private val medicinePlanDao: MedicinePlanDao by inject()
+    private val timeDoseDao: TimeDoseDao by inject()
+    private val plannedMedicineDao: PlannedMedicineDao by inject()
     private val localDatabaseDispatcher: LocalDatabaseDispatcher by inject()
-    private val entityDtoConverter: EntityDtoConverter by inject()
+    private val entityDtoMapper: EntityDtoMapper by inject()
+    private val deletedHistory: DeletedHistory by inject()
+    private val serverApiService: ServerApiService by inject()
 
     override suspend fun doWork(): Result {
         notificationService.showServerSyncNotification()
         var result = Result.failure()
-        sharedPrefService.getAuthToken()?.let { authToken ->
+        val authToken = inputData.getString(KEY_AUTH_TOKEN)
+
+        if (authToken != null) {
             try {
                 synchronizeData(authToken)
                 result = Result.success()
-                sharedPrefService.saveLastSyncTimeLive(Date())
+                serverApiService.updateLastSyncTime()
             } catch (e: Exception) {
                 e.printStackTrace()
-                notificationService.showServerSyncFailureNotification()
+                notificationService.showServerSyncFailNotification()
             }
         }
         notificationService.cancelServerSyncNotification()
@@ -46,40 +54,42 @@ class LoggedUserSyncWorker(private val context: Context, params: WorkerParameter
 
     private suspend fun synchronizeData(authToken: String) {
         val personsSyncRequestDto = SyncRequestDto(
-            insertUpdateDtoList = personRepository.getEntityListToSync().map {
-                entityDtoConverter.personEntityToDto(it)
+            insertUpdateDtoList = personDao.getEntityListToSync().map {
+                entityDtoMapper.personEntityToDto(it)
             },
-            deleteRemoteIdList = personRepository.getDeletedRemoteIDList()
+            deleteRemoteIdList = deletedHistory.getPersonHistory()
         )
         val responsePersonDtoList =
             registeredUserApi.synchronizePersons(authToken, personsSyncRequestDto)
         localDatabaseDispatcher.dispatchPersonsChanges(responsePersonDtoList)
 
         val medicinesSyncRequestDto = SyncRequestDto(
-            insertUpdateDtoList = medicineRepository.getEntityListToSync().map {
-                entityDtoConverter.medicineEntityToDto(it)
+            insertUpdateDtoList = medicineDao.getEntityListToSync().map {
+                entityDtoMapper.medicineEntityToDto(it)
             },
-            deleteRemoteIdList = medicineRepository.getDeletedRemoteIDList()
+            deleteRemoteIdList = deletedHistory.getMedicineHistory()
         )
         val responseMedicineDtoList =
             registeredUserApi.synchronizeMedicines(authToken, medicinesSyncRequestDto)
         localDatabaseDispatcher.dispatchMedicinesChanges(responseMedicineDtoList)
 
         val medicinesPlansSyncRequestDto = SyncRequestDto(
-            insertUpdateDtoList = medicinePlanRepository.getEntityListToSync().map {
-                entityDtoConverter.medicinePlanEntityToDto(it)
+            insertUpdateDtoList = medicinePlanDao.getEntityListToSync().map { medicinePlanEntity ->
+                val timeDoseList = timeDoseDao.getEntityListByMedicinePlanId(medicinePlanEntity.medicinePlanID)
+                val timeDoseDtoList = timeDoseList.map { entityDtoMapper.timeDoseEntityToDto(it) }
+                entityDtoMapper.medicinePlanEntityToDto(medicinePlanEntity, timeDoseDtoList)
             },
-            deleteRemoteIdList = medicinePlanRepository.getDeletedRemoteIDList()
+            deleteRemoteIdList = deletedHistory.getMedicinePlanHistory()
         )
         val responseMedicinePlanDtoList =
             registeredUserApi.synchronizeMedicinesPlans(authToken, medicinesPlansSyncRequestDto)
         localDatabaseDispatcher.dispatchMedicinesPlansChanges(responseMedicinePlanDtoList)
 
         val plannedMedicinesSyncRequestDto = SyncRequestDto(
-            insertUpdateDtoList = plannedMedicineRepository.getEntityListToSync().map {
-                entityDtoConverter.plannedMedicineEntityToDto(it)
+            insertUpdateDtoList = plannedMedicineDao.getEntityListToSync().map {
+                entityDtoMapper.plannedMedicineEntityToDto(it)
             },
-            deleteRemoteIdList = plannedMedicineRepository.getDeletedRemoteIDList()
+            deleteRemoteIdList = deletedHistory.getPlannedMedicineHistory()
         )
         val responsePlannedMedicineDtoList =
             registeredUserApi.synchronizePlannedMedicines(authToken, plannedMedicinesSyncRequestDto)

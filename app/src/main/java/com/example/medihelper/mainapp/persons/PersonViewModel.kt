@@ -1,20 +1,16 @@
 package com.example.medihelper.mainapp.persons
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.medihelper.localdatabase.pojos.PersonItem
-import com.example.medihelper.localdatabase.repositories.PersonRepository
-import com.example.medihelper.services.PersonProfileService
-import kotlinx.coroutines.launch
+import com.example.medihelper.localdatabase.pojo.PersonItem
+import com.example.medihelper.service.PersonService
 
 class PersonViewModel(
-    private val personRepository: PersonRepository,
-    private val personProfileService: PersonProfileService
+    private val personService: PersonService
 ) : ViewModel() {
 
-    val personItemListLive = personRepository.getItemListLive()
+    val personItemListLive = personService.getItemListLive()
 
-    fun selectPerson(personID: Int) = personProfileService.selectCurrPerson(personID)
+    fun selectPerson(personID: Int) = personService.selectCurrPerson(personID)
 
     fun getPersonItemDisplayData(personItem: PersonItem) = PersonItemDisplayData(
         personID = personItem.personID,

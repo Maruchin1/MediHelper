@@ -58,9 +58,6 @@ data class MedicinePlanEntity(
     @ColumnInfo(name = "schedule_days")
     var daysType: DaysType,
 
-    @ColumnInfo(name = "dose_hour_list")
-    var timeOfTakingList: List<TimeOfTaking>,
-
     @ColumnInfo(name = "synchronized_with_server")
     var synchronizedWithServer: Boolean = false
 ) {
@@ -71,11 +68,6 @@ data class MedicinePlanEntity(
     enum class DaysType {
         NONE, EVERYDAY, DAYS_OF_WEEK, INTERVAL_OF_DAYS
     }
-
-    data class TimeOfTaking(
-        var doseSize: Float = 1.0f,
-        var time: AppTime = AppTime(8, 0)
-    )
 
     class DaysOfWeek : BaseObservable() {
         @Bindable

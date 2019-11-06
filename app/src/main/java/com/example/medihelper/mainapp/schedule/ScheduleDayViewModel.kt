@@ -6,13 +6,13 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.AppDate
 import com.example.medihelper.AppTime
-import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
-import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
-import com.example.medihelper.services.PersonProfileService
+import com.example.medihelper.localdatabase.pojo.PlannedMedicineItem
+import com.example.medihelper.service.PersonService
+import com.example.medihelper.service.PlannedMedicineService
 
 class ScheduleDayViewModel(
-    private val plannedMedicineRepository: PlannedMedicineRepository,
-    private val personProfileService: PersonProfileService
+    private val personService: PersonService,
+    private val plannedMedicineService: PlannedMedicineService
 ) : ViewModel() {
 
     val dateLive = MutableLiveData<AppDate>()
@@ -30,8 +30,8 @@ class ScheduleDayViewModel(
 
     init {
         plannedMedicineItemListLive = Transformations.switchMap(dateLive) { appDate ->
-            Transformations.switchMap(personProfileService.getCurrPersonItemLive()) { personItem ->
-                personItem?.let { plannedMedicineRepository.getItemListLiveByDate(appDate, personItem.personID) }
+            Transformations.switchMap(personService.getCurrPersonItemLive()) { personItem ->
+                personItem?.let { plannedMedicineService.getItemListLiveByDateAndPerson(appDate, personItem.personID) }
             }
         }
         morningPlannedMedicineItemListLive = Transformations.map(plannedMedicineItemListLive) { list ->

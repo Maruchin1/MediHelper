@@ -6,17 +6,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.localdatabase.entity.MedicineEntity
-import com.example.medihelper.localdatabase.pojos.MedicineItem
-import com.example.medihelper.localdatabase.repositories.MedicineRepository
-import com.example.medihelper.localdatabase.repositories.PersonRepository
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.localdatabase.pojo.MedicineItem
+import com.example.medihelper.service.AppMode
+import com.example.medihelper.service.MedicineService
+import com.example.medihelper.service.PersonService
+import com.example.medihelper.service.ServerApiService
 import java.io.File
 
 class MedicinesViewModel(
     private val appFilesDir: File,
-    private val medicineRepository: MedicineRepository,
-    private val personRepository: PersonRepository,
-    private val sharedPrefService: SharedPrefService
+    private val personService: PersonService,
+    private val medicineService: MedicineService,
+    private val serverApiService: ServerApiService
 ) : ViewModel() {
     private val TAG = "MedicinesViewModel"
 
@@ -25,18 +26,18 @@ class MedicinesViewModel(
     val medicineItemListLive: LiveData<List<MedicineItem>>
     val medicineAvailableLive: LiveData<Boolean>
     val colorPrimaryLive: LiveData<Int>
-    private val mainPersonItemLive = personRepository.getMainPersonItemLive()
+    private val mainPersonItemLive = personService.getMainPersonItemLive()
 
     init {
-        isAppModeConnectedLive = Transformations.map(sharedPrefService.getAppModeLive()) {
-            it == SharedPrefService.AppMode.CONNECTED
+        isAppModeConnectedLive = Transformations.map(serverApiService.getAppModeLive()) {
+            it == AppMode.CONNECTED
         }
         medicineItemListLive = Transformations.switchMap(searchQueryLive) { searchQuery ->
             Log.d(TAG, "searchQuery change = $searchQuery")
             if (searchQuery.isNullOrEmpty()) {
-                medicineRepository.getItemListLive()
+                medicineService.getItemListLive()
             } else {
-                medicineRepository.getFilteredItemListLive(searchQuery)
+                medicineService.getFilteredItemListLive(searchQuery)
             }
         }
         medicineAvailableLive = Transformations.map(medicineItemListLive) { list ->

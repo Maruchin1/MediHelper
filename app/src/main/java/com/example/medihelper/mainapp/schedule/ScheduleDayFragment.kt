@@ -2,14 +2,10 @@ package com.example.medihelper.mainapp.schedule
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -19,12 +15,9 @@ import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentScheduleDayBinding
-import com.example.medihelper.localdatabase.pojos.PlannedMedicineItem
+import com.example.medihelper.localdatabase.pojo.PlannedMedicineItem
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
-import kotlinx.android.synthetic.main.recycler_item_planned_medicine.view.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.sql.Date
 
 
 class ScheduleDayFragment : Fragment() {

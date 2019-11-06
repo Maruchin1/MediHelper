@@ -21,6 +21,7 @@ import com.example.medihelper.dialogs.SelectTimeDialog
 import com.example.medihelper.dialogs.SelectFloatNumberDialog
 import com.example.medihelper.dialogs.SelectMedicineDialog
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
+import com.example.medihelper.localdatabase.pojo.TimeDoseEditData
 import com.example.medihelper.mainapp.medicineplan.daystype.DaysOfWeekFragment
 import com.example.medihelper.mainapp.medicineplan.daystype.IntervalOfDaysFragment
 import com.example.medihelper.mainapp.medicineplan.durationtype.ContinuousFragment
@@ -49,28 +50,28 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
 
     fun onClickSelectPerson() = findNavController().navigate(AddEditMedicinePlanFragmentDirections.toPersonDialog())
 
-    fun onClickSelectTime(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) = SelectTimeDialog().apply {
-        defaultTime = timeOfTaking.time
+    fun onClickSelectTime(position: Int, timeDoseEditData: TimeDoseEditData) = SelectTimeDialog().apply {
+        defaultTime = timeDoseEditData.time
         setTimeSelectedListener { time ->
-            viewModel.updateTimeOfTaking(position, timeOfTaking.copy(time = time))
+            viewModel.updateTimeOfTaking(position, timeDoseEditData.copy(time = time))
         }
         viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
     }.show(childFragmentManager)
 
-    fun onClickSelectDoseSize(position: Int, timeOfTaking: MedicinePlanEntity.TimeOfTaking) =
+    fun onClickSelectDoseSize(position: Int, timeDoseEditData: TimeDoseEditData) =
         SelectFloatNumberDialog().apply {
             title = "Wybierz dawkę leku"
             iconResID = R.drawable.ic_pill_black_36dp
-            defaultNumber = timeOfTaking.doseSize
+            defaultNumber = timeDoseEditData.doseSize
             setNumberSelectedListener { number ->
                 Log.d(TAG, "numberSelected")
-                viewModel.updateTimeOfTaking(position, timeOfTaking.copy(doseSize = number))
+                viewModel.updateTimeOfTaking(position, timeDoseEditData.copy(doseSize = number))
             }
             viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
         }.show(childFragmentManager)
 
-    fun onClickRemoveTimeOfTaking(timeOfTaking: MedicinePlanEntity.TimeOfTaking) =
-        viewModel.removeTimeOfTaking(timeOfTaking)
+    fun onClickRemoveTimeOfTaking(timeDoseEditData: TimeDoseEditData) =
+        viewModel.removeTimeOfTaking(timeDoseEditData)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return bind<FragmentAddEditMedicinePlanBinding>(
@@ -148,7 +149,7 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
                 }
             }
         })
-        viewModel.timeOfTakingListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
+        viewModel.timeDoseListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
             timeOfTakingAdapter.updateItemsList(doseHourList)
         })
         viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
@@ -229,7 +230,7 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
     }
 
     // Inner classes
-    inner class TimeOfTakingAdapter : RecyclerAdapter<MedicinePlanEntity.TimeOfTaking>(
+    inner class TimeOfTakingAdapter : RecyclerAdapter<TimeDoseEditData>(
         R.layout.recycler_item_time_of_taking,
         null
     ) {

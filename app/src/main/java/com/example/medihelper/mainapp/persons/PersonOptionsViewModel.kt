@@ -2,9 +2,9 @@ package com.example.medihelper.mainapp.persons
 
 import android.graphics.Bitmap
 import androidx.lifecycle.*
-import com.example.medihelper.localdatabase.pojos.PersonOptionsData
-import com.example.medihelper.localdatabase.repositories.PersonRepository
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.localdatabase.pojo.PersonOptionsData
+import com.example.medihelper.service.PersonService
+import com.example.medihelper.service.ServerApiService
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -12,8 +12,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class PersonOptionsViewModel(
-    private val personRepository: PersonRepository,
-    private val sharedPrefService: SharedPrefService
+    private val personService: PersonService,
+    private val serverApiService: ServerApiService
 ) : ViewModel() {
 
     val personNameLive: LiveData<String>
@@ -27,7 +27,7 @@ class PersonOptionsViewModel(
 
     init {
         personItemLive = Transformations.switchMap(personIDLive) { personID ->
-            personRepository.getOptionsDataLive(personID)
+            personService.getOptionsDataLive(personID)
         }
         personNameLive = Transformations.map(personItemLive) { it.personName }
         personColorResIDLive = Transformations.map(personItemLive) { it.personColorResID }
@@ -35,7 +35,7 @@ class PersonOptionsViewModel(
         connectionKeyQrCodeLive = Transformations.map(connectionKeyLive) { connectionKey ->
             connectionKey?.let { createTempKeyQrCodeBitmap(it) }
         }
-        isUserLoggedLive = Transformations.map(sharedPrefService.getUserEmailLive()) { !it.isNullOrEmpty() }
+        isUserLoggedLive = Transformations.map(serverApiService.getUserEmailLive()) { !it.isNullOrEmpty() }
     }
 
     fun setArgs(args: PersonOptionsFragmentArgs) {
@@ -43,7 +43,7 @@ class PersonOptionsViewModel(
     }
 
     fun deletePerson() = GlobalScope.launch {
-        personIDLive.value?.let { personRepository.delete(it) }
+        personIDLive.value?.let { personService.delete(it) }
     }
 
     fun getPersonID() = personIDLive.value

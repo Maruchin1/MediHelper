@@ -5,36 +5,33 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
-import com.example.medihelper.localdatabase.pojos.MedicinePlanItem
-import com.example.medihelper.localdatabase.repositories.MedicinePlanRepository
-import com.example.medihelper.services.DateTimeService
-import com.example.medihelper.services.PersonProfileService
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.localdatabase.pojo.MedicinePlanItem
+import com.example.medihelper.service.*
 import kotlinx.coroutines.launch
 
 class MedicinePlanListViewModel(
-    private val medicinePlanRepository: MedicinePlanRepository,
-    private val personProfileService: PersonProfileService,
-    private val sharedPrefService: SharedPrefService,
+    private val personService: PersonService,
+    private val serverApiService: ServerApiService,
+    private val medicinePlanService: MedicinePlanService,
     private val dateTimeService: DateTimeService
 ) : ViewModel() {
 
     val isAppModeConnectedLive: LiveData<Boolean>
     val colorPrimaryLive: LiveData<Int>
-    val selectedPersonItemLive = personProfileService.getCurrPersonItemLive()
+    val selectedPersonItemLive = personService.getCurrPersonItemLive()
     private val medicinePlanItemListLive: LiveData<List<MedicinePlanItem>>
     private val medicinePlanItemOngoingListLive: LiveData<List<MedicinePlanItem>>
     private val medicinePlanItemEndedListLive: LiveData<List<MedicinePlanItem>>
 
     init {
-        isAppModeConnectedLive = Transformations.map(sharedPrefService.getAppModeLive()) {
-            it == SharedPrefService.AppMode.CONNECTED
+        isAppModeConnectedLive = Transformations.map(serverApiService.getAppModeLive()) {
+            it == AppMode.CONNECTED
         }
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
             personItem?.personColorResID
         }
         medicinePlanItemListLive = Transformations.switchMap(selectedPersonItemLive) { personItem ->
-            medicinePlanRepository.getItemListLive(personItem.personID)
+            medicinePlanService.getItemListLive(personItem.personID)
         }
         medicinePlanItemOngoingListLive = Transformations.map(medicinePlanItemListLive) { medicinePlanItemList ->
             medicinePlanItemList.filter { medicinePlanItem ->
@@ -56,7 +53,7 @@ class MedicinePlanListViewModel(
     }
 
     fun deleteMedicinePlan(medicinePlanID: Int) = viewModelScope.launch {
-        medicinePlanRepository.delete(medicinePlanID)
+        medicinePlanService.delete(medicinePlanID)
     }
 
     fun getMedicinePlanDisplayData(medicinePlanItem: MedicinePlanItem) = MedicinePlanDisplayData(
@@ -75,7 +72,7 @@ class MedicinePlanListViewModel(
             MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanItem.daysOfWeek?.getSelectedDaysString() ?: "--"
             MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> "Co ${medicinePlanItem.intervalOfDays ?: "--"} dni"
         },
-        isAppModeConnected = sharedPrefService.getAppMode() == SharedPrefService.AppMode.CONNECTED
+        isAppModeConnected = serverApiService.getAppMode() == AppMode.CONNECTED
     )
 
     private fun getMedicinePlanType(medicinePlanItem: MedicinePlanItem): MedicinePlanType {

@@ -9,7 +9,7 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.DialogSelectMonthDateBinding
-import com.example.medihelper.services.DateTimeService
+import com.example.medihelper.service.DateTimeService
 import kotlinx.android.synthetic.main.dialog_select_month_date.*
 import org.koin.android.ext.android.inject
 

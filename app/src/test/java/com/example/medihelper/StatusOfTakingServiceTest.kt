@@ -1,7 +1,7 @@
 package com.example.medihelper
 
 import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
-import com.example.medihelper.services.DateTimeService
+import com.example.medihelper.service.DateTimeService
 import com.example.medihelper.services.StatusOfTakingService
 import com.google.common.truth.Truth.assertThat
 import org.junit.After

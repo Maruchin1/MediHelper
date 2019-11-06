@@ -14,24 +14,24 @@ class Converters {
 
     // Date
     @TypeConverter
-    fun appDateToLong(date: AppDate?): Long? {
-        return date?.timeInMillis
+    fun appDateToString(date: AppDate?): String? {
+        return date?.jsonFormatString
     }
 
     @TypeConverter
-    fun longToAppDate(long: Long?): AppDate? {
-        return long?.let { AppDate(long) }
+    fun stringToAppDate(string: String?): AppDate? {
+        return string?.let { AppDate(string) }
     }
 
     // Time
     @TypeConverter
-    fun appTimeToLong(time: AppTime): Long {
-        return time.timeInMillis
+    fun appTimeToString(time: AppTime?): String? {
+        return time?.jsonFormatString
     }
 
     @TypeConverter
-    fun longToAppTime(long: Long): AppTime {
-        return AppTime(long)
+    fun stringToAppTime(string: String?): AppTime? {
+        return string?.let { AppTime(string) }
     }
 
     // DurationType
@@ -56,17 +56,17 @@ class Converters {
         return MedicinePlanEntity.DaysType.valueOf(string)
     }
 
-    // List<TimeOfTaking>
-    @TypeConverter
-    fun timeOfTakingListToString(list: List<MedicinePlanEntity.TimeOfTaking>): String {
-        return Gson().toJson(list)
-    }
-
-    @TypeConverter
-    fun stringToTimeOfTakingList(string: String): List<MedicinePlanEntity.TimeOfTaking> {
-        val listType = object : TypeToken<List<MedicinePlanEntity.TimeOfTaking>>() {}.type
-        return Gson().fromJson(string, listType)
-    }
+//    // List<TimeOfTaking>
+//    @TypeConverter
+//    fun timeOfTakingListToString(list: List<MedicinePlanEntity.TimeOfTaking>): String {
+//        return Gson().toJson(list)
+//    }
+//
+//    @TypeConverter
+//    fun stringToTimeOfTakingList(string: String): List<MedicinePlanEntity.TimeOfTaking> {
+//        val listType = object : TypeToken<List<MedicinePlanEntity.TimeOfTaking>>() {}.type
+//        return Gson().fromJson(string, listType)
+//    }
 
     // StatusOfTaking
     @TypeConverter

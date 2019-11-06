@@ -10,7 +10,7 @@
 
         <variable
             name="displayData"
-            type="com.example.medihelper.localdatabase.pojos.PersonItem" />
+            type="com.example.medihelper.localdatabase.pojo.PersonItem" />
     </data>
 
     <LinearLayout

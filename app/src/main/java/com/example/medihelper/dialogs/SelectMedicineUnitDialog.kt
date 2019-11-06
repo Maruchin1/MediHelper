@@ -4,33 +4,26 @@ import android.app.Dialog
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.custom.bind
-import com.example.medihelper.databinding.DialogSelectMedicineBinding
 import com.example.medihelper.databinding.DialogSelectMedicineUnitBinding
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.service.MedicineService
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.dialog_select_medicine_unit.*
 import org.koin.android.ext.android.inject
 
 class SelectMedicineUnitDialog : AppBottomSheetDialog() {
     override val TAG = "SelectMedicineUnitDialog"
 
     val newMedicineUnitLive = MutableLiveData<String>()
-    private val sharedPrefService: SharedPrefService by inject()
+    private val medicineService: MedicineService by inject()
     private var medicineUnitSelectedListener: ((medicineUnit: String) -> Unit)? = null
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var binding: DialogSelectMedicineUnitBinding
@@ -59,9 +52,9 @@ class SelectMedicineUnitDialog : AppBottomSheetDialog() {
     }
 
     fun onClickConfirmAddMedicineType() = newMedicineUnitLive.value?.let { newMedicineUnit ->
-        val medicineUnitList = sharedPrefService.getMedicineUnitList().toMutableList()
+        val medicineUnitList = medicineService.getMedicineUnitList().toMutableList()
         medicineUnitList.add(newMedicineUnit)
-        sharedPrefService.saveMedicineUnitList(medicineUnitList)
+        medicineService.saveMedicineUnitList(medicineUnitList)
         onClickCancelAddMedicineType()
     }
 
@@ -89,7 +82,7 @@ class SelectMedicineUnitDialog : AppBottomSheetDialog() {
     }
 
     private fun observerData() {
-        sharedPrefService.getMedicineUnitListLive().observe(requireParentFragment().viewLifecycleOwner, Observer {
+        medicineService.getMedicineUnitListLive().observe(requireParentFragment().viewLifecycleOwner, Observer {
             (binding.recyclerViewMedicineUnit.adapter as MedicineUnitAdapter).updateItemsList(it)
         })
     }

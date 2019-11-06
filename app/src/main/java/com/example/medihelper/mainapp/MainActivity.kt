@@ -8,9 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
-import com.example.medihelper.services.MedicineSchedulerService
-import com.example.medihelper.serversync.ServerSyncWorkManager
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.service.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
@@ -20,9 +18,8 @@ import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
 
-    private val medicineSchedulerService: MedicineSchedulerService by inject()
-    private val serverSyncWorkManager: ServerSyncWorkManager by inject()
-    private val sharedPrefService: SharedPrefService by inject()
+    private val plannedMedicineService: PlannedMedicineService by inject()
+    private val serverApiService: ServerApiService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +30,14 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         GlobalScope.launch {
-            medicineSchedulerService.updatePlannedMedicinesStatuses()
+            plannedMedicineService.updateAllStatus()
         }
-        checkAppModeAndSync()
+        serverApiService.enqueueServerSync()
     }
 
     override fun onPause() {
         super.onPause()
-        checkAppModeAndSync()
+        serverApiService.enqueueServerSync()
     }
 
     fun setMainColor(colorResID: Int) {
@@ -75,12 +72,5 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNav() {
         val navController = findNavController(R.id.nav_host_fragment)
         bottom_nav.setupWithNavController(navController)
-    }
-
-    private fun checkAppModeAndSync() {
-        when (sharedPrefService.getAppMode()) {
-            SharedPrefService.AppMode.LOGGED -> serverSyncWorkManager.enqueueLoggedUserSync()
-            SharedPrefService.AppMode.CONNECTED -> serverSyncWorkManager.enqueueConnectedPersonSync()
-        }
     }
 }

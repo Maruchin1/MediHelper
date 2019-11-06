@@ -5,24 +5,17 @@ import com.example.medihelper.AppDate
 import com.example.medihelper.AppTime
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
-import com.example.medihelper.localdatabase.pojos.PlannedMedicineDetails
-import com.example.medihelper.localdatabase.repositories.MedicineRepository
-import com.example.medihelper.localdatabase.repositories.PlannedMedicineRepository
-import com.example.medihelper.services.AlarmService
-import com.example.medihelper.services.DateTimeService
-import com.example.medihelper.services.PersonProfileService
-import com.example.medihelper.services.StatusOfTakingService
+import com.example.medihelper.localdatabase.pojo.PlannedMedicineDetails
+import com.example.medihelper.service.MedicineService
+import com.example.medihelper.service.PersonService
+import com.example.medihelper.service.PlannedMedicineService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
 
 class PlannedMedicineOptionsViewModel(
-    private val plannedMedicineRepository: PlannedMedicineRepository,
-    private val medicineRepository: MedicineRepository,
-    private val personProfileService: PersonProfileService,
-    private val alarmService: AlarmService,
-    private val statusOfTakingService: StatusOfTakingService,
-    private val dateTimeService: DateTimeService
+    private val personService: PersonService,
+    private val plannedMedicineService: PlannedMedicineService,
+    private val medicineService: MedicineService
 ) : ViewModel() {
 
     val colorPrimaryLive: LiveData<Int>
@@ -42,9 +35,9 @@ class PlannedMedicineOptionsViewModel(
     private val plannedMedicineDetailsLive: LiveData<PlannedMedicineDetails>
 
     init {
-        colorPrimaryLive = Transformations.map(personProfileService.getCurrPersonItemLive()) { it.personColorResID }
+        colorPrimaryLive = Transformations.map(personService.getCurrPersonItemLive()) { it.personColorResID }
         plannedMedicineDetailsLive = Transformations.switchMap(plannedMedicineIDLive) { plannedMedicineID ->
-            plannedMedicineRepository.getDetailsLive(plannedMedicineID)
+            plannedMedicineService.getDetailsLive(plannedMedicineID)
         }
 
         medicineNameLive = Transformations.map(plannedMedicineDetailsLive) { it.medicineName }
@@ -75,31 +68,31 @@ class PlannedMedicineOptionsViewModel(
 
     fun changePlannedMedicineStatus() = GlobalScope.launch {
         plannedMedicineDetailsLive.value?.let { plannedMedicineDetails ->
-            val plannedMedicineEntity = plannedMedicineRepository.getEntity(plannedMedicineDetails.plannedMedicineID)
-            val medicineEntity = medicineRepository.getEntity(plannedMedicineDetails.medicineID)
+            val plannedMedicineEntity = plannedMedicineService.getEntity(plannedMedicineDetails.plannedMedicineID)
+            val medicineEntity = medicineService.getEntity(plannedMedicineDetails.medicineID)
 
             if (plannedMedicineEntity.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
-                plannedMedicineEntity.statusOfTaking = statusOfTakingService.getStatusByTaken(plannedMedicineEntity, false)
+                plannedMedicineEntity.statusOfTaking = plannedMedicineService.getStatusByTaken(plannedMedicineEntity, false)
                 medicineEntity.increaseCurrState(plannedMedicineDetails.plannedDoseSize)
             } else {
-                plannedMedicineEntity.statusOfTaking = statusOfTakingService.getStatusByTaken(plannedMedicineEntity, true)
+                plannedMedicineEntity.statusOfTaking = plannedMedicineService.getStatusByTaken(plannedMedicineEntity, true)
                 medicineEntity.reduceCurrState(plannedMedicineDetails.plannedDoseSize)
             }
 
-            plannedMedicineRepository.update(plannedMedicineEntity)
-            medicineRepository.update(medicineEntity)
+            plannedMedicineService.update(plannedMedicineEntity)
+            medicineService.update(medicineEntity)
         }
     }
 
-    fun setAlarm() {
-        val plannedMedicineID = plannedMedicineIDLive.value
-        val plannedMedicineDetails = plannedMedicineDetailsLive.value
-        if (plannedMedicineID != null && plannedMedicineDetails != null) {
-            alarmService.setPlannedMedicineAlarm(
-                plannedMedicineID =  plannedMedicineID,
-                date =  dateTimeService.getCurrDate(),
-                time =  AppTime(Date().time + 2000)
-            )
-        }
-    }
+//    fun setAlarm() {
+//        val plannedMedicineID = plannedMedicineIDLive.value
+//        val plannedMedicineDetails = plannedMedicineDetailsLive.value
+//        if (plannedMedicineID != null && plannedMedicineDetails != null) {
+//            alarmService.setPlannedMedicineAlarm(
+//                plannedMedicineID =  plannedMedicineID,
+//                date =  dateTimeService.getCurrDate(),
+//                time =  AppTime(Date().time + 2000)
+//            )
+//        }
+//    }
 }

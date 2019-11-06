@@ -7,9 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entity.MedicineEntity
-import com.example.medihelper.localdatabase.repositories.MedicineRepository
-import com.example.medihelper.services.MedicineImageService
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.service.MedicineService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
@@ -17,13 +15,11 @@ import java.io.File
 
 class AddEditMedicineViewModel(
     private val appFileDir: File,
-    private val medicineRepository: MedicineRepository,
-    private val medicineImageService: MedicineImageService,
-    sharedPrefService: SharedPrefService
+    private val medicineService: MedicineService
 ) : ViewModel() {
     private val TAG = AddEditMedicineViewModel::class.simpleName
 
-    val medicineUnitList = sharedPrefService.getMedicineUnitList()
+    val medicineUnitList = medicineService.getMedicineUnitList()
 
     val titleLive = MutableLiveData("Dodaj lek")
     val medicineNameLive = MutableLiveData<String>()
@@ -42,7 +38,7 @@ class AddEditMedicineViewModel(
         if (args.editMedicineID != -1) {
             editMedicineID = args.editMedicineID
             titleLive.postValue("Edytuj lek")
-            medicineRepository.getDetails(args.editMedicineID).run {
+            medicineService.getDetails(args.editMedicineID).run {
                 medicineNameLive.postValue(medicineName)
                 expireDateLive.postValue(expireDate)
                 medicineUnitLive.postValue(medicineUnit)
@@ -58,7 +54,7 @@ class AddEditMedicineViewModel(
         if (validateInputData()) {
             if (editMedicineID != null) {
                 GlobalScope.launch {
-                    val existingMedicineEntity = medicineRepository.getEntity(editMedicineID!!)
+                    val existingMedicineEntity = medicineService.getEntity(editMedicineID!!)
                     val updatedMedicineEntity = existingMedicineEntity.copy(
                         medicineName = medicineNameLive.value!!,
                         medicineUnit = medicineUnitLive.value!!,
@@ -67,10 +63,10 @@ class AddEditMedicineViewModel(
                         currState = currStateLive.value,
                         additionalInfo = commentsLive.value,
                         imageName = imageFileLive.value?.let { imageFile ->
-                            medicineImageService.saveTmpFile(medicineNameLive.value!!, imageFile)
+                            medicineService.saveTmpFile(medicineNameLive.value!!, imageFile)
                         }
                     )
-                    medicineRepository.update(updatedMedicineEntity)
+                    medicineService.update(updatedMedicineEntity)
                 }
             } else {
                 GlobalScope.launch {
@@ -82,10 +78,10 @@ class AddEditMedicineViewModel(
                         currState = currStateLive.value,
                         additionalInfo = commentsLive.value,
                         imageName = imageFileLive.value?.let { imageFile ->
-                            medicineImageService.saveTmpFile(medicineNameLive.value!!, imageFile)
+                            medicineService.saveTmpFile(medicineNameLive.value!!, imageFile)
                         }
                     )
-                    medicineRepository.insert(newMedicineEntity)
+                    medicineService.insert(newMedicineEntity)
                 }
             }
             return true
@@ -96,7 +92,7 @@ class AddEditMedicineViewModel(
     fun takePhotoIntent(activity: FragmentActivity): Intent {
         return Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(activity.packageManager)?.also {
-                val imageFile = medicineImageService.createTempImageFile()
+                val imageFile = medicineService.createTempImageFile()
                 imageFileLive.value = imageFile
                 val photoURI = FileProvider.getUriForFile(
                     activity,

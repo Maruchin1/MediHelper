@@ -3,12 +3,13 @@ package com.example.medihelper.mainapp.more
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.localdatabase.repositories.PersonRepository
-import com.example.medihelper.services.SharedPrefService
+import com.example.medihelper.service.AppMode
+import com.example.medihelper.service.PersonService
+import com.example.medihelper.service.ServerApiService
 
 class MoreViewModel(
-    private val sharedPrefService: SharedPrefService,
-    private val personRepository: PersonRepository
+    private val personService: PersonService,
+    private val serverApiService: ServerApiService
 ) : ViewModel() {
 
     val colorPrimaryLive: LiveData<Int>
@@ -16,19 +17,19 @@ class MoreViewModel(
     val connectedPersonInfoLive: LiveData<String>
 
     val isAppModeLogged: Boolean
-        get() = sharedPrefService.getAppMode() == SharedPrefService.AppMode.LOGGED
+        get() = serverApiService.getAppMode() == AppMode.LOGGED
     val isAppModeConnected: Boolean
-        get() = sharedPrefService.getAppMode() == SharedPrefService.AppMode.CONNECTED
-    private val mainPersonItemLive = personRepository.getMainPersonItemLive()
+        get() = serverApiService.getAppMode() == AppMode.CONNECTED
+    private val mainPersonItemLive = personService.getMainPersonItemLive()
 
     init {
         colorPrimaryLive = Transformations.map(mainPersonItemLive) { it?.personColorResID }
-        loggedUserInfoLive = Transformations.map(sharedPrefService.getUserEmailLive()) { email ->
+        loggedUserInfoLive = Transformations.map(serverApiService.getUserEmailLive()) { email ->
             if (email.isNullOrEmpty()) "Nie zalogowano" else email
         }
-        connectedPersonInfoLive = Transformations.map(sharedPrefService.getAppModeLive()) { appMode ->
+        connectedPersonInfoLive = Transformations.map(serverApiService.getAppModeLive()) { appMode ->
             when (appMode) {
-                SharedPrefService.AppMode.CONNECTED -> "Połączono z opiekunem"
+                AppMode.CONNECTED -> "Połączono z opiekunem"
                 else -> "Nie połączono z opiekunem"
             }
         }
