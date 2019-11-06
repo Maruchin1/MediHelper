@@ -2,6 +2,7 @@ package com.example.medihelper.mainapp.persons
 
 import androidx.lifecycle.*
 import com.example.medihelper.localdatabase.entity.PersonEntity
+import com.example.medihelper.localdatabase.pojo.PersonEditData
 import com.example.medihelper.service.PersonService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -37,9 +38,9 @@ class AddEditPersonViewModel(
         if (args.editPersonID != -1) {
             editPersonID = args.editPersonID
             titleLive.postValue("Edytuj osobę")
-            personService.getItem(args.editPersonID).let { personItem ->
-                personNameLive.postValue(personItem.personName)
-                personColorResIDLive.postValue(personItem.personColorResID)
+            personService.getEditData(args.editPersonID).let { editData ->
+                personNameLive.postValue(editData.personName)
+                personColorResIDLive.postValue(editData.personColorResID)
             }
         } else {
             personNameLive.postValue("")
@@ -49,23 +50,13 @@ class AddEditPersonViewModel(
 
     fun saveNewPerson(): Boolean {
         if (validateInputData()) {
-            if (editPersonID != null) {
-                GlobalScope.launch {
-                    val existingPersonEntity = personService.getEntity(editPersonID!!)
-                    val updatedPersonEntity = existingPersonEntity.copy(
-                        personName = personNameLive.value!!,
-                        personColorResID = personColorResIDLive.value!!
-                    )
-                    personService.update(updatedPersonEntity)
-                }
-            } else {
-                GlobalScope.launch {
-                    val newPersonEntity = PersonEntity(
-                        personName = personNameLive.value!!,
-                        personColorResID = personColorResIDLive.value!!
-                    )
-                    personService.insert(newPersonEntity)
-                }
+            val editData = PersonEditData(
+                personID = editPersonID ?: 0,
+                personName = personNameLive.value!!,
+                personColorResID = personColorResIDLive.value!!
+            )
+            GlobalScope.launch {
+                personService.save(editData)
             }
             return true
         }

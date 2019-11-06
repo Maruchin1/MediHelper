@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import com.example.medihelper.AppDate
 import com.example.medihelper.localdatabase.entity.MedicineEntity
+import com.example.medihelper.localdatabase.pojo.MedicineEditData
 import com.example.medihelper.service.MedicineService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -52,37 +53,20 @@ class AddEditMedicineViewModel(
 
     fun saveMedicine(): Boolean {
         if (validateInputData()) {
-            if (editMedicineID != null) {
-                GlobalScope.launch {
-                    val existingMedicineEntity = medicineService.getEntity(editMedicineID!!)
-                    val updatedMedicineEntity = existingMedicineEntity.copy(
-                        medicineName = medicineNameLive.value!!,
-                        medicineUnit = medicineUnitLive.value!!,
-                        expireDate = expireDateLive.value!!,
-                        packageSize = packageSizeLive.value,
-                        currState = currStateLive.value,
-                        additionalInfo = commentsLive.value,
-                        imageName = imageFileLive.value?.let { imageFile ->
-                            medicineService.saveTmpFile(medicineNameLive.value!!, imageFile)
-                        }
-                    )
-                    medicineService.update(updatedMedicineEntity)
+            val editData = MedicineEditData(
+                medicineID = editMedicineID ?: 0,
+                medicineName = medicineNameLive.value!!,
+                medicineUnit = medicineUnitLive.value!!,
+                expireDate = expireDateLive.value!!,
+                packageSize = packageSizeLive.value,
+                currState = currStateLive.value,
+                additionalInfo = commentsLive.value,
+                imageName = imageFileLive.value?.let { imageFile ->
+                    medicineService.saveTmpFile(medicineNameLive.value!!, imageFile)
                 }
-            } else {
-                GlobalScope.launch {
-                    val newMedicineEntity = MedicineEntity(
-                        medicineName = medicineNameLive.value!!,
-                        expireDate = expireDateLive.value!!,
-                        medicineUnit = medicineUnitLive.value!!,
-                        packageSize = packageSizeLive.value,
-                        currState = currStateLive.value,
-                        additionalInfo = commentsLive.value,
-                        imageName = imageFileLive.value?.let { imageFile ->
-                            medicineService.saveTmpFile(medicineNameLive.value!!, imageFile)
-                        }
-                    )
-                    medicineService.insert(newMedicineEntity)
-                }
+            )
+            GlobalScope.launch {
+                medicineService.save(editData)
             }
             return true
         }

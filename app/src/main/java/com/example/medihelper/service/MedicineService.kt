@@ -9,14 +9,16 @@ import com.example.medihelper.localdatabase.DeletedHistory
 import com.example.medihelper.localdatabase.dao.MedicineDao
 import com.example.medihelper.localdatabase.entity.MedicineEntity
 import com.example.medihelper.localdatabase.pojo.MedicineDetails
+import com.example.medihelper.localdatabase.pojo.MedicineEditData
 import com.example.medihelper.localdatabase.pojo.MedicineItem
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 interface MedicineService {
-    suspend fun insert(entity: MedicineEntity)
-    suspend fun update(entity: MedicineEntity)
+    suspend fun save(editData: MedicineEditData)
+    suspend fun reduceCurrState(medicineId: Int, doseSize: Float)
+    suspend fun increaseCurrState(medicineId: Int, doseSize: Float)
     suspend fun delete(id: Int)
     suspend fun getEntity(id: Int): MedicineEntity
     suspend fun getEntityList(): List<MedicineEntity>
@@ -44,10 +46,51 @@ class MedicineServiceImpl(
         private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
     }
 
-    override suspend fun insert(entity: MedicineEntity) = medicineDao.insert(entity)
+    override suspend fun save(editData: MedicineEditData) {
+        val entity = MedicineEntity(
+            medicineID = editData.medicineID,
+            medicineName = editData.medicineName,
+            expireDate = editData.expireDate,
+            medicineUnit = editData.medicineUnit,
+            packageSize = editData.packageSize,
+            currState = editData.currState,
+            additionalInfo = editData.additionalInfo,
+            imageName = editData.imageName,
+            synchronizedWithServer = false
+        )
+        if (editData.medicineID == 0) {
+            medicineDao.insert(entity)
+        } else {
+            medicineDao.update(entity)
+        }
+    }
 
-    override suspend fun update(entity: MedicineEntity) =
-        medicineDao.update(entity.apply { synchronizedWithServer = false })
+    override suspend fun reduceCurrState(medicineId: Int, doseSize: Float) {
+        val entity = medicineDao.getEntity(medicineId)
+        val currState = entity.currState
+        if (currState != null) {
+            var newState = currState - doseSize
+            if (newState < 0f) {
+                newState = 0f
+            }
+            entity.currState = newState
+            medicineDao.update(entity)
+        }
+    }
+
+    override suspend fun increaseCurrState(medicineId: Int, doseSize: Float) {
+        val entity = medicineDao.getEntity(medicineId)
+        val currState = entity.currState
+        if (currState != null) {
+            var newState = currState + doseSize
+            val packageSize = entity.packageSize
+            if (packageSize != null && newState > packageSize) {
+                newState = packageSize
+            }
+            entity.currState = newState
+            medicineDao.update(entity)
+        }
+    }
 
     override suspend fun delete(id: Int) {
         medicineDao.getRemoteIdById(id)?.let { deletedHistory.addToMedicineHistory(it) }

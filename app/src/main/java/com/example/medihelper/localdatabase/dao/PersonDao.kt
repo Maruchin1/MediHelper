@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.medihelper.localdatabase.entity.PersonEntity
+import com.example.medihelper.localdatabase.pojo.PersonEditData
 import com.example.medihelper.localdatabase.pojo.PersonItem
 import com.example.medihelper.localdatabase.pojo.PersonOptionsData
 
@@ -38,6 +39,9 @@ interface PersonDao {
 
     @Query("SELECT * FROM persons WHERE person_id = :id")
     suspend fun getItem(id: Int): PersonItem
+
+    @Query("SELECT * FROM persons WHERE person_id = :id")
+    suspend fun getEditData(id: Int): PersonEditData
 
     @Query("SELECT person_id FROM persons WHERE main_person = 1")
     suspend fun getMainPersonID(): Int?

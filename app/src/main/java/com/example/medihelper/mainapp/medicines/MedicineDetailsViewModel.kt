@@ -80,9 +80,7 @@ class MedicineDetailsViewModel(
 
     fun takeMedicineDose(doseSize: Float) = viewModelScope.launch {
         selectedMedicineIDLive.value?.let { medicineID ->
-            val medicineEntity = medicineService.getEntity(medicineID)
-            medicineEntity.reduceCurrState(doseSize)
-            medicineService.update(medicineEntity)
+            medicineService.reduceCurrState(medicineID, doseSize)
         }
     }
 }

@@ -8,16 +8,17 @@ import androidx.lifecycle.Transformations
 import com.example.medihelper.localdatabase.DeletedHistory
 import com.example.medihelper.localdatabase.dao.PersonDao
 import com.example.medihelper.localdatabase.entity.PersonEntity
+import com.example.medihelper.localdatabase.pojo.PersonEditData
 import com.example.medihelper.localdatabase.pojo.PersonItem
 import com.example.medihelper.localdatabase.pojo.PersonOptionsData
 
 interface PersonService {
-    suspend fun insert(entity: PersonEntity): Int
-    suspend fun update(entity: PersonEntity)
+    suspend fun save(editData: PersonEditData)
     suspend fun delete(id: Int)
     suspend fun getEntity(id: Int): PersonEntity
     suspend fun getEntityList(): List<PersonEntity>
     suspend fun getItem(id: Int): PersonItem
+    suspend fun getEditData(id: Int): PersonEditData
     suspend fun getMainPersonID(): Int?
     suspend fun getMainPersonEntity(): PersonEntity
     fun getItemLive(id: Int): LiveData<PersonItem>
@@ -55,10 +56,19 @@ class PersonServiceImpl(
         }
     }
 
-    override suspend fun insert(entity: PersonEntity) = personDao.insert(entity).toInt()
-
-    override suspend fun update(entity: PersonEntity) =
-        personDao.update(entity.apply { synchronizedWithServer = false })
+    override suspend fun save(editData: PersonEditData) {
+        val entity = PersonEntity(
+            personID = editData.personID,
+            personName = editData.personName,
+            personColorResID = editData.personColorResID,
+            synchronizedWithServer = false
+        )
+        if (entity.personID == 0) {
+            personDao.insert(entity).toInt()
+        } else {
+            personDao.update(entity)
+        }
+    }
 
     override suspend fun delete(id: Int) {
         personDao.getRemoteIdById(id)?.let { deletedHistory.addToPersonHistory(it) }
@@ -70,6 +80,8 @@ class PersonServiceImpl(
     override suspend fun getEntityList() = personDao.getEntityList()
 
     override suspend fun getItem(id: Int) = personDao.getItem(id)
+
+    override suspend fun getEditData(id: Int) = personDao.getEditData(id)
 
     override suspend fun getMainPersonID() = personDao.getMainPersonID()
 

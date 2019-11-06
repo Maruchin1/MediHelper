@@ -38,23 +38,23 @@ data class MedicineEntity(
     @ColumnInfo(name = "synchronized_with_server")
     var synchronizedWithServer: Boolean = false
 ) {
-    fun reduceCurrState(doseSize: Float) {
-        currState?.let { currState ->
-            this.currState = currState - doseSize
-            if (this.currState!! < 0f) {
-                this.currState = 0f
-            }
-        }
-    }
-
-    fun increaseCurrState(doseSize: Float) {
-        currState?.let { currState ->
-            this.currState = currState + doseSize
-            if (packageSize != null && this.currState!! > packageSize!!) {
-                this.currState = this.packageSize
-            }
-        }
-    }
+//    fun reduceCurrState(doseSize: Float) {
+//        currState?.let { currState ->
+//            this.currState = currState - doseSize
+//            if (this.currState!! < 0f) {
+//                this.currState = 0f
+//            }
+//        }
+//    }
+//
+//    fun increaseCurrState(doseSize: Float) {
+//        currState?.let { currState ->
+//            this.currState = currState + doseSize
+//            if (packageSize != null && this.currState!! > packageSize!!) {
+//                this.currState = this.packageSize
+//            }
+//        }
+//    }
 
     class StateData(packageSize: Float?, currState: Float?) {
         val stateAvailable: Boolean

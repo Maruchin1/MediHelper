@@ -13,13 +13,10 @@ import com.example.medihelper.localdatabase.pojo.PlannedMedicineDetails
 import com.example.medihelper.localdatabase.pojo.PlannedMedicineItem
 
 interface PlannedMedicineService {
-    suspend fun insert(entity: PlannedMedicineEntity): Long
-    suspend fun insert(entityList: List<PlannedMedicineEntity>)
-    suspend fun insertForMedicinePlan(medicinePlanId: Int)
-    suspend fun update(entity: PlannedMedicineEntity)
-    suspend fun update(entityList: List<PlannedMedicineEntity>)
+    suspend fun addForMedicinePlan(medicinePlanId: Int)
     suspend fun updateForMedicinePlan(medicinePlanId: Int)
     suspend fun updateAllStatus()
+    suspend fun changeMedicineTaken(plannedMedicineId: Int, taken: Boolean)
     suspend fun delete(idList: List<Int>)
     suspend fun deleteFromDateByMedicinePlanID(date: AppDate, id: Int)
     suspend fun getEntity(id: Int): PlannedMedicineEntity
@@ -27,8 +24,6 @@ interface PlannedMedicineService {
     suspend fun getAlarmData(id: Int): PlannedMedicineAlarmData
     fun getDetailsLive(id: Int): LiveData<PlannedMedicineDetails>
     fun getItemListLiveByDateAndPerson(date: AppDate, personID: Int): LiveData<List<PlannedMedicineItem>>
-    fun getStatusByTaken(entity: PlannedMedicineEntity, taken: Boolean): PlannedMedicineEntity.StatusOfTaking
-    fun getStatusByCurrDate(entity: PlannedMedicineEntity): PlannedMedicineEntity.StatusOfTaking
     fun updateStatusOfTakingByCurrDate(entityList: List<PlannedMedicineEntity>): List<PlannedMedicineEntity>
 }
 
@@ -40,24 +35,11 @@ class PlannedMedicineServiceImpl(
     private val deletedHistory: DeletedHistory
 ) : PlannedMedicineService {
 
-    override suspend fun insert(entity: PlannedMedicineEntity) = plannedMedicineDao.insert(entity)
-
-    override suspend fun insert(entityList: List<PlannedMedicineEntity>) = plannedMedicineDao.insert(entityList)
-
-    override suspend fun insertForMedicinePlan(medicinePlanId: Int) {
+    override suspend fun addForMedicinePlan(medicinePlanId: Int) {
         val medicinePlanEditData = medicinePlanDao.getEditDataById(medicinePlanId)
         val plannedMedicineList = medicineSchedulerService.getPlannedMedicinesForMedicinePlan(medicinePlanEditData)
         plannedMedicineDao.insert(plannedMedicineList)
     }
-
-    override suspend fun update(entity: PlannedMedicineEntity) =
-        plannedMedicineDao.update(entity.apply { synchronizedWithServer = false })
-
-    override suspend fun update(entityList: List<PlannedMedicineEntity>) = plannedMedicineDao.update(entityList.map {
-        it.apply {
-            synchronizedWithServer = false
-        }
-    })
 
     override suspend fun updateForMedicinePlan(medicinePlanId: Int) {
         val medicinePlanEditData = medicinePlanDao.getEditDataById(medicinePlanId)
@@ -75,6 +57,13 @@ class PlannedMedicineServiceImpl(
             }
         }
         plannedMedicineDao.update(updatedList)
+    }
+
+    override suspend fun changeMedicineTaken(plannedMedicineId: Int, taken: Boolean) {
+        val entity = plannedMedicineDao.getEntityById(plannedMedicineId)
+        val newStatus = getStatusByTaken(entity, taken)
+        entity.statusOfTaking = newStatus
+        plannedMedicineDao.update(entity)
     }
 
     override suspend fun delete(idList: List<Int>) {
@@ -99,7 +88,15 @@ class PlannedMedicineServiceImpl(
     override fun getItemListLiveByDateAndPerson(date: AppDate, personID: Int) =
         plannedMedicineDao.getItemListLiveByDate(date, personID)
 
-    override fun getStatusByTaken(entity: PlannedMedicineEntity, taken: Boolean): PlannedMedicineEntity.StatusOfTaking {
+    override fun updateStatusOfTakingByCurrDate(entityList: List<PlannedMedicineEntity>): List<PlannedMedicineEntity> {
+        return entityList.map { entity ->
+            entity.apply {
+                statusOfTaking = getStatusByCurrDate(entity)
+            }
+        }
+    }
+
+    private fun getStatusByTaken(entity: PlannedMedicineEntity, taken: Boolean): PlannedMedicineEntity.StatusOfTaking {
         return if (taken) {
             PlannedMedicineEntity.StatusOfTaking.TAKEN
         } else {
@@ -107,7 +104,7 @@ class PlannedMedicineServiceImpl(
         }
     }
 
-    override fun getStatusByCurrDate(entity: PlannedMedicineEntity): PlannedMedicineEntity.StatusOfTaking {
+    private fun getStatusByCurrDate(entity: PlannedMedicineEntity): PlannedMedicineEntity.StatusOfTaking {
         return if (entity.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
             PlannedMedicineEntity.StatusOfTaking.TAKEN
         } else {
@@ -120,14 +117,6 @@ class PlannedMedicineServiceImpl(
                     entity.plannedTime < currTime -> PlannedMedicineEntity.StatusOfTaking.NOT_TAKEN
                     else -> PlannedMedicineEntity.StatusOfTaking.WAITING
                 }
-            }
-        }
-    }
-
-    override fun updateStatusOfTakingByCurrDate(entityList: List<PlannedMedicineEntity>): List<PlannedMedicineEntity> {
-        return entityList.map { entity ->
-            entity.apply {
-                statusOfTaking = getStatusByCurrDate(entity)
             }
         }
     }

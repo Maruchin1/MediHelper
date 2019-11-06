@@ -67,20 +67,14 @@ class PlannedMedicineOptionsViewModel(
     }
 
     fun changePlannedMedicineStatus() = GlobalScope.launch {
-        plannedMedicineDetailsLive.value?.let { plannedMedicineDetails ->
-            val plannedMedicineEntity = plannedMedicineService.getEntity(plannedMedicineDetails.plannedMedicineID)
-            val medicineEntity = medicineService.getEntity(plannedMedicineDetails.medicineID)
-
-            if (plannedMedicineEntity.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
-                plannedMedicineEntity.statusOfTaking = plannedMedicineService.getStatusByTaken(plannedMedicineEntity, false)
-                medicineEntity.increaseCurrState(plannedMedicineDetails.plannedDoseSize)
+        plannedMedicineDetailsLive.value?.let { details ->
+            if (details.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
+                plannedMedicineService.changeMedicineTaken(details.plannedMedicineID, false)
+                medicineService.increaseCurrState(details.medicineID, details.plannedDoseSize)
             } else {
-                plannedMedicineEntity.statusOfTaking = plannedMedicineService.getStatusByTaken(plannedMedicineEntity, true)
-                medicineEntity.reduceCurrState(plannedMedicineDetails.plannedDoseSize)
+                plannedMedicineService.changeMedicineTaken(details.plannedMedicineID, true)
+                medicineService.reduceCurrState(details.medicineID, details.plannedDoseSize)
             }
-
-            plannedMedicineService.update(plannedMedicineEntity)
-            medicineService.update(medicineEntity)
         }
     }
 
