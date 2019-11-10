@@ -17,7 +17,7 @@ import com.example.medihelper.localdatabase.entity.*
     version = 42,
     exportSchema = false
 )
-@TypeConverters(Converters::class)
+@TypeConverters(Converter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun medicineDao(): MedicineDao

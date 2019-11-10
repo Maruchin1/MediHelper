@@ -5,13 +5,12 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.medihelper.localdatabase.DeletedHistory
 import com.example.medihelper.localdatabase.dao.*
-import com.example.medihelper.remotedatabase.RegisteredUserApi
+import com.example.medihelper.remotedatabase.api.RegisteredUserApi
 import com.example.medihelper.remotedatabase.dto.*
 import com.example.medihelper.service.NotificationService
 import com.example.medihelper.service.ServerApiService
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import java.util.*
 
 class LoggedUserSyncWorker(private val context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params), KoinComponent {

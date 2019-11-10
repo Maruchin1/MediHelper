@@ -8,11 +8,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.persons.PersonDialog" />
+            type="com.example.medihelper.mainapp.person.PersonDialog" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.persons.PersonViewModel.PersonItemDisplayData" />
+            type="com.example.medihelper.mainapp.person.PersonViewModel.PersonItemDisplayData" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

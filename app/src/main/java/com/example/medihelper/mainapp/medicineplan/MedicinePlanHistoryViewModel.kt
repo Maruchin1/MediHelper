@@ -1,7 +1,7 @@
 package com.example.medihelper.mainapp.medicineplan
 
 import androidx.lifecycle.*
-import com.example.medihelper.AppDate
+import com.example.medihelper.custom.AppDate
 import com.example.medihelper.localdatabase.pojo.MedicinePlanHistory
 import com.example.medihelper.localdatabase.pojo.MedicinePlanHistoryCheckbox
 import com.example.medihelper.service.DateTimeService

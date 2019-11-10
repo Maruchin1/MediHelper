@@ -1,7 +1,7 @@
 package com.example.medihelper.service
 
 import androidx.fragment.app.FragmentManager
-import com.example.medihelper.dialogs.LoadingDialog
+import com.example.medihelper.mainapp.dialog.LoadingDialog
 
 interface LoadingScreenService {
     fun showLoadingScreen(fragmentManager: FragmentManager)

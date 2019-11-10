@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.dialogs.SelectMedicineUnitDialog" />
+            type="com.example.medihelper.mainapp.dialog.SelectMedicineUnitDialog" />
 
         <variable
             name="displayData"

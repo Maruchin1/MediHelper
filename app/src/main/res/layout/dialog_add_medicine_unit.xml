@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.dialogs.AddMedicineUnitDialog" />
+            type="com.example.medihelper.mainapp.dialog.AddMedicineUnitDialog" />
     </data>
 
     <LinearLayout

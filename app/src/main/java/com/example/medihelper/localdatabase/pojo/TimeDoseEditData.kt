@@ -1,7 +1,7 @@
 package com.example.medihelper.localdatabase.pojo
 
 import androidx.room.ColumnInfo
-import com.example.medihelper.AppTime
+import com.example.medihelper.custom.AppTime
 
 data class TimeDoseEditData(
     @ColumnInfo( name = "time")

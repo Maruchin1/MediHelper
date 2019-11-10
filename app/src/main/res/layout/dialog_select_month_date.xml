@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.dialogs.SelectMonthDateDialog" />
+            type="com.example.medihelper.mainapp.dialog.SelectMonthDateDialog" />
     </data>
 
     <LinearLayout

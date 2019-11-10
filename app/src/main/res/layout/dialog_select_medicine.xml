@@ -6,11 +6,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.dialogs.SelectMedicineDialog" />
+            type="com.example.medihelper.mainapp.dialog.SelectMedicineDialog" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.medicines.MedicinesViewModel" />
+            type="com.example.medihelper.mainapp.medicine.MedicinesViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

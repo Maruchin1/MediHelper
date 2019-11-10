@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.example.medihelper.AppDate
-import com.example.medihelper.AppTime
-import com.example.medihelper.mainapp.AlarmActivity
+import com.example.medihelper.custom.AppDate
+import com.example.medihelper.custom.AppTime
+import com.example.medihelper.mainapp.alarm.AlarmActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

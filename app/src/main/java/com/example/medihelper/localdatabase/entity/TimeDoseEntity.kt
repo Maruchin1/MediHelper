@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.example.medihelper.AppTime
+import com.example.medihelper.custom.AppTime
 
 @Entity(
     tableName = "times_doses",

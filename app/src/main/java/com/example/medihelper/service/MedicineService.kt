@@ -27,6 +27,7 @@ interface MedicineService {
     fun getFilteredItemListLive(searchQuery: String): LiveData<List<MedicineItem>>
     fun getItemLive(id: Int): LiveData<MedicineItem>
     fun getDetailsLive(id: Int): LiveData<MedicineDetails>
+    fun getImageFile(imageName: String): File
     fun createTempImageFile(): File
     fun saveTmpFile(medicineName: String, tempFile: File): String
     fun getMedicineUnitList(): List<String>
@@ -110,6 +111,8 @@ class MedicineServiceImpl(
     override fun getItemLive(id: Int) = medicineDao.getItemLive(id)
 
     override fun getDetailsLive(id: Int) = medicineDao.getDetailsLive(id)
+
+    override fun getImageFile(imageName: String) = File(appFilesDir, imageName)
 
     override fun createTempImageFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())

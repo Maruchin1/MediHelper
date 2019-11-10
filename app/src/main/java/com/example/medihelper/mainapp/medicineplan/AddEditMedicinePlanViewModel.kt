@@ -2,11 +2,9 @@ package com.example.medihelper.mainapp.medicineplan
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.medihelper.AppDate
-import com.example.medihelper.AppTime
+import com.example.medihelper.custom.AppDate
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
-import com.example.medihelper.localdatabase.entity.TimeDoseEntity
 import com.example.medihelper.localdatabase.pojo.MedicineDetails
 import com.example.medihelper.localdatabase.pojo.MedicinePlanEditData
 import com.example.medihelper.localdatabase.pojo.TimeDoseEditData
@@ -74,7 +72,7 @@ class AddEditMedicinePlanViewModel(
     }
 
     fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
-        Log.d(TAG, "medicinePlanID = ${args.editMedicinePlanID}")
+        Log.d(TAG, "medicinePlanId = ${args.editMedicinePlanID}")
         if (args.editMedicinePlanID != -1) {
             editMedicinePlanID = args.editMedicinePlanID
             titleLive.postValue("Edytuj plan")

@@ -11,8 +11,8 @@ import androidx.lifecycle.Observer
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentLoggedUserBinding
-import com.example.medihelper.dialogs.ConfirmDialog
-import com.example.medihelper.dialogs.LoadingDialog
+import com.example.medihelper.mainapp.dialog.ConfirmDialog
+import com.example.medihelper.mainapp.dialog.LoadingDialog
 import com.example.medihelper.mainapp.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_logged_user.*

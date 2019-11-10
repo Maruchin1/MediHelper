@@ -1,5 +1,7 @@
 package com.example.medihelper
 
+import com.example.medihelper.custom.AppDate
+import com.example.medihelper.custom.AppTime
 import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 import com.example.medihelper.service.DateTimeService
 import com.example.medihelper.services.StatusOfTakingService
@@ -31,7 +33,7 @@ class StatusOfTakingServiceTest : KoinTest {
     @Test
     fun statusOfTakingService_SetMedicineTaken_FromWaitingToTaken() {
         val plannedMedicineEntity = PlannedMedicineEntity(
-            medicinePlanID = 1,
+            medicinePlanId = 1,
             plannedDate = AppDate(2019, 10, 1),
             plannedTime = AppTime(8, 30),
             plannedDoseSize = 2f,
@@ -44,7 +46,7 @@ class StatusOfTakingServiceTest : KoinTest {
     @Test
     fun statusOfTakingService_SetMedicineTaken_FromNotTakenToTaken() {
         val plannedMedicineEntity = PlannedMedicineEntity(
-            medicinePlanID = 1,
+            medicinePlanId = 1,
             plannedDate = AppDate(2019, 10, 1),
             plannedTime = AppTime(8, 30),
             plannedDoseSize = 2f,
@@ -57,7 +59,7 @@ class StatusOfTakingServiceTest : KoinTest {
     @Test
     fun statusOfTakingService_SetMedicineTaken_FromTakenToWaiting() {
         val plannedMedicineEntity = PlannedMedicineEntity(
-            medicinePlanID = 1,
+            medicinePlanId = 1,
             plannedDate = AppDate(2019, 10, 1),
             plannedTime = AppTime(8, 30),
             plannedDoseSize = 2f,
@@ -76,7 +78,7 @@ class StatusOfTakingServiceTest : KoinTest {
     @Test
     fun statusOfTakingService_SetMedicineTaken_FromTakenToNotTaken() {
         val plannedMedicineEntity = PlannedMedicineEntity(
-            medicinePlanID = 1,
+            medicinePlanId = 1,
             plannedDate = AppDate(2019, 10, 1),
             plannedTime = AppTime(8, 30),
             plannedDoseSize = 2f,
@@ -95,7 +97,7 @@ class StatusOfTakingServiceTest : KoinTest {
     @Test
     fun statusOfTakingService_UpdateStatusByCurrDate_FromWaitingToNotTaken() {
         val plannedMedicineEntity = PlannedMedicineEntity(
-            medicinePlanID = 1,
+            medicinePlanId = 1,
             plannedDate = AppDate(2019, 10, 1),
             plannedTime = AppTime(8, 30),
             plannedDoseSize = 2f,
@@ -114,7 +116,7 @@ class StatusOfTakingServiceTest : KoinTest {
     @Test
     fun statusOfTakingService_UpdateStatusByCurrDate_FromTakenToNoChange() {
         val plannedMedicineEntity = PlannedMedicineEntity(
-            medicinePlanID = 1,
+            medicinePlanId = 1,
             plannedDate = AppDate(2019, 10, 1),
             plannedTime = AppTime(8, 30),
             plannedDoseSize = 2f,

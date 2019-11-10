@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.example.medihelper.AppDate
+import com.example.medihelper.custom.AppDate
 import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder

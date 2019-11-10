@@ -1,6 +1,6 @@
 package com.example.medihelper.service
 
-import com.example.medihelper.AppDate
+import com.example.medihelper.custom.AppDate
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojo.MedicinePlanEditData
@@ -100,7 +100,7 @@ class MedicineSchedulerService {
         timeDoseList.forEach { timeOfTaking ->
             plannedMedicineArrayList.add(
                 PlannedMedicineEntity(
-                    medicinePlanID = medicinePlanID,
+                    medicinePlanId = medicinePlanID,
                     plannedDate = plannedDate,
                     plannedTime = timeOfTaking.time,
                     plannedDoseSize = timeOfTaking.doseSize

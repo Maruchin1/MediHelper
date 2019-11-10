@@ -1,8 +1,8 @@
 package com.example.medihelper.localdatabase.pojo
 
 import androidx.room.ColumnInfo
-import com.example.medihelper.AppDate
-import com.example.medihelper.AppTime
+import com.example.medihelper.custom.AppDate
+import com.example.medihelper.custom.AppTime
 import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 
 

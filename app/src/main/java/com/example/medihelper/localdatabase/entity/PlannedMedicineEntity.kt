@@ -1,8 +1,8 @@
 package com.example.medihelper.localdatabase.entity
 
 import androidx.room.*
-import com.example.medihelper.AppDate
-import com.example.medihelper.AppTime
+import com.example.medihelper.custom.AppDate
+import com.example.medihelper.custom.AppTime
 import com.example.medihelper.R
 
 @Entity(
@@ -18,13 +18,13 @@ import com.example.medihelper.R
 data class PlannedMedicineEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "planned_medicine_id")
-    val plannedMedicineID: Int = 0,
+    val plannedMedicineId: Int = 0,
 
     @ColumnInfo(name = "planned_medicine_remote_id")
-    var plannedMedicineRemoteID: Long? = null,
+    var plannedMedicineRemoteId: Long? = null,
 
     @ColumnInfo(name = "medicine_plan_id")
-    val medicinePlanID: Int,
+    val medicinePlanId: Int,
 
     @ColumnInfo(name = "planned_date")
     var plannedDate: AppDate,

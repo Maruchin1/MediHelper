@@ -1,7 +1,7 @@
 package com.example.medihelper.localdatabase.pojo
 
 import androidx.room.ColumnInfo
-import com.example.medihelper.AppDate
+import com.example.medihelper.custom.AppDate
 
 data class MedicineEditData(
 

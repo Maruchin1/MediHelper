@@ -2,12 +2,11 @@ package com.example.medihelper.localdatabase.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.medihelper.AppDate
+import com.example.medihelper.custom.AppDate
 import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojo.PlannedMedicineAlarmData
 import com.example.medihelper.localdatabase.pojo.PlannedMedicineDetails
 import com.example.medihelper.localdatabase.pojo.PlannedMedicineItem
-import net.bytebuddy.asm.Advice
 
 @Dao
 interface PlannedMedicineDao {
@@ -33,8 +32,8 @@ interface PlannedMedicineDao {
     @Query("DELETE FROM planned_medicines WHERE planned_medicine_remote_id NOT IN (:remoteIdList)")
     suspend fun deleteByRemoteIdNotIn(remoteIdList: List<Long>)
 
-    @Query("DELETE FROM planned_medicines WHERE medicine_plan_id = :medicinePlanID AND planned_date >= :date")
-    suspend fun deleteFromDateByMedicinePlanID(date: AppDate, medicinePlanID: Int)
+    @Query("DELETE FROM planned_medicines WHERE medicine_plan_id = :medicinePlanId AND planned_date >= :date")
+    suspend fun deleteFromDateByMedicinePlanID(date: AppDate, medicinePlanId: Int)
 
     @Query("SELECT * FROM planned_medicines WHERE planned_medicine_id = :id")
     suspend fun getEntityById(id: Int): PlannedMedicineEntity

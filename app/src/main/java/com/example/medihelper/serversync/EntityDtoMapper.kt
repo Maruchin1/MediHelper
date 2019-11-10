@@ -1,7 +1,7 @@
 package com.example.medihelper.serversync
 
-import com.example.medihelper.AppDate
-import com.example.medihelper.AppTime
+import com.example.medihelper.custom.AppDate
+import com.example.medihelper.custom.AppTime
 import com.example.medihelper.localdatabase.dao.MedicineDao
 import com.example.medihelper.localdatabase.dao.MedicinePlanDao
 import com.example.medihelper.localdatabase.dao.PersonDao
@@ -99,9 +99,9 @@ class EntityDtoMapper(
     )
 
     suspend fun plannedMedicineDtoToEntity(plannedMedicineDto: PlannedMedicineDto) = PlannedMedicineEntity(
-        plannedMedicineID = plannedMedicineDto.plannedMedicineLocalId ?: 0,
-        plannedMedicineRemoteID = plannedMedicineDto.plannedMedicineRemoteId,
-        medicinePlanID = medicinePlanDao.getIdByRemoteId(plannedMedicineDto.medicinePlanRemoteId)!!,
+        plannedMedicineId = plannedMedicineDto.plannedMedicineLocalId ?: 0,
+        plannedMedicineRemoteId = plannedMedicineDto.plannedMedicineRemoteId,
+        medicinePlanId = medicinePlanDao.getIdByRemoteId(plannedMedicineDto.medicinePlanRemoteId)!!,
         plannedDate = AppDate(plannedMedicineDto.plannedDate),
         plannedTime = AppTime(plannedMedicineDto.plannedTime),
         plannedDoseSize = plannedMedicineDto.plannedDoseSize,
@@ -109,9 +109,9 @@ class EntityDtoMapper(
     )
 
     suspend fun plannedMedicineEntityToDto(plannedMedicineEntity: PlannedMedicineEntity) = PlannedMedicineDto(
-        plannedMedicineLocalId = plannedMedicineEntity.plannedMedicineID,
-        plannedMedicineRemoteId = plannedMedicineEntity.plannedMedicineRemoteID,
-        medicinePlanRemoteId = medicinePlanDao.getRemoteIdById(plannedMedicineEntity.medicinePlanID)!!,
+        plannedMedicineLocalId = plannedMedicineEntity.plannedMedicineId,
+        plannedMedicineRemoteId = plannedMedicineEntity.plannedMedicineRemoteId,
+        medicinePlanRemoteId = medicinePlanDao.getRemoteIdById(plannedMedicineEntity.medicinePlanId)!!,
         plannedDate = plannedMedicineEntity.plannedDate.jsonFormatString,
         plannedTime = plannedMedicineEntity.plannedTime.jsonFormatString,
         plannedDoseSize = plannedMedicineEntity.plannedDoseSize,

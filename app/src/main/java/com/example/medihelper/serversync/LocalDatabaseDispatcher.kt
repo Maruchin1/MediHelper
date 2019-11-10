@@ -106,13 +106,13 @@ class LocalDatabaseDispatcher(
         val insertList = mutableListOf<PlannedMedicineEntity>()
         plannedMedicineDtoList.forEach { plannedMedicineDto ->
             val plannedMedicineEntity = entityDtoMapper.plannedMedicineDtoToEntity(plannedMedicineDto)
-            if (plannedMedicineEntity.plannedMedicineID != 0) {
+            if (plannedMedicineEntity.plannedMedicineId != 0) {
                 updateList.add(plannedMedicineEntity)
             } else {
                 val existingPlannedMedicineID =
-                    plannedMedicineDao.getIdByRemoteId(plannedMedicineEntity.plannedMedicineRemoteID!!)
+                    plannedMedicineDao.getIdByRemoteId(plannedMedicineEntity.plannedMedicineRemoteId!!)
                 if (existingPlannedMedicineID != null) {
-                    updateList.add(plannedMedicineEntity.copy(plannedMedicineID = existingPlannedMedicineID))
+                    updateList.add(plannedMedicineEntity.copy(plannedMedicineId = existingPlannedMedicineID))
                 } else {
                     insertList.add(plannedMedicineEntity)
                 }

@@ -17,9 +17,9 @@ import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentAddEditMedicinePlanBinding
-import com.example.medihelper.dialogs.SelectTimeDialog
-import com.example.medihelper.dialogs.SelectFloatNumberDialog
-import com.example.medihelper.dialogs.SelectMedicineDialog
+import com.example.medihelper.mainapp.dialog.SelectTimeDialog
+import com.example.medihelper.mainapp.dialog.SelectFloatNumberDialog
+import com.example.medihelper.mainapp.dialog.SelectMedicineDialog
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojo.TimeDoseEditData
 import com.example.medihelper.mainapp.medicineplan.daystype.DaysOfWeekFragment

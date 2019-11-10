@@ -44,7 +44,8 @@ class MainApplication : Application() {
                     mainDatabaseModule,
                     serverApiModule,
                     viewModelModule,
-                    serviceModule
+                    serviceModule,
+                    utilsModule
                 )
             )
         }

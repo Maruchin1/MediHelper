@@ -3,9 +3,8 @@ package com.example.medihelper.serversync
 import android.content.Context
 import androidx.work.WorkerParameters
 import com.example.medihelper.localdatabase.dao.PlannedMedicineDao
-import com.example.medihelper.remotedatabase.ConnectedPersonApi
+import com.example.medihelper.remotedatabase.api.ConnectedPersonApi
 import com.example.medihelper.service.NotificationService
-import com.example.medihelper.service.PlannedMedicineService
 import com.example.medihelper.service.ServerApiService
 import org.koin.core.inject
 

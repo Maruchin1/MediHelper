@@ -101,6 +101,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <LinearLayout
@@ -112,9 +113,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="@dimen/main_card_margin_start"
+                    android:layout_marginTop="@dimen/main_card_margin_top"
+                    android:layout_marginEnd="@dimen/main_card_margin_end"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?selectableItemBackground"
@@ -226,9 +227,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="12dp">
+                    android:layout_marginStart="@dimen/main_card_margin_start"
+                    android:layout_marginTop="@dimen/main_card_margin_top"
+                    android:layout_marginEnd="@dimen/main_card_margin_end">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -316,9 +317,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="@dimen/main_card_margin_start"
+                    android:layout_marginTop="@dimen/main_card_margin_top"
+                    android:layout_marginEnd="@dimen/main_card_margin_end"
                     android:visibility="@{viewModel.daysTypeLive == DaysType.NONE ? View.GONE : View.VISIBLE}">
 
                     <LinearLayout
@@ -400,10 +401,10 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginBottom="128dp">
+                    android:layout_marginStart="@dimen/main_card_margin_start"
+                    android:layout_marginTop="@dimen/main_card_margin_top"
+                    android:layout_marginEnd="@dimen/main_card_margin_end"
+                    android:layout_marginBottom="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"

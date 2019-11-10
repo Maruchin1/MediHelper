@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicines.MedicineDetailsFragment" />
+            type="com.example.medihelper.mainapp.medicine.MedicineDetailsFragment" />
 
         <variable
             name="displayData"

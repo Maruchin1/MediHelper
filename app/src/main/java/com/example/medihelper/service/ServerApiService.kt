@@ -12,8 +12,8 @@ import com.example.medihelper.custom.SharedPrefLiveData
 import com.example.medihelper.localdatabase.dao.MedicineDao
 import com.example.medihelper.localdatabase.dao.PersonDao
 import com.example.medihelper.localdatabase.entity.PersonEntity
-import com.example.medihelper.remotedatabase.AuthenticationApi
-import com.example.medihelper.remotedatabase.RegisteredUserApi
+import com.example.medihelper.remotedatabase.api.AuthenticationApi
+import com.example.medihelper.remotedatabase.api.RegisteredUserApi
 import com.example.medihelper.remotedatabase.dto.ConnectedPersonDto
 import com.example.medihelper.remotedatabase.dto.NewPasswordDto
 import com.example.medihelper.remotedatabase.dto.UserCredentialsDto

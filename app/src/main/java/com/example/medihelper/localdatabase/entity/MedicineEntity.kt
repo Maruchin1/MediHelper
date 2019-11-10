@@ -1,7 +1,7 @@
 package com.example.medihelper.localdatabase.entity
 
 import androidx.room.*
-import com.example.medihelper.AppDate
+import com.example.medihelper.custom.AppDate
 import com.example.medihelper.R
 
 @Entity(tableName = "medicines")

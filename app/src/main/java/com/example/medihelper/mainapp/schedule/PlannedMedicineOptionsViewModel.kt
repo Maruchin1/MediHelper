@@ -1,8 +1,8 @@
 package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.*
-import com.example.medihelper.AppDate
-import com.example.medihelper.AppTime
+import com.example.medihelper.custom.AppDate
+import com.example.medihelper.custom.AppTime
 import com.example.medihelper.R
 import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojo.PlannedMedicineDetails
@@ -79,11 +79,11 @@ class PlannedMedicineOptionsViewModel(
     }
 
 //    fun setAlarm() {
-//        val plannedMedicineID = plannedMedicineIDLive.value
+//        val plannedMedicineId = plannedMedicineIDLive.value
 //        val plannedMedicineDetails = plannedMedicineDetailsLive.value
-//        if (plannedMedicineID != null && plannedMedicineDetails != null) {
+//        if (plannedMedicineId != null && plannedMedicineDetails != null) {
 //            alarmService.setPlannedMedicineAlarm(
-//                plannedMedicineID =  plannedMedicineID,
+//                plannedMedicineId =  plannedMedicineId,
 //                date =  dateTimeService.getCurrDate(),
 //                time =  AppTime(Date().time + 2000)
 //            )

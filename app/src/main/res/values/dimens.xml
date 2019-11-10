@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_card_margin_top">16dp</dimen>
+    <dimen name="main_card_margin_start">12dp</dimen>
+    <dimen name="main_card_margin_end">12dp</dimen>
+</resources>

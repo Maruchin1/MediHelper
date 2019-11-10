@@ -7,28 +7,30 @@ import androidx.work.WorkManager
 import com.example.medihelper.localdatabase.AppDatabase
 import com.example.medihelper.localdatabase.DeletedHistory
 import com.example.medihelper.localdatabase.DeletedHistoryImpl
-import com.example.medihelper.mainapp.AlarmViewModel
+import com.example.medihelper.mainapp.alarm.AlarmViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanListViewModel
-import com.example.medihelper.mainapp.medicines.AddEditMedicineViewModel
-import com.example.medihelper.mainapp.medicines.MedicineDetailsViewModel
-import com.example.medihelper.mainapp.medicines.MedicinesViewModel
+import com.example.medihelper.mainapp.medicine.AddEditMedicineViewModel
+import com.example.medihelper.mainapp.medicine.MedicineDetailsViewModel
+import com.example.medihelper.mainapp.medicine.MedicinesViewModel
 import com.example.medihelper.mainapp.more.MoreViewModel
 import com.example.medihelper.mainapp.more.loggeduser.LoggedUserViewModel
 import com.example.medihelper.mainapp.more.loggeduser.NewPasswordViewModel
 import com.example.medihelper.mainapp.more.loginregister.LoginRegisterViewModel
 import com.example.medihelper.mainapp.more.patronconnect.ConnectedPersonViewModel
 import com.example.medihelper.mainapp.more.patronconnect.PatronConnectViewModel
-import com.example.medihelper.mainapp.persons.AddEditPersonViewModel
-import com.example.medihelper.mainapp.persons.PersonOptionsViewModel
-import com.example.medihelper.mainapp.persons.PersonViewModel
+import com.example.medihelper.mainapp.person.AddEditPersonViewModel
+import com.example.medihelper.mainapp.person.PersonOptionsViewModel
+import com.example.medihelper.mainapp.person.PersonViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleDayViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
-import com.example.medihelper.remotedatabase.AuthenticationApi
-import com.example.medihelper.remotedatabase.ConnectedPersonApi
-import com.example.medihelper.remotedatabase.RegisteredUserApi
+import com.example.medihelper.remotedatabase.api.AuthenticationApi
+import com.example.medihelper.remotedatabase.api.ConnectedPersonApi
+import com.example.medihelper.remotedatabase.api.RegisteredUserApi
+import com.example.medihelper.serversync.EntityDtoMapper
+import com.example.medihelper.serversync.LocalDatabaseDispatcher
 import com.example.medihelper.service.*
 import com.google.gson.*
 import org.koin.android.ext.koin.androidContext
@@ -104,7 +106,7 @@ val viewModelModule = module {
     viewModel { PersonViewModel(get()) }
     viewModel { MedicinePlanHistoryViewModel(get(), get(), get()) }
     viewModel { MedicinePlanListViewModel(get(), get(), get(), get()) }
-    viewModel { MedicineDetailsViewModel(get(), get(), get(), get()) }
+    viewModel { MedicineDetailsViewModel(get(), get(), get()) }
     viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get(), get()) }
     viewModel { ScheduleViewModel(get(), get(), get()) }
@@ -124,14 +126,18 @@ val serviceModule = module {
     single<MedicineService> { MedicineServiceImpl(get(), get(), get(named(NAME_EXTERNAL_PICTURES_DIR)), get(), get()) }
     single<MedicinePlanService> { MedicinePlanServiceImpl(get(), get(), get(), get()) }
     single<PlannedMedicineService> { PlannedMedicineServiceImpl(get(), get(), get(), get(), get()) }
-
     single<AlarmService> { AlarmServiceImpl(get(), get()) }
     single<DateTimeService> { DateTimeServiceImpl() }
     single<InitialDataService> { InitialDataServiceImpl(get(), get()) }
     single<LoadingScreenService> { LoadingScreenServiceImpl() }
     single<NotificationService> { NotificationServiceImpl(get()) }
     single<ServerApiService> { ServerApiServiceImpl(get(), get(), get(), get(), get(), get(), get()) }
+}
+
+val utilsModule = module {
+    single { EntityDtoMapper(get(), get(), get()) }
     single { MedicineSchedulerService() }
+    single { LocalDatabaseDispatcher(get(), get(), get(), get(), get()) }
 }
 
 private val appRetrofit: Retrofit by lazy {

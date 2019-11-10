@@ -14,7 +14,7 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicinePlanListBinding
-import com.example.medihelper.dialogs.ConfirmDialog
+import com.example.medihelper.mainapp.dialog.ConfirmDialog
 import com.example.medihelper.localdatabase.pojo.MedicinePlanItem
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel

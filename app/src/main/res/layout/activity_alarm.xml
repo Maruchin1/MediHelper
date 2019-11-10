@@ -7,11 +7,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.AlarmActivity" />
+            type="com.example.medihelper.mainapp.alarm.AlarmActivity" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.AlarmViewModel" />
+            type="com.example.medihelper.mainapp.alarm.AlarmViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

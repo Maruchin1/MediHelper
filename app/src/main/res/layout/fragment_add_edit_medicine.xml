@@ -9,11 +9,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.medicines.AddEditMedicineViewModel" />
+            type="com.example.medihelper.mainapp.medicine.AddEditMedicineViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicines.AddEditMedicineFragment" />
+            type="com.example.medihelper.mainapp.medicine.AddEditMedicineFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -43,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorBackground"
+            android:fillViewport="true"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <LinearLayout
@@ -55,9 +56,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp">
+                    android:layout_marginStart="@dimen/main_card_margin_start"
+                    android:layout_marginTop="@dimen/main_card_margin_top"
+                    android:layout_marginEnd="@dimen/main_card_margin_end">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -192,9 +193,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp">
+                    android:layout_marginStart="@dimen/main_card_margin_start"
+                    android:layout_marginTop="@dimen/main_card_margin_top"
+                    android:layout_marginEnd="@dimen/main_card_margin_end">
 
                     <LinearLayout
                         android:id="@+id/lay_package"
@@ -281,9 +282,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp">
+                    android:layout_marginStart="@dimen/main_card_margin_start"
+                    android:layout_marginTop="@dimen/main_card_margin_top"
+                    android:layout_marginEnd="@dimen/main_card_margin_end">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -317,10 +318,10 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="100dp">
+                    android:layout_marginStart="@dimen/main_card_margin_start"
+                    android:layout_marginTop="@dimen/main_card_margin_top"
+                    android:layout_marginEnd="@dimen/main_card_margin_end"
+                    android:layout_marginBottom="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"

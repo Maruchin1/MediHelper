@@ -27,7 +27,7 @@ class InitialDataServiceImpl(
 
     private fun getInitialPerson() = PersonEditData(
         personID = 0,
-        personName = "Ja",
+        personName = "Użytkownik",
         personColorResID = R.color.colorPrimary,
         mainPerson = true
     )

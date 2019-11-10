@@ -1,5 +1,6 @@
 package com.example.medihelper
 
+import com.example.medihelper.custom.AppDate
 import com.google.common.truth.Truth.assertThat
 import com.example.medihelper.localdatabase.entity.MedicineEntity
 import org.junit.Test
@@ -11,7 +12,7 @@ class MedicineEntityTest {
         val medicineEntity = MedicineEntity(
             medicineName = "Apap",
             medicineUnit = "tableki",
-            expireDate = AppDate(2020, 5,1),
+            expireDate = AppDate(2020, 5, 1),
             packageSize = 60f,
             currState = 40f
         )
@@ -24,7 +25,7 @@ class MedicineEntityTest {
         val medicineEntity = MedicineEntity(
             medicineName = "Apap",
             medicineUnit = "tableki",
-            expireDate = AppDate(2020, 5,1),
+            expireDate = AppDate(2020, 5, 1),
             packageSize = 60f,
             currState = 1f
         )
@@ -37,7 +38,7 @@ class MedicineEntityTest {
         val medicineEntity = MedicineEntity(
             medicineName = "Apap",
             medicineUnit = "tableki",
-            expireDate = AppDate(2020, 5,1),
+            expireDate = AppDate(2020, 5, 1),
             packageSize = 60f,
             currState = 40f
         )
@@ -50,7 +51,7 @@ class MedicineEntityTest {
         val medicineEntity = MedicineEntity(
             medicineName = "Apap",
             medicineUnit = "tableki",
-            expireDate = AppDate(2020, 5,1),
+            expireDate = AppDate(2020, 5, 1),
             packageSize = 60f,
             currState = 59f
         )

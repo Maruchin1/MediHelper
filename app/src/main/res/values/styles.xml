@@ -76,12 +76,23 @@
     </style>
 
     <style name="AppTheme.Widget.Chip.Action" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="chipBackgroundColor">@color/colorTransparent</item>
+        <item name="chipBackgroundColor">@color/colorWhite</item>
         <item name="chipIconTint">@color/colorDarkerGray</item>
         <item name="chipStrokeColor">@color/colorDarkerGray</item>
         <item name="chipStrokeWidth">1dp</item>
         <item name="iconStartPadding">4dp</item>
         <item name="android:textColor">@color/colorTextSecondary</item>
+    </style>
+
+    <style name="AppTheme.Widget.Chip.Action.Dark" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="chipSurfaceColor">@color/colorTransparent</item>
+        <item name="chipBackgroundColor">@color/colorTransparent</item>
+        <item name="chipIconTint">@color/colorWhite</item>
+        <item name="chipStrokeColor">@color/colorWhite</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="iconStartPadding">4dp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="rippleColor">@color/colorWhite</item>
     </style>
 
     <style name="AppTheme.Widget.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
@@ -147,6 +158,10 @@
 
     <style name="MedicineDetailFragment.Text.Body2" parent="TextAppearance.MaterialComponents.Body2">
         <item name="android:textColor">@color/colorTextSecondary</item>
+    </style>
+
+    <style name="MedicineDetailFragment.Text.Body2.Dark" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textColor">@color/colorWhite</item>
     </style>
 
     <!--    fragment_add_edit_medicine_plan-->

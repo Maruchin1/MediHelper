@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
-import com.example.medihelper.AppDate
+import com.example.medihelper.custom.AppDate
 import com.example.medihelper.custom.CenterLayoutManager
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding

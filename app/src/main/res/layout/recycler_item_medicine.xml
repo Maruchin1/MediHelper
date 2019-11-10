@@ -9,11 +9,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicines.MedicinesFragment" />
+            type="com.example.medihelper.mainapp.medicine.MedicinesFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.medicines.MedicinesViewModel.MedicineItemDisplayData" />
+            type="com.example.medihelper.mainapp.medicine.MedicinesViewModel.MedicineItemDisplayData" />
     </data>
 
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
