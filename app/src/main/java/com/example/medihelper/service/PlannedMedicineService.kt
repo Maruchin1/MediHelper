@@ -3,6 +3,7 @@ package com.example.medihelper.service
 import androidx.lifecycle.LiveData
 import com.example.medihelper.custom.AppDate
 import com.example.medihelper.localdatabase.DeletedHistory
+import com.example.medihelper.localdatabase.MedicineScheduler
 import com.example.medihelper.localdatabase.dao.MedicinePlanDao
 import com.example.medihelper.localdatabase.dao.PlannedMedicineDao
 import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
@@ -29,13 +30,13 @@ class PlannedMedicineServiceImpl(
     private val plannedMedicineDao: PlannedMedicineDao,
     private val medicinePlanDao: MedicinePlanDao,
     private val dateTimeService: DateTimeService,
-    private val medicineSchedulerService: MedicineSchedulerService,
+    private val medicineScheduler: MedicineScheduler,
     private val deletedHistory: DeletedHistory
 ) : PlannedMedicineService {
 
     override suspend fun addForMedicinePlan(medicinePlanId: Int) {
         val medicinePlanEditData = medicinePlanDao.getEditDataById(medicinePlanId)
-        val plannedMedicineList = medicineSchedulerService.getPlannedMedicinesForMedicinePlan(medicinePlanEditData)
+        val plannedMedicineList = medicineScheduler.getPlannedMedicinesForMedicinePlan(medicinePlanEditData)
         plannedMedicineDao.insert(plannedMedicineList)
     }
 
@@ -44,7 +45,7 @@ class PlannedMedicineServiceImpl(
         val currDate = dateTimeService.getCurrDate()
         plannedMedicineDao.deleteFromDateByMedicinePlanID(currDate, medicinePlanEditData.medicinePlanID)
         val medicinePlanFromNow = medicinePlanEditData.copy(startDate = currDate)
-        val plannedMedicineList = medicineSchedulerService.getPlannedMedicinesForMedicinePlan(medicinePlanFromNow)
+        val plannedMedicineList = medicineScheduler.getPlannedMedicinesForMedicinePlan(medicinePlanFromNow)
         plannedMedicineDao.insert(plannedMedicineList)
     }
 

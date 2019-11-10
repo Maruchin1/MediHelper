@@ -3,6 +3,7 @@ package com.example.medihelper.mainapp.medicineplan
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.medihelper.custom.AppDate
+import com.example.medihelper.custom.AppExpireDate
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojo.MedicineDetails
@@ -29,7 +30,7 @@ class AddEditMedicinePlanViewModel(
     val selectedMedicineAvailableLive: LiveData<Boolean>
     val selectedMedicineNameLive: LiveData<String>
     val selectedMedicineUnitLive: LiveData<String>
-    val selectedMedicineExpireDateLive: LiveData<AppDate>
+    val selectedMedicineExpireDateLive: LiveData<AppExpireDate>
 
     val durationTypeLive = MutableLiveData<MedicinePlanEntity.DurationType>()
     val startDateLive = MutableLiveData<AppDate>()
@@ -65,7 +66,7 @@ class AddEditMedicinePlanViewModel(
         durationTypeLive.postValue(MedicinePlanEntity.DurationType.ONCE)
         startDateLive.postValue(dateTimeService.getCurrDate())
         endDateLive.postValue(null)
-        daysTypeLive.postValue(MedicinePlanEntity.DaysType.NONE)
+        daysTypeLive.postValue(null)
         daysOfWeekLive.postValue(MedicinePlanEntity.DaysOfWeek())
         intervalOfDaysLive.postValue(1)
         timeDoseListLive.postValue(arrayListOf(TimeDoseEditData()))

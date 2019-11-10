@@ -3,6 +3,7 @@ package com.example.medihelper.localdatabase.entity
 import androidx.room.*
 import com.example.medihelper.custom.AppDate
 import com.example.medihelper.R
+import com.example.medihelper.custom.AppExpireDate
 
 @Entity(tableName = "medicines")
 data class MedicineEntity(
@@ -21,7 +22,7 @@ data class MedicineEntity(
     var medicineUnit: String,
 
     @ColumnInfo(name = "expire_date")
-    var expireDate: AppDate? = null,
+    var expireDate: AppExpireDate? = null,
 
     @ColumnInfo(name = "package_size")
     var packageSize: Float? = null,
@@ -38,24 +39,6 @@ data class MedicineEntity(
     @ColumnInfo(name = "synchronized_with_server")
     var synchronizedWithServer: Boolean = false
 ) {
-//    fun reduceCurrState(doseSize: Float) {
-//        currState?.let { currState ->
-//            this.currState = currState - doseSize
-//            if (this.currState!! < 0f) {
-//                this.currState = 0f
-//            }
-//        }
-//    }
-//
-//    fun increaseCurrState(doseSize: Float) {
-//        currState?.let { currState ->
-//            this.currState = currState + doseSize
-//            if (packageSize != null && this.currState!! > packageSize!!) {
-//                this.currState = this.packageSize
-//            }
-//        }
-//    }
-
     class StateData(packageSize: Float?, currState: Float?) {
         val stateAvailable: Boolean
         val stateWeight: Float?

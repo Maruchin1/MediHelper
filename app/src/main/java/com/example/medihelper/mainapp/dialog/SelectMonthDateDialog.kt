@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.example.medihelper.custom.AppDate
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
+import com.example.medihelper.custom.AppExpireDate
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.DialogSelectMonthDateBinding
 import com.example.medihelper.service.DateTimeService
@@ -20,18 +21,18 @@ class SelectMonthDateDialog : AppBottomSheetDialog() {
         private const val MAX_YEAR = 2100
     }
 
-    var defaultDate: AppDate? = null
-    private var dateSelectedListener: ((date: AppDate) -> Unit)? = null
+    var defaultDate: AppExpireDate? = null
+    private var dateSelectedListener: ((date: AppExpireDate) -> Unit)? = null
     private val dateTimeService: DateTimeService by inject()
 
     fun onClickConfirm() {
         val selectedDate =
-            AppDate(year = year_picker.value, month = month_picker.value - 1, day = 1)
+            AppExpireDate(year = year_picker.value, month = month_picker.value)
         dateSelectedListener?.invoke(selectedDate)
         dismiss()
     }
 
-    fun setDateSelectedListener(listener: (date: AppDate) -> Unit) {
+    fun setDateSelectedListener(listener: (date: AppExpireDate) -> Unit) {
         dateSelectedListener = listener
     }
 

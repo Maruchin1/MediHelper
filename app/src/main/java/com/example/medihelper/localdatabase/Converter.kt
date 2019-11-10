@@ -2,6 +2,7 @@ package com.example.medihelper.localdatabase
 
 import androidx.room.TypeConverter
 import com.example.medihelper.custom.AppDate
+import com.example.medihelper.custom.AppExpireDate
 import com.example.medihelper.custom.AppTime
 import com.example.medihelper.localdatabase.entity.DeletedEntity
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
@@ -19,6 +20,17 @@ class Converter {
     @TypeConverter
     fun stringToAppDate(string: String?): AppDate? {
         return string?.let { AppDate(string) }
+    }
+
+    // ExpireDate
+    @TypeConverter
+    fun appExpireDateToString(expireDate: AppExpireDate?): String? {
+        return expireDate?.jsonFormatString
+    }
+
+    @TypeConverter
+    fun stringToExpireDate(string: String?): AppExpireDate? {
+        return string?.let { AppExpireDate(it) }
     }
 
     // Time

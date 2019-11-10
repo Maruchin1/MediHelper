@@ -181,7 +181,7 @@
                                         android:focusable="false"
                                         android:hint="Nie wybrano"
                                         android:onClick="@{() -> handler.onClickSelectExpireDate()}"
-                                        android:text='@{viewModel.expireDateLive.monthYearString}'
+                                        android:text='@{viewModel.expireDateLive.formatString}'
                                         android:textAlignment="center" />
                                 </com.google.android.material.textfield.TextInputLayout>
                             </TableRow>

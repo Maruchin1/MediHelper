@@ -55,7 +55,7 @@ data class MedicinePlanEntity(
     var intervalOfDays: Int? = null,
 
     @ColumnInfo(name = "schedule_days")
-    var daysType: DaysType,
+    var daysType: DaysType? = null,
 
     @ColumnInfo(name = "synchronized_with_server")
     var synchronizedWithServer: Boolean = false
@@ -65,7 +65,7 @@ data class MedicinePlanEntity(
     }
 
     enum class DaysType {
-        NONE, EVERYDAY, DAYS_OF_WEEK, INTERVAL_OF_DAYS
+        EVERYDAY, DAYS_OF_WEEK, INTERVAL_OF_DAYS
     }
 
     class DaysOfWeek : BaseObservable() {

@@ -32,5 +32,5 @@ data class MedicinePlanItem(
     val intervalOfDays: Int? = null,
 
     @ColumnInfo(name = "schedule_days")
-    val daysType: MedicinePlanEntity.DaysType
+    val daysType: MedicinePlanEntity.DaysType? = null
 )

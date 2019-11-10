@@ -214,7 +214,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="16dp"
-                                        android:text='@{viewModel.selectedMedicineExpireDateLive.monthYearString, default="data"}'
+                                        android:text='@{viewModel.selectedMedicineExpireDateLive.formatString, default="data"}'
                                         android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
                                 </TableRow>
                             </TableLayout>
@@ -320,7 +320,7 @@
                     android:layout_marginStart="@dimen/main_card_margin_start"
                     android:layout_marginTop="@dimen/main_card_margin_top"
                     android:layout_marginEnd="@dimen/main_card_margin_end"
-                    android:visibility="@{viewModel.daysTypeLive == DaysType.NONE ? View.GONE : View.VISIBLE}">
+                    android:visibility="@{viewModel.daysTypeLive == null ? View.GONE : View.VISIBLE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"

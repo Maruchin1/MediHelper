@@ -7,33 +7,37 @@ import java.util.*
 
 class AppTimeTest {
 
-    // constructors
     @Test
-    fun appTime_constructor_hourMinute() {
-        val time = AppTime(8, 30)
-        assertThat(time.hour).isEqualTo(8)
-        assertThat(time.minute).isEqualTo(30)
-    }
-
-    @Test
-    fun appTime_constructor_timeInMillis() {
+    fun appTime_NewTime_TimeInMillis() {
         val calendar = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 8)
             set(Calendar.MINUTE, 30)
         }
         val time = AppTime(calendar.timeInMillis)
-        assertThat(time.hour).isEqualTo(8)
-        assertThat(time.minute).isEqualTo(30)
+        with(time) {
+            assertThat(hour).isEqualTo(8)
+            assertThat(minute).isEqualTo(30)
+        }
     }
 
     @Test
-    fun appTime_constructor_jsonFormatString() {
-        val time = AppTime("08:30")
-        assertThat(time.hour).isEqualTo(8)
-        assertThat(time.minute).isEqualTo(30)
+    fun appTime_NewTime_HourMinute() {
+        val time = AppTime(8, 30)
+        with(time) {
+            assertThat(hour).isEqualTo(8)
+            assertThat(minute).isEqualTo(30)
+        }
     }
 
-    // formats
+    @Test
+    fun appTime_NewTime_JsonFormatString() {
+        val time = AppTime("08:30")
+        with(time) {
+            assertThat(hour).isEqualTo(8)
+            assertThat(minute).isEqualTo(30)
+        }
+    }
+
     @Test
     fun appTime_formatString() {
         val time = AppTime(8, 30)
@@ -46,16 +50,15 @@ class AppTimeTest {
         assertThat(time.jsonFormatString).matches("08:30")
     }
 
-    // other
     @Test
-    fun appTime_Equals() {
+    fun appTime_Equal() {
         val firstTime = AppTime(8, 30)
         val secondTime = AppTime(8, 30)
         assertThat(firstTime == secondTime).isTrue()
     }
 
     @Test
-    fun appTime_NotEquals() {
+    fun appTime_NotEqual() {
         val firstTime = AppTime(8, 30)
         val secondTime = AppTime(9, 10)
         assertThat(firstTime != secondTime).isTrue()

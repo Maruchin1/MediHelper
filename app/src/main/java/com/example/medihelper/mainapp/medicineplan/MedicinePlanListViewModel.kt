@@ -67,10 +67,10 @@ class MedicinePlanListViewModel(
             MedicinePlanEntity.DurationType.CONTINUOUS -> "Pzyjmowanie ciągłe od ${medicinePlanItem.startDate.formatString}"
         },
         daysType = when (medicinePlanItem.daysType) {
-            MedicinePlanEntity.DaysType.NONE -> null
             MedicinePlanEntity.DaysType.EVERYDAY -> "Codziennie"
             MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanItem.daysOfWeek?.getSelectedDaysString() ?: "--"
             MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> "Co ${medicinePlanItem.intervalOfDays ?: "--"} dni"
+            else -> null
         },
         isAppModeConnected = serverApiService.getAppMode() == AppMode.CONNECTED
     )

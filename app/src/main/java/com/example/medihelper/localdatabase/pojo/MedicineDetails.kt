@@ -2,6 +2,7 @@ package com.example.medihelper.localdatabase.pojo
 
 import androidx.room.ColumnInfo
 import com.example.medihelper.custom.AppDate
+import com.example.medihelper.custom.AppExpireDate
 
 
 data class MedicineDetails(
@@ -15,7 +16,7 @@ data class MedicineDetails(
     val medicineUnit: String,
 
     @ColumnInfo(name = "expire_date")
-    val expireDate: AppDate?,
+    val expireDate: AppExpireDate?,
 
     @ColumnInfo(name = "package_size")
     val packageSize: Float?,

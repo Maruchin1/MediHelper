@@ -7,6 +7,7 @@ import androidx.work.WorkManager
 import com.example.medihelper.localdatabase.AppDatabase
 import com.example.medihelper.localdatabase.DeletedHistory
 import com.example.medihelper.localdatabase.DeletedHistoryImpl
+import com.example.medihelper.localdatabase.MedicineScheduler
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel
@@ -136,7 +137,7 @@ val serviceModule = module {
 
 val utilsModule = module {
     single { EntityDtoMapper(get(), get(), get()) }
-    single { MedicineSchedulerService() }
+    single { MedicineScheduler() }
     single { LocalDatabaseDispatcher(get(), get(), get(), get(), get()) }
 }
 

@@ -200,7 +200,7 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
             when (checkedId) {
                 R.id.chip_once -> {
                     viewModel.durationTypeLive.value = MedicinePlanEntity.DurationType.ONCE
-                    viewModel.daysTypeLive.value = MedicinePlanEntity.DaysType.NONE
+                    viewModel.daysTypeLive.value = null
                 }
                 R.id.chip_period -> {
                     viewModel.durationTypeLive.value = MedicinePlanEntity.DurationType.PERIOD

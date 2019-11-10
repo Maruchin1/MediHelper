@@ -1,4 +1,4 @@
-package com.example.medihelper.service
+package com.example.medihelper.localdatabase
 
 import com.example.medihelper.custom.AppDate
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
@@ -7,7 +7,7 @@ import com.example.medihelper.localdatabase.pojo.MedicinePlanEditData
 import com.example.medihelper.localdatabase.pojo.TimeDoseEditData
 import kotlin.collections.ArrayList
 
-class MedicineSchedulerService {
+class MedicineScheduler {
 
     fun getPlannedMedicinesForMedicinePlan(editData: MedicinePlanEditData): List<PlannedMedicineEntity> {
         return when (editData.durationType) {

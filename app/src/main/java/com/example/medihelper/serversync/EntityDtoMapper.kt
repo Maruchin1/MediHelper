@@ -1,6 +1,7 @@
 package com.example.medihelper.serversync
 
 import com.example.medihelper.custom.AppDate
+import com.example.medihelper.custom.AppExpireDate
 import com.example.medihelper.custom.AppTime
 import com.example.medihelper.localdatabase.dao.MedicineDao
 import com.example.medihelper.localdatabase.dao.MedicinePlanDao
@@ -36,7 +37,7 @@ class EntityDtoMapper(
         medicineRemoteID = medicineDto.medicineRemoteId,
         medicineName = medicineDto.medicineName,
         medicineUnit = medicineDto.medicineUnit,
-        expireDate = medicineDto.expireDate?.let { AppDate(it) },
+        expireDate = medicineDto.expireDate?.let { AppExpireDate(it) },
         packageSize = medicineDto.packageSize,
         currState = medicineDto.currState,
         additionalInfo = medicineDto.additionalInfo,

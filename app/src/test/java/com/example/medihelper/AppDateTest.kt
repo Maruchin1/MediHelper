@@ -1,47 +1,69 @@
 package com.example.medihelper
 
 import com.example.medihelper.custom.AppDate
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import java.util.*
+import com.google.common.truth.Truth.assertThat
 
 class AppDateTest {
 
     @Test
-    fun appDate_constructor_timeInMillis() {
+    fun appDate_NewDate_TimeInMillis() {
         val calendar = Calendar.getInstance().apply {
-            set(Calendar.DAY_OF_MONTH, 1)
-            set(Calendar.MONTH, 10)
-            set(Calendar.YEAR, 2019)
+            set(2019, 10, 1)
         }
-        val calendarTimeInMillis = calendar.timeInMillis
-        val appDate = AppDate(calendarTimeInMillis)
-        assertThat(appDate.year).isEqualTo(2019)
-        assertThat(appDate.month).isEqualTo(10)
-        assertThat(appDate.day).isEqualTo(1)
-        assertThat(appDate.dayOfWeek).isEqualTo(6)
+        val date = AppDate(calendar.timeInMillis)
+        with(date) {
+            assertThat(year).isEqualTo(2019)
+            assertThat(month).isEqualTo(10)
+            assertThat(day).isEqualTo(1)
+            assertThat(dayOfWeek).isEqualTo(3)
+        }
     }
 
     @Test
-    fun appDate_constructor_jsonFormatString() {
-        val date = AppDate("01-11-2019")
-        assertThat(date == AppDate(2019, 10, 1))
-    }
-
-    @Test
-    fun appDate_monthYearString() {
+    fun appDate_NewDate_YearMonthDay() {
         val date = AppDate(2019, 10, 1)
-        assertThat(date.monthYearString).matches("11.2019")
+        with(date) {
+            assertThat(year).isEqualTo(2019)
+            assertThat(month).isEqualTo(10)
+            assertThat(day).isEqualTo(1)
+            assertThat(dayOfWeek).isEqualTo(3)
+        }
     }
 
     @Test
-    fun appDate_jsonFormatSting() {
+    fun appDate_NewDate_JsonString() {
+        val date = AppDate("01-10-2019")
+        with(date) {
+            assertThat(year).isEqualTo(2019)
+            assertThat(month).isEqualTo(10)
+            assertThat(day).isEqualTo(1)
+            assertThat(dayOfWeek).isEqualTo(3)
+        }
+    }
+
+    @Test
+    fun appDate_DayMonthString() {
         val date = AppDate(2019, 10, 1)
-        assertThat(date.jsonFormatString).matches("01-11-2019")
+        assertThat(date.dayMonthString).isEqualTo("01 paź")
     }
 
     @Test
-    fun appDate_addDays() {
+    fun appDate_JsonFormatString() {
+        val date = AppDate(2019, 10, 1)
+        assertThat(date.jsonFormatString).isEqualTo("01-10-2019")
+    }
+
+    @Test
+    fun appDate_Copy() {
+        val date = AppDate(2019, 10, 1)
+        val dateCopy = date.copy()
+        assertThat(dateCopy).isNotSameInstanceAs(date)
+    }
+
+    @Test
+    fun appDate_AddDays() {
         val date = AppDate(2019, 10, 1)
         date.addDays(12)
         assertThat(date.year).isEqualTo(2019)
@@ -50,38 +72,30 @@ class AppDateTest {
     }
 
     @Test
-    fun appDate_copy() {
-        val date = AppDate(2019, 10, 1)
-        val dateCopy = date.copy()
-        dateCopy.addDays(5)
-        assertThat(date == dateCopy) .isFalse()
-    }
-
-    @Test
     fun appDate_equals() {
         val firstDate = AppDate(2019, 10, 1)
         val secondDate = AppDate(2019, 10, 1)
-        assertThat(firstDate == secondDate).isTrue()
+        assertThat(firstDate == secondDate)
     }
 
     @Test
     fun appDate_notEquals() {
         val firstDate = AppDate(2019, 10, 1)
         val secondDate = AppDate(2019, 10, 2)
-        assertThat(firstDate != secondDate).isTrue()
+        assertThat(firstDate != secondDate)
     }
 
     @Test
     fun appDate_compare_secondBiggerDay() {
         val firstDate = AppDate(2019, 10, 1)
         val secondDate = AppDate(2019, 10, 2)
-        assertThat(secondDate > firstDate).isTrue()
+        assertThat(secondDate > firstDate)
     }
 
     @Test
     fun appDate_compare_firstBiggerDay() {
         val firstDate = AppDate(2019, 10, 2)
         val secondDate = AppDate(2019, 10, 1)
-        assertThat(firstDate > secondDate).isTrue()
+        assertThat(firstDate > secondDate)
     }
 }

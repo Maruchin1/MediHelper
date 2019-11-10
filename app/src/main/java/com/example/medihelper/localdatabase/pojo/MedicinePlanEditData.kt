@@ -33,7 +33,7 @@ data class MedicinePlanEditData(
     var intervalOfDays: Int? = null,
 
     @ColumnInfo(name = "schedule_days")
-    var daysType: MedicinePlanEntity.DaysType,
+    var daysType: MedicinePlanEntity.DaysType? = null,
 
     @Relation(
         entity = TimeDoseEntity::class,
