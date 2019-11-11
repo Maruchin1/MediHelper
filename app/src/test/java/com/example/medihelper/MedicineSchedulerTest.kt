@@ -13,23 +13,29 @@ import org.koin.core.context.startKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import com.google.common.truth.Truth.assertThat
+import org.junit.After
+import org.junit.Before
+import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 
 class MedicineSchedulerTest : KoinTest {
 
+    private val testModule = module {
+        single { MedicineScheduler() }
+    }
+
     private val medicineScheduler: MedicineScheduler by inject()
 
-    companion object {
-        private val testModule = module {
-            single { MedicineScheduler() }
+    @Before
+    fun before() {
+        startKoin {
+            modules(testModule)
         }
-        @JvmStatic
-        @BeforeClass
-        fun beforeClass() {
-            startKoin {
-                modules(testModule)
-            }
-        }
+    }
+
+    @After
+    fun after() {
+        stopKoin()
     }
 
     @Test
