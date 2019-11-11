@@ -1,21 +1,19 @@
 package com.example.medihelper.service
 
 import androidx.lifecycle.LiveData
-import com.example.medihelper.localdatabase.DeletedHistory
-import com.example.medihelper.localdatabase.dao.MedicinePlanDao
-import com.example.medihelper.localdatabase.dao.TimeDoseDao
-import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
-import com.example.medihelper.localdatabase.entity.TimeDoseEntity
-import com.example.medihelper.localdatabase.pojo.MedicinePlanEditData
-import com.example.medihelper.localdatabase.pojo.MedicinePlanHistory
-import com.example.medihelper.localdatabase.pojo.MedicinePlanItem
-import com.example.medihelper.localdatabase.pojo.TimeDoseEditData
+import com.example.medihelper.localdata.DeletedHistory
+import com.example.medihelper.localdata.dao.MedicinePlanDao
+import com.example.medihelper.localdata.dao.TimeDoseDao
+import com.example.medihelper.localdata.entity.MedicinePlanEntity
+import com.example.medihelper.localdata.entity.TimeDoseEntity
+import com.example.medihelper.localdata.pojo.MedicinePlanEditData
+import com.example.medihelper.localdata.pojo.MedicinePlanHistory
+import com.example.medihelper.localdata.pojo.MedicinePlanItem
+import com.example.medihelper.localdata.pojo.TimeDoseEditData
 
 interface MedicinePlanService {
     suspend fun save(editData: MedicinePlanEditData)
     suspend fun delete(medicinePlanID: Int)
-    suspend fun getEntity(medicinePlanID: Int): MedicinePlanEntity
-    suspend fun getEntityList(): List<MedicinePlanEntity>
     suspend fun getEditData(medicinePlanID: Int): MedicinePlanEditData
     fun getItemListLive(personID: Int): LiveData<List<MedicinePlanItem>>
     fun getHistoryLive(medicinePlanID: Int): LiveData<MedicinePlanHistory>
@@ -30,9 +28,9 @@ class MedicinePlanServiceImpl(
 
     override suspend fun save(editData: MedicinePlanEditData) {
         val entity = MedicinePlanEntity(
-            medicinePlanID = editData.medicinePlanID,
-            medicineID = editData.medicineID,
-            personID = editData.personID,
+            medicinePlanId = editData.medicinePlanId,
+            medicineId = editData.medicineId,
+            personId = editData.personId,
             durationType = editData.durationType,
             startDate = editData.startDate,
             endDate = editData.endDate,
@@ -41,17 +39,17 @@ class MedicinePlanServiceImpl(
             intervalOfDays = editData.intervalOfDays,
             synchronizedWithServer = false
         )
-        if (entity.medicinePlanID == 0) {
+        if (entity.medicinePlanId == 0) {
             val insertedId = medicinePlanDao.insert(entity).toInt()
             val timeDoseEntityList = mapTimeDoseEditDataListToEntityList(editData.timeDoseList, insertedId)
             timeDoseDao.insert(timeDoseEntityList)
             plannedMedicineService.updateForMedicinePlan(insertedId)
         } else {
             medicinePlanDao.update(entity)
-            val timeDoseEntityList = mapTimeDoseEditDataListToEntityList(editData.timeDoseList, entity.medicinePlanID)
-            timeDoseDao.deleteAllByMedicinePlanId(entity.medicinePlanID)
+            val timeDoseEntityList = mapTimeDoseEditDataListToEntityList(editData.timeDoseList, entity.medicinePlanId)
+            timeDoseDao.deleteAllByMedicinePlanId(entity.medicinePlanId)
             timeDoseDao.insert(timeDoseEntityList)
-            plannedMedicineService.updateForMedicinePlan(entity.medicinePlanID)
+            plannedMedicineService.updateForMedicinePlan(entity.medicinePlanId)
         }
     }
 
@@ -59,10 +57,6 @@ class MedicinePlanServiceImpl(
         medicinePlanDao.getRemoteIdById(medicinePlanID)?.let { deletedHistory.addToMedicinePlanHistory(it) }
         medicinePlanDao.delete(medicinePlanID)
     }
-
-    override suspend fun getEntity(medicinePlanID: Int) = medicinePlanDao.getEntity(medicinePlanID)
-
-    override suspend fun getEntityList() = medicinePlanDao.getEntityList()
 
     override suspend fun getEditData(medicinePlanID: Int) = medicinePlanDao.getEditDataById(medicinePlanID)
 

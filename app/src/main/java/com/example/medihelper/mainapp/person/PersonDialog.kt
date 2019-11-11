@@ -13,7 +13,7 @@ import com.example.medihelper.custom.CenterLayoutManager
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogPersonBinding
-import com.example.medihelper.localdatabase.pojo.PersonItem
+import com.example.medihelper.localdata.pojo.PersonItem
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_person.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -61,7 +61,7 @@ class PersonDialog : BottomSheetDialogFragment() {
     // Inner classes
     inner class PersonAdapter : RecyclerAdapter<PersonItem>(
         layoutResId = R.layout.recycler_item_person,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.personID == newItem.personID }
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.personId == newItem.personId }
     ) {
 
         override fun updateItemsList(newList: List<PersonItem>?) {
@@ -69,7 +69,7 @@ class PersonDialog : BottomSheetDialogFragment() {
                 if (newList != null) {
                     addAll(newList)
                 }
-                add(PersonItem(personID = -1, personName = "", personColorResID = 0, mainPerson = false))
+                add(PersonItem(personId = -1, personName = "", personColorResId = 0, mainPerson = false))
             }
             super.updateItemsList(listWithOneEmptyItem.toList())
         }

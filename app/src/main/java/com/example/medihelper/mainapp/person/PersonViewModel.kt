@@ -1,7 +1,7 @@
 package com.example.medihelper.mainapp.person
 
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.localdatabase.pojo.PersonItem
+import com.example.medihelper.localdata.pojo.PersonItem
 import com.example.medihelper.service.PersonService
 
 class PersonViewModel(
@@ -13,9 +13,9 @@ class PersonViewModel(
     fun selectPerson(personID: Int) = personService.selectCurrPerson(personID)
 
     fun getPersonItemDisplayData(personItem: PersonItem) = PersonItemDisplayData(
-        personID = personItem.personID,
+        personID = personItem.personId,
         personName = personItem.personName,
-        personColorResID = personItem.personColorResID,
+        personColorResID = personItem.personColorResId,
         isMainPerson = personItem.mainPerson
     )
 

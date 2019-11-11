@@ -1,9 +1,9 @@
 package com.example.medihelper.mainapp.medicine
 
 import androidx.lifecycle.*
-import com.example.medihelper.localdatabase.entity.MedicineEntity
-import com.example.medihelper.localdatabase.pojo.MedicineDetails
-import com.example.medihelper.localdatabase.pojo.PersonItem
+import com.example.medihelper.localdata.entity.MedicineEntity
+import com.example.medihelper.localdata.pojo.MedicineDetails
+import com.example.medihelper.localdata.pojo.PersonItem
 import com.example.medihelper.service.AppMode
 import com.example.medihelper.service.MedicineService
 import com.example.medihelper.service.PersonService
@@ -31,7 +31,7 @@ class MedicineDetailsViewModel(
     private val mainPersonItemLive = personService.getMainPersonItemLive()
 
     init {
-        colorPrimaryLive = Transformations.map(mainPersonItemLive) { it.personColorResID }
+        colorPrimaryLive = Transformations.map(mainPersonItemLive) { it.personColorResId }
         isAppModeConnected = Transformations.map(serverApiService.getAppModeLive()) {
             it == AppMode.CONNECTED
         }
@@ -60,7 +60,7 @@ class MedicineDetailsViewModel(
 
     fun deleteMedicine() = GlobalScope.launch {
         medicineDetailsLive.value?.let { medicineDetails ->
-            medicineService.delete(medicineDetails.medicineID)
+            medicineService.delete(medicineDetails.medicineId)
         }
     }
 

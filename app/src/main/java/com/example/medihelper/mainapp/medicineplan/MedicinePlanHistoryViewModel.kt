@@ -1,9 +1,9 @@
 package com.example.medihelper.mainapp.medicineplan
 
 import androidx.lifecycle.*
-import com.example.medihelper.localdatabase.AppDate
-import com.example.medihelper.localdatabase.pojo.MedicinePlanHistory
-import com.example.medihelper.localdatabase.pojo.MedicinePlanHistoryCheckbox
+import com.example.medihelper.localdata.type.AppDate
+import com.example.medihelper.localdata.pojo.MedicinePlanHistory
+import com.example.medihelper.localdata.pojo.MedicinePlanHistoryCheckbox
 import com.example.medihelper.service.DateTimeService
 import com.example.medihelper.service.MedicinePlanService
 import com.example.medihelper.service.PersonService
@@ -24,7 +24,7 @@ class MedicinePlanHistoryViewModel(
 
     init {
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
-            personItem.personColorResID
+            personItem.personColorResId
         }
         medicinePlanHistoryLive = Transformations.switchMap(selectedMedicinePlanIDLive) { medicinePlanID ->
             medicinePlanService.getHistoryLive(medicinePlanID)

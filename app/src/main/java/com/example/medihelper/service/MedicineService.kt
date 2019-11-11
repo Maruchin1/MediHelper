@@ -1,17 +1,13 @@
 package com.example.medihelper.service
 
-import android.content.SharedPreferences
-import androidx.core.content.edit
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import com.example.medihelper.custom.SharedPrefLiveData
-import com.example.medihelper.localdatabase.AppSharedPref
-import com.example.medihelper.localdatabase.DeletedHistory
-import com.example.medihelper.localdatabase.dao.MedicineDao
-import com.example.medihelper.localdatabase.entity.MedicineEntity
-import com.example.medihelper.localdatabase.pojo.MedicineDetails
-import com.example.medihelper.localdatabase.pojo.MedicineEditData
-import com.example.medihelper.localdatabase.pojo.MedicineItem
+import com.example.medihelper.localdata.AppSharedPref
+import com.example.medihelper.localdata.DeletedHistory
+import com.example.medihelper.localdata.dao.MedicineDao
+import com.example.medihelper.localdata.entity.MedicineEntity
+import com.example.medihelper.localdata.pojo.MedicineDetails
+import com.example.medihelper.localdata.pojo.MedicineEditData
+import com.example.medihelper.localdata.pojo.MedicineItem
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,8 +17,6 @@ interface MedicineService {
     suspend fun reduceCurrState(medicineId: Int, doseSize: Float)
     suspend fun increaseCurrState(medicineId: Int, doseSize: Float)
     suspend fun delete(id: Int)
-    suspend fun getEntity(id: Int): MedicineEntity
-    suspend fun getEntityList(): List<MedicineEntity>
     suspend fun getDetails(id: Int): MedicineDetails
     fun getItemListLive(): LiveData<List<MedicineItem>>
     fun getFilteredItemListLive(searchQuery: String): LiveData<List<MedicineItem>>
@@ -46,7 +40,7 @@ class MedicineServiceImpl(
 
     override suspend fun save(editData: MedicineEditData) {
         val entity = MedicineEntity(
-            medicineID = editData.medicineID,
+            medicineId = editData.medicineId,
             medicineName = editData.medicineName,
             expireDate = editData.expireDate,
             medicineUnit = editData.medicineUnit,
@@ -56,7 +50,7 @@ class MedicineServiceImpl(
             imageName = editData.imageName,
             synchronizedWithServer = false
         )
-        if (editData.medicineID == 0) {
+        if (editData.medicineId == 0) {
             medicineDao.insert(entity)
         } else {
             medicineDao.update(entity)
@@ -94,10 +88,6 @@ class MedicineServiceImpl(
         medicineDao.getRemoteIdById(id)?.let { deletedHistory.addToMedicineHistory(it) }
         medicineDao.delete(id)
     }
-
-    override suspend fun getEntity(id: Int) = medicineDao.getEntity(id)
-
-    override suspend fun getEntityList() = medicineDao.getEntityList()
 
     override suspend fun getDetails(id: Int) = medicineDao.getDetails(id)
 

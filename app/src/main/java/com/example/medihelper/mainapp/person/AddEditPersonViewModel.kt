@@ -1,7 +1,7 @@
 package com.example.medihelper.mainapp.person
 
 import androidx.lifecycle.*
-import com.example.medihelper.localdatabase.pojo.PersonEditData
+import com.example.medihelper.localdata.pojo.PersonEditData
 import com.example.medihelper.service.PersonService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -39,7 +39,7 @@ class AddEditPersonViewModel(
             titleLive.postValue("Edytuj osobę")
             personService.getEditData(args.editPersonID).let { editData ->
                 personNameLive.postValue(editData.personName)
-                personColorResIDLive.postValue(editData.personColorResID)
+                personColorResIDLive.postValue(editData.personColorResId)
             }
         } else {
             personNameLive.postValue("")
@@ -50,9 +50,9 @@ class AddEditPersonViewModel(
     fun saveNewPerson(): Boolean {
         if (validateInputData()) {
             val editData = PersonEditData(
-                personID = editPersonID ?: 0,
+                personId = editPersonID ?: 0,
                 personName = personNameLive.value!!,
-                personColorResID = personColorResIDLive.value!!
+                personColorResId = personColorResIDLive.value!!
             )
             GlobalScope.launch {
                 personService.save(editData)

@@ -1,6 +1,6 @@
 package com.example.medihelper
 
-import com.example.medihelper.localdatabase.AppExpireDate
+import com.example.medihelper.localdata.type.AppExpireDate
 import org.junit.Test
 import com.google.common.truth.Truth.assertThat
 

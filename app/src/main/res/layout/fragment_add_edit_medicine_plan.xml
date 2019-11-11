@@ -5,8 +5,6 @@
 
     <data>
 
-        <import type="com.example.medihelper.localdatabase.entity.MedicinePlanEntity.DaysType" />
-
         <import type="android.view.View" />
 
         <variable

@@ -4,15 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.work.*
 import com.example.medihelper.*
-import com.example.medihelper.localdatabase.AppSharedPref
-import com.example.medihelper.localdatabase.dao.MedicineDao
-import com.example.medihelper.localdatabase.dao.PersonDao
-import com.example.medihelper.localdatabase.entity.PersonEntity
-import com.example.medihelper.remotedatabase.api.AuthenticationApi
-import com.example.medihelper.remotedatabase.api.RegisteredUserApi
-import com.example.medihelper.remotedatabase.dto.ConnectedPersonDto
-import com.example.medihelper.remotedatabase.dto.NewPasswordDto
-import com.example.medihelper.remotedatabase.dto.UserCredentialsDto
+import com.example.medihelper.localdata.AppSharedPref
+import com.example.medihelper.localdata.dao.MedicineDao
+import com.example.medihelper.localdata.dao.PersonDao
+import com.example.medihelper.localdata.entity.PersonEntity
+import com.example.medihelper.remotedata.api.AuthenticationApi
+import com.example.medihelper.remotedata.api.RegisteredUserApi
+import com.example.medihelper.remotedata.dto.ConnectedPersonDto
+import com.example.medihelper.remotedata.dto.NewPasswordDto
+import com.example.medihelper.remotedata.dto.UserCredentialsDto
 import com.example.medihelper.serversync.ConnectedPersonSyncWorker
 import com.example.medihelper.serversync.LoggedUserSyncWorker
 import com.example.medihelper.serversync.ServerSyncWorker
@@ -213,9 +213,9 @@ class ServerApiServiceImpl(
 
     private suspend fun initConnectedPersonDatabase(connectedPersonDto: ConnectedPersonDto) {
         val mainPerson = PersonEntity(
-            personRemoteID = connectedPersonDto.personRemoteId,
+            personRemoteId = connectedPersonDto.personRemoteId,
             personName = connectedPersonDto.personName,
-            personColorResID = connectedPersonDto.personColorResId,
+            personColorResId = connectedPersonDto.personColorResId,
             mainPerson = true
         )
         personDao.insert(mainPerson)

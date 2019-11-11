@@ -1,13 +1,11 @@
 package com.example.medihelper
 
-import com.example.medihelper.localdatabase.AppDate
-import com.example.medihelper.localdatabase.AppTime
-import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
-import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
-import com.example.medihelper.localdatabase.pojo.MedicinePlanEditData
-import com.example.medihelper.localdatabase.pojo.TimeDoseEditData
-import com.example.medihelper.localdatabase.MedicineScheduler
-import org.junit.BeforeClass
+import com.example.medihelper.localdata.entity.MedicinePlanEntity
+import com.example.medihelper.localdata.entity.PlannedMedicineEntity
+import com.example.medihelper.localdata.pojo.MedicinePlanEditData
+import com.example.medihelper.localdata.pojo.TimeDoseEditData
+import com.example.medihelper.localdata.MedicineScheduler
+import com.example.medihelper.localdata.type.*
 import org.junit.Test
 import org.koin.core.context.startKoin
 import org.koin.test.KoinTest
@@ -41,10 +39,10 @@ class MedicineSchedulerTest : KoinTest {
     @Test
     fun medicineScheduler_Once_TwoTimesPerDay() {
         val plan = MedicinePlanEditData(
-            medicinePlanID = 1,
-            medicineID = 1,
-            personID = 1,
-            durationType = MedicinePlanEntity.DurationType.ONCE,
+            medicinePlanId = 1,
+            medicineId = 1,
+            personId = 1,
+            durationType = DurationType.ONCE,
             startDate = AppDate(2019, 11, 10),
             timeDoseList = listOf(
                 TimeDoseEditData(
@@ -78,14 +76,14 @@ class MedicineSchedulerTest : KoinTest {
     @Test
     fun medicineScheduler_Period_MondayWednesdaySaturday_OneTimePerDay() {
         val plan = MedicinePlanEditData(
-            medicinePlanID = 1,
-            medicineID = 1,
-            personID = 1,
-            durationType = MedicinePlanEntity.DurationType.PERIOD,
+            medicinePlanId = 1,
+            medicineId = 1,
+            personId = 1,
+            durationType = DurationType.PERIOD,
             startDate = AppDate(2019, 11, 10),
             endDate = AppDate(2019, 11, 17),
-            daysType = MedicinePlanEntity.DaysType.DAYS_OF_WEEK,
-            daysOfWeek = MedicinePlanEntity.DaysOfWeek().apply {
+            daysType = DaysType.DAYS_OF_WEEK,
+            daysOfWeek = DaysOfWeek().apply {
                 monday = true
                 wednesday = true
                 saturday = true

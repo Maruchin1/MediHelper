@@ -3,13 +3,13 @@ package com.example.medihelper.service
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
-import com.example.medihelper.localdatabase.AppSharedPref
-import com.example.medihelper.localdatabase.DeletedHistory
-import com.example.medihelper.localdatabase.dao.PersonDao
-import com.example.medihelper.localdatabase.entity.PersonEntity
-import com.example.medihelper.localdatabase.pojo.PersonEditData
-import com.example.medihelper.localdatabase.pojo.PersonItem
-import com.example.medihelper.localdatabase.pojo.PersonOptionsData
+import com.example.medihelper.localdata.AppSharedPref
+import com.example.medihelper.localdata.DeletedHistory
+import com.example.medihelper.localdata.dao.PersonDao
+import com.example.medihelper.localdata.entity.PersonEntity
+import com.example.medihelper.localdata.pojo.PersonEditData
+import com.example.medihelper.localdata.pojo.PersonItem
+import com.example.medihelper.localdata.pojo.PersonOptionsData
 
 interface PersonService {
     suspend fun save(editData: PersonEditData)
@@ -50,12 +50,12 @@ class PersonServiceImpl(
 
     override suspend fun save(editData: PersonEditData) {
         val entity = PersonEntity(
-            personID = editData.personID,
+            personId = editData.personId,
             personName = editData.personName,
-            personColorResID = editData.personColorResID,
+            personColorResId = editData.personColorResId,
             synchronizedWithServer = false
         )
-        if (entity.personID == 0) {
+        if (entity.personId == 0) {
             personDao.insert(entity).toInt()
         } else {
             personDao.update(entity)

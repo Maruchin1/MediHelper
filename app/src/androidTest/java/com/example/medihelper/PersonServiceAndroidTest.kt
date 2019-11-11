@@ -1,9 +1,9 @@
 package com.example.medihelper
 
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.medihelper.localdatabase.*
-import com.example.medihelper.localdatabase.pojo.PersonEditData
-import com.example.medihelper.localdatabase.pojo.PersonItem
+import com.example.medihelper.localdata.*
+import com.example.medihelper.localdata.pojo.PersonEditData
+import com.example.medihelper.localdata.pojo.PersonItem
 import com.example.medihelper.service.PersonService
 import com.example.medihelper.service.PersonServiceImpl
 import com.google.common.truth.Truth
@@ -15,7 +15,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
-import org.koin.test.KoinTest
 import org.koin.test.inject
 
 class PersonServiceAndroidTest : AppAndroidTest() {
@@ -45,17 +44,17 @@ class PersonServiceAndroidTest : AppAndroidTest() {
     @Test
     fun save_New_GetEntity() {
         val editData = PersonEditData(
-            personID = 0,
+            personId = 0,
             personName = "Wojtek",
-            personColorResID = 123
+            personColorResId = 123
         )
         runBlocking {
             personService.save(editData)
         }
         val expectedPersonItem = PersonItem(
-            personID = 1,
+            personId = 1,
             personName = "Wojtek",
-            personColorResID = 123,
+            personColorResId = 123,
             mainPerson = false
         )
         val savedPersonItem = runBlocking {

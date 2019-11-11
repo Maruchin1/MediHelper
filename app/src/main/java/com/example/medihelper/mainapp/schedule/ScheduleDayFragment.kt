@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.example.medihelper.localdatabase.AppDate
+import com.example.medihelper.localdata.type.AppDate
 import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentScheduleDayBinding
-import com.example.medihelper.localdatabase.pojo.PlannedMedicineItem
+import com.example.medihelper.localdata.pojo.PlannedMedicineItem
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -73,7 +73,7 @@ class ScheduleDayFragment : Fragment() {
     // Inner classes
     inner class PlannedMedicineAdapter : RecyclerAdapter<PlannedMedicineItem>(
         layoutResId = R.layout.recycler_item_planned_medicine,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedMedicineID == newItem.plannedMedicineID }
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedMedicineId == newItem.plannedMedicineId }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val plannedMedicine = itemsList[position]

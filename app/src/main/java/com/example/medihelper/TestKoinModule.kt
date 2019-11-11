@@ -1,7 +1,7 @@
 package com.example.medihelper
 
 import androidx.room.Room
-import com.example.medihelper.localdatabase.AppDatabase
+import com.example.medihelper.localdata.AppDatabase
 import com.google.gson.GsonBuilder
 import org.koin.dsl.module
 import retrofit2.Retrofit

@@ -1,8 +1,7 @@
 package com.example.medihelper.service
 
 import com.example.medihelper.R
-import com.example.medihelper.localdatabase.entity.PersonEntity
-import com.example.medihelper.localdatabase.pojo.PersonEditData
+import com.example.medihelper.localdata.pojo.PersonEditData
 
 interface InitialDataService {
     suspend fun checkInitialData()
@@ -26,9 +25,9 @@ class InitialDataServiceImpl(
     }
 
     private fun getInitialPerson() = PersonEditData(
-        personID = 0,
+        personId = 0,
         personName = "Użytkownik",
-        personColorResID = R.color.colorPrimary,
+        personColorResId = R.color.colorPrimary,
         mainPerson = true
     )
 

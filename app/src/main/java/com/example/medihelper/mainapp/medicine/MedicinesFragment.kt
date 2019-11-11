@@ -15,7 +15,7 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicinesBinding
-import com.example.medihelper.localdatabase.pojo.MedicineItem
+import com.example.medihelper.localdata.pojo.MedicineItem
 import com.example.medihelper.mainapp.MainActivity
 import kotlinx.android.synthetic.main.fragment_medicines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -87,7 +87,7 @@ class MedicinesFragment : Fragment() {
     // Inner classes
     inner class MedicineAdapter : RecyclerAdapter<MedicineItem>(
         layoutResId = R.layout.recycler_item_medicine,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.medicineID == newItem.medicineID }
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.medicineId == newItem.medicineId }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicineItem = itemsList[position]

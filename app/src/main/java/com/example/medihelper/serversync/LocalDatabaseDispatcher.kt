@@ -1,17 +1,17 @@
 package com.example.medihelper.serversync
 
-import com.example.medihelper.localdatabase.dao.MedicineDao
-import com.example.medihelper.localdatabase.dao.MedicinePlanDao
-import com.example.medihelper.localdatabase.dao.PersonDao
-import com.example.medihelper.localdatabase.dao.PlannedMedicineDao
-import com.example.medihelper.localdatabase.entity.MedicineEntity
-import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
-import com.example.medihelper.localdatabase.entity.PersonEntity
-import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
-import com.example.medihelper.remotedatabase.dto.MedicineDto
-import com.example.medihelper.remotedatabase.dto.MedicinePlanDto
-import com.example.medihelper.remotedatabase.dto.PersonDto
-import com.example.medihelper.remotedatabase.dto.PlannedMedicineDto
+import com.example.medihelper.localdata.dao.MedicineDao
+import com.example.medihelper.localdata.dao.MedicinePlanDao
+import com.example.medihelper.localdata.dao.PersonDao
+import com.example.medihelper.localdata.dao.PlannedMedicineDao
+import com.example.medihelper.localdata.entity.MedicineEntity
+import com.example.medihelper.localdata.entity.MedicinePlanEntity
+import com.example.medihelper.localdata.entity.PersonEntity
+import com.example.medihelper.localdata.entity.PlannedMedicineEntity
+import com.example.medihelper.remotedata.dto.MedicineDto
+import com.example.medihelper.remotedata.dto.MedicinePlanDto
+import com.example.medihelper.remotedata.dto.PersonDto
+import com.example.medihelper.remotedata.dto.PlannedMedicineDto
 
 class LocalDatabaseDispatcher(
     private val entityDtoMapper: EntityDtoMapper,
@@ -26,15 +26,15 @@ class LocalDatabaseDispatcher(
         val insertList = mutableListOf<MedicineEntity>()
         medicineDtoList.forEach { medicineDto ->
             val medicineEntity = entityDtoMapper.medicineDtoToEntity(medicineDto)
-            if (medicineEntity.medicineID != 0) {
+            if (medicineEntity.medicineId != 0) {
                 updateList.add(medicineEntity)
             } else {
                 val existingMedicineID =
-                    medicineDao.getIdByRemoteId(medicineEntity.medicineRemoteID!!)
+                    medicineDao.getIdByRemoteId(medicineEntity.medicineRemoteId!!)
                 if (existingMedicineID != null) {
                     // todo usunąć gdy będzie rozwiązany problem z przesyłaniem zdjeć
                     val existingEntity = medicineDao.getEntity(existingMedicineID)
-                    updateList.add(medicineEntity.copy(medicineID = existingMedicineID, imageName = existingEntity.imageName))
+                    updateList.add(medicineEntity.copy(medicineId = existingMedicineID, imageName = existingEntity.imageName))
                 } else {
                     insertList.add(medicineEntity)
                 }
@@ -54,13 +54,13 @@ class LocalDatabaseDispatcher(
         val insertList = mutableListOf<PersonEntity>()
         personDtoList.forEach { personDto ->
             val personEntity = entityDtoMapper.personDtoToEntity(personDto)
-            if (personEntity.personID != 0) {
+            if (personEntity.personId != 0) {
                 updateList.add(personEntity)
             } else {
                 val existingPersonID =
-                    personDao.getIdByRemoteId(personEntity.personRemoteID!!)
+                    personDao.getIdByRemoteId(personEntity.personRemoteId!!)
                 if (existingPersonID != null) {
-                    updateList.add(personEntity.copy(personID = existingPersonID))
+                    updateList.add(personEntity.copy(personId = existingPersonID))
                 } else {
                     insertList.add(personEntity)
                 }
@@ -80,13 +80,13 @@ class LocalDatabaseDispatcher(
         val insertList = mutableListOf<MedicinePlanEntity>()
         medicinePlanDtoList.forEach { medicinePlanDto ->
             val medicinePlanEntity = entityDtoMapper.medicinePlanDtoToEntity(medicinePlanDto)
-            if (medicinePlanEntity.medicinePlanID != 0) {
+            if (medicinePlanEntity.medicinePlanId != 0) {
                 updateList.add(medicinePlanEntity)
             } else {
                 val existingMedicinePlanID =
-                    medicinePlanDao.getIdByRemoteId(medicinePlanEntity.medicinePlanRemoteID!!)
+                    medicinePlanDao.getIdByRemoteId(medicinePlanEntity.medicinePlanRemoteId!!)
                 if (existingMedicinePlanID != null) {
-                    updateList.add(medicinePlanEntity.copy(medicinePlanID = existingMedicinePlanID))
+                    updateList.add(medicinePlanEntity.copy(medicinePlanId = existingMedicinePlanID))
                 } else {
                     insertList.add(medicinePlanEntity)
                 }

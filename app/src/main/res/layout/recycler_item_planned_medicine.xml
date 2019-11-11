@@ -12,7 +12,7 @@
 
         <variable
             name="displayData"
-            type="com.example.medihelper.localdatabase.pojo.PlannedMedicineItem" />
+            type="com.example.medihelper.localdata.pojo.PlannedMedicineItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -21,7 +21,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?selectableItemBackground"
-        android:onClick="@{() -> handler.onClickOpenPlannedMedicineOptions(displayData.plannedMedicineID)}"
+        android:onClick="@{() -> handler.onClickOpenPlannedMedicineOptions(displayData.plannedMedicineId)}"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp">
 

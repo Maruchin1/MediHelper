@@ -15,7 +15,7 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.*
 import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
 import com.example.medihelper.mainapp.dialog.SelectFloatNumberDialog
-import com.example.medihelper.localdatabase.pojo.PersonItem
+import com.example.medihelper.localdata.pojo.PersonItem
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -99,7 +99,7 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
 
     inner class PersonAdapter : RecyclerAdapter<PersonItem>(
         layoutResId = R.layout.recycler_item_person_taking_medicine,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.personID == newItem.personID }
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.personId == newItem.personId }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val personItem = itemsList[position]

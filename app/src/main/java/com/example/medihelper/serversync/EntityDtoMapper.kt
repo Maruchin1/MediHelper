@@ -1,13 +1,11 @@
 package com.example.medihelper.serversync
 
-import com.example.medihelper.localdatabase.AppDate
-import com.example.medihelper.localdatabase.AppExpireDate
-import com.example.medihelper.localdatabase.AppTime
-import com.example.medihelper.localdatabase.dao.MedicineDao
-import com.example.medihelper.localdatabase.dao.MedicinePlanDao
-import com.example.medihelper.localdatabase.dao.PersonDao
-import com.example.medihelper.localdatabase.entity.*
-import com.example.medihelper.remotedatabase.dto.*
+import com.example.medihelper.localdata.dao.MedicineDao
+import com.example.medihelper.localdata.dao.MedicinePlanDao
+import com.example.medihelper.localdata.dao.PersonDao
+import com.example.medihelper.localdata.entity.*
+import com.example.medihelper.localdata.type.*
+import com.example.medihelper.remotedata.dto.*
 
 class EntityDtoMapper(
     private val medicineDao: MedicineDao,
@@ -16,25 +14,25 @@ class EntityDtoMapper(
 ) {
 
     fun personDtoToEntity(personDto: PersonDto) = PersonEntity(
-        personID = personDto.personLocalId ?: 0,
-        personRemoteID = personDto.personRemoteId,
+        personId = personDto.personLocalId ?: 0,
+        personRemoteId = personDto.personRemoteId,
         personName = personDto.personName,
-        personColorResID = personDto.personColorResId,
+        personColorResId = personDto.personColorResId,
         connectionKey = personDto.connectionKey,
         synchronizedWithServer = true
     )
 
     fun personEntityToDto(personEntity: PersonEntity) = PersonDto(
-        personLocalId = personEntity.personID,
-        personRemoteId = personEntity.personRemoteID,
+        personLocalId = personEntity.personId,
+        personRemoteId = personEntity.personRemoteId,
         personName = personEntity.personName,
-        personColorResId = personEntity.personColorResID,
+        personColorResId = personEntity.personColorResId,
         connectionKey = null
     )
 
     fun medicineDtoToEntity(medicineDto: MedicineDto) = MedicineEntity(
-        medicineID = medicineDto.medicineLocalId ?: 0,
-        medicineRemoteID = medicineDto.medicineRemoteId,
+        medicineId = medicineDto.medicineLocalId ?: 0,
+        medicineRemoteId = medicineDto.medicineRemoteId,
         medicineName = medicineDto.medicineName,
         medicineUnit = medicineDto.medicineUnit,
         expireDate = medicineDto.expireDate?.let { AppExpireDate(it) },
@@ -46,8 +44,8 @@ class EntityDtoMapper(
     )
 
     fun medicineEntityToDto(medicineEntity: MedicineEntity) = MedicineDto(
-        medicineLocalId = medicineEntity.medicineID,
-        medicineRemoteId = medicineEntity.medicineRemoteID,
+        medicineLocalId = medicineEntity.medicineId,
+        medicineRemoteId = medicineEntity.medicineRemoteId,
         medicineName = medicineEntity.medicineName,
         medicineUnit = medicineEntity.medicineUnit,
         expireDate = medicineEntity.expireDate?.jsonFormatString,
@@ -58,27 +56,27 @@ class EntityDtoMapper(
     )
 
     suspend fun medicinePlanDtoToEntity(medicinePlanDto: MedicinePlanDto) = MedicinePlanEntity(
-        medicinePlanID = medicinePlanDto.medicinePlanLocalId ?: 0,
-        medicinePlanRemoteID = medicinePlanDto.medicinePlanRemoteId,
-        medicineID = medicineDao.getIdByRemoteId(medicinePlanDto.medicineRemoteId)!!,
-        personID = if (medicinePlanDto.personRemoteId != null) {
+        medicinePlanId = medicinePlanDto.medicinePlanLocalId ?: 0,
+        medicinePlanRemoteId = medicinePlanDto.medicinePlanRemoteId,
+        medicineId = medicineDao.getIdByRemoteId(medicinePlanDto.medicineRemoteId)!!,
+        personId = if (medicinePlanDto.personRemoteId != null) {
             personDao.getIdByRemoteId(medicinePlanDto.personRemoteId)!!
         } else {
             personDao.getMainPersonID()!!
         },
         startDate = AppDate(medicinePlanDto.startDate),
         endDate = medicinePlanDto.endDate?.let { AppDate(it) },
-        durationType = MedicinePlanEntity.DurationType.valueOf(medicinePlanDto.durationType),
+        durationType = DurationType.valueOf(medicinePlanDto.durationType),
         daysOfWeek = medicinePlanDto.daysOfWeek,
         intervalOfDays = medicinePlanDto.intervalOfDays,
-        daysType = MedicinePlanEntity.DaysType.valueOf(medicinePlanDto.daysType)
+        daysType = DaysType.valueOf(medicinePlanDto.daysType)
     )
 
     suspend fun medicinePlanEntityToDto(medicinePlanEntity: MedicinePlanEntity, timeDoseDtoList: List<TimeDoseDto>) = MedicinePlanDto(
-        medicinePlanLocalId = medicinePlanEntity.medicinePlanID,
-        medicinePlanRemoteId = medicinePlanEntity.medicinePlanRemoteID,
-        medicineRemoteId = medicineDao.getRemoteIdById(medicinePlanEntity.medicineID)!!,
-        personRemoteId = personDao.getRemoteIdById(medicinePlanEntity.personID),
+        medicinePlanLocalId = medicinePlanEntity.medicinePlanId,
+        medicinePlanRemoteId = medicinePlanEntity.medicinePlanRemoteId,
+        medicineRemoteId = medicineDao.getRemoteIdById(medicinePlanEntity.medicineId)!!,
+        personRemoteId = personDao.getRemoteIdById(medicinePlanEntity.personId),
         startDate = medicinePlanEntity.startDate.jsonFormatString,
         endDate = medicinePlanEntity.endDate?.jsonFormatString,
         durationType = medicinePlanEntity.durationType.toString(),
@@ -106,7 +104,7 @@ class EntityDtoMapper(
         plannedDate = AppDate(plannedMedicineDto.plannedDate),
         plannedTime = AppTime(plannedMedicineDto.plannedTime),
         plannedDoseSize = plannedMedicineDto.plannedDoseSize,
-        statusOfTaking = PlannedMedicineEntity.StatusOfTaking.valueOf(plannedMedicineDto.statusOfTaking)
+        statusOfTaking = StatusOfTaking.valueOf(plannedMedicineDto.statusOfTaking)
     )
 
     suspend fun plannedMedicineEntityToDto(plannedMedicineEntity: PlannedMedicineEntity) = PlannedMedicineDto(

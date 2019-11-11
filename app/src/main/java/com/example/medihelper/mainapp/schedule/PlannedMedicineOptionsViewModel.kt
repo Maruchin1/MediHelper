@@ -1,11 +1,12 @@
 package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.*
-import com.example.medihelper.localdatabase.AppDate
-import com.example.medihelper.localdatabase.AppTime
+import com.example.medihelper.localdata.type.AppDate
+import com.example.medihelper.localdata.type.AppTime
 import com.example.medihelper.R
-import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
-import com.example.medihelper.localdatabase.pojo.PlannedMedicineDetails
+import com.example.medihelper.localdata.entity.PlannedMedicineEntity
+import com.example.medihelper.localdata.pojo.PlannedMedicineDetails
+import com.example.medihelper.localdata.type.StatusOfTaking
 import com.example.medihelper.service.MedicineService
 import com.example.medihelper.service.PersonService
 import com.example.medihelper.service.PlannedMedicineService
@@ -21,7 +22,7 @@ class PlannedMedicineOptionsViewModel(
     val colorPrimaryLive: LiveData<Int>
     val medicineNameLive: LiveData<String>
     val medicineUnitLive: LiveData<String>
-    val statusOfTakingLive: LiveData<PlannedMedicineEntity.StatusOfTaking>
+    val statusOfTakingLive: LiveData<StatusOfTaking>
     val plannedDateLive: LiveData<AppDate>
     val plannedTimeLive: LiveData<AppTime>
     val doseSizeLive: LiveData<String>
@@ -29,13 +30,13 @@ class PlannedMedicineOptionsViewModel(
     val takeMedicineBtnIcon: LiveData<Int>
 
     val medicineID: Int?
-        get() = plannedMedicineDetailsLive.value?.medicineID
+        get() = plannedMedicineDetailsLive.value?.medicineId
 
     private val plannedMedicineIDLive = MutableLiveData<Int>()
     private val plannedMedicineDetailsLive: LiveData<PlannedMedicineDetails>
 
     init {
-        colorPrimaryLive = Transformations.map(personService.getCurrPersonItemLive()) { it.personColorResID }
+        colorPrimaryLive = Transformations.map(personService.getCurrPersonItemLive()) { it.personColorResId }
         plannedMedicineDetailsLive = Transformations.switchMap(plannedMedicineIDLive) { plannedMedicineID ->
             plannedMedicineService.getDetailsLive(plannedMedicineID)
         }
@@ -47,14 +48,14 @@ class PlannedMedicineOptionsViewModel(
         doseSizeLive = Transformations.map(plannedMedicineDetailsLive) { it.plannedDoseSize.toString() }
         medicineUnitLive = Transformations.map(plannedMedicineDetailsLive) { it.medicineUnit }
         takeMedicineBtnText = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            if (plannedMedicine.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
+            if (plannedMedicine.statusOfTaking == StatusOfTaking.TAKEN) {
                 "Anuluj przyjecie leku"
             } else {
                 "Przyjmij lek"
             }
         }
         takeMedicineBtnIcon = Transformations.map(plannedMedicineDetailsLive) { plannedMedicine ->
-            if (plannedMedicine.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
+            if (plannedMedicine.statusOfTaking == StatusOfTaking.TAKEN) {
                 R.drawable.round_close_black_24
             } else {
                 R.drawable.baseline_check_white_24
@@ -68,12 +69,12 @@ class PlannedMedicineOptionsViewModel(
 
     fun changePlannedMedicineStatus() = GlobalScope.launch {
         plannedMedicineDetailsLive.value?.let { details ->
-            if (details.statusOfTaking == PlannedMedicineEntity.StatusOfTaking.TAKEN) {
-                plannedMedicineService.changeMedicineTaken(details.plannedMedicineID, false)
-                medicineService.increaseCurrState(details.medicineID, details.plannedDoseSize)
+            if (details.statusOfTaking == StatusOfTaking.TAKEN) {
+                plannedMedicineService.changeMedicineTaken(details.plannedMedicineId, false)
+                medicineService.increaseCurrState(details.medicineId, details.plannedDoseSize)
             } else {
-                plannedMedicineService.changeMedicineTaken(details.plannedMedicineID, true)
-                medicineService.reduceCurrState(details.medicineID, details.plannedDoseSize)
+                plannedMedicineService.changeMedicineTaken(details.plannedMedicineId, true)
+                medicineService.reduceCurrState(details.medicineId, details.plannedDoseSize)
             }
         }
     }

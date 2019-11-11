@@ -15,7 +15,7 @@ import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicinePlanListBinding
 import com.example.medihelper.mainapp.dialog.ConfirmDialog
-import com.example.medihelper.localdatabase.pojo.MedicinePlanItem
+import com.example.medihelper.localdata.pojo.MedicinePlanItem
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -85,7 +85,7 @@ class MedicinePlanListFragment : Fragment() {
     // Inner classes
     inner class MedicinePlanAdapter : RecyclerAdapter<MedicinePlanItem>(
         layoutResId = R.layout.recycler_item_medicine_plan,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.medicinePlanID == newItem.medicinePlanID }
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.medicinePlanId == newItem.medicinePlanId }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicinePlanItem = itemsList[position]

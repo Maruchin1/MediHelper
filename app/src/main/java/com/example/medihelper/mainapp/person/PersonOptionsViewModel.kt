@@ -2,7 +2,7 @@ package com.example.medihelper.mainapp.person
 
 import android.graphics.Bitmap
 import androidx.lifecycle.*
-import com.example.medihelper.localdatabase.pojo.PersonOptionsData
+import com.example.medihelper.localdata.pojo.PersonOptionsData
 import com.example.medihelper.service.PersonService
 import com.example.medihelper.service.ServerApiService
 import com.google.zxing.BarcodeFormat
@@ -30,7 +30,7 @@ class PersonOptionsViewModel(
             personService.getOptionsDataLive(personID)
         }
         personNameLive = Transformations.map(personItemLive) { it.personName }
-        personColorResIDLive = Transformations.map(personItemLive) { it.personColorResID }
+        personColorResIDLive = Transformations.map(personItemLive) { it.personColorResId }
         connectionKeyLive = Transformations.map(personItemLive) { it.connectionKey }
         connectionKeyQrCodeLive = Transformations.map(connectionKeyLive) { connectionKey ->
             connectionKey?.let { createTempKeyQrCodeBitmap(it) }

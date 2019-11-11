@@ -5,8 +5,8 @@ import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
-import com.example.medihelper.localdatabase.AppExpireDate
-import com.example.medihelper.localdatabase.pojo.MedicineEditData
+import com.example.medihelper.localdata.type.AppExpireDate
+import com.example.medihelper.localdata.pojo.MedicineEditData
 import com.example.medihelper.service.MedicineService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -53,7 +53,7 @@ class AddEditMedicineViewModel(
     fun saveMedicine(): Boolean {
         if (validateInputData()) {
             val editData = MedicineEditData(
-                medicineID = editMedicineID ?: 0,
+                medicineId = editMedicineID ?: 0,
                 medicineName = medicineNameLive.value!!,
                 medicineUnit = medicineUnitLive.value!!,
                 expireDate = expireDateLive.value!!,

@@ -1,10 +1,9 @@
 package com.example.medihelper
 
 import android.os.Environment
-import android.preference.PreferenceManager
 import androidx.room.Room
 import androidx.work.WorkManager
-import com.example.medihelper.localdatabase.*
+import com.example.medihelper.localdata.*
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel
@@ -24,9 +23,9 @@ import com.example.medihelper.mainapp.person.PersonViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleDayViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
-import com.example.medihelper.remotedatabase.api.AuthenticationApi
-import com.example.medihelper.remotedatabase.api.ConnectedPersonApi
-import com.example.medihelper.remotedatabase.api.RegisteredUserApi
+import com.example.medihelper.remotedata.api.AuthenticationApi
+import com.example.medihelper.remotedata.api.ConnectedPersonApi
+import com.example.medihelper.remotedata.api.RegisteredUserApi
 import com.example.medihelper.serversync.EntityDtoMapper
 import com.example.medihelper.serversync.LocalDatabaseDispatcher
 import com.example.medihelper.service.*
@@ -37,7 +36,6 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.reflect.Type
 
 private const val NAME_EXTERNAL_PICTURES_DIR = "name-external-pictures-dir"
 

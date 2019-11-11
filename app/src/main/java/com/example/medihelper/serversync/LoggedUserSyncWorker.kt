@@ -3,10 +3,10 @@ package com.example.medihelper.serversync
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.medihelper.localdatabase.DeletedHistory
-import com.example.medihelper.localdatabase.dao.*
-import com.example.medihelper.remotedatabase.api.RegisteredUserApi
-import com.example.medihelper.remotedatabase.dto.*
+import com.example.medihelper.localdata.DeletedHistory
+import com.example.medihelper.localdata.dao.*
+import com.example.medihelper.remotedata.api.RegisteredUserApi
+import com.example.medihelper.remotedata.dto.*
 import com.example.medihelper.service.NotificationService
 import com.example.medihelper.service.ServerApiService
 import org.koin.core.KoinComponent
@@ -74,7 +74,7 @@ class LoggedUserSyncWorker(private val context: Context, params: WorkerParameter
 
         val medicinesPlansSyncRequestDto = SyncRequestDto(
             insertUpdateDtoList = medicinePlanDao.getEntityListToSync().map { medicinePlanEntity ->
-                val timeDoseList = timeDoseDao.getEntityListByMedicinePlanId(medicinePlanEntity.medicinePlanID)
+                val timeDoseList = timeDoseDao.getEntityListByMedicinePlanId(medicinePlanEntity.medicinePlanId)
                 val timeDoseDtoList = timeDoseList.map { entityDtoMapper.timeDoseEntityToDto(it) }
                 entityDtoMapper.medicinePlanEntityToDto(medicinePlanEntity, timeDoseDtoList)
             },

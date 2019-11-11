@@ -1,7 +1,7 @@
 package com.example.medihelper.mainapp.alarm
 
 import androidx.lifecycle.*
-import com.example.medihelper.localdatabase.AppTime
+import com.example.medihelper.localdata.type.AppTime
 import com.example.medihelper.service.PlannedMedicineService
 import kotlinx.coroutines.launch
 
@@ -24,6 +24,6 @@ class AlarmViewModel(
         personNameLive.postValue(alarmData.personName)
         medicineNameLive.postValue(alarmData.medicineName)
         medicineDoseLive.postValue("${alarmData.plannedDoseSize} ${alarmData.medicineUnit}")
-        personColorLive.postValue(alarmData.personColorResID)
+        personColorLive.postValue(alarmData.personColorResId)
     }
 }

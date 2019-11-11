@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.localdatabase.entity.MedicineEntity
-import com.example.medihelper.localdatabase.pojo.MedicineItem
+import com.example.medihelper.localdata.entity.MedicineEntity
+import com.example.medihelper.localdata.pojo.MedicineItem
 import com.example.medihelper.service.AppMode
 import com.example.medihelper.service.MedicineService
 import com.example.medihelper.service.PersonService
@@ -43,13 +43,13 @@ class MedicinesViewModel(
         medicineAvailableLive = Transformations.map(medicineItemListLive) { list ->
             list != null && list.isNotEmpty()
         }
-        colorPrimaryLive = Transformations.map(mainPersonItemLive) { it.personColorResID }
+        colorPrimaryLive = Transformations.map(mainPersonItemLive) { it.personColorResId }
     }
 
     fun getMedicineItemDisplayData(medicineItem: MedicineItem): MedicineItemDisplayData {
         val medicineStateData = MedicineEntity.StateData(medicineItem.packageSize, medicineItem.currState)
         return MedicineItemDisplayData(
-            medicineID = medicineItem.medicineID,
+            medicineID = medicineItem.medicineId,
             medicineName = medicineItem.medicineName,
             medicineUnit = medicineItem.medicineUnit,
             stateAvailable = medicineStateData.stateAvailable,

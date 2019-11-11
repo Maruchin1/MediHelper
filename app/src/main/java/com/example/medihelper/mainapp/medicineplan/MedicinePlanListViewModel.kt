@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
-import com.example.medihelper.localdatabase.pojo.MedicinePlanItem
+import com.example.medihelper.localdata.entity.MedicinePlanEntity
+import com.example.medihelper.localdata.pojo.MedicinePlanItem
+import com.example.medihelper.localdata.type.DaysType
+import com.example.medihelper.localdata.type.DurationType
 import com.example.medihelper.service.*
 import kotlinx.coroutines.launch
 
@@ -28,10 +30,10 @@ class MedicinePlanListViewModel(
             it == AppMode.CONNECTED
         }
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
-            personItem?.personColorResID
+            personItem?.personColorResId
         }
         medicinePlanItemListLive = Transformations.switchMap(selectedPersonItemLive) { personItem ->
-            medicinePlanService.getItemListLive(personItem.personID)
+            medicinePlanService.getItemListLive(personItem.personId)
         }
         medicinePlanItemOngoingListLive = Transformations.map(medicinePlanItemListLive) { medicinePlanItemList ->
             medicinePlanItemList.filter { medicinePlanItem ->
@@ -57,19 +59,19 @@ class MedicinePlanListViewModel(
     }
 
     fun getMedicinePlanDisplayData(medicinePlanItem: MedicinePlanItem) = MedicinePlanDisplayData(
-        medicinePlanID = medicinePlanItem.medicinePlanID,
+        medicinePlanID = medicinePlanItem.medicinePlanId,
         colorPrimaryResID = colorPrimaryLive.value!!,
         medicineName = medicinePlanItem.medicineName,
         planDuration = when (medicinePlanItem.durationType) {
-            MedicinePlanEntity.DurationType.ONCE -> "Jednorazowo ${medicinePlanItem.startDate.formatString}"
-            MedicinePlanEntity.DurationType.PERIOD -> "Od ${medicinePlanItem.startDate.formatString} " +
+            DurationType.ONCE -> "Jednorazowo ${medicinePlanItem.startDate.formatString}"
+            DurationType.PERIOD -> "Od ${medicinePlanItem.startDate.formatString} " +
                     "do ${medicinePlanItem.endDate?.formatString}"
-            MedicinePlanEntity.DurationType.CONTINUOUS -> "Pzyjmowanie ciągłe od ${medicinePlanItem.startDate.formatString}"
+            DurationType.CONTINUOUS -> "Pzyjmowanie ciągłe od ${medicinePlanItem.startDate.formatString}"
         },
         daysType = when (medicinePlanItem.daysType) {
-            MedicinePlanEntity.DaysType.EVERYDAY -> "Codziennie"
-            MedicinePlanEntity.DaysType.DAYS_OF_WEEK -> medicinePlanItem.daysOfWeek?.getSelectedDaysString() ?: "--"
-            MedicinePlanEntity.DaysType.INTERVAL_OF_DAYS -> "Co ${medicinePlanItem.intervalOfDays ?: "--"} dni"
+            DaysType.EVERYDAY -> "Codziennie"
+            DaysType.DAYS_OF_WEEK -> medicinePlanItem.daysOfWeek?.getSelectedDaysString() ?: "--"
+            DaysType.INTERVAL_OF_DAYS -> "Co ${medicinePlanItem.intervalOfDays ?: "--"} dni"
             else -> null
         },
         isAppModeConnected = serverApiService.getAppMode() == AppMode.CONNECTED
@@ -78,19 +80,19 @@ class MedicinePlanListViewModel(
     private fun getMedicinePlanType(medicinePlanItem: MedicinePlanItem): MedicinePlanType {
         val currDate = dateTimeService.getCurrDate()
         return when (medicinePlanItem.durationType) {
-            MedicinePlanEntity.DurationType.ONCE -> {
+            DurationType.ONCE -> {
                 when {
                     currDate > medicinePlanItem.startDate -> MedicinePlanType.ENDED
                     else -> MedicinePlanType.ONGOING
                 }
             }
-            MedicinePlanEntity.DurationType.PERIOD -> {
+            DurationType.PERIOD -> {
                 when {
                     currDate > medicinePlanItem.endDate!! -> MedicinePlanType.ENDED
                     else -> MedicinePlanType.ONGOING
                 }
             }
-            MedicinePlanEntity.DurationType.CONTINUOUS -> MedicinePlanType.ONGOING
+            DurationType.CONTINUOUS -> MedicinePlanType.ONGOING
         }
     }
 

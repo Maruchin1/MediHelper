@@ -20,7 +20,7 @@ class ConnectedPersonViewModel(
 
     init {
         personNameLive = Transformations.map(mainPersonItemLive) { it?.personName }
-        personColorResID = Transformations.map(mainPersonItemLive) { it?.personColorResID }
+        personColorResID = Transformations.map(mainPersonItemLive) { it?.personColorResId }
     }
 
     fun cancelConnection(mainActivity: MainActivity) = GlobalScope.launch {

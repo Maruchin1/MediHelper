@@ -1,13 +1,13 @@
 package com.example.medihelper
 
 import androidx.work.WorkManager
-import com.example.medihelper.localdatabase.AppSharedPref
-import com.example.medihelper.localdatabase.dao.MedicineDao
-import com.example.medihelper.localdatabase.dao.PersonDao
-import com.example.medihelper.remotedatabase.api.AuthenticationApi
-import com.example.medihelper.remotedatabase.api.RegisteredUserApi
-import com.example.medihelper.remotedatabase.dto.LoginResponseDto
-import com.example.medihelper.remotedatabase.dto.UserCredentialsDto
+import com.example.medihelper.localdata.AppSharedPref
+import com.example.medihelper.localdata.dao.MedicineDao
+import com.example.medihelper.localdata.dao.PersonDao
+import com.example.medihelper.remotedata.api.AuthenticationApi
+import com.example.medihelper.remotedata.api.RegisteredUserApi
+import com.example.medihelper.remotedata.dto.LoginResponseDto
+import com.example.medihelper.remotedata.dto.UserCredentialsDto
 import com.example.medihelper.service.ApiResponse
 import com.example.medihelper.service.AppMode
 import com.example.medihelper.service.ServerApiService

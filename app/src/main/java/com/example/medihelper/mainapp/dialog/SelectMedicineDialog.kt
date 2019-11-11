@@ -13,7 +13,7 @@ import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogSelectMedicineBinding
-import com.example.medihelper.localdatabase.pojo.MedicineItem
+import com.example.medihelper.localdata.pojo.MedicineItem
 import com.example.medihelper.mainapp.medicine.MedicinesViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -102,7 +102,7 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
     // Inner classes -------------------------------------------------------------------------------
     inner class MedicineAdapter : RecyclerAdapter<MedicineItem>(
         layoutResId = R.layout.recycler_item_select_medicine,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.medicineID == newItem.medicineID }
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.medicineId == newItem.medicineId }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicineItem = itemsList[position]

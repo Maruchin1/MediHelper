@@ -2,12 +2,12 @@ package com.example.medihelper
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.WorkManager
-import com.example.medihelper.localdatabase.AppDatabase
-import com.example.medihelper.localdatabase.AppSharedPref
-import com.example.medihelper.localdatabase.AppSharedPrefImpl
-import com.example.medihelper.remotedatabase.api.AuthenticationApi
-import com.example.medihelper.remotedatabase.api.RegisteredUserApi
-import com.example.medihelper.remotedatabase.dto.LoginResponseDto
+import com.example.medihelper.localdata.AppDatabase
+import com.example.medihelper.localdata.AppSharedPref
+import com.example.medihelper.localdata.AppSharedPrefImpl
+import com.example.medihelper.remotedata.api.AuthenticationApi
+import com.example.medihelper.remotedata.api.RegisteredUserApi
+import com.example.medihelper.remotedata.dto.LoginResponseDto
 import com.example.medihelper.service.ApiResponse
 import com.example.medihelper.service.AppMode
 import com.example.medihelper.service.ServerApiService
