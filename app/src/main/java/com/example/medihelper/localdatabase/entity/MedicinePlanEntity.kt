@@ -4,7 +4,7 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.room.*
-import com.example.medihelper.custom.AppDate
+import com.example.medihelper.localdatabase.AppDate
 import com.google.gson.annotations.SerializedName
 
 @Entity(

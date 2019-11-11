@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.example.medihelper.custom.AppTime
+import com.example.medihelper.localdatabase.AppTime
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.databinding.DialogSelectTimeBinding
@@ -24,7 +24,8 @@ class SelectTimeDialog : AppBottomSheetDialog() {
     fun onClickCancel() = dismiss()
 
     fun onClickConfirm() {
-        val selectedTime = AppTime(time_picker.currentHour, time_picker.currentMinute)
+        val selectedTime =
+            AppTime(time_picker.currentHour, time_picker.currentMinute)
         timeSelectedListener?.invoke(selectedTime)
         dismiss()
     }

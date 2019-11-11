@@ -1,7 +1,7 @@
 package com.example.medihelper.service
 
-import com.example.medihelper.custom.AppDate
-import com.example.medihelper.custom.AppTime
+import com.example.medihelper.localdatabase.AppDate
+import com.example.medihelper.localdatabase.AppTime
 import java.util.*
 
 interface DateTimeService {

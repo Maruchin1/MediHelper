@@ -1,5 +1,6 @@
 package com.example.medihelper.localdatabase
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
@@ -26,7 +27,18 @@ interface AppSharedPref {
     fun deleteUserEmail()
 }
 
-class AppSharedPrefImpl(private val pref: SharedPreferences) : AppSharedPref {
+class AppSharedPrefImpl(context: Context) : AppSharedPref {
+
+    companion object {
+        private const val PREF_NAME = "app-shared-pref"
+        private const val KEY_AUTH_TOKEN = "key-auth-token"
+        private const val KEY_USER_EMAIL = "key-user-email"
+        private const val KEY_LAST_SYNC_TIME = "key-last-sync_time"
+        private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-set"
+        private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
+    }
+
+    private val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
     override fun getAuthToken(): String? = pref.getString(KEY_AUTH_TOKEN, null)
 
@@ -85,13 +97,5 @@ class AppSharedPrefImpl(private val pref: SharedPreferences) : AppSharedPref {
 
     override fun deleteUserEmail() = pref.edit(true) {
         putString(KEY_USER_EMAIL, null)
-    }
-
-    companion object {
-        const val KEY_AUTH_TOKEN = "key-auth-token"
-        const val KEY_USER_EMAIL = "key-user-email"
-        const val KEY_LAST_SYNC_TIME = "key-last-sync_time"
-        private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-set"
-        private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
     }
 }

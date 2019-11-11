@@ -1,5 +1,6 @@
 package com.example.medihelper.localdatabase
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 
@@ -14,16 +15,17 @@ interface DeletedHistory {
     fun addToPlannedMedicineHistory(remoteId: Long)
 }
 
-class DeletedHistoryImpl(
-    private val sharedPreferences: SharedPreferences
-) : DeletedHistory {
+class DeletedHistoryImpl(context: Context) : DeletedHistory {
 
     companion object {
+        private const val PREF_NAME = "deleted-history-shared-pref"
         private const val KEY_PERSON_HISTORY_SET = "key-person-history-set"
         private const val KEY_MEDICINE_HISTORY_SET = "key-medicine-history-set"
         private const val KEY_MEDICINE_PLAN_HISTORY_SET = "key-medicine-plan-history-set"
         private const val KEY_PLANNED_MEDICINE_HISTORY_SET = "key_planned-medicine-history-set"
     }
+
+    private val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
     override fun getPersonHistory() = getHistory(KEY_PERSON_HISTORY_SET)
 
@@ -42,15 +44,15 @@ class DeletedHistoryImpl(
     override fun addToPlannedMedicineHistory(remoteId: Long) = addToHistory(KEY_PLANNED_MEDICINE_HISTORY_SET, remoteId)
 
     private fun getHistory(key: String): List<Long> {
-        return sharedPreferences.getStringSet(key, null)?.map {
+        return pref.getStringSet(key, null)?.map {
             it.toLong()
         } ?: emptyList()
     }
 
     private fun addToHistory(key: String, remoteId: Long) {
-        val set = sharedPreferences.getStringSet(key, null) ?: emptySet()
+        val set = pref.getStringSet(key, null) ?: emptySet()
         set.add(remoteId.toString())
-        sharedPreferences.edit(true) {
+        pref.edit(true) {
             putStringSet(key, set)
         }
     }

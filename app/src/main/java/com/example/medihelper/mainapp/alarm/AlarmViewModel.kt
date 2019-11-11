@@ -1,7 +1,7 @@
 package com.example.medihelper.mainapp.alarm
 
 import androidx.lifecycle.*
-import com.example.medihelper.custom.AppTime
+import com.example.medihelper.localdatabase.AppTime
 import com.example.medihelper.service.PlannedMedicineService
 import kotlinx.coroutines.launch
 

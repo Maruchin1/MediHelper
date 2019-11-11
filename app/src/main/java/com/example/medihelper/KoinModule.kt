@@ -73,8 +73,8 @@ val localDataModule = module(override = true) {
     single { get<AppDatabase>().medicinePlanDao() }
     single { get<AppDatabase>().timeDoseDao() }
     single { get<AppDatabase>().plannedMedicineDao() }
-    single<DeletedHistory> { DeletedHistoryImpl(PreferenceManager.getDefaultSharedPreferences(androidContext())) }
-    single<AppSharedPref> { AppSharedPrefImpl(PreferenceManager.getDefaultSharedPreferences(androidContext())) }
+    single<DeletedHistory> { DeletedHistoryImpl(androidContext()) }
+    single<AppSharedPref> { AppSharedPrefImpl(androidContext()) }
     single { MedicineScheduler() }
 }
 

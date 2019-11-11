@@ -1,7 +1,7 @@
 package com.example.medihelper
 
-import com.example.medihelper.custom.AppDate
-import com.example.medihelper.custom.AppTime
+import com.example.medihelper.localdatabase.AppDate
+import com.example.medihelper.localdatabase.AppTime
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojo.MedicinePlanEditData
@@ -13,17 +13,21 @@ import org.koin.core.context.startKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import com.google.common.truth.Truth.assertThat
+import org.koin.dsl.module
 
 class MedicineSchedulerTest : KoinTest {
 
     private val medicineScheduler: MedicineScheduler by inject()
 
     companion object {
+        private val testModule = module {
+            single { MedicineScheduler() }
+        }
         @JvmStatic
         @BeforeClass
         fun beforeClass() {
             startKoin {
-                modules(utilsModule)
+                modules(testModule)
             }
         }
     }

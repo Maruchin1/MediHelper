@@ -1,7 +1,7 @@
 package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.*
-import com.example.medihelper.custom.AppDate
+import com.example.medihelper.localdatabase.AppDate
 import com.example.medihelper.service.AppMode
 import com.example.medihelper.service.DateTimeService
 import com.example.medihelper.service.PersonService

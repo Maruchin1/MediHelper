@@ -1,8 +1,8 @@
 package com.example.medihelper.serversync
 
-import com.example.medihelper.custom.AppDate
-import com.example.medihelper.custom.AppExpireDate
-import com.example.medihelper.custom.AppTime
+import com.example.medihelper.localdatabase.AppDate
+import com.example.medihelper.localdatabase.AppExpireDate
+import com.example.medihelper.localdatabase.AppTime
 import com.example.medihelper.localdatabase.dao.MedicineDao
 import com.example.medihelper.localdatabase.dao.MedicinePlanDao
 import com.example.medihelper.localdatabase.dao.PersonDao

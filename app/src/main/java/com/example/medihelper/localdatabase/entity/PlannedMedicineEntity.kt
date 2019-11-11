@@ -1,8 +1,8 @@
 package com.example.medihelper.localdatabase.entity
 
 import androidx.room.*
-import com.example.medihelper.custom.AppDate
-import com.example.medihelper.custom.AppTime
+import com.example.medihelper.localdatabase.AppDate
+import com.example.medihelper.localdatabase.AppTime
 import com.example.medihelper.R
 
 @Entity(

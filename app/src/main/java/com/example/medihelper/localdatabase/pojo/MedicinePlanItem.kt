@@ -2,7 +2,7 @@ package com.example.medihelper.localdatabase.pojo
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
-import com.example.medihelper.custom.AppDate
+import com.example.medihelper.localdatabase.AppDate
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
 
 

@@ -1,6 +1,5 @@
 package com.example.medihelper.localdatabase
 
-import com.example.medihelper.custom.AppDate
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
 import com.example.medihelper.localdatabase.entity.PlannedMedicineEntity
 import com.example.medihelper.localdatabase.pojo.MedicinePlanEditData

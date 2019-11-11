@@ -2,8 +2,8 @@ package com.example.medihelper.mainapp.medicineplan
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.medihelper.custom.AppDate
-import com.example.medihelper.custom.AppExpireDate
+import com.example.medihelper.localdatabase.AppDate
+import com.example.medihelper.localdatabase.AppExpireDate
 import com.example.medihelper.custom.FieldMutableLiveData
 import com.example.medihelper.localdatabase.entity.MedicinePlanEntity
 import com.example.medihelper.localdatabase.pojo.MedicineDetails

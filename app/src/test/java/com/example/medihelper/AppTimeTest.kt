@@ -1,6 +1,6 @@
 package com.example.medihelper
 
-import com.example.medihelper.custom.AppTime
+import com.example.medihelper.localdatabase.AppTime
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import java.util.*

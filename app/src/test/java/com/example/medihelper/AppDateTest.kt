@@ -1,6 +1,6 @@
 package com.example.medihelper
 
-import com.example.medihelper.custom.AppDate
+import com.example.medihelper.localdatabase.AppDate
 import org.junit.Test
 import java.util.*
 import com.google.common.truth.Truth.assertThat
@@ -41,12 +41,6 @@ class AppDateTest {
             assertThat(day).isEqualTo(1)
             assertThat(dayOfWeek).isEqualTo(3)
         }
-    }
-
-    @Test
-    fun appDate_DayMonthString() {
-        val date = AppDate(2019, 10, 1)
-        assertThat(date.dayMonthString).isEqualTo("01 paź")
     }
 
     @Test
