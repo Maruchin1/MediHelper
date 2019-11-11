@@ -2,7 +2,7 @@ package com.example.medihelper.remotedatabase.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class TimeOfTakingDto(
+data class TimeDoseDto(
     @SerializedName(value = "doseSize")
     val doseSize: Float,
 

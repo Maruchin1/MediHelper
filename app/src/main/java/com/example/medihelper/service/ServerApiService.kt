@@ -1,14 +1,10 @@
 package com.example.medihelper.service
 
-import android.content.SharedPreferences
-import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Transformations
 import androidx.work.*
-import com.example.medihelper.MainApplication
-import com.example.medihelper.R
-import com.example.medihelper.custom.SharedPrefLiveData
+import com.example.medihelper.*
+import com.example.medihelper.localdatabase.AppSharedPref
 import com.example.medihelper.localdatabase.dao.MedicineDao
 import com.example.medihelper.localdatabase.dao.PersonDao
 import com.example.medihelper.localdatabase.entity.PersonEntity
@@ -20,9 +16,10 @@ import com.example.medihelper.remotedatabase.dto.UserCredentialsDto
 import com.example.medihelper.serversync.ConnectedPersonSyncWorker
 import com.example.medihelper.serversync.LoggedUserSyncWorker
 import com.example.medihelper.serversync.ServerSyncWorker
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.unloadKoinModules
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.Exception
 
@@ -33,13 +30,12 @@ interface ServerApiService {
     fun getLastSyncTimeLive(): LiveData<Date>
     fun updateLastSyncTime()
     fun enqueueServerSync()
-    suspend fun registerNewUser(email: String, password: String): String?
-    suspend fun loginUser(email: String, password: String): String?
-    suspend fun isRemoteDataAvailable(): Pair<Boolean?, String?>
+    suspend fun registerNewUser(email: String, password: String): ApiResponse
+    suspend fun loginUser(email: String, password: String): Pair<Boolean?, ApiResponse>
     suspend fun useRemoteDataAfterLogin()
-    suspend fun useLocalDataAfterLogin(): String?
-    suspend fun changeUserPassword(newPassword: String): String?
-    suspend fun connectWithPatron(connectionKey: String): String?
+    suspend fun useLocalDataAfterLogin(): ApiResponse
+    suspend fun changeUserPassword(newPassword: String): ApiResponse
+    suspend fun connectWithPatron(connectionKey: String): ApiResponse
     suspend fun logoutUser()
     suspend fun cancelPatronConnection()
 }
@@ -48,9 +44,12 @@ enum class AppMode {
     OFFLINE, LOGGED, CONNECTED
 }
 
+enum class ApiResponse {
+    OK, TIMEOUT, NOT_FOUND, ALREADY_EXISTS, INCORRECT_DATA, ERROR
+}
+
 class ServerApiServiceImpl(
-    private val mainApplication: MainApplication,
-    private val sharedPreferences: SharedPreferences,
+    private val sharedPref: AppSharedPref,
     private val authenticationApi: AuthenticationApi,
     private val registeredUserApi: RegisteredUserApi,
     private val personDao: PersonDao,
@@ -58,52 +57,34 @@ class ServerApiServiceImpl(
     private val workManager: WorkManager
 ) : ServerApiService {
 
-    companion object {
-        private const val KEY_AUTH_TOKEN = "key-auth-token"
-        private const val KEY_USER_EMAIL = "key-user-email"
-        private const val KEY_LAST_SYNC_TIME = "key-last-sync_time"
-    }
-
     override fun getAppMode(): AppMode {
-        val authToken = getAuthToken() ?: ""
-        val email = getUserEmail() ?: ""
+        val authToken = sharedPref.getAuthToken() ?: ""
+        val email = sharedPref.getUserEmail() ?: ""
         return getAppMode(authToken, email)
     }
 
-    override suspend fun registerNewUser(email: String, password: String): String? {
+    override suspend fun registerNewUser(email: String, password: String): ApiResponse {
         val userCredentialsDto = UserCredentialsDto(email, password)
         return try {
             authenticationApi.registerNewUser(userCredentialsDto)
-            null
+            ApiResponse.OK
         } catch (e: Exception) {
             e.printStackTrace()
-            getErrorMessage(e)
+            getError(e)
         }
     }
 
-    override suspend fun loginUser(email: String, password: String): String? {
+    override suspend fun loginUser(email: String, password: String): Pair<Boolean?, ApiResponse> {
         val userCredentialsDto = UserCredentialsDto(email, password)
         return try {
-            val authToken = authenticationApi.loginUser(userCredentialsDto)
-            saveAuthToken(authToken)
-            saveUserEmail(userCredentialsDto.email)
-            null
+            val loginResponseDto = authenticationApi.loginUser(userCredentialsDto)
+            sharedPref.saveAuthToken(loginResponseDto.authToken)
+            sharedPref.saveUserEmail(userCredentialsDto.email)
+            Pair(loginResponseDto.isDataAvailable, ApiResponse.OK)
         } catch (e: Exception) {
             e.printStackTrace()
-            getErrorMessage(e)
+            Pair(null, getError(e))
         }
-    }
-
-    override suspend fun isRemoteDataAvailable(): Pair<Boolean?, String?> {
-        return getAuthToken()?.let { authToken ->
-            try {
-                val available = registeredUserApi.isDataAvailable(authToken)
-                Pair(available, null)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Pair(null, getErrorMessage(e))
-            }
-        } ?: throw Exception("AuthToken not available")
     }
 
     override suspend fun useRemoteDataAfterLogin() {
@@ -112,64 +93,64 @@ class ServerApiServiceImpl(
         enqueueServerSync()
     }
 
-    override suspend fun useLocalDataAfterLogin(): String? {
-        return getAuthToken()?.let { authToken ->
+    override suspend fun useLocalDataAfterLogin(): ApiResponse {
+        return sharedPref.getAuthToken()?.let { authToken ->
             try {
                 registeredUserApi.deleteAllData(authToken)
                 enqueueServerSync()
-                null
+                ApiResponse.OK
             } catch (e: Exception) {
                 e.printStackTrace()
-                getErrorMessage(e)
+                getError(e)
             }
         } ?: throw Exception("AuthToken not available")
     }
 
-    override suspend fun changeUserPassword(newPassword: String): String? {
-        return getAuthToken()?.let { authToken ->
+    override suspend fun changeUserPassword(newPassword: String): ApiResponse {
+        return sharedPref.getAuthToken()?.let { authToken ->
             try {
                 val newPasswordDto = NewPasswordDto(value = newPassword)
                 registeredUserApi.changeUserPassword(authToken, newPasswordDto)
                 null
             } catch (e: Exception) {
                 e.printStackTrace()
-                getErrorMessage(e)
+                getError(e)
             }
         } ?: throw Exception("AuthToken not available")
     }
 
-    override suspend fun connectWithPatron(connectionKey: String): String? {
-        return getAuthToken()?.let { authToken ->
+    override suspend fun connectWithPatron(connectionKey: String): ApiResponse {
+        return sharedPref.getAuthToken()?.let { authToken ->
             try {
                 val connectedPersonDto = authenticationApi.patronConnect(connectionKey)
-                saveAuthToken(connectedPersonDto.authToken)
-                deleteUserEmail()
-                mainApplication.switchToConnectedPersonDatabase()
+                sharedPref.saveAuthToken(connectedPersonDto.authToken)
+                sharedPref.deleteUserEmail()
+                switchToConnectedDatabase()
                 initConnectedPersonDatabase(connectedPersonDto)
-                null
+                ApiResponse.OK
             } catch (e: Exception) {
                 e.printStackTrace()
-                getErrorMessage(e)
+                getError(e)
             }
         } ?: throw Exception("AuthToken not available")
     }
 
     override suspend fun logoutUser() {
-        deleteAuthToken()
-        deleteUserEmail()
+        sharedPref.deleteAuthToken()
+        sharedPref.deleteUserEmail()
         //todo czyścić historię i ustawiać wszystko na synchronized = false
     }
 
     override suspend fun cancelPatronConnection() {
-        deleteAuthToken()
+        sharedPref.deleteAuthToken()
         medicineDao.deleteAll()
         personDao.deleteAllWithMain()
-        mainApplication.switchToMainDatabase()
+        switchToMainDatabase()
     }
 
     override fun getAppModeLive(): LiveData<AppMode> {
-        val authTokenLive = SharedPrefLiveData(sharedPreferences, KEY_AUTH_TOKEN, "")
-        val emailLive = SharedPrefLiveData(sharedPreferences, KEY_USER_EMAIL, "")
+        val authTokenLive = sharedPref.getAuthTokenLive()
+        val emailLive = sharedPref.getUserEmailLive()
         var authToken = ""
         var email = ""
         val appModeLive = MediatorLiveData<AppMode>()
@@ -184,13 +165,9 @@ class ServerApiServiceImpl(
         return appModeLive
     }
 
-    override fun getUserEmailLive() = SharedPrefLiveData(sharedPreferences, KEY_USER_EMAIL, "")
+    override fun getUserEmailLive() = sharedPref.getUserEmailLive()
 
-    override fun getLastSyncTimeLive(): LiveData<Date> {
-        return Transformations.map(SharedPrefLiveData(sharedPreferences, KEY_LAST_SYNC_TIME, "")) {
-            if (it != null) SimpleDateFormat.getDateTimeInstance().parse(it) else null
-        }
-    }
+    override fun getLastSyncTimeLive() = sharedPref.getLastSyncTimeLive()
 
     override fun enqueueServerSync() {
         val syncWorkBuilder = when (getAppMode()) {
@@ -199,7 +176,7 @@ class ServerApiServiceImpl(
             else -> null
         }
         if (syncWorkBuilder != null) {
-            getAuthToken()?.let { authToken ->
+            sharedPref.getAuthToken()?.let { authToken ->
                 val syncWork = syncWorkBuilder.setConstraints(
                     Constraints(
                         Constraints.Builder()
@@ -218,26 +195,21 @@ class ServerApiServiceImpl(
 
     override fun updateLastSyncTime() {
         val currDate = Date()
-        val currDateString = SimpleDateFormat.getDateTimeInstance().format(currDate)
-        sharedPreferences.edit(true) {
-            putString(KEY_LAST_SYNC_TIME, currDateString)
-        }
+        sharedPref.saveLastSyncTime(currDate)
     }
 
-    private fun getErrorMessage(e: Exception): String {
-        val messageId = when (e) {
-            is SocketTimeoutException -> R.string.error_timeout
-            is HttpException -> when (e.code()) {
-                422 -> R.string.error_incorrect_credentials
-                409 -> R.string.error_user_exists
-                404 -> R.string.error_user_not_found
-                else -> R.string.error_connection
+    private fun getError(e: Exception) = when (e) {
+        is SocketTimeoutException -> ApiResponse.TIMEOUT
+        is HttpException -> when (e.code()) {
+            422 -> ApiResponse.INCORRECT_DATA
+            409 -> ApiResponse.ALREADY_EXISTS
+            404 -> ApiResponse.NOT_FOUND
+            else -> ApiResponse.ERROR
 
-            }
-            else -> R.string.error_connection
         }
-        return mainApplication.resources.getString(messageId)
+        else -> ApiResponse.ERROR
     }
+
 
     private suspend fun initConnectedPersonDatabase(connectedPersonDto: ConnectedPersonDto) {
         val mainPerson = PersonEntity(
@@ -257,23 +229,13 @@ class ServerApiServiceImpl(
         }
     }
 
-    private fun getAuthToken() = sharedPreferences.getString(KEY_AUTH_TOKEN, null)
-
-    private fun getUserEmail() = sharedPreferences.getString(KEY_USER_EMAIL, null)
-
-    private fun saveAuthToken(authToken: String) = sharedPreferences.edit(true) {
-        putString(KEY_AUTH_TOKEN, authToken)
+    private fun switchToConnectedDatabase() {
+        unloadKoinModules(listOf(viewModelModule, serviceModule, localDataModule, mainRoomModule))
+        loadKoinModules(listOf(connectedRoomModule, localDataModule, serviceModule, viewModelModule))
     }
 
-    private fun saveUserEmail(email: String) = sharedPreferences.edit(true) {
-        putString(KEY_USER_EMAIL, email)
-    }
-
-    private fun deleteAuthToken() = sharedPreferences.edit(true) {
-        putString(KEY_AUTH_TOKEN, null)
-    }
-
-    private fun deleteUserEmail() = sharedPreferences.edit(true) {
-        putString(KEY_USER_EMAIL, null)
+    private fun switchToMainDatabase() {
+        unloadKoinModules(listOf(viewModelModule, serviceModule, localDataModule, connectedRoomModule))
+        loadKoinModules(listOf(mainRoomModule, localDataModule, serviceModule, viewModelModule))
     }
 }

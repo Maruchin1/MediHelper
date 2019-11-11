@@ -42,21 +42,17 @@ class LoginRegisterViewModel(
         Log.i(TAG, "loginUser")
         if (validateInputData(Mode.LOGIN)) {
             loadingInProgressLive.postValue(true)
-            var errorMessage = serverApiService.loginUser(
+            val responsePair = serverApiService.loginUser(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
-            if (errorMessage != null) {
-                loginErrorLive.postValue(errorMessage)
+            val isDataAvailable = responsePair.first
+            val apiResponse = responsePair.second
+            if (isDataAvailable == true) {
+                remoteDataIsAvailableAction.sendAction()
             } else {
-                val responsePair = serverApiService.isRemoteDataAvailable()
-                val isAvailable = responsePair.first
-                errorMessage = responsePair.second
-                if (isAvailable == true) {
-                    remoteDataIsAvailableAction.sendAction()
-                } else {
-                    loginErrorLive.postValue(errorMessage)
-                }
+                //todo mapować response na tekst
+                loginErrorLive.postValue("error")
             }
             loadingInProgressLive.postValue(false)
         }
@@ -65,11 +61,12 @@ class LoginRegisterViewModel(
     fun registerNewUser() = viewModelScope.launch {
         if (validateInputData(Mode.REGISTER)) {
             loadingInProgressLive.postValue(true)
-            val errorMessage = serverApiService.registerNewUser(
+            val apiResponse = serverApiService.registerNewUser(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
-            registerErrorLive.postValue(errorMessage)
+            //todo mapować response na tekst
+            registerErrorLive.postValue("error")
             loadingInProgressLive.postValue(false)
         }
     }
@@ -81,8 +78,9 @@ class LoginRegisterViewModel(
 
     fun useLocalDataAfterLogin() = viewModelScope.launch {
         loadingInProgressLive.postValue(true)
-        val errorMessage = serverApiService.useLocalDataAfterLogin()
-        loginErrorLive.postValue(errorMessage)
+        val apiResponse = serverApiService.useLocalDataAfterLogin()
+        //todo mapować response na tekst
+        loginErrorLive.postValue("error")
         loadingInProgressLive.postValue(false)
     }
 

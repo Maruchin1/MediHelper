@@ -1,10 +1,9 @@
 package com.example.medihelper.service
 
-import android.content.SharedPreferences
-import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
+import com.example.medihelper.localdatabase.AppSharedPref
 import com.example.medihelper.localdatabase.DeletedHistory
 import com.example.medihelper.localdatabase.dao.PersonDao
 import com.example.medihelper.localdatabase.entity.PersonEntity
@@ -36,13 +35,9 @@ interface PersonService {
 
 class PersonServiceImpl(
     private val personDao: PersonDao,
-    private val sharedPreferences: SharedPreferences,
+    private val appSharedPref: AppSharedPref,
     private val deletedHistory: DeletedHistory
 ) : PersonService {
-
-    companion object {
-        private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-set"
-    }
 
     private val currPersonIDLive = MediatorLiveData<Int>()
     private val currPersonItemLive: LiveData<PersonItem>
@@ -105,13 +100,7 @@ class PersonServiceImpl(
 
     override fun selectCurrPerson(id: Int) = currPersonIDLive.postValue(id)
 
-    override fun getColorResIdList(): List<Int> {
-        return sharedPreferences.getStringSet(KEY_PERSON_COLOR_RES_ID_SET, null)?.map {
-            it.toInt()
-        } ?: emptyList()
-    }
+    override fun getColorResIdList() = appSharedPref.getColorResIdList()
 
-    override fun saveColorResIdList(newList: List<Int>) = sharedPreferences.edit(true) {
-        putStringSet(KEY_PERSON_COLOR_RES_ID_SET, newList.map { it.toString() }.toMutableSet())
-    }
+    override fun saveColorResIdList(newList: List<Int>) = appSharedPref.saveColorResIdList(newList)
 }

@@ -74,7 +74,7 @@ class EntityDtoMapper(
         daysType = MedicinePlanEntity.DaysType.valueOf(medicinePlanDto.daysType)
     )
 
-    suspend fun medicinePlanEntityToDto(medicinePlanEntity: MedicinePlanEntity, timeDoseDtoList: List<TimeOfTakingDto>) = MedicinePlanDto(
+    suspend fun medicinePlanEntityToDto(medicinePlanEntity: MedicinePlanEntity, timeDoseDtoList: List<TimeDoseDto>) = MedicinePlanDto(
         medicinePlanLocalId = medicinePlanEntity.medicinePlanID,
         medicinePlanRemoteId = medicinePlanEntity.medicinePlanRemoteID,
         medicineRemoteId = medicineDao.getRemoteIdById(medicinePlanEntity.medicineID)!!,
@@ -85,16 +85,16 @@ class EntityDtoMapper(
         daysOfWeek = medicinePlanEntity.daysOfWeek,
         intervalOfDays = medicinePlanEntity.intervalOfDays,
         daysType = medicinePlanEntity.daysType.toString(),
-        timeOfTakingList = timeDoseDtoList
+        timeDoseList = timeDoseDtoList
     )
 
-    suspend fun timeDoseDtoToEntity(timeOfTakingDto: TimeOfTakingDto, medicinePlanId: Int) = TimeDoseEntity(
-        time = AppTime(timeOfTakingDto.time),
-        doseSize = timeOfTakingDto.doseSize,
+    suspend fun timeDoseDtoToEntity(timeDoseDto: TimeDoseDto, medicinePlanId: Int) = TimeDoseEntity(
+        time = AppTime(timeDoseDto.time),
+        doseSize = timeDoseDto.doseSize,
         medicinePlanId = medicinePlanId
     )
 
-    suspend fun timeDoseEntityToDto(timeDoseEntity: TimeDoseEntity) = TimeOfTakingDto(
+    suspend fun timeDoseEntityToDto(timeDoseEntity: TimeDoseEntity) = TimeDoseDto(
         time = timeDoseEntity.time.jsonFormatString,
         doseSize = timeDoseEntity.doseSize
     )

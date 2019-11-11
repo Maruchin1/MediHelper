@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.medihelper.custom.SharedPrefLiveData
+import com.example.medihelper.localdatabase.AppSharedPref
 import com.example.medihelper.localdatabase.DeletedHistory
 import com.example.medihelper.localdatabase.dao.MedicineDao
 import com.example.medihelper.localdatabase.entity.MedicineEntity
@@ -39,13 +40,9 @@ class MedicineServiceImpl(
     private val medicineDao: MedicineDao,
     private val appFilesDir: File,
     private val externalImagesDir: File,
-    private val sharedPreferences: SharedPreferences,
+    private val appSharedPref: AppSharedPref,
     private val deletedHistory: DeletedHistory
 ) : MedicineService {
-
-    companion object {
-        private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
-    }
 
     override suspend fun save(editData: MedicineEditData) {
         val entity = MedicineEntity(
@@ -132,16 +129,9 @@ class MedicineServiceImpl(
         return fileName
     }
 
-    override fun getMedicineUnitList() =
-        sharedPreferences.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList() ?: emptyList()
+    override fun getMedicineUnitList() = appSharedPref.getMedicineUnitList()
 
-    override fun getMedicineUnitListLive(): LiveData<List<String>> {
-        return Transformations.map(SharedPrefLiveData(sharedPreferences, KEY_MEDICINE_UNIT_SET, emptySet<String>())) {
-            it.toList()
-        }
-    }
+    override fun getMedicineUnitListLive() = appSharedPref.getMedicineUnitListLive()
 
-    override fun saveMedicineUnitList(newList: List<String>) = sharedPreferences.edit(commit = true) {
-        putStringSet(KEY_MEDICINE_UNIT_SET, newList.toMutableSet())
-    }
+    override fun saveMedicineUnitList(newList: List<String>) = appSharedPref.saveMedicineUnitList(newList)
 }

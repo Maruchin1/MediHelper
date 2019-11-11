@@ -35,5 +35,5 @@ data class MedicinePlanDto(
     val daysType: String,
 
     @SerializedName(value = "timeOfTakingDtoList")
-    val timeOfTakingList: List<TimeOfTakingDto>
+    val timeDoseList: List<TimeDoseDto>
 )

@@ -4,10 +4,7 @@ import android.os.Environment
 import android.preference.PreferenceManager
 import androidx.room.Room
 import androidx.work.WorkManager
-import com.example.medihelper.localdatabase.AppDatabase
-import com.example.medihelper.localdatabase.DeletedHistory
-import com.example.medihelper.localdatabase.DeletedHistoryImpl
-import com.example.medihelper.localdatabase.MedicineScheduler
+import com.example.medihelper.localdatabase.*
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel
@@ -44,60 +41,77 @@ import java.lang.reflect.Type
 
 private const val NAME_EXTERNAL_PICTURES_DIR = "name-external-pictures-dir"
 
-val appModule = module {
-    single { androidContext() as MainApplication }
+//val appModule = module {
+//
+//    single { WorkManager.getInstance(androidContext()) }
+//}
+
+val filesModule = module {
     single { androidContext().filesDir }
     single(named(NAME_EXTERNAL_PICTURES_DIR)) { androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) }
-    single { PreferenceManager.getDefaultSharedPreferences(androidContext()) }
-    single { WorkManager.getInstance(androidContext()) }
 }
 
-val mainDatabaseModule = module(override = true) {
+val mainRoomModule = module(override = true) {
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, AppDatabase.MAIN_DATABASE_NAME)
             .fallbackToDestructiveMigration()
             .build()
     }
-    single { get<AppDatabase>().medicineDao() }
-    single { get<AppDatabase>().personDao() }
-    single { get<AppDatabase>().medicinePlanDao() }
-    single { get<AppDatabase>().timeDoseDao() }
-    single { get<AppDatabase>().plannedMedicineDao() }
-    single<DeletedHistory> { DeletedHistoryImpl(get()) }
 }
 
-val connectedPersonDatabaseModule = module(override = true) {
+val connectedRoomModule = module(override = true) {
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, AppDatabase.CONNECTED_DATABASE_NAME)
             .fallbackToDestructiveMigration()
             .build()
     }
+}
+
+val localDataModule = module(override = true) {
     single { get<AppDatabase>().medicineDao() }
     single { get<AppDatabase>().personDao() }
     single { get<AppDatabase>().medicinePlanDao() }
     single { get<AppDatabase>().timeDoseDao() }
     single { get<AppDatabase>().plannedMedicineDao() }
-    single<DeletedHistory> { DeletedHistoryImpl(get()) }
+    single<DeletedHistory> { DeletedHistoryImpl(PreferenceManager.getDefaultSharedPreferences(androidContext())) }
+    single<AppSharedPref> { AppSharedPrefImpl(PreferenceManager.getDefaultSharedPreferences(androidContext())) }
+    single { MedicineScheduler() }
 }
 
-val testDatabaseModule = module(override = true) {
+val retrofitModule = module {
     single {
-        Room.inMemoryDatabaseBuilder(get(), AppDatabase::class.java)
-            .allowMainThreadQueries()
+        Retrofit.Builder()
+            .baseUrl("https://medihelper-api.herokuapp.com/")
+            .addConverterFactory(
+                GsonConverterFactory.create(
+                    GsonBuilder().setLenient().create()
+                )
+            )
             .build()
     }
-    single { get<AppDatabase>().medicineDao() }
-    single { get<AppDatabase>().personDao() }
-    single { get<AppDatabase>().medicinePlanDao() }
-    single { get<AppDatabase>().timeDoseDao() }
-    single { get<AppDatabase>().plannedMedicineDao() }
-    single<DeletedHistory> { DeletedHistoryImpl(get()) }
 }
 
-val serverApiModule = module {
-    single { appRetrofit.create(AuthenticationApi::class.java) }
-    single { appRetrofit.create(RegisteredUserApi::class.java) }
-    single { appRetrofit.create(ConnectedPersonApi::class.java) }
+val remoteDataModule = module {
+    single { get<Retrofit>().create(AuthenticationApi::class.java) }
+    single { get<Retrofit>().create(RegisteredUserApi::class.java) }
+    single { get<Retrofit>().create(ConnectedPersonApi::class.java) }
+    single { EntityDtoMapper(get(), get(), get()) }
+    single { LocalDatabaseDispatcher(get(), get(), get(), get(), get()) }
+}
+
+val serviceModule = module {
+    single<PersonService> { PersonServiceImpl(get(), get(), get()) }
+    single<MedicineService> { MedicineServiceImpl(get(), get(), get(named(NAME_EXTERNAL_PICTURES_DIR)), get(), get()) }
+    single<MedicinePlanService> { MedicinePlanServiceImpl(get(), get(), get(), get()) }
+    single<PlannedMedicineService> { PlannedMedicineServiceImpl(get(), get(), get(), get(), get()) }
+    single<AlarmService> { AlarmServiceImpl(get(), get()) }
+    single<DateTimeService> { DateTimeServiceImpl() }
+    single<InitialDataService> { InitialDataServiceImpl(get(), get()) }
+    single<LoadingScreenService> { LoadingScreenServiceImpl() }
+    single<NotificationService> { NotificationServiceImpl(get()) }
+    single<ServerApiService> { ServerApiServiceImpl(get(), get(), get(), get(), get(), get()) }
+
+    single { WorkManager.getInstance(androidContext()) }
 }
 
 val viewModelModule = module {
@@ -120,50 +134,4 @@ val viewModelModule = module {
     viewModel { ConnectedPersonViewModel(get(), get()) }
     viewModel { ScheduleDayViewModel(get(), get()) }
     viewModel { AlarmViewModel(get()) }
-}
-
-val serviceModule = module {
-    single<PersonService> { PersonServiceImpl(get(), get(), get()) }
-    single<MedicineService> { MedicineServiceImpl(get(), get(), get(named(NAME_EXTERNAL_PICTURES_DIR)), get(), get()) }
-    single<MedicinePlanService> { MedicinePlanServiceImpl(get(), get(), get(), get()) }
-    single<PlannedMedicineService> { PlannedMedicineServiceImpl(get(), get(), get(), get(), get()) }
-    single<AlarmService> { AlarmServiceImpl(get(), get()) }
-    single<DateTimeService> { DateTimeServiceImpl() }
-    single<InitialDataService> { InitialDataServiceImpl(get(), get()) }
-    single<LoadingScreenService> { LoadingScreenServiceImpl() }
-    single<NotificationService> { NotificationServiceImpl(get()) }
-    single<ServerApiService> { ServerApiServiceImpl(get(), get(), get(), get(), get(), get(), get()) }
-}
-
-val utilsModule = module {
-    single { EntityDtoMapper(get(), get(), get()) }
-    single { MedicineScheduler() }
-    single { LocalDatabaseDispatcher(get(), get(), get(), get(), get()) }
-}
-
-private val appRetrofit: Retrofit by lazy {
-    Retrofit.Builder()
-        .baseUrl("https://medihelper-api.herokuapp.com/")
-        .addConverterFactory(
-            GsonConverterFactory.create(
-                GsonBuilder()
-                    .registerTypeHierarchyAdapter(ByteArray::class.java, byteArrayToStringTypeAdapter)
-                    .setLenient()
-                    .create()
-            )
-        )
-        .build()
-}
-
-private val byteArrayToStringTypeAdapter by lazy {
-    object : JsonSerializer<ByteArray>, JsonDeserializer<ByteArray> {
-        override fun serialize(src: ByteArray?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
-            return JsonPrimitive(src?.let { String(src) })
-        }
-
-        override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): ByteArray {
-            return json?.asString?.toByteArray() ?: byteArrayOf()
-        }
-
-    }
 }

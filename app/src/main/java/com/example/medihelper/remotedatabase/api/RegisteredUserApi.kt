@@ -37,7 +37,4 @@ interface RegisteredUserApi {
 
     @DELETE("registered-users/data")
     suspend fun deleteAllData(@Header("Authorization") authToken: String)
-
-    @GET("registered-users/data/available")
-    suspend fun isDataAvailable(@Header("Authorization") authToken: String): Boolean
 }

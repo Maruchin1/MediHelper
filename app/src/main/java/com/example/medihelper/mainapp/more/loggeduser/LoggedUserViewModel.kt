@@ -29,7 +29,8 @@ class LoggedUserViewModel(
 
     fun changeUserPassword(newPassword: String) = viewModelScope.launch {
         loadingStartedAction.sendAction()
-        val errorMessage = serverApiService.changeUserPassword(newPassword)
-        changePasswordErrorLive.postValue(errorMessage)
+        val apiResponse = serverApiService.changeUserPassword(newPassword)
+        //todo mapować response na tekst
+        changePasswordErrorLive.postValue("error")
     }
 }

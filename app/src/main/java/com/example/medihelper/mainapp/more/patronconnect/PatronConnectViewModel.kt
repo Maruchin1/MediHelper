@@ -3,7 +3,6 @@ package com.example.medihelper.mainapp.more.patronconnect
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.medihelper.custom.ActionLiveData
 import com.example.medihelper.service.ServerApiService
 import kotlinx.coroutines.launch
 
@@ -39,8 +38,9 @@ class PatronConnectViewModel(
             val connectionKey = StringBuilder().apply {
                 charLiveList.forEach { append(it.value!!) }
             }.toString()
-            val errorMessage = serverApiService.connectWithPatron(connectionKey)
-            patronConnectErrorLive.postValue(errorMessage)
+            val apiResponse = serverApiService.connectWithPatron(connectionKey)
+            //todo mapować response na tekst
+            patronConnectErrorLive.postValue("error")
             loadingInProgressLive.postValue(false)
         }
     }
