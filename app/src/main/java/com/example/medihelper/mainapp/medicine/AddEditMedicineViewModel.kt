@@ -5,13 +5,15 @@ import androidx.lifecycle.*
 import com.example.medihelper.localdata.type.AppExpireDate
 import com.example.medihelper.localdata.pojo.MedicineEditData
 import com.example.medihelper.service.MedicineService
+import com.example.medihelper.service.FormValidatorService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
 
 
 class AddEditMedicineViewModel(
-    private val medicineService: MedicineService
+    private val medicineService: MedicineService,
+    private val formValidatorService: FormValidatorService
 ) : ViewModel() {
     private val TAG = AddEditMedicineViewModel::class.simpleName
 
@@ -74,28 +76,25 @@ class AddEditMedicineViewModel(
     }
 
     private fun validateInputData(): Boolean {
-        var inputDataValid = true
-        if (medicineNameLive.value.isNullOrEmpty()) {
-            errorMedicineNameLive.value = "Pole jest wymagane"
-            inputDataValid = false
-        } else {
-            errorMedicineNameLive.value = null
-        }
-        if (expireDateLive.value == null) {
-            errorExpireDateLive.value = "Pole jest wymagane"
-            inputDataValid = false
-        } else {
-            errorExpireDateLive.value = null
-        }
-        if (packageSizeLive.value != null &&
-            currStateLive.value != null &&
-            currStateLive.value!! > packageSizeLive.value!!
-        ) {
-            errorCurrStateLive.value = "Większe niż rozmiar opakowania"
-            inputDataValid = false
-        } else {
-            errorCurrStateLive.value = null
-        }
-        return inputDataValid
+        val error = formValidatorService.isMedicineValid(
+            medicineName = medicineNameLive.value,
+            expireDate = expireDateLive.value,
+            packageSize = packageSizeLive.value,
+            currState = currStateLive.value
+        )
+        var isValid = true
+        errorMedicineNameLive.value = if (error.emptyName) {
+            isValid = false
+            "Pole jest wymagane"
+        } else null
+        errorExpireDateLive.value = if (error.emptyExpireDate) {
+            isValid = false
+            "Pole jest wymagane"
+        } else null
+        errorCurrStateLive.value = if (error.currStateBiggerThanPackageSize) {
+            isValid = false
+            "Większe niż rozmiar opackowania"
+        } else null
+        return isValid
     }
 }

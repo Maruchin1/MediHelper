@@ -15,7 +15,8 @@ class AddEditMedicinePlanViewModel(
     private val personService: PersonService,
     private val medicineService: MedicineService,
     private val medicinePlanService: MedicinePlanService,
-    private val dateTimeService: DateTimeService
+    private val dateTimeService: DateTimeService,
+    private val formValidatorService: FormValidatorService
 ) : ViewModel() {
     private val TAG = AddEditMedicinePlanViewModel::class.simpleName
 
@@ -40,7 +41,7 @@ class AddEditMedicinePlanViewModel(
 
     val timeDoseListLive = MutableLiveData<MutableList<TimeDoseEditData>>()
 
-    val errorMessageLive = MutableLiveData<String>()
+    val errorGlobalMessageLive = MutableLiveData<String>()
     val errorStartDateLive = MutableLiveData<String>()
     val errorEndDateLive = MutableLiveData<String>()
 
@@ -154,43 +155,38 @@ class AddEditMedicinePlanViewModel(
     }
 
     private fun validateInputData(): Boolean {
-        var inputDataValid = true
-        if (selectedMedicineIDLive.value == null) {
-            errorMessageLive.postValue("Nie wybrano leku")
-            inputDataValid = false
+        val error = formValidatorService.isMedicinePlanValid(
+            medicineId = selectedMedicineIDLive.value,
+            startDate = startDateLive.value,
+            endDate = endDateLive.value,
+            durationType = durationTypeLive.value,
+            daysType = daysTypeLive.value,
+            daysOfWeek = daysOfWeekLive.value
+        )
+        var isValid = true
+        errorGlobalMessageLive.value = if (error.emptyMedicine) {
+            isValid = false
+            "Nie wybrano leku"
+        } else null
+        errorStartDateLive.value = if (error.emptyStartDate) {
+            isValid = false
+            "Pole wymagane"
+        } else null
+        errorEndDateLive.value = if (error.emptyEndDate) {
+            isValid = false
+            "Pole wymagane"
+        } else null
+        arrayOf(errorStartDateLive, errorEndDateLive).forEach {
+            it.value = if (error.incorrectDatesOrder) {
+                isValid = false
+                "Zła kolejnosć dat"
+            } else null
         }
-        if (durationTypeLive.value == DurationType.PERIOD) {
-            if (startDateLive.value == null) {
-                errorStartDateLive.value = "Pole wymagane"
-                inputDataValid = false
-            } else {
-                errorStartDateLive.value = null
-            }
-            if (endDateLive.value == null) {
-                errorEndDateLive.value = "Pole wymagane"
-                inputDataValid = false
-            } else {
-                errorEndDateLive.value = null
-            }
-            if (startDateLive.value != null && endDateLive.value != null) {
-                if (startDateLive.value!! >= endDateLive.value!!) {
-                    arrayOf(errorStartDateLive, errorEndDateLive).forEach { it.value = "Zła kolejność dat" }
-                    inputDataValid = false
-                } else {
-                    arrayOf(errorStartDateLive, errorEndDateLive).forEach { it.value = null }
-                }
-            }
-        }
-        if (daysTypeLive.value == DaysType.DAYS_OF_WEEK) {
-            daysOfWeekLive.value?.run {
-                val daysArray = arrayOf(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
-                if (daysArray.none { daySelected -> daySelected }) {
-                    errorMessageLive.postValue("Nie wybrano dni tygodnia")
-                    inputDataValid = false
-                }
-            }
-        }
-        return inputDataValid
+        errorGlobalMessageLive.value = if (error.emptyDaysOfWeek) {
+            isValid = false
+            "Niew wybrano dni tygodnia"
+        } else null
+        return isValid
     }
 
     data class TimeDoseDisplayData(

@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.medihelper.localdata.entity.MedicineEntity
 import com.example.medihelper.localdata.pojo.MedicineDetails
+import com.example.medihelper.localdata.pojo.MedicineEditData
 import com.example.medihelper.localdata.pojo.MedicineItem
 
 @Dao
@@ -35,6 +36,9 @@ interface MedicineDao {
 
     @Query("SELECT * FROM medicines WHERE medicine_id = :id")
     suspend fun getDetails(id: Int): MedicineDetails
+
+    @Query("SELECT * FROM medicines WHERE medicine_id = :id")
+    suspend fun getEditData(id: Int): MedicineEditData
 
     @Query("SELECT * FROM medicines")
     fun getItemListLive(): LiveData<List<MedicineItem>>

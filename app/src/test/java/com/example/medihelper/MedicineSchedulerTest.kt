@@ -1,10 +1,9 @@
 package com.example.medihelper
 
-import com.example.medihelper.localdata.entity.MedicinePlanEntity
 import com.example.medihelper.localdata.entity.PlannedMedicineEntity
 import com.example.medihelper.localdata.pojo.MedicinePlanEditData
 import com.example.medihelper.localdata.pojo.TimeDoseEditData
-import com.example.medihelper.localdata.MedicineScheduler
+import com.example.medihelper.utility.MedicineScheduler
 import com.example.medihelper.localdata.type.*
 import org.junit.Test
 import org.koin.core.context.startKoin

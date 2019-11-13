@@ -19,6 +19,7 @@ interface MedicineService {
     suspend fun increaseCurrState(medicineId: Int, doseSize: Float)
     suspend fun delete(id: Int)
     suspend fun getDetails(id: Int): MedicineDetails
+    suspend fun getEditData(id: Int): MedicineEditData
     fun getItemListLive(): LiveData<List<MedicineItem>>
     fun getFilteredItemListLive(searchQuery: String): LiveData<List<MedicineItem>>
     fun getItemLive(id: Int): LiveData<MedicineItem>
@@ -90,6 +91,8 @@ class MedicineServiceImpl(
     }
 
     override suspend fun getDetails(id: Int) = medicineDao.getDetails(id)
+
+    override suspend fun getEditData(id: Int) = medicineDao.getEditData(id)
 
     override fun getItemListLive() = medicineDao.getItemListLive()
 

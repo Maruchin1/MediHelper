@@ -2,12 +2,14 @@ package com.example.medihelper.mainapp.person
 
 import androidx.lifecycle.*
 import com.example.medihelper.localdata.pojo.PersonEditData
+import com.example.medihelper.service.FormValidatorService
 import com.example.medihelper.service.PersonService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AddEditPersonViewModel(
-    private val personService: PersonService
+    private val personService: PersonService,
+    private val formValidatorService: FormValidatorService
 ) : ViewModel() {
 
     val titleLive = MutableLiveData("Dodaj osobę")
@@ -63,14 +65,15 @@ class AddEditPersonViewModel(
     }
 
     private fun validateInputData(): Boolean {
-        var inputDataValid = true
-        errorPersonNameLive.value = if (personNameLive.value.isNullOrEmpty()) {
-            inputDataValid = false
+        val error = formValidatorService.isPersonValid(
+            personName = personNameLive.value
+        )
+        var isValid = true
+        errorPersonNameLive.value = if (error.emptyName) {
+            isValid = false
             "Podanie nazwy jest wymagane"
-        } else {
-            null
-        }
-        return inputDataValid
+        } else null
+        return isValid
     }
 
     data class PersonColorDisplayData(

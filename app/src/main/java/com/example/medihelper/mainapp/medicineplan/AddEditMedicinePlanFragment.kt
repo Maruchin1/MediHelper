@@ -20,7 +20,6 @@ import com.example.medihelper.databinding.FragmentAddEditMedicinePlanBinding
 import com.example.medihelper.mainapp.dialog.SelectTimeDialog
 import com.example.medihelper.mainapp.dialog.SelectFloatNumberDialog
 import com.example.medihelper.mainapp.dialog.SelectMedicineDialog
-import com.example.medihelper.localdata.entity.MedicinePlanEntity
 import com.example.medihelper.localdata.pojo.TimeDoseEditData
 import com.example.medihelper.localdata.type.DaysType
 import com.example.medihelper.localdata.type.DurationType
@@ -157,7 +156,7 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
             dialog?.window?.statusBarColor = ContextCompat.getColor(requireContext(), colorResID)
         })
-        viewModel.errorMessageLive.observe(viewLifecycleOwner, Observer { errorMessage ->
+        viewModel.errorGlobalMessageLive.observe(viewLifecycleOwner, Observer { errorMessage ->
             Snackbar.make(root_lay, errorMessage, Snackbar.LENGTH_SHORT).show()
         })
         viewModel.selectedMedicineAvailableLive.observe(viewLifecycleOwner, Observer {

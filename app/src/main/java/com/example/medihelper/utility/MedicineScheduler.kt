@@ -1,4 +1,4 @@
-package com.example.medihelper.localdata
+package com.example.medihelper.utility
 
 import com.example.medihelper.localdata.entity.PlannedMedicineEntity
 import com.example.medihelper.localdata.pojo.MedicinePlanEditData

@@ -3,7 +3,7 @@ package com.example.medihelper
 import androidx.room.Room
 import androidx.work.WorkManager
 import com.example.medihelper.localdata.*
-import com.example.medihelper.localdata.utils.StatusOfTakingCalculator
+import com.example.medihelper.utility.StatusOfTakingCalculator
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel
@@ -29,10 +29,10 @@ import com.example.medihelper.remotedata.api.RegisteredUserApi
 import com.example.medihelper.serversync.EntityDtoMapper
 import com.example.medihelper.serversync.LocalDatabaseDispatcher
 import com.example.medihelper.service.*
+import com.example.medihelper.utility.MedicineScheduler
 import com.google.gson.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -99,18 +99,20 @@ val serviceModule = module {
     single<NotificationService> { NotificationServiceImpl(get()) }
     single<ServerApiService> { ServerApiServiceImpl(get(), get(), get(), get(), get(), get()) }
 
+    single { FormValidatorService() }
+
     single { WorkManager.getInstance(androidContext()) }
 }
 
 val viewModelModule = module {
     viewModel { MedicinesViewModel(get(), get(), get()) }
-    viewModel { AddEditMedicineViewModel(get()) }
-    viewModel { AddEditPersonViewModel(get()) }
+    viewModel { AddEditMedicineViewModel(get(), get()) }
+    viewModel { AddEditPersonViewModel(get(), get()) }
     viewModel { PersonViewModel(get()) }
     viewModel { MedicinePlanHistoryViewModel(get(), get(), get()) }
     viewModel { MedicinePlanListViewModel(get(), get(), get(), get()) }
     viewModel { MedicineDetailsViewModel(get(), get(), get()) }
-    viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get()) }
+    viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get(), get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get(), get()) }
     viewModel { ScheduleViewModel(get(), get(), get()) }
     viewModel { MoreViewModel(get(), get()) }

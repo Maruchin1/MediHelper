@@ -8,27 +8,24 @@ data class MedicineEditData(
     @ColumnInfo(name = "medicine_id")
     val medicineId: Int = 0,
 
-    @ColumnInfo(name = "medicine_remote_id")
-    var medicineRemoteId: Long? = null,
-
     @ColumnInfo(name = "medicine_name")
-    var medicineName: String,
+    val medicineName: String,
 
     @ColumnInfo(name = "medicine_unit")
-    var medicineUnit: String,
+    val medicineUnit: String,
 
     @ColumnInfo(name = "expire_date")
-    var expireDate: AppExpireDate? = null,
+    val expireDate: AppExpireDate,
 
     @ColumnInfo(name = "package_size")
-    var packageSize: Float? = null,
+    val packageSize: Float? = null,
 
     @ColumnInfo(name = "curr_state")
-    var currState: Float? = null,
+    val currState: Float? = null,
 
     @ColumnInfo(name = "additional_info")
-    var additionalInfo: String? = null,
+    val additionalInfo: String? = null,
 
     @ColumnInfo(name = "image_name")
-    var imageName: String? = null
+    val imageName: String? = null
 )

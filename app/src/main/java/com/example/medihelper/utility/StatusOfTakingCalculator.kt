@@ -1,4 +1,4 @@
-package com.example.medihelper.localdata.utils
+package com.example.medihelper.utility
 
 import com.example.medihelper.localdata.type.AppDate
 import com.example.medihelper.localdata.type.AppTime

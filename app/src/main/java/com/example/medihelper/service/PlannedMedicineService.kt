@@ -3,15 +3,14 @@ package com.example.medihelper.service
 import androidx.lifecycle.LiveData
 import com.example.medihelper.localdata.type.AppDate
 import com.example.medihelper.localdata.DeletedHistory
-import com.example.medihelper.localdata.MedicineScheduler
+import com.example.medihelper.utility.MedicineScheduler
 import com.example.medihelper.localdata.dao.MedicinePlanDao
 import com.example.medihelper.localdata.dao.PlannedMedicineDao
 import com.example.medihelper.localdata.entity.PlannedMedicineEntity
 import com.example.medihelper.localdata.pojo.PlannedMedicineAlarmData
 import com.example.medihelper.localdata.pojo.PlannedMedicineDetails
 import com.example.medihelper.localdata.pojo.PlannedMedicineItem
-import com.example.medihelper.localdata.type.StatusOfTaking
-import com.example.medihelper.localdata.utils.StatusOfTakingCalculator
+import com.example.medihelper.utility.StatusOfTakingCalculator
 
 interface PlannedMedicineService {
     suspend fun addForMedicinePlan(medicinePlanId: Int)
