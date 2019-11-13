@@ -37,17 +37,17 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-private const val NAME_EXTERNAL_PICTURES_DIR = "name-external-pictures-dir"
+//private const val NAME_EXTERNAL_PICTURES_DIR = "name-external-pictures-dir"
 
 //val appModule = module {
 //
 //    single { WorkManager.getInstance(androidContext()) }
 //}
 
-val filesModule = module {
-    single { androidContext().filesDir }
-    single(named(NAME_EXTERNAL_PICTURES_DIR)) { androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) }
-}
+//val filesModule = module {
+//    single { androidContext().filesDir }
+//    single(named(NAME_EXTERNAL_PICTURES_DIR)) { androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) }
+//}
 
 val mainRoomModule = module(override = true) {
     single {

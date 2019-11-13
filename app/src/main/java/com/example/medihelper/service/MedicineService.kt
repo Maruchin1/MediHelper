@@ -1,8 +1,10 @@
 package com.example.medihelper.service
 
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.DeletedHistory
+import com.example.medihelper.localdata.MedicineImageFiles
 import com.example.medihelper.localdata.dao.MedicineDao
 import com.example.medihelper.localdata.entity.MedicineEntity
 import com.example.medihelper.localdata.pojo.MedicineDetails
@@ -23,8 +25,7 @@ interface MedicineService {
     fun getItemLive(id: Int): LiveData<MedicineItem>
     fun getDetailsLive(id: Int): LiveData<MedicineDetails>
     fun getImageFile(imageName: String): File
-    fun createTempImageFile(): File
-    fun saveTmpFile(medicineName: String, tempFile: File): String
+    fun getTempImageCaptureIntentAndFileLive(): Pair<Intent, LiveData<File>>
     fun getMedicineUnitList(): List<String>
     fun getMedicineUnitListLive(): LiveData<List<String>>
     fun saveMedicineUnitList(newList: List<String>)
@@ -32,10 +33,9 @@ interface MedicineService {
 
 class MedicineServiceImpl(
     private val medicineDao: MedicineDao,
-    private val appFilesDir: File,
-    private val externalImagesDir: File,
     private val appSharedPref: AppSharedPref,
-    private val deletedHistory: DeletedHistory
+    private val deletedHistory: DeletedHistory,
+    private val medicineImageFiles: MedicineImageFiles
 ) : MedicineService {
 
     override suspend fun save(editData: MedicineEditData) {
@@ -99,25 +99,9 @@ class MedicineServiceImpl(
 
     override fun getDetailsLive(id: Int) = medicineDao.getDetailsLive(id)
 
-    override fun getImageFile(imageName: String) = File(appFilesDir, imageName)
+    override fun getImageFile(imageName: String) = medicineImageFiles.getImageFile(imageName)
 
-    override fun createTempImageFile(): File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        return File.createTempFile(
-            "TMP_${timeStamp}",
-            ".jpg",
-            externalImagesDir
-        ).apply {
-            deleteOnExit()
-        }
-    }
-
-    override fun saveTmpFile(medicineName: String, tempFile: File): String {
-        val fileName = medicineName + tempFile.name.replace("TMP", "")
-        val file = File(appFilesDir, fileName)
-        tempFile.copyTo(file)
-        return fileName
-    }
+    override fun getTempImageCaptureIntentAndFileLive() = medicineImageFiles.getTempImageCaptureIntentAndFileLive()
 
     override fun getMedicineUnitList() = appSharedPref.getMedicineUnitList()
 

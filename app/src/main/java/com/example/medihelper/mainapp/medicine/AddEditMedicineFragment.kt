@@ -22,7 +22,6 @@ import java.io.File
 
 class AddEditMedicineFragment : AppFullScreenDialog() {
     private val TAG = "AddEditMedicineFragment"
-    private val REQUEST_IMAGE_CAPTURE = 1
 
     private val viewModel: AddEditMedicineViewModel by viewModel()
     private val args: AddEditMedicineFragmentArgs by navArgs()
@@ -56,16 +55,13 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
         setupToolbar()
         setupTextFieldsFocusListener()
         observeViewModel()
-//        setupSpinMedicineType()
     }
 
     private fun observeViewModel() {
-        viewModel.run {
-            imageFileLive.observe(viewLifecycleOwner, Observer { photoFile ->
-                Log.d(TAG, "photoFile change = $photoFile")
-                setPhotoImage(photoFile)
-            })
-        }
+        viewModel.imageFileLive.observe(viewLifecycleOwner, Observer { photoFile ->
+            Log.d(TAG, "photoFile change = $photoFile")
+            setPhotoImage(photoFile)
+        })
     }
 
     private fun setPhotoImage(photoFile: File?) {
@@ -76,26 +72,6 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
                 .into(img_photo)
         }
     }
-
-//    private fun setupSpinMedicineType() {
-//        context?.run {
-//            spin_medicine_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//                override fun onNothingSelected(parent: AdapterView<*>?) {}
-//
-//                override fun onItemSelected(
-//                    parent: AdapterView<*>?,
-//                    view: View?,
-//                    position: Int,
-//                    id: Long
-//                ) {
-//                    viewModel.setMedicineType(position)
-//                }
-//            }
-//            spin_medicine_type.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1).apply {
-//                addAll(viewModel.medicineUnitList)
-//            }
-//        }
-//    }
 
     private fun setupTextFieldsFocusListener() {
         etx_package_size.setOnFocusChangeListener { view, hasFocus ->

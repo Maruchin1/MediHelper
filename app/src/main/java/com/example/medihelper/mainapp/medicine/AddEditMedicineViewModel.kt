@@ -1,9 +1,6 @@
 package com.example.medihelper.mainapp.medicine
 
-import android.content.Intent
-import android.provider.MediaStore
-import androidx.core.content.FileProvider
-import androidx.fragment.app.FragmentActivity
+import android.app.Activity
 import androidx.lifecycle.*
 import com.example.medihelper.localdata.type.AppExpireDate
 import com.example.medihelper.localdata.pojo.MedicineEditData
@@ -14,7 +11,6 @@ import java.io.File
 
 
 class AddEditMedicineViewModel(
-    private val appFileDir: File,
     private val medicineService: MedicineService
 ) : ViewModel() {
     private val TAG = AddEditMedicineViewModel::class.simpleName
@@ -28,7 +24,7 @@ class AddEditMedicineViewModel(
     val packageSizeLive = MutableLiveData<Float>()
     val currStateLive = MutableLiveData<Float>()
     val commentsLive = MutableLiveData<String>()
-    val imageFileLive = MutableLiveData<File>()
+    val imageFileLive = MediatorLiveData<File>()
     val errorMedicineNameLive = MutableLiveData<String>()
     val errorExpireDateLive = MutableLiveData<String>()
     val errorCurrStateLive = MutableLiveData<String>()
@@ -45,7 +41,7 @@ class AddEditMedicineViewModel(
                 packageSizeLive.postValue(packageSize)
                 currStateLive.postValue(currState)
                 commentsLive.postValue(additionalInfo)
-                imageFileLive.postValue(imageName?.let { File(appFileDir, it) })
+                imageFileLive.postValue(imageName?.let { medicineService.getImageFile(it) })
             }
         }
     }
@@ -72,20 +68,28 @@ class AddEditMedicineViewModel(
         return false
     }
 
-    fun takePhotoIntent(activity: FragmentActivity): Intent {
-        return Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(activity.packageManager)?.also {
-                val imageFile = medicineService.createTempImageFile()
-                imageFileLive.value = imageFile
-                val photoURI = FileProvider.getUriForFile(
-                    activity,
-                    "com.example.medihelper.fileprovider",
-                    imageFile
-                )
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-            }
-        }
+    fun capturePhoto(activity: Activity) {
+        val returnedPair = medicineService.getTempImageCaptureIntentAndFileLive()
+        val captureIntent = returnedPair.first
+        val imageFileLive = returnedPair.second
+
+        this.imageFileLive.addSource(imageFileLive) { this.imageFileLive.value = it }
     }
+
+//    fun takePhotoIntent(activity: FragmentActivity): Intent {
+//        return Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+//            takePictureIntent.resolveActivity(activity.packageManager)?.also {
+//                val imageFile = medicineService.createTempImageFile()
+//                imageFileLive.value = imageFile
+//                val photoURI = FileProvider.getUriForFile(
+//                    activity,
+//                    "com.example.medihelper.fileprovider",
+//                    imageFile
+//                )
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+//            }
+//        }
+//    }
 
     private fun validateInputData(): Boolean {
         var inputDataValid = true
