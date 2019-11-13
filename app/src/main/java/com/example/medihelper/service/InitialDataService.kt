@@ -1,6 +1,9 @@
 package com.example.medihelper.service
 
 import com.example.medihelper.R
+import com.example.medihelper.localdata.AppSharedPref
+import com.example.medihelper.localdata.dao.PersonDao
+import com.example.medihelper.localdata.entity.PersonEntity
 import com.example.medihelper.localdata.pojo.PersonEditData
 
 interface InitialDataService {
@@ -8,23 +11,23 @@ interface InitialDataService {
 }
 
 class InitialDataServiceImpl(
-    private val personService: PersonService,
-    private val medicineService: MedicineService
+    private val personDao: PersonDao,
+    private val appSharedPref: AppSharedPref
 ) : InitialDataService {
 
     override suspend fun checkInitialData() {
-        if (personService.getMainPersonID() == null) {
-            personService.save(getInitialPerson())
+        if (personDao.getMainPersonID() == null) {
+            personDao.insert(getInitialPerson())
         }
-        if (medicineService.getMedicineUnitList().isNullOrEmpty()) {
-            medicineService.saveMedicineUnitList(getInitialMedicineUnitList())
+        if (appSharedPref.getMedicineUnitList().isNullOrEmpty()) {
+            appSharedPref.saveMedicineUnitList(getInitialMedicineUnitList())
         }
-        if (personService.getColorResIdList().isNullOrEmpty()) {
-            personService.saveColorResIdList(getInitialPersonColorResIDList())
+        if (appSharedPref.getColorResIdList().isNullOrEmpty()) {
+            appSharedPref.saveColorResIdList(getInitialPersonColorResIDList())
         }
     }
 
-    private fun getInitialPerson() = PersonEditData(
+    private fun getInitialPerson() = PersonEntity(
         personId = 0,
         personName = "Użytkownik",
         personColorResId = R.color.colorPrimary,
