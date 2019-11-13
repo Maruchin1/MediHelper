@@ -1,6 +1,12 @@
 package com.example.medihelper.mainapp.medicine
 
+import android.Manifest
 import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import com.example.medihelper.localdata.type.AppExpireDate
 import com.example.medihelper.localdata.pojo.MedicineEditData
@@ -70,9 +76,20 @@ class AddEditMedicineViewModel(
         return false
     }
 
-    fun capturePhoto(activity: Activity) {
+    fun isCameraPermissionGranted(context: Context) =
+        ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+
+    fun askForCameraPermission(activity: Activity, requestCode: Int) {
+        ActivityCompat.requestPermissions(
+            activity,
+            arrayOf(Manifest.permission.CAMERA),
+            requestCode
+        )
+    }
+
+    fun capturePhoto(fragment: Fragment) {
         val captureIntent = medicineService.getTempImageCaptureIntent(imageFileLive)
-        activity.startActivity(captureIntent)
+        fragment.startActivity(captureIntent)
     }
 
     private fun validateInputData(): Boolean {
@@ -96,5 +113,9 @@ class AddEditMedicineViewModel(
             "Większe niż rozmiar opackowania"
         } else null
         return isValid
+    }
+
+    private fun requestCameraPermission(activity: Activity) {
+
     }
 }

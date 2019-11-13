@@ -23,10 +23,20 @@ import java.io.File
 class AddEditMedicineFragment : AppFullScreenDialog() {
     private val TAG = "AddEditMedicineFragment"
 
+    companion object {
+        const val PERMISSION_REQUEST_CAMERA = 1
+    }
+
     private val viewModel: AddEditMedicineViewModel by viewModel()
     private val args: AddEditMedicineFragmentArgs by navArgs()
 
-    fun onClickTakePhoto() = viewModel.capturePhoto(requireActivity())
+    fun onClickTakePhoto() {
+        if (viewModel.isCameraPermissionGranted(requireContext())) {
+            viewModel.capturePhoto(this)
+        } else {
+            viewModel.askForCameraPermission(requireActivity(), PERMISSION_REQUEST_CAMERA)
+        }
+    }
 
     fun onClickSelectExpireDate() = SelectMonthDateDialog().apply {
         defaultDate = viewModel.expireDateLive.value
