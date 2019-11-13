@@ -10,14 +10,14 @@ class AppDateTest {
     @Test
     fun appDate_NewDate_TimeInMillis() {
         val calendar = Calendar.getInstance().apply {
-            set(2019, 10, 1)
+            set(2019, 10, 13)
         }
         val date = AppDate(calendar.timeInMillis)
         with(date) {
             assertThat(year).isEqualTo(2019)
-            assertThat(month).isEqualTo(10)
-            assertThat(day).isEqualTo(1)
-            assertThat(dayOfWeek).isEqualTo(3)
+            assertThat(month).isEqualTo(11)
+            assertThat(day).isEqualTo(13)
+            assertThat(dayOfWeek).isEqualTo(4)
         }
     }
 

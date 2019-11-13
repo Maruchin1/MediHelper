@@ -46,4 +46,6 @@ class StatusOfTakingCalculatorTest : KoinTest {
         Truth.assertThat(resultStatus).isEqualTo(StatusOfTaking.NOT_TAKEN)
     }
 
+
+
 }

@@ -39,7 +39,6 @@ class AppDate : Comparable<AppDate> {
             ).forEach { calendarField ->
                 set(calendarField, 0)
             }
-            add(Calendar.MONTH, -1)
         }
     }
 

@@ -123,7 +123,7 @@ class ScheduleFragment : Fragment() {
     private fun setupCalendarView() {
         calendar_view.setOnDateChangeListener { _, year, month, day ->
             Log.d(TAG, "calendar date change")
-            viewModel.selectDate(AppDate(year, month, day))
+            viewModel.selectDate(AppDate(year, month + 1, day))
             TransitionManager.beginDelayedTransition(root_lay)
             viewModel.calendarLayoutVisibleLive.value = false
         }
