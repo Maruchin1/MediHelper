@@ -11,6 +11,7 @@ import com.example.medihelper.localdata.pojo.PlannedMedicineAlarmData
 import com.example.medihelper.localdata.pojo.PlannedMedicineDetails
 import com.example.medihelper.localdata.pojo.PlannedMedicineItem
 import com.example.medihelper.localdata.type.StatusOfTaking
+import com.example.medihelper.localdata.utils.StatusOfTakingCalculator
 
 interface PlannedMedicineService {
     suspend fun addForMedicinePlan(medicinePlanId: Int)
@@ -18,7 +19,6 @@ interface PlannedMedicineService {
     suspend fun updateAllStatus()
     suspend fun changeMedicineTaken(plannedMedicineId: Int, taken: Boolean)
     suspend fun delete(idList: List<Int>)
-    suspend fun deleteFromDateByMedicinePlanID(date: AppDate, id: Int)
     suspend fun getAlarmData(id: Int): PlannedMedicineAlarmData
     fun getDetailsLive(id: Int): LiveData<PlannedMedicineDetails>
     fun getItemListLiveByDateAndPerson(date: AppDate, personID: Int): LiveData<List<PlannedMedicineItem>>
@@ -30,7 +30,8 @@ class PlannedMedicineServiceImpl(
     private val medicinePlanDao: MedicinePlanDao,
     private val dateTimeService: DateTimeService,
     private val medicineScheduler: MedicineScheduler,
-    private val deletedHistory: DeletedHistory
+    private val deletedHistory: DeletedHistory,
+    private val statusOfTakingCalculator: StatusOfTakingCalculator
 ) : PlannedMedicineService {
 
     override suspend fun addForMedicinePlan(medicinePlanId: Int) {
@@ -51,7 +52,13 @@ class PlannedMedicineServiceImpl(
     override suspend fun updateAllStatus() {
         val updatedList = plannedMedicineDao.getEntityList().map { entity ->
             entity.apply {
-                statusOfTaking = getStatusByCurrDate(entity)
+                statusOfTaking = statusOfTakingCalculator.getByCurrStatus(
+                    plannedDate = entity.plannedDate,
+                    plannedTime = entity.plannedTime,
+                    currDate = dateTimeService.getCurrDate(),
+                    currTime = dateTimeService.getCurrTime(),
+                    currStatusOfTaking = entity.statusOfTaking
+                )
             }
         }
         plannedMedicineDao.update(updatedList)
@@ -59,7 +66,13 @@ class PlannedMedicineServiceImpl(
 
     override suspend fun changeMedicineTaken(plannedMedicineId: Int, taken: Boolean) {
         val entity = plannedMedicineDao.getEntityById(plannedMedicineId)
-        val newStatus = getStatusByTaken(entity, taken)
+        val newStatus = statusOfTakingCalculator.getByTaken(
+            plannedDate = entity.plannedDate,
+            plannedTime = entity.plannedTime,
+            currDate = dateTimeService.getCurrDate(),
+            currTime = dateTimeService.getCurrTime(),
+            taken = taken
+        )
         entity.statusOfTaking = newStatus
         plannedMedicineDao.update(entity)
     }
@@ -69,10 +82,6 @@ class PlannedMedicineServiceImpl(
             plannedMedicineDao.getRemoteId(plannedMedicineID)?.let { deletedHistory.addToPlannedMedicineHistory(it) }
         }
         plannedMedicineDao.delete(idList)
-    }
-
-    override suspend fun deleteFromDateByMedicinePlanID(date: AppDate, id: Int) {
-
     }
 
     override suspend fun getAlarmData(id: Int) = plannedMedicineDao.getAlarmData(id)
@@ -85,32 +94,13 @@ class PlannedMedicineServiceImpl(
     override fun updateStatusOfTakingByCurrDate(entityList: List<PlannedMedicineEntity>): List<PlannedMedicineEntity> {
         return entityList.map { entity ->
             entity.apply {
-                statusOfTaking = getStatusByCurrDate(entity)
-            }
-        }
-    }
-
-    private fun getStatusByTaken(entity: PlannedMedicineEntity, taken: Boolean): StatusOfTaking {
-        return if (taken) {
-           StatusOfTaking.TAKEN
-        } else {
-            getStatusByCurrDate(entity)
-        }
-    }
-
-    private fun getStatusByCurrDate(entity: PlannedMedicineEntity): StatusOfTaking {
-        return if (entity.statusOfTaking == StatusOfTaking.TAKEN) {
-            StatusOfTaking.TAKEN
-        } else {
-            val currDate = dateTimeService.getCurrDate()
-            val currTime = dateTimeService.getCurrTime()
-            when {
-                entity.plannedDate > currDate -> StatusOfTaking.WAITING
-                entity.plannedDate < currDate -> StatusOfTaking.NOT_TAKEN
-                else -> when {
-                    entity.plannedTime < currTime -> StatusOfTaking.NOT_TAKEN
-                    else ->StatusOfTaking.WAITING
-                }
+                statusOfTaking = statusOfTakingCalculator.getByCurrStatus(
+                    plannedDate = entity.plannedDate,
+                    plannedTime = entity.plannedTime,
+                    currDate = dateTimeService.getCurrDate(),
+                    currTime = dateTimeService.getCurrTime(),
+                    currStatusOfTaking = entity.statusOfTaking
+                )
             }
         }
     }

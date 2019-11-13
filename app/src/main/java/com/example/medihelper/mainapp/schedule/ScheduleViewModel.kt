@@ -50,7 +50,7 @@ class ScheduleViewModel(
     }
 
     fun getPositionForDate(date: AppDate): Int {
-        val daysDiff = dateTimeService.daysBetween(dateTimeService.getCurrDate(), date)
+        val daysDiff = dateTimeService.calcDaysBetween(dateTimeService.getCurrDate(), date)
         return (timelineDaysCount / 2) + daysDiff.toInt()
     }
 }

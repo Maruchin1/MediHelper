@@ -3,6 +3,7 @@ package com.example.medihelper
 import androidx.room.Room
 import androidx.work.WorkManager
 import com.example.medihelper.localdata.*
+import com.example.medihelper.localdata.utils.StatusOfTakingCalculator
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel
@@ -74,6 +75,7 @@ val localDataModule = module(override = true) {
     single<DeletedHistory> { DeletedHistoryImpl(androidContext()) }
     single<AppSharedPref> { AppSharedPrefImpl(androidContext()) }
     single<MedicineImageFiles> { MedicineImageFilesImpl(androidContext()) }
+    single { StatusOfTakingCalculator() }
     single { MedicineScheduler() }
 }
 
@@ -89,7 +91,7 @@ val serviceModule = module {
     single<PersonService> { PersonServiceImpl(get(), get(), get()) }
     single<MedicineService> { MedicineServiceImpl(get(), get(), get(), get()) }
     single<MedicinePlanService> { MedicinePlanServiceImpl(get(), get(), get(), get()) }
-    single<PlannedMedicineService> { PlannedMedicineServiceImpl(get(), get(), get(), get(), get()) }
+    single<PlannedMedicineService> { PlannedMedicineServiceImpl(get(), get(), get(), get(), get(), get()) }
     single<AlarmService> { AlarmServiceImpl(get(), get()) }
     single<DateTimeService> { DateTimeServiceImpl() }
     single<InitialDataService> { InitialDataServiceImpl(get(), get()) }

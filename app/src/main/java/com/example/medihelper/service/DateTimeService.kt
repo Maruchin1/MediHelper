@@ -7,7 +7,7 @@ import java.util.*
 interface DateTimeService {
     fun getCurrDate(): AppDate
     fun getCurrTime(): AppTime
-    fun daysBetween(date1: AppDate, date2: AppDate): Long
+    fun calcDaysBetween(firstDate: AppDate, secondDate: AppDate): Long
 }
 
 class DateTimeServiceImpl : DateTimeService {
@@ -16,9 +16,9 @@ class DateTimeServiceImpl : DateTimeService {
 
     override fun getCurrTime() = AppTime(Calendar.getInstance().timeInMillis)
 
-    override fun daysBetween(date1: AppDate, date2: AppDate): Long {
-        val days1 = date1.timeInMillis / (24 * 3600 * 1000)
-        val days2 = date2.timeInMillis / (24 * 3600 * 1000)
+    override fun calcDaysBetween(firstDate: AppDate, secondDate: AppDate): Long {
+        val days1 = firstDate.timeInMillis / (24 * 3600 * 1000)
+        val days2 = secondDate.timeInMillis / (24 * 3600 * 1000)
         val daysDiff = days2 - days1
         return daysDiff
     }
