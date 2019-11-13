@@ -2,6 +2,7 @@ package com.example.medihelper.service
 
 import android.content.Intent
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.DeletedHistory
 import com.example.medihelper.localdata.MedicineImageFiles
@@ -11,8 +12,6 @@ import com.example.medihelper.localdata.pojo.MedicineDetails
 import com.example.medihelper.localdata.pojo.MedicineEditData
 import com.example.medihelper.localdata.pojo.MedicineItem
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
 interface MedicineService {
     suspend fun save(editData: MedicineEditData)
@@ -25,7 +24,8 @@ interface MedicineService {
     fun getItemLive(id: Int): LiveData<MedicineItem>
     fun getDetailsLive(id: Int): LiveData<MedicineDetails>
     fun getImageFile(imageName: String): File
-    fun getTempImageCaptureIntentAndFileLive(): Pair<Intent, LiveData<File>>
+    fun getTempImageCaptureIntent(capturedFileLive: MutableLiveData<File>): Intent
+    fun saveTempFileAsPerma(medicineName: String, tempFile: File): String
     fun getMedicineUnitList(): List<String>
     fun getMedicineUnitListLive(): LiveData<List<String>>
     fun saveMedicineUnitList(newList: List<String>)
@@ -101,7 +101,11 @@ class MedicineServiceImpl(
 
     override fun getImageFile(imageName: String) = medicineImageFiles.getImageFile(imageName)
 
-    override fun getTempImageCaptureIntentAndFileLive() = medicineImageFiles.getTempImageCaptureIntentAndFileLive()
+    override fun getTempImageCaptureIntent(capturedFileLive: MutableLiveData<File>) =
+        medicineImageFiles.getTempImageCaptureIntent(capturedFileLive)
+
+    override fun saveTempFileAsPerma(medicineName: String, tempFile: File) =
+        medicineImageFiles.saveTempImageFileAsPerma(medicineName, tempFile)
 
     override fun getMedicineUnitList() = appSharedPref.getMedicineUnitList()
 

@@ -24,7 +24,7 @@ class AddEditMedicineViewModel(
     val packageSizeLive = MutableLiveData<Float>()
     val currStateLive = MutableLiveData<Float>()
     val commentsLive = MutableLiveData<String>()
-    val imageFileLive = MediatorLiveData<File>()
+    val imageFileLive = MutableLiveData<File>()
     val errorMedicineNameLive = MutableLiveData<String>()
     val errorExpireDateLive = MutableLiveData<String>()
     val errorCurrStateLive = MutableLiveData<String>()
@@ -57,7 +57,7 @@ class AddEditMedicineViewModel(
                 currState = currStateLive.value,
                 additionalInfo = commentsLive.value,
                 imageName = imageFileLive.value?.let { imageFile ->
-                    medicineService.saveTmpFile(medicineNameLive.value!!, imageFile)
+                    medicineService.saveTempFileAsPerma(medicineNameLive.value!!, imageFile)
                 }
             )
             GlobalScope.launch {
@@ -69,27 +69,9 @@ class AddEditMedicineViewModel(
     }
 
     fun capturePhoto(activity: Activity) {
-        val returnedPair = medicineService.getTempImageCaptureIntentAndFileLive()
-        val captureIntent = returnedPair.first
-        val imageFileLive = returnedPair.second
-
-        this.imageFileLive.addSource(imageFileLive) { this.imageFileLive.value = it }
+        val captureIntent = medicineService.getTempImageCaptureIntent(imageFileLive)
+        activity.startActivity(captureIntent)
     }
-
-//    fun takePhotoIntent(activity: FragmentActivity): Intent {
-//        return Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-//            takePictureIntent.resolveActivity(activity.packageManager)?.also {
-//                val imageFile = medicineService.createTempImageFile()
-//                imageFileLive.value = imageFile
-//                val photoURI = FileProvider.getUriForFile(
-//                    activity,
-//                    "com.example.medihelper.fileprovider",
-//                    imageFile
-//                )
-//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-//            }
-//        }
-//    }
 
     private fun validateInputData(): Boolean {
         var inputDataValid = true

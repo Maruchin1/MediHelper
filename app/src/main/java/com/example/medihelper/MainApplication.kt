@@ -23,7 +23,6 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
             modules(
                 listOf(
-                    filesModule,
                     mainRoomModule,
                     retrofitModule,
                     localDataModule,

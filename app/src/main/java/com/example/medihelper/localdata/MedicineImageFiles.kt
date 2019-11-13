@@ -1,12 +1,10 @@
 package com.example.medihelper.localdata
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.io.File
 import java.text.SimpleDateFormat
@@ -14,8 +12,8 @@ import java.util.*
 
 interface MedicineImageFiles {
     fun getImageFile(imageName: String): File
-    fun getTempImageCaptureIntentAndFileLive(): Pair<Intent, LiveData<File>>
-    fun saveTempFile(medicineName: String, tempFile: File): String
+    fun getTempImageCaptureIntent(capturedFileLive: MutableLiveData<File>): Intent
+    fun saveTempImageFileAsPerma(medicineName: String, tempFile: File): String
 }
 
 class MedicineImageFilesImpl(private val context: Context) : MedicineImageFiles {
@@ -25,12 +23,11 @@ class MedicineImageFilesImpl(private val context: Context) : MedicineImageFiles 
 
     override fun getImageFile(imageName: String) = File(internalFilesDir, imageName)
 
-    override fun getTempImageCaptureIntentAndFileLive(): Pair<Intent, LiveData<File>> {
-        val tempImageFileLive = MutableLiveData<File>()
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
+    override fun getTempImageCaptureIntent(capturedFileLive: MutableLiveData<File>): Intent {
+         return Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
             intent.resolveActivity(context.packageManager)?.also {
                 val tempImageFile = createTempImageFile()
-                tempImageFileLive.postValue(tempImageFile)
+                capturedFileLive.postValue(tempImageFile)
                 val photoURI = FileProvider.getUriForFile(
                     context,
                     "com.example.medihelper.fileprovider",
@@ -39,10 +36,9 @@ class MedicineImageFilesImpl(private val context: Context) : MedicineImageFiles 
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
             }
         }
-        return Pair(intent, tempImageFileLive)
     }
 
-    override fun saveTempFile(medicineName: String, tempFile: File): String {
+    override fun saveTempImageFileAsPerma(medicineName: String, tempFile: File): String {
         val fileName = medicineName + tempFile.name.replace("TMP", "")
         val file = File(internalFilesDir, fileName)
         tempFile.copyTo(file)

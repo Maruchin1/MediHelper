@@ -14,7 +14,6 @@ import com.example.medihelper.service.ServerApiService
 import java.io.File
 
 class MedicinesViewModel(
-    private val appFilesDir: File,
     private val personService: PersonService,
     private val medicineService: MedicineService,
     private val serverApiService: ServerApiService
@@ -56,7 +55,7 @@ class MedicinesViewModel(
             stateLayoutWeight = medicineStateData.stateWeight,
             emptyLayoutWeight = medicineStateData.emptyWeight,
             stateColorId = medicineStateData.colorId,
-            medicineImageFile = medicineItem.imageName?.let { File(appFilesDir, it) }
+            medicineImageFile = medicineItem.imageName?.let { medicineService.getImageFile(it) }
         )
     }
 

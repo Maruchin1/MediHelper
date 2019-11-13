@@ -26,10 +26,7 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
     private val viewModel: AddEditMedicineViewModel by viewModel()
     private val args: AddEditMedicineFragmentArgs by navArgs()
 
-    fun onClickTakePhoto() {
-        val intent = viewModel.takePhotoIntent(requireActivity())
-        startActivity(intent)
-    }
+    fun onClickTakePhoto() = viewModel.capturePhoto(requireActivity())
 
     fun onClickSelectExpireDate() = SelectMonthDateDialog().apply {
         defaultDate = viewModel.expireDateLive.value

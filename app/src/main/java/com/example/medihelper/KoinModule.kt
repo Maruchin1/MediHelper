@@ -1,6 +1,5 @@
 package com.example.medihelper
 
-import android.os.Environment
 import androidx.room.Room
 import androidx.work.WorkManager
 import com.example.medihelper.localdata.*
@@ -37,18 +36,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-//private const val NAME_EXTERNAL_PICTURES_DIR = "name-external-pictures-dir"
-
-//val appModule = module {
-//
-//    single { WorkManager.getInstance(androidContext()) }
-//}
-
-//val filesModule = module {
-//    single { androidContext().filesDir }
-//    single(named(NAME_EXTERNAL_PICTURES_DIR)) { androidContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) }
-//}
-
 val mainRoomModule = module(override = true) {
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, AppDatabase.MAIN_DATABASE_NAME)
@@ -73,6 +60,7 @@ val localDataModule = module(override = true) {
     single { get<AppDatabase>().plannedMedicineDao() }
     single<DeletedHistory> { DeletedHistoryImpl(androidContext()) }
     single<AppSharedPref> { AppSharedPrefImpl(androidContext()) }
+    single<MedicineImageFiles> { MedicineImageFilesImpl(androidContext()) }
     single { MedicineScheduler() }
 }
 
@@ -99,7 +87,7 @@ val remoteDataModule = module {
 
 val serviceModule = module {
     single<PersonService> { PersonServiceImpl(get(), get(), get()) }
-    single<MedicineService> { MedicineServiceImpl(get(), get(), get(named(NAME_EXTERNAL_PICTURES_DIR)), get(), get()) }
+    single<MedicineService> { MedicineServiceImpl(get(), get(), get(), get()) }
     single<MedicinePlanService> { MedicinePlanServiceImpl(get(), get(), get(), get()) }
     single<PlannedMedicineService> { PlannedMedicineServiceImpl(get(), get(), get(), get(), get()) }
     single<AlarmService> { AlarmServiceImpl(get(), get()) }
@@ -113,8 +101,8 @@ val serviceModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { MedicinesViewModel(get(), get(), get(), get()) }
-    viewModel { AddEditMedicineViewModel(get(), get()) }
+    viewModel { MedicinesViewModel(get(), get(), get()) }
+    viewModel { AddEditMedicineViewModel(get()) }
     viewModel { AddEditPersonViewModel(get()) }
     viewModel { PersonViewModel(get()) }
     viewModel { MedicinePlanHistoryViewModel(get(), get(), get()) }
