@@ -54,13 +54,13 @@ class Converter {
 
     // DaysType
     @TypeConverter
-    fun daysTypeToString(daysType: DaysType): String {
-        return daysType.toString()
+    fun daysTypeToString(daysType: DaysType?): String? {
+        return daysType?.toString()
     }
 
     @TypeConverter
-    fun stringToDaysType(string: String): DaysType {
-        return DaysType.valueOf(string)
+    fun stringToDaysType(string: String?): DaysType? {
+        return string?.let { DaysType.valueOf(it) }
     }
 
 //    // List<TimeOfTaking>

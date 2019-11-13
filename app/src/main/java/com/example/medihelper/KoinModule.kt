@@ -52,18 +52,6 @@ val connectedRoomModule = module(override = true) {
     }
 }
 
-val localDataModule = module(override = true) {
-    single { get<AppDatabase>().medicineDao() }
-    single { get<AppDatabase>().personDao() }
-    single { get<AppDatabase>().medicinePlanDao() }
-    single { get<AppDatabase>().timeDoseDao() }
-    single { get<AppDatabase>().plannedMedicineDao() }
-    single<DeletedHistory> { DeletedHistoryImpl(androidContext()) }
-    single<AppSharedPref> { AppSharedPrefImpl(androidContext()) }
-    single<MedicineImageFiles> { MedicineImageFilesImpl(androidContext()) }
-    single { MedicineScheduler() }
-}
-
 val retrofitModule = module {
     single {
         Retrofit.Builder()
@@ -75,6 +63,18 @@ val retrofitModule = module {
             )
             .build()
     }
+}
+
+val localDataModule = module(override = true) {
+    single { get<AppDatabase>().medicineDao() }
+    single { get<AppDatabase>().personDao() }
+    single { get<AppDatabase>().medicinePlanDao() }
+    single { get<AppDatabase>().timeDoseDao() }
+    single { get<AppDatabase>().plannedMedicineDao() }
+    single<DeletedHistory> { DeletedHistoryImpl(androidContext()) }
+    single<AppSharedPref> { AppSharedPrefImpl(androidContext()) }
+    single<MedicineImageFiles> { MedicineImageFilesImpl(androidContext()) }
+    single { MedicineScheduler() }
 }
 
 val remoteDataModule = module {

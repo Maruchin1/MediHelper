@@ -132,15 +132,18 @@ class AddEditMedicinePlanViewModel(
                 personId = selectedPersonItemLive.value!!.personId,
                 durationType = durationTypeLive.value!!,
                 startDate = startDateLive.value!!,
-                daysType = daysTypeLive.value!!,
+                daysType = daysTypeLive.value,
                 timeDoseList = timeDoseListLive.value!!
             )
             if (durationTypeLive.value == DurationType.PERIOD) {
                 editData.endDate = endDateLive.value
             }
-            when (daysTypeLive.value) {
-                DaysType.DAYS_OF_WEEK -> editData.daysOfWeek = daysOfWeekLive.value
-                DaysType.INTERVAL_OF_DAYS -> editData.intervalOfDays = intervalOfDaysLive.value
+            if (durationTypeLive.value != DurationType.ONCE) {
+                editData.daysType = daysTypeLive.value
+                when (daysTypeLive.value) {
+                    DaysType.DAYS_OF_WEEK -> editData.daysOfWeek = daysOfWeekLive.value
+                    DaysType.INTERVAL_OF_DAYS -> editData.intervalOfDays = intervalOfDaysLive.value
+                }
             }
             GlobalScope.launch {
                 medicinePlanService.save(editData)
