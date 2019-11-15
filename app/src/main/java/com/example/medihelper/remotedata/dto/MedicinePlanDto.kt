@@ -26,7 +26,7 @@ data class MedicinePlanDto(
     val endDate: String?,
 
     @SerializedName(value = "daysType")
-    val daysType: String,
+    val daysType: String?,
 
     @SerializedName(value = "daysOfWeek")
     val daysOfWeek: DaysOfWeek?,

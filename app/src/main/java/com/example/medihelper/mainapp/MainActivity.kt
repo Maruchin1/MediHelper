@@ -18,7 +18,6 @@ import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
 
-    private val plannedMedicineService: PlannedMedicineService by inject()
     private val serverApiService: ServerApiService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,9 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        GlobalScope.launch {
-            plannedMedicineService.updateAllStatus()
-        }
         serverApiService.enqueueServerSync()
     }
 

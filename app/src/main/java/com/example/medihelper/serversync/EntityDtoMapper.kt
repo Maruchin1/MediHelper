@@ -71,7 +71,7 @@ class EntityDtoMapper(
         durationType = DurationType.valueOf(medicinePlanDto.durationType),
         daysOfWeek = medicinePlanDto.daysOfWeek,
         intervalOfDays = medicinePlanDto.intervalOfDays,
-        daysType = DaysType.valueOf(medicinePlanDto.daysType)
+        daysType = medicinePlanDto.daysType?.let { DaysType.valueOf(it) }
     )
 
     suspend fun medicinePlanEntityToDto(medicinePlanEntity: MedicinePlanEntity, timeDoseDtoList: List<TimeDoseDto>) = MedicinePlanDto(
@@ -84,7 +84,7 @@ class EntityDtoMapper(
         durationType = medicinePlanEntity.durationType.toString(),
         daysOfWeek = medicinePlanEntity.daysOfWeek,
         intervalOfDays = medicinePlanEntity.intervalOfDays,
-        daysType = medicinePlanEntity.daysType.toString(),
+        daysType = medicinePlanEntity.daysType?.toString(),
         timeDoseList = timeDoseDtoList
     )
 

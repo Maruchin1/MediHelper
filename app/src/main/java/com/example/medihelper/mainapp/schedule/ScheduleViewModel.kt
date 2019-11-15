@@ -2,16 +2,15 @@ package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.*
 import com.example.medihelper.localdata.type.AppDate
-import com.example.medihelper.service.AppMode
-import com.example.medihelper.service.DateTimeService
-import com.example.medihelper.service.PersonService
-import com.example.medihelper.service.ServerApiService
+import com.example.medihelper.service.*
+import kotlinx.coroutines.launch
 
 
 class ScheduleViewModel(
     private val personService: PersonService,
     private val dateTimeService: DateTimeService,
-    private val serverApiService: ServerApiService
+    private val serverApiService: ServerApiService,
+    private val plannedMedicineService: PlannedMedicineService
 ) : ViewModel() {
 
     val timelineDaysCount = 10000
@@ -29,6 +28,9 @@ class ScheduleViewModel(
         }
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
             personItem?.personColorResId
+        }
+        viewModelScope.launch {
+            plannedMedicineService.updateAllStatus()
         }
     }
 

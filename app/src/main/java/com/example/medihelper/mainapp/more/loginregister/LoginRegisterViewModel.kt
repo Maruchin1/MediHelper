@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.custom.ActionLiveData
+import com.example.medihelper.service.ApiResponse
 import com.example.medihelper.service.ServerApiService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -51,8 +52,13 @@ class LoginRegisterViewModel(
             if (isDataAvailable == true) {
                 remoteDataIsAvailableAction.sendAction()
             } else {
-                //todo mapować response na tekst
-                loginErrorLive.postValue("error")
+                val errorString = when (apiResponse) {
+                    ApiResponse.OK -> null
+                    ApiResponse.TIMEOUT -> "Przekroczono czas połączenia"
+                    ApiResponse.INCORRECT_DATA -> "Niepoprawne dane logowania"
+                    else -> "Błąd połączenia"
+                }
+                loginErrorLive.postValue(errorString)
             }
             loadingInProgressLive.postValue(false)
         }
@@ -65,8 +71,13 @@ class LoginRegisterViewModel(
                 email = emailLive.value!!,
                 password = passwordLive.value!!
             )
-            //todo mapować response na tekst
-            registerErrorLive.postValue("error")
+            val errorString = when (apiResponse) {
+                ApiResponse.OK -> null
+                ApiResponse.TIMEOUT -> "Przekroczono czas połączenia"
+                ApiResponse.ALREADY_EXISTS -> "Użytkownik o podanym adresie już istnieje"
+                else -> "Błąd połączenia"
+            }
+            registerErrorLive.postValue(errorString)
             loadingInProgressLive.postValue(false)
         }
     }
@@ -79,8 +90,12 @@ class LoginRegisterViewModel(
     fun useLocalDataAfterLogin() = viewModelScope.launch {
         loadingInProgressLive.postValue(true)
         val apiResponse = serverApiService.useLocalDataAfterLogin()
-        //todo mapować response na tekst
-        loginErrorLive.postValue("error")
+        val errorString = when (apiResponse) {
+            ApiResponse.OK -> null
+            ApiResponse.TIMEOUT -> "Przekroczono czas połączenia"
+            else -> "Błąd połączenia"
+        }
+        loginErrorLive.postValue(errorString)
         loadingInProgressLive.postValue(false)
     }
 

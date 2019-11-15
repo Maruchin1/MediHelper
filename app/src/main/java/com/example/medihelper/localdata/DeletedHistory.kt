@@ -50,7 +50,8 @@ class DeletedHistoryImpl(context: Context) : DeletedHistory {
 
     private fun addToHistory(key: String, remoteId: Long) {
         val set = pref.getStringSet(key, null) ?: emptySet()
-        set.add(remoteId.toString())
+        val newSet = set.toMutableSet()
+        newSet.add(remoteId.toString())
         pref.edit(true) {
             putStringSet(key, set)
         }
