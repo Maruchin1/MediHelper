@@ -7,6 +7,10 @@
         <variable
             name="handler"
             type="com.example.medihelper.mainapp.launcher.MainPersonFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.example.medihelper.mainapp.launcher.MainPersonViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -27,8 +31,8 @@
                 android:layout_marginEnd="64dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/hor_guideline">
+                app:layout_constraintBottom_toTopOf="@id/hor_guideline"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="100dp"
@@ -58,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="aplikacji, dzięki której organizacja domowej apteczki stanie się prosta jak nigy dotąd"
+                    android:text="Aplikacja, dzięki której organizacja domowej apteczki stanie się prosta jak nigy dotąd"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
             </LinearLayout>
@@ -89,6 +93,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.Design.TextInputLayout"
+                    inLayError="@{viewModel.errorUserNameLive}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintEnabled="false">
@@ -96,7 +101,8 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"/>
+                        android:inputType="textEmailAddress"
+                        android:text="@={viewModel.userNameLive}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -104,6 +110,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="48dp"
+                    android:onClick="@{() -> handler.onClickConfirm()}"
                     android:text="Zatwierdź" />
 
             </LinearLayout>

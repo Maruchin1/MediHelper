@@ -1,7 +1,7 @@
 package com.example.medihelper.service
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.DeletedHistory
@@ -16,14 +16,12 @@ interface PersonService {
     suspend fun delete(id: Int)
     suspend fun getItem(id: Int): PersonItem
     suspend fun getEditData(id: Int): PersonEditData
-    suspend fun getMainPersonID(): Int?
+    fun getMainPersonId(): Int?
+    fun getMainPersonColorLive(): LiveData<Int>
     fun getItemLive(id: Int): LiveData<PersonItem>
     fun getOptionsDataLive(id: Int): LiveData<PersonOptionsData>
     fun getItemListLive(): LiveData<List<PersonItem>>
     fun getItemListLiveByMedicineID(id: Int): LiveData<List<PersonItem>>
-    fun getMainPersonIDLive(): LiveData<Int>
-    fun getMainPersonItemLive(): LiveData<PersonItem>
-    fun getMainPersonColorLive(): LiveData<Int>
     fun getCurrPersonItemLive(): LiveData<PersonItem>
     fun selectCurrPerson(id: Int)
     fun getColorResIdList(): List<Int>
@@ -36,13 +34,10 @@ class PersonServiceImpl(
     private val deletedHistory: DeletedHistory
 ) : PersonService {
 
-    private val currPersonIDLive = MediatorLiveData<Int>()
+    private val currPersonIDLive = MutableLiveData<Int>(appSharedPref.getMainPersonId())
     private val currPersonItemLive: LiveData<PersonItem>
 
     init {
-        currPersonIDLive.addSource(personDao.getMainPersonIDLive()) { mainPersonID ->
-            currPersonIDLive.postValue(mainPersonID)
-        }
         currPersonItemLive = Transformations.switchMap(currPersonIDLive) { personID ->
             personID?.let { personDao.getItemLive(it) }
         }
@@ -71,7 +66,12 @@ class PersonServiceImpl(
 
     override suspend fun getEditData(id: Int) = personDao.getEditData(id)
 
-    override suspend fun getMainPersonID() = personDao.getMainPersonID()
+    override fun getMainPersonId() = appSharedPref.getMainPersonId()
+
+    override fun getMainPersonColorLive(): LiveData<Int> {
+        val liveData = appSharedPref.getMainPersonId()?.let { personDao.getColorLive(it) }
+        return liveData ?: MutableLiveData<Int>()
+    }
 
     override fun getItemLive(id: Int) = personDao.getItemLive(id)
 
@@ -80,12 +80,6 @@ class PersonServiceImpl(
     override fun getItemListLive() = personDao.getItemListLive()
 
     override fun getItemListLiveByMedicineID(id: Int) = personDao.getItemListLiveByMedicineID(id)
-
-    override fun getMainPersonIDLive() = personDao.getMainPersonIDLive()
-
-    override fun getMainPersonItemLive() = personDao.getMainPersonItemLive()
-
-    override fun getMainPersonColorLive() = personDao.getMainPersonColorLive()
 
     override fun getCurrPersonItemLive() = currPersonItemLive
 

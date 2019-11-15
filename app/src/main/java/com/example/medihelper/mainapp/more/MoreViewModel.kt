@@ -3,6 +3,7 @@ package com.example.medihelper.mainapp.more
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import com.example.medihelper.service.AppMode
 import com.example.medihelper.service.PersonService
 import com.example.medihelper.service.ServerApiService
@@ -20,10 +21,9 @@ class MoreViewModel(
         get() = serverApiService.getAppMode() == AppMode.LOGGED
     val isAppModeConnected: Boolean
         get() = serverApiService.getAppMode() == AppMode.CONNECTED
-    private val mainPersonItemLive = personService.getMainPersonItemLive()
 
     init {
-        colorPrimaryLive = Transformations.map(mainPersonItemLive) { it?.personColorResId }
+        colorPrimaryLive = personService.getMainPersonColorLive()
         loggedUserInfoLive = Transformations.map(serverApiService.getUserEmailLive()) { email ->
             if (email.isNullOrEmpty()) "Nie zalogowano" else email
         }

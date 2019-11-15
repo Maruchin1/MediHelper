@@ -1,5 +1,6 @@
 package com.example.medihelper.serversync
 
+import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.dao.MedicineDao
 import com.example.medihelper.localdata.dao.MedicinePlanDao
 import com.example.medihelper.localdata.dao.PersonDao
@@ -10,7 +11,8 @@ import com.example.medihelper.remotedata.dto.*
 class EntityDtoMapper(
     private val medicineDao: MedicineDao,
     private val personDao: PersonDao,
-    private val medicinePlanDao: MedicinePlanDao
+    private val medicinePlanDao: MedicinePlanDao,
+    private val appSharedPref: AppSharedPref
 ) {
 
     fun personDtoToEntity(personDto: PersonDto) = PersonEntity(
@@ -62,7 +64,7 @@ class EntityDtoMapper(
         personId = if (medicinePlanDto.personRemoteId != null) {
             personDao.getIdByRemoteId(medicinePlanDto.personRemoteId)!!
         } else {
-            personDao.getMainPersonID()!!
+            appSharedPref.getMainPersonId()!!
         },
         startDate = AppDate(medicinePlanDto.startDate),
         endDate = medicinePlanDto.endDate?.let { AppDate(it) },

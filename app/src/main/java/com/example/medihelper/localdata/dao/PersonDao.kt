@@ -43,11 +43,8 @@ interface PersonDao {
     @Query("SELECT * FROM persons WHERE person_id = :id")
     suspend fun getEditData(id: Int): PersonEditData
 
-    @Query("SELECT person_id FROM persons WHERE main_person = 1")
-    suspend fun getMainPersonID(): Int?
-
-    @Query("SELECT * FROM persons WHERE main_person = 1")
-    suspend fun getMainPersonEntity(): PersonEntity
+    @Query("SELECT person_color_res_id FROM persons WHERE person_id = :id")
+    fun getColorLive(id: Int): LiveData<Int>
 
     @Query("SELECT * FROM persons WHERE person_id = :id")
     fun getItemLive(id: Int): LiveData<PersonItem>
@@ -60,15 +57,6 @@ interface PersonDao {
 
     @Query("SELECT * FROM persons p JOIN medicines_plans mp ON p.person_id = mp.person_id JOIN medicines m ON mp.medicine_id = m.medicine_id GROUP BY p.person_id HAVING m.medicine_id = :medicineId")
     fun getItemListLiveByMedicineID(medicineId: Int): LiveData<List<PersonItem>>
-
-    @Query("SELECT person_id FROM persons WHERE main_person = 1")
-    fun getMainPersonIDLive(): LiveData<Int>
-
-    @Query("SELECT * FROM persons WHERE main_person = 1")
-    fun getMainPersonItemLive(): LiveData<PersonItem>
-
-    @Query("SELECT person_color_res_id FROM persons WHERE main_person = 1")
-    fun getMainPersonColorLive(): LiveData<Int>
 
     // ServerSync
     @Query("SELECT person_id FROM persons WHERE person_remote_id = :remoteId")
@@ -83,6 +71,6 @@ interface PersonDao {
     @Query("DELETE FROM persons WHERE person_remote_id NOT IN (:remoteIdList)")
     suspend fun deleteByRemoteIdNotIn(remoteIdList: List<Long>)
 
-    @Query("DELETE FROM persons WHERE main_person = 0")
-    suspend fun deleteAllWithoutMain()
+    @Query("DELETE FROM persons WHERE person_id = :mainPersonId")
+    suspend fun deleteAllWithoutMain(mainPersonId: Int)
 }

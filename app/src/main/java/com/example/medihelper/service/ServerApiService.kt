@@ -89,7 +89,9 @@ class ServerApiServiceImpl(
 
     override suspend fun useRemoteDataAfterLogin() {
         medicineDao.deleteAll()
-        personDao.deleteAllWithoutMain()
+        sharedPref.getMainPersonId()?.let {
+            personDao.deleteAllWithoutMain(it)
+        }
         enqueueServerSync()
     }
 
@@ -215,8 +217,7 @@ class ServerApiServiceImpl(
         val mainPerson = PersonEntity(
             personRemoteId = connectedPersonDto.personRemoteId,
             personName = connectedPersonDto.personName,
-            personColorResId = connectedPersonDto.personColorResId,
-            mainPerson = true
+            personColorResId = connectedPersonDto.personColorResId
         )
         personDao.insert(mainPerson)
     }

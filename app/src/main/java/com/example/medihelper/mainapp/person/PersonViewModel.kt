@@ -16,7 +16,7 @@ class PersonViewModel(
         personID = personItem.personId,
         personName = personItem.personName,
         personColorResID = personItem.personColorResId,
-        isMainPerson = personItem.mainPerson
+        isMainPerson = personItem.personId == personService.getMainPersonId()
     )
 
     data class PersonItemDisplayData(

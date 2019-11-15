@@ -28,10 +28,9 @@ class MedicineDetailsViewModel(
     val additionalInfoAvailableLive: LiveData<Boolean>
     val personItemListTakingMedicineLive: LiveData<List<PersonItem>>
     val personItemListTakingMedicineAvailableLive: LiveData<Boolean>
-    private val mainPersonItemLive = personService.getMainPersonItemLive()
 
     init {
-        colorPrimaryLive = Transformations.map(mainPersonItemLive) { it.personColorResId }
+        colorPrimaryLive = personService.getMainPersonColorLive()
         isAppModeConnected = Transformations.map(serverApiService.getAppModeLive()) {
             it == AppMode.CONNECTED
         }

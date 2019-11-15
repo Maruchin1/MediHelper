@@ -7,6 +7,7 @@ import com.example.medihelper.localdata.entity.PersonEntity
 import com.example.medihelper.localdata.pojo.PersonEditData
 
 interface InitialDataService {
+    suspend fun createMainPerson(personName: String)
     suspend fun checkInitialData()
 }
 
@@ -15,10 +16,16 @@ class InitialDataServiceImpl(
     private val appSharedPref: AppSharedPref
 ) : InitialDataService {
 
+    override suspend fun createMainPerson(personName: String) {
+        val mainPerson = PersonEntity(
+            personName = personName,
+            personColorResId = R.color.colorPrimary
+        )
+        val mainPersonId = personDao.insert(mainPerson)
+        appSharedPref.saveMainPersonId(mainPersonId.toInt())
+    }
+
     override suspend fun checkInitialData() {
-        if (personDao.getMainPersonID() == null) {
-            personDao.insert(getInitialPerson())
-        }
         if (appSharedPref.getMedicineUnitList().isNullOrEmpty()) {
             appSharedPref.saveMedicineUnitList(getInitialMedicineUnitList())
         }
@@ -26,13 +33,6 @@ class InitialDataServiceImpl(
             appSharedPref.saveColorResIdList(getInitialPersonColorResIDList())
         }
     }
-
-    private fun getInitialPerson() = PersonEntity(
-        personId = 0,
-        personName = "Użytkownik",
-        personColorResId = R.color.colorPrimary,
-        mainPerson = true
-    )
 
     private fun getInitialMedicineUnitList() = listOf("dawki", "pigułki", "ml", "g", "mg", "krople")
 

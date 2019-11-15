@@ -20,9 +20,6 @@ data class PersonEntity(
     @ColumnInfo(name = "person_color_res_id")
     var personColorResId: Int,
 
-    @ColumnInfo(name = "main_person")
-    var mainPerson: Boolean = false,
-
     @ColumnInfo(name = "connection_key")
     var connectionKey: String? = null,
 

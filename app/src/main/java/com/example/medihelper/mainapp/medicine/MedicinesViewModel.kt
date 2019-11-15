@@ -1,10 +1,7 @@
 package com.example.medihelper.mainapp.medicine
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.medihelper.localdata.entity.MedicineEntity
 import com.example.medihelper.localdata.pojo.MedicineItem
 import com.example.medihelper.service.AppMode
@@ -20,12 +17,11 @@ class MedicinesViewModel(
 ) : ViewModel() {
     private val TAG = "MedicinesViewModel"
 
+    val colorPrimaryLive: LiveData<Int>
     val isAppModeConnectedLive: LiveData<Boolean>
     val searchQueryLive = MutableLiveData("")
     val medicineItemListLive: LiveData<List<MedicineItem>>
     val medicineAvailableLive: LiveData<Boolean>
-    val colorPrimaryLive: LiveData<Int>
-    private val mainPersonItemLive = personService.getMainPersonItemLive()
 
     init {
         isAppModeConnectedLive = Transformations.map(serverApiService.getAppModeLive()) {
@@ -42,7 +38,7 @@ class MedicinesViewModel(
         medicineAvailableLive = Transformations.map(medicineItemListLive) { list ->
             list != null && list.isNotEmpty()
         }
-        colorPrimaryLive = Transformations.map(mainPersonItemLive) { it.personColorResId }
+        colorPrimaryLive = personService.getMainPersonColorLive()
     }
 
     fun getMedicineItemDisplayData(medicineItem: MedicineItem): MedicineItemDisplayData {

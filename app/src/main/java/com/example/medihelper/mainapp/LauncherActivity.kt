@@ -2,6 +2,7 @@ package com.example.medihelper.mainapp
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,10 +14,12 @@ import androidx.core.content.ContextCompat
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.transition.*
 import com.example.medihelper.R
+import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.mainapp.launcher.LogoFragment
 import com.example.medihelper.mainapp.launcher.MainPersonFragment
 import kotlinx.android.synthetic.main.activity_launcher.*
 import kotlinx.android.synthetic.main.fragment_logo.*
+import org.koin.android.ext.android.inject
 
 class LauncherActivity : AppCompatActivity() {
 
@@ -25,23 +28,37 @@ class LauncherActivity : AppCompatActivity() {
         private const val ANIM_TIME = 1000L
     }
 
+    private val appSharedPref: AppSharedPref by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launcher)
 
         setTransparentStatusBar()
         loadLogoFragment()
-        Handler().postDelayed({
-            setLightStatusBar()
-            circularHideBackground()
-        }, LOGO_TIME)
-        Handler().postDelayed({
-            checkFirstStart()
-        }, LOGO_TIME + ANIM_TIME)
+        checkFirstStart()
+    }
+
+    fun startMainActivity() {
+        val mainActivityIntent = Intent(this, MainActivity::class.java)
+        startActivity(mainActivityIntent)
+        finish()
     }
 
     private fun checkFirstStart() {
-        loadMainPersonFragment()
+        if (appSharedPref.getMainPersonId() == null) {
+            Handler().postDelayed({
+                setLightStatusBar()
+                circularHideBackground()
+            }, LOGO_TIME)
+            Handler().postDelayed({
+                loadMainPersonFragment()
+            }, LOGO_TIME + ANIM_TIME)
+        } else {
+            Handler().postDelayed({
+                startMainActivity()
+            }, LOGO_TIME)
+        }
     }
 
     private fun loadLogoFragment() {

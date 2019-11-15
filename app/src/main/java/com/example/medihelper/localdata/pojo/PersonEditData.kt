@@ -10,8 +10,5 @@ data class PersonEditData(
     val personName: String,
 
     @ColumnInfo(name = "person_color_res_id")
-    val personColorResId: Int,
-
-    @ColumnInfo(name = "main_person")
-    var mainPerson: Boolean = false
+    val personColorResId: Int
 )

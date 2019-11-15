@@ -5,6 +5,7 @@ import androidx.work.WorkManager
 import com.example.medihelper.localdata.*
 import com.example.medihelper.utility.StatusOfTakingCalculator
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
+import com.example.medihelper.mainapp.launcher.MainPersonViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanListViewModel
@@ -83,7 +84,7 @@ val remoteDataModule = module {
     single { get<Retrofit>().create(AuthenticationApi::class.java) }
     single { get<Retrofit>().create(RegisteredUserApi::class.java) }
     single { get<Retrofit>().create(ConnectedPersonApi::class.java) }
-    single { EntityDtoMapper(get(), get(), get()) }
+    single { EntityDtoMapper(get(), get(), get(), get()) }
     single { LocalDatabaseDispatcher(get(), get(), get(), get(), get()) }
 }
 
@@ -124,4 +125,5 @@ val viewModelModule = module {
     viewModel { ConnectedPersonViewModel(get(), get()) }
     viewModel { ScheduleDayViewModel(get(), get()) }
     viewModel { AlarmViewModel(get()) }
+    viewModel { MainPersonViewModel(get()) }
 }

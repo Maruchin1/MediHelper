@@ -14,7 +14,7 @@ import com.example.medihelper.localdata.entity.*
         PersonEntity::class,
         TimeDoseEntity::class
     ],
-    version = 44,
+    version = 45,
     exportSchema = false
 )
 @TypeConverters(Converter::class)

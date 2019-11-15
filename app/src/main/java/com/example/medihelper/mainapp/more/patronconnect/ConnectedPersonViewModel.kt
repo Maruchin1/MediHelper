@@ -1,8 +1,7 @@
 package com.example.medihelper.mainapp.more.patronconnect
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.medihelper.localdata.pojo.PersonItem
 import com.example.medihelper.mainapp.MainActivity
 import com.example.medihelper.service.PersonService
 import com.example.medihelper.service.ServerApiService
@@ -16,9 +15,13 @@ class ConnectedPersonViewModel(
 
     val personNameLive: LiveData<String>
     val personColorResID: LiveData<Int>
-    private val mainPersonItemLive = personService.getMainPersonItemLive()
+    private val mainPersonItemLive = MutableLiveData<PersonItem>()
 
     init {
+        viewModelScope.launch {
+            val personItem = personService.getMainPersonId()?.let { personService.getItem(it) }
+            mainPersonItemLive.postValue(personItem)
+        }
         personNameLive = Transformations.map(mainPersonItemLive) { it?.personName }
         personColorResID = Transformations.map(mainPersonItemLive) { it?.personColorResId }
     }

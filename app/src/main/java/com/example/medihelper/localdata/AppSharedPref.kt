@@ -17,11 +17,13 @@ interface AppSharedPref {
     fun getColorResIdList(): List<Int>
     fun getMedicineUnitList(): List<String>
     fun getMedicineUnitListLive(): LiveData<List<String>>
+    fun getMainPersonId(): Int?
     fun saveAuthToken(authToken: String)
     fun saveUserEmail(userEmail: String)
     fun saveLastSyncTime(date: Date)
     fun saveColorResIdList(list: List<Int>)
     fun saveMedicineUnitList(list: List<String>)
+    fun saveMainPersonId(id: Int)
     fun deleteAuthToken()
     fun deleteUserEmail()
 }
@@ -35,6 +37,7 @@ class AppSharedPrefImpl(context: Context) : AppSharedPref {
         private const val KEY_LAST_SYNC_TIME = "key-last-sync_time"
         private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-set"
         private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
+        private const val KEY_MAIN_PERSON_ID = "key-main-person-id"
     }
 
     private val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -67,6 +70,11 @@ class AppSharedPrefImpl(context: Context) : AppSharedPref {
         }
     }
 
+    override fun getMainPersonId(): Int? {
+        val mainPersonId = pref.getInt(KEY_MAIN_PERSON_ID, -1)
+        return if (mainPersonId == -1) null else mainPersonId
+    }
+
     override fun saveAuthToken(authToken: String) = pref.edit(true) {
         putString(KEY_AUTH_TOKEN, authToken)
     }
@@ -88,6 +96,10 @@ class AppSharedPrefImpl(context: Context) : AppSharedPref {
 
     override fun saveMedicineUnitList(list: List<String>) = pref.edit(commit = true) {
         putStringSet(KEY_MEDICINE_UNIT_SET, list.toMutableSet())
+    }
+
+    override fun saveMainPersonId(id: Int) = pref.edit(true) {
+        putInt(KEY_MAIN_PERSON_ID, id)
     }
 
     override fun deleteAuthToken() = pref.edit(true) {
