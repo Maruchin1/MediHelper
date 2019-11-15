@@ -71,7 +71,8 @@ class EntityDtoMapper(
         durationType = DurationType.valueOf(medicinePlanDto.durationType),
         daysOfWeek = medicinePlanDto.daysOfWeek,
         intervalOfDays = medicinePlanDto.intervalOfDays,
-        daysType = medicinePlanDto.daysType?.let { DaysType.valueOf(it) }
+        daysType = medicinePlanDto.daysType?.let { DaysType.valueOf(it) },
+        synchronizedWithServer = true
     )
 
     suspend fun medicinePlanEntityToDto(medicinePlanEntity: MedicinePlanEntity, timeDoseDtoList: List<TimeDoseDto>) = MedicinePlanDto(
@@ -106,7 +107,8 @@ class EntityDtoMapper(
         plannedDate = AppDate(plannedMedicineDto.plannedDate),
         plannedTime = AppTime(plannedMedicineDto.plannedTime),
         plannedDoseSize = plannedMedicineDto.plannedDoseSize,
-        statusOfTaking = StatusOfTaking.valueOf(plannedMedicineDto.statusOfTaking)
+        statusOfTaking = StatusOfTaking.valueOf(plannedMedicineDto.statusOfTaking),
+        synchronizedWithServer = true
     )
 
     suspend fun plannedMedicineEntityToDto(plannedMedicineEntity: PlannedMedicineEntity) = PlannedMedicineDto(

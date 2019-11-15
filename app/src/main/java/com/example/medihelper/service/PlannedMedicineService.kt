@@ -58,6 +58,7 @@ class PlannedMedicineServiceImpl(
                     currTime = dateTimeService.getCurrTime(),
                     currStatusOfTaking = entity.statusOfTaking
                 )
+                synchronizedWithServer = false
             }
         }
         plannedMedicineDao.update(updatedList)
@@ -73,6 +74,7 @@ class PlannedMedicineServiceImpl(
             taken = taken
         )
         entity.statusOfTaking = newStatus
+        entity.synchronizedWithServer = false
         plannedMedicineDao.update(entity)
     }
 

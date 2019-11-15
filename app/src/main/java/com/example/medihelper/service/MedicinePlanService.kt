@@ -27,29 +27,41 @@ class MedicinePlanServiceImpl(
 ) : MedicinePlanService {
 
     override suspend fun save(editData: MedicinePlanEditData) {
-        val entity = MedicinePlanEntity(
-            medicinePlanId = editData.medicinePlanId,
-            medicineId = editData.medicineId,
-            personId = editData.personId,
-            durationType = editData.durationType,
-            startDate = editData.startDate,
-            endDate = editData.endDate,
-            daysType = editData.daysType,
-            daysOfWeek = editData.daysOfWeek,
-            intervalOfDays = editData.intervalOfDays,
-            synchronizedWithServer = false
-        )
-        if (entity.medicinePlanId == 0) {
-            val insertedId = medicinePlanDao.insert(entity).toInt()
+        if (editData.medicinePlanId == 0) {
+            val newEntity = MedicinePlanEntity(
+                medicinePlanId = editData.medicinePlanId,
+                medicineId = editData.medicineId,
+                personId = editData.personId,
+                durationType = editData.durationType,
+                startDate = editData.startDate,
+                endDate = editData.endDate,
+                daysType = editData.daysType,
+                daysOfWeek = editData.daysOfWeek,
+                intervalOfDays = editData.intervalOfDays
+            )
+            val insertedId = medicinePlanDao.insert(newEntity).toInt()
             val timeDoseEntityList = mapTimeDoseEditDataListToEntityList(editData.timeDoseList, insertedId)
             timeDoseDao.insert(timeDoseEntityList)
             plannedMedicineService.updateForMedicinePlan(insertedId)
         } else {
-            medicinePlanDao.update(entity)
-            val timeDoseEntityList = mapTimeDoseEditDataListToEntityList(editData.timeDoseList, entity.medicinePlanId)
-            timeDoseDao.deleteAllByMedicinePlanId(entity.medicinePlanId)
+            val existingEntity = medicinePlanDao.getEntity(editData.medicinePlanId)
+            val updatedEntity = existingEntity.copy(
+                medicinePlanId = editData.medicinePlanId,
+                medicineId = editData.medicineId,
+                personId = editData.personId,
+                durationType = editData.durationType,
+                startDate = editData.startDate,
+                endDate = editData.endDate,
+                daysType = editData.daysType,
+                daysOfWeek = editData.daysOfWeek,
+                intervalOfDays = editData.intervalOfDays,
+                synchronizedWithServer = false
+            )
+            medicinePlanDao.update(updatedEntity)
+            val timeDoseEntityList = mapTimeDoseEditDataListToEntityList(editData.timeDoseList, updatedEntity.medicinePlanId)
+            timeDoseDao.deleteAllByMedicinePlanId(updatedEntity.medicinePlanId)
             timeDoseDao.insert(timeDoseEntityList)
-            plannedMedicineService.updateForMedicinePlan(entity.medicinePlanId)
+            plannedMedicineService.updateForMedicinePlan(updatedEntity.medicinePlanId)
         }
     }
 
