@@ -1,5 +1,7 @@
 package com.example.medihelper.serversync
 
+import com.example.medihelper.localdata.AppSharedPref
+import com.example.medihelper.localdata.DeletedHistory
 import com.example.medihelper.localdata.dao.MedicineDao
 import com.example.medihelper.localdata.dao.MedicinePlanDao
 import com.example.medihelper.localdata.dao.PersonDao
@@ -18,7 +20,9 @@ class LocalDatabaseDispatcher(
     private val medicineDao: MedicineDao,
     private val personDao: PersonDao,
     private val medicinePlanDao: MedicinePlanDao,
-    private val plannedMedicineDao: PlannedMedicineDao
+    private val plannedMedicineDao: PlannedMedicineDao,
+    private val deletedHistory: DeletedHistory,
+    private val appSharedPref: AppSharedPref
 ) {
     suspend fun dispatchMedicinesChanges(medicineDtoList: List<MedicineDto>) {
         val remoteIdList = medicineDtoList.map { it.medicineRemoteId!! }
@@ -32,9 +36,7 @@ class LocalDatabaseDispatcher(
                 val existingMedicineID =
                     medicineDao.getIdByRemoteId(medicineEntity.medicineRemoteId!!)
                 if (existingMedicineID != null) {
-                    // todo usunąć gdy będzie rozwiązany problem z przesyłaniem zdjeć
-                    val existingEntity = medicineDao.getEntity(existingMedicineID)
-                    updateList.add(medicineEntity.copy(medicineId = existingMedicineID, imageName = existingEntity.imageName))
+                    updateList.add(medicineEntity.copy(medicineId = existingMedicineID))
                 } else {
                     insertList.add(medicineEntity)
                 }
@@ -44,8 +46,8 @@ class LocalDatabaseDispatcher(
             deleteByRemoteIdNotIn(remoteIdList)
             update(updateList)
             insert(insertList)
-            //todo czyścić historię
         }
+        deletedHistory.clearMedicineHistory()
     }
 
     suspend fun dispatchPersonsChanges(personDtoList: List<PersonDto>) {
@@ -67,11 +69,11 @@ class LocalDatabaseDispatcher(
             }
         }
         with(personDao) {
-            deleteByRemoteIdNotIn(remoteIdList)
+            deleteByRemoteIdNotIn(remoteIdList, appSharedPref.getMainPersonId()!!)
             update(updateList)
             insert(insertList)
-            //todo czyścić historię
         }
+        deletedHistory.clearPersonHistory()
     }
 
     suspend fun dispatchMedicinesPlansChanges(medicinePlanDtoList: List<MedicinePlanDto>) {
@@ -96,8 +98,8 @@ class LocalDatabaseDispatcher(
             deleteByRemoteIdNotIn(remoteIdList)
             update(updateList)
             insert(insertList)
-            //todo czyścić historię
         }
+        deletedHistory.clearMedicinePlanHistory()
     }
 
     suspend fun dispatchPlannedMedicinesChanges(plannedMedicineDtoList: List<PlannedMedicineDto>) {
@@ -122,7 +124,7 @@ class LocalDatabaseDispatcher(
             deleteByRemoteIdNotIn(remoteIdList)
             update(updateList)
             insert(insertList)
-            //todo czyścić historię
         }
+        deletedHistory.clearPlannedMedicineHistory()
     }
 }

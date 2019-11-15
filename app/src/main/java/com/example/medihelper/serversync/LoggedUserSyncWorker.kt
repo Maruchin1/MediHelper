@@ -3,6 +3,7 @@ package com.example.medihelper.serversync
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.DeletedHistory
 import com.example.medihelper.localdata.dao.*
 import com.example.medihelper.remotedata.api.RegisteredUserApi
@@ -12,16 +13,16 @@ import com.example.medihelper.service.ServerApiService
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class LoggedUserSyncWorker(private val context: Context, params: WorkerParameters) :
+class LoggedUserSyncWorker(context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params), KoinComponent {
 
     companion object {
         const val KEY_AUTH_TOKEN = "key-auth-token"
     }
 
-    private val appFilesDir by lazy { context.filesDir }
     private val registeredUserApi: RegisteredUserApi by inject()
     private val notificationService: NotificationService by inject()
+    private val appSharedPref: AppSharedPref by inject()
     private val personDao: PersonDao by inject()
     private val medicineDao: MedicineDao by inject()
     private val medicinePlanDao: MedicinePlanDao by inject()
@@ -53,7 +54,7 @@ class LoggedUserSyncWorker(private val context: Context, params: WorkerParameter
 
     private suspend fun synchronizeData(authToken: String) {
         val personsSyncRequestDto = SyncRequestDto(
-            insertUpdateDtoList = personDao.getEntityListToSync().map {
+            insertUpdateDtoList = personDao.getEntityListToSync(appSharedPref.getMainPersonId()!!).map {
                 entityDtoMapper.personEntityToDto(it)
             },
             deleteRemoteIdList = deletedHistory.getPersonHistory()

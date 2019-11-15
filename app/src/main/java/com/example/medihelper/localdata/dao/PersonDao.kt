@@ -65,11 +65,11 @@ interface PersonDao {
     @Query("SELECT person_remote_id FROM persons WHERE person_id = :id")
     suspend fun getRemoteIdById(id: Int): Long?
 
-    @Query("SELECT * FROM persons WHERE synchronized_with_server = 0")
-    suspend fun getEntityListToSync(): List<PersonEntity>
+    @Query("SELECT * FROM persons WHERE synchronized_with_server = 0 AND person_id != :mainPersonId")
+    suspend fun getEntityListToSync(mainPersonId: Int): List<PersonEntity>
 
-    @Query("DELETE FROM persons WHERE person_remote_id NOT IN (:remoteIdList)")
-    suspend fun deleteByRemoteIdNotIn(remoteIdList: List<Long>)
+    @Query("DELETE FROM persons WHERE person_remote_id NOT IN (:remoteIdList) AND person_id != :mainPersonId")
+    suspend fun deleteByRemoteIdNotIn(remoteIdList: List<Long>, mainPersonId: Int)
 
     @Query("DELETE FROM persons WHERE person_id = :mainPersonId")
     suspend fun deleteAllWithoutMain(mainPersonId: Int)

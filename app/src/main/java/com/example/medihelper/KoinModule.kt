@@ -85,7 +85,7 @@ val remoteDataModule = module {
     single { get<Retrofit>().create(RegisteredUserApi::class.java) }
     single { get<Retrofit>().create(ConnectedPersonApi::class.java) }
     single { EntityDtoMapper(get(), get(), get(), get()) }
-    single { LocalDatabaseDispatcher(get(), get(), get(), get(), get()) }
+    single { LocalDatabaseDispatcher(get(), get(), get(), get(), get(), get(), get()) }
 }
 
 val serviceModule = module {

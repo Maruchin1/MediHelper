@@ -12,6 +12,10 @@ interface DeletedHistory {
     fun addToMedicineHistory(remoteId: Long)
     fun addToMedicinePlanHistory(remoteId: Long)
     fun addToPlannedMedicineHistory(remoteId: Long)
+    fun clearPersonHistory()
+    fun clearMedicineHistory()
+    fun clearMedicinePlanHistory()
+    fun clearPlannedMedicineHistory()
 }
 
 class DeletedHistoryImpl(context: Context) : DeletedHistory {
@@ -42,6 +46,14 @@ class DeletedHistoryImpl(context: Context) : DeletedHistory {
 
     override fun addToPlannedMedicineHistory(remoteId: Long) = addToHistory(KEY_PLANNED_MEDICINE_HISTORY_SET, remoteId)
 
+    override fun clearPersonHistory() = clearHistory(KEY_PERSON_HISTORY_SET)
+
+    override fun clearMedicineHistory() = clearHistory(KEY_MEDICINE_HISTORY_SET)
+
+    override fun clearMedicinePlanHistory() = clearHistory(KEY_MEDICINE_PLAN_HISTORY_SET)
+
+    override fun clearPlannedMedicineHistory() = clearHistory(KEY_PLANNED_MEDICINE_HISTORY_SET)
+
     private fun getHistory(key: String): List<Long> {
         return pref.getStringSet(key, null)?.map {
             it.toLong()
@@ -54,6 +66,12 @@ class DeletedHistoryImpl(context: Context) : DeletedHistory {
         newSet.add(remoteId.toString())
         pref.edit(true) {
             putStringSet(key, set)
+        }
+    }
+
+    private fun clearHistory(key: String) {
+        pref.edit(true) {
+            putStringSet(key, null)
         }
     }
 }
