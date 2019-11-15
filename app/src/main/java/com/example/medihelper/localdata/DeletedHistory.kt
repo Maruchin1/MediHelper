@@ -65,7 +65,7 @@ class DeletedHistoryImpl(context: Context) : DeletedHistory {
         val newSet = set.toMutableSet()
         newSet.add(remoteId.toString())
         pref.edit(true) {
-            putStringSet(key, set)
+            putStringSet(key, newSet)
         }
     }
 
