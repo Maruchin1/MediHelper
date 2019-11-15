@@ -40,21 +40,30 @@ class MedicineServiceImpl(
 ) : MedicineService {
 
     override suspend fun save(editData: MedicineEditData) {
-        val entity = MedicineEntity(
-            medicineId = editData.medicineId,
-            medicineName = editData.medicineName,
-            expireDate = editData.expireDate,
-            medicineUnit = editData.medicineUnit,
-            packageSize = editData.packageSize,
-            currState = editData.currState,
-            additionalInfo = editData.additionalInfo,
-            imageName = editData.imageName,
-            synchronizedWithServer = false
-        )
         if (editData.medicineId == 0) {
-            medicineDao.insert(entity)
+            val newEntity = MedicineEntity(
+                medicineName = editData.medicineName,
+                expireDate = editData.expireDate,
+                medicineUnit = editData.medicineUnit,
+                packageSize = editData.packageSize,
+                currState = editData.currState,
+                additionalInfo = editData.additionalInfo,
+                imageName = editData.imageName
+            )
+            medicineDao.insert(newEntity)
         } else {
-            medicineDao.update(entity)
+            val existingEntity = medicineDao.getEntity(editData.medicineId)
+            val updatedEntity = existingEntity.copy(
+                medicineName = editData.medicineName,
+                expireDate = editData.expireDate,
+                medicineUnit = editData.medicineUnit,
+                packageSize = editData.packageSize,
+                currState = editData.currState,
+                additionalInfo = editData.additionalInfo,
+                imageName = editData.imageName,
+                synchronizedWithServer = false
+            )
+            medicineDao.update(updatedEntity)
         }
     }
 
