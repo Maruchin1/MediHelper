@@ -41,7 +41,7 @@ class EntityDtoMapper(
         packageSize = medicineDto.packageSize,
         currState = medicineDto.currState,
         additionalInfo = medicineDto.additionalInfo,
-        imageName = null,
+        imageName = medicineDto.imageName,
         synchronizedWithServer = true
     )
 
@@ -54,7 +54,7 @@ class EntityDtoMapper(
         packageSize = medicineEntity.packageSize,
         currState = medicineEntity.currState,
         additionalInfo = medicineEntity.additionalInfo,
-        image = null
+        imageName = medicineEntity.imageName
     )
 
     suspend fun medicinePlanDtoToEntity(medicinePlanDto: MedicinePlanDto) = MedicinePlanEntity(

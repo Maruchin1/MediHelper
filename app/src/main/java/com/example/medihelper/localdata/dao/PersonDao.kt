@@ -71,6 +71,6 @@ interface PersonDao {
     @Query("DELETE FROM persons WHERE person_remote_id NOT IN (:remoteIdList) AND person_id != :mainPersonId")
     suspend fun deleteByRemoteIdNotIn(remoteIdList: List<Long>, mainPersonId: Int)
 
-    @Query("DELETE FROM persons WHERE person_id = :mainPersonId")
+    @Query("DELETE FROM persons WHERE person_id != :mainPersonId")
     suspend fun deleteAllWithoutMain(mainPersonId: Int)
 }
