@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.medihelper.localdata.type.AppDate
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
+import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.DialogSelectDateBinding
 import kotlinx.android.synthetic.main.dialog_select_date.*
 
@@ -31,11 +32,11 @@ class SelectDateDialog : AppBottomSheetDialog() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: DialogSelectDateBinding = DataBindingUtil.inflate(inflater,
-            R.layout.dialog_select_date, container, false)
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        return bind<DialogSelectDateBinding>(
+            inflater = inflater,
+            container = container,
+            layoutResId = R.layout.dialog_select_date
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +49,7 @@ class SelectDateDialog : AppBottomSheetDialog() {
             calendar_view.date = defaultDate!!.timeInMillis
         }
         calendar_view.setOnDateChangeListener { _, year, month, day ->
-            val selectedDate = AppDate(year, month, day)
+            val selectedDate = AppDate(year, month + 1, day)
             calendar_view.date = selectedDate.timeInMillis
         }
     }

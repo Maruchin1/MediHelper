@@ -13,7 +13,7 @@ import com.example.medihelper.service.DateTimeService
 import kotlinx.android.synthetic.main.dialog_select_month_date.*
 import org.koin.android.ext.android.inject
 
-class SelectMonthDateDialog : AppBottomSheetDialog() {
+class SelectExpireDialog : AppBottomSheetDialog() {
     override val TAG = "SelectMontDateDialog"
 
     companion object {

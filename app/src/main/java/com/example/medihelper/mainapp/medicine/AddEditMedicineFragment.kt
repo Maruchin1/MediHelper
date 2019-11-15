@@ -14,7 +14,7 @@ import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentAddEditMedicineBinding
 import com.example.medihelper.mainapp.dialog.SelectMedicineUnitDialog
-import com.example.medihelper.mainapp.dialog.SelectMonthDateDialog
+import com.example.medihelper.mainapp.dialog.SelectExpireDialog
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -38,7 +38,7 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
         }
     }
 
-    fun onClickSelectExpireDate() = SelectMonthDateDialog().apply {
+    fun onClickSelectExpireDate() = SelectExpireDialog().apply {
         defaultDate = viewModel.expireDateLive.value
         setDateSelectedListener { viewModel.expireDateLive.value = it }
     }.show(childFragmentManager)
