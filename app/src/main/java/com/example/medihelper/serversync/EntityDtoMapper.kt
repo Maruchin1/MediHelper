@@ -29,7 +29,7 @@ class EntityDtoMapper(
         personRemoteId = personEntity.personRemoteId,
         personName = personEntity.personName,
         personColorResId = personEntity.personColorResId,
-        connectionKey = null
+        connectionKey = personEntity.connectionKey
     )
 
     fun medicineDtoToEntity(medicineDto: MedicineDto) = MedicineEntity(

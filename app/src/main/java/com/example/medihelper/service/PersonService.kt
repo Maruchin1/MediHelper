@@ -44,16 +44,20 @@ class PersonServiceImpl(
     }
 
     override suspend fun save(editData: PersonEditData) {
-        val entity = PersonEntity(
-            personId = editData.personId,
-            personName = editData.personName,
-            personColorResId = editData.personColorResId,
-            synchronizedWithServer = false
-        )
-        if (entity.personId == 0) {
-            personDao.insert(entity).toInt()
+        if (editData.personId == 0) {
+            val newEntity = PersonEntity(
+                personName = editData.personName,
+                personColorResId = editData.personColorResId
+            )
+            personDao.insert(newEntity)
         } else {
-            personDao.update(entity)
+            val existingEntity = personDao.getEntity(editData.personId)
+            val updatedEntity = existingEntity.copy(
+                personName = editData.personName,
+                personColorResId = editData.personColorResId,
+                synchronizedWithServer = false
+            )
+            personDao.update(updatedEntity)
         }
     }
 

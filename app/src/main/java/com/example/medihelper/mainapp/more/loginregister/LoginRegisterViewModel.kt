@@ -55,7 +55,8 @@ class LoginRegisterViewModel(
                 val errorString = when (apiResponse) {
                     ApiResponse.OK -> null
                     ApiResponse.TIMEOUT -> "Przekroczono czas połączenia"
-                    ApiResponse.INCORRECT_DATA -> "Niepoprawne dane logowania"
+                    ApiResponse.INCORRECT_DATA -> "Niepoprawne hasło"
+                    ApiResponse.NOT_FOUND -> "Nie znaleziono użytkownika"
                     else -> "Błąd połączenia"
                 }
                 loginErrorLive.postValue(errorString)
