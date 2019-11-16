@@ -19,10 +19,10 @@ class InitialDataServiceImpl(
     override suspend fun createMainPerson(personName: String) {
         val mainPerson = PersonEntity(
             personName = personName,
-            personColorResId = R.color.colorPrimary
+            personColorResId = R.color.colorPrimary,
+            mainPerson = true
         )
-        val mainPersonId = personDao.insert(mainPerson)
-        appSharedPref.saveMainPersonId(mainPersonId.toInt())
+        personDao.insert(mainPerson)
     }
 
     override suspend fun checkInitialData() {

@@ -54,7 +54,7 @@ class LoggedUserSyncWorker(context: Context, params: WorkerParameters) :
 
     private suspend fun synchronizeData(authToken: String) {
         val personsSyncRequestDto = SyncRequestDto(
-            insertUpdateDtoList = personDao.getEntityListToSync(appSharedPref.getMainPersonId()!!).map {
+            insertUpdateDtoList = personDao.getEntityListToSync().map {
                 entityDtoMapper.personEntityToDto(it)
             },
             deleteRemoteIdList = deletedHistory.getPersonHistory()

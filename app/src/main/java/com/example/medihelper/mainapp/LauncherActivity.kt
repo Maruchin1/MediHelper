@@ -17,8 +17,10 @@ import com.example.medihelper.R
 import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.mainapp.launcher.LogoFragment
 import com.example.medihelper.mainapp.launcher.MainPersonFragment
+import com.example.medihelper.service.PersonService
 import kotlinx.android.synthetic.main.activity_launcher.*
 import kotlinx.android.synthetic.main.fragment_logo.*
+import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 
 class LauncherActivity : AppCompatActivity() {
@@ -28,7 +30,7 @@ class LauncherActivity : AppCompatActivity() {
         private const val ANIM_TIME = 1000L
     }
 
-    private val appSharedPref: AppSharedPref by inject()
+    private val personService: PersonService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +47,8 @@ class LauncherActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun checkFirstStart() {
-        if (appSharedPref.getMainPersonId() == null) {
+    private fun checkFirstStart() = runBlocking {
+        if (!personService.hasMainPerson()) {
             Handler().postDelayed({
                 setLightStatusBar()
                 circularHideBackground()

@@ -69,7 +69,7 @@ class LocalDatabaseDispatcher(
             }
         }
         with(personDao) {
-            deleteByRemoteIdNotIn(remoteIdList, appSharedPref.getMainPersonId()!!)
+            deleteByRemoteIdNotIn(remoteIdList)
             update(updateList)
             insert(insertList)
         }

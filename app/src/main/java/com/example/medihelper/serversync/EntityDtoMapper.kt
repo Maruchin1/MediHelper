@@ -11,8 +11,7 @@ import com.example.medihelper.remotedata.dto.*
 class EntityDtoMapper(
     private val medicineDao: MedicineDao,
     private val personDao: PersonDao,
-    private val medicinePlanDao: MedicinePlanDao,
-    private val appSharedPref: AppSharedPref
+    private val medicinePlanDao: MedicinePlanDao
 ) {
 
     fun personDtoToEntity(personDto: PersonDto) = PersonEntity(
@@ -64,7 +63,7 @@ class EntityDtoMapper(
         personId = if (medicinePlanDto.personRemoteId != null) {
             personDao.getIdByRemoteId(medicinePlanDto.personRemoteId)!!
         } else {
-            appSharedPref.getMainPersonId()!!
+            personDao.getMainPersonId()!!
         },
         startDate = AppDate(medicinePlanDto.startDate),
         endDate = medicinePlanDto.endDate?.let { AppDate(it) },

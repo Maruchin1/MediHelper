@@ -10,5 +10,8 @@ data class PersonItem(
     val personName: String,
 
     @ColumnInfo(name = "person_color_res_id")
-    val personColorResId: Int
+    val personColorResId: Int,
+
+    @ColumnInfo(name = "main_person")
+    var mainPerson: Boolean = false
 )

@@ -51,14 +51,17 @@ class PlannedMedicineServiceImpl(
     override suspend fun updateAllStatus() {
         val updatedList = plannedMedicineDao.getEntityList().map { entity ->
             entity.apply {
-                statusOfTaking = statusOfTakingCalculator.getByCurrStatus(
+                val newStatut = statusOfTakingCalculator.getByCurrStatus(
                     plannedDate = entity.plannedDate,
                     plannedTime = entity.plannedTime,
                     currDate = dateTimeService.getCurrDate(),
                     currTime = dateTimeService.getCurrTime(),
                     currStatusOfTaking = entity.statusOfTaking
                 )
-                synchronizedWithServer = false
+                if (newStatut != entity.statusOfTaking) {
+                    entity.statusOfTaking = newStatut
+                    synchronizedWithServer = false
+                }
             }
         }
         plannedMedicineDao.update(updatedList)

@@ -89,9 +89,7 @@ class ServerApiServiceImpl(
 
     override suspend fun useRemoteDataAfterLogin() {
         medicineDao.deleteAll()
-        sharedPref.getMainPersonId()?.let {
-            personDao.deleteAllWithoutMain(it)
-        }
+        personDao.deleteAllWithoutMain()
         enqueueServerSync()
     }
 
@@ -122,19 +120,17 @@ class ServerApiServiceImpl(
     }
 
     override suspend fun connectWithPatron(connectionKey: String): ApiResponse {
-        return sharedPref.getAuthToken()?.let { authToken ->
-            try {
-                val connectedPersonDto = authenticationApi.patronConnect(connectionKey)
-                sharedPref.saveAuthToken(connectedPersonDto.authToken)
-                sharedPref.deleteUserEmail()
-                switchToConnectedDatabase()
-                initConnectedPersonDatabase(connectedPersonDto)
-                ApiResponse.OK
-            } catch (e: Exception) {
-                e.printStackTrace()
-                getError(e)
-            }
-        } ?: throw Exception("AuthToken not available")
+        return try {
+            val connectedPersonDto = authenticationApi.patronConnect(connectionKey)
+            sharedPref.saveAuthToken(connectedPersonDto.authToken)
+            sharedPref.deleteUserEmail()
+            switchToConnectedDatabase()
+            initConnectedPersonDatabase(connectedPersonDto)
+            ApiResponse.OK
+        } catch (e: Exception) {
+            e.printStackTrace()
+            getError(e)
+        }
     }
 
     override suspend fun logoutUser() {

@@ -43,11 +43,14 @@ interface PersonDao {
     @Query("SELECT * FROM persons WHERE person_id = :id")
     suspend fun getEditData(id: Int): PersonEditData
 
-    @Query("SELECT person_color_res_id FROM persons WHERE person_id = :id")
-    fun getColorLive(id: Int): LiveData<Int>
+    @Query("SELECT person_id FROM persons WHERE main_person = 1")
+    suspend fun getMainPersonId(): Int?
 
     @Query("SELECT * FROM persons WHERE person_id = :id")
     fun getItemLive(id: Int): LiveData<PersonItem>
+
+    @Query("SELECT person_color_res_id FROM persons WHERE person_id = :id")
+    fun getColorLive(id: Int): LiveData<Int>
 
     @Query("SELECT * FROM persons WHERE person_id = :id")
     fun getOptionsDataLive(id: Int): LiveData<PersonOptionsData>
@@ -58,6 +61,15 @@ interface PersonDao {
     @Query("SELECT * FROM persons p JOIN medicines_plans mp ON p.person_id = mp.person_id JOIN medicines m ON mp.medicine_id = m.medicine_id GROUP BY p.person_id HAVING m.medicine_id = :medicineId")
     fun getItemListLiveByMedicineID(medicineId: Int): LiveData<List<PersonItem>>
 
+    @Query("SELECT person_id FROM persons WHERE main_person = 1")
+    fun getMainIdLive(): LiveData<Int>
+
+    @Query("SELECT * FROM persons WHERE main_person = 1")
+    fun getMainItemLive(): LiveData<PersonItem>
+
+    @Query("SELECT person_color_res_id FROM persons WHERE main_person = 1")
+    fun getMainColorLive(): LiveData<Int>
+
     // ServerSync
     @Query("SELECT person_id FROM persons WHERE person_remote_id = :remoteId")
     suspend fun getIdByRemoteId(remoteId: Long): Int?
@@ -65,12 +77,12 @@ interface PersonDao {
     @Query("SELECT person_remote_id FROM persons WHERE person_id = :id")
     suspend fun getRemoteIdById(id: Int): Long?
 
-    @Query("SELECT * FROM persons WHERE synchronized_with_server = 0 AND person_id != :mainPersonId")
-    suspend fun getEntityListToSync(mainPersonId: Int): List<PersonEntity>
+    @Query("SELECT * FROM persons WHERE synchronized_with_server = 0 AND main_person = 0")
+    suspend fun getEntityListToSync(): List<PersonEntity>
 
-    @Query("DELETE FROM persons WHERE person_remote_id NOT IN (:remoteIdList) AND person_id != :mainPersonId")
-    suspend fun deleteByRemoteIdNotIn(remoteIdList: List<Long>, mainPersonId: Int)
+    @Query("DELETE FROM persons WHERE person_remote_id NOT IN (:remoteIdList) AND main_person = 0")
+    suspend fun deleteByRemoteIdNotIn(remoteIdList: List<Long>)
 
-    @Query("DELETE FROM persons WHERE person_id != :mainPersonId")
-    suspend fun deleteAllWithoutMain(mainPersonId: Int)
+    @Query("DELETE FROM persons WHERE main_person = 0")
+    suspend fun deleteAllWithoutMain()
 }
