@@ -34,5 +34,13 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.medihelper.mainapp.launcher.LoginFragment"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/toRegisterFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.medihelper.mainapp.launcher.RegisterFragment"
+        tools:layout="@layout/fragment_register" />
 </navigation>

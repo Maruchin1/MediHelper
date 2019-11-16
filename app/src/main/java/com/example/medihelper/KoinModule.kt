@@ -7,6 +7,7 @@ import com.example.medihelper.utility.StatusOfTakingCalculator
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
 import com.example.medihelper.mainapp.launcher.LoginViewModel
 import com.example.medihelper.mainapp.launcher.MainPersonViewModel
+import com.example.medihelper.mainapp.launcher.RegisterViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanListViewModel
@@ -128,4 +129,5 @@ val viewModelModule = module {
     viewModel { AlarmViewModel(get()) }
     viewModel { MainPersonViewModel(get()) }
     viewModel { LoginViewModel(get()) }
+    viewModel { RegisterViewModel(get()) }
 }

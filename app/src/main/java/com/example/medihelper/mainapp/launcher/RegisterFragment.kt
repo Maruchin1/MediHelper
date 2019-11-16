@@ -5,40 +5,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
 import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.showShortSnackbar
-import com.example.medihelper.databinding.FragmentLoginBinding
-import com.example.medihelper.mainapp.LauncherActivity
+import com.example.medihelper.databinding.FragmentRegisterBinding
 import com.example.medihelper.service.LoadingScreenService
-import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_register.*
 import org.koin.android.ext.android.inject
 
-class LoginFragment : LauncherOptionFragment() {
+class RegisterFragment : LauncherOptionFragment() {
 
-    private val viewModel: LoginViewModel by inject()
+    private val viewModel: RegisterViewModel by inject()
     private val loadingScreenService: LoadingScreenService by inject()
-    private val launcherActivity: LauncherActivity by lazy { requireActivity() as LauncherActivity }
-    private val directions by lazy { LoginFragmentDirections }
 
-    fun onClickConfirm() = viewModel.loginUser()
+    fun onClickConfirm() = viewModel.registerUser()
 
     fun onClickBack() = findNavController().popBackStack()
 
-    fun onClickRegister() {
-        val extras = FragmentNavigatorExtras(
-            lay_logo to "lay_logo_register"
-        )
-        findNavController().navigate(directions.toRegisterFragment(), extras)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bind<FragmentLoginBinding>(
+        return bind<FragmentRegisterBinding>(
             inflater = inflater,
             container = container,
-            layoutResId = R.layout.fragment_login,
+            layoutResId = R.layout.fragment_register,
             viewModel = viewModel
         )
     }
@@ -56,9 +45,9 @@ class LoginFragment : LauncherOptionFragment() {
                 loadingScreenService.closeLoadingScreen()
             }
         })
-        viewModel.loginError.observe(viewLifecycleOwner, Observer { errorMessage ->
+        viewModel.registerError.observe(viewLifecycleOwner, Observer { errorMessage ->
             if (errorMessage == null) {
-                launcherActivity.startMainActivity()
+                findNavController().popBackStack()
             } else {
                 showShortSnackbar(rootLayout = root_lay, message = errorMessage)
             }

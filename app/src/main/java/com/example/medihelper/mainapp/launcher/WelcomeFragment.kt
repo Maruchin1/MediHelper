@@ -54,8 +54,6 @@ class WelcomeFragment : Fragment() {
     }
 
     private fun getSharedLogoExtras() = FragmentNavigatorExtras(
-        (
-                lay_logo to "lay_logo_main_person"
-                )
+        lay_logo to "lay_logo_option"
     )
 }

@@ -11,6 +11,8 @@ abstract class LauncherOptionFragment : Fragment() {
             sharedElementEnterTransition = getOptionEnterShared(requireContext())
             enterTransition = getOptionEnter()
             returnTransition = getOptionReturn()
+            exitTransition = getOptionExit()
+            reenterTransition = getOptionReenter()
         }
     }
 }

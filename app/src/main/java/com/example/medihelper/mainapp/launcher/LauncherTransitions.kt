@@ -35,7 +35,16 @@ class LauncherTransitions {
         startDelay = 600
     }
 
+    fun getOptionExit() = Slide(Gravity.BOTTOM).apply {
+        duration = 300
+    }
+
     fun getOptionReturn() = Slide(Gravity.BOTTOM).apply {
         duration = 300
+    }
+
+    fun getOptionReenter() = Slide(Gravity.BOTTOM).apply {
+        duration = 300
+        startDelay = 600
     }
 }

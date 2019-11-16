@@ -1,16 +1,11 @@
 package com.example.medihelper.mainapp.launcher
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.transition.Slide
-import androidx.transition.TransitionInflater
-import androidx.transition.TransitionSet
 import com.example.medihelper.R
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentMainPersonBinding
@@ -40,7 +35,7 @@ class MainPersonFragment : LauncherOptionFragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.actionInitialSetupEnd.observe(viewLifecycleOwner, Observer {
+        viewModel.setupEndAction.observe(viewLifecycleOwner, Observer {
             (requireActivity() as LauncherActivity).startMainActivity()
         })
     }
