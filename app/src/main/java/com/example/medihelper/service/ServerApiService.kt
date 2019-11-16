@@ -5,8 +5,11 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.work.*
 import com.example.medihelper.*
 import com.example.medihelper.localdata.AppSharedPref
+import com.example.medihelper.localdata.DeletedHistory
 import com.example.medihelper.localdata.dao.MedicineDao
+import com.example.medihelper.localdata.dao.MedicinePlanDao
 import com.example.medihelper.localdata.dao.PersonDao
+import com.example.medihelper.localdata.dao.PlannedMedicineDao
 import com.example.medihelper.localdata.entity.PersonEntity
 import com.example.medihelper.remotedata.api.AuthenticationApi
 import com.example.medihelper.remotedata.api.RegisteredUserApi
@@ -56,7 +59,10 @@ class ServerApiServiceImpl(
     private val registeredUserApi: RegisteredUserApi,
     private val personDao: PersonDao,
     private val medicineDao: MedicineDao,
-    private val workManager: WorkManager
+    private val medicinePlanDao: MedicinePlanDao,
+    private val plannedMedicineDao: PlannedMedicineDao,
+    private val workManager: WorkManager,
+    private val deletedHistory: DeletedHistory
 ) : ServerApiService, KoinComponent {
 
     override fun getAppMode(): AppMode {
@@ -128,6 +134,7 @@ class ServerApiServiceImpl(
             sharedPref.deleteUserEmail()
             switchToConnectedDatabase()
             initConnectedPersonDatabase(connectedPersonDto)
+            enqueueServerSync()
             ApiResponse.OK
         } catch (e: Exception) {
             e.printStackTrace()
@@ -138,13 +145,52 @@ class ServerApiServiceImpl(
     override suspend fun logoutUser() {
         sharedPref.deleteAuthToken()
         sharedPref.deleteUserEmail()
-        //todo czyścić historię i ustawiać wszystko na synchronized = false
+        with(deletedHistory) {
+            clearPersonHistory()
+            clearMedicineHistory()
+            clearMedicinePlanHistory()
+            clearPlannedMedicineHistory()
+        }
+        with(personDao) {
+            val entityList = this.getEntityList()
+            entityList.forEach {
+                it.synchronizedWithServer = false
+            }
+            this.update(entityList)
+        }
+        with(medicineDao) {
+            val entityList = this.getEntityList()
+            entityList.forEach {
+                it.synchronizedWithServer = false
+            }
+            this.update(entityList)
+        }
+        with(medicinePlanDao) {
+            val entityList = this.getEntityList()
+            entityList.forEach {
+                it.synchronizedWithServer = false
+            }
+            this.update(entityList)
+        }
+        with(plannedMedicineDao) {
+            val entityList = this.getEntityList()
+            entityList.forEach {
+                it.synchronizedWithServer = false
+            }
+            this.update(entityList)
+        }
     }
 
     override suspend fun cancelPatronConnection() {
+        val medicineDao: MedicineDao = get()
+        val personDao: PersonDao = get()
         sharedPref.deleteAuthToken()
         medicineDao.deleteAll()
         personDao.deleteAllWithMain()
+
+        val medicines = medicineDao.getEntityList()
+        val persons = personDao.getEntityList()
+
         switchToMainDatabase()
     }
 
@@ -216,7 +262,8 @@ class ServerApiServiceImpl(
             personRemoteId = connectedPersonDto.personRemoteId,
             personName = connectedPersonDto.personName,
             personColorResId = connectedPersonDto.personColorResId,
-            mainPerson = true
+            mainPerson = true,
+            synchronizedWithServer = true
         )
         val newPersonDao: PersonDao = get()
         newPersonDao.insert(mainPerson)

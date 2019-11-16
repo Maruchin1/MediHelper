@@ -98,7 +98,7 @@ val serviceModule = module {
     single<InitialDataService> { InitialDataServiceImpl(get(), get()) }
     single<LoadingScreenService> { LoadingScreenServiceImpl() }
     single<NotificationService> { NotificationServiceImpl(get()) }
-    single<ServerApiService> { ServerApiServiceImpl(get(), get(), get(), get(), get(), get()) }
+    single<ServerApiService> { ServerApiServiceImpl(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
 
     single { FormValidatorService() }
 
