@@ -128,6 +128,9 @@ class ServerApiServiceImpl(
     }
 
     override suspend fun connectWithPatron(connectionKey: String): ApiResponse {
+        if (getAppMode() == AppMode.LOGGED) {
+            logoutUser()
+        }
         return try {
             val connectedPersonDto = authenticationApi.patronConnect(connectionKey)
             sharedPref.saveAuthToken(connectedPersonDto.authToken)
@@ -187,9 +190,6 @@ class ServerApiServiceImpl(
         sharedPref.deleteAuthToken()
         medicineDao.deleteAll()
         personDao.deleteAllWithMain()
-
-        val medicines = medicineDao.getEntityList()
-        val persons = personDao.getEntityList()
 
         switchToMainDatabase()
     }
@@ -278,12 +278,44 @@ class ServerApiServiceImpl(
     }
 
     private fun switchToConnectedDatabase() {
-        unloadKoinModules(listOf(viewModelModule, serviceModule, localDataModule, mainRoomModule))
-        loadKoinModules(listOf(connectedRoomModule, localDataModule, serviceModule, viewModelModule))
+        unloadKoinModules(
+            listOf(
+                viewModelModule,
+                serviceModule,
+                remoteDataModule,
+                localDataModule,
+                mainRoomModule
+            )
+        )
+        loadKoinModules(
+            listOf(
+                connectedRoomModule,
+                localDataModule,
+                remoteDataModule,
+                serviceModule,
+                viewModelModule
+            )
+        )
     }
 
     private fun switchToMainDatabase() {
-        unloadKoinModules(listOf(viewModelModule, serviceModule, localDataModule, connectedRoomModule))
-        loadKoinModules(listOf(mainRoomModule, localDataModule, serviceModule, viewModelModule))
+        unloadKoinModules(
+            listOf(
+                viewModelModule,
+                serviceModule,
+                remoteDataModule,
+                localDataModule,
+                connectedRoomModule
+            )
+        )
+        loadKoinModules(
+            listOf(
+                mainRoomModule,
+                localDataModule,
+                remoteDataModule,
+                serviceModule,
+                viewModelModule
+            )
+        )
     }
 }

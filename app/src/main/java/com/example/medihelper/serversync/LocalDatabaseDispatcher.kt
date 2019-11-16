@@ -1,6 +1,5 @@
 package com.example.medihelper.serversync
 
-import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.DeletedHistory
 import com.example.medihelper.localdata.dao.MedicineDao
 import com.example.medihelper.localdata.dao.MedicinePlanDao
@@ -21,8 +20,7 @@ class LocalDatabaseDispatcher(
     private val personDao: PersonDao,
     private val medicinePlanDao: MedicinePlanDao,
     private val plannedMedicineDao: PlannedMedicineDao,
-    private val deletedHistory: DeletedHistory,
-    private val appSharedPref: AppSharedPref
+    private val deletedHistory: DeletedHistory
 ) {
     suspend fun dispatchMedicinesChanges(medicineDtoList: List<MedicineDto>) {
         val remoteIdList = medicineDtoList.map { it.medicineRemoteId!! }
@@ -48,6 +46,9 @@ class LocalDatabaseDispatcher(
             insert(insertList)
         }
         deletedHistory.clearMedicineHistory()
+
+        val medicines = medicineDao.getEntityList()
+
     }
 
     suspend fun dispatchPersonsChanges(personDtoList: List<PersonDto>) {
