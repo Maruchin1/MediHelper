@@ -6,11 +6,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.launcher.MainPersonFragment" />
+            type="com.example.medihelper.mainapp.launcher.LoginFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.launcher.MainPersonViewModel" />
+            type="com.example.medihelper.mainapp.launcher.LoginViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
-                android:text="Korzystanie samodzielne"
+                android:text="Logowanie na konto"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:textColor="@color/colorTextSecondary"
@@ -98,12 +98,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="Podaj swoje imię"
+                    android:text="E-mail"
                     android:textAppearance="@style/LoginRegisterFragment.Text.TextFieldLabel" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.Design.TextInputLayout"
-                    inLayError="@{viewModel.errorUserNameLive}"
+                    inLayError="@{viewModel.formError.emailErr}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintEnabled="false">
@@ -112,9 +112,56 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
-                        android:text="@={viewModel.userNameLive}" />
+                        android:text="@={viewModel.form.email}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Hasło"
+                    android:textAppearance="@style/LoginRegisterFragment.Text.TextFieldLabel" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Design.TextInputLayout"
+                    inLayError="@{viewModel.formError.passwordErr}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:endIconMode="password_toggle"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:text="@={viewModel.form.password}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nie masz konta?"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                        android:textColor="@color/colorTextTertiary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="Zarejestruj"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -160,4 +207,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

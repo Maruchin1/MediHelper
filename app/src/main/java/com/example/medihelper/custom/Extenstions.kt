@@ -12,8 +12,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.BR
 import com.example.medihelper.R
+import com.google.android.material.snackbar.Snackbar
 
-fun <BindingType : ViewDataBinding>Fragment.bind(
+fun <BindingType : ViewDataBinding> Fragment.bind(
     inflater: LayoutInflater,
     layoutResId: Int,
     container: ViewGroup?,
@@ -31,4 +32,16 @@ fun <BindingType : ViewDataBinding>Fragment.bind(
 
 fun DialogFragment.setTransparentStatusBar() {
     dialog?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorTransparent)
+}
+
+fun Fragment.showShortSnackbar(rootLayout: View, message: String) {
+    Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT)
+        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+        .show()
+}
+
+fun Fragment.showLongSnackbar(rootLayout: View, message: String) {
+    Snackbar.make(rootLayout, message, Snackbar.LENGTH_LONG)
+        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+        .show()
 }

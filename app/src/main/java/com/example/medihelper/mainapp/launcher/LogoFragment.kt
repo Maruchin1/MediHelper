@@ -68,12 +68,6 @@ class LogoFragment : Fragment() {
         val initialRadius = Math.hypot(cx.toDouble(), cy.toDouble()).toFloat()
 
         val anim = ViewAnimationUtils.createCircularReveal(lay_background, cx, cy, initialRadius, 0f)
-//        anim.addListener(object : AnimatorListenerAdapter() {
-//            override fun onAnimationEnd(animation: Animator?) {
-//                super.onAnimationEnd(animation)
-//                lay_background.visibility = View.INVISIBLE
-//            }
-//        })
         anim.interpolator = FastOutSlowInInterpolator()
         anim.duration = ANIM_TIME
         anim.start()

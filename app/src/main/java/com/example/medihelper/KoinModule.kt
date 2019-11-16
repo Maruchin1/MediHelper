@@ -5,6 +5,7 @@ import androidx.work.WorkManager
 import com.example.medihelper.localdata.*
 import com.example.medihelper.utility.StatusOfTakingCalculator
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
+import com.example.medihelper.mainapp.launcher.LoginViewModel
 import com.example.medihelper.mainapp.launcher.MainPersonViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel
@@ -98,7 +99,7 @@ val serviceModule = module {
     single<InitialDataService> { InitialDataServiceImpl(get(), get()) }
     single<LoadingScreenService> { LoadingScreenServiceImpl() }
     single<NotificationService> { NotificationServiceImpl(get()) }
-    single<ServerApiService> { ServerApiServiceImpl(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    single<ServerApiService> { ServerApiServiceImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
 
     single { FormValidatorService() }
 
@@ -126,4 +127,5 @@ val viewModelModule = module {
     viewModel { ScheduleDayViewModel(get(), get()) }
     viewModel { AlarmViewModel(get()) }
     viewModel { MainPersonViewModel(get()) }
+    viewModel { LoginViewModel(get()) }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.work.*
 import com.example.medihelper.*
+import com.example.medihelper.R
 import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.DeletedHistory
 import com.example.medihelper.localdata.dao.MedicineDao
@@ -37,6 +38,7 @@ interface ServerApiService {
     fun enqueueServerSync()
     suspend fun registerNewUser(email: String, password: String): ApiResponse
     suspend fun loginUser(email: String, password: String): Pair<Boolean?, ApiResponse>
+    suspend fun initialLoginUser(email: String, password: String): ApiResponse
     suspend fun useRemoteDataAfterLogin()
     suspend fun useLocalDataAfterLogin(): ApiResponse
     suspend fun changeUserPassword(newPassword: String): ApiResponse
@@ -62,7 +64,8 @@ class ServerApiServiceImpl(
     private val medicinePlanDao: MedicinePlanDao,
     private val plannedMedicineDao: PlannedMedicineDao,
     private val workManager: WorkManager,
-    private val deletedHistory: DeletedHistory
+    private val deletedHistory: DeletedHistory,
+    private val initialDataService: InitialDataService
 ) : ServerApiService, KoinComponent {
 
     override fun getAppMode(): AppMode {
@@ -92,6 +95,21 @@ class ServerApiServiceImpl(
         } catch (e: Exception) {
             e.printStackTrace()
             Pair(null, getError(e))
+        }
+    }
+
+    override suspend fun initialLoginUser(email: String, password: String): ApiResponse {
+        val userCredentialsDto = UserCredentialsDto(email, password)
+        return try {
+            val loginResponseDto = authenticationApi.loginUser(userCredentialsDto)
+            sharedPref.saveAuthToken(loginResponseDto.authToken)
+            sharedPref.saveUserEmail(userCredentialsDto.email)
+            //todo przekazywać tutaj imię otrzymane z API
+            initialDataService.createMainPerson("User")
+            ApiResponse.OK
+        } catch (e: Exception) {
+            e.printStackTrace()
+            getError(e)
         }
     }
 
@@ -255,7 +273,6 @@ class ServerApiServiceImpl(
         }
         else -> ApiResponse.ERROR
     }
-
 
     private suspend fun initConnectedPersonDatabase(connectedPersonDto: ConnectedPersonDto) {
         val mainPerson = PersonEntity(
