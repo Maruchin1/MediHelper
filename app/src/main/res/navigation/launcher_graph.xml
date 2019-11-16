@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/launcher_graph"
+    app:startDestination="@id/logoFragment">
+
+
+    <fragment
+        android:id="@+id/logoFragment"
+        android:name="com.example.medihelper.mainapp.launcher.LogoFragment"
+        tools:layout="@layout/fragment_logo" >
+        <action
+            android:id="@+id/toWelcomeFragment"
+            app:destination="@id/welcomeFragment"
+            app:popUpTo="@+id/logoFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.medihelper.mainapp.launcher.WelcomeFragment"
+        tools:layout="@layout/fragment_welcome" />
+</navigation>
