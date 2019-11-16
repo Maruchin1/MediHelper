@@ -29,9 +29,6 @@ class ScheduleViewModel(
         colorPrimaryLive = Transformations.map(selectedPersonItemLive) { personItem ->
             personItem?.personColorResId
         }
-        viewModelScope.launch {
-            plannedMedicineService.updateAllStatus()
-        }
     }
 
     fun selectDate(position: Int) = selectDate(getDateForPosition(position))
@@ -54,5 +51,9 @@ class ScheduleViewModel(
     fun getPositionForDate(date: AppDate): Int {
         val daysDiff = dateTimeService.calcDaysBetween(dateTimeService.getCurrDate(), date)
         return (timelineDaysCount / 2) + daysDiff.toInt()
+    }
+
+    fun updateAllStatus() = viewModelScope.launch {
+        plannedMedicineService.updateAllStatus()
     }
 }

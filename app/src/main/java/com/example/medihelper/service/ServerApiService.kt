@@ -16,8 +16,10 @@ import com.example.medihelper.remotedata.dto.UserCredentialsDto
 import com.example.medihelper.serversync.ConnectedPersonSyncWorker
 import com.example.medihelper.serversync.LoggedUserSyncWorker
 import com.example.medihelper.serversync.ServerSyncWorker
+import org.koin.core.KoinComponent
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
+import org.koin.core.get
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.util.*
@@ -55,7 +57,7 @@ class ServerApiServiceImpl(
     private val personDao: PersonDao,
     private val medicineDao: MedicineDao,
     private val workManager: WorkManager
-) : ServerApiService {
+) : ServerApiService, KoinComponent {
 
     override fun getAppMode(): AppMode {
         val authToken = sharedPref.getAuthToken() ?: ""
@@ -213,9 +215,11 @@ class ServerApiServiceImpl(
         val mainPerson = PersonEntity(
             personRemoteId = connectedPersonDto.personRemoteId,
             personName = connectedPersonDto.personName,
-            personColorResId = connectedPersonDto.personColorResId
+            personColorResId = connectedPersonDto.personColorResId,
+            mainPerson = true
         )
-        personDao.insert(mainPerson)
+        val newPersonDao: PersonDao = get()
+        newPersonDao.insert(mainPerson)
     }
 
     private fun getAppMode(authToken: String, email: String): AppMode {

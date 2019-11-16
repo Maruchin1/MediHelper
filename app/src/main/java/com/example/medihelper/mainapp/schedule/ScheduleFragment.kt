@@ -53,6 +53,11 @@ class ScheduleFragment : Fragment() {
         observeViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateAllStatus()
+    }
+
     private fun observeViewModel() {
         viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
             if (colorResID != null) {
