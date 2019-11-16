@@ -31,9 +31,10 @@ class WelcomeFragment : Fragment() {
         getSharedLogoExtras()
     )
 
-    fun onClickNavToPatronConnectFragment() {
-
-    }
+    fun onClickNavToPatronConnectFragment() = findNavController().navigate(
+        directions.toPatronConnectFragment(),
+        getSharedLogoExtras()
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

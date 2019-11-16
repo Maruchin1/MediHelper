@@ -27,12 +27,7 @@ class LoginFragment : LauncherOptionFragment() {
 
     fun onClickBack() = findNavController().popBackStack()
 
-    fun onClickRegister() {
-        val extras = FragmentNavigatorExtras(
-            lay_logo to "lay_logo_register"
-        )
-        findNavController().navigate(directions.toRegisterFragment(), extras)
-    }
+    fun onClickRegister() = findNavController().navigate(directions.toRegisterFragment())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return bind<FragmentLoginBinding>(

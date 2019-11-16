@@ -1,5 +1,6 @@
 package com.example.medihelper.mainapp.more.patronconnect
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,53 +12,66 @@ import kotlinx.coroutines.launch
 class PatronConnectViewModel(
     private val serverApiService: ServerApiService
 ) : ViewModel() {
-    private val TAG = "PatronConnectViewModel"
 
-    val keyChar1Live = MutableLiveData<String>()
-    val keyChar2Live = MutableLiveData<String>()
-    val keyChar3Live = MutableLiveData<String>()
-    val keyChar4Live = MutableLiveData<String>()
-    val keyChar5Live = MutableLiveData<String>()
-    val keyChar6Live = MutableLiveData<String>()
-    val errorConnectionKeyLive = MutableLiveData<String>()
-    val patronConnectErrorLive = MutableLiveData<String>()
-    val loadingInProgressLive = MutableLiveData<Boolean>()
+    private var _formModel = FormModel()
+    private val _connectionKeyError = MutableLiveData<String>()
+    private val _patronConnectError = MutableLiveData<String>()
+    private val _loadingInProgress = MutableLiveData<Boolean>()
 
-    private val charLiveList by lazy {
-        listOf(keyChar1Live, keyChar2Live, keyChar3Live, keyChar4Live, keyChar5Live, keyChar6Live)
-    }
+    val formModel: FormModel
+        get() = _formModel
+    val connectionKeyError: LiveData<String>
+        get() = _connectionKeyError
+    val patronConnectError: LiveData<String>
+        get() = _patronConnectError
+    val loadingInProgress: LiveData<Boolean>
+        get() = _loadingInProgress
 
     fun setConnectionKey(connectionKey: String) {
-        for (i in charLiveList.indices) {
-            charLiveList[i].value = connectionKey[i].toString()
+        val allCharList = _formModel.allCharList
+        for (i in allCharList.indices) {
+            allCharList[i].value = connectionKey[i].toString()
         }
     }
 
     fun loadProfileData() = viewModelScope.launch {
         if (validateInputData()) {
-            loadingInProgressLive.postValue(true)
+            _loadingInProgress.postValue(true)
             val connectionKey = StringBuilder().apply {
-                charLiveList.forEach { append(it.value!!) }
+                _formModel.allCharList.forEach { append(it.value!!) }
             }.toString()
             val apiResponse = serverApiService.connectWithPatron(connectionKey)
-            val errorMessage = when (apiResponse) {
-                ApiResponse.OK -> null
-                ApiResponse.TIMEOUT -> "Przekroczono czas połączenia"
-                else -> "Błąd połączenia"
-            }
-            patronConnectErrorLive.postValue(errorMessage)
-            loadingInProgressLive.postValue(false)
+            val errorMessage = mapApiResponseToErrString(apiResponse)
+            _patronConnectError.postValue(errorMessage)
+            _loadingInProgress.postValue(false)
         }
     }
 
     private fun validateInputData(): Boolean {
-        var valid = true
-        if (charLiveList.any { it.value.isNullOrEmpty() }) {
-            errorConnectionKeyLive.postValue("Nie podano kodu opiekuna")
-            valid = false
-        } else {
-            errorConnectionKeyLive.postValue(null)
+        val connectionKeyErr = if (_formModel.allCharList.any { it.value.isNullOrEmpty() }) {
+            "Nie podano kodu opiekuna"
+        } else null
+
+        _connectionKeyError.postValue(connectionKeyErr)
+
+        return connectionKeyErr == null
+    }
+
+    private fun mapApiResponseToErrString(apiResponse: ApiResponse) = when (apiResponse) {
+        ApiResponse.OK -> null
+        ApiResponse.TIMEOUT -> "Przekroczono czas połączenia"
+        else -> "Błąd połączenia"
+    }
+
+    class FormModel {
+        val keyChar1Live = MutableLiveData<String>()
+        val keyChar2Live = MutableLiveData<String>()
+        val keyChar3Live = MutableLiveData<String>()
+        val keyChar4Live = MutableLiveData<String>()
+        val keyChar5Live = MutableLiveData<String>()
+        val keyChar6Live = MutableLiveData<String>()
+        val allCharList by lazy {
+            listOf(keyChar1Live, keyChar2Live, keyChar3Live, keyChar4Live, keyChar5Live, keyChar6Live)
         }
-        return valid
     }
 }

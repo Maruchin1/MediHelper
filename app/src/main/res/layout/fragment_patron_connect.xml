@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.more.patronconnect.PatronConnectFragment" />
+            type="com.example.medihelper.mainapp.launcher.PatronConnectFragment" />
 
         <variable
             name="viewModel"
@@ -17,73 +17,82 @@
         android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
         android:fitsSystemWindows="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                toolbarNavigationOnClick="@{() -> handler.dismiss()}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/round_close_white_24" />
-
             <LinearLayout
-                android:id="@+id/lay_info"
+                android:id="@+id/lay_logo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="48dp"
+                android:gravity="center_horizontal"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/toolbar">
+                android:transitionName="lay_logo_option"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_logo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:cardBackgroundColor="@color/colorPrimary"
+                    app:cardCornerRadius="50dp"
+                    app:cardElevation="0dp">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/round_people_white_36" />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="16dp"
+                        android:src="@drawable/cross_icon"
+                        android:tint="@color/colorWhite" />
+                </androidx.cardview.widget.CardView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="Połącz z opiekunem"
-                        android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                        android:textColor="@color/colorWhite" />
-                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="MediHelper"
+                    android:textAppearance="@style/AppTheme.Text.ToolbarTitle.Main"
+                    android:textColor="@color/colorPrimary" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="32dp"
-                    android:alpha="0.6"
-                    android:text="Opiekun będzie miał możliwość zarządzania twoim planem leków oraz kontrolowania czy przyjmujesz swoje leki"
+                    android:layout_marginTop="04dp"
+                    android:text="Organizacja domowej apteczki prosta jak nigdy dotąd"
                     android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                    android:textColor="@color/colorWhite" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/txv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="Połącz z opiekunem"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:textColor="@color/colorTextSecondary"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/lay_logo" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
-                android:gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lay_info"
-                app:layout_constraintVertical_bias="0.4">
+                app:layout_constraintBottom_toTopOf="@id/lay_buttons"
+                app:layout_constraintTop_toBottomOf="@id/txv_title">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -96,13 +105,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/colorWhite"
                         android:inputType="numberDecimal"
                         android:maxLength="1"
+                        android:text="@={viewModel.formModel.keyChar1Live}"
                         android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                        android:textColor="@color/colorWhite"
-                        android:text="@={viewModel.keyChar1Live}"/>
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etx_key_2"
@@ -111,13 +118,11 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/colorWhite"
                         android:inputType="numberDecimal"
                         android:maxLength="1"
+                        android:text="@={viewModel.formModel.keyChar2Live}"
                         android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                        android:textColor="@color/colorWhite"
-                        android:text="@={viewModel.keyChar2Live}"/>
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etx_key_3"
@@ -126,13 +131,11 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/colorWhite"
                         android:inputType="numberDecimal"
                         android:maxLength="1"
+                        android:text="@={viewModel.formModel.keyChar3Live}"
                         android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                        android:textColor="@color/colorWhite"
-                        android:text="@={viewModel.keyChar3Live}"/>
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etx_key_4"
@@ -141,13 +144,11 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/colorWhite"
                         android:inputType="numberDecimal"
                         android:maxLength="1"
+                        android:text="@={viewModel.formModel.keyChar4Live}"
                         android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                        android:textColor="@color/colorWhite"
-                        android:text="@={viewModel.keyChar4Live}"/>
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etx_key_5"
@@ -156,13 +157,11 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/colorWhite"
                         android:inputType="numberDecimal"
                         android:maxLength="1"
+                        android:text="@={viewModel.formModel.keyChar5Live}"
                         android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                        android:textColor="@color/colorWhite"
-                        android:text="@={viewModel.keyChar5Live}"/>
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etx_key_6"
@@ -170,13 +169,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/colorWhite"
                         android:inputType="numberDecimal"
                         android:maxLength="1"
+                        android:text="@={viewModel.formModel.keyChar6Live}"
                         android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                        android:textColor="@color/colorWhite"
-                        android:text="@={viewModel.keyChar6Live}"/>
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
                 </LinearLayout>
 
                 <TextView
@@ -185,11 +182,10 @@
                     android:layout_marginTop="8dp"
                     android:text="Kod z aplikacji opiekuna"
                     android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                    android:textColor="@color/colorWhite" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/AppTheme.Widget.Button.Outlined.Big.Dark"
+                    style="@style/AppTheme.Widget.Button.Outlined.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="64dp"
@@ -198,21 +194,48 @@
                     app:icon="@drawable/ic_qrcode_white_24dp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/lay_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@id/txv_app_version">
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/AppTheme.Widget.Button.Outlined.Big"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:onClick="@{() -> handler.onClickBack()}"
+                    android:text="Powrót" />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/AppTheme.Widget.Button.Big"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:onClick="@{() -> handler.onClickConfirm()}"
+                    android:text="Zatwierdź" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txv_app_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/version"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:textColor="@color/colorTextTertiary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="32dp"
-            android:onClick="@{() -> handler.onClickConfirm()}"
-            android:src="@drawable/baseline_check_white_48"
-            app:backgroundTint="@color/colorWhite"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:rippleColor="@color/colorPrimary"
-            app:tint="@color/colorPrimary" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
