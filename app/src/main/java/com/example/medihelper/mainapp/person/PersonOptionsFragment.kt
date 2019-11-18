@@ -13,6 +13,7 @@ import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.setTransparentStatusBar
 import com.example.medihelper.databinding.FragmentPersonOptionsBinding
 import com.example.medihelper.mainapp.dialog.ConfirmDialog
+import com.example.medihelper.mainapp.options.AuthenticationFragment
 import kotlinx.android.synthetic.main.fragment_person_options.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,7 +23,11 @@ class PersonOptionsFragment : AppFullScreenDialog() {
     private val directions by lazy { PersonOptionsFragmentDirections }
     private val args: PersonOptionsFragmentArgs by navArgs()
 
-    fun onClickMediHelperAccount() = findNavController().navigate(directions.toLoginFragment())
+    fun onClickMediHelperAccount() = findNavController().navigate(
+        directions.toAuthenticationFragment(
+            AuthenticationFragment.AuthenticationType.LOGIN
+        )
+    )
 
     fun onClickEdit() = viewModel.getPersonID()?.let { personID ->
         findNavController().navigate(directions.toAddEditPersonFragment(personID))

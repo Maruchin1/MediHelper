@@ -35,7 +35,7 @@
         tools:layout="@layout/fragment_main_person" />
     <fragment
         android:id="@+id/loginFragmentLauncher"
-        android:name="com.example.medihelper.mainapp.authentication.LoginFragmentLauncher"
+        android:name="com.example.medihelper.mainapp.authentication.LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/toRegisterFragment"
@@ -43,10 +43,10 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragmentLauncher"
-        android:name="com.example.medihelper.mainapp.authentication.RegisterFragmentLauncher"
+        android:name="com.example.medihelper.mainapp.authentication.RegisterFragment"
         tools:layout="@layout/fragment_register" />
     <fragment
         android:id="@+id/patronConnectFragmentLauncher"
-        android:name="com.example.medihelper.mainapp.authentication.PatronConnectFragmentLauncher"
+        android:name="com.example.medihelper.mainapp.authentication.PatronConnectFragment"
         tools:layout="@layout/fragment_patron_connect" />
 </navigation>

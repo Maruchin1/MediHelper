@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.authentication.IRegisterFragment" />
+            type="com.example.medihelper.mainapp.authentication.RegisterFragment" />
 
         <variable
             name="viewModel"

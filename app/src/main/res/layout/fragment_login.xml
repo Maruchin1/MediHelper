@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.authentication.ILoginFragment" />
+            type="com.example.medihelper.mainapp.authentication.LoginFragment" />
 
         <variable
             name="viewModel"
@@ -103,7 +103,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.Design.TextInputLayout"
-                    inLayError="@{viewModel.formError.emailErr}"
+                    inLayError="@{viewModel.errorEmail}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintEnabled="false">
@@ -112,7 +112,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
-                        android:text="@={viewModel.form.email}" />
+                        android:text="@={viewModel.email}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -125,7 +125,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.Design.TextInputLayout"
-                    inLayError="@{viewModel.formError.passwordErr}"
+                    inLayError="@{viewModel.errorPassword}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:endIconMode="password_toggle"
@@ -135,7 +135,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:text="@={viewModel.form.password}" />
+                        android:text="@={viewModel.password}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout

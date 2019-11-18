@@ -78,7 +78,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:paddingStart="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="8dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -103,7 +105,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="16dp"
                             android:text="Dzięki darmowemu kontu MediHelper możesz przechowywać kopię swoich danych w chmurze, a także łączyć się z aplikacjami podopiecznych."
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
@@ -113,7 +118,6 @@
                             style="@style/AppTheme.Widget.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:onClick="@{() -> handler.onClickLogin()}"
                             android:text="Zaloguj" />
                     </LinearLayout>
@@ -132,7 +136,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:paddingStart="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="8dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -157,7 +163,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="16dp"
                             android:text="Zalogowano jako"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
@@ -167,8 +176,6 @@
                             style="@style/AppTheme.Widget.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp"
                             android:text="Zmień hasło" />
 
                         <include layout="@layout/line_horizontal" />
@@ -177,7 +184,6 @@
                             style="@style/AppTheme.Widget.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:text="Wyloguj" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -195,7 +201,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:paddingStart="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="8dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -220,7 +228,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="16dp"
                             android:text="Połącz się ze swoim opiekunem jako podopieczny. Pozwoli to opiekunowi na zarządzanie twoim planem leków oraz kontrolowanie czy leki zostały przyjęte."
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
@@ -230,7 +241,6 @@
                             style="@style/AppTheme.Widget.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:text="Połącz" />
 
                     </LinearLayout>
@@ -249,7 +259,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:paddingStart="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="8dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -274,7 +286,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="16dp"
                             android:text="Połączono jako"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
@@ -284,7 +299,6 @@
                             style="@style/AppTheme.Widget.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:text="Anuluj połączenie" />
 
                     </LinearLayout>

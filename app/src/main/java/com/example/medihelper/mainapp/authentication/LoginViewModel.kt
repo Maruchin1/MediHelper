@@ -12,45 +12,52 @@ class LoginViewModel(
     private val serverApiService: ServerApiService
 ) : ViewModel() {
 
-    private var _form = FormModel()
-    private var _formError = FormErrorModel()
+    private val _errorEmail = MutableLiveData<String>()
+    private val _errorPassword = MutableLiveData<String>()
+    private val _errorLogin = MutableLiveData<String>()
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
-    private val _loginError = MutableLiveData<String>()
 
-    val form: FormModel
-        get() = _form
-    val formError: FormErrorModel
-        get() = _formError
-    val loadingInProgress: LiveData<Boolean>
+    val errorEmail: LiveData<String>
+        get() = _errorEmail
+    val errorPassword: LiveData<String>
+        get() = _errorPassword
+    val errorLogin: LiveData<String>
+        get() = _errorLogin
+    val loadingInProcess: LiveData<Boolean>
         get() = _loadingInProgress
-    val loginError: LiveData<String>
-        get() = _loginError
+
+    val email = MutableLiveData<String>()
+    val password = MutableLiveData<String>()
+
 
     fun loginUser() = viewModelScope.launch {
         if (isFormValid()) {
             _loadingInProgress.postValue(true)
             val apiResponse = serverApiService.initialLoginUser(
-                email = _form.email.value!!,
-                password = _form.password.value!!
+                email = email.value!!,
+                password = password.value!!
             )
             val errorString = mapApiResponseToErrString(apiResponse)
-            _loginError.postValue(errorString)
+            _errorLogin.postValue(errorString)
             _loadingInProgress.postValue(false)
         }
     }
 
     private fun isFormValid(): Boolean {
-        val emailErr = if (_form.email.value.isNullOrEmpty()) {
+        val email = email.value
+        val password = password.value
+
+        val emailError = if (email.isNullOrEmpty()) {
             "Adred e-mail jest wymagany"
         } else null
-        val passwordErr = if (_form.password.value.isNullOrEmpty()) {
+        val passwordError = if (password.isNullOrEmpty()) {
             "Hasło jest wymagane"
         } else null
 
-        _formError.emailErr.postValue(emailErr)
-        _formError.passwordErr.postValue(passwordErr)
+        _errorEmail.postValue(emailError)
+        _errorEmail.postValue(passwordError)
 
-        return arrayOf(emailErr, passwordErr).all { it == null }
+        return arrayOf(emailError, passwordError).all { it == null }
     }
 
     private fun mapApiResponseToErrString(apiResponse: ApiResponse) = when (apiResponse) {
@@ -59,15 +66,5 @@ class LoginViewModel(
         ApiResponse.INCORRECT_DATA -> "Niepoprawne hasło"
         ApiResponse.NOT_FOUND -> "Nie znaleziono użytkownika"
         else -> "Błąd połączenia"
-    }
-
-    class FormModel {
-        val email = MutableLiveData<String>()
-        val password = MutableLiveData<String>()
-    }
-
-    class FormErrorModel {
-        val emailErr = MutableLiveData<String>()
-        val passwordErr = MutableLiveData<String>()
     }
 }

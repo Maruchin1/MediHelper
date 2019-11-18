@@ -5,33 +5,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.showShortSnackbar
 import com.example.medihelper.databinding.FragmentLoginBinding
-import com.example.medihelper.mainapp.MainActivity
+import com.example.medihelper.mainapp.LauncherActivity
+import com.example.medihelper.mainapp.launcher.LauncherOptionFragment
 import com.example.medihelper.service.LoadingScreenService
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject
 
-class LoginFragment : AppFullScreenDialog(), ILoginFragment {
+class LoginFragment : LauncherOptionFragment() {
 
     private val viewModel: LoginViewModel by inject()
     private val loadingScreenService: LoadingScreenService by inject()
-    private val mainActivity: MainActivity by lazy { requireActivity() as MainActivity }
+    private val launcherActivity: LauncherActivity by lazy { requireActivity() as LauncherActivity }
+    private val directions by lazy { LoginFragmentDirections }
 
-    override fun onClickConfirm() {
-        viewModel.loginUser()
-    }
+    fun onClickConfirm() = viewModel.loginUser()
 
-    override fun onClickBack() {
-        dismiss()
-    }
+    fun onClickBack() = findNavController().popBackStack()
 
-    override fun onClickRegister() {
-
-    }
+    fun onClickRegister() = findNavController().navigate(directions.toRegisterFragment())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return bind<FragmentLoginBinding>(
@@ -44,22 +40,20 @@ class LoginFragment : AppFullScreenDialog(), ILoginFragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setTransparentStatusBar()
-        setLightStatusBar()
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        viewModel.loadingInProgress.observe(viewLifecycleOwner, Observer { inProgress ->
+        viewModel.loadingInProcess.observe(viewLifecycleOwner, Observer { inProgress ->
             if (inProgress) {
                 loadingScreenService.showLoadingScreen(childFragmentManager)
             } else {
                 loadingScreenService.closeLoadingScreen()
             }
         })
-        viewModel.loginError.observe(viewLifecycleOwner, Observer { errorMessage ->
+        viewModel.errorLogin.observe(viewLifecycleOwner, Observer { errorMessage ->
             if (errorMessage == null) {
-                mainActivity.restartApp()
+                launcherActivity.startMainActivity()
             } else {
                 showShortSnackbar(rootLayout = root_lay, message = errorMessage)
             }

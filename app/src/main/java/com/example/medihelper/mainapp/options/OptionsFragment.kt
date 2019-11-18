@@ -14,9 +14,13 @@ import org.koin.android.ext.android.inject
 class OptionsFragment : Fragment() {
 
     private val viewModel: OptionsViewModel by inject()
-    private val directions  by lazy { OptionsFragmentDirections }
+    private val directions by lazy { OptionsFragmentDirections }
 
-    fun onClickLogin() = findNavController().navigate(directions.toLoginFragment())
+    fun onClickLogin() = findNavController().navigate(
+        directions.toAuthenticationFragment(
+            AuthenticationFragment.AuthenticationType.LOGIN
+        )
+    )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return bind<FragmentOptionsBinding>(

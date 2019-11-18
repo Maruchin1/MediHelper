@@ -14,11 +14,6 @@ import com.example.medihelper.mainapp.medicineplan.MedicinePlanListViewModel
 import com.example.medihelper.mainapp.medicine.AddEditMedicineViewModel
 import com.example.medihelper.mainapp.medicine.MedicineDetailsViewModel
 import com.example.medihelper.mainapp.medicine.MedicinesViewModel
-import com.example.medihelper.mainapp.more.MoreViewModel
-import com.example.medihelper.mainapp.more.loggeduser.LoggedUserViewModel
-import com.example.medihelper.mainapp.more.loggeduser.NewPasswordViewModel
-import com.example.medihelper.mainapp.more.loginregister.LoginRegisterViewModel
-import com.example.medihelper.mainapp.more.patronconnect.ConnectedPersonViewModel
 import com.example.medihelper.mainapp.authentication.PatronConnectViewModel
 import com.example.medihelper.mainapp.options.OptionsViewModel
 import com.example.medihelper.mainapp.person.AddEditPersonViewModel
@@ -122,13 +117,8 @@ val viewModelModule = module {
     viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get(), get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get(), get()) }
     viewModel { ScheduleViewModel(get(), get(), get(), get()) }
-    viewModel { MoreViewModel(get(), get()) }
-    viewModel { LoginRegisterViewModel(get()) }
-    viewModel { LoggedUserViewModel(get()) }
-    viewModel { NewPasswordViewModel() }
     viewModel { PersonOptionsViewModel(get(), get()) }
     viewModel { PatronConnectViewModel(get()) }
-    viewModel { ConnectedPersonViewModel(get(), get()) }
     viewModel { ScheduleDayViewModel(get(), get()) }
     viewModel { AlarmViewModel(get()) }
     viewModel { MainPersonViewModel(get()) }

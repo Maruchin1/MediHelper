@@ -1,12 +1,12 @@
-package com.example.medihelper.mainapp.more.loggeduser
+package com.example.medihelper.mainapp.options
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
+import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.DialogNewPasswordBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -17,8 +17,9 @@ class NewPasswordDialog : AppBottomSheetDialog() {
     private var newPasswordSelectedListener: ((newPassword: String) -> Unit)? = null
 
     fun onClickConfirm() {
-        if (viewModel.validatePasswordsInputData()) {
-            newPasswordSelectedListener?.invoke(viewModel.newPasswordLive.value!!)
+        val validNewPassword = viewModel.getValidNewPassword()
+        if (validNewPassword != null) {
+            newPasswordSelectedListener?.invoke(validNewPassword)
             dismiss()
         }
     }
@@ -28,10 +29,11 @@ class NewPasswordDialog : AppBottomSheetDialog() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: DialogNewPasswordBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_new_password, container, false)
-        binding.viewModel = viewModel
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        return bind<DialogNewPasswordBinding>(
+            inflater = inflater,
+            container = container,
+            layoutResId = R.layout.dialog_new_password,
+            viewModel = viewModel
+        )
     }
 }
