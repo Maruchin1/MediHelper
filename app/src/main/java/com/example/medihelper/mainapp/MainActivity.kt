@@ -65,6 +65,12 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun restartApp() {
+        val intent = Intent(this, LauncherActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     private fun setupBottomNav() {
         val navController = findNavController(R.id.nav_host_fragment)
         bottom_nav.setupWithNavController(navController)

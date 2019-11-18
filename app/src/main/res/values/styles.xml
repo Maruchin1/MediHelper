@@ -133,6 +133,10 @@
         <item name="rippleColor">@color/colorWhite</item>
     </style>
 
+    <style name="AppTheme.Widget.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="cornerRadius">20dp</item>
+    </style>
+
     <style name="AppTheme.Text.Form.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textColor">@color/colorTextSecondary</item>
     </style>

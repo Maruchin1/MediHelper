@@ -5,9 +5,9 @@ import androidx.work.WorkManager
 import com.example.medihelper.localdata.*
 import com.example.medihelper.utility.StatusOfTakingCalculator
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
-import com.example.medihelper.mainapp.launcher.LoginViewModel
+import com.example.medihelper.mainapp.authentication.LoginViewModel
 import com.example.medihelper.mainapp.launcher.MainPersonViewModel
-import com.example.medihelper.mainapp.launcher.RegisterViewModel
+import com.example.medihelper.mainapp.authentication.RegisterViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanListViewModel
@@ -19,7 +19,8 @@ import com.example.medihelper.mainapp.more.loggeduser.LoggedUserViewModel
 import com.example.medihelper.mainapp.more.loggeduser.NewPasswordViewModel
 import com.example.medihelper.mainapp.more.loginregister.LoginRegisterViewModel
 import com.example.medihelper.mainapp.more.patronconnect.ConnectedPersonViewModel
-import com.example.medihelper.mainapp.more.patronconnect.PatronConnectViewModel
+import com.example.medihelper.mainapp.authentication.PatronConnectViewModel
+import com.example.medihelper.mainapp.options.OptionsViewModel
 import com.example.medihelper.mainapp.person.AddEditPersonViewModel
 import com.example.medihelper.mainapp.person.PersonOptionsViewModel
 import com.example.medihelper.mainapp.person.PersonViewModel
@@ -100,7 +101,10 @@ val serviceModule = module {
     single<InitialDataService> { InitialDataServiceImpl(get(), get()) }
     single<LoadingScreenService> { LoadingScreenServiceImpl() }
     single<NotificationService> { NotificationServiceImpl(get()) }
-    single<ServerApiService> { ServerApiServiceImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    single<ServerApiService> {
+        ServerApiServiceImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
+    }
+
 
     single { FormValidatorService() }
 
@@ -130,4 +134,5 @@ val viewModelModule = module {
     viewModel { MainPersonViewModel(get()) }
     viewModel { LoginViewModel(get()) }
     viewModel { RegisterViewModel(get()) }
+    viewModel { OptionsViewModel(get(), get()) }
 }

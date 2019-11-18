@@ -21,7 +21,7 @@
 <!--        android:title="Lekarze" />-->
 
     <item
-        android:id="@+id/moreFragment"
+        android:id="@+id/optionsFragment"
         android:icon="@drawable/round_more_horiz_white_48"
         android:title="Więcej" />
 </menu>

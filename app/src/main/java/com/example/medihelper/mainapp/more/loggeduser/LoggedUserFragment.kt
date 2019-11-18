@@ -66,13 +66,6 @@ class LoggedUserFragment : AppFullScreenDialog() {
         })
     }
 
-    private fun setTransparentStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            dialog?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorTransparent)
-            dialog?.window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
-    }
-
     private fun showLoadingDialog() {
         loadingDialog = LoadingDialog()
         loadingDialog?.show(childFragmentManager)

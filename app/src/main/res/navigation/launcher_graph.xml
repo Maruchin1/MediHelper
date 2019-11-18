@@ -5,7 +5,6 @@
     android:id="@+id/launcher_graph"
     app:startDestination="@id/logoFragment">
 
-
     <fragment
         android:id="@+id/logoFragment"
         android:name="com.example.medihelper.mainapp.launcher.LogoFragment"
@@ -25,29 +24,29 @@
             app:destination="@id/mainPersonFragment" />
         <action
             android:id="@+id/toLoginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragmentLauncher" />
         <action
             android:id="@+id/toPatronConnectFragment"
-            app:destination="@id/patronConnectFragment2" />
+            app:destination="@id/patronConnectFragmentLauncher" />
     </fragment>
     <fragment
         android:id="@+id/mainPersonFragment"
         android:name="com.example.medihelper.mainapp.launcher.MainPersonFragment"
         tools:layout="@layout/fragment_main_person" />
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.medihelper.mainapp.launcher.LoginFragment"
+        android:id="@+id/loginFragmentLauncher"
+        android:name="com.example.medihelper.mainapp.authentication.LoginFragmentLauncher"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/toRegisterFragment"
-            app:destination="@id/registerFragment" />
+            app:destination="@id/registerFragmentLauncher" />
     </fragment>
     <fragment
-        android:id="@+id/registerFragment"
-        android:name="com.example.medihelper.mainapp.launcher.RegisterFragment"
+        android:id="@+id/registerFragmentLauncher"
+        android:name="com.example.medihelper.mainapp.authentication.RegisterFragmentLauncher"
         tools:layout="@layout/fragment_register" />
     <fragment
-        android:id="@+id/patronConnectFragment2"
-        android:name="com.example.medihelper.mainapp.launcher.PatronConnectFragment"
+        android:id="@+id/patronConnectFragmentLauncher"
+        android:name="com.example.medihelper.mainapp.authentication.PatronConnectFragmentLauncher"
         tools:layout="@layout/fragment_patron_connect" />
 </navigation>

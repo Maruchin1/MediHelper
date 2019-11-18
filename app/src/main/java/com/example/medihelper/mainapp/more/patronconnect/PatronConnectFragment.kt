@@ -13,6 +13,7 @@ import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentPatronConnectBinding
 import com.example.medihelper.mainapp.MainActivity
+import com.example.medihelper.mainapp.authentication.PatronConnectViewModel
 import com.example.medihelper.service.LoadingScreenService
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -22,7 +23,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PatronConnectFragment : AppFullScreenDialog() {
-    private val TAG = "PatronConnectFragment"
+    private val TAG = "IPatronConnectFragment"
 
     private val viewModel: PatronConnectViewModel by viewModel()
     private val loadingScreenService: LoadingScreenService by inject()

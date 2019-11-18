@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.more.patronconnect
+package com.example.medihelper.mainapp.authentication
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

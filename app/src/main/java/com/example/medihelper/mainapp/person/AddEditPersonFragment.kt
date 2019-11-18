@@ -42,12 +42,6 @@ class AddEditPersonFragment : AppFullScreenDialog() {
         observeViewModel()
     }
 
-    private fun setTransparentStatusBar() {
-        context?.run {
-            dialog?.window?.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
-        }
-    }
-
     private fun observeViewModel() {
         viewModel.personColorDisplayDataListLive.observe(viewLifecycleOwner, Observer { personColorDisplayDataList ->
             val adapter = recycler_view_color.adapter as PersonColorAdapter

@@ -112,32 +112,6 @@
             android:name="medicinePlanID"
             app:argType="integer" />
     </dialog>
-    <fragment
-        android:id="@+id/moreFragment"
-        android:name="com.example.medihelper.mainapp.more.MoreFragment"
-        tools:layout="@layout/fragment_more">
-        <action
-            android:id="@+id/toLoginRegisterFragment"
-            app:destination="@id/loginRegisterFragment" />
-        <action
-            android:id="@+id/toLoggedUserFragment"
-            app:destination="@id/loggedUserFragment" />
-        <action
-            android:id="@+id/toPatronConnectFragment"
-            app:destination="@id/patronConnectFragment" />
-        <action
-            android:id="@+id/toConnectedPersonFragment"
-            app:destination="@id/connectedPersonFragment" />
-    </fragment>
-    <dialog
-        android:id="@+id/loginRegisterFragment"
-        android:name="com.example.medihelper.mainapp.more.loginregister.LoginRegisterFragment"
-        android:label="LoginRegisterFragment"
-        tools:layout="@layout/fragment_login_register" />
-    <dialog
-        android:id="@+id/loggedUserFragment"
-        android:name="com.example.medihelper.mainapp.more.loggeduser.LoggedUserFragment"
-        tools:layout="@layout/fragment_logged_user" />
     <dialog
         android:id="@+id/personOptionsFragment"
         android:name="com.example.medihelper.mainapp.person.PersonOptionsFragment"
@@ -149,15 +123,19 @@
             android:name="personID"
             app:argType="integer" />
         <action
-            android:id="@+id/toLoginRegisterFragment"
-            app:destination="@id/loginRegisterFragment" />
+            android:id="@+id/toLoginFragment"
+            app:destination="@id/loginFragment" />
     </dialog>
+    <fragment
+        android:id="@+id/optionsFragment"
+        android:name="com.example.medihelper.mainapp.options.OptionsFragment"
+        tools:layout="@layout/fragment_options" >
+        <action
+            android:id="@+id/toLoginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <dialog
-        android:id="@+id/patronConnectFragment"
-        android:name="com.example.medihelper.mainapp.more.patronconnect.PatronConnectFragment"
-        tools:layout="@layout/fragment_patron_connect" />
-    <dialog
-        android:id="@+id/connectedPersonFragment"
-        android:name="com.example.medihelper.mainapp.more.patronconnect.ConnectedPersonFragment"
-        tools:layout="@layout/fragment_connected_person" />
+        android:id="@+id/loginFragment"
+        android:name="com.example.medihelper.mainapp.authentication.LoginFragment"
+        tools:layout="@layout/fragment_login" />
 </navigation>

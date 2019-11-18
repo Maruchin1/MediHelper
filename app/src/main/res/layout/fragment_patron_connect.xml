@@ -6,11 +6,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.launcher.PatronConnectFragment" />
+            type="com.example.medihelper.mainapp.authentication.IPatronConnectFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.more.patronconnect.PatronConnectViewModel" />
+            type="com.example.medihelper.mainapp.authentication.PatronConnectViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -189,7 +189,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="64dp"
-                    android:onClick="@{() -> handler.onClickScanQrCode()}"
+                    android:onClick="@{() -> handler.onClickScanCode()}"
                     android:text="Zeskanuj kod"
                     app:icon="@drawable/ic_qrcode_white_24dp" />
             </LinearLayout>

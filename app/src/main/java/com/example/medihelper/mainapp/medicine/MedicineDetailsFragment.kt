@@ -74,12 +74,6 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
         observeViewModel()
     }
 
-    private fun setTransparentStatusBar() {
-        context?.run {
-            dialog?.window?.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
-        }
-    }
-
     private fun setupToolbar() {
        toolbar.setNavigationOnClickListener { dismiss() }
     }

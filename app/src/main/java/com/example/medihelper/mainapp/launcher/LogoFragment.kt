@@ -1,7 +1,5 @@
 package com.example.medihelper.mainapp.launcher
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater

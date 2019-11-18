@@ -20,21 +20,21 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MoreFragment : Fragment() {
 
     private val viewModel: MoreViewModel by viewModel()
-    private val directions by lazy { MoreFragmentDirections }
+//    private val directions by lazy { MoreFragmentDirections }
 
     fun onClickMediHelperAccount() {
         if (viewModel.isAppModeLogged) {
-            findNavController().navigate(directions.toLoggedUserFragment())
+//            findNavController().navigate(directions.toLoggedUserFragment())
         } else {
-            findNavController().navigate(directions.toLoginRegisterFragment())
+//            findNavController().navigate(directions.toLoginRegisterFragment())
         }
     }
 
     fun onClickPatronConnect() {
         if (viewModel.isAppModeConnected) {
-            findNavController().navigate(directions.toConnectedPersonFragment())
+//            findNavController().navigate(directions.toConnectedPersonFragment())
         } else {
-            findNavController().navigate(directions.toPatronConnectFragment())
+//            findNavController().navigate(directions.toPatronConnectFragment())
         }
     }
 

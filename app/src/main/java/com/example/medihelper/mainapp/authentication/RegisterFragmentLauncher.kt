@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.launcher
+package com.example.medihelper.mainapp.authentication
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,18 +10,23 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.showShortSnackbar
 import com.example.medihelper.databinding.FragmentRegisterBinding
+import com.example.medihelper.mainapp.launcher.LauncherOptionFragment
 import com.example.medihelper.service.LoadingScreenService
 import kotlinx.android.synthetic.main.fragment_register.*
 import org.koin.android.ext.android.inject
 
-class RegisterFragment : LauncherOptionFragment() {
+class RegisterFragmentLauncher : LauncherOptionFragment(), IRegisterFragment {
 
     private val viewModel: RegisterViewModel by inject()
     private val loadingScreenService: LoadingScreenService by inject()
 
-    fun onClickConfirm() = viewModel.registerUser()
+    override fun onClickConfirm() {
+        viewModel.registerUser()
+    }
 
-    fun onClickBack() = findNavController().popBackStack()
+    override fun onClickBack() {
+        findNavController().popBackStack()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return bind<FragmentRegisterBinding>(

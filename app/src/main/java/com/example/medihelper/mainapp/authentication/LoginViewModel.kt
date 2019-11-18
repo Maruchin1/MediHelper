@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.launcher
+package com.example.medihelper.mainapp.authentication
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
