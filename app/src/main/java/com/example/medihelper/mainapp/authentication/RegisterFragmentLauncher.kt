@@ -5,40 +5,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.showShortSnackbar
-import com.example.medihelper.databinding.FragmentRegisterBinding
-import com.example.medihelper.mainapp.MainActivity
+import com.example.medihelper.databinding.FragmentLauncherRegisterBinding
+import com.example.medihelper.mainapp.launcher.LauncherOptionFragment
 import com.example.medihelper.service.LoadingScreenService
-import kotlinx.android.synthetic.main.fragment_register.*
+import kotlinx.android.synthetic.main.fragment_launcher_register.*
 import org.koin.android.ext.android.inject
 
-class RegisterFragment : AppFullScreenDialog() {
+class RegisterFragmentLauncher : LauncherOptionFragment() {
 
     private val viewModel: RegisterViewModel by inject()
     private val loadingScreenService: LoadingScreenService by inject()
-    private val mainActivity: MainActivity
-        get() = requireActivity() as MainActivity
 
     fun onClickConfirm() = viewModel.registerUser()
 
-    fun onClickClose() = dismiss()
+    fun onClickBack() = findNavController().popBackStack()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bind<FragmentRegisterBinding>(
+        return bind<FragmentLauncherRegisterBinding>(
             inflater = inflater,
             container = container,
-            layoutResId = R.layout.fragment_register,
+            layoutResId = R.layout.fragment_launcher_register,
             viewModel = viewModel
         )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setTransparentStatusBar()
-        setLightStatusBar()
         observeViewModel()
     }
 
@@ -52,8 +48,7 @@ class RegisterFragment : AppFullScreenDialog() {
         })
         viewModel.errorRegister.observe(viewLifecycleOwner, Observer { errorMessage ->
             if (errorMessage == null) {
-                dismiss()
-                mainActivity.showSnackbar("Zarejestrowano pomyślnie")
+                findNavController().popBackStack()
             } else {
                 showShortSnackbar(rootLayout = root_lay, message = errorMessage)
             }

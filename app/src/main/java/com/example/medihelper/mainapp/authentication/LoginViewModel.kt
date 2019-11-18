@@ -12,10 +12,8 @@ class LoginViewModel(
     private val serverApiService: ServerApiService
 ) : ViewModel() {
 
-    private val _errorEmail = MutableLiveData<String>()
-    private val _errorPassword = MutableLiveData<String>()
-    private val _errorLogin = MutableLiveData<String>()
-    private val _loadingInProgress = MutableLiveData<Boolean>(false)
+    val email = MutableLiveData<String>()
+    val password = MutableLiveData<String>()
 
     val errorEmail: LiveData<String>
         get() = _errorEmail
@@ -26,8 +24,10 @@ class LoginViewModel(
     val loadingInProcess: LiveData<Boolean>
         get() = _loadingInProgress
 
-    val email = MutableLiveData<String>()
-    val password = MutableLiveData<String>()
+    private val _errorEmail = MutableLiveData<String>()
+    private val _errorPassword = MutableLiveData<String>()
+    private val _errorLogin = MutableLiveData<String>()
+    private val _loadingInProgress = MutableLiveData<Boolean>(false)
 
 
     fun loginUser() = viewModelScope.launch {
@@ -38,6 +38,9 @@ class LoginViewModel(
                 password = password.value!!
             )
             val errorString = mapApiResponseToErrString(apiResponse)
+            if (errorString == null) {
+                serverApiService.enqueueServerSync()
+            }
             _errorLogin.postValue(errorString)
             _loadingInProgress.postValue(false)
         }

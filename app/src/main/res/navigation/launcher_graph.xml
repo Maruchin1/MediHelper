@@ -43,8 +43,8 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragmentLauncher"
-        android:name="com.example.medihelper.mainapp.authentication.RegisterFragment"
-        tools:layout="@layout/fragment_register" />
+        android:name="com.example.medihelper.mainapp.authentication.RegisterFragmentLauncher"
+        tools:layout="@layout/fragment_launcher_register" />
     <fragment
         android:id="@+id/patronConnectFragmentLauncher"
         android:name="com.example.medihelper.mainapp.authentication.PatronConnectFragment"

@@ -14,6 +14,7 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
@@ -24,6 +25,7 @@
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.Toolbar
+                toolbarNavigationOnClick="@{() -> handler.onClickClose()}"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 app:layout_constraintTop_toTopOf="parent"
@@ -39,25 +41,18 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/round_cloud_black_48"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/round_cloud_24"
                     android:tint="@color/colorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Konto MediHelper"
-                    android:textAppearance="@style/AppTheme.Text.ToolbarTitle.Main"
+                    android:text="Logowanie do konta"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:textColor="@color/colorPrimary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Logowanie"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
             </LinearLayout>
 
 
@@ -70,7 +65,7 @@
                 android:layout_marginBottom="16dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@id/btn_login"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lay_header">
 
                 <TextView
@@ -116,18 +111,17 @@
                         android:inputType="textPassword"
                         android:text="@={viewModel.password}" />
                 </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_login"
-                style="@style/AppTheme.Widget.Button.Big"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="48dp"
-                android:text="Zaloguj"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_login"
+                    style="@style/AppTheme.Widget.Button.Big"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="48dp"
+                    android:onClick="@{() -> handler.onClickConfirm()}"
+                    android:text="Zaloguj"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

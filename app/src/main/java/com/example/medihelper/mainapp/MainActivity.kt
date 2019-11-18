@@ -4,6 +4,8 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -54,9 +56,16 @@ class MainActivity : AppCompatActivity() {
         bottom_nav.itemIconTintList = ColorStateList(states, colors)
     }
 
-    fun showSnackbar(message: String) = Snackbar.make(frame_fragments, message, Snackbar.LENGTH_SHORT)
-        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
-        .show()
+    fun showSnackbar(message: String) {
+        val snackbar = Snackbar.make(frame_fragments, message, Snackbar.LENGTH_SHORT)
+            .setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
+        val layoutParams = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
+        layoutParams.anchorId = R.id.bottom_nav
+        layoutParams.anchorGravity = Gravity.TOP
+        layoutParams.gravity = Gravity.TOP
+        snackbar.view.layoutParams = layoutParams
+        snackbar.show()
+    }
 
     fun restartActivity() {
         val intent = Intent(this, MainActivity::class.java).apply {

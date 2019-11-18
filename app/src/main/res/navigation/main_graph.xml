@@ -122,6 +122,9 @@
         <argument
             android:name="personID"
             app:argType="integer" />
+        <action
+            android:id="@+id/toOptionsFragment"
+            app:destination="@id/optionsFragment" />
     </dialog>
     <fragment
         android:id="@+id/optionsFragment"
@@ -130,9 +133,16 @@
         <action
             android:id="@+id/toLoginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/toRegisterFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
-    <fragment
+    <dialog
         android:id="@+id/loginFragment"
         android:name="com.example.medihelper.mainapp.authentication.LoginFragment"
         tools:layout="@layout/fragment_login" />
+    <dialog
+        android:id="@+id/registerFragment"
+        android:name="com.example.medihelper.mainapp.authentication.RegisterFragment"
+        tools:layout="@layout/fragment_register" />
 </navigation>
