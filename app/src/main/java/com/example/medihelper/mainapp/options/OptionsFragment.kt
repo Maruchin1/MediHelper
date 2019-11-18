@@ -31,6 +31,8 @@ class OptionsFragment : Fragment() {
 
     fun onClickRegister() = findNavController().navigate(directions.toRegisterFragment())
 
+    fun onClickConnectWithPatron() = findNavController().navigate(directions.toPatronConnectFragment())
+
     fun onClickChangePassword() = NewPasswordDialog().apply {
         setNewPasswordSelectedListener { newPassword ->
             viewModel.changePassword(newPassword)
@@ -40,6 +42,15 @@ class OptionsFragment : Fragment() {
     fun onClickLogout() = LogoutDialog().apply {
         setOnLogoutSelectedListener { clearLocalData ->
             viewModel.logoutUser(clearLocalData)
+        }
+    }.show(childFragmentManager)
+
+    fun onClickCancelPatronConnect() = ConfirmDialog().apply {
+        title = "Anuluj polączenie"
+        message = "Twoje połączenie z opiekunem zostanie anulowane. Z aplikacji zostaną usunięte wszystkie udostępnione przez opiekuna dane. Czy chcesz kontynuwoać?"
+        iconResId = R.drawable.round_people_white_36
+        setOnConfirmClickListener {
+            viewModel.cancelPatronConnect()
         }
     }.show(childFragmentManager)
 
@@ -73,6 +84,9 @@ class OptionsFragment : Fragment() {
             }
         })
         viewModel.actionLogoutComplete.observe(viewLifecycleOwner, Observer {
+            mainActivity.restartApp()
+        })
+        viewModel.actionCancelPatronConnectComplete.observe(viewLifecycleOwner, Observer {
             mainActivity.restartApp()
         })
     }

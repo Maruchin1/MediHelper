@@ -2,6 +2,8 @@ package com.example.medihelper
 
 
 import android.app.Application
+import com.example.medihelper.localdata.AppSharedPref
+import com.example.medihelper.localdata.AppSharedPrefImpl
 import com.example.medihelper.service.*
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
@@ -18,12 +20,15 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        val appSharedPref: AppSharedPref = AppSharedPrefImpl(this)
+        val isConnected = appSharedPref.getAuthToken() != null && appSharedPref.getUserEmail() == null
+
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
             modules(
                 listOf(
-                    mainRoomModule,
+                    if (isConnected) connectedRoomModule else mainRoomModule,
                     retrofitModule,
                     localDataModule,
                     remoteDataModule,

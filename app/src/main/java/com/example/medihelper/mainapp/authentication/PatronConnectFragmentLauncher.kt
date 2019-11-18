@@ -1,50 +1,58 @@
 package com.example.medihelper.mainapp.authentication
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.showShortSnackbar
-import com.example.medihelper.databinding.FragmentPatronConnectBinding
-import com.example.medihelper.mainapp.MainActivity
+import com.example.medihelper.databinding.FragmentLauncherPatronConnectBinding
+import com.example.medihelper.mainapp.LauncherActivity
+import com.example.medihelper.mainapp.launcher.LauncherOptionFragment
 import com.example.medihelper.service.LoadingScreenService
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.android.synthetic.main.fragment_patron_connect.*
+import com.google.zxing.integration.android.IntentIntegrator
+import kotlinx.android.synthetic.main.fragment_launcher_patron_connect.*
 import org.koin.android.ext.android.inject
 
-class PatronConnectFragment : AppFullScreenDialog() {
+class PatronConnectFragmentLauncher : LauncherOptionFragment() {
 
     private val viewModel: PatronConnectViewModel by inject()
     private val loadingScreenService: LoadingScreenService by inject()
-    private val mainActivity: MainActivity
-        get() = requireActivity() as MainActivity
+    private val launcherActivity: LauncherActivity
+        get() = requireActivity() as LauncherActivity
 
     fun onClickScanCode() = viewModel.scanQrCode(this)
 
     fun onClickConfirm() = viewModel.loadProfileData()
 
-    fun onClickClose() = dismiss()
+    fun onClickBack() = findNavController().popBackStack()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bind<FragmentPatronConnectBinding>(
+        return bind<FragmentLauncherPatronConnectBinding>(
             inflater = inflater,
             container = container,
-            layoutResId = R.layout.fragment_patron_connect,
+            layoutResId = R.layout.fragment_launcher_patron_connect,
             viewModel = viewModel
         )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setTransparentStatusBar()
-        setLightStatusBar()
         setupKeyEditTexts()
         observeViewModel()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        result?.contents?.let { connectionKey ->
+            viewModel.setConnectionKey(connectionKey)
+        }
     }
 
     private fun observeViewModel() {
@@ -62,7 +70,7 @@ class PatronConnectFragment : AppFullScreenDialog() {
         })
         viewModel.errorPatronConnect.observe(viewLifecycleOwner, Observer { errorMessage ->
             if (errorMessage == null) {
-                mainActivity.restartApp()
+                launcherActivity.startMainActivity()
             } else {
                 showShortSnackbar(rootLayout = root_lay, message = errorMessage)
             }

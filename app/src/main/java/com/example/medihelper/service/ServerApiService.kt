@@ -2,6 +2,7 @@ package com.example.medihelper.service
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Transformations
 import androidx.work.*
 import com.example.medihelper.*
 import com.example.medihelper.R
@@ -30,7 +31,7 @@ interface ServerApiService {
     fun getAppMode(): AppMode
     fun getAppModeLive(): LiveData<AppMode>
     fun getUserEmailLive(): LiveData<String>
-    fun getLastSyncTimeLive(): LiveData<Date>
+    fun getConnectedProfileNameLive(): LiveData<String>
     fun updateLastSyncTime()
     fun enqueueServerSync()
     suspend fun registerNewUser(email: String, password: String): ApiResponse
@@ -233,7 +234,7 @@ class ServerApiServiceImpl(
 
     override fun getUserEmailLive() = sharedPref.getUserEmailLive()
 
-    override fun getLastSyncTimeLive() = sharedPref.getLastSyncTimeLive()
+    override fun getConnectedProfileNameLive() = Transformations.map(personDao.getMainItemLive()) { it?.personName ?: "" }
 
     override fun enqueueServerSync() {
         val syncWorkBuilder = when (getAppMode()) {

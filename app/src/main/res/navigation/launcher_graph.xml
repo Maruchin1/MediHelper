@@ -47,6 +47,6 @@
         tools:layout="@layout/fragment_launcher_register" />
     <fragment
         android:id="@+id/patronConnectFragmentLauncher"
-        android:name="com.example.medihelper.mainapp.authentication.PatronConnectFragment"
-        tools:layout="@layout/fragment_patron_connect" />
+        android:name="com.example.medihelper.mainapp.authentication.PatronConnectFragmentLauncher"
+        tools:layout="@layout/fragment_launcher_patron_connect" />
 </navigation>

@@ -6,7 +6,6 @@ import com.example.medihelper.service.ApiResponse
 import com.example.medihelper.service.AppMode
 import com.example.medihelper.service.PersonService
 import com.example.medihelper.service.ServerApiService
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class OptionsViewModel(
@@ -19,6 +18,7 @@ class OptionsViewModel(
     val isAppModeLogged: LiveData<Boolean>
     val isAppModeConnected: LiveData<Boolean>
     val loggedUserEmail: LiveData<String> = serverApiService.getUserEmailLive()
+    val connectedProfileName: LiveData<String> = serverApiService.getConnectedProfileNameLive()
 
     val errorChangePassword: LiveData<String>
         get() = _errorChangePassword
@@ -26,10 +26,13 @@ class OptionsViewModel(
         get() = _loadingInProgress
     val actionLogoutComplete: LiveData<Boolean>
         get() = _actionLogoutComplete
+    val actionCancelPatronConnectComplete: LiveData<Boolean>
+        get() = _actionCancelPatronConnectComplete
 
     private val _errorChangePassword = MutableLiveData<String>()
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
     private val _actionLogoutComplete = ActionLiveData()
+    private val _actionCancelPatronConnectComplete = ActionLiveData()
 
     private val appMode: LiveData<AppMode> = serverApiService.getAppModeLive()
 
@@ -50,6 +53,11 @@ class OptionsViewModel(
     fun logoutUser(clearLocalData: Boolean) = viewModelScope.launch {
         serverApiService.logoutUser(clearLocalData)
         _actionLogoutComplete.sendAction()
+    }
+
+    fun cancelPatronConnect() = viewModelScope.launch {
+        serverApiService.cancelPatronConnection()
+        _actionCancelPatronConnectComplete.sendAction()
     }
 
     private fun mapApiResponseToErrString(apiResponse: ApiResponse) = when (apiResponse) {

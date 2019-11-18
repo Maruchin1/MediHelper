@@ -253,6 +253,7 @@
                             style="@style/AppTheme.Widget.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:onClick="@{() -> handler.onClickConnectWithPatron()}"
                             android:text="Połącz" />
 
                     </LinearLayout>
@@ -302,7 +303,7 @@
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginBottom="16dp"
-                            android:text="Połączono jako"
+                            android:text='@{"Połączono z profilem: " + viewModel.connectedProfileName}'
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                         <include layout="@layout/line_horizontal" />
@@ -311,7 +312,9 @@
                             style="@style/AppTheme.Widget.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Anuluj połączenie" />
+                            android:onClick="@{() -> handler.onClickCancelPatronConnect()}"
+                            android:text="Anuluj połączenie"
+                            android:textColor="@{viewModel.colorPrimary}" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
