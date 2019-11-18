@@ -16,11 +16,13 @@ class OptionsFragment : Fragment() {
     private val viewModel: OptionsViewModel by inject()
     private val directions by lazy { OptionsFragmentDirections }
 
-    fun onClickLogin() = findNavController().navigate(
-        directions.toAuthenticationFragment(
-            AuthenticationFragment.AuthenticationType.LOGIN
-        )
-    )
+    fun onClickLogin() {
+
+    }
+
+    fun onClickRegister() {
+
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return bind<FragmentOptionsBinding>(

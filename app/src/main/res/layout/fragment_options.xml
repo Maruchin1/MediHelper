@@ -120,6 +120,15 @@
                             android:layout_height="wrap_content"
                             android:onClick="@{() -> handler.onClickLogin()}"
                             android:text="Zaloguj" />
+
+                        <include layout="@layout/line_horizontal" />
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/AppTheme.Widget.Button.TextButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> handler.onClickRegister()}"
+                            android:text="Zarejestruj" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

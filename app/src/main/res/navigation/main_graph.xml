@@ -122,24 +122,17 @@
         <argument
             android:name="personID"
             app:argType="integer" />
-        <action
-            android:id="@+id/toAuthenticationFragment"
-            app:destination="@id/authenticationFragment" />
     </dialog>
     <fragment
         android:id="@+id/optionsFragment"
         android:name="com.example.medihelper.mainapp.options.OptionsFragment"
         tools:layout="@layout/fragment_options" >
         <action
-            android:id="@+id/toAuthenticationFragment"
-            app:destination="@id/authenticationFragment" />
+            android:id="@+id/toLoginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
-    <dialog
-        android:id="@+id/authenticationFragment"
-        android:name="com.example.medihelper.mainapp.options.AuthenticationFragment"
-        tools:layout="@layout/fragment_login" >
-        <argument
-            android:name="authType"
-            app:argType="com.example.medihelper.mainapp.options.AuthenticationFragment$AuthenticationType" />
-    </dialog>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.medihelper.mainapp.authentication.LoginFragment"
+        tools:layout="@layout/fragment_login" />
 </navigation>

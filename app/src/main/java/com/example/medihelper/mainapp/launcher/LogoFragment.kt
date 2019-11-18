@@ -20,7 +20,7 @@ import org.koin.android.ext.android.inject
 class LogoFragment : Fragment() {
 
     companion object {
-        private const val LOGO_TIME = 500L
+        private const val LOGO_TIME = 300L
         private const val ANIM_TIME = 1000L
     }
 
