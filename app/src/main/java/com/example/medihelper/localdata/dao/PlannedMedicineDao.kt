@@ -83,7 +83,8 @@ interface PlannedMedicineDao {
     )
     fun getItemListLiveByDate(date: AppDate, personId: Int): LiveData<List<PlannedMedicineItem>>
 
-
+    @Query("DELETE FROM planned_medicines")
+    fun deleteAll()
 
 
 

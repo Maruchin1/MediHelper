@@ -7,10 +7,7 @@ import com.example.medihelper.*
 import com.example.medihelper.R
 import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.DeletedHistory
-import com.example.medihelper.localdata.dao.MedicineDao
-import com.example.medihelper.localdata.dao.MedicinePlanDao
-import com.example.medihelper.localdata.dao.PersonDao
-import com.example.medihelper.localdata.dao.PlannedMedicineDao
+import com.example.medihelper.localdata.dao.*
 import com.example.medihelper.localdata.entity.PersonEntity
 import com.example.medihelper.remotedata.api.AuthenticationApi
 import com.example.medihelper.remotedata.api.RegisteredUserApi
@@ -43,7 +40,7 @@ interface ServerApiService {
     suspend fun useLocalDataAfterLogin(): ApiResponse
     suspend fun changeUserPassword(newPassword: String): ApiResponse
     suspend fun connectWithPatron(connectionKey: String): ApiResponse
-    suspend fun logoutUser()
+    suspend fun logoutUser(clearLocalData: Boolean)
     suspend fun cancelPatronConnection()
 }
 
@@ -137,7 +134,7 @@ class ServerApiServiceImpl(
             try {
                 val newPasswordDto = NewPasswordDto(value = newPassword)
                 registeredUserApi.changeUserPassword(authToken, newPasswordDto)
-                null
+                ApiResponse.OK
             } catch (e: Exception) {
                 e.printStackTrace()
                 getError(e)
@@ -147,7 +144,7 @@ class ServerApiServiceImpl(
 
     override suspend fun connectWithPatron(connectionKey: String): ApiResponse {
         if (getAppMode() == AppMode.LOGGED) {
-            logoutUser()
+            logoutUser(clearLocalData = false)
         }
         return try {
             val connectedPersonDto = authenticationApi.patronConnect(connectionKey)
@@ -163,7 +160,7 @@ class ServerApiServiceImpl(
         }
     }
 
-    override suspend fun logoutUser() {
+    override suspend fun logoutUser(clearLocalData: Boolean) {
         sharedPref.deleteAuthToken()
         sharedPref.deleteUserEmail()
         with(deletedHistory) {
@@ -172,33 +169,38 @@ class ServerApiServiceImpl(
             clearMedicinePlanHistory()
             clearPlannedMedicineHistory()
         }
-        with(personDao) {
-            val entityList = this.getEntityList()
-            entityList.forEach {
-                it.synchronizedWithServer = false
+        if (clearLocalData) {
+            personDao.deleteAllWithMain()
+            medicineDao.deleteAll()
+        } else {
+            with(personDao) {
+                val entityList = this.getEntityList()
+                entityList.forEach {
+                    it.synchronizedWithServer = false
+                }
+                this.update(entityList)
             }
-            this.update(entityList)
-        }
-        with(medicineDao) {
-            val entityList = this.getEntityList()
-            entityList.forEach {
-                it.synchronizedWithServer = false
+            with(medicineDao) {
+                val entityList = this.getEntityList()
+                entityList.forEach {
+                    it.synchronizedWithServer = false
+                }
+                this.update(entityList)
             }
-            this.update(entityList)
-        }
-        with(medicinePlanDao) {
-            val entityList = this.getEntityList()
-            entityList.forEach {
-                it.synchronizedWithServer = false
+            with(medicinePlanDao) {
+                val entityList = this.getEntityList()
+                entityList.forEach {
+                    it.synchronizedWithServer = false
+                }
+                this.update(entityList)
             }
-            this.update(entityList)
-        }
-        with(plannedMedicineDao) {
-            val entityList = this.getEntityList()
-            entityList.forEach {
-                it.synchronizedWithServer = false
+            with(plannedMedicineDao) {
+                val entityList = this.getEntityList()
+                entityList.forEach {
+                    it.synchronizedWithServer = false
+                }
+                this.update(entityList)
             }
-            this.update(entityList)
         }
     }
 

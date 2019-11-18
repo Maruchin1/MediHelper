@@ -55,4 +55,7 @@ interface MedicinePlanDao {
 
     @Query("DELETE FROM medicines_plans WHERE medicine_plan_remote_id NOT IN (:remoteIdList)")
     suspend fun deleteByRemoteIdNotIn(remoteIdList: List<Long>)
+
+    @Query("DELETE FROM medicines_plans")
+    suspend fun deleteAll()
 }

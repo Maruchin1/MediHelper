@@ -36,12 +36,12 @@ fun DialogFragment.setTransparentStatusBar() {
 
 fun Fragment.showShortSnackbar(rootLayout: View, message: String) {
     Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT)
-        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+        .setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
         .show()
 }
 
 fun Fragment.showLongSnackbar(rootLayout: View, message: String) {
     Snackbar.make(rootLayout, message, Snackbar.LENGTH_LONG)
-        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+        .setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
         .show()
 }

@@ -16,6 +16,7 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
@@ -176,7 +177,7 @@
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginBottom="16dp"
-                            android:text="Zalogowano jako"
+                            android:text='@{"Zalogowany: " + viewModel.loggedUserEmail}'
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                         <include layout="@layout/line_horizontal" />
@@ -185,6 +186,7 @@
                             style="@style/AppTheme.Widget.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:onClick="@{() -> handler.onClickChangePassword()}"
                             android:text="Zmień hasło" />
 
                         <include layout="@layout/line_horizontal" />
@@ -193,6 +195,7 @@
                             style="@style/AppTheme.Widget.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:onClick="@{() -> handler.onClickLogout()}"
                             android:text="Wyloguj" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

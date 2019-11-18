@@ -15,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PeriodFragment : Fragment() {
 
-    private val viewModel: AddEditMedicinePlanViewModel by sharedViewModel(from = { parentFragment!! })
+    private val viewModel: AddEditMedicinePlanViewModel by sharedViewModel(from = { requireParentFragment() })
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentPeriodBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_period, container, false)

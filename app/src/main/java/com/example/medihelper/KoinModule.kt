@@ -15,6 +15,7 @@ import com.example.medihelper.mainapp.medicine.AddEditMedicineViewModel
 import com.example.medihelper.mainapp.medicine.MedicineDetailsViewModel
 import com.example.medihelper.mainapp.medicine.MedicinesViewModel
 import com.example.medihelper.mainapp.authentication.PatronConnectViewModel
+import com.example.medihelper.mainapp.options.NewPasswordViewModel
 import com.example.medihelper.mainapp.options.OptionsViewModel
 import com.example.medihelper.mainapp.person.AddEditPersonViewModel
 import com.example.medihelper.mainapp.person.PersonOptionsViewModel
@@ -125,4 +126,5 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { RegisterViewModel(get()) }
     viewModel { OptionsViewModel(get(), get()) }
+    viewModel { NewPasswordViewModel() }
 }
