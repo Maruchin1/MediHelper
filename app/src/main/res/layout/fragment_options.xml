@@ -115,21 +115,35 @@
 
                         <include layout="@layout/line_horizontal" />
 
-                        <com.google.android.material.button.MaterialButton
-                            style="@style/AppTheme.Widget.Button.TextButton"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:onClick="@{() -> handler.onClickLogin()}"
-                            android:text="Zaloguj się" />
+                            android:paddingTop="16dp"
+                            android:paddingBottom="16dp"
+                            android:text="Zaloguj się"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                            android:textColor='@{viewModel.colorPrimary, default="@color/colorPrimary"}'
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?selectableItemBackground"
+                            android:onClick="@{() -> handler.onClickLogin()}"/>
 
                         <include layout="@layout/line_horizontal" />
 
-                        <com.google.android.material.button.MaterialButton
-                            style="@style/AppTheme.Widget.Button.TextButton"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:onClick="@{() -> handler.onClickRegister()}"
-                            android:text="Utwórz konto" />
+                            android:paddingTop="16dp"
+                            android:paddingBottom="16dp"
+                            android:text="Utwórz konto"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                            android:textColor='@{viewModel.colorPrimary, default="@color/colorPrimary"}'
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?selectableItemBackground"
+                            android:onClick="@{() -> handler.onClickRegister()}"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -182,21 +196,35 @@
 
                         <include layout="@layout/line_horizontal" />
 
-                        <com.google.android.material.button.MaterialButton
-                            style="@style/AppTheme.Widget.Button.TextButton"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:onClick="@{() -> handler.onClickChangePassword()}"
-                            android:text="Zmień hasło" />
+                            android:paddingTop="16dp"
+                            android:paddingBottom="16dp"
+                            android:text="Zmień hasło"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                            android:textColor='@{viewModel.colorPrimary, default="@color/colorPrimary"}'
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?selectableItemBackground"
+                            android:onClick="@{() -> handler.onClickChangePassword()}"/>
 
                         <include layout="@layout/line_horizontal" />
 
-                        <com.google.android.material.button.MaterialButton
-                            style="@style/AppTheme.Widget.Button.TextButton"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:onClick="@{() -> handler.onClickLogout()}"
-                            android:text="Wyloguj" />
+                            android:paddingTop="16dp"
+                            android:paddingBottom="16dp"
+                            android:text="Wyloguj się"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                            android:textColor='@{viewModel.colorPrimary, default="@color/colorPrimary"}'
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?selectableItemBackground"
+                            android:onClick="@{() -> handler.onClickLogout()}"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -249,12 +277,19 @@
 
                         <include layout="@layout/line_horizontal" />
 
-                        <com.google.android.material.button.MaterialButton
-                            style="@style/AppTheme.Widget.Button.TextButton"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:onClick="@{() -> handler.onClickConnectWithPatron()}"
-                            android:text="Połącz" />
+                            android:paddingTop="16dp"
+                            android:paddingBottom="16dp"
+                            android:text="Połącz"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                            android:textColor='@{viewModel.colorPrimary, default="@color/colorPrimary"}'
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?selectableItemBackground"
+                            android:onClick="@{() -> handler.onClickConnectWithPatron()}"/>
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -308,13 +343,19 @@
 
                         <include layout="@layout/line_horizontal" />
 
-                        <com.google.android.material.button.MaterialButton
-                            style="@style/AppTheme.Widget.Button.TextButton"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:onClick="@{() -> handler.onClickCancelPatronConnect()}"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="16dp"
                             android:text="Anuluj połączenie"
-                            android:textColor="@{viewModel.colorPrimary}" />
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                            android:textColor='@{viewModel.colorPrimary, default="@color/colorPrimary"}'
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?selectableItemBackground"
+                            android:onClick="@{() -> handler.onClickCancelPatronConnect()}"/>
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

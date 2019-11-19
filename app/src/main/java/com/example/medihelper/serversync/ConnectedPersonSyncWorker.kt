@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.WorkerParameters
 import com.example.medihelper.localdata.dao.PlannedMedicineDao
 import com.example.medihelper.remotedata.api.ConnectedPersonApi
-import com.example.medihelper.service.NotificationService
+import com.example.medihelper.utility.NotificationUtil
 import com.example.medihelper.service.ServerApiService
 import org.koin.core.inject
 
@@ -12,13 +12,13 @@ class ConnectedPersonSyncWorker(context: Context, params: WorkerParameters) : Se
 
     private val serverApiService: ServerApiService by inject()
     private val connectedPersonApi: ConnectedPersonApi by inject()
-    private val notificationService: NotificationService by inject()
+    private val notificationUtil: NotificationUtil by inject()
     private val plannedMedicineDao: PlannedMedicineDao by inject()
     private val localDatabaseDispatcher: LocalDatabaseDispatcher by inject()
     private val entityDtoMapper: EntityDtoMapper by inject()
 
     override suspend fun doWork(): Result {
-        notificationService.showServerSyncNotification()
+        notificationUtil.showServerSyncNotification()
         var result = Result.failure()
         val authToken = inputData.getString(KEY_AUTH_TOKEN)
 
@@ -29,10 +29,10 @@ class ConnectedPersonSyncWorker(context: Context, params: WorkerParameters) : Se
                 serverApiService.updateLastSyncTime()
             } catch (e: Exception) {
                 e.printStackTrace()
-                notificationService.showServerSyncFailNotification()
+                notificationUtil.showServerSyncFailNotification()
             }
         }
-        notificationService.cancelServerSyncNotification()
+        notificationUtil.cancelServerSyncNotification()
         return result
     }
 

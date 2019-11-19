@@ -30,6 +30,8 @@ import com.example.medihelper.serversync.EntityDtoMapper
 import com.example.medihelper.serversync.LocalDatabaseDispatcher
 import com.example.medihelper.service.*
 import com.example.medihelper.utility.MedicineScheduler
+import com.example.medihelper.utility.NotificationUtil
+import com.example.medihelper.utility.ReminderUtil
 import com.google.gson.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -72,11 +74,9 @@ val localDataModule = module(override = true) {
     single { get<AppDatabase>().medicinePlanDao() }
     single { get<AppDatabase>().timeDoseDao() }
     single { get<AppDatabase>().plannedMedicineDao() }
-    single<DeletedHistory> { DeletedHistoryImpl(androidContext()) }
-    single<AppSharedPref> { AppSharedPrefImpl(androidContext()) }
-    single<MedicineImageFiles> { MedicineImageFilesImpl(androidContext()) }
-    single { StatusOfTakingCalculator() }
-    single { MedicineScheduler() }
+    single<DeletedHistory> { DeletedHistoryImpl(get()) }
+    single<AppSharedPref> { AppSharedPrefImpl(get()) }
+    single<MedicineImageFiles> { MedicineImageFilesImpl(get()) }
 }
 
 val remoteDataModule = module {
@@ -87,24 +87,26 @@ val remoteDataModule = module {
     single { LocalDatabaseDispatcher(get(), get(), get(), get(), get(), get()) }
 }
 
+val utilModule = module {
+    factory { MedicineScheduler() }
+    factory { NotificationUtil(get()) }
+    factory { ReminderUtil(get()) }
+    factory { StatusOfTakingCalculator() }
+    factory { WorkManager.getInstance(get()) }
+}
+
 val serviceModule = module {
     single<PersonService> { PersonServiceImpl(get(), get(), get()) }
     single<MedicineService> { MedicineServiceImpl(get(), get(), get(), get()) }
     single<MedicinePlanService> { MedicinePlanServiceImpl(get(), get(), get(), get()) }
-    single<PlannedMedicineService> { PlannedMedicineServiceImpl(get(), get(), get(), get(), get(), get()) }
-    single<AlarmService> { AlarmServiceImpl(get(), get()) }
+    single<PlannedMedicineService> { PlannedMedicineServiceImpl(get(), get(), get(), get(), get(), get(), get()) }
     single<DateTimeService> { DateTimeServiceImpl() }
     single<InitialDataService> { InitialDataServiceImpl(get(), get()) }
     single<LoadingScreenService> { LoadingScreenServiceImpl() }
-    single<NotificationService> { NotificationServiceImpl(get()) }
     single<ServerApiService> {
         ServerApiServiceImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
-
-
     single { FormValidatorService() }
-
-    single { WorkManager.getInstance(androidContext()) }
 }
 
 val viewModelModule = module {

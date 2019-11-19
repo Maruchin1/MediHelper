@@ -32,6 +32,7 @@ class MainApplication : Application() {
                     retrofitModule,
                     localDataModule,
                     remoteDataModule,
+                    utilModule,
                     serviceModule,
                     viewModelModule
                 )

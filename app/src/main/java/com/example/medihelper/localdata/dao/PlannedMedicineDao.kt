@@ -7,6 +7,7 @@ import com.example.medihelper.localdata.entity.PlannedMedicineEntity
 import com.example.medihelper.localdata.pojo.PlannedMedicineAlarmData
 import com.example.medihelper.localdata.pojo.PlannedMedicineDetails
 import com.example.medihelper.localdata.pojo.PlannedMedicineItem
+import com.example.medihelper.localdata.pojo.PlannedMedicineReminder
 
 @Dao
 interface PlannedMedicineDao {
@@ -40,6 +41,18 @@ interface PlannedMedicineDao {
 
     @Query("SELECT * FROM planned_medicines")
     suspend fun getEntityList(): List<PlannedMedicineEntity>
+
+    @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN medicines m ON mp.medicine_id = m.medicine_id JOIN persons p ON mp.person_id = p.person_id WHERE pm.planned_medicine_id = :id")
+    suspend fun getReminder(id: Int): PlannedMedicineReminder
+
+//    @Query("SELECT * FROM planned_medicines WHERE medicine_plan_id = :medicinePlanId AND planned_date >= :date")
+//    suspend fun getEntityListFromDateByMedicinePlan(date: AppDate, medicinePlanId: Int): List<PlannedMedicineEntity>
+//
+//    @Query("SELECT * FROM planned_medicines WHERE medicine_plan_id = :medicinePlanId")
+//    suspend fun getEntityListByMedicinePlan(medicinePlanId: Int): List<PlannedMedicineEntity>
+
+    @Query("SELECT * FROM planned_medicines WHERE planned_date = :date")
+    suspend fun getEntityListByDate(date: AppDate): List<PlannedMedicineEntity>
 
     @Query("SELECT * FROM planned_medicines WHERE synchronized_with_server = 0")
     suspend fun getEntityListToSync(): List<PlannedMedicineEntity>

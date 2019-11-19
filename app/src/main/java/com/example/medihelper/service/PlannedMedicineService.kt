@@ -10,6 +10,7 @@ import com.example.medihelper.localdata.entity.PlannedMedicineEntity
 import com.example.medihelper.localdata.pojo.PlannedMedicineAlarmData
 import com.example.medihelper.localdata.pojo.PlannedMedicineDetails
 import com.example.medihelper.localdata.pojo.PlannedMedicineItem
+import com.example.medihelper.utility.ReminderUtil
 import com.example.medihelper.utility.StatusOfTakingCalculator
 
 interface PlannedMedicineService {
@@ -30,13 +31,16 @@ class PlannedMedicineServiceImpl(
     private val dateTimeService: DateTimeService,
     private val medicineScheduler: MedicineScheduler,
     private val deletedHistory: DeletedHistory,
-    private val statusOfTakingCalculator: StatusOfTakingCalculator
+    private val statusOfTakingCalculator: StatusOfTakingCalculator,
+    private val reminderUtil: ReminderUtil
 ) : PlannedMedicineService {
 
     override suspend fun addForMedicinePlan(medicinePlanId: Int) {
         val medicinePlanEditData = medicinePlanDao.getEditDataById(medicinePlanId)
         val plannedMedicineList = medicineScheduler.getPlannedMedicinesForMedicinePlan(medicinePlanEditData)
         plannedMedicineDao.insert(plannedMedicineList)
+
+        reminderUtil.updateReminders()
     }
 
     override suspend fun updateForMedicinePlan(medicinePlanId: Int) {
@@ -46,20 +50,22 @@ class PlannedMedicineServiceImpl(
         val medicinePlanFromNow = medicinePlanEditData.copy(startDate = currDate)
         val plannedMedicineList = medicineScheduler.getPlannedMedicinesForMedicinePlan(medicinePlanFromNow)
         plannedMedicineDao.insert(plannedMedicineList)
+
+        reminderUtil.updateReminders()
     }
 
     override suspend fun updateAllStatus() {
         val updatedList = plannedMedicineDao.getEntityList().map { entity ->
             entity.apply {
-                val newStatut = statusOfTakingCalculator.getByCurrStatus(
+                val newStatus = statusOfTakingCalculator.getByCurrStatus(
                     plannedDate = entity.plannedDate,
                     plannedTime = entity.plannedTime,
                     currDate = dateTimeService.getCurrDate(),
                     currTime = dateTimeService.getCurrTime(),
                     currStatusOfTaking = entity.statusOfTaking
                 )
-                if (newStatut != entity.statusOfTaking) {
-                    entity.statusOfTaking = newStatut
+                if (newStatus != entity.statusOfTaking) {
+                    entity.statusOfTaking = newStatus
                     synchronizedWithServer = false
                 }
             }
@@ -86,6 +92,8 @@ class PlannedMedicineServiceImpl(
             plannedMedicineDao.getRemoteId(plannedMedicineID)?.let { deletedHistory.addToPlannedMedicineHistory(it) }
         }
         plannedMedicineDao.delete(idList)
+
+        reminderUtil.updateReminders()
     }
 
     override suspend fun getAlarmData(id: Int) = plannedMedicineDao.getAlarmData(id)
