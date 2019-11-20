@@ -8,29 +8,26 @@ import com.example.medihelper.data.repositories.PersonRepoImpl
 import com.example.medihelper.domain.repositories.AppUserRepo
 import com.example.medihelper.domain.repositories.MedicineRepo
 import com.example.medihelper.domain.repositories.PersonRepo
-import com.example.medihelper.domain.usecases.MedicinePlanUseCases
-import com.example.medihelper.domain.usecases.MedicineUseCases
-import com.example.medihelper.domain.usecases.PersonUseCases
-import com.example.medihelper.domain.usecases.ServerConnectionUseCases
+import com.example.medihelper.domain.usecases.*
 import com.example.medihelper.localdata.*
 import com.example.medihelper.utility.StatusOfTakingCalculator
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
 import com.example.medihelper.mainapp.authentication.LoginViewModel
 import com.example.medihelper.mainapp.launcher.MainPersonViewModel
 import com.example.medihelper.mainapp.authentication.RegisterViewModel
-import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.authentication.PatronConnectViewModel
 import com.example.medihelper.mainapp.options.NewPasswordViewModel
 import com.example.medihelper.mainapp.options.OptionsViewModel
-import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
-import com.example.medihelper.mainapp.schedule.ScheduleDayViewModel
-import com.example.medihelper.mainapp.schedule.ScheduleViewModel
+import com.example.medihelper.presentation.feature.calendar.CalendarDayViewModel
+import com.example.medihelper.presentation.feature.calendar.CalendarViewModel
+import com.example.medihelper.presentation.feature.calendar.PlannedMedicineOptionsViewModel
 import com.example.medihelper.presentation.feature.medikit.AddEditMedicineViewModel
 import com.example.medihelper.presentation.feature.medikit.MedicineDetailsViewModel
 import com.example.medihelper.presentation.feature.medikit.MedicinesListViewModel
 import com.example.medihelper.presentation.feature.personsprofiles.AddEditPersonViewModel
 import com.example.medihelper.presentation.feature.personsprofiles.PersonOptionsViewModel
 import com.example.medihelper.presentation.feature.personsprofiles.PersonViewModel
+import com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel
 import com.example.medihelper.presentation.feature.plans.MedicinePlanHistoryViewModel
 import com.example.medihelper.presentation.feature.plans.MedicinePlanListViewModel
 import com.example.medihelper.remotedata.api.AuthenticationApi
@@ -130,6 +127,7 @@ val useCaseModule = module {
     single { PersonUseCases(get()) }
     single { ServerConnectionUseCases(get()) }
     single { MedicinePlanUseCases(get()) }
+    single { PlannedMedicineUseCases() }
 }
 
 val viewModelModule = module {
@@ -141,14 +139,14 @@ val viewModelModule = module {
     viewModel { AddEditPersonViewModel(get()) }
     viewModel { MedicinePlanListViewModel(get(), get(), get(), get()) }
     viewModel { MedicinePlanHistoryViewModel(get(), get(), get()) }
-
-
-
-    viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get(), get()) }
+    viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get()) }
+    viewModel { CalendarViewModel(get(), get(), get(), get()) }
+    viewModel { CalendarDayViewModel(get(), get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get(), get()) }
-    viewModel { ScheduleViewModel(get(), get(), get(), get()) }
+
+
+
     viewModel { PatronConnectViewModel(get()) }
-    viewModel { ScheduleDayViewModel(get(), get()) }
     viewModel { AlarmViewModel(get()) }
     viewModel { MainPersonViewModel(get()) }
     viewModel { LoginViewModel(get()) }

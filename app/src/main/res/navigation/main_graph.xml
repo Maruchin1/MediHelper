@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/scheduleFragment"
-        android:name="com.example.medihelper.mainapp.schedule.ScheduleFragment"
+        android:name="com.example.medihelper.presentation.feature.calendar.CalendarFragment"
         tools:layout="@layout/fragment_schedule">
         <action
             android:id="@+id/toPersonDialog"
@@ -63,7 +63,7 @@
     </dialog>
     <dialog
         android:id="@+id/addEditMedicinePlanFragment"
-        android:name="com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanFragment"
+        android:name="com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanFragment"
         tools:layout="@layout/fragment_add_edit_medicine_plan">
         <action
             android:id="@+id/toPersonDialog"
@@ -95,7 +95,7 @@
     </dialog>
     <dialog
         android:id="@+id/plannedMedicineOptionsDialog"
-        android:name="com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsDialog"
+        android:name="com.example.medihelper.presentation.feature.calendar.PlannedMedicineOptionsDialog"
         tools:layout="@layout/dialog_planned_medicine_options">
         <argument
             android:name="plannedMedicineID"

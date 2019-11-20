@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.medicineplan
+package com.example.medihelper.presentation.feature.plans
 
 
 import android.os.Bundle
@@ -20,14 +20,15 @@ import com.example.medihelper.databinding.FragmentAddEditMedicinePlanBinding
 import com.example.medihelper.mainapp.dialog.SelectTimeDialog
 import com.example.medihelper.mainapp.dialog.SelectFloatNumberDialog
 import com.example.medihelper.mainapp.dialog.SelectMedicineDialog
-import com.example.medihelper.localdata.pojo.TimeDoseEditData
 import com.example.medihelper.domain.entities.DaysType
 import com.example.medihelper.domain.entities.DurationType
-import com.example.medihelper.mainapp.medicineplan.daystype.DaysOfWeekFragment
-import com.example.medihelper.mainapp.medicineplan.daystype.IntervalOfDaysFragment
-import com.example.medihelper.mainapp.medicineplan.durationtype.ContinuousFragment
-import com.example.medihelper.mainapp.medicineplan.durationtype.PeriodFragment
-import com.example.medihelper.mainapp.medicineplan.durationtype.OnceFragment
+import com.example.medihelper.domain.entities.TimeDose
+import com.example.medihelper.presentation.feature.plans.daystype.DaysOfWeekFragment
+import com.example.medihelper.presentation.feature.plans.daystype.IntervalOfDaysFragment
+import com.example.medihelper.presentation.feature.plans.durationtype.ContinuousFragment
+import com.example.medihelper.presentation.feature.plans.durationtype.PeriodFragment
+import com.example.medihelper.presentation.feature.plans.durationtype.OnceFragment
+import com.example.medihelper.presentation.model.TimeDoseFormItem
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.toolbar
@@ -44,35 +45,34 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
 
     fun onClickSelectMedicine() = SelectMedicineDialog().apply {
         setMedicineSelectedListener { medicineID ->
-            viewModel.selectedMedicineIDLive.value = medicineID
+            viewModel.selectedMedicineId.value = medicineID
         }
-        viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
+        viewModel.colorPrimaryId.value?.let { setColorPrimary(it) }
     }.show(childFragmentManager)
 
     fun onClickSelectPerson() = findNavController().navigate(AddEditMedicinePlanFragmentDirections.toPersonDialog())
 
-    fun onClickSelectTime(position: Int, timeDoseEditData: TimeDoseEditData) = SelectTimeDialog().apply {
-        defaultTime = timeDoseEditData.time
+    fun onClickSelectTime(position: Int, timeDoseFormItem: TimeDoseFormItem) = SelectTimeDialog().apply {
+        defaultTime = timeDoseFormItem.time
         setTimeSelectedListener { time ->
-            viewModel.updateTimeOfTaking(position, timeDoseEditData.copy(time = time))
+            viewModel.updateTimeOfTaking(position, timeDoseFormItem.copy(time = time))
         }
-        viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
+        viewModel.colorPrimaryId.value?.let { setColorPrimary(it) }
     }.show(childFragmentManager)
 
-    fun onClickSelectDoseSize(position: Int, timeDoseEditData: TimeDoseEditData) =
+    fun onClickSelectDoseSize(position: Int, timeDoseFormItem: TimeDoseFormItem) =
         SelectFloatNumberDialog().apply {
             title = "Wybierz dawkę leku"
             iconResID = R.drawable.ic_pill_black_36dp
-            defaultNumber = timeDoseEditData.doseSize
+            defaultNumber = timeDoseFormItem.doseSize
             setNumberSelectedListener { number ->
                 Log.d(TAG, "numberSelected")
-                viewModel.updateTimeOfTaking(position, timeDoseEditData.copy(doseSize = number))
+                viewModel.updateTimeOfTaking(position, timeDoseFormItem.copy(doseSize = number))
             }
-            viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
+            viewModel.colorPrimaryId.value?.let { setColorPrimary(it) }
         }.show(childFragmentManager)
 
-    fun onClickRemoveTimeOfTaking(timeDoseEditData: TimeDoseEditData) =
-        viewModel.removeTimeOfTaking(timeDoseEditData)
+    fun onClickRemoveTimeOfTaking(timeDoseFormItem: TimeDoseFormItem) = viewModel.removeTimeOfTaking(timeDoseFormItem)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return bind<FragmentAddEditMedicinePlanBinding>(
@@ -112,54 +112,51 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         val onceFragment = OnceFragment()
         val periodFragment = PeriodFragment()
         val continuousFragment = ContinuousFragment()
-        viewModel.durationTypeLive.observe(viewLifecycleOwner, Observer { scheduleType ->
-            if (scheduleType != null) {
-                when (scheduleType) {
-                    DurationType.ONCE -> {
-                        checkDurationTypeChipGroupItem(R.id.chip_once)
-                        changeScheduleTypeFragment(onceFragment)
-                    }
-                    DurationType.PERIOD -> {
-                        checkDurationTypeChipGroupItem(R.id.chip_period)
-                        changeScheduleTypeFragment(periodFragment)
-                    }
-                    DurationType.CONTINUOUS -> {
-                        checkDurationTypeChipGroupItem(R.id.chip_continuous)
-                        changeScheduleTypeFragment(continuousFragment)
-                    }
-                }
-            }
-        })
         val daysOfWeekFragment = DaysOfWeekFragment()
         val intervalOfDaysFragment = IntervalOfDaysFragment()
-        viewModel.daysTypeLive.observe(viewLifecycleOwner, Observer { scheduleDays ->
-            if (scheduleDays != null) {
-                when (scheduleDays) {
-                    DaysType.EVERYDAY -> {
-                        checkDaysTypeChipGroupItem(R.id.chip_everyday)
-                        changeScheduleDaysFragment(null)
-                    }
-                    DaysType.DAYS_OF_WEEK -> {
-                        checkDaysTypeChipGroupItem(R.id.chip_days_of_week)
-                        changeScheduleDaysFragment(daysOfWeekFragment)
-                    }
-                    DaysType.INTERVAL_OF_DAYS -> {
-                        checkDaysTypeChipGroupItem(R.id.chip_interval_of_days)
-                        changeScheduleDaysFragment(intervalOfDaysFragment)
-                    }
+        viewModel.medicinePlanForm.observe(viewLifecycleOwner, Observer { form ->
+            when (form.durationType) {
+                DurationType.ONCE -> {
+                    checkDurationTypeChipGroupItem(R.id.chip_once)
+                    changeScheduleTypeFragment(onceFragment)
+                }
+                DurationType.PERIOD -> {
+                    checkDurationTypeChipGroupItem(R.id.chip_period)
+                    changeScheduleTypeFragment(periodFragment)
+                }
+                DurationType.CONTINUOUS -> {
+                    checkDurationTypeChipGroupItem(R.id.chip_continuous)
+                    changeScheduleTypeFragment(continuousFragment)
+                }
+            }
+
+            when (form.daysType) {
+                DaysType.EVERYDAY -> {
+                    checkDaysTypeChipGroupItem(R.id.chip_everyday)
+                    changeScheduleDaysFragment(null)
+                }
+                DaysType.DAYS_OF_WEEK -> {
+                    checkDaysTypeChipGroupItem(R.id.chip_days_of_week)
+                    changeScheduleDaysFragment(daysOfWeekFragment)
+                }
+                DaysType.INTERVAL_OF_DAYS -> {
+                    checkDaysTypeChipGroupItem(R.id.chip_interval_of_days)
+                    changeScheduleDaysFragment(intervalOfDaysFragment)
                 }
             }
         })
-        viewModel.timeDoseListLive.observe(viewLifecycleOwner, Observer { doseHourList ->
-            timeOfTakingAdapter.updateItemsList(doseHourList)
+        viewModel.timeDoseList.observe(viewLifecycleOwner, Observer { timeDoseList ->
+            timeOfTakingAdapter.updateItemsList(timeDoseList)
         })
-        viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
-            dialog?.window?.statusBarColor = ContextCompat.getColor(requireContext(), colorResID)
+        viewModel.colorPrimaryId.observe(viewLifecycleOwner, Observer { colorId ->
+            dialog?.window?.statusBarColor = ContextCompat.getColor(requireContext(), colorId)
         })
-        viewModel.errorGlobalMessageLive.observe(viewLifecycleOwner, Observer { errorMessage ->
-            Snackbar.make(root_lay, errorMessage, Snackbar.LENGTH_SHORT).show()
+        viewModel.medicinePlanFormError.observe(viewLifecycleOwner, Observer { formError ->
+            formError?.globalError?.let { errorMessage ->
+                Snackbar.make(root_lay, errorMessage, Snackbar.LENGTH_SHORT).show()
+            }
         })
-        viewModel.selectedMedicineAvailableLive.observe(viewLifecycleOwner, Observer {
+        viewModel.selectedMedicineAvailable.observe(viewLifecycleOwner, Observer {
             timeOfTakingAdapter.notifyDataSetChanged()
         })
     }
@@ -200,16 +197,16 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         chip_group_duration_type.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.chip_once -> {
-                    viewModel.durationTypeLive.value = DurationType.ONCE
-                    viewModel.daysTypeLive.value = null
+                    viewModel.medicinePlanForm.value?.durationType = DurationType.ONCE
+                    viewModel.medicinePlanForm.value?.daysType = null
                 }
                 R.id.chip_period -> {
-                    viewModel.durationTypeLive.value = DurationType.PERIOD
-                    viewModel.daysTypeLive.value = DaysType.EVERYDAY
+                    viewModel.medicinePlanForm.value?.durationType = DurationType.PERIOD
+                    viewModel.medicinePlanForm.value?.daysType = DaysType.EVERYDAY
                 }
                 R.id.chip_continuous -> {
-                    viewModel.durationTypeLive.value = DurationType.CONTINUOUS
-                    viewModel.daysTypeLive.value = DaysType.EVERYDAY
+                    viewModel.medicinePlanForm.value?.durationType = DurationType.CONTINUOUS
+                    viewModel.medicinePlanForm.value?.daysType = DaysType.EVERYDAY
                 }
             }
         }
@@ -218,9 +215,9 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
     private fun setupDaysTypeChipGroup() {
         chip_group_days_type.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.chip_everyday -> viewModel.daysTypeLive.value = DaysType.EVERYDAY
-                R.id.chip_days_of_week -> viewModel.daysTypeLive.value = DaysType.DAYS_OF_WEEK
-                R.id.chip_interval_of_days -> viewModel.daysTypeLive.value = DaysType.INTERVAL_OF_DAYS
+                R.id.chip_everyday -> viewModel.medicinePlanForm.value?.daysType = DaysType.EVERYDAY
+                R.id.chip_days_of_week -> viewModel.medicinePlanForm.value?.daysType = DaysType.DAYS_OF_WEEK
+                R.id.chip_interval_of_days -> viewModel.medicinePlanForm.value?.daysType = DaysType.INTERVAL_OF_DAYS
             }
         }
     }
@@ -230,14 +227,13 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
     }
 
     // Inner classes
-    inner class TimeOfTakingAdapter : RecyclerAdapter<TimeDoseEditData>(
+    inner class TimeOfTakingAdapter : RecyclerAdapter<TimeDoseFormItem>(
         R.layout.recycler_item_time_of_taking,
         null
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val timeOfTaking = itemsList[position]
-            val timeOfTakingDisplayData = viewModel.getTimeOfTakingDisplayData(timeOfTaking)
-            holder.bind(timeOfTakingDisplayData, this@AddEditMedicinePlanFragment, position)
+            val timeDose = itemsList[position]
+            holder.bind(timeDose, this@AddEditMedicinePlanFragment, position)
         }
     }
 }

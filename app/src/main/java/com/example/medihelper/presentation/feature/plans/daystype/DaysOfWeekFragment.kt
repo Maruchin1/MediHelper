@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.medicineplan.daystype
+package com.example.medihelper.presentation.feature.plans.daystype
 
 
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentDaysOfWeekBinding
-import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
+import com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class DaysOfWeekFragment : Fragment() {
@@ -29,8 +29,8 @@ class DaysOfWeekFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.daysOfWeekLive.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG, "daysOfWeek change = $it")
+        viewModel.daysOfWeekFormItem.observe(viewLifecycleOwner, Observer { daysOfWeekFormItem ->
+            Log.d(TAG, "daysOfWeek change = $daysOfWeekFormItem")
         })
     }
 

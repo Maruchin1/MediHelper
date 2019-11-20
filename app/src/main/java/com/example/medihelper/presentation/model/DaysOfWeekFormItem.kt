@@ -3,8 +3,10 @@ package com.example.medihelper.presentation.model
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
+import com.example.medihelper.domain.entities.DaysOfWeek
+import com.example.medihelper.domain.entities.DaysType
 
-data class DaysOfWeekForm(
+data class DaysOfWeekFormItem(
     private var _monday: Boolean = false,
     private var _tuesday: Boolean = false,
     private var _wednesday: Boolean = false,
@@ -62,4 +64,16 @@ data class DaysOfWeekForm(
             _sunday = value
             notifyPropertyChanged(BR.sunday)
         }
+
+    constructor(daysOfWeek: DaysOfWeek) : this(
+        daysOfWeek.monday,
+        daysOfWeek.tuesday,
+        daysOfWeek.wednesday,
+        daysOfWeek.thursday,
+        daysOfWeek.friday,
+        daysOfWeek.saturday,
+        daysOfWeek.sunday
+    )
+
+    fun toDaysOfWeek() = DaysOfWeek(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
 }

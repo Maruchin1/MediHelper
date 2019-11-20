@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule
+package com.example.medihelper.presentation.feature.calendar
 
 
 import android.os.Bundle
@@ -15,21 +15,21 @@ import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentScheduleDayBinding
-import com.example.medihelper.localdata.pojo.PlannedMedicineItem
+import com.example.medihelper.presentation.model.PlannedMedicineItem
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ScheduleDayFragment : Fragment() {
-    private val TAG = ScheduleDayFragment::class.simpleName
+class CalendarDayFragment : Fragment() {
+    private val TAG = CalendarDayFragment::class.simpleName
 
     var date: AppDate? = null
 
-    private val viewModel: ScheduleDayViewModel by viewModel()
-    private val directions by lazyOf(ScheduleFragmentDirections)
+    private val viewModel: CalendarDayViewModel by viewModel()
+    private val directions by lazyOf(CalendarFragmentDirections)
 
     fun onClickOpenPlannedMedicineOptions(plannedMedicineID: Int) {
-        val parentFrag = parentFragment as ScheduleFragment
+        val parentFrag = parentFragment as CalendarFragment
         parentFrag.findNavController().navigate(directions.toPlannedMedicineOptionsDialog(plannedMedicineID))
     }
 
@@ -44,19 +44,19 @@ class ScheduleDayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.dateLive.value = date
+        viewModel.date.value = date
         setupRecyclerView()
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        viewModel.morningPlannedMedicineItemListLive.observe(viewLifecycleOwner, Observer {
+        viewModel.morningPlannedMedicineItemList.observe(viewLifecycleOwner, Observer {
             (recycler_view_morning_schedule.adapter as PlannedMedicineAdapter).updateItemsList(it)
         })
-        viewModel.afternoonPlannedMedicineItemListLive.observe(viewLifecycleOwner, Observer {
+        viewModel.afternoonPlannedMedicineItemList.observe(viewLifecycleOwner, Observer {
             (recycler_view_afternoon_schedule.adapter as PlannedMedicineAdapter).updateItemsList(it)
         })
-        viewModel.eveningPlannedMedicineItemListLive.observe(viewLifecycleOwner, Observer {
+        viewModel.eveningPlannedMedicineItemList.observe(viewLifecycleOwner, Observer {
             (recycler_view_evening_schedule.adapter as PlannedMedicineAdapter).updateItemsList(it)
         })
     }
@@ -77,7 +77,7 @@ class ScheduleDayFragment : Fragment() {
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val plannedMedicine = itemsList[position]
-            holder.bind(plannedMedicine, this@ScheduleDayFragment)
+            holder.bind(plannedMedicine, this@CalendarDayFragment)
         }
     }
 }

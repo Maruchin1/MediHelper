@@ -5,7 +5,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanFragment" />
+            type="com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanFragment" />
 
         <variable
             name="position"
@@ -13,7 +13,7 @@
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel.TimeDoseDisplayData" />
+            type="com.example.medihelper.presentation.model.TimeDoseFormItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,8 +28,8 @@
             style="@style/AppTheme.Widget.Chip.Action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> handler.onClickSelectTime(position, displayData.timeDoseRef)}"
-            android:text='@{displayData.time, default="00:00"}'
+            android:onClick="@{() -> handler.onClickSelectTime(position, displayData)}"
+            android:text='@{displayData.time.formatString, default="00:00"}'
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="false"
-                android:onClick="@{() -> handler.onClickSelectDoseSize(position, displayData.timeDoseRef)}"
+                android:onClick="@{() -> handler.onClickSelectDoseSize(position, displayData)}"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:text='@{displayData.doseSize + "   " + displayData.medicineUnit, default="1.0 pigulki"}' />
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
-            android:onClick="@{() -> handler.onClickRemoveTimeOfTaking(displayData.timeDoseRef)}"
+            android:onClick="@{() -> handler.onClickRemoveTimeOfTaking(displayData)}"
             android:src="@drawable/round_delete_black_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

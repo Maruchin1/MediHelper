@@ -8,7 +8,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.schedule.ScheduleDayFragment" />
+            type="com.example.medihelper.presentation.feature.calendar.CalendarDayFragment" />
 
         <variable
             name="displayData"

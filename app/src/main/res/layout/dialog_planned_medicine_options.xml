@@ -6,11 +6,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsDialog" />
+            type="com.example.medihelper.presentation.feature.calendar.PlannedMedicineOptionsDialog" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel" />
+            type="com.example.medihelper.presentation.feature.calendar.PlannedMedicineOptionsViewModel" />
     </data>
 
     <LinearLayout
@@ -31,7 +31,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:maxLines="1"
-                android:text='@{viewModel.medicineNameLive, default="Nazwa leku"}'
+                android:text='@{viewModel.optionsData.medicineName, default="Nazwa leku"}'
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 app:layout_constraintEnd_toStartOf="@id/lay_status"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text='@{viewModel.plannedDateLive.formatString + " godz. " + viewModel.plannedTimeLive.formatString, default="Zaplanowano na 01 sty 2019 godz. 08:00"}'
+                    android:text='@{viewModel.optionsData.plannedDate.formatString + " godz. " + viewModel.optionsData.plannedTime.formatString, default="Zaplanowano na 01 sty 2019 godz. 08:00"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                     android:textColor="@color/colorTextTertiary" />
 
@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text='@{"Do przyjęcia " + viewModel.doseSizeLive + " " + viewModel.medicineUnitLive, default="Do przyjęcia 2.0 pigułki"}'
+                    android:text='@{"Do przyjęcia " + viewModel.optionsData.plannedDoseSize + " " + viewModel.optionsData.medicineUnit, default="Do przyjęcia 2.0 pigułki"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                     android:textColor="@color/colorTextTertiary" />
             </LinearLayout>
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="@{viewModel.statusOfTakingLive.string, default=status}"
+                    android:text="@{viewModel.optionsData.statusOfTaking.string, default=status}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
                 <com.google.android.material.card.MaterialCardView
@@ -91,8 +91,8 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src='@{viewModel.statusOfTakingLive.iconResID, default="@drawable/round_check_circle_black_24"}'
-                        android:tint='@{viewModel.statusOfTakingLive.colorResID, default="@color/colorStateGood"}' />
+                        android:src='@{viewModel.optionsData.statusOfTaking.iconResID, default="@drawable/round_check_circle_black_24"}'
+                        android:tint='@{viewModel.optionsData.statusOfTaking.colorResID, default="@color/colorStateGood"}' />
 
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
@@ -115,7 +115,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src='@{viewModel.takeMedicineBtnIcon, default="@drawable/baseline_check_white_36"}'
-                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
 
             <TextView
                 android:layout_width="match_parent"
@@ -139,7 +139,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src='@drawable/baseline_access_time_black_36'
-                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
 
             <TextView
                 android:layout_width="match_parent"
@@ -164,7 +164,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src='@drawable/ic_pill_black_36dp'
-                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
 
             <TextView
                 android:layout_width="match_parent"

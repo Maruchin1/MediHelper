@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".mainapp.medicineplan.daystype.DaysOfWeekFragment">
+    tools:context=".presentation.feature.plans.daystype.DaysOfWeekFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel" />
+            type="com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekLive.monday}"
+            android:checked="@={viewModel.daysOfWeekFormItem.monday}"
             app:layout_constraintEnd_toEndOf="@id/label_monday"
             app:layout_constraintStart_toStartOf="@id/label_monday"
             app:layout_constraintTop_toBottomOf="@id/label_monday" />
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekLive.tuesday}"
+            android:checked="@={viewModel.daysOfWeekFormItem.tuesday}"
             app:layout_constraintEnd_toEndOf="@id/label_tuesday"
             app:layout_constraintStart_toStartOf="@id/label_tuesday"
             app:layout_constraintTop_toBottomOf="@id/label_tuesday" />
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekLive.wednesday}"
+            android:checked="@={viewModel.daysOfWeekFormItem.wednesday}"
             app:layout_constraintEnd_toEndOf="@id/label_wednesday"
             app:layout_constraintStart_toStartOf="@id/label_wednesday"
             app:layout_constraintTop_toBottomOf="@id/label_wednesday" />
@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekLive.thursday}"
+            android:checked="@={viewModel.daysOfWeekFormItem.thursday}"
             app:layout_constraintEnd_toEndOf="@id/label_thursday"
             app:layout_constraintStart_toStartOf="@id/label_thursday"
             app:layout_constraintTop_toBottomOf="@id/label_thursday" />
@@ -123,7 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekLive.friday}"
+            android:checked="@={viewModel.daysOfWeekFormItem.friday}"
             app:layout_constraintEnd_toEndOf="@id/label_friday"
             app:layout_constraintStart_toStartOf="@id/label_friday"
             app:layout_constraintTop_toBottomOf="@id/label_friday" />
@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekLive.saturday}"
+            android:checked="@={viewModel.daysOfWeekFormItem.saturday}"
             app:layout_constraintEnd_toEndOf="@id/label_saturday"
             app:layout_constraintStart_toStartOf="@id/label_saturday"
             app:layout_constraintTop_toBottomOf="@id/label_saturday" />
@@ -143,7 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekLive.sunday}"
+            android:checked="@={viewModel.daysOfWeekFormItem.sunday}"
             app:layout_constraintEnd_toEndOf="@id/label_sunday"
             app:layout_constraintStart_toStartOf="@id/label_sunday"
             app:layout_constraintTop_toBottomOf="@id/label_sunday" />

@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.medicineplan.durationtype
+package com.example.medihelper.presentation.feature.plans.durationtype
 
 
 import android.os.Bundle
@@ -8,18 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.medihelper.R
-import com.example.medihelper.databinding.FragmentOnceBinding
+import com.example.medihelper.databinding.FragmentContinuousBinding
 import com.example.medihelper.mainapp.dialog.SelectDateDialog
-import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
+import com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-
-class OnceFragment : Fragment() {
+class ContinuousFragment : Fragment() {
 
     private val viewModel: AddEditMedicinePlanViewModel by sharedViewModel(from = { parentFragment!! })
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentOnceBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_once, container, false)
+        val binding: FragmentContinuousBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_continuous, container, false)
         binding.viewModel = viewModel
         binding.handler = this
         binding.lifecycleOwner = viewLifecycleOwner
@@ -27,10 +26,10 @@ class OnceFragment : Fragment() {
     }
 
     fun onClickSelectDate() = SelectDateDialog().apply {
-        defaultDate = viewModel.startDateLive.value
+        defaultDate = viewModel.medicinePlanForm.value?.startDate
         setDateSelectedListener { date ->
-            viewModel.startDateLive.value = date
+            viewModel.medicinePlanForm.value?.startDate = date
         }
-        viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
+        viewModel.colorPrimaryId.value?.let { setColorPrimary(it) }
     }.show(requireParentFragment().childFragmentManager)
 }

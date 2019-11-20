@@ -7,12 +7,7 @@ import com.example.medihelper.domain.usecases.DateTimeUseCases
 import com.example.medihelper.domain.usecases.MedicinePlanUseCases
 import com.example.medihelper.domain.usecases.MedicineUseCases
 import com.example.medihelper.domain.usecases.PersonUseCases
-import com.example.medihelper.localdata.pojo.TimeDoseEditData
-import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanFragmentArgs
-import com.example.medihelper.presentation.model.MedicinePlanForm
-import com.example.medihelper.presentation.model.MedicinePlanFormError
-import com.example.medihelper.presentation.model.MedicineShortInfo
-import com.example.medihelper.service.FormValidatorService
+import com.example.medihelper.presentation.model.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -25,20 +20,25 @@ class AddEditMedicinePlanViewModel(
 
     val colorPrimaryId: LiveData<Int>
     val selectedMedicineId = MutableLiveData<Int>()
+    val selectedMedicineAvailable: LiveData<Boolean>
     val selectedMedicineShortInfo: LiveData<MedicineShortInfo>
+    val selectedPersonName: LiveData<String>
 
     val formTitle: LiveData<String>
         get() = _formTitle
     val medicinePlanForm: MutableLiveData<MedicinePlanForm>
         get() = _medicinePlanForm
-    val timeDoseList: LiveData<MutableList<TimeDose>>
-        get() = _timeDoseList
+    val daysOfWeekFormItem: MutableLiveData<DaysOfWeekFormItem>
+        get() = _daysOfWeekFormItem
+    val timeDoseList: LiveData<MutableList<TimeDoseFormItem>>
+        get() = _timeDoseFormItemList
     val medicinePlanFormError: LiveData<MedicinePlanFormError>
         get() = _medicinePlanFormError
 
     private val _formTitle = MutableLiveData<String>("Zaplanuj lek")
     private val _medicinePlanForm = FieldMutableLiveData<MedicinePlanForm>()
-    private val _timeDoseList = MutableLiveData<MutableList<TimeDose>>()
+    private val _daysOfWeekFormItem = FieldMutableLiveData<DaysOfWeekFormItem>()
+    private val _timeDoseFormItemList = MutableLiveData<MutableList<TimeDoseFormItem>>()
     private val _medicinePlanFormError = MutableLiveData<MedicinePlanFormError>()
 
     private val selectedPerson: LiveData<Person> = personUseCases.getCurrPersonLive()
@@ -50,7 +50,9 @@ class AddEditMedicinePlanViewModel(
         selectedMedicine = Transformations.switchMap(selectedMedicineId) { medicineId ->
             medicineId?.let { medicineUseCases.getMedicineLiveById(it) }
         }
+        selectedMedicineAvailable = Transformations.map(selectedMedicine) { it != null }
         selectedMedicineShortInfo = Transformations.map(selectedMedicine) { MedicineShortInfo(it) }
+        selectedPersonName = Transformations.map(selectedPerson) { it.name }
     }
 
     fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
@@ -60,15 +62,19 @@ class AddEditMedicinePlanViewModel(
             val editMedicinePlan = medicinePlanUseCases.getMedicinePlanById(args.editMedicinePlanID)
             val editMedicinePlanForm = MedicinePlanForm(editMedicinePlan)
             _medicinePlanForm.postValue(editMedicinePlanForm)
-            _timeDoseList.postValue(editMedicinePlan.timeDoseList.toMutableList())
+            _timeDoseFormItemList.postValue(editMedicinePlan.timeDoseList.map {
+                TimeDoseFormItem(timeDose = it, medicineUnit = selectedMedicineShortInfo.value?.unit)
+            }.toMutableList())
+            _daysOfWeekFormItem.postValue(editMedicinePlan.daysOfWeek?.let { DaysOfWeekFormItem(it) })
             selectedMedicineId.postValue(editMedicinePlan.medicineId)
         } else {
             _medicinePlanForm.postValue(getEmptyForm())
-            _timeDoseList.postValue(
+            _timeDoseFormItemList.postValue(
                 mutableListOf(
-                    TimeDose(
+                    TimeDoseFormItem(
                         time = AppTime(8, 0),
-                        doseSize = 1f
+                        doseSize = 1f,
+                        medicineUnit = selectedMedicineShortInfo.value?.unit ?: "--"
                     )
                 )
             )
@@ -77,28 +83,35 @@ class AddEditMedicinePlanViewModel(
     }
 
     fun addTimeOfTaking() {
-        _timeDoseList.value?.let { timeOfTakingList ->
-            timeOfTakingList.add(TimeDoseEditData())
-            _timeDoseList.value = _timeDoseList.value
+        _timeDoseFormItemList.value?.let { timeOfTakingList ->
+            timeOfTakingList.add(
+                TimeDoseFormItem(
+                    time = AppTime(8, 0),
+                    doseSize = 1f,
+                    medicineUnit = selectedMedicineShortInfo.value?.unit ?: "--"
+                )
+            )
+            _timeDoseFormItemList.value = _timeDoseFormItemList.value
         }
     }
 
-    fun removeTimeOfTaking(timeDose: TimeDose) {
-        _timeDoseList.value?.let { doseHourList ->
-            doseHourList.remove(timeDose)
-            _timeDoseList.value = _timeDoseList.value
+    fun removeTimeOfTaking(timeDoseFormItem: TimeDoseFormItem) {
+        _timeDoseFormItemList.value?.let { doseHourList ->
+            doseHourList.remove(timeDoseFormItem)
+            _timeDoseFormItemList.value = _timeDoseFormItemList.value
         }
     }
 
-    fun updateTimeOfTaking(position: Int, timeDose: TimeDose) {
-        _timeDoseList.value?.let { doseHourList ->
-            doseHourList[position] = timeDose
-            _timeDoseList.value = _timeDoseList.value
+    fun updateTimeOfTaking(position: Int, timeDoseFormItem: TimeDoseFormItem) {
+        _timeDoseFormItemList.value?.let { doseHourList ->
+            doseHourList[position] = timeDoseFormItem
+            _timeDoseFormItemList.value = _timeDoseFormItemList.value
         }
     }
 
     fun saveMedicinePlan(): Boolean {
         if (isFormValid()) {
+            val medicinePlanId = editMedicinePlanId
             val inputData = MedicinePlanInputData(
                 medicineId = selectedMedicineId.value!!,
                 personId = selectedPerson.value?.personId!!,
@@ -106,53 +119,54 @@ class AddEditMedicinePlanViewModel(
                 startDate = _medicinePlanForm.value?.startDate!!,
                 endDate = _medicinePlanForm.value?.endDate,
                 daysType = _medicinePlanForm.value?.daysType,
-                daysOfWeek = _medicinePlanForm.value?.daysOfWeek,
+                daysOfWeek = _daysOfWeekFormItem.value?.toDaysOfWeek(),
                 intervalOfDays = _medicinePlanForm.value?.intervalOfDays,
-                timeDoseList = _timeDoseList.value!!
+                timeDoseList = _timeDoseFormItemList.value!!.map { it.toTimeDose() }
             )
-            GlobalScope.launch {  }
+            if (medicinePlanId == null) {
+                GlobalScope.launch {
+                    medicinePlanUseCases.addNewMedicinePlan(inputData)
+                }
+            } else {
+                GlobalScope.launch {
+                    medicinePlanUseCases.updateMedicinePlan(medicinePlanId, inputData)
+                }
+            }
+            return true
         }
+        return false
     }
 
     private fun isFormValid(): Boolean {
-        val validator = FormValidatorService()
+        val medicineId = selectedMedicineId.value
+        val durationType = _medicinePlanForm.value?.durationType
+        val startDate = _medicinePlanForm.value?.startDate
+        val endDate = _medicinePlanForm.value?.endDate
+        val daysType = _medicinePlanForm.value?.daysType
+        val daysOfWeek = _daysOfWeekFormItem.value
 
-        val error = validator.isMedicinePlanValid(
-            medicineId = selectedMedicineId.value,
-            startDate = _medicinePlanForm.value?.startDate,
-            endDate = _medicinePlanForm.value?.endDate,
-            durationType = _medicinePlanForm.value?.durationType,
-            daysType = _medicinePlanForm.value?.daysType,
-            daysOfWeek = _medicinePlanForm.value?.daysOfWeek
-        )
-        var isValid = true
-        var globalError = if (error.emptyMedicine) {
-            isValid = false
+        //todo nie ma walidaacji kolejności dat
+        val medicineError = if (medicineId == null) {
             "Nie wybrano leku"
         } else null
-        var startDateError = if (error.emptyStartDate) {
-            isValid = false
-            "Pole wymagane"
+        val startDateError = if (startDate == null) {
+            "Pole jest wymagane"
         } else null
-        var endDateError = if (error.emptyEndDate) {
-            isValid = false
-            "Pole wymagane"
+        val endDateError = if (durationType == DurationType.PERIOD && endDate == null) {
+            "Pole jest wymagane"
         } else null
-        val startEndDateError = if (error.incorrectDatesOrder) {
-            isValid = false
-            "Zła kolejnosć dat"
-        } else null
-        globalError = if (error.emptyDaysOfWeek) {
-            isValid = false
-            "Niew wybrano dni tygodnia"
+        val daysOfWeekError = if (daysType == DaysType.DAYS_OF_WEEK && daysOfWeek == null) {
+            "Nie wybrano dni tygodnia"
         } else null
 
-        _medicinePlanFormError.postValue(
-            MedicinePlanFormError(globalError, startDateError, endDateError)
+        val formError = MedicinePlanFormError(
+            globalError = medicineError ?: daysOfWeekError,
+            startDateError = startDateError,
+            endDateError = endDateError
         )
+        _medicinePlanFormError.postValue(formError)
 
-        return isValid
-
+        return arrayOf(medicineError, startDateError, endDateError, daysOfWeekError).all { it == null }
     }
 
     private fun getEmptyForm() = MedicinePlanForm(
@@ -160,15 +174,6 @@ class AddEditMedicinePlanViewModel(
         _startDate = dateTimeUseCases.getCurrDate(),
         _endDate = null,
         _daysType = null,
-        _daysOfWeek = DaysOfWeek(
-            monday = false,
-            tuesday = false,
-            wednesday = false,
-            thursday = false,
-            friday = false,
-            saturday = false,
-            sunday = false
-        ),
         _intervalOfDays = 1
     )
 }

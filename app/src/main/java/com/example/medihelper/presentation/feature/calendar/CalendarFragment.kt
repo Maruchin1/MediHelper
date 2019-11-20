@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.schedule
+package com.example.medihelper.presentation.feature.calendar
 
 import android.os.Bundle
 import android.util.Log
@@ -25,11 +25,11 @@ import kotlinx.android.synthetic.main.recycler_item_schedule_timeline.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ScheduleFragment : Fragment() {
-    private val TAG = ScheduleFragment::class.simpleName
+class CalendarFragment : Fragment() {
+    private val TAG = CalendarFragment::class.simpleName
 
-    private val viewModel: ScheduleViewModel by viewModel()
-    private val directions by lazyOf(ScheduleFragmentDirections)
+    private val viewModel: CalendarViewModel by viewModel()
+    private val directions by lazyOf(CalendarFragmentDirections)
 
     fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
 
@@ -59,13 +59,13 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
+        viewModel.colorPrimaryId.observe(viewLifecycleOwner, Observer { colorResID ->
             if (colorResID != null) {
                 (requireActivity() as MainActivity).setMainColor(colorResID)
 
             }
         })
-        viewModel.selectedDateLive.observe(viewLifecycleOwner, Observer { selectedDate ->
+        viewModel.selectedDate.observe(viewLifecycleOwner, Observer { selectedDate ->
             val position = viewModel.getPositionForDate(selectedDate)
             val timelineAdapter = recycler_view_timeline.adapter as ScheduleTimelineAdapter
             timelineAdapter.selectDate(position)
@@ -89,7 +89,7 @@ class ScheduleFragment : Fragment() {
                 }
                 R.id.btn_calendar -> {
                     TransitionManager.beginDelayedTransition(root_lay)
-                    viewModel.calendarLayoutVisibleLive.value = true
+                    viewModel.calendarLayoutVisible.value = true
                 }
             }
             true
@@ -130,7 +130,7 @@ class ScheduleFragment : Fragment() {
             Log.d(TAG, "calendar date change")
             viewModel.selectDate(AppDate(year, month + 1, day))
             TransitionManager.beginDelayedTransition(root_lay)
-            viewModel.calendarLayoutVisibleLive.value = false
+            viewModel.calendarLayoutVisible.value = false
         }
     }
 
@@ -151,7 +151,7 @@ class ScheduleFragment : Fragment() {
         }
 
         override fun getItem(position: Int): Fragment {
-            val fragment = ScheduleDayFragment()
+            val fragment = CalendarDayFragment()
             fragment.date = viewModel.getDateForPosition(position)
             return fragment
         }

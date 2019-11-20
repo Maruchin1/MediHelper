@@ -9,11 +9,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel" />
+            type="com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanFragment" />
+            type="com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -22,12 +22,12 @@
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
         android:fitsSystemWindows="true"
-        tools:context=".mainapp.medicineplan.AddEditMedicinePlanFragment">
+        tools:context=".presentation.feature.plans.AddEditMedicinePlanFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@{viewModel.colorPrimaryLive}">
+            android:background="@{viewModel.colorPrimaryId}">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text='@{viewModel.selectedPersonItemLive.personName, default="Nazwa osoby"}'
+                            android:text='@{viewModel.selectedPersonName, default="Nazwa osoby"}'
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                             android:textColor="@color/colorWhite" />
                     </LinearLayout>
@@ -86,12 +86,12 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
-                    android:background="@{viewModel.colorPrimaryLive}"
+                    android:background="@{viewModel.colorPrimaryId}"
                     android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                     app:layout_collapseMode="pin"
                     app:menu="@menu/toolbar_menu_add_edit"
                     app:navigationIcon="@drawable/round_close_24"
-                    app:title='@{viewModel.titleLive, default="Zaplanuj lek"}' />
+                    app:title='@{viewModel.formTitle, default="Zaplanuj lek"}' />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -134,7 +134,7 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:src="@drawable/pill"
-                                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -142,7 +142,7 @@
                                 android:layout_marginStart="8dp"
                                 android:text="Lek do zaplanowania"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                                android:textColor='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
                         </LinearLayout>
 
                         <LinearLayout
@@ -161,12 +161,12 @@
                                 android:textAlignment="center"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                                 android:textColor="@color/colorTextTertiary"
-                                android:visibility="@{viewModel.selectedMedicineAvailableLive ? View.GONE : View.VISIBLE, default=gone}" />
+                                android:visibility="@{viewModel.selectedMedicineAvailable ? View.GONE : View.VISIBLE, default=gone}" />
 
                             <TableLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:visibility="@{viewModel.selectedMedicineAvailableLive ? View.VISIBLE : View.GONE, default=visible}">
+                                android:visibility="@{viewModel.selectedMedicineAvailable ? View.VISIBLE : View.GONE, default=visible}">
 
                                 <TableRow android:layout_marginTop="16dp">
 
@@ -180,7 +180,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="16dp"
-                                        android:text='@{viewModel.selectedMedicineNameLive, default="nazwa"}'
+                                        android:text='@{viewModel.selectedMedicineShortInfo.name, default="nazwa"}'
                                         android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
                                 </TableRow>
 
@@ -196,7 +196,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="16dp"
-                                        android:text='@{viewModel.selectedMedicineUnitLive, default="jednostka"}'
+                                        android:text='@{viewModel.selectedMedicineShortInfo.unit, default="jednostka"}'
                                         android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
                                 </TableRow>
 
@@ -212,7 +212,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="16dp"
-                                        android:text='@{viewModel.selectedMedicineExpireDateLive.formatString, default="data"}'
+                                        android:text='@{viewModel.selectedMedicineShortInfo.expireDate.formatString, default="data"}'
                                         android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
                                 </TableRow>
                             </TableLayout>
@@ -244,7 +244,7 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:src="@drawable/round_event_24"
-                                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
 
                             <TextView
                                 android:id="@+id/txv_title_schedule_type"
@@ -253,7 +253,7 @@
                                 android:layout_marginStart="8dp"
                                 android:text="Czas trwania"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                                android:textColor='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
                         </LinearLayout>
 
                         <LinearLayout
@@ -318,7 +318,7 @@
                     android:layout_marginStart="@dimen/main_card_margin_start"
                     android:layout_marginTop="@dimen/main_card_margin_top"
                     android:layout_marginEnd="@dimen/main_card_margin_end"
-                    android:visibility="@{viewModel.daysTypeLive == null ? View.GONE : View.VISIBLE}">
+                    android:visibility="@{viewModel.medicinePlanForm.daysType == null ? View.GONE : View.VISIBLE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -335,7 +335,7 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:src="@drawable/round_event_24"
-                                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -343,7 +343,7 @@
                                 android:layout_marginStart="8dp"
                                 android:text="Dni przyjmowania"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                                android:textColor='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
                         </LinearLayout>
 
                         <LinearLayout
@@ -419,7 +419,7 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:src="@drawable/round_access_time_24"
-                                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -427,7 +427,7 @@
                                 android:layout_marginStart="8dp"
                                 android:text="Godziny przyjmowania"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                                android:textColor='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
                         </LinearLayout>
 
                         <LinearLayout
@@ -453,7 +453,7 @@
                                 android:background="?selectableItemBackgroundBorderless"
                                 android:onClick="@{() -> viewModel.addTimeOfTaking()}"
                                 android:src="@drawable/round_add_white_36"
-                                android:tint='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

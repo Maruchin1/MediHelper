@@ -36,15 +36,21 @@ class MedicineUseCases(
         medicineRepo.update(updatedMedicine)
     }
 
-    suspend fun deleteMedicineById(id: Int) = medicineRepo.deleteById(id)
-
-    suspend fun getMedicineById(id: Int): Medicine = medicineRepo.getById(id)
-
     suspend fun reduceMedicineCurrState(id: Int, doseSize: Float) {
         val medicine = medicineRepo.getById(id)
         medicine.reduceCurrState(doseSize)
         medicineRepo.update(medicine)
     }
+
+    suspend fun increaseMedicineCurrState(medicineId: Int, doseSize: Float) {
+        val medicine = medicineRepo.getById(medicineId)
+        medicine.increaseCurrState(doseSize)
+        medicineRepo.update(medicine)
+    }
+
+    suspend fun deleteMedicineById(id: Int) = medicineRepo.deleteById(id)
+
+    suspend fun getMedicineById(id: Int): Medicine = medicineRepo.getById(id)
 
     fun getMedicineLiveById(id: Int): LiveData<Medicine> = medicineRepo.getLiveById(id)
 

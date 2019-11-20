@@ -1,10 +1,9 @@
-package com.example.medihelper.mainapp.schedule
+package com.example.medihelper.presentation.feature.calendar
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.medihelper.R
@@ -25,12 +24,12 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
         dismiss()
     }
 
-    fun onClickNavigateToMedicineDetails() = viewModel.medicineID?.let {
-        findNavController().navigate(directions.toMedicineDetailsFragment(it))
+    fun onClickNavigateToMedicineDetails() = viewModel.plannedMedicineId.value?.let {
+        findNavController().navigate(PlannedMedicineOptionsDialogDirections.toMedicineDetailsFragment(it))
     }
 
     fun onClickChangeForLater() {
-//        viewModel.setAlarm()
+        //todo dorobić zmianę przypomnienia
         dismiss()
     }
 

@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.medicineplan.daystype
+package com.example.medihelper.presentation.feature.plans.daystype
 
 
 import android.os.Bundle
@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.medihelper.R
 import com.example.medihelper.mainapp.dialog.SelectNumberDialog
 import com.example.medihelper.databinding.FragmentIntervalOfDaysBinding
-import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
+import com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class IntervalOfDaysFragment : Fragment() {
@@ -22,11 +22,11 @@ class IntervalOfDaysFragment : Fragment() {
     fun onClickSelectInterval() = SelectNumberDialog().apply {
         title = "Wybierz odstęp dni"
         iconResID = R.drawable.round_access_time_white_36
-        defaultNumber = viewModel.intervalOfDaysLive.value
+        defaultNumber = viewModel.medicinePlanForm.value?.intervalOfDays
         setNumberSelectedListener { number ->
-            viewModel.intervalOfDaysLive.value = number
+            viewModel.medicinePlanForm.value?.intervalOfDays = number
         }
-        viewModel.colorPrimaryLive.value?.let { setColorPrimary(it) }
+        viewModel.colorPrimaryId.value?.let { setColorPrimary(it) }
     }.show(requireParentFragment().childFragmentManager)
 
     override fun onCreateView(

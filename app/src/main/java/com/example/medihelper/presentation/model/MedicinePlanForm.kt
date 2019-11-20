@@ -10,7 +10,6 @@ data class MedicinePlanForm(
     private var _startDate: AppDate,
     private var _endDate: AppDate?,
     private var _daysType: DaysType?,
-    private var _daysOfWeek: DaysOfWeek?,
     private var _intervalOfDays: Int?
 ) : BaseObservable() {
 
@@ -42,13 +41,6 @@ data class MedicinePlanForm(
             notifyPropertyChanged(BR.daysType)
         }
 
-    var daysOfWeek: DaysOfWeek?
-        @Bindable get() = _daysOfWeek
-        set(value) {
-            _daysOfWeek = value
-            notifyPropertyChanged(BR.daysOfWeek)
-        }
-
     var intervalOfDays: Int?
         @Bindable get() = _intervalOfDays
         set(value) {
@@ -61,7 +53,6 @@ data class MedicinePlanForm(
         _startDate = medicinePlan.startDate,
         _endDate = medicinePlan.endDate,
         _daysType = medicinePlan.daysType,
-        _daysOfWeek = medicinePlan.daysOfWeek,
         _intervalOfDays = medicinePlan.intervalOfDays
     )
 }
