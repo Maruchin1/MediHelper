@@ -1,10 +1,10 @@
 package com.example.medihelper.localdata.entity
 
 import androidx.room.*
-import com.example.medihelper.localdata.type.AppDate
+import com.example.medihelper.domain.entities.AppDate
+import com.example.medihelper.domain.entities.DaysType
+import com.example.medihelper.domain.entities.DurationType
 import com.example.medihelper.localdata.type.DaysOfWeek
-import com.example.medihelper.localdata.type.DaysType
-import com.example.medihelper.localdata.type.DurationType
 
 @Entity(
     tableName = "medicines_plans",

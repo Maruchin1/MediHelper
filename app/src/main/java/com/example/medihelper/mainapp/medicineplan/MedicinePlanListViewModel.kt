@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.medihelper.localdata.entity.MedicinePlanEntity
 import com.example.medihelper.localdata.pojo.MedicinePlanItem
-import com.example.medihelper.localdata.type.DaysType
-import com.example.medihelper.localdata.type.DurationType
+import com.example.medihelper.domain.entities.DaysType
+import com.example.medihelper.domain.entities.DurationType
 import com.example.medihelper.service.*
 import kotlinx.coroutines.launch
 

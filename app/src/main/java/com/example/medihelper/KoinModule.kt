@@ -2,6 +2,15 @@ package com.example.medihelper
 
 import androidx.room.Room
 import androidx.work.WorkManager
+import com.example.medihelper.data.repositories.AppUserRepoImpl
+import com.example.medihelper.data.repositories.MedicineRepoImpl
+import com.example.medihelper.data.repositories.PersonRepoImpl
+import com.example.medihelper.domain.repositories.AppUserRepo
+import com.example.medihelper.domain.repositories.MedicineRepo
+import com.example.medihelper.domain.repositories.PersonRepo
+import com.example.medihelper.domain.usecases.MedicineUseCases
+import com.example.medihelper.domain.usecases.PersonUseCases
+import com.example.medihelper.domain.usecases.ServerConnectionUseCases
 import com.example.medihelper.localdata.*
 import com.example.medihelper.utility.StatusOfTakingCalculator
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
@@ -11,18 +20,18 @@ import com.example.medihelper.mainapp.authentication.RegisterViewModel
 import com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryViewModel
 import com.example.medihelper.mainapp.medicineplan.MedicinePlanListViewModel
-import com.example.medihelper.mainapp.medicine.AddEditMedicineViewModel
-import com.example.medihelper.mainapp.medicine.MedicineDetailsViewModel
-import com.example.medihelper.mainapp.medicine.MedicinesViewModel
 import com.example.medihelper.mainapp.authentication.PatronConnectViewModel
 import com.example.medihelper.mainapp.options.NewPasswordViewModel
 import com.example.medihelper.mainapp.options.OptionsViewModel
-import com.example.medihelper.mainapp.person.AddEditPersonViewModel
-import com.example.medihelper.mainapp.person.PersonOptionsViewModel
-import com.example.medihelper.mainapp.person.PersonViewModel
 import com.example.medihelper.mainapp.schedule.PlannedMedicineOptionsViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleDayViewModel
 import com.example.medihelper.mainapp.schedule.ScheduleViewModel
+import com.example.medihelper.presentation.feature.medikit.AddEditMedicineViewModel
+import com.example.medihelper.presentation.feature.medikit.MedicineDetailsViewModel
+import com.example.medihelper.presentation.feature.medikit.MedicinesListViewModel
+import com.example.medihelper.presentation.feature.personsprofiles.AddEditPersonViewModel
+import com.example.medihelper.presentation.feature.personsprofiles.PersonOptionsViewModel
+import com.example.medihelper.presentation.feature.personsprofiles.PersonViewModel
 import com.example.medihelper.remotedata.api.AuthenticationApi
 import com.example.medihelper.remotedata.api.ConnectedPersonApi
 import com.example.medihelper.remotedata.api.RegisteredUserApi
@@ -109,18 +118,33 @@ val serviceModule = module {
     single { FormValidatorService() }
 }
 
+val repoModule = module {
+    single<AppUserRepo> { AppUserRepoImpl() }
+    single<MedicineRepo> { MedicineRepoImpl() }
+    single<PersonRepo> { PersonRepoImpl() }
+}
+
+val useCaseModule = module {
+    single { MedicineUseCases(get()) }
+    single { PersonUseCases(get()) }
+    single { ServerConnectionUseCases(get()) }
+}
+
 val viewModelModule = module {
-    viewModel { MedicinesViewModel(get(), get(), get()) }
-    viewModel { AddEditMedicineViewModel(get(), get()) }
-    viewModel { AddEditPersonViewModel(get(), get()) }
+    viewModel { MedicinesListViewModel(get(), get(), get()) }
+    viewModel { MedicineDetailsViewModel(get(), get(), get()) }
+    viewModel { AddEditMedicineViewModel(get()) }
     viewModel { PersonViewModel(get()) }
+    viewModel { PersonOptionsViewModel(get(), get()) }
+    viewModel { AddEditPersonViewModel(get()) }
+
+
+
     viewModel { MedicinePlanHistoryViewModel(get(), get(), get()) }
     viewModel { MedicinePlanListViewModel(get(), get(), get(), get()) }
-    viewModel { MedicineDetailsViewModel(get(), get(), get()) }
     viewModel { AddEditMedicinePlanViewModel(get(), get(), get(), get(), get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get(), get()) }
     viewModel { ScheduleViewModel(get(), get(), get(), get()) }
-    viewModel { PersonOptionsViewModel(get(), get()) }
     viewModel { PatronConnectViewModel(get()) }
     viewModel { ScheduleDayViewModel(get(), get()) }
     viewModel { AlarmViewModel(get()) }

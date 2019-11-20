@@ -2,11 +2,10 @@ package com.example.medihelper.localdata.pojo
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
-import com.example.medihelper.localdata.type.AppDate
-import com.example.medihelper.localdata.entity.MedicinePlanEntity
+import com.example.medihelper.domain.entities.AppDate
+import com.example.medihelper.domain.entities.DaysType
+import com.example.medihelper.domain.entities.DurationType
 import com.example.medihelper.localdata.type.DaysOfWeek
-import com.example.medihelper.localdata.type.DaysType
-import com.example.medihelper.localdata.type.DurationType
 
 
 data class MedicinePlanItem(

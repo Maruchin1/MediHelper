@@ -1,7 +1,7 @@
 package com.example.medihelper.localdata.pojo
 
 import androidx.room.ColumnInfo
-import com.example.medihelper.localdata.type.AppExpireDate
+import com.example.medihelper.domain.entities.AppExpireDate
 
 data class MedicineEditData(
 

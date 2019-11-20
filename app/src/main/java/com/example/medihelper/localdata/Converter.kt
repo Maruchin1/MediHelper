@@ -1,9 +1,7 @@
 package com.example.medihelper.localdata
 
 import androidx.room.TypeConverter
-import com.example.medihelper.localdata.entity.MedicinePlanEntity
-import com.example.medihelper.localdata.entity.PlannedMedicineEntity
-import com.example.medihelper.localdata.type.*
+import com.example.medihelper.domain.entities.*
 
 
 class Converter {

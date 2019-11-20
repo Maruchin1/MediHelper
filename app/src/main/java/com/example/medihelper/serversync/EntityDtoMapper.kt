@@ -1,11 +1,10 @@
 package com.example.medihelper.serversync
 
-import com.example.medihelper.localdata.AppSharedPref
+import com.example.medihelper.domain.entities.*
 import com.example.medihelper.localdata.dao.MedicineDao
 import com.example.medihelper.localdata.dao.MedicinePlanDao
 import com.example.medihelper.localdata.dao.PersonDao
 import com.example.medihelper.localdata.entity.*
-import com.example.medihelper.localdata.type.*
 import com.example.medihelper.remotedata.dto.*
 
 class EntityDtoMapper(

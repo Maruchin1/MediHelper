@@ -1,7 +1,7 @@
 package com.example.medihelper.mainapp.schedule
 
 import androidx.lifecycle.*
-import com.example.medihelper.localdata.type.AppDate
+import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.service.*
 import kotlinx.coroutines.launch
 

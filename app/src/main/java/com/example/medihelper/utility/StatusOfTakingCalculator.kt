@@ -1,8 +1,8 @@
 package com.example.medihelper.utility
 
-import com.example.medihelper.localdata.type.AppDate
-import com.example.medihelper.localdata.type.AppTime
-import com.example.medihelper.localdata.type.StatusOfTaking
+import com.example.medihelper.domain.entities.AppDate
+import com.example.medihelper.domain.entities.AppTime
+import com.example.medihelper.domain.entities.StatusOfTaking
 
 class StatusOfTakingCalculator {
 

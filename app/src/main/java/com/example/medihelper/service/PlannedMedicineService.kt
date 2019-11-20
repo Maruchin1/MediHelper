@@ -1,7 +1,7 @@
 package com.example.medihelper.service
 
 import androidx.lifecycle.LiveData
-import com.example.medihelper.localdata.type.AppDate
+import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.localdata.DeletedHistory
 import com.example.medihelper.utility.MedicineScheduler
 import com.example.medihelper.localdata.dao.MedicinePlanDao

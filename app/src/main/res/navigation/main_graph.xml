@@ -17,9 +17,9 @@
             app:destination="@id/plannedMedicineOptionsDialog" />
     </fragment>
     <fragment
-        android:id="@+id/medicinesFragment"
-        android:name="com.example.medihelper.mainapp.medicine.MedicinesFragment"
-        tools:layout="@layout/fragment_medicines">
+        android:id="@+id/medicinesListFragment"
+        android:name="com.example.medihelper.presentation.feature.medikit.MedicinesListFragment"
+        tools:layout="@layout/fragment_medicines_list">
         <action
             android:id="@+id/toAddEditMedicineFragment"
             app:destination="@id/addEditMedicineFragment" />
@@ -43,7 +43,7 @@
     </fragment>
     <dialog
         android:id="@+id/personDialog"
-        android:name="com.example.medihelper.mainapp.person.PersonDialog"
+        android:name="com.example.medihelper.presentation.feature.personsprofiles.PersonDialog"
         tools:layout="@layout/dialog_person">
         <action
             android:id="@+id/toPersonOptionsFragment"
@@ -54,7 +54,7 @@
     </dialog>
     <dialog
         android:id="@+id/addEditPersonFragment"
-        android:name="com.example.medihelper.mainapp.person.AddEditPersonFragment"
+        android:name="com.example.medihelper.presentation.feature.personsprofiles.AddEditPersonFragment"
         tools:layout="@layout/fragment_add_edit_person">
         <argument
             android:name="editPersonID"
@@ -75,16 +75,16 @@
     </dialog>
     <dialog
         android:id="@+id/addEditMedicineFragment"
-        android:name="com.example.medihelper.mainapp.medicine.AddEditMedicineFragment"
+        android:name="com.example.medihelper.presentation.feature.medikit.AddEditMedicineFragment"
         tools:layout="@layout/fragment_add_edit_medicine">
         <argument
-            android:name="editMedicineID"
+            android:name="editMedicineId"
             android:defaultValue="-1"
             app:argType="integer" />
     </dialog>
     <dialog
         android:id="@+id/medicineDetailsFragment"
-        android:name="com.example.medihelper.mainapp.medicine.MedicineDetailsFragment"
+        android:name="com.example.medihelper.presentation.feature.medikit.MedicineDetailsFragment"
         tools:layout="@layout/fragment_medicine_details">
         <argument
             android:name="medicineID"
@@ -114,7 +114,7 @@
     </dialog>
     <dialog
         android:id="@+id/personOptionsFragment"
-        android:name="com.example.medihelper.mainapp.person.PersonOptionsFragment"
+        android:name="com.example.medihelper.presentation.feature.personsprofiles.PersonOptionsFragment"
         tools:layout="@layout/fragment_person_options">
         <action
             android:id="@+id/toAddEditPersonFragment"

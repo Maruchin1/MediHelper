@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.medicine.MedicinesViewModel" />
+            type="com.example.medihelper.presentation.feature.medikit.MedicinesListViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -32,7 +32,7 @@
                 app:menu="@menu/menu_select_medicine"
                 app:title="Apteczka"
                 app:titleTextAppearance="@style/AppTheme.Text.ToolbarTitle.Main"
-                app:titleTextColor='@{handler.colorPrimaryLive, default="@color/colorPrimary"}' />
+                app:titleTextColor='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
 
         </com.google.android.material.appbar.AppBarLayout>
 

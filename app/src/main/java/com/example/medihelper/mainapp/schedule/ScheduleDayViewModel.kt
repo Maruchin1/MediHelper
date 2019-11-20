@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.medihelper.localdata.type.AppDate
-import com.example.medihelper.localdata.type.AppTime
+import com.example.medihelper.domain.entities.AppDate
+import com.example.medihelper.domain.entities.AppTime
 import com.example.medihelper.localdata.pojo.PlannedMedicineItem
 import com.example.medihelper.service.PersonService
 import com.example.medihelper.service.PlannedMedicineService

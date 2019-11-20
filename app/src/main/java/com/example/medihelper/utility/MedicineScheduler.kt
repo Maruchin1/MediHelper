@@ -3,9 +3,9 @@ package com.example.medihelper.utility
 import com.example.medihelper.localdata.entity.PlannedMedicineEntity
 import com.example.medihelper.localdata.pojo.MedicinePlanEditData
 import com.example.medihelper.localdata.pojo.TimeDoseEditData
-import com.example.medihelper.localdata.type.AppDate
-import com.example.medihelper.localdata.type.DaysType
-import com.example.medihelper.localdata.type.DurationType
+import com.example.medihelper.domain.entities.AppDate
+import com.example.medihelper.domain.entities.DaysType
+import com.example.medihelper.domain.entities.DurationType
 import kotlin.collections.ArrayList
 
 class MedicineScheduler {

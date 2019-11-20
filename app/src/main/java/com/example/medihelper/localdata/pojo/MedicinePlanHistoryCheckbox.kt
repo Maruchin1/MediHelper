@@ -1,10 +1,9 @@
 package com.example.medihelper.localdata.pojo
 
 import androidx.room.ColumnInfo
-import com.example.medihelper.localdata.type.AppDate
-import com.example.medihelper.localdata.type.AppTime
-import com.example.medihelper.localdata.entity.PlannedMedicineEntity
-import com.example.medihelper.localdata.type.StatusOfTaking
+import com.example.medihelper.domain.entities.AppDate
+import com.example.medihelper.domain.entities.AppTime
+import com.example.medihelper.domain.entities.StatusOfTaking
 
 
 data class MedicinePlanHistoryCheckbox(

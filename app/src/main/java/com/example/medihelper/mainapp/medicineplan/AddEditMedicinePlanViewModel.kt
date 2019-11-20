@@ -3,10 +3,14 @@ package com.example.medihelper.mainapp.medicineplan
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.medihelper.custom.FieldMutableLiveData
+import com.example.medihelper.domain.entities.AppDate
+import com.example.medihelper.domain.entities.AppExpireDate
+import com.example.medihelper.domain.entities.DaysType
+import com.example.medihelper.domain.entities.DurationType
 import com.example.medihelper.localdata.pojo.MedicineDetails
 import com.example.medihelper.localdata.pojo.MedicinePlanEditData
 import com.example.medihelper.localdata.pojo.TimeDoseEditData
-import com.example.medihelper.localdata.type.*
+import com.example.medihelper.localdata.type.DaysOfWeek
 import com.example.medihelper.service.*
 import kotlinx.coroutines.*
 

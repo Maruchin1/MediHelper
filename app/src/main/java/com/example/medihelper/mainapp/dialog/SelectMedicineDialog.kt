@@ -13,8 +13,8 @@ import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogSelectMedicineBinding
-import com.example.medihelper.localdata.pojo.MedicineItem
-import com.example.medihelper.mainapp.medicine.MedicinesViewModel
+import com.example.medihelper.presentation.feature.medikit.MedicinesListViewModel
+import com.example.medihelper.presentation.model.MedicineItem
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SelectMedicineDialog : AppBottomSheetDialog() {
     override val TAG = "SelectMedicineDialog"
 
-    private val viewModel: MedicinesViewModel by viewModel()
+    private val viewModel: MedicinesListViewModel by viewModel()
     private var medicineSelectedListener: ((medicineID: Int) -> Unit)? = null
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var binding: DialogSelectMedicineBinding
@@ -64,7 +64,7 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
     }
 
     private fun observeData() {
-        viewModel.medicineItemListLive.observe(
+        viewModel.medicineItemList.observe(
             requireParentFragment().viewLifecycleOwner,
             Observer { medicineItemList ->
                 val adapter = binding.recyclerViewMedicines.adapter as MedicineAdapter
@@ -87,7 +87,7 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.searchQueryLive.value = newText
+                viewModel.nameQuery.value = newText
                 return true
             }
         })
@@ -106,8 +106,7 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicineItem = itemsList[position]
-            val medicineDisplayData = viewModel.getMedicineItemDisplayData(medicineItem)
-            holder.bind(medicineDisplayData, this@SelectMedicineDialog)
+            holder.bind(medicineItem, this@SelectMedicineDialog)
         }
     }
 }

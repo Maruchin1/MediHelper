@@ -7,11 +7,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.person.AddEditPersonFragment" />
+            type="com.example.medihelper.presentation.feature.personsprofiles.AddEditPersonFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.person.AddEditPersonViewModel.PersonColorDisplayData" />
+            type="com.example.medihelper.presentation.model.PersonColorCheckboxData" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,13 +21,13 @@
         android:layout_margin="16dp">
 
         <com.google.android.material.card.MaterialCardView
-            cardBackgroundColorResID="@{displayData.colorResID}"
+            cardBackgroundColorResID="@{displayData.colorId}"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?selectableItemBackground"
-            android:onClick="@{() -> handler.onClickSelectColor(displayData.colorResID)}"
+            android:onClick="@{() -> handler.onClickSelectColor(displayData.colorId)}"
             app:cardCornerRadius="24dp">
 
             <ImageView

@@ -2,7 +2,7 @@ package com.example.medihelper.localdata.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.medihelper.localdata.type.AppDate
+import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.localdata.entity.PlannedMedicineEntity
 import com.example.medihelper.localdata.pojo.PlannedMedicineAlarmData
 import com.example.medihelper.localdata.pojo.PlannedMedicineDetails

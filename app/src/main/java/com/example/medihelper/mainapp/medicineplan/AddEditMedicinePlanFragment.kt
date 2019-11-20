@@ -21,8 +21,8 @@ import com.example.medihelper.mainapp.dialog.SelectTimeDialog
 import com.example.medihelper.mainapp.dialog.SelectFloatNumberDialog
 import com.example.medihelper.mainapp.dialog.SelectMedicineDialog
 import com.example.medihelper.localdata.pojo.TimeDoseEditData
-import com.example.medihelper.localdata.type.DaysType
-import com.example.medihelper.localdata.type.DurationType
+import com.example.medihelper.domain.entities.DaysType
+import com.example.medihelper.domain.entities.DurationType
 import com.example.medihelper.mainapp.medicineplan.daystype.DaysOfWeekFragment
 import com.example.medihelper.mainapp.medicineplan.daystype.IntervalOfDaysFragment
 import com.example.medihelper.mainapp.medicineplan.durationtype.ContinuousFragment

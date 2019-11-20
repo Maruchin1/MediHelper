@@ -9,7 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.example.medihelper.R
-import com.example.medihelper.localdata.type.AppTime
+import com.example.medihelper.domain.entities.AppTime
 
 class NotificationUtil(private val context: Context) {
 

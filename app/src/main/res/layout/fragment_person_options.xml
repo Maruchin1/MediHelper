@@ -8,17 +8,17 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.person.PersonOptionsFragment" />
+            type="com.example.medihelper.presentation.feature.personsprofiles.PersonOptionsFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.person.PersonOptionsViewModel" />
+            type="com.example.medihelper.presentation.feature.personsprofiles.PersonOptionsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background='@{viewModel.personColorResIDLive, default="@color/colorPrimary"}'
+        android:background='@{viewModel.personOptionsData.colorId, default="@color/colorPrimary"}'
         android:fitsSystemWindows="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +33,7 @@
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                 app:layout_constraintTop_toTopOf="parent"
                 app:navigationIcon="@drawable/round_close_white_24"
-                app:title='@{viewModel.personNameLive + " - opcje", default="Nazwa osoby - opcje"}' />
+                app:title='@{viewModel.personOptionsData.name + " - opcje", default="Nazwa osoby - opcje"}' />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="@{viewModel.isUserLoggedLive() ? View.VISIBLE : View.GONE, default=visible}">
+                    android:visibility="@{viewModel.isUserLogged ? View.VISIBLE : View.GONE, default=visible}">
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="200dp"
@@ -67,7 +67,7 @@
                         android:layout_marginTop="48dp"
                         android:letterSpacing="0.3"
                         android:maxLines="1"
-                        android:text='@{viewModel.connectionKeyLive, default="123456"}'
+                        android:text='@{viewModel.personOptionsData.connectionKey, default="123456"}'
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
                         android:textColor="@color/colorWhite" />
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:visibility="@{viewModel.isUserLoggedLive() ? View.GONE : View.VISIBLE, default=gone}">
+                    android:visibility="@{viewModel.isUserLogged ? View.GONE : View.VISIBLE, default=gone}">
 
                     <ImageView
                         android:layout_width="100dp"
