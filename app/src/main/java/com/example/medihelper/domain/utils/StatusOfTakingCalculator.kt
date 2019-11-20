@@ -1,4 +1,4 @@
-package com.example.medihelper.utility
+package com.example.medihelper.domain.utils
 
 import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.domain.entities.AppTime

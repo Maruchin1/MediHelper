@@ -2,15 +2,12 @@ package com.example.medihelper
 
 import androidx.room.Room
 import androidx.work.WorkManager
-import com.example.medihelper.data.repositories.AppUserRepoImpl
-import com.example.medihelper.data.repositories.MedicineRepoImpl
-import com.example.medihelper.data.repositories.PersonRepoImpl
 import com.example.medihelper.domain.repositories.AppUserRepo
 import com.example.medihelper.domain.repositories.MedicineRepo
 import com.example.medihelper.domain.repositories.PersonRepo
 import com.example.medihelper.domain.usecases.*
 import com.example.medihelper.localdata.*
-import com.example.medihelper.utility.StatusOfTakingCalculator
+import com.example.medihelper.domain.utils.StatusOfTakingCalculator
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
 import com.example.medihelper.mainapp.authentication.LoginViewModel
 import com.example.medihelper.mainapp.launcher.MainPersonViewModel
@@ -117,9 +114,7 @@ val serviceModule = module {
 }
 
 val repoModule = module {
-    single<AppUserRepo> { AppUserRepoImpl() }
-    single<MedicineRepo> { MedicineRepoImpl() }
-    single<PersonRepo> { PersonRepoImpl() }
+
 }
 
 val useCaseModule = module {
@@ -127,7 +122,7 @@ val useCaseModule = module {
     single { PersonUseCases(get()) }
     single { ServerConnectionUseCases(get()) }
     single { MedicinePlanUseCases(get()) }
-    single { PlannedMedicineUseCases() }
+    single { PlannedMedicineUseCases(get(), get(), get()) }
 }
 
 val viewModelModule = module {

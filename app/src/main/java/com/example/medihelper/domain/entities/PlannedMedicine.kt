@@ -6,5 +6,5 @@ data class PlannedMedicine(
     val plannedDate: AppDate,
     val plannedTime: AppTime,
     val plannedDoseSize: Float,
-    val statusOfTaking: StatusOfTaking
+    var statusOfTaking: StatusOfTaking
 )

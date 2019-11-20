@@ -11,7 +11,7 @@ import com.example.medihelper.localdata.pojo.PlannedMedicineAlarmData
 import com.example.medihelper.localdata.pojo.PlannedMedicineDetails
 import com.example.medihelper.localdata.pojo.PlannedMedicineItem
 import com.example.medihelper.utility.ReminderUtil
-import com.example.medihelper.utility.StatusOfTakingCalculator
+import com.example.medihelper.domain.utils.StatusOfTakingCalculator
 
 interface PlannedMedicineService {
     suspend fun addForMedicinePlan(medicinePlanId: Int)
