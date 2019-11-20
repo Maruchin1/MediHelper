@@ -1,59 +1,55 @@
-package com.example.medihelper.mainapp.authentication
+package com.example.medihelper.presentation.feature.auth
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.showShortSnackbar
-import com.example.medihelper.databinding.FragmentLoginBinding
-import com.example.medihelper.mainapp.MainActivity
+import com.example.medihelper.databinding.FragmentLauncherRegisterBinding
+import com.example.medihelper.mainapp.launcher.LauncherOptionFragment
+import com.example.medihelper.presentation.feature.auth.RegisterViewModel
 import com.example.medihelper.service.LoadingScreenService
-import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_launcher_register.*
 import org.koin.android.ext.android.inject
 
-class LoginFragment : AppFullScreenDialog() {
+class RegisterFragmentLauncher : LauncherOptionFragment() {
 
-    private val viewModel: LoginViewModel by inject()
+    private val viewModel: RegisterViewModel by inject()
     private val loadingScreenService: LoadingScreenService by inject()
-    private val mainActivity: MainActivity
-        get() = requireActivity() as MainActivity
 
-    fun onClickConfirm() = viewModel.loginUser()
+    fun onClickConfirm() = viewModel.registerUser()
 
-    fun onClickClose() = dismiss()
+    fun onClickBack() = findNavController().popBackStack()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bind<FragmentLoginBinding>(
+        return bind<FragmentLauncherRegisterBinding>(
             inflater = inflater,
             container = container,
-            layoutResId = R.layout.fragment_login,
+            layoutResId = R.layout.fragment_launcher_register,
             viewModel = viewModel
         )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setTransparentStatusBar()
-        setLightStatusBar()
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        viewModel.loadingInProcess.observe(viewLifecycleOwner, Observer { inProgress ->
+        viewModel.loadingInProgress.observe(viewLifecycleOwner, Observer { inProgress ->
             if (inProgress) {
                 loadingScreenService.showLoadingScreen(childFragmentManager)
             } else {
                 loadingScreenService.closeLoadingScreen()
             }
         })
-        viewModel.errorLogin.observe(viewLifecycleOwner, Observer { errorMessage ->
+        viewModel.errorRegister.observe(viewLifecycleOwner, Observer { errorMessage ->
             if (errorMessage == null) {
-                dismiss()
-                mainActivity.showSnackbar("Zalogowano pomyślnie")
+                findNavController().popBackStack()
             } else {
                 showShortSnackbar(rootLayout = root_lay, message = errorMessage)
             }

@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.dialog
+package com.example.medihelper.presentation.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater

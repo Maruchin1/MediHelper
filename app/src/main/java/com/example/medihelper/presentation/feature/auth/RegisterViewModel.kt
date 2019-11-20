@@ -1,15 +1,15 @@
-package com.example.medihelper.mainapp.authentication
+package com.example.medihelper.presentation.feature.auth
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.medihelper.service.ApiResponse
-import com.example.medihelper.service.ServerApiService
+import com.example.medihelper.domain.entities.ApiResponse
+import com.example.medihelper.domain.usecases.ServerConnectionUseCases
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
-    private val serverApiService: ServerApiService
+    private val serverConnectionUseCases: ServerConnectionUseCases
 ) : ViewModel() {
 
     val userName = MutableLiveData<String>()
@@ -40,7 +40,7 @@ class RegisterViewModel(
     fun registerUser() = viewModelScope.launch {
         if (isFormValid()) {
             _loadingInProgress.postValue(true)
-            val apiResponse = serverApiService.registerNewUser(
+            val apiResponse = serverConnectionUseCases.registerNewUser(
                 email = email.value!!,
                 password = password.value!!
             )

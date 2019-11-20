@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.options
+package com.example.medihelper.presentation.feature.options
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

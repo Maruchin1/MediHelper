@@ -128,7 +128,7 @@
     </dialog>
     <fragment
         android:id="@+id/optionsFragment"
-        android:name="com.example.medihelper.mainapp.options.OptionsFragment"
+        android:name="com.example.medihelper.presentation.feature.options.OptionsFragment"
         tools:layout="@layout/fragment_options">
         <action
             android:id="@+id/toLoginFragment"
@@ -142,14 +142,14 @@
     </fragment>
     <dialog
         android:id="@+id/loginFragment"
-        android:name="com.example.medihelper.mainapp.authentication.LoginFragment"
+        android:name="com.example.medihelper.presentation.feature.auth.LoginFragment"
         tools:layout="@layout/fragment_login" />
     <dialog
         android:id="@+id/registerFragment"
-        android:name="com.example.medihelper.mainapp.authentication.RegisterFragment"
+        android:name="com.example.medihelper.presentation.feature.auth.RegisterFragment"
         tools:layout="@layout/fragment_register" />
     <dialog
         android:id="@+id/patronConnectFragment"
-        android:name="com.example.medihelper.mainapp.authentication.PatronConnectFragment"
+        android:name="com.example.medihelper.presentation.feature.auth.PatronConnectFragment"
         tools:layout="@layout/fragment_patron_connect" />
 </navigation>

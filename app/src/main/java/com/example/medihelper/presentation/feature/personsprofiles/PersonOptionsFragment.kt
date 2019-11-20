@@ -11,7 +11,7 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentPersonOptionsBinding
-import com.example.medihelper.mainapp.dialog.ConfirmDialog
+import com.example.medihelper.presentation.dialogs.ConfirmDialog
 import kotlinx.android.synthetic.main.fragment_person_options.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

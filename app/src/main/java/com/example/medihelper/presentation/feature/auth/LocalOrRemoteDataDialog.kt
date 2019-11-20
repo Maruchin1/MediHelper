@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.authentication
+package com.example.medihelper.presentation.feature.auth
 
 import android.os.Bundle
 import android.view.LayoutInflater

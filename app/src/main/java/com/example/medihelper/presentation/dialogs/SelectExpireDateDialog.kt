@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.dialog
+package com.example.medihelper.presentation.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,12 +8,12 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.AppBottomSheetDialog
 import com.example.medihelper.domain.entities.AppExpireDate
 import com.example.medihelper.custom.bind
-import com.example.medihelper.databinding.DialogSelectMonthDateBinding
+import com.example.medihelper.databinding.DialogSelectExpireDateBinding
 import com.example.medihelper.service.DateTimeService
-import kotlinx.android.synthetic.main.dialog_select_month_date.*
+import kotlinx.android.synthetic.main.dialog_select_expire_date.*
 import org.koin.android.ext.android.inject
 
-class SelectExpireDialog : AppBottomSheetDialog() {
+class SelectExpireDateDialog : AppBottomSheetDialog() {
     override val TAG = "SelectMontDateDialog"
 
     companion object {
@@ -36,10 +36,10 @@ class SelectExpireDialog : AppBottomSheetDialog() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bind<DialogSelectMonthDateBinding>(
+        return bind<DialogSelectExpireDateBinding>(
             inflater = inflater,
             container = container,
-            layoutResId = R.layout.dialog_select_month_date
+            layoutResId = R.layout.dialog_select_expire_date
         )
     }
 

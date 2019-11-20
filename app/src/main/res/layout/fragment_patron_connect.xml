@@ -4,10 +4,10 @@
     <data>
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.authentication.PatronConnectFragment" />
+            type="com.example.medihelper.presentation.feature.auth.PatronConnectFragment" />
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.authentication.PatronConnectViewModel" />
+            type="com.example.medihelper.presentation.feature.auth.PatronConnectViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

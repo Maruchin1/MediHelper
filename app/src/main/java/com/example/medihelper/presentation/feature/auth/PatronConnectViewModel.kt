@@ -1,18 +1,18 @@
-package com.example.medihelper.mainapp.authentication
+package com.example.medihelper.presentation.feature.auth
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.medihelper.service.ApiResponse
-import com.example.medihelper.service.ServerApiService
+import com.example.medihelper.domain.entities.ApiResponse
+import com.example.medihelper.domain.usecases.ServerConnectionUseCases
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.coroutines.launch
 
 
 class PatronConnectViewModel(
-    private val serverApiService: ServerApiService
+    private val serverConnectionUseCases: ServerConnectionUseCases
 ) : ViewModel() {
 
     val keyChar1 = MutableLiveData<String>()
@@ -58,7 +58,7 @@ class PatronConnectViewModel(
             val connectionKey = StringBuilder().apply {
                 allCharList.forEach { append(it.value!!) }
             }.toString()
-            val apiResponse = serverApiService.connectWithPatron(connectionKey)
+            val apiResponse = serverConnectionUseCases.connectWithPatron(connectionKey)
             val errorMessage = mapApiResponseToErrString(apiResponse)
             _errorPatronConnect.postValue(errorMessage)
             _loadingInProgress.postValue(false)

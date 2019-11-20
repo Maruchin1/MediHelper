@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 
 import com.example.medihelper.R
-import com.example.medihelper.mainapp.dialog.SelectNumberDialog
+import com.example.medihelper.presentation.dialogs.SelectNumberDialog
 import com.example.medihelper.databinding.FragmentIntervalOfDaysBinding
 import com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel

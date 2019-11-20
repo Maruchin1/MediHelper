@@ -5,11 +5,11 @@
     <data>
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.authentication.RegisterFragment" />
+            type="com.example.medihelper.presentation.feature.auth.RegisterFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.authentication.RegisterViewModel" />
+            type="com.example.medihelper.presentation.feature.auth.RegisterViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

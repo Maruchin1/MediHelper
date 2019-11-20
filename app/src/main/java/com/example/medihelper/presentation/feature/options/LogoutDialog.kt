@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.options
+package com.example.medihelper.presentation.feature.options
 
 import android.os.Bundle
 import android.view.LayoutInflater

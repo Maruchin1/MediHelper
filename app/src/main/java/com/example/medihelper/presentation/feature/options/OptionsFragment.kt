@@ -1,7 +1,6 @@
-package com.example.medihelper.mainapp.options
+package com.example.medihelper.presentation.feature.options
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.showShortSnackbar
 import com.example.medihelper.databinding.FragmentOptionsBinding
 import com.example.medihelper.mainapp.MainActivity
-import com.example.medihelper.mainapp.dialog.ConfirmDialog
+import com.example.medihelper.presentation.dialogs.ConfirmDialog
 import com.example.medihelper.service.LoadingScreenService
 import kotlinx.android.synthetic.main.fragment_options.*
 import org.koin.android.ext.android.inject
@@ -27,11 +26,11 @@ class OptionsFragment : Fragment() {
     private val mainActivity: MainActivity
         get() = requireActivity() as MainActivity
 
-    fun onClickLogin() = findNavController().navigate(directions.toLoginFragment())
+    fun onClickLogin() = findNavController().navigate(OptionsFragmentDirections.toLoginFragment())
 
-    fun onClickRegister() = findNavController().navigate(directions.toRegisterFragment())
+    fun onClickRegister() = findNavController().navigate(OptionsFragmentDirections.toRegisterFragment())
 
-    fun onClickConnectWithPatron() = findNavController().navigate(directions.toPatronConnectFragment())
+    fun onClickConnectWithPatron() = findNavController().navigate(OptionsFragmentDirections.toPatronConnectFragment())
 
     fun onClickChangePassword() = NewPasswordDialog().apply {
         setNewPasswordSelectedListener { newPassword ->

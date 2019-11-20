@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.example.medihelper.R
 import com.example.medihelper.databinding.ActivityAlarmBinding
-import com.example.medihelper.mainapp.dialog.SelectTimeDialog
+import com.example.medihelper.presentation.dialogs.SelectTimeDialog
 import kotlinx.android.synthetic.main.activity_alarm.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.hypot

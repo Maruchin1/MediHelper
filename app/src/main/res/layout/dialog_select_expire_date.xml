@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.dialog.SelectExpireDialog" />
+            type="com.example.medihelper.presentation.dialogs.SelectExpireDateDialog" />
     </data>
 
     <LinearLayout

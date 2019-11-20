@@ -10,8 +10,8 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentAddEditMedicineBinding
-import com.example.medihelper.mainapp.dialog.SelectMedicineUnitDialog
-import com.example.medihelper.mainapp.dialog.SelectExpireDialog
+import com.example.medihelper.presentation.dialogs.SelectMedicineUnitDialog
+import com.example.medihelper.presentation.dialogs.SelectExpireDateDialog
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -36,7 +36,7 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
         }
     }
 
-    fun onClickSelectExpireDate() = SelectExpireDialog().apply {
+    fun onClickSelectExpireDate() = SelectExpireDateDialog().apply {
         defaultDate = viewModel.formModel.value?.expireDate
         setDateSelectedListener { viewModel.formModel.value?.expireDate = it }
     }.show(childFragmentManager)

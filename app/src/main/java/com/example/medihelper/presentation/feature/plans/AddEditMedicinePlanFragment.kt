@@ -17,12 +17,11 @@ import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentAddEditMedicinePlanBinding
-import com.example.medihelper.mainapp.dialog.SelectTimeDialog
-import com.example.medihelper.mainapp.dialog.SelectFloatNumberDialog
-import com.example.medihelper.mainapp.dialog.SelectMedicineDialog
+import com.example.medihelper.presentation.dialogs.SelectTimeDialog
+import com.example.medihelper.presentation.dialogs.SelectFloatNumberDialog
+import com.example.medihelper.presentation.dialogs.SelectMedicineDialog
 import com.example.medihelper.domain.entities.DaysType
 import com.example.medihelper.domain.entities.DurationType
-import com.example.medihelper.domain.entities.TimeDose
 import com.example.medihelper.presentation.feature.plans.daystype.DaysOfWeekFragment
 import com.example.medihelper.presentation.feature.plans.daystype.IntervalOfDaysFragment
 import com.example.medihelper.presentation.feature.plans.durationtype.ContinuousFragment

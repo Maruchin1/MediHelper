@@ -2,19 +2,16 @@ package com.example.medihelper
 
 import androidx.room.Room
 import androidx.work.WorkManager
-import com.example.medihelper.domain.repositories.AppUserRepo
-import com.example.medihelper.domain.repositories.MedicineRepo
-import com.example.medihelper.domain.repositories.PersonRepo
 import com.example.medihelper.domain.usecases.*
 import com.example.medihelper.localdata.*
 import com.example.medihelper.domain.utils.StatusOfTakingCalculator
 import com.example.medihelper.mainapp.alarm.AlarmViewModel
-import com.example.medihelper.mainapp.authentication.LoginViewModel
+import com.example.medihelper.presentation.feature.auth.LoginViewModel
 import com.example.medihelper.mainapp.launcher.MainPersonViewModel
-import com.example.medihelper.mainapp.authentication.RegisterViewModel
-import com.example.medihelper.mainapp.authentication.PatronConnectViewModel
-import com.example.medihelper.mainapp.options.NewPasswordViewModel
-import com.example.medihelper.mainapp.options.OptionsViewModel
+import com.example.medihelper.presentation.feature.auth.RegisterViewModel
+import com.example.medihelper.presentation.feature.auth.PatronConnectViewModel
+import com.example.medihelper.presentation.feature.options.NewPasswordViewModel
+import com.example.medihelper.presentation.feature.options.OptionsViewModel
 import com.example.medihelper.presentation.feature.calendar.CalendarDayViewModel
 import com.example.medihelper.presentation.feature.calendar.CalendarViewModel
 import com.example.medihelper.presentation.feature.calendar.PlannedMedicineOptionsViewModel
@@ -120,7 +117,7 @@ val repoModule = module {
 val useCaseModule = module {
     single { MedicineUseCases(get()) }
     single { PersonUseCases(get()) }
-    single { ServerConnectionUseCases(get()) }
+    single { ServerConnectionUseCases(get(), get()) }
     single { MedicinePlanUseCases(get()) }
     single { PlannedMedicineUseCases(get(), get(), get()) }
 }
