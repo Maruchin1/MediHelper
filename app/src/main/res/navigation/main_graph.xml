@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/medicinePlanListHostFragment"
-        android:name="com.example.medihelper.mainapp.medicineplan.MedicinePlanListHostFragment"
+        android:name="com.example.medihelper.presentation.feature.plans.MedicinePlanListHostFragment"
         tools:layout="@layout/fragment_medicine_plan_list_host">
         <action
             android:id="@+id/toPersonDialog"
@@ -106,7 +106,7 @@
     </dialog>
     <dialog
         android:id="@+id/medicinePlanHistoryDialog"
-        android:name="com.example.medihelper.mainapp.medicineplan.MedicinePlanHistoryDialog"
+        android:name="com.example.medihelper.presentation.feature.plans.MedicinePlanHistoryDialog"
         tools:layout="@layout/dialog_medicine_plan_history">
         <argument
             android:name="medicinePlanID"

@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.medicineplan
+package com.example.medihelper.presentation.feature.plans
 
 
 import android.os.Bundle
@@ -14,20 +14,21 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.RecyclerAdapter
 import com.example.medihelper.custom.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicinePlanListBinding
+import com.example.medihelper.domain.entities.MedicinePlanType
 import com.example.medihelper.mainapp.dialog.ConfirmDialog
-import com.example.medihelper.localdata.pojo.MedicinePlanItem
+import com.example.medihelper.presentation.model.MedicinePlanItem
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class MedicinePlanListFragment : Fragment() {
 
-    var medicinePlanType: MedicinePlanListViewModel.MedicinePlanType? = null
+    var medicinePlanType: MedicinePlanType? = null
         set(value) {
             field = value
             when (medicinePlanType) {
-                MedicinePlanListViewModel.MedicinePlanType.ENDED -> unavailableMessage = "Brak zakończonych planów"
-                MedicinePlanListViewModel.MedicinePlanType.ONGOING -> unavailableMessage = "Brak trwających planów"
+                MedicinePlanType.ENDED -> unavailableMessage = "Brak zakończonych planów"
+                MedicinePlanType.ONGOING -> unavailableMessage = "Brak trwających planów"
             }
         }
     var unavailableMessage = ""
@@ -70,7 +71,12 @@ class MedicinePlanListFragment : Fragment() {
 
     private fun observeViewModel() {
         medicinePlanType?.let {
-            viewModel.getMedicinePlanItemListLive(it).observe(viewLifecycleOwner, Observer { medicinePlanList ->
+            val medicinePlanItemList = when (medicinePlanType) {
+                MedicinePlanType.ONGOING -> viewModel.medicinePlanItemOngoingList
+                MedicinePlanType.ENDED -> viewModel.medicinePlanItemEndedList
+                else -> null
+            }
+            medicinePlanItemList?.observe(viewLifecycleOwner, Observer { medicinePlanList ->
                 val adapter = recycler_view_medicine_plan.adapter as MedicinePlanAdapter
                 adapter.updateItemsList(medicinePlanList)
                 medicinePlanAvailableLive.value = !medicinePlanList.isNullOrEmpty()
@@ -89,8 +95,7 @@ class MedicinePlanListFragment : Fragment() {
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicinePlanItem = itemsList[position]
-            val medicinePlanDisplayData = viewModel.getMedicinePlanDisplayData(medicinePlanItem)
-            holder.bind(medicinePlanDisplayData, this@MedicinePlanListFragment)
+            holder.bind(medicinePlanItem, this@MedicinePlanListFragment)
         }
     }
 }

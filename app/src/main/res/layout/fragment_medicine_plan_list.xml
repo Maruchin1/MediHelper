@@ -9,11 +9,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicineplan.MedicinePlanListFragment" />
+            type="com.example.medihelper.presentation.feature.plans.MedicinePlanListFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.medicineplan.MedicinePlanListViewModel" />
+            type="com.example.medihelper.presentation.feature.plans.MedicinePlanListViewModel" />
     </data>
 
     <FrameLayout
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:context=".mainapp.medicineplan.MedicinePlanListFragment"
+            tools:context=".presentation.feature.plans.MedicinePlanListFragment"
             tools:listitem="@layout/recycler_item_medicine_plan" />
 
         <LinearLayout

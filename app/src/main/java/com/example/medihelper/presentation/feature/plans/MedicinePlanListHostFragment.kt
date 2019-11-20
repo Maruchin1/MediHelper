@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.medicineplan
+package com.example.medihelper.presentation.feature.plans
 
 
 import android.os.Bundle
@@ -6,12 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
+import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentMedicinePlanListHostBinding
+import com.example.medihelper.domain.entities.MedicinePlanType
 import com.example.medihelper.mainapp.MainActivity
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list_host.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,17 +22,17 @@ class MedicinePlanListHostFragment : Fragment() {
     private val viewModel: MedicinePlanListViewModel by viewModel()
     private val directions by lazyOf(MedicinePlanListHostFragmentDirections)
 
-    fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddEditMedicinePlanFragment())
+    fun onClickAddMedicinePlan() = findNavController().navigate(MedicinePlanListHostFragmentDirections.toAddEditMedicinePlanFragment())
 
-    fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
+    fun onClickSelectPerson() = findNavController().navigate(MedicinePlanListHostFragmentDirections.toPersonDialog())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentMedicinePlanListHostBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_medicine_plan_list_host, container, false)
-        binding.viewModel = viewModel
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+       return bind<FragmentMedicinePlanListHostBinding>(
+           inflater = inflater,
+           container = container,
+           layoutResId = R.layout.fragment_medicine_plan_list_host,
+           viewModel = viewModel
+       )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +42,7 @@ class MedicinePlanListHostFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.colorPrimaryLive.observe(viewLifecycleOwner, Observer { colorResID ->
+        viewModel.colorPrimaryId.observe(viewLifecycleOwner, Observer { colorResID ->
             if (colorResID != null) {
                 (requireActivity() as MainActivity).setMainColor(colorResID)
             }
@@ -57,12 +58,8 @@ class MedicinePlanListHostFragment : Fragment() {
     inner class MedicinePlanListPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         private val pagesList = listOf(
-            MedicinePlanListFragment().apply { medicinePlanType =
-                MedicinePlanListViewModel.MedicinePlanType.ONGOING
-            },
-            MedicinePlanListFragment().apply { medicinePlanType =
-                MedicinePlanListViewModel.MedicinePlanType.ENDED
-            }
+            MedicinePlanListFragment().apply { medicinePlanType = MedicinePlanType.ONGOING },
+            MedicinePlanListFragment().apply { medicinePlanType = MedicinePlanType.ENDED }
         )
 
         override fun getCount(): Int {
@@ -74,7 +71,7 @@ class MedicinePlanListHostFragment : Fragment() {
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
-            return pagesList[position].medicinePlanType?.pageTitle
+            return pagesList[position].medicinePlanType?.title
         }
 
     }

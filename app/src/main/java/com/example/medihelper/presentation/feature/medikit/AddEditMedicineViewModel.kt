@@ -39,7 +39,7 @@ class AddEditMedicineViewModel(
         if (args.editMedicineId != -1) {
             editMedicineId = args.editMedicineId
             _formTitle.postValue("Edytuj lek")
-            val editMedicine = medicineUseCases.getMedicine(args.editMedicineId)
+            val editMedicine = medicineUseCases.getMedicineById(args.editMedicineId)
             val editMedicineForm = MedicineForm(editMedicine)
             _formModel.postValue(editMedicineForm)
         }

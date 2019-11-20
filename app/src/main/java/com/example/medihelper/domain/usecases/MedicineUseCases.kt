@@ -38,7 +38,7 @@ class MedicineUseCases(
 
     suspend fun deleteMedicineById(id: Int) = medicineRepo.deleteById(id)
 
-    suspend fun getMedicine(id: Int): Medicine = medicineRepo.getById(id)
+    suspend fun getMedicineById(id: Int): Medicine = medicineRepo.getById(id)
 
     suspend fun reduceMedicineCurrState(id: Int, doseSize: Float) {
         val medicine = medicineRepo.getById(id)

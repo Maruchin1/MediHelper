@@ -50,7 +50,9 @@ class PersonUseCases(
 
     fun getPersonListLiveByMedicineId(id: Int): LiveData<List<Person>> = personRepo.getListLiveByMedicineId(id)
 
-    fun selectCurrPerson(id: Int) = currPersonId.postValue(id)
+    fun getCurrPersonLive() = currPerson
 
     fun getColorIdList() = personRepo.getColorIdList()
+
+    fun selectCurrPerson(id: Int) = currPersonId.postValue(id)
 }
