@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.alarm
+package com.example.medihelper.presentation.feature.alarm
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -5,7 +5,7 @@ import androidx.work.WorkManager
 import com.example.medihelper.domain.usecases.*
 import com.example.medihelper.localdata.*
 import com.example.medihelper.domain.utils.StatusOfTakingCalculator
-import com.example.medihelper.mainapp.alarm.AlarmViewModel
+import com.example.medihelper.presentation.feature.alarm.AlarmViewModel
 import com.example.medihelper.presentation.feature.auth.LoginViewModel
 import com.example.medihelper.mainapp.launcher.MainPersonViewModel
 import com.example.medihelper.presentation.feature.auth.RegisterViewModel
