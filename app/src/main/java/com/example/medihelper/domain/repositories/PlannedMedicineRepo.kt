@@ -6,8 +6,10 @@ import com.example.medihelper.domain.entities.PlannedMedicine
 import com.example.medihelper.domain.entities.PlannedMedicineWithMedicine
 
 interface PlannedMedicineRepo {
+    suspend fun insert(plannedMedicineList: List<PlannedMedicine>)
     suspend fun update(plannedMedicine: PlannedMedicine)
     suspend fun update(plannedMedicineList: List<PlannedMedicine>)
+    suspend fun deleteFromDateByMedicinePlanId(date: AppDate, medicinePlanId: Int)
     suspend fun getById(id: Int): PlannedMedicine
     suspend fun getAllList(): List<PlannedMedicine>
     fun getWithMedicineLiveById(id: Int): LiveData<PlannedMedicineWithMedicine>

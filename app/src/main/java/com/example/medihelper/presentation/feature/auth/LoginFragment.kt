@@ -10,8 +10,7 @@ import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.showShortSnackbar
 import com.example.medihelper.databinding.FragmentLoginBinding
-import com.example.medihelper.mainapp.MainActivity
-import com.example.medihelper.presentation.feature.auth.LoginViewModel
+import com.example.medihelper.presentation.feature.MainActivity
 import com.example.medihelper.service.LoadingScreenService
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject

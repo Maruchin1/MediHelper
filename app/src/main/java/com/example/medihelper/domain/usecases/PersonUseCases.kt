@@ -3,6 +3,7 @@ package com.example.medihelper.domain.usecases
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
+import com.example.medihelper.R
 import com.example.medihelper.domain.entities.Person
 import com.example.medihelper.domain.entities.PersonInputData
 import com.example.medihelper.domain.repositories.PersonRepo
@@ -29,6 +30,17 @@ class PersonUseCases(
         personRepo.insert(newPerson)
     }
 
+    suspend fun addMainPerson(personName: String) {
+        val mainPerson = Person(
+            personId = 0,
+            name = personName,
+            colorId = R.color.colorPrimary,
+            mainPerson = true,
+            connectionKey = null
+        )
+        personRepo.insert(mainPerson)
+    }
+
     suspend fun updatePerson(id: Int, inputData: PersonInputData) {
         val existingPerson = personRepo.getById(id)
         val updatedPerson = existingPerson.copy(
@@ -42,11 +54,13 @@ class PersonUseCases(
 
     suspend fun getPersonById(id: Int): Person = personRepo.getById(id)
 
+    suspend fun isMainPersonExists(): Boolean = personRepo.getMainId() != null
+
     fun getPersonLiveById(id: Int) = personRepo.getLiveById(id)
 
     fun getAllPersonListLive(): LiveData<List<Person>> = personRepo.getAllListLive()
 
-    fun getMainPersonColorLive(): LiveData<Int> = personRepo.getMainPersonColorLive()
+    fun getMainPersonColorLive(): LiveData<Int> = personRepo.getMainPersonColorIdLive()
 
     fun getPersonListLiveByMedicineId(id: Int): LiveData<List<Person>> = personRepo.getListLiveByMedicineId(id)
 

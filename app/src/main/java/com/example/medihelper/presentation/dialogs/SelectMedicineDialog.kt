@@ -75,7 +75,7 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
     private fun setupToolbar() {
         val itemSearch = binding.toolbar.menu.findItem(R.id.btn_search)
         val searchView = itemSearch.actionView as SearchView
-        searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
+        searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             when {
                 hasFocus -> bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 else -> bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED

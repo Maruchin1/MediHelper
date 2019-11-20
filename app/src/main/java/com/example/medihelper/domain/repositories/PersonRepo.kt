@@ -8,10 +8,11 @@ interface PersonRepo {
     suspend fun update(person: Person)
     suspend fun deleteById(id: Int)
     suspend fun getById(id: Int): Person
+    suspend fun getMainId(): Int?
     fun getLiveById(id: Int): LiveData<Person>
     fun getMainLive(): LiveData<Person>
     fun getMainIdLive(): LiveData<Int>
-    fun getMainPersonColorLive(): LiveData<Int>
+    fun getMainPersonColorIdLive(): LiveData<Int>
     fun getAllListLive(): LiveData<List<Person>>
     fun getListLiveByMedicineId(id: Int): LiveData<List<Person>>
     fun getColorIdList(): List<Int>

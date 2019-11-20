@@ -5,11 +5,10 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
 import androidx.work.*
 import com.example.medihelper.*
-import com.example.medihelper.R
 import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.DeletedHistory
 import com.example.medihelper.localdata.dao.*
-import com.example.medihelper.localdata.entity.PersonEntity
+import com.example.medihelper.data.local.model.PersonEntity
 import com.example.medihelper.remotedata.api.AuthenticationApi
 import com.example.medihelper.remotedata.api.RegisteredUserApi
 import com.example.medihelper.remotedata.dto.ConnectedPersonDto

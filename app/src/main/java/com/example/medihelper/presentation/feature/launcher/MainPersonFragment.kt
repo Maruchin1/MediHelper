@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.launcher
+package com.example.medihelper.presentation.feature.launcher
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentMainPersonBinding
-import com.example.medihelper.mainapp.LauncherActivity
 import org.koin.android.ext.android.inject
 
 class MainPersonFragment : LauncherOptionFragment() {

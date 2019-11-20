@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/logoFragment"
-        android:name="com.example.medihelper.mainapp.launcher.LogoFragment"
+        android:name="com.example.medihelper.presentation.feature.launcher.LogoFragment"
         tools:layout="@layout/fragment_logo">
         <action
             android:id="@+id/toWelcomeFragment"
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.example.medihelper.mainapp.launcher.WelcomeFragment"
+        android:name="com.example.medihelper.presentation.feature.launcher.WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/toMainPersonFragment"
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainPersonFragment"
-        android:name="com.example.medihelper.mainapp.launcher.MainPersonFragment"
+        android:name="com.example.medihelper.presentation.feature.launcher.MainPersonFragment"
         tools:layout="@layout/fragment_main_person" />
     <fragment
         android:id="@+id/loginFragmentLauncher"

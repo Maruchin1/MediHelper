@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp
+package com.example.medihelper.presentation.feature
 
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -10,11 +10,10 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
+import com.example.medihelper.presentation.feature.launcher.LauncherActivity
 import com.example.medihelper.service.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 

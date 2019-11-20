@@ -1,8 +1,10 @@
-package com.example.medihelper.localdata.entity
+package com.example.medihelper.data.local.model
 
 import androidx.room.*
+import com.example.medihelper.data.local.model.MedicinePlanEntity
 import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.domain.entities.AppTime
+import com.example.medihelper.domain.entities.PlannedMedicine
 import com.example.medihelper.domain.entities.StatusOfTaking
 
 @Entity(
@@ -40,4 +42,24 @@ data class PlannedMedicineEntity(
 
     @ColumnInfo(name = "synchronized_with_server")
     var synchronizedWithServer: Boolean = false
-)
+) {
+    constructor(plannedMedicine: PlannedMedicine, remoteId: Long?) : this(
+        plannedMedicineId = plannedMedicine.plannedMedicineId,
+        plannedMedicineRemoteId = remoteId,
+        medicinePlanId = plannedMedicine.medicinePlanId,
+        plannedDate = plannedMedicine.plannedDate,
+        plannedTime = plannedMedicine.plannedTime,
+        plannedDoseSize = plannedMedicine.plannedDoseSize,
+        statusOfTaking = plannedMedicine.statusOfTaking,
+        synchronizedWithServer = false
+    )
+
+    fun toPlannedMedicine() = PlannedMedicine(
+        plannedMedicineId = plannedMedicineId,
+        medicinePlanId = medicinePlanId,
+        plannedDate = plannedDate,
+        plannedTime = plannedTime,
+        plannedDoseSize = plannedDoseSize,
+        statusOfTaking = statusOfTaking
+    )
+}

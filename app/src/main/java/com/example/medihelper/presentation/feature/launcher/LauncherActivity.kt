@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp
+package com.example.medihelper.presentation.feature.launcher
 
 import android.content.Intent
 import android.os.Build
@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.example.medihelper.R
+import com.example.medihelper.presentation.feature.MainActivity
 
 class LauncherActivity : AppCompatActivity() {
 

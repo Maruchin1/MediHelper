@@ -1,34 +1,31 @@
-package com.example.medihelper.mainapp.launcher
+package com.example.medihelper.presentation.feature.launcher
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.custom.ActionLiveData
-import com.example.medihelper.service.InitialDataService
+import com.example.medihelper.domain.usecases.PersonUseCases
 import kotlinx.coroutines.launch
 
 class MainPersonViewModel(
-    private val initialDataService: InitialDataService
+    private val personUseCases: PersonUseCases
 ) : ViewModel() {
 
     private val _form = FormModel()
-    private val _formError = FormErroModel()
+    private val _formError = FormErrorModel()
     private val _setupEndAction = ActionLiveData()
 
     val form: FormModel
         get() = _form
-    val formError: FormErroModel
+    val formError: FormErrorModel
         get() = _formError
     val setupEndAction: LiveData<Boolean>
         get() = _setupEndAction
 
     fun saveMainProfile() = viewModelScope.launch {
         if (isFormValid()) {
-            with(initialDataService) {
-                createMainPerson(_form.userName.value!!)
-                checkInitialData()
-            }
+            personUseCases.addMainPerson(_form.userName.value!!)
             _setupEndAction.sendAction()
         }
     }
@@ -47,7 +44,7 @@ class MainPersonViewModel(
         val userName = MutableLiveData<String>()
     }
 
-    class FormErroModel {
+    class FormErrorModel {
         val userNameErr = MutableLiveData<String>()
     }
 }

@@ -4,10 +4,10 @@ import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.domain.entities.AppTime
 import com.example.medihelper.domain.entities.DaysType
 import com.example.medihelper.domain.entities.DurationType
-import com.example.medihelper.localdata.entity.PlannedMedicineEntity
+import com.example.medihelper.data.local.model.PlannedMedicineEntity
 import com.example.medihelper.localdata.pojo.MedicinePlanEditData
 import com.example.medihelper.localdata.pojo.TimeDoseEditData
-import com.example.medihelper.utility.MedicineScheduler
+import com.example.medihelper.domain.utils.MedicineScheduler
 import org.junit.Test
 import org.koin.core.context.startKoin
 import org.koin.test.KoinTest

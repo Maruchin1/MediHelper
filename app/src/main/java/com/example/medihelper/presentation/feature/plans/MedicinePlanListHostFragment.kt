@@ -13,7 +13,7 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentMedicinePlanListHostBinding
 import com.example.medihelper.domain.entities.MedicinePlanType
-import com.example.medihelper.mainapp.MainActivity
+import com.example.medihelper.presentation.feature.MainActivity
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list_host.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

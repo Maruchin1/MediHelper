@@ -1,8 +1,9 @@
-package com.example.medihelper.localdata.entity
+package com.example.medihelper.data.local.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.medihelper.domain.entities.Person
 
 @Entity(tableName = "persons")
 data class PersonEntity(
@@ -28,4 +29,22 @@ data class PersonEntity(
 
     @ColumnInfo(name = "synchronized_with_server")
     var synchronizedWithServer: Boolean = false
-)
+) {
+    constructor(person: Person, personRemoteId: Long?) : this(
+        personId = person.personId,
+        personRemoteId = personRemoteId,
+        personName = person.name,
+        personColorResId = person.colorId,
+        mainPerson = person.mainPerson,
+        connectionKey = person.connectionKey,
+        synchronizedWithServer = false
+    )
+
+    fun toPerson() = Person(
+        personId = personId,
+        name = personName,
+        colorId = personColorResId,
+        mainPerson = mainPerson,
+        connectionKey = connectionKey
+    )
+}

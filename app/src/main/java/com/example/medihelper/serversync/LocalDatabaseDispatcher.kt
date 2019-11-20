@@ -5,10 +5,10 @@ import com.example.medihelper.localdata.dao.MedicineDao
 import com.example.medihelper.localdata.dao.MedicinePlanDao
 import com.example.medihelper.localdata.dao.PersonDao
 import com.example.medihelper.localdata.dao.PlannedMedicineDao
-import com.example.medihelper.localdata.entity.MedicineEntity
-import com.example.medihelper.localdata.entity.MedicinePlanEntity
-import com.example.medihelper.localdata.entity.PersonEntity
-import com.example.medihelper.localdata.entity.PlannedMedicineEntity
+import com.example.medihelper.data.local.model.MedicineEntity
+import com.example.medihelper.data.local.model.MedicinePlanEntity
+import com.example.medihelper.data.local.model.PersonEntity
+import com.example.medihelper.data.local.model.PlannedMedicineEntity
 import com.example.medihelper.remotedata.dto.MedicineDto
 import com.example.medihelper.remotedata.dto.MedicinePlanDto
 import com.example.medihelper.remotedata.dto.PersonDto

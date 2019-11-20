@@ -1,6 +1,7 @@
 package com.example.medihelper
 
 import androidx.test.platform.app.InstrumentationRegistry
+import com.example.medihelper.data.local.RoomDatabase
 import com.example.medihelper.localdata.*
 import com.example.medihelper.localdata.pojo.PersonEditData
 import com.example.medihelper.localdata.pojo.PersonItem
@@ -20,7 +21,7 @@ import org.koin.test.inject
 class PersonServiceAndroidTest : AppAndroidTest() {
 
     private val testModule = module {
-        single { get<AppDatabase>().personDao() }
+        single { get<RoomDatabase>().personDao() }
         single<AppSharedPref> { AppSharedPrefImpl(androidContext()) }
         single<DeletedHistory> { DeletedHistoryImpl(androidContext()) }
         single<PersonService> { PersonServiceImpl(get(), get(), get()) }

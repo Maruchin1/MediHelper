@@ -1,7 +1,7 @@
 package com.example.medihelper
 
 import androidx.room.Room
-import com.example.medihelper.localdata.AppDatabase
+import com.example.medihelper.data.local.RoomDatabase
 import com.google.gson.GsonBuilder
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val testRoomModule = module(override = true) {
     single {
-        Room.inMemoryDatabaseBuilder(get(), AppDatabase::class.java)
+        Room.inMemoryDatabaseBuilder(get(), RoomDatabase::class.java)
             .allowMainThreadQueries()
             .build()
     }

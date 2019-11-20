@@ -1,6 +1,5 @@
 package com.example.medihelper.remotedata.dto
 
-import com.example.medihelper.localdata.type.DaysOfWeek
 import com.google.gson.annotations.SerializedName
 
 data class MedicinePlanDto(

@@ -3,8 +3,7 @@ package com.example.medihelper.service
 import com.example.medihelper.R
 import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.dao.PersonDao
-import com.example.medihelper.localdata.entity.PersonEntity
-import com.example.medihelper.localdata.pojo.PersonEditData
+import com.example.medihelper.data.local.model.PersonEntity
 
 interface InitialDataService {
     suspend fun createMainPerson(personName: String)
@@ -25,6 +24,7 @@ class InitialDataServiceImpl(
         personDao.insert(mainPerson)
     }
 
+    //todo sprawdzanie danych przy inicjacj repozytoriów
     override suspend fun checkInitialData() {
         if (appSharedPref.getMedicineUnitList().isNullOrEmpty()) {
             appSharedPref.saveMedicineUnitList(getInitialMedicineUnitList())

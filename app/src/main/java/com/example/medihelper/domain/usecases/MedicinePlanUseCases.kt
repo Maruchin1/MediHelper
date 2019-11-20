@@ -7,7 +7,8 @@ import com.example.medihelper.domain.entities.MedicinePlanWithMedicine
 import com.example.medihelper.domain.repositories.MedicinePlanRepo
 
 class MedicinePlanUseCases(
-    private val medicinePlanRepo: MedicinePlanRepo
+    private val medicinePlanRepo: MedicinePlanRepo,
+    private val plannedMedicineUseCases: PlannedMedicineUseCases
 ) {
 
     suspend fun addNewMedicinePlan(inputData: MedicinePlanInputData) {
@@ -23,7 +24,9 @@ class MedicinePlanUseCases(
             intervalOfDays = inputData.intervalOfDays,
             timeDoseList = inputData.timeDoseList
         )
-        medicinePlanRepo.insert(newMedicinePlan)
+        val insertedId = medicinePlanRepo.insert(newMedicinePlan)
+        val insertedPlan = medicinePlanRepo.getById(insertedId)
+        plannedMedicineUseCases.addForMedicinePlan(insertedPlan)
     }
 
     suspend fun updateMedicinePlan(id: Int, inputData: MedicinePlanInputData) {
@@ -40,6 +43,7 @@ class MedicinePlanUseCases(
             timeDoseList = inputData.timeDoseList
         )
         medicinePlanRepo.update(updatedMedicinePlan)
+        plannedMedicineUseCases.updateForMedicinePlan(updatedMedicinePlan)
     }
 
     suspend fun deleteMedicinePlanById(id: Int) = medicinePlanRepo.deleteById(id)

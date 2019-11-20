@@ -1,10 +1,12 @@
-package com.example.medihelper.localdata.entity
+package com.example.medihelper.data.local.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.medihelper.data.local.model.MedicinePlanEntity
 import com.example.medihelper.domain.entities.AppTime
+import com.example.medihelper.domain.entities.TimeDose
 
 @Entity(
     tableName = "times_doses",
@@ -30,4 +32,13 @@ class TimeDoseEntity(
 
     @ColumnInfo(name = "medicine_plan_id")
     var medicinePlanId: Int
-)
+) {
+    constructor(timeDose: TimeDose, medicinePlanId: Int) : this(
+        timeDoseId = 0,
+        time = timeDose.time,
+        doseSize = timeDose.doseSize,
+        medicinePlanId = medicinePlanId
+    )
+
+    fun toTimeDose() = TimeDose(time, doseSize)
+}

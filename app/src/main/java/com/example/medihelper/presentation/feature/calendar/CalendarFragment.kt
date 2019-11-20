@@ -19,7 +19,7 @@ import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.custom.CenterLayoutManager
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
-import com.example.medihelper.mainapp.MainActivity
+import com.example.medihelper.presentation.feature.MainActivity
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.recycler_item_schedule_timeline.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

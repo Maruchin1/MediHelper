@@ -12,8 +12,8 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.showShortSnackbar
 import com.example.medihelper.databinding.FragmentLauncherPatronConnectBinding
-import com.example.medihelper.mainapp.LauncherActivity
-import com.example.medihelper.mainapp.launcher.LauncherOptionFragment
+import com.example.medihelper.presentation.feature.launcher.LauncherActivity
+import com.example.medihelper.presentation.feature.launcher.LauncherOptionFragment
 import com.example.medihelper.service.LoadingScreenService
 import com.google.android.material.textfield.TextInputEditText
 import com.google.zxing.integration.android.IntentIntegrator

@@ -2,12 +2,13 @@ package com.example.medihelper
 
 import androidx.room.Room
 import androidx.work.WorkManager
+import com.example.medihelper.data.local.RoomDatabase
 import com.example.medihelper.domain.usecases.*
 import com.example.medihelper.localdata.*
 import com.example.medihelper.domain.utils.StatusOfTakingCalculator
 import com.example.medihelper.presentation.feature.alarm.AlarmViewModel
 import com.example.medihelper.presentation.feature.auth.LoginViewModel
-import com.example.medihelper.mainapp.launcher.MainPersonViewModel
+import com.example.medihelper.presentation.feature.launcher.MainPersonViewModel
 import com.example.medihelper.presentation.feature.auth.RegisterViewModel
 import com.example.medihelper.presentation.feature.auth.PatronConnectViewModel
 import com.example.medihelper.presentation.feature.options.NewPasswordViewModel
@@ -30,7 +31,7 @@ import com.example.medihelper.remotedata.api.RegisteredUserApi
 import com.example.medihelper.serversync.EntityDtoMapper
 import com.example.medihelper.serversync.LocalDatabaseDispatcher
 import com.example.medihelper.service.*
-import com.example.medihelper.utility.MedicineScheduler
+import com.example.medihelper.domain.utils.MedicineScheduler
 import com.example.medihelper.utility.NotificationUtil
 import com.example.medihelper.utility.ReminderUtil
 import com.google.gson.*
@@ -42,7 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val mainRoomModule = module(override = true) {
     single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, AppDatabase.MAIN_DATABASE_NAME)
+        Room.databaseBuilder(androidContext(), RoomDatabase::class.java, RoomDatabase.MAIN_DATABASE_NAME)
             .fallbackToDestructiveMigration()
             .build()
     }
@@ -50,7 +51,7 @@ val mainRoomModule = module(override = true) {
 
 val connectedRoomModule = module(override = true) {
     single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, AppDatabase.CONNECTED_DATABASE_NAME)
+        Room.databaseBuilder(androidContext(), RoomDatabase::class.java, RoomDatabase.CONNECTED_DATABASE_NAME)
             .fallbackToDestructiveMigration()
             .build()
     }
@@ -70,11 +71,11 @@ val retrofitModule = module {
 }
 
 val localDataModule = module(override = true) {
-    single { get<AppDatabase>().medicineDao() }
-    single { get<AppDatabase>().personDao() }
-    single { get<AppDatabase>().medicinePlanDao() }
-    single { get<AppDatabase>().timeDoseDao() }
-    single { get<AppDatabase>().plannedMedicineDao() }
+    single { get<RoomDatabase>().medicineDao() }
+    single { get<RoomDatabase>().personDao() }
+    single { get<RoomDatabase>().medicinePlanDao() }
+    single { get<RoomDatabase>().timeDoseDao() }
+    single { get<RoomDatabase>().plannedMedicineDao() }
     single<DeletedHistory> { DeletedHistoryImpl(get()) }
     single<AppSharedPref> { AppSharedPrefImpl(get()) }
     single<MedicineImageFiles> { MedicineImageFilesImpl(get()) }
@@ -118,8 +119,8 @@ val useCaseModule = module {
     single { MedicineUseCases(get()) }
     single { PersonUseCases(get()) }
     single { ServerConnectionUseCases(get(), get()) }
-    single { MedicinePlanUseCases(get()) }
-    single { PlannedMedicineUseCases(get(), get(), get()) }
+    single { MedicinePlanUseCases(get(), get()) }
+    single { PlannedMedicineUseCases(get(), get(), get(), get()) }
 }
 
 val viewModelModule = module {
@@ -135,8 +136,6 @@ val viewModelModule = module {
     viewModel { CalendarViewModel(get(), get(), get(), get()) }
     viewModel { CalendarDayViewModel(get(), get()) }
     viewModel { PlannedMedicineOptionsViewModel(get(), get(), get()) }
-
-
 
     viewModel { PatronConnectViewModel(get()) }
     viewModel { AlarmViewModel(get()) }

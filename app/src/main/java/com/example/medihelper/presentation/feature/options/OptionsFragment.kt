@@ -11,7 +11,7 @@ import com.example.medihelper.R
 import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.showShortSnackbar
 import com.example.medihelper.databinding.FragmentOptionsBinding
-import com.example.medihelper.mainapp.MainActivity
+import com.example.medihelper.presentation.feature.MainActivity
 import com.example.medihelper.presentation.dialogs.ConfirmDialog
 import com.example.medihelper.service.LoadingScreenService
 import kotlinx.android.synthetic.main.fragment_options.*

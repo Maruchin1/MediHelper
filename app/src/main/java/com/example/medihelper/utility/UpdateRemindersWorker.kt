@@ -9,7 +9,7 @@ import androidx.core.content.edit
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.medihelper.localdata.dao.PlannedMedicineDao
-import com.example.medihelper.localdata.entity.PlannedMedicineEntity
+import com.example.medihelper.data.local.model.PlannedMedicineEntity
 import com.example.medihelper.service.DateTimeService
 import org.koin.core.KoinComponent
 import org.koin.core.inject

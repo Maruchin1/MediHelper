@@ -3,7 +3,7 @@ package com.example.medihelper.localdata.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.medihelper.localdata.entity.TimeDoseEntity
+import com.example.medihelper.data.local.model.TimeDoseEntity
 
 @Dao
 interface TimeDoseDao {

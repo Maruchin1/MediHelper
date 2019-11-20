@@ -11,7 +11,7 @@ import com.example.medihelper.custom.AppFullScreenDialog
 import com.example.medihelper.custom.bind
 import com.example.medihelper.custom.showShortSnackbar
 import com.example.medihelper.databinding.FragmentPatronConnectBinding
-import com.example.medihelper.mainapp.MainActivity
+import com.example.medihelper.presentation.feature.MainActivity
 import com.example.medihelper.service.LoadingScreenService
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_patron_connect.*

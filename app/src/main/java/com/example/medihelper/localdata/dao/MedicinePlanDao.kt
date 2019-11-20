@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.medihelper.localdata.entity.MedicinePlanEntity
+import com.example.medihelper.data.local.model.MedicinePlanEntity
 import com.example.medihelper.localdata.pojo.MedicinePlanEditData
 import com.example.medihelper.localdata.pojo.MedicinePlanHistory
 import com.example.medihelper.localdata.pojo.MedicinePlanItem

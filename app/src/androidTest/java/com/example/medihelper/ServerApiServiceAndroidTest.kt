@@ -2,7 +2,7 @@ package com.example.medihelper
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.WorkManager
-import com.example.medihelper.localdata.AppDatabase
+import com.example.medihelper.data.local.RoomDatabase
 import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.AppSharedPrefImpl
 import com.example.medihelper.remotedata.api.AuthenticationApi
@@ -35,8 +35,8 @@ class ServerApiServiceAndroidTest : AppAndroidTest() {
         }
         single<AuthenticationApi> { get<Retrofit>().create(AuthenticationApi::class.java) }
         single<RegisteredUserApi> { get<Retrofit>().create(RegisteredUserApi::class.java) }
-        single { get<AppDatabase>().personDao() }
-        single { get<AppDatabase>().medicineDao() }
+        single { get<RoomDatabase>().personDao() }
+        single { get<RoomDatabase>().medicineDao() }
         single { WorkManager.getInstance(androidContext()) }
         single<ServerApiService> { ServerApiServiceImpl(get(), get(), get(), get(), get(), get()) }
     }

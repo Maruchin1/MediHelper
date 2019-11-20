@@ -3,10 +3,10 @@ package com.example.medihelper.service
 import androidx.lifecycle.LiveData
 import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.localdata.DeletedHistory
-import com.example.medihelper.utility.MedicineScheduler
+import com.example.medihelper.domain.utils.MedicineScheduler
 import com.example.medihelper.localdata.dao.MedicinePlanDao
 import com.example.medihelper.localdata.dao.PlannedMedicineDao
-import com.example.medihelper.localdata.entity.PlannedMedicineEntity
+import com.example.medihelper.data.local.model.PlannedMedicineEntity
 import com.example.medihelper.localdata.pojo.PlannedMedicineAlarmData
 import com.example.medihelper.localdata.pojo.PlannedMedicineDetails
 import com.example.medihelper.localdata.pojo.PlannedMedicineItem
@@ -36,22 +36,22 @@ class PlannedMedicineServiceImpl(
 ) : PlannedMedicineService {
 
     override suspend fun addForMedicinePlan(medicinePlanId: Int) {
-        val medicinePlanEditData = medicinePlanDao.getEditDataById(medicinePlanId)
-        val plannedMedicineList = medicineScheduler.getPlannedMedicinesForMedicinePlan(medicinePlanEditData)
-        plannedMedicineDao.insert(plannedMedicineList)
-
-        reminderUtil.updateReminders()
+//        val medicinePlanEditData = medicinePlanDao.getEditDataById(medicinePlanId)
+//        val plannedMedicineList = medicineScheduler.getPlannedMedicinesForMedicinePlan(medicinePlanEditData)
+//        plannedMedicineDao.insert(plannedMedicineList)
+//
+//        reminderUtil.updateReminders()
     }
 
     override suspend fun updateForMedicinePlan(medicinePlanId: Int) {
-        val medicinePlanEditData = medicinePlanDao.getEditDataById(medicinePlanId)
-        val currDate = dateTimeService.getCurrDate()
-        plannedMedicineDao.deleteFromDateByMedicinePlanID(currDate, medicinePlanEditData.medicinePlanId)
-        val medicinePlanFromNow = medicinePlanEditData.copy(startDate = currDate)
-        val plannedMedicineList = medicineScheduler.getPlannedMedicinesForMedicinePlan(medicinePlanFromNow)
-        plannedMedicineDao.insert(plannedMedicineList)
-
-        reminderUtil.updateReminders()
+//        val medicinePlanEditData = medicinePlanDao.getEditDataById(medicinePlanId)
+//        val currDate = dateTimeService.getCurrDate()
+//        plannedMedicineDao.deleteFromDateByMedicinePlanID(currDate, medicinePlanEditData.medicinePlanId)
+//        val medicinePlanFromNow = medicinePlanEditData.copy(startDate = currDate)
+//        val plannedMedicineList = medicineScheduler.getPlannedMedicinesForMedicinePlan(medicinePlanFromNow)
+//        plannedMedicineDao.insert(plannedMedicineList)
+//
+//        reminderUtil.updateReminders()
     }
 
     override suspend fun updateAllStatus() {

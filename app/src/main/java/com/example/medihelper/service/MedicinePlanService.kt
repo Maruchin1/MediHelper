@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import com.example.medihelper.localdata.DeletedHistory
 import com.example.medihelper.localdata.dao.MedicinePlanDao
 import com.example.medihelper.localdata.dao.TimeDoseDao
-import com.example.medihelper.localdata.entity.MedicinePlanEntity
-import com.example.medihelper.localdata.entity.TimeDoseEntity
+import com.example.medihelper.data.local.model.MedicinePlanEntity
+import com.example.medihelper.data.local.model.TimeDoseEntity
 import com.example.medihelper.localdata.pojo.MedicinePlanEditData
 import com.example.medihelper.localdata.pojo.MedicinePlanHistory
 import com.example.medihelper.localdata.pojo.MedicinePlanItem

@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.launcher
+package com.example.medihelper.presentation.feature.launcher
 
 import android.content.Context
 import android.view.Gravity

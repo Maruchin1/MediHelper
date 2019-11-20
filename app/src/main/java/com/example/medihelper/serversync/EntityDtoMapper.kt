@@ -1,10 +1,10 @@
 package com.example.medihelper.serversync
 
+import com.example.medihelper.data.local.model.*
 import com.example.medihelper.domain.entities.*
 import com.example.medihelper.localdata.dao.MedicineDao
 import com.example.medihelper.localdata.dao.MedicinePlanDao
 import com.example.medihelper.localdata.dao.PersonDao
-import com.example.medihelper.localdata.entity.*
 import com.example.medihelper.remotedata.dto.*
 
 class EntityDtoMapper(
@@ -55,23 +55,24 @@ class EntityDtoMapper(
         imageName = medicineEntity.imageName
     )
 
-    suspend fun medicinePlanDtoToEntity(medicinePlanDto: MedicinePlanDto) = MedicinePlanEntity(
-        medicinePlanId = medicinePlanDto.medicinePlanLocalId ?: 0,
-        medicinePlanRemoteId = medicinePlanDto.medicinePlanRemoteId,
-        medicineId = medicineDao.getIdByRemoteId(medicinePlanDto.medicineRemoteId)!!,
-        personId = if (medicinePlanDto.personRemoteId != null) {
-            personDao.getIdByRemoteId(medicinePlanDto.personRemoteId)!!
-        } else {
-            personDao.getMainPersonId()!!
-        },
-        startDate = AppDate(medicinePlanDto.startDate),
-        endDate = medicinePlanDto.endDate?.let { AppDate(it) },
-        durationType = DurationType.valueOf(medicinePlanDto.durationType),
-        daysOfWeek = medicinePlanDto.daysOfWeek,
-        intervalOfDays = medicinePlanDto.intervalOfDays,
-        daysType = medicinePlanDto.daysType?.let { DaysType.valueOf(it) },
-        synchronizedWithServer = true
-    )
+    suspend fun medicinePlanDtoToEntity(medicinePlanDto: MedicinePlanDto) =
+        MedicinePlanEntity(
+            medicinePlanId = medicinePlanDto.medicinePlanLocalId ?: 0,
+            medicinePlanRemoteId = medicinePlanDto.medicinePlanRemoteId,
+            medicineId = medicineDao.getIdByRemoteId(medicinePlanDto.medicineRemoteId)!!,
+            personId = if (medicinePlanDto.personRemoteId != null) {
+                personDao.getIdByRemoteId(medicinePlanDto.personRemoteId)!!
+            } else {
+                personDao.getMainPersonId()!!
+            },
+            startDate = AppDate(medicinePlanDto.startDate),
+            endDate = medicinePlanDto.endDate?.let { AppDate(it) },
+            durationType = DurationType.valueOf(medicinePlanDto.durationType),
+            daysOfWeek = medicinePlanDto.daysOfWeek,
+            intervalOfDays = medicinePlanDto.intervalOfDays,
+            daysType = medicinePlanDto.daysType?.let { DaysType.valueOf(it) },
+            synchronizedWithServer = true
+        )
 
     suspend fun medicinePlanEntityToDto(medicinePlanEntity: MedicinePlanEntity, timeDoseDtoList: List<TimeDoseDto>) = MedicinePlanDto(
         medicinePlanLocalId = medicinePlanEntity.medicinePlanId,
@@ -87,27 +88,29 @@ class EntityDtoMapper(
         timeDoseList = timeDoseDtoList
     )
 
-    suspend fun timeDoseDtoToEntity(timeDoseDto: TimeDoseDto, medicinePlanId: Int) = TimeDoseEntity(
-        time = AppTime(timeDoseDto.time),
-        doseSize = timeDoseDto.doseSize,
-        medicinePlanId = medicinePlanId
-    )
+    suspend fun timeDoseDtoToEntity(timeDoseDto: TimeDoseDto, medicinePlanId: Int) =
+        TimeDoseEntity(
+            time = AppTime(timeDoseDto.time),
+            doseSize = timeDoseDto.doseSize,
+            medicinePlanId = medicinePlanId
+        )
 
     suspend fun timeDoseEntityToDto(timeDoseEntity: TimeDoseEntity) = TimeDoseDto(
         time = timeDoseEntity.time.jsonFormatString,
         doseSize = timeDoseEntity.doseSize
     )
 
-    suspend fun plannedMedicineDtoToEntity(plannedMedicineDto: PlannedMedicineDto) = PlannedMedicineEntity(
-        plannedMedicineId = plannedMedicineDto.plannedMedicineLocalId ?: 0,
-        plannedMedicineRemoteId = plannedMedicineDto.plannedMedicineRemoteId,
-        medicinePlanId = medicinePlanDao.getIdByRemoteId(plannedMedicineDto.medicinePlanRemoteId)!!,
-        plannedDate = AppDate(plannedMedicineDto.plannedDate),
-        plannedTime = AppTime(plannedMedicineDto.plannedTime),
-        plannedDoseSize = plannedMedicineDto.plannedDoseSize,
-        statusOfTaking = StatusOfTaking.valueOf(plannedMedicineDto.statusOfTaking),
-        synchronizedWithServer = true
-    )
+    suspend fun plannedMedicineDtoToEntity(plannedMedicineDto: PlannedMedicineDto) =
+        PlannedMedicineEntity(
+            plannedMedicineId = plannedMedicineDto.plannedMedicineLocalId ?: 0,
+            plannedMedicineRemoteId = plannedMedicineDto.plannedMedicineRemoteId,
+            medicinePlanId = medicinePlanDao.getIdByRemoteId(plannedMedicineDto.medicinePlanRemoteId)!!,
+            plannedDate = AppDate(plannedMedicineDto.plannedDate),
+            plannedTime = AppTime(plannedMedicineDto.plannedTime),
+            plannedDoseSize = plannedMedicineDto.plannedDoseSize,
+            statusOfTaking = StatusOfTaking.valueOf(plannedMedicineDto.statusOfTaking),
+            synchronizedWithServer = true
+        )
 
     suspend fun plannedMedicineEntityToDto(plannedMedicineEntity: PlannedMedicineEntity) = PlannedMedicineDto(
         plannedMedicineLocalId = plannedMedicineEntity.plannedMedicineId,

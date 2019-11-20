@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.medihelper.localdata.entity.PersonEntity
+import com.example.medihelper.data.local.model.PersonEntity
 import com.example.medihelper.localdata.pojo.PersonEditData
 import com.example.medihelper.localdata.pojo.PersonItem
 import com.example.medihelper.localdata.pojo.PersonOptionsData

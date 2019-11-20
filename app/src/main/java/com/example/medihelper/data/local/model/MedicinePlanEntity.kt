@@ -1,10 +1,7 @@
-package com.example.medihelper.localdata.entity
+package com.example.medihelper.data.local.model
 
 import androidx.room.*
-import com.example.medihelper.domain.entities.AppDate
-import com.example.medihelper.domain.entities.DaysType
-import com.example.medihelper.domain.entities.DurationType
-import com.example.medihelper.localdata.type.DaysOfWeek
+import com.example.medihelper.domain.entities.*
 
 @Entity(
     tableName = "medicines_plans",
@@ -58,4 +55,18 @@ data class MedicinePlanEntity(
 
     @ColumnInfo(name = "synchronized_with_server")
     var synchronizedWithServer: Boolean = false
-)
+) {
+    constructor(medicinePlan: MedicinePlan, remoteId: Long?) : this(
+        medicinePlanId = medicinePlan.medicinePlanId,
+        medicinePlanRemoteId = remoteId,
+        medicineId = medicinePlan.medicineId,
+        personId = medicinePlan.personId,
+        durationType = medicinePlan.durationType,
+        startDate = medicinePlan.startDate,
+        endDate = medicinePlan.endDate,
+        daysType = medicinePlan.daysType,
+        daysOfWeek = medicinePlan.daysOfWeek,
+        intervalOfDays = medicinePlan.intervalOfDays,
+        synchronizedWithServer = false
+    )
+}

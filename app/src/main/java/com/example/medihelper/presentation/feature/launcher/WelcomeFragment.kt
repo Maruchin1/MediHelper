@@ -1,17 +1,12 @@
-package com.example.medihelper.mainapp.launcher
+package com.example.medihelper.presentation.feature.launcher
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.transition.Fade
-import androidx.transition.Slide
-import androidx.transition.TransitionInflater
-import androidx.transition.TransitionSet
 import com.example.medihelper.R
 import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentWelcomeBinding

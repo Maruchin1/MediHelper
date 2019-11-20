@@ -1,4 +1,4 @@
-package com.example.medihelper.localdata.entity
+package com.example.medihelper.data.local.model
 
 import androidx.room.*
 import com.example.medihelper.R
@@ -22,7 +22,7 @@ data class MedicineEntity(
     var medicineUnit: String,
 
     @ColumnInfo(name = "expire_date")
-    var expireDate: AppExpireDate? = null,
+    var expireDate: AppExpireDate,
 
     @ColumnInfo(name = "package_size")
     var packageSize: Float? = null,
@@ -38,4 +38,27 @@ data class MedicineEntity(
 
     @ColumnInfo(name = "synchronized_with_server")
     var synchronizedWithServer: Boolean = false
-)
+) {
+    constructor(medicine: Medicine, medicineRemoteId: Long?) : this(
+        medicineId = medicine.medicineId,
+        medicineRemoteId = medicineRemoteId,
+        medicineName = medicine.name,
+        medicineUnit = medicine.unit,
+        expireDate = medicine.expireDate,
+        packageSize = medicine.packageSize,
+        currState = medicine.currState,
+        additionalInfo = medicine.additionalInfo,
+        imageName = medicine.image?.name
+    )
+
+    fun toMedicine() = Medicine(
+        medicineId = medicineId,
+        name = medicineName,
+        unit = medicineUnit,
+        expireDate = expireDate,
+        packageSize = packageSize,
+        currState = currState,
+        additionalInfo = additionalInfo,
+        image =
+    )
+}

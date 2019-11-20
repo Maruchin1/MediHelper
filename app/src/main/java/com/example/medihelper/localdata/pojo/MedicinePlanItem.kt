@@ -5,7 +5,6 @@ import androidx.room.Embedded
 import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.domain.entities.DaysType
 import com.example.medihelper.domain.entities.DurationType
-import com.example.medihelper.localdata.type.DaysOfWeek
 
 
 data class MedicinePlanItem(

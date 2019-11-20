@@ -1,10 +1,11 @@
-package com.example.medihelper.localdata
+package com.example.medihelper.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.medihelper.localdata.dao.*
-import com.example.medihelper.localdata.entity.*
+import com.example.medihelper.data.local.dao.*
+import com.example.medihelper.data.local.model.*
+import com.example.medihelper.localdata.Converter
 
 @Database(
     entities = [
@@ -18,7 +19,7 @@ import com.example.medihelper.localdata.entity.*
     exportSchema = false
 )
 @TypeConverters(Converter::class)
-abstract class AppDatabase : RoomDatabase() {
+abstract class RoomDatabase : RoomDatabase() {
 
     abstract fun medicineDao(): MedicineDao
     abstract fun medicinePlanDao(): MedicinePlanDao

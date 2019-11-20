@@ -7,7 +7,7 @@ import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.DeletedHistory
 import com.example.medihelper.localdata.MedicineImageFiles
 import com.example.medihelper.localdata.dao.MedicineDao
-import com.example.medihelper.localdata.entity.MedicineEntity
+import com.example.medihelper.data.local.model.MedicineEntity
 import com.example.medihelper.localdata.pojo.MedicineDetails
 import com.example.medihelper.localdata.pojo.MedicineEditData
 import com.example.medihelper.localdata.pojo.MedicineItem

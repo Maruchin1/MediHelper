@@ -1,4 +1,4 @@
-package com.example.medihelper.mainapp.launcher
+package com.example.medihelper.presentation.feature.launcher
 
 import android.os.Bundle
 import android.os.Handler
@@ -11,8 +11,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
-import com.example.medihelper.mainapp.LauncherActivity
-import com.example.medihelper.service.PersonService
+import com.example.medihelper.domain.usecases.PersonUseCases
 import kotlinx.android.synthetic.main.fragment_logo.*
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
@@ -24,7 +23,7 @@ class LogoFragment : Fragment() {
         private const val ANIM_TIME = 1000L
     }
 
-    private val personService: PersonService by inject()
+    private val personUseCases: PersonUseCases by inject()
     private val launcherActivity: LauncherActivity by lazy { requireActivity() as LauncherActivity }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -35,7 +34,7 @@ class LogoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         runBlocking {
-            if (!personService.hasMainPerson()) {
+            if (!personUseCases.isMainPersonExists()) {
                 Handler().postDelayed({
                     launcherActivity.setLightStatusBar()
                     circularHideBackground()
