@@ -32,7 +32,7 @@ class ServerConnectionUseCases(
         return appUserRepo.registerNewUser(email, password)
     }
 
-    suspend fun loginUser(email: String, password: String): ApiResponse {
+    suspend fun loginUser(email: String, password: String): Pair<ApiResponse, Boolean?> {
         return appUserRepo.loginUser(email, password)
     }
 

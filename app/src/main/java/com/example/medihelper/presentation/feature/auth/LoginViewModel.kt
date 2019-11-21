@@ -37,7 +37,8 @@ class LoginViewModel(
                 email = email.value!!,
                 password = password.value!!
             )
-            val errorString = mapApiResponseToErrString(apiResponse)
+            //todo osbłużyć kiedy jest konflikt danych z serwerem
+            val errorString = mapApiResponseToErrString(apiResponse.first)
             if (errorString == null) {
                 //todo odpalanie synchronizacji raczej do data
 //                serverApiService.enqueueServerSync()

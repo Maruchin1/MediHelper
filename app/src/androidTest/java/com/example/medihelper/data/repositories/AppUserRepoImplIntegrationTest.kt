@@ -1,17 +1,17 @@
-package com.example.medihelper
+package com.example.medihelper.data.repositories
 
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.work.WorkManager
-import com.example.medihelper.data.local.RoomDatabase
-import com.example.medihelper.localdata.AppSharedPref
-import com.example.medihelper.localdata.AppSharedPrefImpl
+import com.example.medihelper.AppAndroidTest
+import com.example.medihelper.data.di.retrofitTestModule
+import com.example.medihelper.data.local.DeletedHistory
+import com.example.medihelper.data.local.SharedPref
+import com.example.medihelper.data.remote.ApiResponseMapper
 import com.example.medihelper.data.remote.api.AuthenticationApi
 import com.example.medihelper.data.remote.api.RegisteredUserApi
 import com.example.medihelper.data.remote.dto.LoginResponseDto
-import com.example.medihelper.service.ApiResponse
-import com.example.medihelper.service.AppMode
-import com.example.medihelper.service.ServerApiService
-import com.example.medihelper.service.ServerApiServiceImpl
+import com.example.medihelper.domain.entities.ApiResponse
+import com.example.medihelper.domain.entities.AppMode
+import com.example.medihelper.domain.repositories.AppUserRepo
 import com.google.common.truth.Truth
 import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
@@ -23,26 +23,42 @@ import org.junit.Test
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.core.inject
 import org.koin.dsl.module
-import org.koin.test.inject
 import retrofit2.Retrofit
 
-class ServerApiServiceAndroidTest : AppAndroidTest() {
+class AppUserRepoImplIntegrationTest : AppAndroidTest() {
 
     private val testModule = module {
-        single<AppSharedPref> {
-            AppSharedPrefImpl(androidContext())
+        single {
+            SharedPref(androidContext())
         }
-        single<AuthenticationApi> { get<Retrofit>().create(AuthenticationApi::class.java) }
-        single<RegisteredUserApi> { get<Retrofit>().create(RegisteredUserApi::class.java) }
-        single { get<RoomDatabase>().personDao() }
-        single { get<RoomDatabase>().medicineDao() }
-        single { WorkManager.getInstance(androidContext()) }
-        single<ServerApiService> { ServerApiServiceImpl(get(), get(), get(), get(), get(), get()) }
+        single {
+            get<Retrofit>().create(AuthenticationApi::class.java)
+        }
+        single {
+            get<Retrofit>().create(RegisteredUserApi::class.java)
+        }
+        single {
+            ApiResponseMapper()
+        }
+        single {
+            DeletedHistory(androidContext())
+        }
+        single {
+            AppUserRepoImpl(
+                context = androidContext(),
+                sharedPref = get(),
+                authenticationApi = get(),
+                registeredUserApi = get(),
+                apiResponseMapper = get(),
+                deletedHistory = get()
+            )
+        }
     }
 
     private val mockWebServer = MockWebServer()
-    private val serverApiService: ServerApiService by inject()
+    private val appUserRepo: AppUserRepo by inject()
 
     @Before
     fun before() {
@@ -50,7 +66,7 @@ class ServerApiServiceAndroidTest : AppAndroidTest() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         startKoin {
             androidContext(context)
-            modules(listOf(testRoomModule, testRetrofitModule, testModule))
+            modules(listOf(retrofitTestModule, testModule))
         }
     }
 
@@ -62,7 +78,7 @@ class ServerApiServiceAndroidTest : AppAndroidTest() {
 
     @Test
     fun getAppMode_NoTokenAndNoEmail_ReturnOffline() {
-        val appMode = serverApiService.getAppMode()
+        val appMode = appUserRepo.getAppMode()
         Truth.assertThat(appMode).isEqualTo(AppMode.OFFLINE)
     }
 
@@ -76,15 +92,15 @@ class ServerApiServiceAndroidTest : AppAndroidTest() {
         mockWebServer.enqueue(response)
 
         val returnedPair = runBlocking {
-            serverApiService.loginUser(email = "test@email.com", password = "abc")
+            appUserRepo.loginUser(email = "test@email.com", password = "abc")
         }
-        val isDataAvailable = returnedPair.first
-        val apiResponse = returnedPair.second
+        val apiResponse = returnedPair.first
+        val isDataAvailable = returnedPair.second
 
         Truth.assertThat(apiResponse).isEqualTo(ApiResponse.OK)
         Truth.assertThat(isDataAvailable).isFalse()
 
-        val appMode = serverApiService.getAppMode()
+        val appMode = appUserRepo.getAppMode()
         Truth.assertThat(appMode).isEqualTo(AppMode.LOGGED)
     }
 }
