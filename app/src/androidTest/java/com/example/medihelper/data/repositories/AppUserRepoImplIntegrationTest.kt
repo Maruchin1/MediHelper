@@ -53,7 +53,7 @@ class AppUserRepoImplIntegrationTest : AppAndroidTest() {
                 registeredUserApi = get(),
                 apiResponseMapper = get(),
                 deletedHistory = get()
-            )
+            ) as AppUserRepo
         }
     }
 
