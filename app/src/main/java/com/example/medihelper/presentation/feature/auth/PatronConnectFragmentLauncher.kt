@@ -9,12 +9,12 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
-import com.example.medihelper.custom.bind
-import com.example.medihelper.custom.showShortSnackbar
 import com.example.medihelper.databinding.FragmentLauncherPatronConnectBinding
 import com.example.medihelper.presentation.feature.launcher.LauncherActivity
 import com.example.medihelper.presentation.feature.launcher.LauncherOptionFragment
-import com.example.medihelper.service.LoadingScreenService
+import com.example.medihelper.presentation.framework.bind
+import com.example.medihelper.presentation.framework.showShortSnackbar
+import com.example.medihelper.presentation.utils.LoadingScreen
 import com.google.android.material.textfield.TextInputEditText
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.fragment_launcher_patron_connect.*
@@ -23,7 +23,7 @@ import org.koin.android.ext.android.inject
 class PatronConnectFragmentLauncher : LauncherOptionFragment() {
 
     private val viewModel: PatronConnectViewModel by inject()
-    private val loadingScreenService: LoadingScreenService by inject()
+    private val loadingScreen: LoadingScreen by inject()
     private val launcherActivity: LauncherActivity
         get() = requireActivity() as LauncherActivity
 
@@ -63,9 +63,9 @@ class PatronConnectFragmentLauncher : LauncherOptionFragment() {
         })
         viewModel.loadingInProgress.observe(viewLifecycleOwner, Observer { inProgress ->
             if (inProgress == true) {
-                loadingScreenService.showLoadingScreen(childFragmentManager)
+                loadingScreen.showLoadingScreen(childFragmentManager)
             } else {
-                loadingScreenService.closeLoadingScreen()
+                loadingScreen.closeLoadingScreen()
             }
         })
         viewModel.errorPatronConnect.observe(viewLifecycleOwner, Observer { errorMessage ->

@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppBottomSheetDialog
-import com.example.medihelper.custom.bind
+import com.example.medihelper.presentation.framework.AppBottomSheetDialog
 import com.example.medihelper.databinding.DialogNewPasswordBinding
-import com.example.medihelper.presentation.feature.options.NewPasswordViewModel
+import com.example.medihelper.presentation.framework.bind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewPasswordDialog : AppBottomSheetDialog() {

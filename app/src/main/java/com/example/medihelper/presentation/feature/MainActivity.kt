@@ -10,8 +10,8 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
+import com.example.medihelper.domain.usecases.ServerConnectionUseCases
 import com.example.medihelper.presentation.feature.launcher.LauncherActivity
-import com.example.medihelper.service.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
@@ -19,7 +19,7 @@ import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
 
-    private val serverApiService: ServerApiService by inject()
+    private val serverConnectionUseCases: ServerConnectionUseCases by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +29,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        serverApiService.enqueueServerSync()
+        serverConnectionUseCases.enqueueServerSync()
     }
 
     override fun onPause() {
         super.onPause()
-        serverApiService.enqueueServerSync()
+        serverConnectionUseCases.enqueueServerSync()
     }
 
     fun setMainColor(colorResID: Int) {

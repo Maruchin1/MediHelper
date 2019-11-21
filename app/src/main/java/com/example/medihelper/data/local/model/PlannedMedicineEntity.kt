@@ -1,7 +1,6 @@
 package com.example.medihelper.data.local.model
 
 import androidx.room.*
-import com.example.medihelper.data.local.model.MedicinePlanEntity
 import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.domain.entities.AppTime
 import com.example.medihelper.domain.entities.PlannedMedicine
@@ -20,13 +19,13 @@ import com.example.medihelper.domain.entities.StatusOfTaking
 data class PlannedMedicineEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "planned_medicine_id")
-    val plannedMedicineId: Int = 0,
+    val plannedMedicineId: Int,
 
     @ColumnInfo(name = "planned_medicine_remote_id")
-    var plannedMedicineRemoteId: Long? = null,
+    var plannedMedicineRemoteId: Long?,
 
     @ColumnInfo(name = "medicine_plan_id")
-    val medicinePlanId: Int,
+    var medicinePlanId: Int,
 
     @ColumnInfo(name = "planned_date")
     var plannedDate: AppDate,
@@ -38,21 +37,30 @@ data class PlannedMedicineEntity(
     var plannedDoseSize: Float,
 
     @ColumnInfo(name = "status_of_taking")
-    var statusOfTaking: StatusOfTaking = StatusOfTaking.WAITING,
+    var statusOfTaking: StatusOfTaking,
 
-    @ColumnInfo(name = "synchronized_with_server")
-    var synchronizedWithServer: Boolean = false
+    @ColumnInfo(name = "planned_medicine_synchronized")
+    var plannedMedicineSynchronized: Boolean
 ) {
-    constructor(plannedMedicine: PlannedMedicine, remoteId: Long?) : this(
-        plannedMedicineId = plannedMedicine.plannedMedicineId,
-        plannedMedicineRemoteId = remoteId,
+    constructor(plannedMedicine: PlannedMedicine) : this(
+        plannedMedicineId = 0,
+        plannedMedicineRemoteId = null,
         medicinePlanId = plannedMedicine.medicinePlanId,
         plannedDate = plannedMedicine.plannedDate,
         plannedTime = plannedMedicine.plannedTime,
         plannedDoseSize = plannedMedicine.plannedDoseSize,
         statusOfTaking = plannedMedicine.statusOfTaking,
-        synchronizedWithServer = false
+        plannedMedicineSynchronized = false
     )
+
+    fun update(plannedMedicine: PlannedMedicine) {
+        medicinePlanId = plannedMedicine.medicinePlanId
+        plannedDate = plannedMedicine.plannedDate
+        plannedTime = plannedMedicine.plannedTime
+        plannedDoseSize = plannedMedicine.plannedDoseSize
+        statusOfTaking = plannedMedicine.statusOfTaking
+        plannedMedicineSynchronized = false
+    }
 
     fun toPlannedMedicine() = PlannedMedicine(
         plannedMedicineId = plannedMedicineId,

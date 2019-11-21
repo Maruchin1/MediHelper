@@ -2,12 +2,13 @@ package com.example.medihelper.domain.repositories
 
 import androidx.lifecycle.LiveData
 import com.example.medihelper.domain.entities.ApiResponse
+import com.example.medihelper.domain.entities.AppMode
 
 interface AppUserRepo {
-    fun getAuthToken(): String?
-    fun getUserEmail(): String?
-    fun getAuthTokenLive(): LiveData<String>
+    fun getAppMode(): AppMode
+    fun getAppModeLive(): LiveData<AppMode>
     fun getUserEmailLive(): LiveData<String>
+    fun enqueueServerSync()
     suspend fun registerNewUser(email: String, password: String): ApiResponse
     suspend fun loginUser(email: String, password: String): ApiResponse
     suspend fun connectWithPatron(connectionKey: String): ApiResponse

@@ -1,7 +1,7 @@
 package com.example.medihelper.presentation.feature.options
 
 import androidx.lifecycle.*
-import com.example.medihelper.custom.ActionLiveData
+import com.example.medihelper.presentation.framework.ActionLiveData
 import com.example.medihelper.domain.entities.ApiResponse
 import com.example.medihelper.domain.entities.AppMode
 import com.example.medihelper.domain.usecases.PersonUseCases

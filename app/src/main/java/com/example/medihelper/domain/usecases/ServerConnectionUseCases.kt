@@ -17,26 +17,15 @@ class ServerConnectionUseCases(
     fun getConnectedProfileNameLive() = Transformations.map(personRepo.getMainLive()) { it.name }
 
     fun getAppMode(): AppMode {
-        val authToken = appUserRepo.getAuthToken() ?: ""
-        val email = appUserRepo.getUserEmail() ?: ""
-        return getAppMode(authToken, email)
+        return appUserRepo.getAppMode()
     }
 
     fun getAppModeLive(): LiveData<AppMode> {
-        val authTokenLive = appUserRepo.getAuthTokenLive()
-        val emailLive = appUserRepo.getUserEmailLive()
-        var authToken = ""
-        var email = ""
-        val appModeLive = MediatorLiveData<AppMode>()
-        appModeLive.addSource(authTokenLive) { newAuthToken ->
-            authToken = newAuthToken
-            appModeLive.postValue(getAppMode(authToken, email))
-        }
-        appModeLive.addSource(emailLive) { newEmail ->
-            email = newEmail
-            appModeLive.postValue(getAppMode(authToken, email))
-        }
-        return appModeLive
+        return appUserRepo.getAppModeLive()
+    }
+
+    fun enqueueServerSync() {
+        appUserRepo.enqueueServerSync()
     }
 
     suspend fun registerNewUser(email: String, password: String): ApiResponse {
@@ -64,13 +53,5 @@ class ServerConnectionUseCases(
 
     suspend fun cancelPatronConnection() {
         appUserRepo.cancelPatronConnection()
-    }
-
-    private fun getAppMode(authToken: String, email: String): AppMode {
-        return when {
-            authToken.isNotEmpty() && email.isNotEmpty() -> AppMode.LOGGED
-            authToken.isNotEmpty() && email.isEmpty() -> AppMode.CONNECTED
-            else -> AppMode.OFFLINE
-        }
     }
 }

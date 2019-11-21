@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
-import com.example.medihelper.custom.bind
-import com.example.medihelper.custom.showShortSnackbar
 import com.example.medihelper.databinding.FragmentOptionsBinding
 import com.example.medihelper.presentation.feature.MainActivity
 import com.example.medihelper.presentation.dialogs.ConfirmDialog
-import com.example.medihelper.service.LoadingScreenService
+import com.example.medihelper.presentation.framework.bind
+import com.example.medihelper.presentation.framework.showShortSnackbar
+import com.example.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_options.*
 import org.koin.android.ext.android.inject
 
@@ -21,16 +21,16 @@ class OptionsFragment : Fragment() {
     private val TAG = "OptionsFragment"
 
     private val viewModel: OptionsViewModel by inject()
-    private val loadingScreenService: LoadingScreenService by inject()
+    private val loadingScreen: LoadingScreen by inject()
     private val directions by lazy { OptionsFragmentDirections }
     private val mainActivity: MainActivity
         get() = requireActivity() as MainActivity
 
-    fun onClickLogin() = findNavController().navigate(OptionsFragmentDirections.toLoginFragment())
+    fun onClickLogin() = findNavController().navigate(directions.toLoginFragment())
 
-    fun onClickRegister() = findNavController().navigate(OptionsFragmentDirections.toRegisterFragment())
+    fun onClickRegister() = findNavController().navigate(directions.toRegisterFragment())
 
-    fun onClickConnectWithPatron() = findNavController().navigate(OptionsFragmentDirections.toPatronConnectFragment())
+    fun onClickConnectWithPatron() = findNavController().navigate(directions.toPatronConnectFragment())
 
     fun onClickChangePassword() = NewPasswordDialog().apply {
         setNewPasswordSelectedListener { newPassword ->
@@ -70,9 +70,9 @@ class OptionsFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.loadingInProgress.observe(viewLifecycleOwner, Observer { inProgress ->
             if (inProgress) {
-                loadingScreenService.showLoadingScreen(childFragmentManager)
+                loadingScreen.showLoadingScreen(childFragmentManager)
             } else {
-                loadingScreenService.closeLoadingScreen()
+                loadingScreen.closeLoadingScreen()
             }
         })
         viewModel.errorChangePassword.observe(viewLifecycleOwner, Observer { errorMessage ->

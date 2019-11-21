@@ -1,7 +1,7 @@
 package com.example.medihelper.presentation.feature.personsprofiles
 
 import androidx.lifecycle.*
-import com.example.medihelper.custom.FieldMutableLiveData
+import com.example.medihelper.presentation.framework.FieldMutableLiveData
 import com.example.medihelper.domain.entities.PersonInputData
 import com.example.medihelper.domain.usecases.PersonUseCases
 import com.example.medihelper.presentation.model.PersonColorCheckboxData

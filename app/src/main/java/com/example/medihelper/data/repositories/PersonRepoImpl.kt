@@ -2,6 +2,7 @@ package com.example.medihelper.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.example.medihelper.data.local.DeletedHistory
 import com.example.medihelper.data.local.SharedPref
 import com.example.medihelper.data.local.dao.PersonDao
 import com.example.medihelper.data.local.model.PersonEntity
@@ -10,22 +11,27 @@ import com.example.medihelper.domain.repositories.PersonRepo
 
 class PersonRepoImpl(
     private val personDao: PersonDao,
-    private val sharedPref: SharedPref
+    private val sharedPref: SharedPref,
+    private val deletedHistory: DeletedHistory
 ) : PersonRepo {
 
 
     override suspend fun insert(person: Person) {
-        val newEntity = PersonEntity(person = person, personRemoteId = null)
+        val newEntity = PersonEntity(person = person)
         personDao.insert(newEntity)
     }
 
     override suspend fun update(person: Person) {
-        val existingPersonRemoteId = personDao.getRemoteIdById(person.personId)
-        val updatedEntity = PersonEntity(person = person, personRemoteId = existingPersonRemoteId)
-        personDao.update(updatedEntity)
+        val existingEntity = personDao.getById(person.personId)
+        existingEntity.update(person)
+        personDao.update(existingEntity)
     }
 
     override suspend fun deleteById(id: Int) {
+        val remoteId = personDao.getRemoteIdById(id)
+        if (remoteId != null) {
+            deletedHistory.addToPersonHistory(remoteId)
+        }
         personDao.deleteById(id)
     }
 

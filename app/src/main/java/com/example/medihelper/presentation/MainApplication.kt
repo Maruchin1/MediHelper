@@ -2,52 +2,60 @@ package com.example.medihelper.presentation
 
 
 import android.app.Application
-import com.example.medihelper.*
-import com.example.medihelper.localdata.AppSharedPref
-import com.example.medihelper.localdata.AppSharedPrefImpl
-import com.example.medihelper.service.*
+import com.example.medihelper.data.di.*
+import com.example.medihelper.domain.entities.AppMode
+import com.example.medihelper.domain.usecases.ServerConnectionUseCases
+import com.example.medihelper.presentation.di.domainUtilsModule
+import com.example.medihelper.presentation.di.useCasesModule
+import com.example.medihelper.presentation.di.utilsModule
+import com.example.medihelper.presentation.di.viewModelModule
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
+import org.koin.core.context.unloadKoinModules
+import org.koin.core.module.Module
 
 
 class MainApplication : Application() {
 
-    private val initialDataService: InitialDataService by inject()
-    private val serverApiService: ServerApiService by inject()
+    private val serverConnectionUseCases: ServerConnectionUseCases by inject()
+
+    private val dataModules: List<Module> by lazy {
+        listOf(
+            roomMainModule,
+            retrofitModule,
+            localDataModule,
+            remoteDataModule,
+            syncModule,
+            repositoryModule
+        )
+    }
+    private val presentationModules: List<Module> by lazy {
+        listOf(
+            domainUtilsModule,
+            useCasesModule,
+            utilsModule,
+            viewModelModule
+        )
+    }
 
     override fun onCreate() {
         super.onCreate()
-        val appSharedPref: AppSharedPref = AppSharedPrefImpl(this)
-        val isConnected = appSharedPref.getAuthToken() != null && appSharedPref.getUserEmail() == null
 
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
-            modules(
-                listOf(
-                    if (isConnected) connectedRoomModule else mainRoomModule,
-                    retrofitModule,
-                    localDataModule,
-                    remoteDataModule,
-                    utilModule,
-                    serviceModule,
-                    repoModule,
-                    useCaseModule,
-                    viewModelModule
-                )
-            )
+            modules(dataModules + presentationModules)
         }
         runBlocking {
-            val databaseModule = when (serverApiService.getAppMode()) {
-                AppMode.CONNECTED -> connectedRoomModule
-                else -> mainRoomModule
+            val currAppMode = serverConnectionUseCases.getAppMode()
+            if (currAppMode == AppMode.CONNECTED) {
+                unloadKoinModules(roomMainModule)
+                loadKoinModules(roomConnectedModule)
             }
-            loadKoinModules(databaseModule)
-            initialDataService.checkInitialData()
         }
     }
 }

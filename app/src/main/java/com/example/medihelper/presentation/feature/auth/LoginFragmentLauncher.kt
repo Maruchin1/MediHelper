@@ -7,19 +7,19 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
-import com.example.medihelper.custom.bind
-import com.example.medihelper.custom.showShortSnackbar
 import com.example.medihelper.databinding.FragmentLoginBinding
 import com.example.medihelper.presentation.feature.launcher.LauncherActivity
 import com.example.medihelper.presentation.feature.launcher.LauncherOptionFragment
-import com.example.medihelper.service.LoadingScreenService
+import com.example.medihelper.presentation.framework.bind
+import com.example.medihelper.presentation.framework.showShortSnackbar
+import com.example.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_launcher_login.*
 import org.koin.android.ext.android.inject
 
 class LoginFragmentLauncher : LauncherOptionFragment() {
 
     private val viewModel: LoginViewModel by inject()
-    private val loadingScreenService: LoadingScreenService by inject()
+    private val loadingScreen: LoadingScreen by inject()
     private val directions by lazy { LoginFragmentLauncherDirections }
     private val launcherActivity: LauncherActivity
         get() = requireActivity() as LauncherActivity
@@ -47,9 +47,9 @@ class LoginFragmentLauncher : LauncherOptionFragment() {
     private fun observeViewModel() {
         viewModel.loadingInProcess.observe(viewLifecycleOwner, Observer { inProgress ->
             if (inProgress) {
-                loadingScreenService.showLoadingScreen(childFragmentManager)
+                loadingScreen.showLoadingScreen(childFragmentManager)
             } else {
-                loadingScreenService.closeLoadingScreen()
+                loadingScreen.closeLoadingScreen()
             }
         })
         viewModel.errorLogin.observe(viewLifecycleOwner, Observer { errorMessage ->

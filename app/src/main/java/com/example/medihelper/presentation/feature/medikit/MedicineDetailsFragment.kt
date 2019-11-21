@@ -10,9 +10,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.medihelper.presentation.dialogs.ConfirmDialog
 import com.example.medihelper.R
-import com.example.medihelper.custom.*
 import com.example.medihelper.databinding.FragmentMedicineDetailsBinding
 import com.example.medihelper.presentation.dialogs.SelectFloatNumberDialog
+import com.example.medihelper.presentation.framework.AppFullScreenDialog
+import com.example.medihelper.presentation.framework.RecyclerAdapter
+import com.example.medihelper.presentation.framework.RecyclerItemViewHolder
+import com.example.medihelper.presentation.framework.bind
 import com.example.medihelper.presentation.model.PersonItem
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

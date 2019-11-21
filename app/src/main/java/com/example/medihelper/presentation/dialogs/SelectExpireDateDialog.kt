@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppBottomSheetDialog
+import com.example.medihelper.presentation.framework.AppBottomSheetDialog
 import com.example.medihelper.domain.entities.AppExpireDate
-import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.DialogSelectExpireDateBinding
-import com.example.medihelper.service.DateTimeService
+import com.example.medihelper.domain.usecases.DateTimeUseCases
+import com.example.medihelper.presentation.framework.bind
 import kotlinx.android.synthetic.main.dialog_select_expire_date.*
 import org.koin.android.ext.android.inject
 
@@ -22,7 +22,7 @@ class SelectExpireDateDialog : AppBottomSheetDialog() {
 
     var defaultDate: AppExpireDate? = null
     private var dateSelectedListener: ((date: AppExpireDate) -> Unit)? = null
-    private val dateTimeService: DateTimeService by inject()
+    private val dateTimeService: DateTimeUseCases by inject()
 
     fun onClickConfirm() {
         val selectedDate =

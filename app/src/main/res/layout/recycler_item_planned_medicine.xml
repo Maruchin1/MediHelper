@@ -12,7 +12,7 @@
 
         <variable
             name="displayData"
-            type="com.example.medihelper.localdata.pojo.PlannedMedicineItem" />
+            type="com.example.medihelper.presentation.model.PlannedMedicineItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

@@ -11,8 +11,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
-import com.example.medihelper.custom.RecyclerAdapter
-import com.example.medihelper.custom.RecyclerItemViewHolder
+import com.example.medihelper.presentation.framework.RecyclerAdapter
+import com.example.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicinePlanListBinding
 import com.example.medihelper.domain.entities.MedicinePlanType
 import com.example.medihelper.presentation.dialogs.ConfirmDialog

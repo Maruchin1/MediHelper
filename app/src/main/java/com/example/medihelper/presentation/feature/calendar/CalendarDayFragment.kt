@@ -11,10 +11,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.R
-import com.example.medihelper.custom.RecyclerAdapter
-import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.custom.bind
+import com.example.medihelper.presentation.framework.RecyclerAdapter
+import com.example.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentScheduleDayBinding
+import com.example.medihelper.presentation.framework.bind
 import com.example.medihelper.presentation.model.PlannedMedicineItem
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

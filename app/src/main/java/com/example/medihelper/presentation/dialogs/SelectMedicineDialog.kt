@@ -9,9 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppBottomSheetDialog
-import com.example.medihelper.custom.RecyclerAdapter
-import com.example.medihelper.custom.RecyclerItemViewHolder
+import com.example.medihelper.presentation.framework.AppBottomSheetDialog
+import com.example.medihelper.presentation.framework.RecyclerAdapter
+import com.example.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogSelectMedicineBinding
 import com.example.medihelper.presentation.feature.medikit.MedicinesListViewModel
 import com.example.medihelper.presentation.model.MedicineItem

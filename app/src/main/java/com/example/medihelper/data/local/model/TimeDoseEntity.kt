@@ -22,13 +22,13 @@ import com.example.medihelper.domain.entities.TimeDose
 class TimeDoseEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "time_dose_id")
-    val timeDoseId: Int = 0,
+    val timeDoseId: Int,
 
     @ColumnInfo( name = "time")
-    var time: AppTime = AppTime(8, 0),
+    var time: AppTime,
 
     @ColumnInfo(name = "dose_size")
-    var doseSize: Float = 1.0f,
+    var doseSize: Float,
 
     @ColumnInfo(name = "medicine_plan_id")
     var medicinePlanId: Int

@@ -3,7 +3,6 @@ package com.example.medihelper.presentation.feature.alarm
 import androidx.lifecycle.*
 import com.example.medihelper.domain.entities.AppTime
 import com.example.medihelper.domain.usecases.PlannedMedicineUseCases
-import com.example.medihelper.service.PlannedMedicineService
 import kotlinx.coroutines.launch
 
 class AlarmViewModel(

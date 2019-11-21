@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppBottomSheetDialog
-import com.example.medihelper.custom.bind
+import com.example.medihelper.presentation.framework.AppBottomSheetDialog
 import com.example.medihelper.databinding.DialogLogoutBinding
+import com.example.medihelper.presentation.framework.bind
 
 class LogoutDialog : AppBottomSheetDialog() {
 

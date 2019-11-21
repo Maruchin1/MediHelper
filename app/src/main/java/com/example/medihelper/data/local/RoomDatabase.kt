@@ -5,7 +5,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.medihelper.data.local.dao.*
 import com.example.medihelper.data.local.model.*
-import com.example.medihelper.localdata.Converter
 
 @Database(
     entities = [
@@ -15,7 +14,7 @@ import com.example.medihelper.localdata.Converter
         PersonEntity::class,
         TimeDoseEntity::class
     ],
-    version = 45,
+    version = 46,
     exportSchema = false
 )
 @TypeConverters(Converter::class)

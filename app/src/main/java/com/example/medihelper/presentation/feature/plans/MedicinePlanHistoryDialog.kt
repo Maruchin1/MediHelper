@@ -11,8 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.R
-import com.example.medihelper.custom.*
 import com.example.medihelper.databinding.DialogMedicinePlanHistoryBinding
+import com.example.medihelper.presentation.framework.*
 import com.example.medihelper.presentation.model.MedicinePlanHistoryItem
 import kotlinx.android.synthetic.main.dialog_medicine_plan_history.*
 import kotlinx.android.synthetic.main.recycler_item_history.view.*
@@ -49,7 +49,11 @@ class MedicinePlanHistoryDialog : AppDialog() {
     private fun setupHistoryRecyclerView() {
         recycler_view_history.apply {
             adapter = HistoryAdapter()
-            layoutManager = CenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = CenterLayoutManager(
+                context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
         }
     }
 

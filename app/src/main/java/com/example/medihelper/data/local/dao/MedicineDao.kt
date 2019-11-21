@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.medihelper.data.local.model.MedicineEntity
+import com.example.medihelper.domain.entities.Medicine
 
 @Dao
 interface MedicineDao {
@@ -33,4 +34,26 @@ interface MedicineDao {
 
     @Query("SELECT * FROM medicines WHERE LOWER(medicine_name) LIKE '%' || LOWER(:nameQuery) || '%'")
     fun getListLiveFilteredByName(nameQuery: String): LiveData<List<MedicineEntity>>
+
+    //remote depended operations
+    @Insert
+    suspend fun insert(entityList: List<MedicineEntity>)
+
+    @Update
+    suspend fun update(entityList: List<MedicineEntity>)
+
+    @Query("DELETE FROM medicines")
+    suspend fun deleteAll()
+
+    @Query("DELETE FROM medicines WHERE medicine_remote_id NOT IN (:remoteIdList)")
+    suspend fun deleteByRemoteIdNotIn(remoteIdList: List<Long>)
+
+    @Query("SELECT * FROM medicines")
+    suspend fun getAllList(): List<MedicineEntity>
+
+    @Query("SELECT medicine_id FROM medicines WHERE medicine_remote_id = :remoteId")
+    suspend fun getIdByRemoteId(remoteId: Long): Int?
+
+    @Query("SELECT * FROM medicines WHERE medicine_synchronized = 0")
+    suspend fun getEntityListToSync(): List<MedicineEntity>
 }

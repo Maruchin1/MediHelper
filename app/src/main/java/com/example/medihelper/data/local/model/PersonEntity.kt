@@ -10,10 +10,10 @@ data class PersonEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "person_id")
-    val personId: Int = 0,
+    val personId: Int,
 
     @ColumnInfo(name = "person_remote_id")
-    var personRemoteId: Long? = null,
+    var personRemoteId: Long?,
 
     @ColumnInfo(name = "person_name")
     var personName: String,
@@ -22,23 +22,31 @@ data class PersonEntity(
     var personColorResId: Int,
 
     @ColumnInfo(name = "main_person")
-    var mainPerson: Boolean = false,
+    var mainPerson: Boolean,
 
     @ColumnInfo(name = "connection_key")
-    var connectionKey: String? = null,
+    var connectionKey: String?,
 
-    @ColumnInfo(name = "synchronized_with_server")
-    var synchronizedWithServer: Boolean = false
+    @ColumnInfo(name = "person_synchronized")
+    var personSynchronized: Boolean
 ) {
-    constructor(person: Person, personRemoteId: Long?) : this(
-        personId = person.personId,
-        personRemoteId = personRemoteId,
+    constructor(person: Person) : this(
+        personId = 0,
+        personRemoteId = null,
         personName = person.name,
         personColorResId = person.colorId,
         mainPerson = person.mainPerson,
         connectionKey = person.connectionKey,
-        synchronizedWithServer = false
+        personSynchronized = false
     )
+
+    fun update(person: Person) {
+        personName = person.name
+        personColorResId = person.colorId
+        mainPerson = person.mainPerson
+        connectionKey = person.connectionKey
+        personSynchronized = false
+    }
 
     fun toPerson() = Person(
         personId = personId,

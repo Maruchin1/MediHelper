@@ -57,4 +57,10 @@ class MedicineUseCases(
     fun getAllMedicineListLive(): LiveData<List<Medicine>> = medicineRepo.getAllListLive()
 
     fun getMedicineListLiveFilteredByName(nameQuery: String) = medicineRepo.getListLiveFilteredByName(nameQuery)
+
+    fun getMedicineUnitList(): List<String> = medicineRepo.getUnitList()
+
+    fun getMedicineUnitListLive(): LiveData<List<String>> = medicineRepo.getUnitListLive()
+
+    fun saveMedicineUnitList(list: List<String>) = medicineRepo.saveUnitList(list)
 }

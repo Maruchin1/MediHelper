@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
-import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.FragmentMainPersonBinding
+import com.example.medihelper.presentation.framework.bind
 import org.koin.android.ext.android.inject
 
 class MainPersonFragment : LauncherOptionFragment() {

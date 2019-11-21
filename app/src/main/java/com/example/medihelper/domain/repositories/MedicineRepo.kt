@@ -12,4 +12,6 @@ interface MedicineRepo {
     fun getAllListLive(): LiveData<List<Medicine>>
     fun getListLiveFilteredByName(nameQuery: String): LiveData<List<Medicine>>
     fun getUnitList(): List<String>
+    fun getUnitListLive(): LiveData<List<String>>
+    fun saveUnitList(list: List<String>)
 }

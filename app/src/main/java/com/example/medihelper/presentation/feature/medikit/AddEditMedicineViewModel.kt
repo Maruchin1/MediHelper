@@ -11,7 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.medihelper.custom.FieldMutableLiveData
+import com.example.medihelper.presentation.framework.FieldMutableLiveData
 import com.example.medihelper.domain.usecases.MedicineUseCases
 import com.example.medihelper.presentation.model.MedicineForm
 import com.example.medihelper.presentation.model.MedicineFormError
@@ -30,7 +30,8 @@ class AddEditMedicineViewModel(
         get() = _formErrorModel
 
     private val _formTitle = MutableLiveData<String>("Dodaj lek")
-    private val _formErrorModel = FieldMutableLiveData<MedicineFormError>()
+    private val _formErrorModel =
+        FieldMutableLiveData<MedicineFormError>()
     private var _formModel = FieldMutableLiveData<MedicineForm>()
 
     private var editMedicineId: Int? = null

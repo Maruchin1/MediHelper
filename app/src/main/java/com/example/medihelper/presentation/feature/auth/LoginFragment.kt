@@ -6,19 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppFullScreenDialog
-import com.example.medihelper.custom.bind
-import com.example.medihelper.custom.showShortSnackbar
+import com.example.medihelper.presentation.framework.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentLoginBinding
 import com.example.medihelper.presentation.feature.MainActivity
-import com.example.medihelper.service.LoadingScreenService
+import com.example.medihelper.presentation.framework.bind
+import com.example.medihelper.presentation.framework.showShortSnackbar
+import com.example.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject
 
 class LoginFragment : AppFullScreenDialog() {
 
     private val viewModel: LoginViewModel by inject()
-    private val loadingScreenService: LoadingScreenService by inject()
+    private val loadingScreen: LoadingScreen by inject()
     private val mainActivity: MainActivity
         get() = requireActivity() as MainActivity
 
@@ -45,9 +45,9 @@ class LoginFragment : AppFullScreenDialog() {
     private fun observeViewModel() {
         viewModel.loadingInProcess.observe(viewLifecycleOwner, Observer { inProgress ->
             if (inProgress) {
-                loadingScreenService.showLoadingScreen(childFragmentManager)
+                loadingScreen.showLoadingScreen(childFragmentManager)
             } else {
-                loadingScreenService.closeLoadingScreen()
+                loadingScreen.closeLoadingScreen()
             }
         })
         viewModel.errorLogin.observe(viewLifecycleOwner, Observer { errorMessage ->

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
 import com.example.medihelper.domain.entities.AppDate
-import com.example.medihelper.custom.CenterLayoutManager
+import com.example.medihelper.presentation.framework.CenterLayoutManager
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentScheduleBinding
 import com.example.medihelper.presentation.feature.MainActivity
@@ -121,7 +121,11 @@ class CalendarFragment : Fragment() {
     private fun setupTimelineRecyclerView() {
         recycler_view_timeline.apply {
             adapter = ScheduleTimelineAdapter()
-            layoutManager = CenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = CenterLayoutManager(
+                context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
         }
     }
 

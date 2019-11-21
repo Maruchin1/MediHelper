@@ -12,10 +12,9 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppFullScreenDialog
-import com.example.medihelper.custom.RecyclerAdapter
-import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.custom.bind
+import com.example.medihelper.presentation.framework.AppFullScreenDialog
+import com.example.medihelper.presentation.framework.RecyclerAdapter
+import com.example.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentAddEditMedicinePlanBinding
 import com.example.medihelper.presentation.dialogs.SelectTimeDialog
 import com.example.medihelper.presentation.dialogs.SelectFloatNumberDialog
@@ -27,6 +26,7 @@ import com.example.medihelper.presentation.feature.plans.daystype.IntervalOfDays
 import com.example.medihelper.presentation.feature.plans.durationtype.ContinuousFragment
 import com.example.medihelper.presentation.feature.plans.durationtype.PeriodFragment
 import com.example.medihelper.presentation.feature.plans.durationtype.OnceFragment
+import com.example.medihelper.presentation.framework.bind
 import com.example.medihelper.presentation.model.TimeDoseFormItem
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*

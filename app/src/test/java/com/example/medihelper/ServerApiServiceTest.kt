@@ -4,10 +4,10 @@ import androidx.work.WorkManager
 import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.dao.MedicineDao
 import com.example.medihelper.localdata.dao.PersonDao
-import com.example.medihelper.remotedata.api.AuthenticationApi
-import com.example.medihelper.remotedata.api.RegisteredUserApi
-import com.example.medihelper.remotedata.dto.LoginResponseDto
-import com.example.medihelper.remotedata.dto.UserCredentialsDto
+import com.example.medihelper.data.remote.api.AuthenticationApi
+import com.example.medihelper.data.remote.api.RegisteredUserApi
+import com.example.medihelper.data.remote.dto.LoginResponseDto
+import com.example.medihelper.data.remote.dto.UserCredentialsDto
 import com.example.medihelper.service.ApiResponse
 import com.example.medihelper.service.AppMode
 import com.example.medihelper.service.ServerApiService
@@ -89,8 +89,16 @@ class ServerApiServiceTest : KoinTest {
             val email = "test@email.com"
             val password = "abc"
 
-            val mockedOutput = LoginResponseDto(authToken = "auth-token", isDataAvailable = false)
-            Mockito.`when`(authenticationApi.loginUser(UserCredentialsDto(email, password)))
+            val mockedOutput = LoginResponseDto(
+                authToken = "auth-token",
+                isDataAvailable = false
+            )
+            Mockito.`when`(authenticationApi.loginUser(
+                UserCredentialsDto(
+                    email,
+                    password
+                )
+            ))
                 .thenReturn(mockedOutput)
 
             val returnedPair = serverApiService.loginUser(email, password)

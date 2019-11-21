@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.medihelper.custom.ActionLiveData
+import com.example.medihelper.presentation.framework.ActionLiveData
 import com.example.medihelper.domain.usecases.PersonUseCases
 import kotlinx.coroutines.launch
 

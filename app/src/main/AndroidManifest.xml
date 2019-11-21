@@ -52,7 +52,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
         <receiver
-            android:name=".utility.ReminderReceiver"
+            android:name=".device.ReminderReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true">

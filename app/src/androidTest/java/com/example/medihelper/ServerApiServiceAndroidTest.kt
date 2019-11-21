@@ -5,9 +5,9 @@ import androidx.work.WorkManager
 import com.example.medihelper.data.local.RoomDatabase
 import com.example.medihelper.localdata.AppSharedPref
 import com.example.medihelper.localdata.AppSharedPrefImpl
-import com.example.medihelper.remotedata.api.AuthenticationApi
-import com.example.medihelper.remotedata.api.RegisteredUserApi
-import com.example.medihelper.remotedata.dto.LoginResponseDto
+import com.example.medihelper.data.remote.api.AuthenticationApi
+import com.example.medihelper.data.remote.api.RegisteredUserApi
+import com.example.medihelper.data.remote.dto.LoginResponseDto
 import com.example.medihelper.service.ApiResponse
 import com.example.medihelper.service.AppMode
 import com.example.medihelper.service.ServerApiService
@@ -68,7 +68,8 @@ class ServerApiServiceAndroidTest : AppAndroidTest() {
 
     @Test
     fun loginUser_Success_AppModeLogged() {
-        val responseBody = LoginResponseDto(authToken = "token", isDataAvailable = false)
+        val responseBody =
+            LoginResponseDto(authToken = "token", isDataAvailable = false)
         val response = MockResponse()
             .setResponseCode(200)
             .setBody(Gson().toJson(responseBody))

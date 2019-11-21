@@ -24,10 +24,10 @@ import com.example.medihelper.domain.entities.*
 data class MedicinePlanEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "medicine_plan_id")
-    val medicinePlanId: Int = 0,
+    val medicinePlanId: Int,
 
     @ColumnInfo(name = "medicine_plan_remote_id")
-    var medicinePlanRemoteId: Long? = null,
+    var medicinePlanRemoteId: Long?,
 
     @ColumnInfo(name = "medicine_id")
     var medicineId: Int,
@@ -42,23 +42,23 @@ data class MedicinePlanEntity(
     var startDate: AppDate,
 
     @ColumnInfo(name = "end_date")
-    var endDate: AppDate? = null,
+    var endDate: AppDate?,
 
     @ColumnInfo(name = "days_type")
-    var daysType: DaysType? = null,
+    var daysType: DaysType?,
 
     @Embedded
-    var daysOfWeek: DaysOfWeek? = null,
+    var daysOfWeek: DaysOfWeek?,
 
     @ColumnInfo(name = "interval_of_days")
-    var intervalOfDays: Int? = null,
+    var intervalOfDays: Int?,
 
-    @ColumnInfo(name = "synchronized_with_server")
-    var synchronizedWithServer: Boolean = false
+    @ColumnInfo(name = "medicine_plan_synchronized")
+    var medicinePlanSynchronized: Boolean
 ) {
-    constructor(medicinePlan: MedicinePlan, remoteId: Long?) : this(
-        medicinePlanId = medicinePlan.medicinePlanId,
-        medicinePlanRemoteId = remoteId,
+    constructor(medicinePlan: MedicinePlan) : this(
+        medicinePlanId = 0,
+        medicinePlanRemoteId = null,
         medicineId = medicinePlan.medicineId,
         personId = medicinePlan.personId,
         durationType = medicinePlan.durationType,
@@ -67,6 +67,18 @@ data class MedicinePlanEntity(
         daysType = medicinePlan.daysType,
         daysOfWeek = medicinePlan.daysOfWeek,
         intervalOfDays = medicinePlan.intervalOfDays,
-        synchronizedWithServer = false
+        medicinePlanSynchronized = false
     )
+
+    fun update(medicinePlan: MedicinePlan) {
+        medicineId = medicinePlan.medicineId
+        personId = medicinePlan.personId
+        durationType = medicinePlan.durationType
+        startDate = medicinePlan.startDate
+        endDate = medicinePlan.endDate
+        daysType = medicinePlan.daysType
+        daysOfWeek = medicinePlan.daysOfWeek
+        intervalOfDays = medicinePlan.intervalOfDays
+        medicinePlanSynchronized = false
+    }
 }

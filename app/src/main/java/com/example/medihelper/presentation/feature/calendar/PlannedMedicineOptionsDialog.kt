@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.medihelper.R
-import com.example.medihelper.custom.bind
 import com.example.medihelper.databinding.DialogPlannedMedicineOptionsBinding
+import com.example.medihelper.presentation.framework.bind
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppFullScreenDialog
-import com.example.medihelper.custom.bind
-import com.example.medihelper.custom.showShortSnackbar
+import com.example.medihelper.presentation.framework.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentPatronConnectBinding
 import com.example.medihelper.presentation.feature.MainActivity
-import com.example.medihelper.service.LoadingScreenService
+import com.example.medihelper.presentation.framework.bind
+import com.example.medihelper.presentation.framework.showShortSnackbar
+import com.example.medihelper.presentation.utils.LoadingScreen
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_patron_connect.*
 import org.koin.android.ext.android.inject
@@ -20,7 +20,7 @@ import org.koin.android.ext.android.inject
 class PatronConnectFragment : AppFullScreenDialog() {
 
     private val viewModel: PatronConnectViewModel by inject()
-    private val loadingScreenService: LoadingScreenService by inject()
+    private val loadingScreen: LoadingScreen by inject()
     private val mainActivity: MainActivity
         get() = requireActivity() as MainActivity
 
@@ -55,9 +55,9 @@ class PatronConnectFragment : AppFullScreenDialog() {
         })
         viewModel.loadingInProgress.observe(viewLifecycleOwner, Observer { inProgress ->
             if (inProgress == true) {
-                loadingScreenService.showLoadingScreen(childFragmentManager)
+                loadingScreen.showLoadingScreen(childFragmentManager)
             } else {
-                loadingScreenService.closeLoadingScreen()
+                loadingScreen.closeLoadingScreen()
             }
         })
         viewModel.errorPatronConnect.observe(viewLifecycleOwner, Observer { errorMessage ->

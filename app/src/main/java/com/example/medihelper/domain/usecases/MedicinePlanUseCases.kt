@@ -51,7 +51,7 @@ class MedicinePlanUseCases(
     suspend fun getMedicinePlanById(id: Int): MedicinePlan = medicinePlanRepo.getById(id)
 
     fun getMedicinePlanWithMedicineAndPlannedMedicinesLiveById(id: Int) =
-        medicinePlanRepo.getWithMedicineAndPlannedMedicinesById(id)
+        medicinePlanRepo.getWithMedicineAndPlannedMedicinesLiveById(id)
 
     fun getMedicinePlanWithMedicineListLiveByPersonId(id: Int): LiveData<List<MedicinePlanWithMedicine>> =
         medicinePlanRepo.getWithMedicineListLiveByPersonId(id)

@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppFullScreenDialog
-import com.example.medihelper.custom.bind
+import com.example.medihelper.presentation.framework.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentAddEditMedicineBinding
 import com.example.medihelper.presentation.dialogs.SelectMedicineUnitDialog
 import com.example.medihelper.presentation.dialogs.SelectExpireDateDialog
+import com.example.medihelper.presentation.framework.bind
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

@@ -11,11 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medihelper.R
-import com.example.medihelper.custom.RecyclerAdapter
-import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.custom.bind
+import com.example.medihelper.presentation.framework.RecyclerAdapter
+import com.example.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicinesListBinding
 import com.example.medihelper.presentation.feature.MainActivity
+import com.example.medihelper.presentation.framework.bind
 import com.example.medihelper.presentation.model.MedicineItem
 import kotlinx.android.synthetic.main.fragment_medicines_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

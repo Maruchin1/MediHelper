@@ -8,11 +8,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medihelper.R
-import com.example.medihelper.custom.CenterLayoutManager
-import com.example.medihelper.custom.RecyclerAdapter
-import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.custom.bind
+import com.example.medihelper.presentation.framework.CenterLayoutManager
+import com.example.medihelper.presentation.framework.RecyclerAdapter
+import com.example.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.example.medihelper.databinding.DialogPersonBinding
+import com.example.medihelper.presentation.framework.bind
 import com.example.medihelper.presentation.model.PersonItem
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_person.*
@@ -51,7 +51,11 @@ class PersonDialog : BottomSheetDialogFragment() {
 
     private fun setupPersonRecyclerView() = recycler_view_persons.apply {
         adapter = PersonAdapter()
-        layoutManager = CenterLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        layoutManager = CenterLayoutManager(
+            requireContext(),
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
     }
 
     private fun observeData() {

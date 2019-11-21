@@ -1,6 +1,9 @@
 package com.example.medihelper.data.repositories
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import com.example.medihelper.data.local.DeletedHistory
+import com.example.medihelper.data.local.ImagesFiles
 import com.example.medihelper.data.local.dao.MedicinePlanDao
 import com.example.medihelper.data.local.dao.TimeDoseDao
 import com.example.medihelper.data.local.model.MedicinePlanEntity
@@ -12,30 +15,38 @@ import com.example.medihelper.domain.repositories.MedicinePlanRepo
 
 class MedicinePlanRepoImpl(
     private val medicinePlanDao: MedicinePlanDao,
-    private val timeDoseDao: TimeDoseDao
+    private val timeDoseDao: TimeDoseDao,
+    private val deletedHistory: DeletedHistory,
+    private val imagesFiles: ImagesFiles
 ) : MedicinePlanRepo {
 
 
-    override suspend fun insert(medicinePlan: MedicinePlan) {
-        val newEntity = MedicinePlanEntity(medicinePlan = medicinePlan, remoteId = null)
+    override suspend fun insert(medicinePlan: MedicinePlan): Int {
+        val newEntity = MedicinePlanEntity(medicinePlan = medicinePlan)
         val insertedId = medicinePlanDao.insert(newEntity).toInt()
 
         val timeDoseEntityList = medicinePlan.timeDoseList.map { TimeDoseEntity(it, insertedId) }
         timeDoseDao.insert(timeDoseEntityList)
+
+        return insertedId
     }
 
     override suspend fun update(medicinePlan: MedicinePlan) {
-        val existingRemoteId = medicinePlanDao.getRemoteIdById(medicinePlan.medicinePlanId)
-        val updatedEntity = MedicinePlanEntity(medicinePlan = medicinePlan, remoteId = existingRemoteId)
-        medicinePlanDao.update(updatedEntity)
+        val existingEntity = medicinePlanDao.getById(medicinePlan.medicinePlanId)
+        existingEntity.update(medicinePlan)
+        medicinePlanDao.update(existingEntity)
 
-        val timeDoseEntityList = medicinePlan.timeDoseList.map { TimeDoseEntity(it, updatedEntity.medicinePlanId) }
-        timeDoseDao.deleteByMedicinePlanId(updatedEntity.medicinePlanId)
+        val timeDoseEntityList = medicinePlan.timeDoseList.map { TimeDoseEntity(it, existingEntity.medicinePlanId) }
+        timeDoseDao.deleteByMedicinePlanId(existingEntity.medicinePlanId)
         timeDoseDao.insert(timeDoseEntityList)
     }
 
     override suspend fun deleteById(id: Int) {
-       medicinePlanDao.deleteById(id)
+        val remoteId = medicinePlanDao.getRemoteIdById(id)
+        if (remoteId != null) {
+            deletedHistory.addToMedicinePlanHistory(remoteId)
+        }
+        medicinePlanDao.deleteById(id)
     }
 
     override suspend fun getById(id: Int): MedicinePlan {
@@ -43,13 +54,15 @@ class MedicinePlanRepoImpl(
         return entity.toMedicinePlan()
     }
 
-    override fun getWithMedicineAndPlannedMedicinesById(id: Int): LiveData<MedicinePlanWithMedicineAndPlannedMedicines> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getWithMedicineAndPlannedMedicinesLiveById(id: Int): LiveData<MedicinePlanWithMedicineAndPlannedMedicines> {
+        val entity = medicinePlanDao.getWithTimeDoseListAndMedicineAndPlannedMedicineListLiveById(id)
+        return Transformations.map(entity) { it.toMedicinePlanWithMedicineAndPlannedMedicines(imagesFiles) }
     }
 
     override fun getWithMedicineListLiveByPersonId(id: Int): LiveData<List<MedicinePlanWithMedicine>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val entityList = medicinePlanDao.getWithTimeDoseListAndMedicineListLiveByPersonId(id)
+        return Transformations.map(entityList) { list ->
+            list.map { it.toMedicinePlanWithMedicine(imagesFiles) }
+        }
     }
-
-
 }

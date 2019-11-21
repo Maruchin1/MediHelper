@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.example.medihelper.custom.SharedPrefLiveData
+import com.example.medihelper.data.local.framework.SharedPrefLiveData
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,14 +22,22 @@ class SharedPref (context: Context) {
 
     fun getAuthToken(): String? = pref.getString(KEY_AUTH_TOKEN, null)
 
-    fun getAuthTokenLive(): LiveData<String> = SharedPrefLiveData(pref, KEY_AUTH_TOKEN, "")
+    fun getAuthTokenLive(): LiveData<String> =
+        SharedPrefLiveData(pref, KEY_AUTH_TOKEN, "")
 
     fun getUserEmail(): String? = pref.getString(KEY_USER_EMAIL, null)
 
-    fun getUserEmailLive(): LiveData<String> = SharedPrefLiveData(pref, KEY_USER_EMAIL, "")
+    fun getUserEmailLive(): LiveData<String> =
+        SharedPrefLiveData(pref, KEY_USER_EMAIL, "")
 
     fun getLastSyncTimeLive(): LiveData<Date> {
-        return Transformations.map(SharedPrefLiveData(pref, KEY_LAST_SYNC_TIME, "")) {
+        return Transformations.map(
+            SharedPrefLiveData(
+                pref,
+                KEY_LAST_SYNC_TIME,
+                ""
+            )
+        ) {
             if (it != null) SimpleDateFormat.getDateTimeInstance().parse(it) else null
         }
     }
@@ -43,7 +51,13 @@ class SharedPref (context: Context) {
     fun getMedicineUnitList() = pref.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList() ?: emptyList()
 
     fun getMedicineUnitListLive(): LiveData<List<String>> {
-        return Transformations.map(SharedPrefLiveData(pref, KEY_MEDICINE_UNIT_SET, emptySet<String>())) {
+        return Transformations.map(
+            SharedPrefLiveData(
+                pref,
+                KEY_MEDICINE_UNIT_SET,
+                emptySet<String>()
+            )
+        ) {
             it.toList()
         }
     }

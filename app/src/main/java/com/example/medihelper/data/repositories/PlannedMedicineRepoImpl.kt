@@ -2,6 +2,8 @@ package com.example.medihelper.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.example.medihelper.data.local.DeletedHistory
+import com.example.medihelper.data.local.ImagesFiles
 import com.example.medihelper.data.local.dao.PlannedMedicineDao
 import com.example.medihelper.data.local.model.PlannedMedicineEntity
 import com.example.medihelper.domain.entities.AppDate
@@ -10,31 +12,38 @@ import com.example.medihelper.domain.entities.PlannedMedicineWithMedicine
 import com.example.medihelper.domain.repositories.PlannedMedicineRepo
 
 class PlannedMedicineRepoImpl(
-    private val plannedMedicineDao: PlannedMedicineDao
+    private val plannedMedicineDao: PlannedMedicineDao,
+    private val deletedHistory: DeletedHistory,
+    private val imagesFiles: ImagesFiles
 ) : PlannedMedicineRepo {
 
     override suspend fun insert(plannedMedicineList: List<PlannedMedicine>) {
         val newEntityList = plannedMedicineList.map {
-            PlannedMedicineEntity(plannedMedicine = it, remoteId = null)
+            PlannedMedicineEntity(plannedMedicine = it)
         }
         plannedMedicineDao.insert(newEntityList)
     }
 
     override suspend fun update(plannedMedicine: PlannedMedicine) {
-        val existingRemoteId = plannedMedicineDao.getRemoteIdById(plannedMedicine.plannedMedicineId)
-        val updatedEntity = PlannedMedicineEntity(plannedMedicine = plannedMedicine, remoteId = existingRemoteId)
-        plannedMedicineDao.update(updatedEntity)
+        val existingEntity = plannedMedicineDao.getById(plannedMedicine.plannedMedicineId)
+        existingEntity.update(plannedMedicine)
+        plannedMedicineDao.update(existingEntity)
     }
 
     override suspend fun update(plannedMedicineList: List<PlannedMedicine>) {
         val updatedEntityList = plannedMedicineList.map {
-            val existingRemoteId = plannedMedicineDao.getRemoteIdById(it.plannedMedicineId)
-            PlannedMedicineEntity(plannedMedicine = it, remoteId = existingRemoteId)
+            val existingEntity = plannedMedicineDao.getById(it.plannedMedicineId)
+            existingEntity.update(it)
+            existingEntity
         }
         plannedMedicineDao.update(updatedEntityList)
     }
 
     override suspend fun deleteFromDateByMedicinePlanId(date: AppDate, medicinePlanId: Int) {
+        val remoteIdList = plannedMedicineDao.getRemoteIdListFromDateByMedicinePlanId(date, medicinePlanId)
+        remoteIdList.forEach {
+            deletedHistory.addToPlannedMedicineHistory(it)
+        }
         plannedMedicineDao.deleteFromDateByMedicinePlanId(date, medicinePlanId)
     }
 
@@ -51,7 +60,7 @@ class PlannedMedicineRepoImpl(
     override fun getWithMedicineLiveById(id: Int): LiveData<PlannedMedicineWithMedicine> {
         val entityLive = plannedMedicineDao.getWithMedicineLiveById(id)
         return Transformations.map(entityLive) {
-            it.toPlannedMedicineWithMedicine()
+            it.toPlannedMedicineWithMedicine(imagesFiles)
         }
     }
 
@@ -61,7 +70,7 @@ class PlannedMedicineRepoImpl(
     ): LiveData<List<PlannedMedicineWithMedicine>> {
         val entityListLive = plannedMedicineDao.getWithMedicineListLiveByDateAndPerson(date, personId)
         return Transformations.map(entityListLive) { list ->
-            list.map { it.toPlannedMedicineWithMedicine() }
+            list.map { it.toPlannedMedicineWithMedicine(imagesFiles) }
         }
     }
 }

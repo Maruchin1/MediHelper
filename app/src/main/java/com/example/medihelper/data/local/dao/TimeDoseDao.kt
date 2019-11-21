@@ -13,4 +13,7 @@ interface TimeDoseDao {
 
     @Query("DELETE FROM times_doses WHERE medicine_plan_id = :id")
     suspend fun deleteByMedicinePlanId(id: Int)
+
+    @Query("SELECT * FROM times_doses WHERE medicine_plan_id = :id")
+    suspend fun getEntityListByMedicinePlanId(id: Int): List<TimeDoseEntity>
 }

@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppFullScreenDialog
-import com.example.medihelper.custom.RecyclerAdapter
-import com.example.medihelper.custom.RecyclerItemViewHolder
-import com.example.medihelper.custom.bind
+import com.example.medihelper.presentation.framework.AppFullScreenDialog
+import com.example.medihelper.presentation.framework.RecyclerAdapter
+import com.example.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentAddEditPersonBinding
+import com.example.medihelper.presentation.framework.bind
 import com.example.medihelper.presentation.model.PersonColorCheckboxData
 import kotlinx.android.synthetic.main.fragment_add_edit_person.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

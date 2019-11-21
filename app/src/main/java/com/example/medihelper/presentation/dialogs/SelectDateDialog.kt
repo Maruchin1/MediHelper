@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppBottomSheetDialog
-import com.example.medihelper.custom.bind
+import com.example.medihelper.presentation.framework.AppBottomSheetDialog
 import com.example.medihelper.databinding.DialogSelectDateBinding
+import com.example.medihelper.presentation.framework.bind
 import kotlinx.android.synthetic.main.dialog_select_date.*
 
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.medihelper.domain.entities.AppTime
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppBottomSheetDialog
+import com.example.medihelper.presentation.framework.AppBottomSheetDialog
 import com.example.medihelper.databinding.DialogSelectTimeBinding
 import kotlinx.android.synthetic.main.dialog_select_time.*
 

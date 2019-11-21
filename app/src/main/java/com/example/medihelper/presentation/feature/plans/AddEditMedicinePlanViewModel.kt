@@ -1,7 +1,7 @@
 package com.example.medihelper.presentation.feature.plans
 
 import androidx.lifecycle.*
-import com.example.medihelper.custom.FieldMutableLiveData
+import com.example.medihelper.presentation.framework.FieldMutableLiveData
 import com.example.medihelper.domain.entities.*
 import com.example.medihelper.domain.usecases.DateTimeUseCases
 import com.example.medihelper.domain.usecases.MedicinePlanUseCases
@@ -36,8 +36,10 @@ class AddEditMedicinePlanViewModel(
         get() = _medicinePlanFormError
 
     private val _formTitle = MutableLiveData<String>("Zaplanuj lek")
-    private val _medicinePlanForm = FieldMutableLiveData<MedicinePlanForm>()
-    private val _daysOfWeekFormItem = FieldMutableLiveData<DaysOfWeekFormItem>()
+    private val _medicinePlanForm =
+        FieldMutableLiveData<MedicinePlanForm>()
+    private val _daysOfWeekFormItem =
+        FieldMutableLiveData<DaysOfWeekFormItem>()
     private val _timeDoseFormItemList = MutableLiveData<MutableList<TimeDoseFormItem>>()
     private val _medicinePlanFormError = MutableLiveData<MedicinePlanFormError>()
 

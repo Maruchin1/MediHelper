@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.example.medihelper.R
-import com.example.medihelper.custom.AppDialog
+import com.example.medihelper.presentation.framework.AppDialog
 
 class LoadingDialog : AppDialog() {
     private val TAG = "LoadingDialog"
