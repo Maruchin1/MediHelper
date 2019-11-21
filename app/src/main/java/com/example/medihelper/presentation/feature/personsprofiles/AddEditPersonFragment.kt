@@ -1,6 +1,7 @@
 package com.example.medihelper.presentation.feature.personsprofiles
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_add_edit_person.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddEditPersonFragment : AppFullScreenDialog() {
+    private val TAG = "AddEditPersonFragment"
 
     private val viewModel: AddEditPersonViewModel by viewModel()
     private val args: AddEditPersonFragmentArgs by navArgs()
@@ -44,9 +46,10 @@ class AddEditPersonFragment : AppFullScreenDialog() {
     }
 
     private fun observeViewModel() {
-        viewModel.personColorCheckboxDataList.observe(viewLifecycleOwner, Observer { personColorDisplayDataList ->
+        viewModel.personColorCheckboxDataList.observe(viewLifecycleOwner, Observer { colorCheckboxList ->
+            Log.i(TAG, "colorCheckboxList = $colorCheckboxList")
             val adapter = recycler_view_color.adapter as PersonColorAdapter
-            adapter.updateItemsList(personColorDisplayDataList)
+            adapter.updateItemsList(colorCheckboxList)
         })
     }
 

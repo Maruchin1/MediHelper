@@ -15,7 +15,6 @@ class AddEditPersonViewModel(
 ) : ViewModel() {
 
     val personColorCheckboxDataList: LiveData<List<PersonColorCheckboxData>>
-    val selectedPersonColorId = MutableLiveData<Int>()
 
     val formTitle: LiveData<String>
         get() = _formTitle
@@ -32,11 +31,11 @@ class AddEditPersonViewModel(
     private var editPersonId: Int? = null
 
     init {
-        personColorCheckboxDataList = Transformations.map(selectedPersonColorId) { selectedColorId ->
+        personColorCheckboxDataList = Transformations.map(_personForm) { form ->
             personColorIdList.map { colorId ->
                 PersonColorCheckboxData(
                     colorId = colorId,
-                    selected = colorId == selectedColorId
+                    selected = colorId == form.colorId
                 )
             }
         }

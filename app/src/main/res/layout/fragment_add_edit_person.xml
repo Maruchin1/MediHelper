@@ -17,7 +17,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background='@{viewModel.selectedPersonColorId, default="@color/colorPrimary"}'
+        android:background='@{viewModel.personForm.colorId, default="@color/colorPrimary"}'
         android:fitsSystemWindows="true">
 
         <LinearLayout
