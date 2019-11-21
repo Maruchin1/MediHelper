@@ -7,7 +7,7 @@ import com.example.medihelper.data.local.DeletedHistory
 import com.example.medihelper.data.local.dao.*
 import com.example.medihelper.data.remote.api.RegisteredUserApi
 import com.example.medihelper.data.remote.dto.SyncRequestDto
-import com.example.medihelper.device.NotificationUtil
+import com.example.medihelper.device.notifications.NotificationUtil
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.WorkerParameters
 import com.example.medihelper.data.local.dao.PlannedMedicineDao
 import com.example.medihelper.data.remote.api.ConnectedPersonApi
-import com.example.medihelper.device.NotificationUtil
+import com.example.medihelper.device.notifications.NotificationUtil
 import org.koin.core.inject
 
 class ConnectedPersonSyncWorker(context: Context, params: WorkerParameters) : ServerSyncWorker(context, params) {

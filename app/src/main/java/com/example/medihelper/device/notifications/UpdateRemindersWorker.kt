@@ -1,4 +1,4 @@
-package com.example.medihelper.device
+package com.example.medihelper.device.notifications
 
 import android.app.AlarmManager
 import android.app.PendingIntent

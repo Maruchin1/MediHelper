@@ -1,4 +1,4 @@
-package com.example.medihelper.device
+package com.example.medihelper.device.notifications
 
 import android.content.BroadcastReceiver
 import android.content.Context

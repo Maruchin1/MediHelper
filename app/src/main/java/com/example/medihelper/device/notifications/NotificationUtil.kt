@@ -1,4 +1,4 @@
-package com.example.medihelper.device
+package com.example.medihelper.device.notifications
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -31,7 +31,9 @@ class NotificationUtil(private val context: Context) {
         NotificationManagerCompat.from(context)
     }
     private val serverSyncNotification by lazy {
-        NotificationCompat.Builder(context, SERVER_SYNC_CHANNEL_ID)
+        NotificationCompat.Builder(context,
+            SERVER_SYNC_CHANNEL_ID
+        )
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setContentTitle("Synchronizacja danych")
             .setOngoing(true)
@@ -41,7 +43,9 @@ class NotificationUtil(private val context: Context) {
             .build()
     }
     private val serverSyncFailureNotification by lazy {
-        NotificationCompat.Builder(context, SERVER_SYNC_CHANNEL_ID)
+        NotificationCompat.Builder(context,
+            SERVER_SYNC_CHANNEL_ID
+        )
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setContentTitle("Synchronizacja danych nieudana")
             .setContentText("Podczas synchronizacji danych wystąpił błąd")
@@ -81,7 +85,9 @@ class NotificationUtil(private val context: Context) {
         medicineName: String,
         plannedTime: AppTime
     ): Notification {
-        return NotificationCompat.Builder(context, REMINDER_CHANNEL_ID)
+        return NotificationCompat.Builder(context,
+            REMINDER_CHANNEL_ID
+        )
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setContentTitle("$personName, pora przyjąć lek!")
             .setStyle(

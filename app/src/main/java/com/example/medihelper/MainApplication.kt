@@ -1,4 +1,4 @@
-package com.example.medihelper.presentation
+package com.example.medihelper
 
 
 import android.app.Application
