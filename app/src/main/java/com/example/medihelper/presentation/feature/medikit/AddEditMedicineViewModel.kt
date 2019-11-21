@@ -34,6 +34,7 @@ class AddEditMedicineViewModel(
         FieldMutableLiveData<MedicineFormError>()
     private var _formModel = FieldMutableLiveData<MedicineForm>()
 
+    private val medicineUnitList: List<String> = medicineUseCases.getMedicineUnitList()
     private var editMedicineId: Int? = null
 
     fun setArgs(args: AddEditMedicineFragmentArgs) = viewModelScope.launch {
@@ -43,13 +44,15 @@ class AddEditMedicineViewModel(
             val editMedicine = medicineUseCases.getMedicineById(args.editMedicineId)
             val editMedicineForm = MedicineForm(editMedicine)
             _formModel.postValue(editMedicineForm)
+        } else {
+            _formModel.postValue(getEmptyForm())
         }
     }
 
     fun saveMedicine(): Boolean {
         if (isFormValid()) {
             val medicineId = editMedicineId
-            val inputData = formModel.value!!.toInpuData()
+            val inputData = formModel.value!!.toInputData()
             if (medicineId == null) {
                 GlobalScope.launch {
                     medicineUseCases.addNewMedicine(inputData)
@@ -109,4 +112,14 @@ class AddEditMedicineViewModel(
 
         return arrayOf(medicineNameError, expireDateError, currStateError).all { it == null }
     }
+
+    private fun getEmptyForm() = MedicineForm(
+        _name = null,
+        _unit = medicineUnitList[0],
+        _expireDate = null,
+        _packageSize = null,
+        _currState = null,
+        _additionalInfo = null,
+        _image = null
+    )
 }

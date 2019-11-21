@@ -9,16 +9,16 @@ import com.example.medihelper.domain.entities.MedicineInputData
 import java.io.File
 
 data class MedicineForm(
-    private var _name: String,
+    private var _name: String?,
     private var _unit: String,
-    private var _expireDate: AppExpireDate,
+    private var _expireDate: AppExpireDate?,
     private var _packageSize: Float?,
     private var _currState: Float?,
     private var _additionalInfo: String?,
     private var _image: File?
 ) : BaseObservable() {
 
-    var name: String
+    var name: String?
         @Bindable get() = _name
         set(value) {
             _name = value
@@ -32,7 +32,7 @@ data class MedicineForm(
             notifyPropertyChanged(BR.unit)
         }
 
-    var expireDate: AppExpireDate
+    var expireDate: AppExpireDate?
         @Bindable get() = _expireDate
         set(value) {
             _expireDate = value
@@ -77,10 +77,10 @@ data class MedicineForm(
         _image = medicine.image
     )
 
-    fun toInpuData() = MedicineInputData(
-        name = name,
+    fun toInputData() = MedicineInputData(
+        name = name!!,
         unit = unit,
-        expireDate = expireDate,
+        expireDate = expireDate!!,
         packageSize = packageSize,
         currState = currState,
         additionalInfo = additionalInfo,
