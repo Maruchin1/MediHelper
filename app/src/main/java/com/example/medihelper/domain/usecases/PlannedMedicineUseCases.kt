@@ -3,6 +3,7 @@ package com.example.medihelper.domain.usecases
 import androidx.lifecycle.LiveData
 import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.domain.entities.MedicinePlan
+import com.example.medihelper.domain.entities.PlannedMedicine
 import com.example.medihelper.domain.entities.PlannedMedicineWithMedicine
 import com.example.medihelper.domain.repositories.PlannedMedicineRepo
 import com.example.medihelper.domain.utils.MedicineScheduler
@@ -32,16 +33,18 @@ class PlannedMedicineUseCases(
     }
 
     suspend fun updateAllStatus() {
-        val updatedList = plannedMedicineRepo.getAllList().map { plannedMedicine ->
-            plannedMedicine.apply {
-                val newStatus = statusOfTakingCalculator.getByCurrStatus(
-                    plannedDate = plannedMedicine.plannedDate,
-                    plannedTime = plannedMedicine.plannedTime,
-                    currDate = dateTimeUseCases.getCurrDate(),
-                    currTime = dateTimeUseCases.getCurrTime(),
-                    currStatusOfTaking = plannedMedicine.statusOfTaking
-                )
-                plannedMedicine.statusOfTaking = newStatus
+        val allPlannedMedicines = plannedMedicineRepo.getAllList()
+        val updatedList = mutableListOf<PlannedMedicine>()
+        allPlannedMedicines.forEach { plannedMedicine ->
+            val newStatus = statusOfTakingCalculator.getByCurrStatus(
+                plannedDate = plannedMedicine.plannedDate,
+                plannedTime = plannedMedicine.plannedTime,
+                currDate = dateTimeUseCases.getCurrDate(),
+                currTime = dateTimeUseCases.getCurrTime(),
+                currStatusOfTaking = plannedMedicine.statusOfTaking
+            )
+            if (newStatus != plannedMedicine.statusOfTaking) {
+                updatedList.add(plannedMedicine.copy(statusOfTaking = newStatus))
             }
         }
         plannedMedicineRepo.update(updatedList)
