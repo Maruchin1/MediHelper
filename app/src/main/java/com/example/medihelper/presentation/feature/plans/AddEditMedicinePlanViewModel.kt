@@ -81,6 +81,7 @@ class AddEditMedicinePlanViewModel(
                     )
                 )
             )
+            _daysOfWeekFormItem.postValue(DaysOfWeekFormItem())
         }
     }
 
