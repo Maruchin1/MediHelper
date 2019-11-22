@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.dialog.ConfirmDialog" />
+            type="com.example.medihelper.presentation.dialogs.ConfirmDialog" />
     </data>
 
     <LinearLayout

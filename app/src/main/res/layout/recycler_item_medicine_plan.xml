@@ -8,11 +8,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicineplan.MedicinePlanListFragment" />
+            type="com.example.medihelper.presentation.feature.plans.MedicinePlanListFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.mainapp.medicineplan.MedicinePlanListViewModel.MedicinePlanDisplayData" />
+            type="com.example.medihelper.presentation.model.MedicinePlanItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -45,13 +45,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/round_event_24"
-                        android:tint='@{displayData.colorPrimaryResID, default="@color/colorPrimary"}' />
+                        android:tint='@{displayData.colorPrimaryId, default="@color/colorPrimary"}' />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text='@{displayData.planDuration, default="01 sty 2019 - 11 sty 2019"}'
+                        android:text='@{displayData.durationType, default="01 sty 2019 - 11 sty 2019"}'
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                         android:textColor="@color/colorTextSecondary" />
                 </LinearLayout>
@@ -66,7 +66,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/pill"
-                        android:tint='@{displayData.colorPrimaryResID, default="@color/colorPrimary"}' />
+                        android:tint='@{displayData.colorPrimaryId, default="@color/colorPrimary"}' />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -88,7 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/baseline_check_24"
-                        android:tint='@{displayData.colorPrimaryResID, default="@color/colorPrimary"}' />
+                        android:tint='@{displayData.colorPrimaryId, default="@color/colorPrimary"}' />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -112,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:onClick="@{() -> handler.onClickMedicinePlanHistory(displayData.medicinePlanID)}"
+                    android:onClick="@{() -> handler.onClickMedicinePlanHistory(displayData.medicinePlanId)}"
                     android:text="Historia"
                     app:chipIcon="@drawable/round_history_24" />
 
@@ -120,18 +120,18 @@
                     style="@style/AppTheme.Widget.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> handler.onClickEditMedicinePlan(displayData.medicinePlanID)}"
+                    android:onClick="@{() -> handler.onClickEditMedicinePlan(displayData.medicinePlanId)}"
                     android:text="Edytuj"
-                    android:visibility="@{displayData.isAppModeConnected ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{displayData.appModeConnected ? View.GONE : View.VISIBLE}"
                     app:chipIcon="@drawable/round_edit_24" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/AppTheme.Widget.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> handler.onClickDeleteMedicinePlan(displayData.medicinePlanID)}"
+                    android:onClick="@{() -> handler.onClickDeleteMedicinePlan(displayData.medicinePlanId)}"
                     android:text="Usuń"
-                    android:visibility="@{displayData.isAppModeConnected ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{displayData.appModeConnected ? View.GONE : View.VISIBLE}"
                     app:chipIcon="@drawable/round_delete_24" />
             </com.google.android.material.chip.ChipGroup>
 

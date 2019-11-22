@@ -7,17 +7,17 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.person.AddEditPersonFragment" />
+            type="com.example.medihelper.presentation.feature.personsprofiles.AddEditPersonFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.person.AddEditPersonViewModel" />
+            type="com.example.medihelper.presentation.feature.personsprofiles.AddEditPersonViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background='@{viewModel.personColorResIDLive, default="@color/colorPrimary"}'
+        android:background='@{viewModel.selectedColorId, default="@color/colorPrimary"}'
         android:fitsSystemWindows="true">
 
         <LinearLayout
@@ -33,7 +33,7 @@
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                 app:menu="@menu/toolbar_menu_add_edit"
                 app:navigationIcon="@drawable/round_close_24"
-                app:title='@{viewModel.titleLive, default="Dodaj osobę"}' />
+                app:title='@{viewModel.formTitle, default="Dodaj osobę"}' />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
@@ -74,19 +74,19 @@
                         android:layout_height="wrap_content"
                         android:text="Nazwa"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                        android:textColor='@{viewModel.personColorResIDLive, default="@color/colorPrimary"}' />
+                        android:textColor='@{viewModel.selectedColorId, default="@color/colorPrimary"}' />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/in_lay_person_name"
                         style="@style/Widget.Design.TextInputLayout"
-                        inLayError="@{viewModel.errorPersonNameLive}"
+                        inLayError="@{viewModel.personNameError}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@={viewModel.personNameLive}" />
+                            android:text="@={viewModel.personName}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -95,7 +95,7 @@
                         android:layout_marginTop="32dp"
                         android:text="Kolor profilu"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                        android:textColor='@{viewModel.personColorResIDLive, default="@color/colorPrimary"}' />
+                        android:textColor='@{viewModel.selectedColorId, default="@color/colorPrimary"}' />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_color"

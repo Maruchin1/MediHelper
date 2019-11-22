@@ -5,7 +5,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.authentication.LocalOrRemoteDataDialog" />
+            type="com.example.medihelper.presentation.feature.auth.LocalOrRemoteDataDialog" />
     </data>
 
     <LinearLayout

@@ -9,11 +9,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.medicine.AddEditMedicineViewModel" />
+            type="com.example.medihelper.presentation.feature.medikit.AddEditMedicineViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicine.AddEditMedicineFragment" />
+            type="com.example.medihelper.presentation.feature.medikit.AddEditMedicineFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -36,7 +36,7 @@
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                 app:menu="@menu/toolbar_menu_add_edit"
                 app:navigationIcon="@drawable/round_close_24"
-                app:title='@{viewModel.titleLive, default="Dodaj lek"}' />
+                app:title='@{viewModel.formTitle, default="Dodaj lek"}' />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -94,7 +94,7 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/in_lay"
                                 style="@style/Widget.Design.TextInputLayout"
-                                inLayError="@{viewModel.errorMedicineNameLive}"
+                                inLayError="@{viewModel.formErrorModel.errorMedicineName}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:hintEnabled="false">
@@ -105,7 +105,7 @@
                                     android:layout_height="wrap_content"
                                     android:hint="Nazwa leku"
                                     android:inputType="text"
-                                    android:text="@={viewModel.medicineNameLive}" />
+                                    android:text="@={viewModel.formModel.name}" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
@@ -143,7 +143,7 @@
                                         android:clickable="true"
                                         android:focusable="false"
                                         android:onClick="@{() -> handler.onClickSelectMedicineUnit()}"
-                                        android:text="@{viewModel.medicineUnitLive}"
+                                        android:text="@{viewModel.formModel.unit}"
                                         android:textAlignment="center" />
                                 </com.google.android.material.textfield.TextInputLayout>
                             </TableRow>
@@ -169,7 +169,7 @@
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:id="@+id/in_lay_expire_date"
                                     style="@style/Widget.Design.TextInputLayout"
-                                    inLayError="@{viewModel.errorExpireDateLive}"
+                                    inLayError="@{viewModel.formErrorModel.errorExpireDate}"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -182,7 +182,7 @@
                                         android:focusable="false"
                                         android:hint="Nie wybrano"
                                         android:onClick="@{() -> handler.onClickSelectExpireDate()}"
-                                        android:text='@{viewModel.expireDateLive.formatString}'
+                                        android:text='@{viewModel.formModel.expireDate.formatString}'
                                         android:textAlignment="center" />
                                 </com.google.android.material.textfield.TextInputLayout>
                             </TableRow>
@@ -240,7 +240,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="number"
-                                    android:text='@{viewModel.packageSizeLive}' />
+                                    android:text='@{viewModel.formModel.packageSize}' />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
@@ -259,7 +259,7 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Design.TextInputLayout"
-                                inLayError="@{viewModel.errorCurrStateLive}"
+                                inLayError="@{viewModel.formErrorModel.errorCurrState}"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -270,7 +270,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="number"
-                                    android:text='@{viewModel.currStateLive}' />
+                                    android:text='@{viewModel.formModel.currState}' />
                             </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
@@ -311,7 +311,7 @@
                             android:hint="Wprowadź swoje uwagi"
                             android:inputType="textMultiLine"
                             android:minLines="4"
-                            android:text="@={viewModel.commentsLive}" />
+                            android:text="@={viewModel.formModel.additionalInfo}" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -349,16 +349,17 @@
                             android:onClick="@{() -> handler.onClickTakePhoto()}"
                             android:src="@drawable/baseline_add_a_photo_black_36"
                             android:tint="@color/colorDarkerGray"
-                            android:visibility="@{viewModel.imageFileLive == null ? View.VISIBLE : View.GONE}" />
+                            android:visibility="@{viewModel.imageFile == null ? View.VISIBLE : View.GONE}" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/lay_image"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="@{viewModel.imageFileLive == null ? View.GONE : View.VISIBLE}">
+                            android:visibility="@{viewModel.imageFile == null ? View.GONE : View.VISIBLE}">
 
                             <ImageView
                                 android:id="@+id/img_photo"
+                                srcFile="@{viewModel.imageFile}"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:clickable="true"

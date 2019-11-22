@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.medicineplan.AddEditMedicinePlanViewModel" />
+            type="com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicineplan.durationtype.ContinuousFragment" />
+            type="com.example.medihelper.presentation.feature.plans.durationtype.ContinuousFragment" />
 
     </data>
 
@@ -42,7 +42,7 @@
                 android:hint="nie wybrano"
                 android:inputType="date"
                 android:onClick="@{() -> handler.onClickSelectDate()}"
-                android:text="@{viewModel.startDateLive.formatString}"
+                android:text="@{viewModel.medicinePlanForm.startDate.formatString}"
                 android:textAlignment="center" />
 
         </com.google.android.material.textfield.TextInputLayout>

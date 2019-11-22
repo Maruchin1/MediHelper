@@ -6,11 +6,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicine.MedicineDetailsFragment" />
+            type="com.example.medihelper.presentation.feature.medikit.MedicineDetailsFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.localdata.pojo.PersonItem" />
+            type="com.example.medihelper.presentation.model.PersonItem" />
     </data>
 
     <LinearLayout
@@ -21,7 +21,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_avatar"
-            cardBackgroundColorResID="@{displayData.personColorResId}"
+            cardBackgroundColorResID="@{displayData.colorId}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/colorPrimary"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:maxLines="1"
-            android:text='@{displayData.personName, default="Nazwa"}'
+            android:text='@{displayData.name, default="Nazwa"}'
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:textColor="@color/colorTextTertiary" />

@@ -9,11 +9,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.medicine.MedicineDetailsViewModel" />
+            type="com.example.medihelper.presentation.feature.medikit.MedicineDetailsViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicine.MedicineDetailsFragment" />
+            type="com.example.medihelper.presentation.feature.medikit.MedicineDetailsFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
         android:fitsSystemWindows="true"
-        tools:context=".mainapp.medicine.MedicineDetailsFragment">
+        tools:context=".presentation.feature.medikit.MedicineDetailsFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
@@ -41,7 +41,7 @@
 
                 <ImageView
                     android:id="@+id/img_medicine_picture"
-                    srcFile="@{viewModel.photoFileLive}"
+                    srcFile="@{viewModel.medicineDetails.image}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
@@ -96,7 +96,7 @@
                             android:layout_marginEnd="16dp"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text='@{viewModel.medicineDetailsLive.medicineName, default="Nazwa leku"}'
+                            android:text='@{viewModel.medicineDetails.name, default="Nazwa leku"}'
                             android:textAppearance="@style/AppTheme.Text.ToolbarTitle.Main"
                             android:textColor="@color/colorTextPrimary" />
 
@@ -120,7 +120,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="16dp"
-                                    android:text="@{viewModel.medicineDetailsLive.medicineUnit, default=tabletki}"
+                                    android:text="@{viewModel.medicineDetails.unit, default=tabletki}"
                                     android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
                             </TableRow>
 
@@ -136,7 +136,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="16dp"
-                                    android:text="@{viewModel.medicineDetailsLive.expireDate.formatString, default=data}"
+                                    android:text="@{viewModel.medicineDetails.expireDate.formatString, default=data}"
                                     android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
                             </TableRow>
                         </TableLayout>
@@ -166,7 +166,7 @@
                                 android:layout_height="wrap_content"
                                 android:onClick="@{() -> handler.onClickEdit()}"
                                 android:text="Edytuj"
-                                android:visibility="@{viewModel.isAppModeConnected() ? View.GONE : View.VISIBLE}"
+                                android:visibility="@{viewModel.appModeConnected ? View.GONE : View.VISIBLE}"
                                 app:chipIcon="@drawable/round_edit_black_24" />
 
                             <com.google.android.material.chip.Chip
@@ -175,7 +175,7 @@
                                 android:layout_height="wrap_content"
                                 android:onClick="@{() -> handler.onClickDelete()}"
                                 android:text="Usuń"
-                                android:visibility="@{viewModel.isAppModeConnected() ? View.GONE : View.VISIBLE}"
+                                android:visibility="@{viewModel.appModeConnected ? View.GONE : View.VISIBLE}"
                                 app:chipIcon="@drawable/round_delete_black_24" />
                         </com.google.android.material.chip.ChipGroup>
                     </LinearLayout>
@@ -188,7 +188,7 @@
                     android:layout_marginStart="@dimen/main_card_margin_start"
                     android:layout_marginTop="@dimen/main_card_margin_top"
                     android:layout_marginEnd="@dimen/main_card_margin_end"
-                    android:visibility="@{viewModel.medicineStateDataLive.stateAvailable ? View.VISIBLE : View.GONE}">
+                    android:visibility="@{viewModel.medicineDetails.stateData.stateAvailable ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -204,9 +204,9 @@
                             android:id="@+id/txv_curr_state_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.medicineStateDataLive.text, default=Stan}"
+                            android:text="@{viewModel.medicineDetails.stateData.text, default=Stan}"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor='@{viewModel.medicineStateDataLive.colorId, default="@color/colorStateGood"}'
+                            android:textColor='@{viewModel.medicineDetails.stateData.colorId, default="@color/colorStateGood"}'
                             android:textSize="16sp" />
 
                         <com.google.android.material.card.MaterialCardView
@@ -226,14 +226,14 @@
                                     android:id="@+id/line_state"
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
-                                    android:layout_weight="@{viewModel.medicineStateDataLive.stateWeight, default=7}"
-                                    android:background='@{viewModel.medicineStateDataLive.colorId, default="@android:color/holo_green_light"}' />
+                                    android:layout_weight="@{viewModel.medicineDetails.stateData.stateWeight, default=7}"
+                                    android:background='@{viewModel.medicineDetails.stateData.colorId, default="@android:color/holo_green_light"}' />
 
                                 <View
                                     android:id="@+id/line_empty"
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
-                                    android:layout_weight="@{viewModel.medicineStateDataLive.emptyWeight, default=3}"
+                                    android:layout_weight="@{viewModel.medicineDetails.stateData.emptyWeight, default=3}"
                                     android:background="@color/colorBackground" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
@@ -250,7 +250,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="4dp"
-                                android:text="@{viewModel.medicineStateDataLive.numberText, default=stan}"
+                                android:text="@{viewModel.medicineDetails.stateData.numberText, default=stan}"
                                 android:textAlignment="viewEnd"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                                 android:textColor="@color/colorTextTertiary" />
@@ -261,7 +261,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="4dp"
-                                android:text="@{viewModel.medicineDetailsLive.medicineUnit, default=typ}"
+                                android:text="@{viewModel.medicineDetails.unit, default=typ}"
                                 android:textAlignment="viewStart"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                                 android:textColor="@color/colorTextTertiary" />
@@ -276,7 +276,7 @@
                     android:layout_marginStart="@dimen/main_card_margin_start"
                     android:layout_marginTop="@dimen/main_card_margin_top"
                     android:layout_marginEnd="@dimen/main_card_margin_end"
-                    android:visibility="@{viewModel.isAppModeConnected() ? View.GONE : View.VISIBLE}">
+                    android:visibility="@{viewModel.appModeConnected ? View.GONE : View.VISIBLE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -293,7 +293,7 @@
                             android:layout_marginEnd="16dp"
                             android:text="Osoby przyjmujące lek"
                             android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle"
-                            android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                            android:textColor='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -306,7 +306,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:orientation="horizontal"
-                                android:visibility="@{viewModel.personItemListTakingMedicineAvailableLive ? View.VISIBLE : View.GONE}"
+                                android:visibility="@{viewModel.personItemListTakingMedicineAvailable ? View.VISIBLE : View.GONE}"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                                 tools:listitem="@layout/recycler_item_person_taking_medicine" />
 
@@ -317,7 +317,7 @@
                                 android:layout_marginEnd="16dp"
                                 android:text="Lek nie jest przyjmowany przez żadną osobę"
                                 android:textAppearance="@style/MedicineDetailFragment.Text.Body2"
-                                android:visibility="@{viewModel.personItemListTakingMedicineAvailableLive ? View.GONE : View.VISIBLE, default=gone}" />
+                                android:visibility="@{viewModel.personItemListTakingMedicineAvailable ? View.GONE : View.VISIBLE, default=gone}" />
                         </FrameLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -346,7 +346,7 @@
                             android:layout_height="wrap_content"
                             android:text="Dodatkowe informacje"
                             android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle"
-                            android:textColor='@{viewModel.colorPrimaryLive, default="@color/colorPrimary"}' />
+                            android:textColor='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -357,16 +357,16 @@
                                 android:id="@+id/txv_extra_info"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text='@{viewModel.medicineDetailsLive.additionalInfo, default=informacje}'
+                                android:text='@{viewModel.medicineDetails.additionalInfo, default=informacje}'
                                 android:textAppearance="@style/MedicineDetailFragment.Text.Body1"
-                                android:visibility="@{viewModel.additionalInfoAvailableLive ? View.VISIBLE : View.GONE}" />
+                                android:visibility="@{viewModel.medicineDetails.additionalInfoAvailable ? View.VISIBLE : View.GONE}" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Brak dodatkowych informacji"
                                 android:textAppearance="@style/MedicineDetailFragment.Text.Body2"
-                                android:visibility="@{viewModel.additionalInfoAvailableLive ? View.GONE : View.VISIBLE, default=gone}" />
+                                android:visibility="@{viewModel.medicineDetails.additionalInfoAvailable ? View.GONE : View.VISIBLE, default=gone}" />
                         </FrameLayout>
                     </LinearLayout>
 

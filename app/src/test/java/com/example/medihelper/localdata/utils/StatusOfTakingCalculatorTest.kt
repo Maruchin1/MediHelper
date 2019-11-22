@@ -1,9 +1,9 @@
 package com.example.medihelper.localdata.utils
 
-import com.example.medihelper.localdata.type.AppDate
-import com.example.medihelper.localdata.type.AppTime
-import com.example.medihelper.localdata.type.StatusOfTaking
-import com.example.medihelper.utility.StatusOfTakingCalculator
+import com.example.medihelper.domain.entities.AppDate
+import com.example.medihelper.domain.entities.AppTime
+import com.example.medihelper.domain.entities.StatusOfTaking
+import com.example.medihelper.domain.utils.StatusOfTakingCalculator
 import com.google.common.truth.Truth
 import org.junit.After
 import org.junit.Before

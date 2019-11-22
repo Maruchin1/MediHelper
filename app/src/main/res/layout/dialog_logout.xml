@@ -5,11 +5,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.options.LogoutDialog" />
+            type="com.example.medihelper.presentation.feature.options.LogoutDialog" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.options.OptionsViewModel" />
+            type="com.example.medihelper.presentation.feature.options.OptionsViewModel" />
     </data>
 
 

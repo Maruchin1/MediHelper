@@ -11,7 +11,7 @@
         android:title="Plany" />
 
     <item
-        android:id="@+id/medicinesFragment"
+        android:id="@+id/medicinesListFragment"
         android:icon="@drawable/ic_pill_black_48dp"
         android:title="Apteczka" />
 

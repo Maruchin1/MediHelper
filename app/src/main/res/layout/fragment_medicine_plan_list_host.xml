@@ -7,11 +7,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.medicineplan.MedicinePlanListHostFragment" />
+            type="com.example.medihelper.presentation.feature.plans.MedicinePlanListHostFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.mainapp.medicineplan.MedicinePlanListViewModel" />
+            type="com.example.medihelper.presentation.feature.plans.MedicinePlanListViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -20,13 +20,13 @@
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
         android:fitsSystemWindows="true"
-        tools:context=".mainapp.medicineplan.MedicinePlanListHostFragment">
+        tools:context=".presentation.feature.plans.MedicinePlanListHostFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@{viewModel.colorPrimaryLive}">
+            android:background="@{viewModel.colorPrimaryId}">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text='@{viewModel.selectedPersonItemLive.personName, default="Nazwa  osoby"}'
+                    android:text='@{viewModel.currPersonItem.name, default="Nazwa  osoby"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:textColor="@color/colorWhite"
                     app:layout_constraintBottom_toBottomOf="@id/card_avatar"
@@ -81,7 +81,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:clickable="@{viewModel.isAppModeConnectedLive() ? false : true}"
+                    android:clickable="@{viewModel.appModeConnected ? false : true}"
                     android:focusable="true"
                     android:onClick="@{() -> handler.onClickSelectPerson()}"
                     app:layout_constraintBottom_toBottomOf="@id/card_avatar"
@@ -116,14 +116,14 @@
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            fabBackgroundColor="@{viewModel.colorPrimaryLive}"
+            fabBackgroundColor="@{viewModel.colorPrimaryId}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:onClick="@{() -> handler.onClickAddMedicinePlan()}"
             android:src="@drawable/round_add_white_48"
-            android:visibility="@{viewModel.isAppModeConnectedLive() ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.appModeConnected ? View.GONE : View.VISIBLE}"
             app:backgroundTint="@color/colorPrimary"
             app:iconTint="@color/colorWhite"
             app:tint="@color/colorWhite" />

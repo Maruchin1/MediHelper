@@ -8,11 +8,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.schedule.ScheduleDayFragment" />
+            type="com.example.medihelper.presentation.feature.calendar.CalendarDayFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.localdata.pojo.PlannedMedicineItem" />
+            type="com.example.medihelper.presentation.model.PlannedMedicineItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

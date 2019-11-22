@@ -5,7 +5,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.mainapp.dialog.SelectDateDialog" />
+            type="com.example.medihelper.presentation.dialogs.SelectDateDialog" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
