@@ -62,13 +62,14 @@ class AddEditMedicinePlanViewModel(
             editMedicinePlanId = args.editMedicinePlanID
             _formTitle.postValue("Edytuj plan")
             val editMedicinePlan = medicinePlanUseCases.getMedicinePlanById(args.editMedicinePlanID)
+            selectedMedicineId.postValue(editMedicinePlan.medicineId)
+
             val editMedicinePlanForm = MedicinePlanForm(editMedicinePlan)
             _medicinePlanForm.postValue(editMedicinePlanForm)
             _timeDoseFormItemList.postValue(editMedicinePlan.timeDoseList.map {
                 TimeDoseFormItem(timeDose = it, medicineUnit = selectedMedicineShortInfo.value?.unit)
             }.toMutableList())
             _daysOfWeekFormItem.postValue(editMedicinePlan.daysOfWeek?.let { DaysOfWeekFormItem(it) })
-            selectedMedicineId.postValue(editMedicinePlan.medicineId)
         } else {
             _medicinePlanForm.postValue(getEmptyForm())
             _timeDoseFormItemList.postValue(
@@ -80,8 +81,19 @@ class AddEditMedicinePlanViewModel(
                     )
                 )
             )
-            selectedMedicineId.postValue(null)
         }
+    }
+
+    fun refreshTimeDoseList(medicineUnit: String) {
+        val currList = _timeDoseFormItemList.value
+        val refreshedList = currList?.map {
+            TimeDoseFormItem(
+                time = it.time,
+                doseSize = it.doseSize,
+                medicineUnit = medicineUnit
+            )
+        }
+        _timeDoseFormItemList.value = refreshedList?.toMutableList()
     }
 
     fun addTimeOfTaking() {

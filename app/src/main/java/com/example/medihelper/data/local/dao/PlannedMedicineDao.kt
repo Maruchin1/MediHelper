@@ -32,7 +32,7 @@ interface PlannedMedicineDao {
     suspend fun getRemoteIdById(id: Int): Long?
 
     @Query("SELECT planned_medicine_remote_id FROM planned_medicines WHERE medicine_plan_id = :id AND planned_date >= :date")
-    suspend fun getRemoteIdListFromDateByMedicinePlanId(date: AppDate, id: Int): List<Long>
+    suspend fun getRemoteIdListFromDateByMedicinePlanId(date: AppDate, id: Int): List<Long?>
 
     @Query("SELECT * FROM planned_medicines")
     suspend fun getAllList(): List<PlannedMedicineEntity>

@@ -155,8 +155,8 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
                 Snackbar.make(root_lay, errorMessage, Snackbar.LENGTH_SHORT).show()
             }
         })
-        viewModel.selectedMedicineAvailable.observe(viewLifecycleOwner, Observer {
-            timeOfTakingAdapter.notifyDataSetChanged()
+        viewModel.selectedMedicineShortInfo.observe(viewLifecycleOwner, Observer {
+            viewModel.refreshTimeDoseList(it.unit)
         })
     }
 

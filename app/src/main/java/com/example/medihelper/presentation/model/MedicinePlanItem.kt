@@ -1,5 +1,6 @@
 package com.example.medihelper.presentation.model
 
+import androidx.lifecycle.LiveData
 import com.example.medihelper.domain.entities.*
 
 data class MedicinePlanItem(
@@ -8,12 +9,12 @@ data class MedicinePlanItem(
     val medicineName: String,
     val durationType: String,
     val daysType: String?,
-    val isAppModeConnected: Boolean
+    val isAppModeConnected: LiveData<Boolean>
 ) {
     constructor(
         medicinePlanWithMedicine: MedicinePlanWithMedicine,
         colorPrimaryId: Int,
-        isAppModeConnected: Boolean
+        isAppModeConnected: LiveData<Boolean>
     ) : this(
         medicinePlanId = medicinePlanWithMedicine.medicinePlanId,
         colorPrimaryId = colorPrimaryId,

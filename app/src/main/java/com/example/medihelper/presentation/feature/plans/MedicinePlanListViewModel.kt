@@ -61,7 +61,7 @@ class MedicinePlanListViewModel(
         MedicinePlanItem(
             medicinePlanWithMedicine = it,
             colorPrimaryId = colorPrimaryId.value!!,
-            isAppModeConnected = isAppModeConnected.value!!
+            isAppModeConnected = isAppModeConnected
         )
     }
 }

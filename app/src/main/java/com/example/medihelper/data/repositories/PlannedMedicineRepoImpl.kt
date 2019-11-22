@@ -41,8 +41,10 @@ class PlannedMedicineRepoImpl(
 
     override suspend fun deleteFromDateByMedicinePlanId(date: AppDate, medicinePlanId: Int) {
         val remoteIdList = plannedMedicineDao.getRemoteIdListFromDateByMedicinePlanId(date, medicinePlanId)
-        remoteIdList.forEach {
-            deletedHistory.addToPlannedMedicineHistory(it)
+        remoteIdList.forEach { remoteId ->
+            if (remoteId != null) {
+                deletedHistory.addToPlannedMedicineHistory(remoteId)
+            }
         }
         plannedMedicineDao.deleteFromDateByMedicinePlanId(date, medicinePlanId)
     }
