@@ -24,7 +24,7 @@ class AddEditPersonFragment : AppFullScreenDialog() {
     private val args: AddEditPersonFragmentArgs by navArgs()
 
     fun onClickSelectColor(colorResID: Int) {
-        viewModel.personForm.value?.colorId = colorResID
+        viewModel.selectedColorId.value = colorResID
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

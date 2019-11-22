@@ -88,5 +88,8 @@ class OptionsFragment : Fragment() {
         viewModel.actionCancelPatronConnectComplete.observe(viewLifecycleOwner, Observer {
             mainActivity.restartApp()
         })
+        viewModel.colorPrimary.observe(viewLifecycleOwner, Observer { colorId ->
+            colorId?.let { mainActivity.setMainColor(it) }
+        })
     }
 }

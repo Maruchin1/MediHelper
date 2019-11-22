@@ -25,6 +25,8 @@ class MedicinesListFragment : Fragment() {
 
     private val viewModel: MedicinesListViewModel by viewModel()
     private val directions by lazyOf(MedicinesListFragmentDirections)
+    private val mainActivity: MainActivity
+        get() = requireActivity() as MainActivity
 
     fun onClickOpenMedicineDetails(medicineID: Int) = findNavController().navigate(
         directions.toMedicineDetailsFragment(medicineID)
@@ -66,7 +68,7 @@ class MedicinesListFragment : Fragment() {
             adapter.updateItemsList(medicineItemList)
         })
         viewModel.colorPrimary.observe(viewLifecycleOwner, Observer { colorResId ->
-            colorResId?.let { (requireActivity() as MainActivity).setMainColor(it) }
+            colorResId?.let { mainActivity.setMainColor(it) }
         })
     }
 

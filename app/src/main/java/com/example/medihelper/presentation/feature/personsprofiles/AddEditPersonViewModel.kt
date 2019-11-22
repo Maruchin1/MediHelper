@@ -5,8 +5,6 @@ import com.example.medihelper.presentation.framework.FieldMutableLiveData
 import com.example.medihelper.domain.entities.PersonInputData
 import com.example.medihelper.domain.usecases.PersonUseCases
 import com.example.medihelper.presentation.model.PersonColorCheckboxData
-import com.example.medihelper.presentation.model.PersonForm
-import com.example.medihelper.presentation.model.PersonFormError
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -15,27 +13,26 @@ class AddEditPersonViewModel(
 ) : ViewModel() {
 
     val personColorCheckboxDataList: LiveData<List<PersonColorCheckboxData>>
+    val personName = MutableLiveData<String>()
+    val selectedColorId = MutableLiveData<Int>()
 
     val formTitle: LiveData<String>
         get() = _formTitle
-    val personForm: MutableLiveData<PersonForm>
-        get() = _personForm
-    val personFormError: LiveData<PersonFormError>
-        get() = _personFormError
+    val personNameError: LiveData<String>
+        get() = _personNameError
 
     private val _formTitle = MutableLiveData<String>("Dodaj osobę")
-    private val _personFormError = FieldMutableLiveData<PersonFormError>()
-    private var _personForm = FieldMutableLiveData<PersonForm>()
+    private val _personNameError = MutableLiveData<String>()
 
     private val personColorIdList: List<Int> = personUseCases.getColorIdList()
     private var editPersonId: Int? = null
 
     init {
-        personColorCheckboxDataList = Transformations.map(_personForm) { form ->
+        personColorCheckboxDataList = Transformations.map(selectedColorId) { selectedColorId ->
             personColorIdList.map { colorId ->
                 PersonColorCheckboxData(
                     colorId = colorId,
-                    selected = colorId == form.colorId
+                    selected = colorId == selectedColorId
                 )
             }
         }
@@ -46,11 +43,11 @@ class AddEditPersonViewModel(
             editPersonId = args.editPersonID
             _formTitle.postValue("Edytuj osobę")
             val editPerson = personUseCases.getPersonById(args.editPersonID)
-            val editPersonForm = PersonForm(_name = editPerson.name, _colorId = editPerson.colorId)
-            _personForm.postValue(editPersonForm)
+            personName.postValue(editPerson.name)
+            selectedColorId.postValue(editPerson.colorId)
         } else {
-            val cleanForm = PersonForm(_name = null, _colorId = personColorIdList[0])
-            _personForm.postValue(cleanForm)
+            personName.postValue(null)
+            selectedColorId.postValue(personColorIdList[0])
         }
     }
 
@@ -59,8 +56,8 @@ class AddEditPersonViewModel(
         if (isFormValid()) {
             val personId = editPersonId
             val inputData = PersonInputData(
-                name = personForm.value!!.name!!,
-                colorId = personForm.value!!.colorId
+                name = personName.value!!,
+                colorId = selectedColorId.value!!
             )
             if (personId == null) {
                 GlobalScope.launch {
@@ -77,13 +74,13 @@ class AddEditPersonViewModel(
     }
 
     private fun isFormValid(): Boolean {
-        val name = _personForm.value?.name
+        val name = personName.value
 
         val nameError = if (name.isNullOrEmpty()) {
             "Pole jest wymagane"
         } else null
 
-        _personFormError.value?.errorName = nameError
+        personName.postValue(nameError)
 
         return nameError == null
     }
