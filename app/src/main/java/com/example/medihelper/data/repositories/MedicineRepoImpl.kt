@@ -17,6 +17,10 @@ class MedicineRepoImpl(
     private val imagesFiles: ImagesFiles
 ) : MedicineRepo {
 
+    init {
+        checkDefaultUnitList()
+    }
+
     override suspend fun insert(medicine: Medicine) {
         val permaFileName = if (medicine.image != null) {
             imagesFiles.saveTempImageFileAsPerma(medicine.name, medicine.image)
@@ -89,4 +93,12 @@ class MedicineRepoImpl(
     override fun saveUnitList(list: List<String>) {
         sharedPref.saveMedicineUnitList(list)
     }
+
+    private fun checkDefaultUnitList() = with(sharedPref) {
+        if (getMedicineUnitList().isNullOrEmpty()) {
+            saveMedicineUnitList(getDefaultUnitList())
+        }
+    }
+
+    private fun getDefaultUnitList() = listOf("dawki", "pigułki", "ml", "g", "mg", "krople")
 }

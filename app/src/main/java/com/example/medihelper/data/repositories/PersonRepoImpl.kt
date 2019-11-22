@@ -2,6 +2,7 @@ package com.example.medihelper.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.example.medihelper.R
 import com.example.medihelper.data.local.DeletedHistory
 import com.example.medihelper.data.local.SharedPref
 import com.example.medihelper.data.local.dao.PersonDao
@@ -15,6 +16,9 @@ class PersonRepoImpl(
     private val deletedHistory: DeletedHistory
 ) : PersonRepo {
 
+    init {
+        checkDefaultColorIdList()
+    }
 
     override suspend fun insert(person: Person) {
         val newEntity = PersonEntity(person = person)
@@ -80,4 +84,21 @@ class PersonRepoImpl(
         return sharedPref.getPersonColorIdList()
     }
 
+    private fun checkDefaultColorIdList() = with(sharedPref) {
+        if (getPersonColorIdList().isNullOrEmpty()) {
+            savePersonColorIdList(getDefaultColorIdList())
+        }
+    }
+
+    private fun getDefaultColorIdList() = listOf(
+        R.color.colorPersonBlue,
+        R.color.colorPersonBrown,
+        R.color.colorPersonCyan,
+        R.color.colorPersonGray,
+        R.color.colorPersonLightGreen,
+        R.color.colorPersonOrange,
+        R.color.colorPersonPurple,
+        R.color.colorPersonRed,
+        R.color.colorPersonYellow
+    )
 }
