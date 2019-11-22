@@ -2,7 +2,6 @@ package com.example.medihelper.presentation.feature
 
 import android.content.Intent
 import android.content.res.ColorStateList
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -12,12 +11,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
 import com.example.medihelper.domain.usecases.ServerConnectionUseCases
 import com.example.medihelper.presentation.feature.launcher.LauncherActivity
+import com.example.medihelper.presentation.framework.BaseActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private val serverConnectionUseCases: ServerConnectionUseCases by inject()
 

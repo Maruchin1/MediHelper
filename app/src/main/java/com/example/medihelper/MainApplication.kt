@@ -1,8 +1,11 @@
 package com.example.medihelper
 
 
+import android.app.Activity
 import android.app.Application
 import com.example.medihelper.data.di.*
+import com.example.medihelper.device.di.cameraModule
+import com.example.medihelper.device.di.deviceApiModule
 import com.example.medihelper.domain.entities.AppMode
 import com.example.medihelper.domain.usecases.ServerConnectionUseCases
 import com.example.medihelper.presentation.di.domainUtilsModule
@@ -21,6 +24,7 @@ import org.koin.core.module.Module
 
 class MainApplication : Application() {
 
+    var currActivity: Activity? = null
     private val serverConnectionUseCases: ServerConnectionUseCases by inject()
 
     private val dataModules: List<Module> by lazy {
@@ -31,6 +35,12 @@ class MainApplication : Application() {
             remoteDataModule,
             syncModule,
             repositoryModule
+        )
+    }
+    private val deviceModules: List<Module> by lazy {
+        listOf(
+            cameraModule,
+            deviceApiModule
         )
     }
     private val presentationModules: List<Module> by lazy {
@@ -48,7 +58,7 @@ class MainApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
-            modules(dataModules + presentationModules)
+            modules(dataModules + deviceModules + presentationModules)
         }
         runBlocking {
             val currAppMode = serverConnectionUseCases.getAppMode()

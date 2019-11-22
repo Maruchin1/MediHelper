@@ -54,7 +54,7 @@ class PersonUseCases(
 
     suspend fun getPersonById(id: Int): Person = personRepo.getById(id)
 
-    suspend fun isMainPersonExists(): Boolean = personRepo.getMainId() != null
+    suspend fun mainPersonExists(): Boolean = personRepo.getMainId() != null
 
     fun getPersonLiveById(id: Int) = personRepo.getLiveById(id)
 

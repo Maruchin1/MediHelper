@@ -1,12 +1,5 @@
 package com.example.medihelper.presentation.feature.medikit
 
-import android.Manifest
-import android.app.Activity
-import android.content.Context
-import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +10,7 @@ import com.example.medihelper.presentation.model.MedicineForm
 import com.example.medihelper.presentation.model.MedicineFormError
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
 
 class AddEditMedicineViewModel(
     private val medicineUseCases: MedicineUseCases
@@ -28,11 +22,14 @@ class AddEditMedicineViewModel(
         get() = _formTitle
     val formErrorModel: LiveData<MedicineFormError>
         get() = _formErrorModel
+    val imageFile: LiveData<File>
+        get() = _imageFile
 
     private val _formTitle = MutableLiveData<String>("Dodaj lek")
     private val _formErrorModel =
         FieldMutableLiveData<MedicineFormError>()
     private var _formModel = FieldMutableLiveData<MedicineForm>()
+    private val _imageFile = MutableLiveData<File>()
 
     private val medicineUnitList: List<String> = medicineUseCases.getMedicineUnitList()
     private var editMedicineId: Int? = null
@@ -44,6 +41,7 @@ class AddEditMedicineViewModel(
             val editMedicine = medicineUseCases.getMedicineById(args.editMedicineId)
             val editMedicineForm = MedicineForm(editMedicine)
             _formModel.postValue(editMedicineForm)
+            _imageFile.postValue(editMedicine.image)
         } else {
             _formModel.postValue(getEmptyForm())
         }
@@ -52,7 +50,7 @@ class AddEditMedicineViewModel(
     fun saveMedicine(): Boolean {
         if (isFormValid()) {
             val medicineId = editMedicineId
-            val inputData = formModel.value!!.toInputData()
+            val inputData = formModel.value!!.toInputData(_imageFile.value)
             if (medicineId == null) {
                 GlobalScope.launch {
                     medicineUseCases.addNewMedicine(inputData)
@@ -67,25 +65,8 @@ class AddEditMedicineViewModel(
         return false
     }
 
-    //todo wyodrębnić te trzy do pakietu device
-    fun isCameraPermissionGranted(context: Context): Boolean {
-        return ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    fun askForCameraPermission(activity: Activity, requestCode: Int) {
-        ActivityCompat.requestPermissions(
-            activity,
-            arrayOf(Manifest.permission.CAMERA),
-            requestCode
-        )
-    }
-
-    fun capturePhoto(fragment: Fragment) {
-//        val captureIntent = medicineService.getTempImageCaptureIntent(imageFileLive)
-//        fragment.startActivity(captureIntent)
+    fun capturePhoto() {
+        medicineUseCases.captureMedicinePhoto(_imageFile)
     }
 
     private fun isFormValid(): Boolean {
@@ -119,7 +100,6 @@ class AddEditMedicineViewModel(
         _expireDate = null,
         _packageSize = null,
         _currState = null,
-        _additionalInfo = null,
-        _image = null
+        _additionalInfo = null
     )
 }

@@ -56,7 +56,7 @@ class MedicinePlanListViewModel(
         medicinePlanType: MedicinePlanType
     ) = list.filter { medicinePlanWithMedicine ->
         val currDate = dateTimeUseCases.getCurrDate()
-        medicinePlanWithMedicine.getType(currDate) == medicinePlanType
+        medicinePlanWithMedicine.getPlanType(currDate) == medicinePlanType
     }.map {
         MedicinePlanItem(
             medicinePlanWithMedicine = it,

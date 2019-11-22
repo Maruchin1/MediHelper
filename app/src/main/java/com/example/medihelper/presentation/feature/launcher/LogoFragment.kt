@@ -34,7 +34,7 @@ class LogoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         runBlocking {
-            if (!personUseCases.isMainPersonExists()) {
+            if (!personUseCases.mainPersonExists()) {
                 Handler().postDelayed({
                     launcherActivity.setLightStatusBar()
                     circularHideBackground()

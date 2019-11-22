@@ -39,7 +39,7 @@ data class MedicineEntity(
     @ColumnInfo(name = "medicine_synchronized")
     var medicineSynchronized: Boolean
 ) {
-    constructor(medicine: Medicine) : this(
+    constructor(medicine: Medicine, permaFileName: String?) : this(
         medicineId = 0,
         medicineRemoteId = null,
         medicineName = medicine.name,
@@ -48,18 +48,18 @@ data class MedicineEntity(
         packageSize = medicine.packageSize,
         currState = medicine.currState,
         additionalInfo = medicine.additionalInfo,
-        imageName = medicine.image?.name,
+        imageName = permaFileName,
         medicineSynchronized = false
     )
 
-    fun update(medicine: Medicine) {
+    fun update(medicine: Medicine, permaFileName: String?) {
         medicineName = medicine.name
         medicineUnit = medicine.unit
         expireDate = medicine.expireDate
         packageSize = medicine.packageSize
         currState = medicine.currState
         additionalInfo = medicine.additionalInfo
-        imageName = medicine.image?.name
+        imageName = permaFileName
         medicineSynchronized = false
     }
 

@@ -19,21 +19,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class AddEditMedicineFragment : AppFullScreenDialog() {
     private val TAG = "AddEditMedicineFragment"
 
-    companion object {
-        const val PERMISSION_REQUEST_CAMERA = 1
-    }
-
     private val viewModel: AddEditMedicineViewModel by viewModel()
     private val args: AddEditMedicineFragmentArgs by navArgs()
 
     fun onClickTakePhoto() {
-        if (viewModel.isCameraPermissionGranted(requireContext())) {
-            viewModel.capturePhoto(this)
-        } else {
-            viewModel.askForCameraPermission(requireActivity(),
-                PERMISSION_REQUEST_CAMERA
-            )
-        }
+        viewModel.capturePhoto()
     }
 
     fun onClickSelectExpireDate() = SelectExpireDateDialog().apply {

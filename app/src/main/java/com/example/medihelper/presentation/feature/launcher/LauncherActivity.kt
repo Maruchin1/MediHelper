@@ -8,8 +8,9 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.example.medihelper.R
 import com.example.medihelper.presentation.feature.MainActivity
+import com.example.medihelper.presentation.framework.BaseActivity
 
-class LauncherActivity : AppCompatActivity() {
+class LauncherActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

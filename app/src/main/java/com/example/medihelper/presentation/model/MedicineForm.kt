@@ -14,8 +14,7 @@ data class MedicineForm(
     private var _expireDate: AppExpireDate?,
     private var _packageSize: Float?,
     private var _currState: Float?,
-    private var _additionalInfo: String?,
-    private var _image: File?
+    private var _additionalInfo: String?
 ) : BaseObservable() {
 
     var name: String?
@@ -60,24 +59,16 @@ data class MedicineForm(
             notifyPropertyChanged(BR.additionalInfo)
         }
 
-    var image: File?
-        @Bindable get() = _image
-        set(value) {
-            _image = value
-            notifyPropertyChanged(BR.image)
-        }
-
     constructor(medicine: Medicine) : this(
         _name = medicine.name,
         _unit = medicine.unit,
         _expireDate = medicine.expireDate,
         _packageSize = medicine.packageSize,
         _currState = medicine.currState,
-        _additionalInfo = medicine.additionalInfo,
-        _image = medicine.image
+        _additionalInfo = medicine.additionalInfo
     )
 
-    fun toInputData() = MedicineInputData(
+    fun toInputData(image: File?) = MedicineInputData(
         name = name!!,
         unit = unit,
         expireDate = expireDate!!,

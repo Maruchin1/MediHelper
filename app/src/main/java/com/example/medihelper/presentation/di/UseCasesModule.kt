@@ -5,10 +5,13 @@ import org.koin.dsl.module
 
 val useCasesModule = module {
     single {
-        DateTimeUseCases()
+        DateTimeUseCases(calendarApi = get())
     }
     single {
-        MedicineUseCases(medicineRepo = get())
+        MedicineUseCases(
+            medicineRepo = get(),
+            cameraApi = get()
+        )
     }
     single {
         PersonUseCases(personRepo = get())

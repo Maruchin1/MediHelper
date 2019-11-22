@@ -349,17 +349,17 @@
                             android:onClick="@{() -> handler.onClickTakePhoto()}"
                             android:src="@drawable/baseline_add_a_photo_black_36"
                             android:tint="@color/colorDarkerGray"
-                            android:visibility="@{viewModel.formModel.image == null ? View.VISIBLE : View.GONE}" />
+                            android:visibility="@{viewModel.imageFile == null ? View.VISIBLE : View.GONE}" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/lay_image"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="@{viewModel.formModel.image == null ? View.GONE : View.VISIBLE}">
+                            android:visibility="@{viewModel.imageFile == null ? View.GONE : View.VISIBLE}">
 
                             <ImageView
                                 android:id="@+id/img_photo"
-                                srcFile="@{viewModel.formModel.image}"
+                                srcFile="@{viewModel.imageFile}"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:clickable="true"

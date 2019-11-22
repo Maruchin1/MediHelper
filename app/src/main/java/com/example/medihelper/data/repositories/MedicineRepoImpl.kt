@@ -18,13 +18,31 @@ class MedicineRepoImpl(
 ) : MedicineRepo {
 
     override suspend fun insert(medicine: Medicine) {
-        val newEntity = MedicineEntity(medicine = medicine)
+        val permaFileName = if (medicine.image != null) {
+            imagesFiles.saveTempImageFileAsPerma(medicine.name, medicine.image)
+        } else null
+
+        val newEntity = MedicineEntity(medicine = medicine, permaFileName = permaFileName)
         medicineDao.insert(newEntity)
     }
 
     override suspend fun update(medicine: Medicine) {
+        val permaFileName = if (medicine.image == null) {
+            null
+        } else if (!imagesFiles.isTempFile(medicine.image)) {
+            medicine.image.name
+        } else {
+            imagesFiles.saveTempImageFileAsPerma(medicine.name, medicine.image)
+        }
+
         val existingEntity = medicineDao.getById(medicine.medicineId)
-        existingEntity.update(medicine)
+        val existingImageName = existingEntity.imageName
+        if (existingImageName != null && existingImageName != permaFileName) {
+            val existingFile = imagesFiles.getImageFile(existingImageName)
+            existingFile.delete()
+        }
+
+        existingEntity.update(medicine, permaFileName)
         medicineDao.update(existingEntity)
     }
 

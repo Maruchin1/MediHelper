@@ -13,23 +13,12 @@ import java.util.*
 class ImagesFiles(private val context: Context) {
 
     private val internalFilesDir = context.filesDir
-    private val externalPicturesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
     fun getImageFile(imageName: String) = File(internalFilesDir, imageName)
 
-    fun getTempImageCaptureIntent(capturedFileLive: MutableLiveData<File>): Intent {
-        return Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
-            intent.resolveActivity(context.packageManager)?.also {
-                val tempImageFile = createTempImageFile()
-                capturedFileLive.postValue(tempImageFile)
-                val photoURI = FileProvider.getUriForFile(
-                    context,
-                    "com.example.medihelper.fileprovider",
-                    tempImageFile
-                )
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-            }
-        }
+    fun isTempFile(image: File): Boolean {
+        val imageName = image.name
+        return imageName.contains("TMP")
     }
 
     fun saveTempImageFileAsPerma(medicineName: String, tempFile: File): String {
@@ -37,12 +26,5 @@ class ImagesFiles(private val context: Context) {
         val file = File(internalFilesDir, fileName)
         tempFile.copyTo(file)
         return fileName
-    }
-
-    private fun createTempImageFile(): File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        return File.createTempFile("TMP_${timeStamp}", ".jpg", externalPicturesDir).apply {
-            deleteOnExit()
-        }
     }
 }

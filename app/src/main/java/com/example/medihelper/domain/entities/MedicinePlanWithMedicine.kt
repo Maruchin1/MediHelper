@@ -12,5 +12,19 @@ data class MedicinePlanWithMedicine(
     val intervalOfDays: Int?,
     val timeDoseList: List<TimeDose>
 ) {
-    fun getType(currDate: AppDate) = MedicinePlanType.getType(durationType, startDate, endDate, currDate)
+    fun getPlanType(currDate: AppDate) = when(durationType) {
+        DurationType.ONCE -> {
+            when {
+                currDate > startDate -> MedicinePlanType.ENDED
+                else -> MedicinePlanType.ONGOING
+            }
+        }
+        DurationType.PERIOD -> {
+            when {
+                currDate > endDate!! -> MedicinePlanType.ENDED
+                else -> MedicinePlanType.ONGOING
+            }
+        }
+        DurationType.CONTINUOUS -> MedicinePlanType.ONGOING
+    }
 }
