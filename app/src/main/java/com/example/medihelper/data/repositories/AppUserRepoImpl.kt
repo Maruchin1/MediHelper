@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.work.*
+import com.example.medihelper.MainApplication
+import com.example.medihelper.data.di.roomMainModule
+import com.example.medihelper.data.di.roomTestModule
 import com.example.medihelper.data.local.DeletedHistory
 import com.example.medihelper.data.local.SharedPref
 import com.example.medihelper.data.local.dao.MedicineDao
@@ -24,6 +27,8 @@ import com.example.medihelper.data.sync.ConnectedPersonSyncWorker
 import com.example.medihelper.data.sync.LoggedUserSyncWorker
 import com.example.medihelper.data.sync.ServerSyncWorker
 import org.koin.core.KoinComponent
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.unloadKoinModules
 import org.koin.core.get
 
 class AppUserRepoImpl(
@@ -36,6 +41,9 @@ class AppUserRepoImpl(
 ) : AppUserRepo, KoinComponent {
 
     private class AuthTokenNotAvailableException : Exception("AuthToken not available")
+
+    private val mainApp: MainApplication
+        get() = context.applicationContext as MainApplication
 
     override fun getAppMode(): AppMode {
         val authToken = sharedPref.getAuthToken()
@@ -65,7 +73,8 @@ class AppUserRepoImpl(
     }
 
     override fun enqueueServerSync() {
-        val syncWorkBuilder = when (getAppMode()) {
+        val appMode = getAppMode()
+        val syncWorkBuilder = when (appMode) {
             AppMode.LOGGED -> OneTimeWorkRequestBuilder<LoggedUserSyncWorker>()
             AppMode.CONNECTED -> OneTimeWorkRequestBuilder<ConnectedPersonSyncWorker>()
             else -> null
@@ -117,9 +126,8 @@ class AppUserRepoImpl(
             val connectedPersonDto = authenticationApi.patronConnect(connectionKey)
             sharedPref.saveAuthToken(connectedPersonDto.authToken)
             sharedPref.deleteUserEmail()
-            switchToConnectedDatabase()
+            mainApp.reloadKoin()
             initConnectedPersonDatabase(connectedPersonDto)
-            enqueueServerSync()
             ApiResponse.OK
         } catch (ex: Exception) {
             ex.printStackTrace()
@@ -189,51 +197,6 @@ class AppUserRepoImpl(
         sharedPref.deleteAuthToken()
         medicineDao.deleteAll()
         personDao.deleteAll()
-        switchToMainDatabase()
-    }
-
-    private fun switchToConnectedDatabase() {
-        //todo dopisać przełączanie
-//        unloadKoinModules(
-//            listOf(
-//                viewModelModule,
-//                serviceModule,
-//                remoteDataModule,
-//                localDataModule,
-//                mainRoomModule
-//            )
-//        )
-//        loadKoinModules(
-//            listOf(
-//                connectedRoomModule,
-//                localDataModule,
-//                remoteDataModule,
-//                serviceModule,
-//                viewModelModule
-//            )
-//        )
-    }
-
-    private fun switchToMainDatabase() {
-        //todo dopisać przełączanie
-//        unloadKoinModules(
-//            listOf(
-//                viewModelModule,
-//                serviceModule,
-//                remoteDataModule,
-//                localDataModule,
-//                connectedRoomModule
-//            )
-//        )
-//        loadKoinModules(
-//            listOf(
-//                mainRoomModule,
-//                localDataModule,
-//                remoteDataModule,
-//                serviceModule,
-//                viewModelModule
-//            )
-//        )
     }
 
     private suspend fun initConnectedPersonDatabase(connectedPersonDto: ConnectedPersonDto) {
@@ -246,6 +209,8 @@ class AppUserRepoImpl(
             connectionKey = null,
             personSynchronized = true
         )
+//        unloadKoinModules(roomMainModule)
+//        loadKoinModules(roomTestModule)
         val newPersonDao: PersonDao = get()
         newPersonDao.insert(mainPerson)
     }
@@ -253,7 +218,7 @@ class AppUserRepoImpl(
     private fun getAppMode(authToken: String?, userEmail: String?): AppMode {
         return when {
             !authToken.isNullOrEmpty() && !userEmail.isNullOrEmpty() -> AppMode.LOGGED
-            !authToken.isNullOrEmpty() && !userEmail.isNullOrEmpty() -> AppMode.CONNECTED
+            !authToken.isNullOrEmpty() && userEmail.isNullOrEmpty() -> AppMode.CONNECTED
             else -> AppMode.OFFLINE
         }
     }

@@ -10,7 +10,7 @@ import org.koin.core.inject
 class ConnectedPersonSyncWorker(context: Context, params: WorkerParameters) : ServerSyncWorker(context, params) {
 
     private val connectedPersonApi: ConnectedPersonApi by inject()
-    private val notificationUtil: NotificationUtil by inject()
+    private val notificationUtil: NotificationUtil = NotificationUtil(context)
     private val plannedMedicineDao: PlannedMedicineDao by inject()
     private val localDatabaseDispatcher: LocalDatabaseDispatcher by inject()
     private val entityDtoMapper: EntityDtoMapper by inject()

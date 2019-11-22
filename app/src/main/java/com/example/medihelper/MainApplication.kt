@@ -60,6 +60,16 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
             modules(dataModules + deviceModules + presentationModules)
         }
+        checkAppMode()
+    }
+
+    fun reloadKoin() {
+        unloadKoinModules(dataModules + deviceModules + presentationModules)
+        loadKoinModules(dataModules + deviceModules + presentationModules)
+        checkAppMode()
+    }
+
+    private fun checkAppMode() {
         runBlocking {
             val currAppMode = serverConnectionUseCases.getAppMode()
             if (currAppMode == AppMode.CONNECTED) {
