@@ -19,7 +19,7 @@ class LoggedUserSyncWorker(context: Context, params: WorkerParameters) :
     }
 
     private val registeredUserApi: RegisteredUserApi by inject()
-    private val notificationUtil: NotificationUtil by inject()
+    private val notificationUtil: NotificationUtil = NotificationUtil(context)
     private val personDao: PersonDao by inject()
     private val medicineDao: MedicineDao by inject()
     private val medicinePlanDao: MedicinePlanDao by inject()

@@ -13,7 +13,6 @@ class SharedPref (context: Context) {
         private const val PREF_NAME = "app-shared-pref"
         private const val KEY_AUTH_TOKEN = "key-auth-token"
         private const val KEY_USER_EMAIL = "key-user-email"
-        private const val KEY_LAST_SYNC_TIME = "key-last-sync_time"
         private const val KEY_PERSON_COLOR_RES_ID_SET = "key-person-color-res-id-set"
         private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
     }
@@ -29,18 +28,6 @@ class SharedPref (context: Context) {
 
     fun getUserEmailLive(): LiveData<String> =
         SharedPrefLiveData(pref, KEY_USER_EMAIL, "")
-
-    fun getLastSyncTimeLive(): LiveData<Date> {
-        return Transformations.map(
-            SharedPrefLiveData(
-                pref,
-                KEY_LAST_SYNC_TIME,
-                ""
-            )
-        ) {
-            if (it != null) SimpleDateFormat.getDateTimeInstance().parse(it) else null
-        }
-    }
 
     fun getPersonColorIdList(): List<Int> {
         return pref.getStringSet(KEY_PERSON_COLOR_RES_ID_SET, null)?.map {
@@ -68,13 +55,6 @@ class SharedPref (context: Context) {
 
     fun saveUserEmail(userEmail: String) = pref.edit(true) {
         putString(KEY_USER_EMAIL, userEmail)
-    }
-
-    fun saveLastSyncTime(date: Date) {
-        val dateString = SimpleDateFormat.getDateTimeInstance().format(date)
-        pref.edit(true) {
-            putString(KEY_LAST_SYNC_TIME, dateString)
-        }
     }
 
     fun savePersonColorIdList(list: List<Int>) = pref.edit(true) {

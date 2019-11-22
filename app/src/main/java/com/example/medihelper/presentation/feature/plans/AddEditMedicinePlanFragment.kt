@@ -49,7 +49,7 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         viewModel.colorPrimaryId.value?.let { setColorPrimary(it) }
     }.show(childFragmentManager)
 
-    fun onClickSelectPerson() = findNavController().navigate(AddEditMedicinePlanFragmentDirections.toPersonDialog())
+    fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
 
     fun onClickSelectTime(position: Int, timeDoseFormItem: TimeDoseFormItem) = SelectTimeDialog().apply {
         defaultTime = timeDoseFormItem.time

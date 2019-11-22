@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medihelper.domain.entities.ApiResponse
+import com.example.medihelper.domain.usecases.PersonUseCases
 import com.example.medihelper.domain.usecases.ServerConnectionUseCases
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val serverConnectionUseCases: ServerConnectionUseCases
+    private val serverConnectionUseCases: ServerConnectionUseCases,
+    private val personUseCases: PersonUseCases
 ) : ViewModel() {
 
     val email = MutableLiveData<String>()
@@ -33,16 +35,27 @@ class LoginViewModel(
     fun loginUser() = viewModelScope.launch {
         if (isFormValid()) {
             _loadingInProgress.postValue(true)
-            val apiResponse = serverConnectionUseCases.loginUser(
+            val returnedTriple = serverConnectionUseCases.loginUser(
                 email = email.value!!,
                 password = password.value!!
             )
+            val apiResponse = returnedTriple.first
+            val userName = returnedTriple.second
+            val isRemoteDataAvailable = returnedTriple.third
             //todo osbłużyć kiedy jest konflikt danych z serwerem
-            val errorString = mapApiResponseToErrString(apiResponse.first)
+
+            val errorString = mapApiResponseToErrString(apiResponse)
             if (errorString == null) {
-                //todo odpalanie synchronizacji raczej do data
-//                serverApiService.enqueueServerSync()
+                if (userName != null) {
+                    if (personUseCases.mainPersonExists()) {
+                        //todo aktualizować nazwę głównego profilu
+                    } else {
+                        personUseCases.addMainPerson(userName)
+                    }
+                }
+                serverConnectionUseCases.enqueueServerSync()
             }
+
             _errorLogin.postValue(errorString)
             _loadingInProgress.postValue(false)
         }

@@ -34,7 +34,12 @@ class LogoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         runBlocking {
-            if (!personUseCases.mainPersonExists()) {
+            val mainPersonExist = personUseCases.mainPersonExists()
+            if (mainPersonExist) {
+                Handler().postDelayed({
+                    launcherActivity.startMainActivity()
+                }, LOGO_TIME)
+            } else {
                 Handler().postDelayed({
                     launcherActivity.setLightStatusBar()
                     circularHideBackground()
@@ -42,10 +47,6 @@ class LogoFragment : Fragment() {
                 Handler().postDelayed({
                     navigateToWelcomeFragment()
                 }, LOGO_TIME + ANIM_TIME)
-            } else {
-                Handler().postDelayed({
-                    launcherActivity.startMainActivity()
-                }, LOGO_TIME)
             }
         }
 

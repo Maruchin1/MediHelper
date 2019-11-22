@@ -99,16 +99,16 @@ class AppUserRepoImpl(
         }
     }
 
-    override suspend fun loginUser(email: String, password: String): Pair<ApiResponse, Boolean?> {
+    override suspend fun loginUser(email: String, password: String): Triple<ApiResponse, String?, Boolean?> {
         val userCredentialsDto = UserCredentialsDto(email, password)
         return try {
             val loginResponseDto = authenticationApi.loginUser(userCredentialsDto)
             sharedPref.saveAuthToken(loginResponseDto.authToken)
             sharedPref.saveUserEmail(userCredentialsDto.email)
-            Pair(ApiResponse.OK, loginResponseDto.isDataAvailable)
+            Triple(ApiResponse.OK, "User", loginResponseDto.isDataAvailable)
         } catch (ex: Exception) {
             ex.printStackTrace()
-            Pair(apiResponseMapper.getError(ex), null)
+            Triple(apiResponseMapper.getError(ex), null, null)
         }
     }
 

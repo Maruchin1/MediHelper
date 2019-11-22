@@ -16,7 +16,9 @@ class PersonUseCases(
 
     init {
         currPersonId.addSource(personRepo.getMainIdLive()) { currPersonId.value = it }
-        currPerson = Transformations.switchMap(currPersonId) { personRepo.getLiveById(it) }
+        currPerson = Transformations.switchMap(currPersonId) { personId ->
+            personId?.let { personRepo.getLiveById(it)  }
+        }
     }
 
     suspend fun addNewPerson(inputData: PersonInputData) {

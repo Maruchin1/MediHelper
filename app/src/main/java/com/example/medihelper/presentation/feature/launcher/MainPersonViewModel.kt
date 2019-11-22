@@ -25,7 +25,8 @@ class MainPersonViewModel(
 
     fun saveMainProfile() = viewModelScope.launch {
         if (isFormValid()) {
-            personUseCases.addMainPerson(_form.userName.value!!)
+            val userName = _form.userName.value
+            personUseCases.addMainPerson(userName!!)
             _setupEndAction.sendAction()
         }
     }

@@ -119,7 +119,8 @@ val viewModelModule = module {
     }
     viewModel {
         LoginViewModel(
-            serverConnectionUseCases = get()
+            serverConnectionUseCases = get(),
+            personUseCases = get()
         )
     }
     viewModel {
