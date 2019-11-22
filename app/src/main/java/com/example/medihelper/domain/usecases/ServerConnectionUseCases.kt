@@ -14,7 +14,7 @@ class ServerConnectionUseCases(
 ) {
     fun getUserEmailLive() = appUserRepo.getUserEmailLive()
 
-    fun getConnectedProfileNameLive() = Transformations.map(personRepo.getMainLive()) { it.name }
+    fun getConnectedProfileNameLive() = Transformations.map(personRepo.getMainLive()) { it?.name }
 
     fun getAppMode(): AppMode {
         return appUserRepo.getAppMode()

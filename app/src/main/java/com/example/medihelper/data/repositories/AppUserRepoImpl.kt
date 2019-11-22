@@ -206,6 +206,7 @@ class AppUserRepoImpl(
         sharedPref.deleteAuthToken()
         medicineDao.deleteAll()
         personDao.deleteAll()
+        mainApp.reloadKoin()
     }
 
     private suspend fun initConnectedPersonDatabase(connectedPersonDto: ConnectedPersonDto) {

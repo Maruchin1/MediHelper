@@ -18,7 +18,7 @@ class OptionsViewModel(
     val appModeLogged: LiveData<Boolean>
     val appModeConnected: LiveData<Boolean>
     val loggedUserEmail: LiveData<String> = serverConnectionUseCases.getUserEmailLive()
-    val connectedProfileName: LiveData<String> = serverConnectionUseCases.getConnectedProfileNameLive()
+    val connectedProfileName: LiveData<String?> = serverConnectionUseCases.getConnectedProfileNameLive()
 
     val errorChangePassword: LiveData<String>
         get() = _errorChangePassword
