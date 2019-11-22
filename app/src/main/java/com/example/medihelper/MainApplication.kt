@@ -7,14 +7,12 @@ import com.example.medihelper.data.di.*
 import com.example.medihelper.data.local.SharedPref
 import com.example.medihelper.device.di.cameraModule
 import com.example.medihelper.device.di.deviceApiModule
-import com.example.medihelper.domain.entities.AppMode
-import com.example.medihelper.domain.usecases.ServerConnectionUseCases
+import com.example.medihelper.device.di.notificationModule
 import com.example.medihelper.presentation.di.domainUtilsModule
 import com.example.medihelper.presentation.di.useCasesModule
 import com.example.medihelper.presentation.di.utilsModule
 import com.example.medihelper.presentation.di.viewModelModule
 import kotlinx.coroutines.runBlocking
-import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.loadKoinModules
@@ -40,6 +38,7 @@ class MainApplication : Application() {
     private val deviceModules: List<Module> by lazy {
         listOf(
             cameraModule,
+            notificationModule,
             deviceApiModule
         )
     }

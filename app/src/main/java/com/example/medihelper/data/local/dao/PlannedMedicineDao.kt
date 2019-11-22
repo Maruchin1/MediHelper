@@ -8,6 +8,7 @@ import androidx.room.Update
 import com.example.medihelper.data.local.model.MedicinePlanEntity
 import com.example.medihelper.data.local.model.PlannedMedicineEntity
 import com.example.medihelper.data.local.pojo.PlannedMedicineEntityAndMedicineEntity
+import com.example.medihelper.data.local.pojo.PlannedMedicineEntityAndMedicineEntityAndPersonEntity
 import com.example.medihelper.domain.entities.AppDate
 
 @Dao
@@ -34,8 +35,14 @@ interface PlannedMedicineDao {
     @Query("SELECT planned_medicine_remote_id FROM planned_medicines WHERE medicine_plan_id = :id AND planned_date >= :date")
     suspend fun getRemoteIdListFromDateByMedicinePlanId(date: AppDate, id: Int): List<Long?>
 
+    @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN medicines m ON mp.medicine_id = m.medicine_id JOIN persons p ON mp.person_id = p.person_id WHERE pm.planned_medicine_id = :id")
+    suspend fun getWithMedicineAndPersonById(id: Int): PlannedMedicineEntityAndMedicineEntityAndPersonEntity
+
     @Query("SELECT * FROM planned_medicines")
     suspend fun getAllList(): List<PlannedMedicineEntity>
+
+    @Query("SELECT * FROM planned_medicines WHERE planned_date = :date")
+    suspend fun getListByDate(date: AppDate): List<PlannedMedicineEntity>
 
     @Query("SELECT * FROM planned_medicines pm JOIN medicines_plans mp ON pm.medicine_plan_id = mp.medicine_plan_id JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE pm.planned_medicine_id = :id")
     fun getWithMedicineLiveById(id: Int): LiveData<PlannedMedicineEntityAndMedicineEntity>

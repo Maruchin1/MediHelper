@@ -34,13 +34,12 @@ class UpdateRemindersWorker(private val context: Context, params: WorkerParamete
     }
 
     override suspend fun doWork(): Result {
-        //todo poprawić zgodnie z nową bazą
-//        val currDate = dateTimeUseCases.getCurrDate()
-//        val plannedMedicinesForCurrDate = plannedMedicineDao.getEntityListByDate(currDate)
-//
-//        cancelCurrReminders()
-//        setReminders(plannedMedicinesForCurrDate)
-//        savePlannedMedicinesIds(plannedMedicinesForCurrDate.map { it.plannedMedicineId })
+        val currDate = dateTimeUseCases.getCurrDate()
+        val plannedMedicinesForCurrDate = plannedMedicineDao.getListByDate(currDate)
+
+        cancelCurrReminders()
+        setReminders(plannedMedicinesForCurrDate)
+        savePlannedMedicinesIds(plannedMedicinesForCurrDate.map { it.plannedMedicineId })
 
         return Result.success()
     }

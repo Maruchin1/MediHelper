@@ -27,7 +27,8 @@ val useCasesModule = module {
             plannedMedicineRepo = get(),
             statusOfTakingCalculator = get(),
             dateTimeUseCases = get(),
-            medicineScheduler = get()
+            medicineScheduler = get(),
+            notificationApi = get()
         )
     }
     single {

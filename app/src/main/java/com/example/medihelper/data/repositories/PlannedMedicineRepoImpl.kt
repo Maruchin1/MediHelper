@@ -9,6 +9,7 @@ import com.example.medihelper.data.local.model.PlannedMedicineEntity
 import com.example.medihelper.domain.entities.AppDate
 import com.example.medihelper.domain.entities.PlannedMedicine
 import com.example.medihelper.domain.entities.PlannedMedicineWithMedicine
+import com.example.medihelper.domain.entities.PlannedMedicineWithMedicineAndPerson
 import com.example.medihelper.domain.repositories.PlannedMedicineRepo
 
 class PlannedMedicineRepoImpl(
@@ -52,6 +53,11 @@ class PlannedMedicineRepoImpl(
     override suspend fun getById(id: Int): PlannedMedicine {
         val entity = plannedMedicineDao.getById(id)
         return entity.toPlannedMedicine()
+    }
+
+    override suspend fun getWithMedicineAndPersonById(id: Int): PlannedMedicineWithMedicineAndPerson {
+        val entity = plannedMedicineDao.getWithMedicineAndPersonById(id)
+        return entity.toPlannedMedicineWithMedicineAndPerson(imagesFiles)
     }
 
     override suspend fun getAllList(): List<PlannedMedicine> {
