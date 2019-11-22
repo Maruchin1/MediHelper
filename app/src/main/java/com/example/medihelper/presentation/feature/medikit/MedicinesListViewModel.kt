@@ -21,7 +21,7 @@ class MedicinesListViewModel(
     val medicineItemList: LiveData<List<MedicineItem>>
     val anyMedicineAvailable: LiveData<Boolean>
     val nameQuery = MutableLiveData<String>("")
-    val isAppModeConnected: LiveData<Boolean>
+    val appModeConnected: LiveData<Boolean>
 
     private val medicineList: LiveData<List<Medicine>>
 
@@ -36,6 +36,6 @@ class MedicinesListViewModel(
         }
         medicineItemList = Transformations.map(medicineList) { medicineList -> medicineList.map { MedicineItem(it) } }
         anyMedicineAvailable = Transformations.map(medicineList) { !it.isNullOrEmpty() }
-        isAppModeConnected = Transformations.map(serverConnectionUseCases.getAppModeLive()) { it == AppMode.CONNECTED }
+        appModeConnected = Transformations.map(serverConnectionUseCases.getAppModeLive()) { it == AppMode.CONNECTED }
     }
 }

@@ -4,6 +4,7 @@ package com.example.medihelper
 import android.app.Activity
 import android.app.Application
 import com.example.medihelper.data.di.*
+import com.example.medihelper.data.local.SharedPref
 import com.example.medihelper.device.di.cameraModule
 import com.example.medihelper.device.di.deviceApiModule
 import com.example.medihelper.domain.entities.AppMode
@@ -25,7 +26,6 @@ import org.koin.core.module.Module
 class MainApplication : Application() {
 
     var currActivity: Activity? = null
-    private val serverConnectionUseCases: ServerConnectionUseCases by inject()
 
     private val dataModules: List<Module> by lazy {
         listOf(
@@ -71,8 +71,12 @@ class MainApplication : Application() {
 
     private fun checkAppMode() {
         runBlocking {
-            val currAppMode = serverConnectionUseCases.getAppMode()
-            if (currAppMode == AppMode.CONNECTED) {
+            val sharedPref = SharedPref(this@MainApplication)
+            val authToken = sharedPref.getAuthToken()
+            val email = sharedPref.getUserEmail()
+
+            val appModeConnected = !authToken.isNullOrEmpty() && email.isNullOrEmpty()
+            if (appModeConnected) {
                 unloadKoinModules(roomMainModule)
                 loadKoinModules(roomConnectedModule)
             }

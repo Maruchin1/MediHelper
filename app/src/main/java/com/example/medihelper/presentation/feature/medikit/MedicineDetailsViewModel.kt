@@ -19,7 +19,7 @@ class MedicineDetailsViewModel(
 ) : ViewModel() {
 
     val colorPrimary: LiveData<Int>
-    val isAppModeConnected: LiveData<Boolean>
+    val appModeConnected: LiveData<Boolean>
     val medicineDetails: LiveData<MedicineDetails>
     val personItemListTakingMedicine: LiveData<List<PersonItem>>
     val personItemListTakingMedicineAvailable: LiveData<Boolean>
@@ -34,7 +34,7 @@ class MedicineDetailsViewModel(
 
     init {
         colorPrimary = personUseCases.getMainPersonColorLive()
-        isAppModeConnected = Transformations.map(serverConnectionUseCases.getAppModeLive()) { it == AppMode.CONNECTED }
+        appModeConnected = Transformations.map(serverConnectionUseCases.getAppModeLive()) { it == AppMode.CONNECTED }
 
         selectedMedicine = Transformations.switchMap(_selectedMedicineId) { medicineUseCases.getMedicineLiveById(it) }
         medicineDetails = Transformations.map(selectedMedicine) { MedicineDetails(it) }

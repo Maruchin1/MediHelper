@@ -42,6 +42,10 @@ class AppUserRepoImpl(
 
     private class AuthTokenNotAvailableException : Exception("AuthToken not available")
 
+    companion object {
+        private const val SYNC_WORK_NAME = "sync-work-name"
+    }
+
     private val mainApp: MainApplication
         get() = context.applicationContext as MainApplication
 
@@ -91,8 +95,13 @@ class AppUserRepoImpl(
                     workDataOf(
                         ServerSyncWorker.KEY_AUTH_TOKEN to authToken
                     )
-                ).build()
-                WorkManager.getInstance(context).enqueue(syncWork)
+                )
+                    .build()
+                WorkManager.getInstance(context).enqueueUniqueWork(
+                    SYNC_WORK_NAME,
+                    ExistingWorkPolicy.KEEP,
+                    syncWork
+                )
             } ?: throw AuthTokenNotAvailableException()
         }
     }
@@ -209,8 +218,6 @@ class AppUserRepoImpl(
             connectionKey = null,
             personSynchronized = true
         )
-//        unloadKoinModules(roomMainModule)
-//        loadKoinModules(roomTestModule)
         val newPersonDao: PersonDao = get()
         newPersonDao.insert(mainPerson)
     }

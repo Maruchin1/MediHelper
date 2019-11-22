@@ -73,7 +73,7 @@
                     android:layout_marginStart="@dimen/main_card_margin_start"
                     android:layout_marginTop="@dimen/main_card_margin_top"
                     android:layout_marginEnd="@dimen/main_card_margin_end"
-                    android:visibility="@{viewModel.isAppModeOffline() ? View.VISIBLE : View.GONE}">
+                    android:visibility="@{viewModel.appModeOffline ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -154,7 +154,7 @@
                     android:layout_marginStart="@dimen/main_card_margin_start"
                     android:layout_marginTop="@dimen/main_card_margin_top"
                     android:layout_marginEnd="@dimen/main_card_margin_end"
-                    android:visibility="@{viewModel.isAppModeLogged() ? View.VISIBLE : View.GONE}">
+                    android:visibility="@{viewModel.appModeLogged ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -235,7 +235,7 @@
                     android:layout_marginStart="@dimen/main_card_margin_start"
                     android:layout_marginTop="@dimen/main_card_margin_top"
                     android:layout_marginEnd="@dimen/main_card_margin_end"
-                    android:visibility="@{viewModel.isAppModeOffline() ? View.VISIBLE : View.GONE}">
+                    android:visibility="@{viewModel.appModeOffline ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -301,7 +301,7 @@
                     android:layout_marginStart="@dimen/main_card_margin_start"
                     android:layout_marginTop="@dimen/main_card_margin_top"
                     android:layout_marginEnd="@dimen/main_card_margin_end"
-                    android:visibility="@{viewModel.isAppModeConnected() ? View.VISIBLE : View.GONE}">
+                    android:visibility="@{viewModel.appModeConnected ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"

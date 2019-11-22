@@ -50,12 +50,12 @@ class PersonRepoImpl(
 
     override fun getLiveById(id: Int): LiveData<Person> {
         val personEntityLive = personDao.getLiveById(id)
-        return Transformations.map(personEntityLive) { it.toPerson() }
+        return Transformations.map(personEntityLive) { it?.toPerson() }
     }
 
     override fun getMainLive(): LiveData<Person> {
         val mainPersonEntityLive = personDao.getMainLive()
-        return Transformations.map(mainPersonEntityLive) { it.toPerson() }
+        return Transformations.map(mainPersonEntityLive) { it?.toPerson() }
     }
 
     override fun getMainIdLive(): LiveData<Int> {

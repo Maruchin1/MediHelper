@@ -2,6 +2,7 @@ package com.example.medihelper.presentation.feature.medikit
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MedicinesListFragment : Fragment() {
+    private val TAG = "MedicinesListFragment"
 
     private val viewModel: MedicinesListViewModel by viewModel()
     private val directions by lazyOf(MedicinesListFragmentDirections)
@@ -69,6 +71,9 @@ class MedicinesListFragment : Fragment() {
         })
         viewModel.colorPrimary.observe(viewLifecycleOwner, Observer { colorResId ->
             colorResId?.let { mainActivity.setMainColor(it) }
+        })
+        viewModel.appModeConnected.observe(viewLifecycleOwner, Observer { connected ->
+            Log.i(TAG, "appModeConnected change = $connected")
         })
     }
 

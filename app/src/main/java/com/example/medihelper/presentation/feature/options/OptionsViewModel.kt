@@ -14,9 +14,9 @@ class OptionsViewModel(
 ) : ViewModel() {
 
     val colorPrimary: LiveData<Int> = personUseCases.getMainPersonColorLive()
-    val isAppModeOffline: LiveData<Boolean>
-    val isAppModeLogged: LiveData<Boolean>
-    val isAppModeConnected: LiveData<Boolean>
+    val appModeOffline: LiveData<Boolean>
+    val appModeLogged: LiveData<Boolean>
+    val appModeConnected: LiveData<Boolean>
     val loggedUserEmail: LiveData<String> = serverConnectionUseCases.getUserEmailLive()
     val connectedProfileName: LiveData<String> = serverConnectionUseCases.getConnectedProfileNameLive()
 
@@ -37,9 +37,9 @@ class OptionsViewModel(
     private val appMode: LiveData<AppMode> = serverConnectionUseCases.getAppModeLive()
 
     init {
-        isAppModeOffline = Transformations.map(appMode) { it == AppMode.OFFLINE }
-        isAppModeLogged = Transformations.map(appMode) { it == AppMode.LOGGED }
-        isAppModeConnected = Transformations.map(appMode) { it == AppMode.CONNECTED }
+        appModeOffline = Transformations.map(appMode) { it == AppMode.OFFLINE }
+        appModeLogged = Transformations.map(appMode) { it == AppMode.LOGGED }
+        appModeConnected = Transformations.map(appMode) { it == AppMode.CONNECTED }
     }
 
     fun changePassword(newPassword: String) = viewModelScope.launch {

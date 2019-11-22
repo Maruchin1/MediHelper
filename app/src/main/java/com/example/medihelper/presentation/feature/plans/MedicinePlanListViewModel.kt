@@ -24,7 +24,7 @@ class MedicinePlanListViewModel(
 ) : ViewModel() {
 
     val colorPrimaryId: LiveData<Int>
-    val isAppModeConnected: LiveData<Boolean>
+    val appModeConnected: LiveData<Boolean>
     val currPersonItem: LiveData<PersonItem>
     val medicinePlanItemOngoingList: LiveData<List<MedicinePlanItem>>
     val medicinePlanItemEndedList: LiveData<List<MedicinePlanItem>>
@@ -35,7 +35,7 @@ class MedicinePlanListViewModel(
     init {
         currPersonItem = Transformations.map(currPerson) { PersonItem(it) }
         colorPrimaryId = Transformations.map(currPersonItem) { it.colorId }
-        isAppModeConnected = Transformations.map(serverConnectionUseCases.getAppModeLive()) { it == AppMode.CONNECTED }
+        appModeConnected = Transformations.map(serverConnectionUseCases.getAppModeLive()) { it == AppMode.CONNECTED }
         medicinePlanWithMedicineList = Transformations.switchMap(currPerson) {
             medicinePlanUseCases.getMedicinePlanWithMedicineListLiveByPersonId(it.personId)
         }
@@ -61,7 +61,7 @@ class MedicinePlanListViewModel(
         MedicinePlanItem(
             medicinePlanWithMedicine = it,
             colorPrimaryId = colorPrimaryId.value!!,
-            isAppModeConnected = isAppModeConnected
+            isAppModeConnected = appModeConnected
         )
     }
 }
