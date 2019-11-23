@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.medihelper.BR
 import com.example.medihelper.R
@@ -43,4 +45,12 @@ fun Fragment.showLongSnackbar(rootLayout: View, message: String) {
     Snackbar.make(rootLayout, message, Snackbar.LENGTH_LONG)
         .setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
         .show()
+}
+
+fun <X, Y> LiveData<X>.map(mapFunction: (input: X) -> Y): LiveData<Y> {
+    return Transformations.map(this) { mapFunction.invoke(it) }
+}
+
+fun <X, Y> LiveData<X>.switchMap(mapFunction: (input: X) -> LiveData<Y>): LiveData<Y> {
+    return Transformations.switchMap(this) { mapFunction.invoke(it) }
 }

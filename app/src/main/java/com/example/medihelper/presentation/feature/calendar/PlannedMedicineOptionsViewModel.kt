@@ -10,6 +10,8 @@ import com.example.medihelper.domain.entities.StatusOfTaking
 import com.example.medihelper.domain.usecases.MedicineUseCases
 import com.example.medihelper.domain.usecases.PersonUseCases
 import com.example.medihelper.domain.usecases.PlannedMedicineUseCases
+import com.example.medihelper.presentation.framework.map
+import com.example.medihelper.presentation.framework.switchMap
 import com.example.medihelper.presentation.model.PlannedMedicineOptionsData
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -25,27 +27,23 @@ class PlannedMedicineOptionsViewModel(
     val takeMedicineBtnText: LiveData<String>
     val takeMedicineBtnIcon: LiveData<Int>
 
-    val plannedMedicineId: LiveData<Int>
-        get() = _plannedMedicineId
-
-    private val _plannedMedicineId = MutableLiveData<Int>()
-
+    private val plannedMedicineId = MutableLiveData<Int>()
     private val plannedMedicineWithMedicine: LiveData<PlannedMedicineWithMedicine>
 
     init {
-        colorPrimaryId = Transformations.map(personUseCases.getCurrPersonLive()) { it.colorId }
-        plannedMedicineWithMedicine = Transformations.switchMap(plannedMedicineId) {
+        colorPrimaryId = personUseCases.getCurrPersonLive().map { it.colorId }
+        plannedMedicineWithMedicine = plannedMedicineId.switchMap {
             plannedMedicineUseCases.getPlannedMedicineWithMedicineLiveById(it)
         }
-        optionsData = Transformations.map(plannedMedicineWithMedicine) { PlannedMedicineOptionsData(it) }
-        takeMedicineBtnText = Transformations.map(plannedMedicineWithMedicine) {
+        optionsData = plannedMedicineWithMedicine.map { PlannedMedicineOptionsData(it) }
+        takeMedicineBtnText = plannedMedicineWithMedicine.map {
             if (it.statusOfTaking == StatusOfTaking.TAKEN) {
                 "Anuluj przyjecie leku"
             } else {
                 "Przyjmij lek"
             }
         }
-        takeMedicineBtnIcon = Transformations.map(plannedMedicineWithMedicine) {
+        takeMedicineBtnIcon = plannedMedicineWithMedicine.map {
             if (it.statusOfTaking == StatusOfTaking.TAKEN) {
                 R.drawable.round_close_black_24
             } else {
@@ -55,8 +53,10 @@ class PlannedMedicineOptionsViewModel(
     }
 
     fun setArgs(args: PlannedMedicineOptionsDialogArgs) {
-        _plannedMedicineId.value = args.plannedMedicineID
+        plannedMedicineId.value = args.plannedMedicineID
     }
+
+    fun getMedicineId(): Int? = plannedMedicineWithMedicine.value?.medicine?.medicineId
 
     fun changePlannedMedicineStatus() = GlobalScope.launch {
         plannedMedicineWithMedicine.value?.let {

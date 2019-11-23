@@ -3,7 +3,6 @@ package com.example.medihelper.presentation.feature.medikit
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,13 +15,13 @@ import com.example.medihelper.presentation.framework.RecyclerAdapter
 import com.example.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicinesListBinding
 import com.example.medihelper.presentation.feature.MainActivity
-import com.example.medihelper.presentation.framework.bind
+import com.example.medihelper.presentation.framework.BaseFragment
 import com.example.medihelper.presentation.model.MedicineItem
 import kotlinx.android.synthetic.main.fragment_medicines_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MedicinesListFragment : Fragment() {
+class MedicinesListFragment : BaseFragment<FragmentMedicinesListBinding>(R.layout.fragment_medicines_list) {
     private val TAG = "MedicinesListFragment"
 
     private val viewModel: MedicinesListViewModel by viewModel()
@@ -37,12 +36,8 @@ class MedicinesListFragment : Fragment() {
     fun onClickAddMedicine() = findNavController().navigate(directions.toAddEditMedicineFragment())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bind<FragmentMedicinesListBinding>(
-            inflater = inflater,
-            container = container,
-            layoutResId = R.layout.fragment_medicines_list,
-            viewModel = viewModel
-        )
+        super.bindingViewModel = viewModel
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
