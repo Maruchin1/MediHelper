@@ -73,7 +73,7 @@ class LoginViewModel(
         } else null
 
         _errorEmail.postValue(emailError)
-        _errorEmail.postValue(passwordError)
+        _errorPassword.postValue(passwordError)
 
         return arrayOf(emailError, passwordError).all { it == null }
     }
