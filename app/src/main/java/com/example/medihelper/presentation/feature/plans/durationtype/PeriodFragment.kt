@@ -29,18 +29,18 @@ class PeriodFragment : Fragment() {
         when (view.id) {
             R.id.etx_start_date -> {
                 SelectDateDialog().apply {
-                    defaultDate = viewModel.medicinePlanForm.value?.startDate
+                    defaultDate = viewModel.startDate.value
                     setDateSelectedListener { selectedDate ->
-                        viewModel.medicinePlanForm.value?.startDate = selectedDate
+                        viewModel.startDate.value = selectedDate
                     }
                     viewModel.colorPrimaryId.value?.let { setColorPrimary(it) }
                 }.show(requireParentFragment().childFragmentManager)
             }
             R.id.etx_end_date -> {
                 SelectDateDialog().apply {
-                    defaultDate = viewModel.medicinePlanForm.value?.endDate
+                    defaultDate = viewModel.endDate.value
                     setDateSelectedListener { selectedDate ->
-                        viewModel.medicinePlanForm.value?.endDate = selectedDate
+                        viewModel.endDate.value = selectedDate
                     }
                     viewModel.colorPrimaryId.value?.let { setColorPrimary(it) }
                 }.show(requireParentFragment().childFragmentManager)

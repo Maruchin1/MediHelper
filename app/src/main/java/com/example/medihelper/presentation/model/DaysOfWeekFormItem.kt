@@ -76,4 +76,8 @@ data class DaysOfWeekFormItem(
     )
 
     fun toDaysOfWeek() = DaysOfWeek(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
+
+    fun isAnySelected(): Boolean {
+        return arrayOf(monday, tuesday, wednesday, thursday, friday, saturday, sunday).any { it }
+    }
 }

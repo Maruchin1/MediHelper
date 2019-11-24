@@ -12,9 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.medihelper.R
-import com.example.medihelper.presentation.framework.AppFullScreenDialog
-import com.example.medihelper.presentation.framework.RecyclerAdapter
-import com.example.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentAddEditMedicinePlanBinding
 import com.example.medihelper.presentation.dialogs.SelectTimeDialog
 import com.example.medihelper.presentation.dialogs.SelectFloatNumberDialog
@@ -26,7 +23,7 @@ import com.example.medihelper.presentation.feature.plans.daystype.IntervalOfDays
 import com.example.medihelper.presentation.feature.plans.durationtype.ContinuousFragment
 import com.example.medihelper.presentation.feature.plans.durationtype.PeriodFragment
 import com.example.medihelper.presentation.feature.plans.durationtype.OnceFragment
-import com.example.medihelper.presentation.framework.bind
+import com.example.medihelper.presentation.framework.*
 import com.example.medihelper.presentation.model.TimeDoseFormItem
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*
@@ -113,8 +110,8 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         val continuousFragment = ContinuousFragment()
         val daysOfWeekFragment = DaysOfWeekFragment()
         val intervalOfDaysFragment = IntervalOfDaysFragment()
-        viewModel.medicinePlanForm.observe(viewLifecycleOwner, Observer { form ->
-            when (form.durationType) {
+        viewModel.durationType.observe(viewLifecycleOwner, Observer { durationType ->
+            when (durationType) {
                 DurationType.ONCE -> {
                     checkDurationTypeChipGroupItem(R.id.chip_once)
                     changeScheduleTypeFragment(onceFragment)
@@ -128,8 +125,9 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
                     changeScheduleTypeFragment(continuousFragment)
                 }
             }
-
-            when (form.daysType) {
+        })
+        viewModel.daysType.observe(viewLifecycleOwner, Observer { daysType ->
+            when (daysType) {
                 DaysType.EVERYDAY -> {
                     checkDaysTypeChipGroupItem(R.id.chip_everyday)
                     changeScheduleDaysFragment(null)
@@ -150,9 +148,9 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         viewModel.colorPrimaryId.observe(viewLifecycleOwner, Observer { colorId ->
             dialog?.window?.statusBarColor = ContextCompat.getColor(requireContext(), colorId)
         })
-        viewModel.medicinePlanFormError.observe(viewLifecycleOwner, Observer { formError ->
-            formError?.globalError?.let { errorMessage ->
-                Snackbar.make(root_lay, errorMessage, Snackbar.LENGTH_SHORT).show()
+        viewModel.errorGlobal.observe(viewLifecycleOwner, Observer { errorMessage ->
+            if (errorMessage != null) {
+                showShortSnackbar(root_lay, errorMessage)
             }
         })
         viewModel.selectedMedicineShortInfo.observe(viewLifecycleOwner, Observer {
@@ -196,16 +194,16 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         chip_group_duration_type.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.chip_once -> {
-                    viewModel.medicinePlanForm.value?.durationType = DurationType.ONCE
-                    viewModel.medicinePlanForm.value?.daysType = null
+                    viewModel.durationType.value = DurationType.ONCE
+                    viewModel.daysType.value = null
                 }
                 R.id.chip_period -> {
-                    viewModel.medicinePlanForm.value?.durationType = DurationType.PERIOD
-                    viewModel.medicinePlanForm.value?.daysType = DaysType.EVERYDAY
+                    viewModel.durationType.value = DurationType.PERIOD
+                    viewModel.daysType.value = DaysType.EVERYDAY
                 }
                 R.id.chip_continuous -> {
-                    viewModel.medicinePlanForm.value?.durationType = DurationType.CONTINUOUS
-                    viewModel.medicinePlanForm.value?.daysType = DaysType.EVERYDAY
+                    viewModel.durationType.value = DurationType.CONTINUOUS
+                    viewModel.daysType.value = DaysType.EVERYDAY
                 }
             }
         }
@@ -214,9 +212,9 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
     private fun setupDaysTypeChipGroup() {
         chip_group_days_type.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.chip_everyday -> viewModel.medicinePlanForm.value?.daysType = DaysType.EVERYDAY
-                R.id.chip_days_of_week -> viewModel.medicinePlanForm.value?.daysType = DaysType.DAYS_OF_WEEK
-                R.id.chip_interval_of_days -> viewModel.medicinePlanForm.value?.daysType = DaysType.INTERVAL_OF_DAYS
+                R.id.chip_everyday -> viewModel.daysType.value = DaysType.EVERYDAY
+                R.id.chip_days_of_week -> viewModel.daysType.value = DaysType.DAYS_OF_WEEK
+                R.id.chip_interval_of_days -> viewModel.daysType.value = DaysType.INTERVAL_OF_DAYS
             }
         }
     }

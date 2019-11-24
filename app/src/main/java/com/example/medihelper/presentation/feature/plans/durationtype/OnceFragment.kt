@@ -27,9 +27,9 @@ class OnceFragment : Fragment() {
     }
 
     fun onClickSelectDate() = SelectDateDialog().apply {
-        defaultDate = viewModel.medicinePlanForm.value?.startDate
+        defaultDate = viewModel.startDate.value
         setDateSelectedListener { date ->
-            viewModel.medicinePlanForm.value?.startDate = date
+            viewModel.startDate.value = date
         }
         viewModel.colorPrimaryId.value?.let { setColorPrimary(it) }
     }.show(requireParentFragment().childFragmentManager)

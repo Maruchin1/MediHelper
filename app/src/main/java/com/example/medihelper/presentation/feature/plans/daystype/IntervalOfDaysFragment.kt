@@ -22,9 +22,9 @@ class IntervalOfDaysFragment : Fragment() {
     fun onClickSelectInterval() = SelectNumberDialog().apply {
         title = "Wybierz odstęp dni"
         iconResID = R.drawable.round_access_time_white_36
-        defaultNumber = viewModel.medicinePlanForm.value?.intervalOfDays
+        defaultNumber = viewModel.intervalOfDays.value
         setNumberSelectedListener { number ->
-            viewModel.medicinePlanForm.value?.intervalOfDays = number
+            viewModel.intervalOfDays.value = number
         }
         viewModel.colorPrimaryId.value?.let { setColorPrimary(it) }
     }.show(requireParentFragment().childFragmentManager)

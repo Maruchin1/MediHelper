@@ -29,8 +29,8 @@ class DaysOfWeekFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.daysOfWeekFormItem.observe(viewLifecycleOwner, Observer { daysOfWeekFormItem ->
-            Log.d(TAG, "daysOfWeek change = $daysOfWeekFormItem")
+        viewModel.daysOfWeek.observe(viewLifecycleOwner, Observer { daysOfWeek ->
+            Log.d(TAG, "daysOfWeek change = $daysOfWeek")
         })
     }
 

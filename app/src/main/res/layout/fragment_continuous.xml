@@ -42,7 +42,7 @@
                 android:hint="nie wybrano"
                 android:inputType="date"
                 android:onClick="@{() -> handler.onClickSelectDate()}"
-                android:text="@{viewModel.medicinePlanForm.startDate.formatString}"
+                android:text="@{viewModel.startDate.formatString}"
                 android:textAlignment="center" />
 
         </com.google.android.material.textfield.TextInputLayout>

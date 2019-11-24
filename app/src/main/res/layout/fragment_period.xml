@@ -33,7 +33,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.Design.TextInputLayout"
-                inLayError="@{viewModel.medicinePlanFormError.startDateError}"
+                inLayError="@{viewModel.errorStartDate}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -48,7 +48,7 @@
                     android:hint="nie wybrano"
                     android:inputType="date"
                     android:onClick="@{(v) -> handler.onClickSelectDate(v)}"
-                    android:text="@{viewModel.medicinePlanForm.startDate.formatString}"
+                    android:text="@{viewModel.startDate.formatString}"
                     android:textAlignment="center" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -69,7 +69,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.Design.TextInputLayout"
-                inLayError="@{viewModel.medicinePlanFormError.endDateError}"
+                inLayError="@{viewModel.errorEndDate}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -84,7 +84,7 @@
                     android:hint="nie wybrano"
                     android:inputType="date"
                     android:onClick="@{(v) -> handler.onClickSelectDate(v)}"
-                    android:text="@{viewModel.medicinePlanForm.endDate.formatString}"
+                    android:text="@{viewModel.endDate.formatString}"
                     android:textAlignment="center" />
 
             </com.google.android.material.textfield.TextInputLayout>

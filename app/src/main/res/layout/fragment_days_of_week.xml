@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekFormItem.monday}"
+            android:checked="@={viewModel.daysOfWeek.monday}"
             app:layout_constraintEnd_toEndOf="@id/label_monday"
             app:layout_constraintStart_toStartOf="@id/label_monday"
             app:layout_constraintTop_toBottomOf="@id/label_monday" />
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekFormItem.tuesday}"
+            android:checked="@={viewModel.daysOfWeek.tuesday}"
             app:layout_constraintEnd_toEndOf="@id/label_tuesday"
             app:layout_constraintStart_toStartOf="@id/label_tuesday"
             app:layout_constraintTop_toBottomOf="@id/label_tuesday" />
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekFormItem.wednesday}"
+            android:checked="@={viewModel.daysOfWeek.wednesday}"
             app:layout_constraintEnd_toEndOf="@id/label_wednesday"
             app:layout_constraintStart_toStartOf="@id/label_wednesday"
             app:layout_constraintTop_toBottomOf="@id/label_wednesday" />
@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekFormItem.thursday}"
+            android:checked="@={viewModel.daysOfWeek.thursday}"
             app:layout_constraintEnd_toEndOf="@id/label_thursday"
             app:layout_constraintStart_toStartOf="@id/label_thursday"
             app:layout_constraintTop_toBottomOf="@id/label_thursday" />
@@ -123,7 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekFormItem.friday}"
+            android:checked="@={viewModel.daysOfWeek.friday}"
             app:layout_constraintEnd_toEndOf="@id/label_friday"
             app:layout_constraintStart_toStartOf="@id/label_friday"
             app:layout_constraintTop_toBottomOf="@id/label_friday" />
@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekFormItem.saturday}"
+            android:checked="@={viewModel.daysOfWeek.saturday}"
             app:layout_constraintEnd_toEndOf="@id/label_saturday"
             app:layout_constraintStart_toStartOf="@id/label_saturday"
             app:layout_constraintTop_toBottomOf="@id/label_saturday" />
@@ -143,7 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:buttonTint="@color/colorDarkerGray"
-            android:checked="@={viewModel.daysOfWeekFormItem.sunday}"
+            android:checked="@={viewModel.daysOfWeek.sunday}"
             app:layout_constraintEnd_toEndOf="@id/label_sunday"
             app:layout_constraintStart_toStartOf="@id/label_sunday"
             app:layout_constraintTop_toBottomOf="@id/label_sunday" />
