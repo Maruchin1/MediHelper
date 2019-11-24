@@ -36,15 +36,20 @@ class CalendarDayViewModel(
             }
         }
         morningPlannedMedicineItemList = Transformations.map(plannedMedicinesForDate) { list ->
-            list.filter { it.plannedTime < MORNING_AFTERNOON_LIMIT }.map { PlannedMedicineItem(it) }
+            list.filter {
+                it.plannedTime < MORNING_AFTERNOON_LIMIT
+            }.sortedBy { it.plannedTime }.map { PlannedMedicineItem(it) }
         }
         afternoonPlannedMedicineItemList = Transformations.map(plannedMedicinesForDate) { list ->
-            list.filter { it.plannedTime >= MORNING_AFTERNOON_LIMIT &&
+            list.filter {
+                it.plannedTime >= MORNING_AFTERNOON_LIMIT &&
                         it.plannedTime < AFTERNOON_EVENING_LIMIT
-            }.map { PlannedMedicineItem(it) }
+            }.sortedBy { it.plannedTime }.map { PlannedMedicineItem(it) }
         }
         eveningPlannedMedicineItemList = Transformations.map(plannedMedicinesForDate) { list ->
-            list.filter { it.plannedTime >= AFTERNOON_EVENING_LIMIT }.map { PlannedMedicineItem(it) }
+            list.filter {
+                it.plannedTime >= AFTERNOON_EVENING_LIMIT
+            }.sortedBy { it.plannedTime }.map { PlannedMedicineItem(it) }
         }
         plannedMedicineAvailable = Transformations.map(plannedMedicinesForDate) { !it.isNullOrEmpty() }
         morningMedicineAvailable = Transformations.map(morningPlannedMedicineItemList) { !it.isNullOrEmpty() }
