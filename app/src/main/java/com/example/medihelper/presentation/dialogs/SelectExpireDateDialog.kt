@@ -17,6 +17,7 @@ class SelectExpireDateDialog : AppBottomSheetDialog() {
     override val TAG = "SelectMontDateDialog"
 
     companion object {
+        private const val MIN_YEAR = 1900
         private const val MAX_YEAR = 2100
     }
 
@@ -56,7 +57,7 @@ class SelectExpireDateDialog : AppBottomSheetDialog() {
             value = (defaultDate?.month ?: curDate.month) + 1
         }
         year_picker.run {
-            minValue = curDate.year
+            minValue = MIN_YEAR
             maxValue = MAX_YEAR
             value = defaultDate?.year ?: curDate.year
         }
