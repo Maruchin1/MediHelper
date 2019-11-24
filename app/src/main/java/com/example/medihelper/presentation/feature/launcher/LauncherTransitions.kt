@@ -25,11 +25,6 @@ class LauncherTransitions {
         startDelay = 600
     }
 
-    fun getOptionEnterShared(context: Context) = TransitionSet().apply {
-        addTransition(TransitionInflater.from(context).inflateTransition(android.R.transition.no_transition))
-        duration = 0
-    }
-
     fun getOptionEnter() = Slide(Gravity.BOTTOM).apply {
         duration = 300
         startDelay = 600

@@ -16,20 +16,11 @@ class WelcomeFragment : Fragment() {
 
     private val directions by lazy { WelcomeFragmentDirections }
 
-    fun onClickNavToMainPersonFragment() = findNavController().navigate(
-        directions.toMainPersonFragment(),
-        getSharedLogoExtras()
-    )
+    fun onClickNavToMainPersonFragment() = findNavController().navigate(directions.toMainPersonFragment())
 
-    fun onClickNavToLoginFragment() = findNavController().navigate(
-        directions.toLoginFragment(),
-        getSharedLogoExtras()
-    )
+    fun onClickNavToLoginFragment() = findNavController().navigate(directions.toLoginFragment())
 
-    fun onClickNavToPatronConnectFragment() = findNavController().navigate(
-        directions.toPatronConnectFragment(),
-        getSharedLogoExtras()
-    )
+    fun onClickNavToPatronConnectFragment() = findNavController().navigate(directions.toPatronConnectFragment())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +39,4 @@ class WelcomeFragment : Fragment() {
             layoutResId = R.layout.fragment_welcome
         )
     }
-
-    private fun getSharedLogoExtras() = FragmentNavigatorExtras(
-        lay_logo to "lay_logo_option"
-    )
 }
