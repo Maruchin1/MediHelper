@@ -27,12 +27,12 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
     }
 
     fun onClickSelectExpireDate() = SelectExpireDateDialog().apply {
-        defaultDate = viewModel.formModel.value?.expireDate
-        setDateSelectedListener { viewModel.formModel.value?.expireDate = it }
+        defaultDate = viewModel.expireDate.value
+        setDateSelectedListener { viewModel.expireDate.value = it }
     }.show(childFragmentManager)
 
     fun onClickSelectMedicineUnit() = SelectMedicineUnitDialog().apply {
-        setMedicineUnitSelectedListener { viewModel.formModel.value?.unit = it }
+        setMedicineUnitSelectedListener { viewModel.medicineUnit.value = it }
     }.show(childFragmentManager)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,11 +65,11 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
     }
 
     private fun passPackageSizeValueToViewModel() {
-        viewModel.formModel.value?.packageSize = etx_package_size.text?.toString()?.toFloatOrNull()
+        viewModel.packageSize.value = etx_package_size.text?.toString()?.toFloatOrNull()
     }
 
     private fun passCurrStateValueToViewModel() {
-        viewModel.formModel.value?.currState = etx_curr_state.text?.toString()?.toFloatOrNull()
+        viewModel.currState.value = etx_curr_state.text?.toString()?.toFloatOrNull()
     }
 
     private fun setupToolbar() {
