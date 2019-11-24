@@ -239,7 +239,7 @@
                                     android:id="@+id/etx_package_size"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:inputType="number"
+                                    android:inputType="numberDecimal"
                                     android:text='@{viewModel.packageSize}' />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
@@ -269,7 +269,7 @@
                                     android:id="@+id/etx_curr_state"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:inputType="number"
+                                    android:inputType="numberDecimal"
                                     android:text='@{viewModel.currState}' />
                             </com.google.android.material.textfield.TextInputLayout>
 
