@@ -2,7 +2,9 @@ package com.example.medihelper.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class UserCredentialsDto(
+data class RegisterInputDto(
+    @SerializedName("userName")
+    val userName: String,
 
     @SerializedName("email")
     val email: String,

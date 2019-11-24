@@ -9,7 +9,7 @@ interface AppUserRepo {
     fun getAppModeLive(): LiveData<AppMode>
     fun getUserEmailLive(): LiveData<String>
     fun enqueueServerSync()
-    suspend fun registerNewUser(email: String, password: String): ApiResponse
+    suspend fun registerNewUser(userName: String, email: String, password: String): ApiResponse
     suspend fun loginUser(email: String, password: String): Triple<ApiResponse, String?, Boolean?>
     suspend fun connectWithPatron(connectionKey: String): ApiResponse
     suspend fun changeUserPassword(newPassword: String): ApiResponse

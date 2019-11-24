@@ -41,6 +41,7 @@ class RegisterViewModel(
         if (isFormValid()) {
             _loadingInProgress.postValue(true)
             val apiResponse = serverConnectionUseCases.registerNewUser(
+                userName = userName.value!!,
                 email = email.value!!,
                 password = password.value!!
             )

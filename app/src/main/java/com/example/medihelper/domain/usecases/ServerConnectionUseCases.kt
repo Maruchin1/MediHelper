@@ -28,8 +28,8 @@ class ServerConnectionUseCases(
         appUserRepo.enqueueServerSync()
     }
 
-    suspend fun registerNewUser(email: String, password: String): ApiResponse {
-        return appUserRepo.registerNewUser(email, password)
+    suspend fun registerNewUser(userName: String, email: String, password: String): ApiResponse {
+        return appUserRepo.registerNewUser(userName, email, password)
     }
 
     suspend fun loginUser(email: String, password: String): Triple<ApiResponse, String?, Boolean?> {

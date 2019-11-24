@@ -52,6 +52,14 @@ class PersonUseCases(
         personRepo.update(updatedPerson)
     }
 
+
+    suspend fun updateMainPerson(personName: String) {
+        personRepo.getMain()?.let { mainPerson ->
+            val updatedMain = mainPerson.copy(name = personName)
+            personRepo.update(updatedMain)
+        }
+    }
+
     suspend fun deletePersonById(id: Int) = personRepo.deleteById(id)
 
     suspend fun getPersonById(id: Int): Person = personRepo.getById(id)

@@ -48,7 +48,7 @@ class LoginViewModel(
             if (errorString == null) {
                 if (userName != null) {
                     if (personUseCases.mainPersonExists()) {
-                        //todo aktualizować nazwę głównego profilu
+                        personUseCases.updateMainPerson(userName)
                     } else {
                         personUseCases.addMainPerson(userName)
                     }

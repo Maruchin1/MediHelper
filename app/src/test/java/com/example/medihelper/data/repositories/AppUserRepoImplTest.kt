@@ -6,8 +6,8 @@ import com.example.medihelper.data.local.SharedPref
 import com.example.medihelper.data.remote.ApiResponseMapper
 import com.example.medihelper.data.remote.api.AuthenticationApi
 import com.example.medihelper.data.remote.api.RegisteredUserApi
+import com.example.medihelper.data.remote.dto.LoginInputDto
 import com.example.medihelper.data.remote.dto.LoginResponseDto
-import com.example.medihelper.data.remote.dto.UserCredentialsDto
 import com.example.medihelper.domain.entities.ApiResponse
 import com.example.medihelper.domain.entities.AppMode
 import com.example.medihelper.domain.repositories.AppUserRepo
@@ -90,16 +90,19 @@ class AppUserRepoImplTest : KoinTest {
 
             val mockedOutput = LoginResponseDto(
                 authToken = "auth-token",
-                isDataAvailable = false
+                isDataAvailable = false,
+                userName = "Marcin"
             )
-            Mockito.`when`(authenticationApi.loginUser(UserCredentialsDto(email, password))).thenReturn(mockedOutput)
+            Mockito.`when`(authenticationApi.loginUser(LoginInputDto(email, password))).thenReturn(mockedOutput)
 
             val returnedPair = appUserRepo.loginUser(email, password)
 
             val apiResponse = returnedPair.first
-            val isDataAvailable = returnedPair.second
+            val userName = returnedPair.second
+            val isDataAvailable = returnedPair.third
 
             Truth.assertThat(apiResponse).isEqualTo(ApiResponse.OK)
+            Truth.assertThat(userName).isEqualTo("Marcin")
             Truth.assertThat(isDataAvailable).isFalse()
         }
     }

@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.work.*
 import com.example.medihelper.MainApplication
-import com.example.medihelper.data.di.roomMainModule
-import com.example.medihelper.data.di.roomTestModule
 import com.example.medihelper.data.local.DeletedHistory
 import com.example.medihelper.data.local.SharedPref
 import com.example.medihelper.data.local.dao.MedicineDao
@@ -18,8 +16,9 @@ import com.example.medihelper.data.remote.ApiResponseMapper
 import com.example.medihelper.data.remote.api.AuthenticationApi
 import com.example.medihelper.data.remote.api.RegisteredUserApi
 import com.example.medihelper.data.remote.dto.ConnectedPersonDto
+import com.example.medihelper.data.remote.dto.LoginInputDto
 import com.example.medihelper.data.remote.dto.NewPasswordDto
-import com.example.medihelper.data.remote.dto.UserCredentialsDto
+import com.example.medihelper.data.remote.dto.RegisterInputDto
 import com.example.medihelper.domain.entities.ApiResponse
 import com.example.medihelper.domain.entities.AppMode
 import com.example.medihelper.domain.repositories.AppUserRepo
@@ -27,8 +26,6 @@ import com.example.medihelper.data.sync.ConnectedPersonSyncWorker
 import com.example.medihelper.data.sync.LoggedUserSyncWorker
 import com.example.medihelper.data.sync.ServerSyncWorker
 import org.koin.core.KoinComponent
-import org.koin.core.context.loadKoinModules
-import org.koin.core.context.unloadKoinModules
 import org.koin.core.get
 
 class AppUserRepoImpl(
@@ -106,10 +103,10 @@ class AppUserRepoImpl(
         }
     }
 
-    override suspend fun registerNewUser(email: String, password: String): ApiResponse {
-        val userCredentialsDto = UserCredentialsDto(email, password)
+    override suspend fun registerNewUser(userName: String, email: String, password: String): ApiResponse {
+        val registerInput = RegisterInputDto(userName, email, password)
         return try {
-            authenticationApi.registerNewUser(userCredentialsDto)
+            authenticationApi.registerNewUser(registerInput)
             ApiResponse.OK
         } catch (ex: Exception) {
             ex.printStackTrace()
@@ -118,12 +115,12 @@ class AppUserRepoImpl(
     }
 
     override suspend fun loginUser(email: String, password: String): Triple<ApiResponse, String?, Boolean?> {
-        val userCredentialsDto = UserCredentialsDto(email, password)
+        val loginInput = LoginInputDto(email, password)
         return try {
-            val loginResponseDto = authenticationApi.loginUser(userCredentialsDto)
+            val loginResponseDto = authenticationApi.loginUser(loginInput)
             sharedPref.saveAuthToken(loginResponseDto.authToken)
-            sharedPref.saveUserEmail(userCredentialsDto.email)
-            Triple(ApiResponse.OK, "User", loginResponseDto.isDataAvailable)
+            sharedPref.saveUserEmail(loginInput.email)
+            Triple(ApiResponse.OK, loginResponseDto.userName, loginResponseDto.isDataAvailable)
         } catch (ex: Exception) {
             ex.printStackTrace()
             Triple(apiResponseMapper.getError(ex), null, null)

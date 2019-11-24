@@ -44,6 +44,11 @@ class PersonRepoImpl(
         return personEntity.toPerson()
     }
 
+    override suspend fun getMain(): Person? {
+        val entity = personDao.getMain()
+        return entity?.toPerson()
+    }
+
     override suspend fun getMainId(): Int? {
         return personDao.getMainId()
     }

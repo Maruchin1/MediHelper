@@ -14,185 +14,180 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <LinearLayout
-                android:id="@+id/lay_logo"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="48dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:transitionName="lay_logo_welcome"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="match_parent">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_logo"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:transitionName="card_logo_welcome"
-                    app:cardBackgroundColor="@color/colorPrimary"
-                    app:cardCornerRadius="50dp"
-                    app:cardElevation="0dp">
+                <LinearLayout
+                    android:id="@+id/lay_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="48dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:transitionName="lay_logo_welcome"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_logo"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:transitionName="card_logo_welcome"
+                        app:cardBackgroundColor="@color/colorPrimary"
+                        app:cardCornerRadius="50dp"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="16dp"
+                            android:src="@drawable/cross_icon"
+                            android:tint="@color/colorWhite" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="MediHelper"
+                        android:textAppearance="@style/AppTheme.Text.ToolbarTitle.Main"
+                        android:textColor="@color/colorPrimary" />
+
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="16dp"
-                        android:src="@drawable/cross_icon"
-                        android:tint="@color/colorWhite" />
-                </androidx.cardview.widget.CardView>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="04dp"
+                        android:text="Organizacja domowej apteczki prosta jak nigdy dotąd"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+                </LinearLayout>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="MediHelper"
-                    android:textAppearance="@style/AppTheme.Text.ToolbarTitle.Main"
-                    android:textColor="@color/colorPrimary" />
-
-                <TextView
+                    android:id="@+id/txv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="04dp"
-                    android:text="Organizacja domowej apteczki prosta jak nigdy dotąd"
+                    android:layout_marginTop="48dp"
+                    android:text="Jak chcesz korzystać z aplikacji?"
                     android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
-            </LinearLayout>
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/lay_logo" />
 
-            <TextView
-                android:id="@+id/txv_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:text="Jak chcesz korzystać z aplikacji?"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:textColor="@color/colorTextSecondary"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/lay_logo" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toTopOf="@id/txv_app_version"
-                app:layout_constraintTop_toBottomOf="@id/txv_title">
-
-                <ScrollView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@id/txv_app_version"
+                    app:layout_constraintTop_toBottomOf="@id/txv_title">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:background="?selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> handler.onClickNavToMainPersonFragment()}"
+                        android:paddingTop="32dp"
+                        android:paddingBottom="32dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <ImageView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="?selectableItemBackground"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:onClick="@{() -> handler.onClickNavToMainPersonFragment()}"
-                            android:paddingTop="32dp"
-                            android:paddingBottom="32dp">
+                            android:src="@drawable/round_sd_storage_black_36"
+                            android:tint="@color/colorPrimary" />
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/round_sd_storage_black_36"
-                                android:tint="@color/colorPrimary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:text="Korzystaj samodzielnie na tym urządzeniu, bez zakładania konta"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                                android:textColor="@color/colorTextSecondary" />
-                        </LinearLayout>
-
-                        <include layout="@layout/line_horizontal" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="?selectableItemBackground"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:onClick="@{() -> handler.onClickNavToLoginFragment()}"
-                            android:paddingTop="32dp"
-                            android:paddingBottom="32dp">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/round_cloud_black_36"
-                                android:tint="@color/colorPrimary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:text="Zaloguj się na konto MediHelper, aby mieć dostęp do swoich leków na wielu urządzeniach"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                                android:textColor="@color/colorTextSecondary" />
-                        </LinearLayout>
-
-                        <include layout="@layout/line_horizontal" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="?selectableItemBackground"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:onClick="@{() -> handler.onClickNavToPatronConnectFragment()}"
-                            android:paddingTop="32dp"
-                            android:paddingBottom="32dp">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/round_people_white_36"
-                                android:tint="@color/colorPrimary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:text="Połącz z opiekunem, który będzie zarządzał twoimi lekami"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                                android:textColor="@color/colorTextSecondary" />
-                        </LinearLayout>
+                            android:layout_marginStart="16dp"
+                            android:text="Korzystaj samodzielnie na tym urządzeniu, bez zakładania konta"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                            android:textColor="@color/colorTextSecondary" />
                     </LinearLayout>
-                </ScrollView>
-            </FrameLayout>
 
-            <TextView
-                android:id="@+id/txv_app_version"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/version"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:textColor="@color/colorTextTertiary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                    <include layout="@layout/line_horizontal" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> handler.onClickNavToLoginFragment()}"
+                        android:paddingTop="32dp"
+                        android:paddingBottom="32dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/round_cloud_black_36"
+                            android:tint="@color/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Zaloguj się na konto MediHelper, aby mieć dostęp do swoich leków na wielu urządzeniach"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                            android:textColor="@color/colorTextSecondary" />
+                    </LinearLayout>
+
+                    <include layout="@layout/line_horizontal" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> handler.onClickNavToPatronConnectFragment()}"
+                        android:paddingTop="32dp"
+                        android:paddingBottom="32dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/round_people_white_36"
+                            android:tint="@color/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Połącz z opiekunem, który będzie zarządzał twoimi lekami"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                            android:textColor="@color/colorTextSecondary" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txv_app_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/version"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textColor="@color/colorTextTertiary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

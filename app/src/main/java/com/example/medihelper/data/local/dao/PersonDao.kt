@@ -25,6 +25,9 @@ interface PersonDao  {
     @Query("SELECT person_remote_id FROM persons WHERE person_id = :id")
     suspend fun getRemoteIdById(id: Int): Long?
 
+    @Query("SELECT * FROM persons WHERE main_person = 1")
+    suspend fun getMain(): PersonEntity?
+
     @Query("SELECT person_id FROM persons WHERE main_person = 1")
     suspend fun getMainId(): Int?
 
