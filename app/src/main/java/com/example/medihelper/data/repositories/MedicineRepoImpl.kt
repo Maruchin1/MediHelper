@@ -100,5 +100,5 @@ class MedicineRepoImpl(
         }
     }
 
-    private fun getDefaultUnitList() = listOf("dawki", "pigułki", "ml", "g", "mg", "krople")
+    private fun getDefaultUnitList() = listOf("dawki", "tabletki", "ml", "g", "mg", "pastylki")
 }

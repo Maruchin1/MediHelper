@@ -26,8 +26,7 @@ class SelectExpireDateDialog : AppBottomSheetDialog() {
     private val dateTimeService: DateTimeUseCases by inject()
 
     fun onClickConfirm() {
-        val selectedDate =
-            AppExpireDate(year = year_picker.value, month = month_picker.value)
+        val selectedDate = AppExpireDate(year = year_picker.value, month = month_picker.value)
         dateSelectedListener?.invoke(selectedDate)
         dismiss()
     }
