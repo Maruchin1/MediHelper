@@ -1,4 +1,4 @@
-package com.example.medihelper.presentation.feature
+package com.example.medihelper.presentation
 
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.medihelper.R
+import com.example.medihelper.domain.deviceapi.NotificationApi
 import com.example.medihelper.domain.usecases.ServerConnectionUseCases
 import com.example.medihelper.presentation.feature.launcher.LauncherActivity
 import com.example.medihelper.presentation.framework.BaseActivity
@@ -20,11 +21,13 @@ import org.koin.android.ext.android.inject
 class MainActivity : BaseActivity() {
 
     private val serverConnectionUseCases: ServerConnectionUseCases by inject()
+    private val notificationApi: NotificationApi by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setupBottomNav()
+        notificationApi.enablePeriodicRemindersUpdate()
     }
 
     override fun onResume() {

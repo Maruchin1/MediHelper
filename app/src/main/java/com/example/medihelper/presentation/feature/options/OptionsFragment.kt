@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.medihelper.R
 import com.example.medihelper.databinding.FragmentOptionsBinding
-import com.example.medihelper.presentation.feature.MainActivity
+import com.example.medihelper.presentation.MainActivity
 import com.example.medihelper.presentation.dialogs.ConfirmDialog
 import com.example.medihelper.presentation.framework.bind
 import com.example.medihelper.presentation.framework.showShortSnackbar

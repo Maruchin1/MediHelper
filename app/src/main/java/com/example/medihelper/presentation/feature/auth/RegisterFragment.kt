@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import com.example.medihelper.R
 import com.example.medihelper.presentation.framework.AppFullScreenDialog
 import com.example.medihelper.databinding.FragmentRegisterBinding
-import com.example.medihelper.presentation.feature.MainActivity
+import com.example.medihelper.presentation.MainActivity
 import com.example.medihelper.presentation.framework.bind
 import com.example.medihelper.presentation.framework.showShortSnackbar
 import com.example.medihelper.presentation.utils.LoadingScreen

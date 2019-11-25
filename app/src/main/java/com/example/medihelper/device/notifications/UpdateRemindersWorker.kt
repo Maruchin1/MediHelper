@@ -12,6 +12,7 @@ import com.example.medihelper.data.local.dao.PlannedMedicineDao
 import com.example.medihelper.data.local.model.PlannedMedicineEntity
 import com.example.medihelper.domain.usecases.DateTimeUseCases
 import org.koin.core.KoinComponent
+import org.koin.core.get
 import org.koin.core.inject
 import java.util.*
 
@@ -20,6 +21,7 @@ class UpdateRemindersWorker(private val context: Context, params: WorkerParamete
     private val TAG = "UpdateRemindersWorker"
 
     companion object {
+        const val ENABLE_PERIODIC_UPDATE = "enable-periodic-update"
         private const val SHARED_PREF_NAME = "reminders-pref"
         private const val KEY_REMINDERS_LIST = "key-reminders-list"
     }
@@ -36,6 +38,11 @@ class UpdateRemindersWorker(private val context: Context, params: WorkerParamete
     override suspend fun doWork(): Result {
         val currDate = dateTimeUseCases.getCurrDate()
         val plannedMedicinesForCurrDate = plannedMedicineDao.getListByDate(currDate)
+
+        val enablePeriodicUpdate = inputData.getBoolean(ENABLE_PERIODIC_UPDATE, false)
+        if (enablePeriodicUpdate) {
+            enablePeriodicUpdate()
+        }
 
         cancelCurrReminders()
         setReminders(plannedMedicinesForCurrDate)
@@ -88,5 +95,10 @@ class UpdateRemindersWorker(private val context: Context, params: WorkerParamete
 
     private fun getPlannedMedicinesIds(): List<Int> {
         return sharedPref.getStringSet(KEY_REMINDERS_LIST, null)?.map { it.toInt() } ?: emptyList()
+    }
+
+    private fun enablePeriodicUpdate() {
+        val reminderWorkManager: ReminderWorkManager = get()
+        reminderWorkManager.enablePeriodicRemindersUpdate()
     }
 }

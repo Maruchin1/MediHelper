@@ -2,12 +2,11 @@ package com.example.medihelper.presentation.feature.launcher
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.example.medihelper.R
-import com.example.medihelper.presentation.feature.MainActivity
+import com.example.medihelper.presentation.MainActivity
 import com.example.medihelper.presentation.framework.BaseActivity
 
 class LauncherActivity : BaseActivity() {

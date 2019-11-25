@@ -12,7 +12,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.example.medihelper.R
 import com.example.medihelper.domain.entities.AppTime
-import com.example.medihelper.presentation.feature.MainActivity
+import com.example.medihelper.presentation.MainActivity
 
 class MedicineReminderNotification(private val context: Context) {
 
@@ -77,11 +77,11 @@ class MedicineReminderNotification(private val context: Context) {
                 "Przyjęty",
                 getMedicineTakenIntent(plannedMedicineId, medicineTaken = true)
             )
-            .addAction(
-                R.drawable.round_close_24,
-                "Nieprzyjęty",
-                getMedicineTakenIntent(plannedMedicineId, medicineTaken = false)
-            )
+//            .addAction(
+//                R.drawable.round_close_24,
+//                "Nieprzyjęty",
+//                getMedicineTakenIntent(plannedMedicineId, medicineTaken = false)
+//            )
             .build()
     }
 

@@ -10,4 +10,8 @@ class NotificationApiImpl(
     override fun updatePlannedMedicinesNotifications() {
         reminderWorkManager.updateReminders()
     }
+
+    override fun enablePeriodicRemindersUpdate() {
+        reminderWorkManager.enablePeriodicRemindersUpdate()
+    }
 }

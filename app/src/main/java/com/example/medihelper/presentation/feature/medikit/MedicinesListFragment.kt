@@ -14,7 +14,7 @@ import com.example.medihelper.R
 import com.example.medihelper.presentation.framework.RecyclerAdapter
 import com.example.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.example.medihelper.databinding.FragmentMedicinesListBinding
-import com.example.medihelper.presentation.feature.MainActivity
+import com.example.medihelper.presentation.MainActivity
 import com.example.medihelper.presentation.framework.BaseFragment
 import com.example.medihelper.presentation.model.MedicineItem
 import kotlinx.android.synthetic.main.fragment_medicines_list.*

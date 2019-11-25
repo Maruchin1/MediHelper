@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.feature.MainActivity"
+            android:name=".presentation.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
