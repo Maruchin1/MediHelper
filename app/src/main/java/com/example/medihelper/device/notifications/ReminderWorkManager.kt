@@ -7,7 +7,7 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.example.medihelper.device.deviceapi.NotificationApiImpl
 
-class ReminderManager(private val context: Context) {
+class ReminderWorkManager(private val context: Context) {
 
     companion object {
         private const val UPDATE_REMINDERS_WORK_NAME = "update-reminders-work-name"

@@ -7,7 +7,7 @@ import com.example.medihelper.data.local.DeletedHistory
 import com.example.medihelper.data.local.dao.*
 import com.example.medihelper.data.remote.api.RegisteredUserApi
 import com.example.medihelper.data.remote.dto.SyncRequestDto
-import com.example.medihelper.device.notifications.NotificationUtil
+import com.example.medihelper.device.notifications.ServerSyncNotification
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -19,7 +19,7 @@ class LoggedUserSyncWorker(context: Context, params: WorkerParameters) :
     }
 
     private val registeredUserApi: RegisteredUserApi by inject()
-    private val notificationUtil: NotificationUtil = NotificationUtil(context)
+    private val serverSyncNotification: ServerSyncNotification = ServerSyncNotification(context)
     private val personDao: PersonDao by inject()
     private val medicineDao: MedicineDao by inject()
     private val medicinePlanDao: MedicinePlanDao by inject()
@@ -30,7 +30,7 @@ class LoggedUserSyncWorker(context: Context, params: WorkerParameters) :
     private val deletedHistory: DeletedHistory by inject()
 
     override suspend fun doWork(): Result {
-        notificationUtil.showServerSyncNotification()
+        serverSyncNotification.showServerSyncNotification()
         var result = Result.failure()
         val authToken = inputData.getString(KEY_AUTH_TOKEN)
 
@@ -40,10 +40,10 @@ class LoggedUserSyncWorker(context: Context, params: WorkerParameters) :
                 result = Result.success()
             } catch (e: Exception) {
                 e.printStackTrace()
-                notificationUtil.showServerSyncFailNotification()
+                serverSyncNotification.showServerSyncFailNotification()
             }
         }
-        notificationUtil.cancelServerSyncNotification()
+        serverSyncNotification.cancelServerSyncNotification()
         return result
     }
 

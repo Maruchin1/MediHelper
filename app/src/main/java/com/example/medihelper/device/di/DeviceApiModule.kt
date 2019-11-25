@@ -20,7 +20,7 @@ val deviceApiModule = module {
     }
     single {
         NotificationApiImpl(
-            reminderManager = get()
+            reminderWorkManager = get()
         ) as NotificationApi
     }
 }

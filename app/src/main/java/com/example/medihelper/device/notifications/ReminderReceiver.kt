@@ -18,7 +18,7 @@ class ReminderReceiver : BroadcastReceiver() {
         val plannedMedicineId = intent.getIntExtra(EXTRA_PLANNED_MEDICINE_ID, -1)
 
         if (plannedMedicineId != -1) {
-            val reminderUtil = ReminderManager(context)
+            val reminderUtil = ReminderWorkManager(context)
             reminderUtil.remindAboutPlannedMedicine(plannedMedicineId)
         }
     }

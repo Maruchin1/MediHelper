@@ -9,7 +9,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.example.medihelper.R
 
-class NotificationUtil(private val context: Context) {
+class ServerSyncNotification(private val context: Context) {
 
     companion object {
         private const val SERVER_SYNC_NOTIFICATION_ID = 1

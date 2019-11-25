@@ -1,17 +1,17 @@
 package com.example.medihelper.device.di
 
-import com.example.medihelper.device.notifications.MedicineReminderNotif
-import com.example.medihelper.device.notifications.ReminderManager
+import com.example.medihelper.device.notifications.MedicineReminderNotification
+import com.example.medihelper.device.notifications.ReminderWorkManager
 import org.koin.dsl.module
 
 val notificationModule = module {
     single {
-        ReminderManager(
+        ReminderWorkManager(
             context = get()
         )
     }
     single {
-        MedicineReminderNotif(
+        MedicineReminderNotification(
             context = get()
         )
     }
