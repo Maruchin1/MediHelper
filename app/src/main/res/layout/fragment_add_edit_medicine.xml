@@ -9,11 +9,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.presentation.feature.medikit.AddEditMedicineViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.medikit.AddEditMedicineViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.medikit.AddEditMedicineFragment" />
+            type="com.maruchin.medihelper.presentation.feature.medikit.AddEditMedicineFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

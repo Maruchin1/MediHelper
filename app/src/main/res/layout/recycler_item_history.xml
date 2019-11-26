@@ -8,7 +8,7 @@
 
         <variable
             name="displayData"
-            type="com.example.medihelper.presentation.model.MedicinePlanHistoryItem" />
+            type="com.maruchin.medihelper.presentation.model.MedicinePlanHistoryItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

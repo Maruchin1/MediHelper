@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/logoFragment"
-        android:name="com.example.medihelper.presentation.feature.launcher.LogoFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.launcher.LogoFragment"
         tools:layout="@layout/fragment_logo">
         <action
             android:id="@+id/toWelcomeFragment"
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.example.medihelper.presentation.feature.launcher.WelcomeFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.launcher.WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/toMainPersonFragment"
@@ -31,11 +31,11 @@
     </fragment>
     <fragment
         android:id="@+id/mainPersonFragment"
-        android:name="com.example.medihelper.presentation.feature.launcher.MainPersonFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.launcher.MainPersonFragment"
         tools:layout="@layout/fragment_main_person" />
     <fragment
         android:id="@+id/loginFragmentLauncher"
-        android:name="com.example.medihelper.presentation.feature.auth.LoginFragmentLauncher"
+        android:name="com.maruchin.medihelper.presentation.feature.auth.LoginFragmentLauncher"
         tools:layout="@layout/fragment_launcher_login">
         <action
             android:id="@+id/toRegisterFragment"
@@ -43,10 +43,10 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragmentLauncher"
-        android:name="com.example.medihelper.presentation.feature.auth.RegisterFragmentLauncher"
+        android:name="com.maruchin.medihelper.presentation.feature.auth.RegisterFragmentLauncher"
         tools:layout="@layout/fragment_launcher_register" />
     <fragment
         android:id="@+id/patronConnectFragmentLauncher"
-        android:name="com.example.medihelper.presentation.feature.auth.PatronConnectFragmentLauncher"
+        android:name="com.maruchin.medihelper.presentation.feature.auth.PatronConnectFragmentLauncher"
         tools:layout="@layout/fragment_launcher_patron_connect" />
 </navigation>

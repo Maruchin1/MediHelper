@@ -6,11 +6,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.medikit.MedicineDetailsFragment" />
+            type="com.maruchin.medihelper.presentation.feature.medikit.MedicineDetailsFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.presentation.model.PersonItem" />
+            type="com.maruchin.medihelper.presentation.model.PersonItem" />
     </data>
 
     <LinearLayout

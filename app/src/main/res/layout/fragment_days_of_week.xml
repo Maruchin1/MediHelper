@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

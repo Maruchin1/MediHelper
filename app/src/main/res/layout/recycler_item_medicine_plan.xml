@@ -8,11 +8,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.plans.MedicinePlanListFragment" />
+            type="com.maruchin.medihelper.presentation.feature.plans.MedicinePlanListFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.presentation.model.MedicinePlanItem" />
+            type="com.maruchin.medihelper.presentation.model.MedicinePlanItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

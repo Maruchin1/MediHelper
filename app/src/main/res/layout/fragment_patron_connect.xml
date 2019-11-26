@@ -6,11 +6,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.auth.PatronConnectFragment" />
+            type="com.maruchin.medihelper.presentation.feature.auth.PatronConnectFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.presentation.feature.auth.PatronConnectViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.auth.PatronConnectViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

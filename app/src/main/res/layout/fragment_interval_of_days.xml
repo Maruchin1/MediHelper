@@ -7,10 +7,10 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.plans.daystype.IntervalOfDaysFragment" />
+            type="com.maruchin.medihelper.presentation.feature.plans.daystype.IntervalOfDaysFragment" />
         <variable
             name="viewModel"
-            type="com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel" />
 
     </data>
 

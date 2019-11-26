@@ -8,11 +8,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.calendar.CalendarDayFragment" />
+            type="com.maruchin.medihelper.presentation.feature.calendar.CalendarDayFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.presentation.model.PlannedMedicineItem" />
+            type="com.maruchin.medihelper.presentation.model.PlannedMedicineItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

@@ -9,11 +9,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.plans.MedicinePlanListFragment" />
+            type="com.maruchin.medihelper.presentation.feature.plans.MedicinePlanListFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.presentation.feature.plans.MedicinePlanListViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.plans.MedicinePlanListViewModel" />
     </data>
 
     <FrameLayout

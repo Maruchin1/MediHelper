@@ -7,11 +7,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.calendar.CalendarDayFragment" />
+            type="com.maruchin.medihelper.presentation.feature.calendar.CalendarDayFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.presentation.feature.calendar.CalendarDayViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.calendar.CalendarDayViewModel" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

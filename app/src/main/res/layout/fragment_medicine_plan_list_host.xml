@@ -7,11 +7,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.plans.MedicinePlanListHostFragment" />
+            type="com.maruchin.medihelper.presentation.feature.plans.MedicinePlanListHostFragment" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.presentation.feature.plans.MedicinePlanListViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.plans.MedicinePlanListViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"

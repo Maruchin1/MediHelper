@@ -9,11 +9,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.presentation.feature.calendar.CalendarViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.calendar.CalendarViewModel" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.calendar.CalendarFragment" />
+            type="com.maruchin.medihelper.presentation.feature.calendar.CalendarFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

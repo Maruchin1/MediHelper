@@ -6,11 +6,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.calendar.PlannedMedicineOptionsDialog" />
+            type="com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOptionsDialog" />
 
         <variable
             name="viewModel"
-            type="com.example.medihelper.presentation.feature.calendar.PlannedMedicineOptionsViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOptionsViewModel" />
     </data>
 
     <LinearLayout

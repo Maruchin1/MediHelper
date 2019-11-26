@@ -3,17 +3,17 @@
 
     <data>
 
-        <import type="com.example.medihelper.R" />
+        <import type="com.maruchin.medihelper.R" />
 
         <import type="android.view.View" />
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.medikit.MedicinesListFragment" />
+            type="com.maruchin.medihelper.presentation.feature.medikit.MedicinesListFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.presentation.model.MedicineItem" />
+            type="com.maruchin.medihelper.presentation.model.MedicineItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"

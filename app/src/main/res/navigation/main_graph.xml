@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/scheduleFragment"
-        android:name="com.example.medihelper.presentation.feature.calendar.CalendarFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.calendar.CalendarFragment"
         tools:layout="@layout/fragment_schedule">
         <action
             android:id="@+id/toPersonDialog"
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/medicinesListFragment"
-        android:name="com.example.medihelper.presentation.feature.medikit.MedicinesListFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.medikit.MedicinesListFragment"
         tools:layout="@layout/fragment_medicines_list">
         <action
             android:id="@+id/toAddEditMedicineFragment"
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/medicinePlanListHostFragment"
-        android:name="com.example.medihelper.presentation.feature.plans.MedicinePlanListHostFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.plans.MedicinePlanListHostFragment"
         tools:layout="@layout/fragment_medicine_plan_list_host">
         <action
             android:id="@+id/toPersonDialog"
@@ -43,7 +43,7 @@
     </fragment>
     <dialog
         android:id="@+id/personDialog"
-        android:name="com.example.medihelper.presentation.feature.personsprofiles.PersonDialog"
+        android:name="com.maruchin.medihelper.presentation.feature.personsprofiles.PersonDialog"
         tools:layout="@layout/dialog_person">
         <action
             android:id="@+id/toPersonOptionsFragment"
@@ -54,7 +54,7 @@
     </dialog>
     <dialog
         android:id="@+id/addEditPersonFragment"
-        android:name="com.example.medihelper.presentation.feature.personsprofiles.AddEditPersonFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.personsprofiles.AddEditPersonFragment"
         tools:layout="@layout/fragment_add_edit_person">
         <argument
             android:name="editPersonID"
@@ -63,7 +63,7 @@
     </dialog>
     <dialog
         android:id="@+id/addEditMedicinePlanFragment"
-        android:name="com.example.medihelper.presentation.feature.plans.AddEditMedicinePlanFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.plans.AddEditMedicinePlanFragment"
         tools:layout="@layout/fragment_add_edit_medicine_plan">
         <action
             android:id="@+id/toPersonDialog"
@@ -75,7 +75,7 @@
     </dialog>
     <dialog
         android:id="@+id/addEditMedicineFragment"
-        android:name="com.example.medihelper.presentation.feature.medikit.AddEditMedicineFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.medikit.AddEditMedicineFragment"
         tools:layout="@layout/fragment_add_edit_medicine">
         <argument
             android:name="editMedicineId"
@@ -84,7 +84,7 @@
     </dialog>
     <dialog
         android:id="@+id/medicineDetailsFragment"
-        android:name="com.example.medihelper.presentation.feature.medikit.MedicineDetailsFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.medikit.MedicineDetailsFragment"
         tools:layout="@layout/fragment_medicine_details">
         <argument
             android:name="medicineID"
@@ -95,7 +95,7 @@
     </dialog>
     <dialog
         android:id="@+id/plannedMedicineOptionsDialog"
-        android:name="com.example.medihelper.presentation.feature.calendar.PlannedMedicineOptionsDialog"
+        android:name="com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOptionsDialog"
         tools:layout="@layout/dialog_planned_medicine_options">
         <argument
             android:name="plannedMedicineID"
@@ -106,7 +106,7 @@
     </dialog>
     <dialog
         android:id="@+id/medicinePlanHistoryDialog"
-        android:name="com.example.medihelper.presentation.feature.plans.MedicinePlanHistoryDialog"
+        android:name="com.maruchin.medihelper.presentation.feature.plans.MedicinePlanHistoryDialog"
         tools:layout="@layout/dialog_medicine_plan_history">
         <argument
             android:name="medicinePlanID"
@@ -114,7 +114,7 @@
     </dialog>
     <dialog
         android:id="@+id/personOptionsFragment"
-        android:name="com.example.medihelper.presentation.feature.personsprofiles.PersonOptionsFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.personsprofiles.PersonOptionsFragment"
         tools:layout="@layout/fragment_person_options">
         <action
             android:id="@+id/toAddEditPersonFragment"
@@ -128,7 +128,7 @@
     </dialog>
     <fragment
         android:id="@+id/optionsFragment"
-        android:name="com.example.medihelper.presentation.feature.options.OptionsFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.options.OptionsFragment"
         tools:layout="@layout/fragment_options">
         <action
             android:id="@+id/toLoginFragment"
@@ -142,14 +142,14 @@
     </fragment>
     <dialog
         android:id="@+id/loginFragment"
-        android:name="com.example.medihelper.presentation.feature.auth.LoginFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.auth.LoginFragment"
         tools:layout="@layout/fragment_login" />
     <dialog
         android:id="@+id/registerFragment"
-        android:name="com.example.medihelper.presentation.feature.auth.RegisterFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.auth.RegisterFragment"
         tools:layout="@layout/fragment_register" />
     <dialog
         android:id="@+id/patronConnectFragment"
-        android:name="com.example.medihelper.presentation.feature.auth.PatronConnectFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.auth.PatronConnectFragment"
         tools:layout="@layout/fragment_patron_connect" />
 </navigation>

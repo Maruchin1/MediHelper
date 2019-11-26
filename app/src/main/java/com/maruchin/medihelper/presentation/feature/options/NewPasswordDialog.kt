@@ -1,0 +1,39 @@
+package com.maruchin.medihelper.presentation.feature.options
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.maruchin.medihelper.R
+import com.maruchin.medihelper.presentation.framework.AppBottomSheetDialog
+import com.maruchin.medihelper.databinding.DialogNewPasswordBinding
+import com.maruchin.medihelper.presentation.framework.bind
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
+class NewPasswordDialog : AppBottomSheetDialog() {
+    override val TAG = "NewPasswordDialog"
+
+    private val viewModel: NewPasswordViewModel by viewModel()
+    private var newPasswordSelectedListener: ((newPassword: String) -> Unit)? = null
+
+    fun onClickConfirm() {
+        val validNewPassword = viewModel.getValidNewPassword()
+        if (validNewPassword != null) {
+            newPasswordSelectedListener?.invoke(validNewPassword)
+            dismiss()
+        }
+    }
+
+    fun setNewPasswordSelectedListener(listener: (newPassword: String) -> Unit) {
+        newPasswordSelectedListener = listener
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return bind<DialogNewPasswordBinding>(
+            inflater = inflater,
+            container = container,
+            layoutResId = R.layout.dialog_new_password,
+            viewModel = viewModel
+        )
+    }
+}

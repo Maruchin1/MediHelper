@@ -7,11 +7,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.personsprofiles.AddEditPersonFragment" />
+            type="com.maruchin.medihelper.presentation.feature.personsprofiles.AddEditPersonFragment" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.presentation.model.PersonColorCheckboxData" />
+            type="com.maruchin.medihelper.presentation.model.PersonColorCheckboxData" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

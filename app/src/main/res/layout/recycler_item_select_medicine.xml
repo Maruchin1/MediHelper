@@ -7,11 +7,11 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.dialogs.SelectMedicineDialog" />
+            type="com.maruchin.medihelper.presentation.dialogs.SelectMedicineDialog" />
 
         <variable
             name="displayData"
-            type="com.example.medihelper.presentation.model.MedicineItem" />
+            type="com.maruchin.medihelper.presentation.model.MedicineItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"

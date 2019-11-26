@@ -7,7 +7,7 @@
 
         <variable
             name="handler"
-            type="com.example.medihelper.presentation.feature.personsprofiles.PersonDialog" />
+            type="com.maruchin.medihelper.presentation.feature.personsprofiles.PersonDialog" />
     </data>
 
     <LinearLayout
