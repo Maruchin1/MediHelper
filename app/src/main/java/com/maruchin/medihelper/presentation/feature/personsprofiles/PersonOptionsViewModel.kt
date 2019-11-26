@@ -5,10 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.maruchin.medihelper.domain.entities.AppMode
-import com.maruchin.medihelper.domain.entities.Person
+import com.maruchin.medihelper.domain.entities.Profile
 import com.maruchin.medihelper.domain.usecases.PersonUseCases
-import com.maruchin.medihelper.domain.usecases.ServerConnectionUseCases
 import com.maruchin.medihelper.presentation.model.PersonOptionsData
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
@@ -17,23 +15,21 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class PersonOptionsViewModel(
-    private val personUseCases: PersonUseCases,
-    private val serverConnectionUseCases: ServerConnectionUseCases
+    private val personUseCases: PersonUseCases
 ) : ViewModel() {
 
-    val personOptionsData: LiveData<PersonOptionsData>
-    val isUserLogged: LiveData<Boolean>
+    val personOptionsData: LiveData<PersonOptionsData> = MutableLiveData()
+    val isUserLogged: LiveData<Boolean> = MutableLiveData(false)
 
     val personId: LiveData<Int>
         get() = _personId
 
     private val _personId = MutableLiveData<Int>()
-    private val person: LiveData<Person>
+    private val profile: LiveData<Profile> = MutableLiveData()
 
     init {
-        person = Transformations.switchMap(_personId) { personUseCases.getPersonLiveById(it) }
-        personOptionsData = Transformations.map(person) { mapPersonToPersonOptionsData(it) }
-        isUserLogged = Transformations.map(serverConnectionUseCases.getAppModeLive()) { it == AppMode.LOGGED }
+//        profile = Transformations.switchMap(_personId) { personUseCases.getPersonLiveById(it) }
+//        personOptionsData = Transformations.map(profile) { mapPersonToPersonOptionsData(it) }
     }
 
     fun setArgs(args: PersonOptionsFragmentArgs) {
@@ -41,15 +37,15 @@ class PersonOptionsViewModel(
     }
 
     fun deletePerson() = GlobalScope.launch {
-        _personId.value?.let { personUseCases.deletePersonById(it) }
+//        _personId.value?.let { personUseCases.deletePersonById(it) }
     }
 
-    private fun mapPersonToPersonOptionsData(person: Person) = PersonOptionsData(
-        name = person.name,
-        colorId = person.colorId,
-        connectionKey = person.connectionKey,
-        connectionKeyQrCode = person.connectionKey?.let { createQrCode(it) }
-    )
+//    private fun mapPersonToPersonOptionsData(profile: Profile) = PersonOptionsData(
+//        name = profile.name,
+//        color = profile.color,
+//        connectionKey = profile.connectionKey,
+//        connectionKeyQrCode = profile.connectionKey?.let { createQrCode(it) }
+//    )
 
     private fun createQrCode(text: String): Bitmap {
         val bitMatrix = MultiFormatWriter().encode(text, BarcodeFormat.QR_CODE, 500, 500)

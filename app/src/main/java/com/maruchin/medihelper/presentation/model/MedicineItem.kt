@@ -1,21 +1,18 @@
 package com.maruchin.medihelper.presentation.model
 
-import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineStateData
-import java.io.File
+import com.maruchin.medihelper.domain.usecases.medicines.GetAllMedicinesItemsLiveUseCase
 
 data class MedicineItem(
-   val medicineId: Int,
+   val medicineId: String,
    val name: String,
    val unit: String,
-   val stateData: MedicineStateData,
-   val image: File?
+   val stateData: MedicineStateData
 ) {
-   constructor(medicine: Medicine) : this(
-      medicineId = medicine.medicineId,
-      name = medicine.name,
-      unit = medicine.unit,
-      stateData = medicine.getStateData(),
-      image = medicine.image
+   constructor(data: GetAllMedicinesItemsLiveUseCase.MedicineItem) : this(
+      medicineId = data.medicineId,
+      name = data.name,
+      unit = data.unit,
+      stateData = data.stateDate
    )
 }

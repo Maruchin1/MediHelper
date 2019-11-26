@@ -2,103 +2,88 @@ package com.maruchin.medihelper.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.maruchin.medihelper.data.local.DeletedHistory
-import com.maruchin.medihelper.data.local.ImagesFiles
-import com.maruchin.medihelper.data.local.SharedPref
-import com.maruchin.medihelper.data.local.dao.MedicineDao
-import com.maruchin.medihelper.data.local.model.MedicineEntity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.maruchin.medihelper.data.SharedPref
+import com.maruchin.medihelper.data.framework.getCurrUserId
+import com.maruchin.medihelper.data.framework.getDocumentLive
+import com.maruchin.medihelper.data.framework.getDocumentsLive
+import com.maruchin.medihelper.data.model.MedicineDb
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class MedicineRepoImpl(
-    private val medicineDao: MedicineDao,
-    private val sharedPref: SharedPref,
-    private val deletedHistory: DeletedHistory,
-    private val imagesFiles: ImagesFiles
+    private val db: FirebaseFirestore,
+    private val auth: FirebaseAuth,
+    private val sharedPref: SharedPref
 ) : MedicineRepo {
 
-    init {
-        checkDefaultUnitList()
+    private val medicinesCollectionRef: CollectionReference
+        get() = db.collection("users").document(auth.getCurrUserId()).collection("medicines")
+
+    override suspend fun addNew(entity: Medicine) {
+        val medicineDb = MedicineDb(entity)
+        medicinesCollectionRef.add(medicineDb)
     }
 
-    override suspend fun insert(medicine: Medicine) {
-        val permaFileName = if (medicine.image != null) {
-            imagesFiles.saveTempImageFileAsPerma(medicine.name, medicine.image)
-        } else null
-
-        val newEntity = MedicineEntity(medicine = medicine, permaFileName = permaFileName)
-        medicineDao.insert(newEntity)
+    override suspend fun update(entity: Medicine) {
+        val medicineDb = MedicineDb(entity)
+        medicinesCollectionRef.document(entity.medicineId).set(medicineDb)
     }
 
-    override suspend fun update(medicine: Medicine) {
-        val permaFileName = if (medicine.image == null) {
-            null
-        } else if (!imagesFiles.isTempFile(medicine.image)) {
-            medicine.image.name
-        } else {
-            imagesFiles.saveTempImageFileAsPerma(medicine.name, medicine.image)
-        }
-
-        val existingEntity = medicineDao.getById(medicine.medicineId)
-        val existingImageName = existingEntity.imageName
-        if (existingImageName != null && existingImageName != permaFileName) {
-            val existingFile = imagesFiles.getImageFile(existingImageName)
-            existingFile.delete()
-        }
-
-        existingEntity.update(medicine, permaFileName)
-        medicineDao.update(existingEntity)
+    override suspend fun deleteById(id: String) = withContext(Dispatchers.IO) {
+        medicinesCollectionRef.document(id).delete()
+        //todo brak usuwania powiązanych rekordów
+        return@withContext
     }
 
-    override suspend fun deleteById(id: Int) {
-        val remoteId = medicineDao.getRemoteIdById(id)
-        if (remoteId != null) {
-            deletedHistory.addToMedicineHistory(remoteId)
-        }
-        medicineDao.deleteById(id)
+    override suspend fun getById(id: String): Medicine? = withContext(Dispatchers.IO) {
+        val document = medicinesCollectionRef.document(id).get().await()
+        val medicineDb = document.toObject(MedicineDb::class.java)
+        val medicine = medicineDb?.toDomainEntity(document.id)
+        return@withContext medicine
     }
 
-    override suspend fun getById(id: Int): Medicine {
-        val entity = medicineDao.getById(id)
-        return entity.toMedicine(imagesFiles)
-    }
-
-    override fun getLiveById(id: Int): LiveData<Medicine> {
-        val entityLive = medicineDao.getLiveById(id)
-        return Transformations.map(entityLive) { it.toMedicine(imagesFiles) }
-    }
-
-    override fun getAllListLive(): LiveData<List<Medicine>> {
-        val entityListLive = medicineDao.getAllListLive()
-        return Transformations.map(entityListLive) { list ->
-            list.map { it.toMedicine(imagesFiles) }
+    override suspend fun getLiveById(id: String): LiveData<Medicine?> = withContext(Dispatchers.IO) {
+        val documentLive = medicinesCollectionRef.document(id).getDocumentLive()
+        return@withContext Transformations.map(documentLive) {
+            val medicineDb = it.toObject(MedicineDb::class.java)
+            val medicine = medicineDb?.toDomainEntity(it.id)
+            return@map medicine
         }
     }
 
-    override fun getListLiveFilteredByName(nameQuery: String): LiveData<List<Medicine>> {
-        val entityListLive = medicineDao.getListLiveFilteredByName(nameQuery)
-        return Transformations.map(entityListLive) { list ->
-            list.map { it.toMedicine(imagesFiles) }
+    override suspend fun getAllList(): List<Medicine> = withContext(Dispatchers.IO) {
+        val documentsQuery = medicinesCollectionRef.get().await()
+        val medicinesList = mutableListOf<Medicine>()
+        documentsQuery.forEach {
+            val medicineDb = it.toObject(MedicineDb::class.java)
+            val medicine = medicineDb.toDomainEntity(it.id)
+            medicinesList.add(medicine)
+        }
+        return@withContext medicinesList
+    }
+
+    override suspend fun getAllListLive(): LiveData<List<Medicine>> = withContext(Dispatchers.IO) {
+        val documentsLive = medicinesCollectionRef.getDocumentsLive()
+        return@withContext Transformations.map(documentsLive) { snapshotList ->
+            val medicinesList = mutableListOf<Medicine>()
+            snapshotList.forEach {
+                val medicineDb = it.toObject(MedicineDb::class.java)
+                val medicine = medicineDb?.toDomainEntity(it.id)
+                if (medicine != null) {
+                    medicinesList.add(medicine)
+                }
+            }
+            return@map medicinesList.toList()
         }
     }
 
-    override fun getUnitList(): List<String> {
-        return sharedPref.getMedicineUnitList()
+    override suspend fun getMedicineUnits(): List<String> = withContext(Dispatchers.IO) {
+        sharedPref.getMedicineUnitList()
     }
-
-    override fun getUnitListLive(): LiveData<List<String>> {
-        return sharedPref.getMedicineUnitListLive()
-    }
-
-    override fun saveUnitList(list: List<String>) {
-        sharedPref.saveMedicineUnitList(list)
-    }
-
-    private fun checkDefaultUnitList() = with(sharedPref) {
-        if (getMedicineUnitList().isNullOrEmpty()) {
-            saveMedicineUnitList(getDefaultUnitList())
-        }
-    }
-
-    private fun getDefaultUnitList() = listOf("dawki", "tabletki", "ml", "g", "mg", "pastylki")
 }

@@ -1,7 +1,6 @@
 package com.maruchin.medihelper.presentation.feature.personsprofiles
 
 import androidx.lifecycle.*
-import com.maruchin.medihelper.domain.entities.PersonInputData
 import com.maruchin.medihelper.domain.usecases.PersonUseCases
 import com.maruchin.medihelper.presentation.model.PersonColorCheckboxData
 import kotlinx.coroutines.GlobalScope
@@ -23,7 +22,7 @@ class AddEditPersonViewModel(
     private val _formTitle = MutableLiveData<String>("Dodaj osobę")
     private val _personNameError = MutableLiveData<String>()
 
-    private val personColorIdList: List<Int> = personUseCases.getColorIdList()
+    private val personColorIdList: List<Int> = emptyList()
     private var editPersonId: Int? = null
 
     init {
@@ -41,9 +40,9 @@ class AddEditPersonViewModel(
         if (args.editPersonID != -1) {
             editPersonId = args.editPersonID
             _formTitle.postValue("Edytuj osobę")
-            val editPerson = personUseCases.getPersonById(args.editPersonID)
-            personName.postValue(editPerson.name)
-            selectedColorId.postValue(editPerson.colorId)
+//            val editPerson = personUseCases.getPersonById(args.editPersonID)
+//            personName.postValue(editPerson.name)
+//            selectedColorId.postValue(editPerson.color)
         } else {
             personName.postValue(null)
             selectedColorId.postValue(personColorIdList[0])
@@ -54,17 +53,17 @@ class AddEditPersonViewModel(
     fun savePerson(): Boolean {
         if (isFormValid()) {
             val personId = editPersonId
-            val inputData = PersonInputData(
-                name = personName.value!!,
-                colorId = selectedColorId.value!!
-            )
+//            val inputData = PersonInputData(
+//                name = personName.value!!,
+//                color = selectedColorId.value!!
+//            )
             if (personId == null) {
                 GlobalScope.launch {
-                    personUseCases.addNewPerson(inputData)
+//                    personUseCases.addNewPerson(inputData)
                 }
             } else {
                 GlobalScope.launch {
-                    personUseCases.updatePerson(personId, inputData)
+//                    personUseCases.updatePerson(profileId, inputData)
                 }
             }
             return true

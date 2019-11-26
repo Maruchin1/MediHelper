@@ -17,7 +17,7 @@ class AddEditMedicinePlanViewModel(
     private val dateTimeUseCases: DateTimeUseCases
 ) : ViewModel() {
 
-    val colorPrimaryId: LiveData<Int>
+    val colorPrimaryId: LiveData<Int> = MutableLiveData()
     val selectedPersonName: LiveData<String>
     val selectedMedicineId = MutableLiveData<Int>()
     val selectedMedicineAvailable: LiveData<Boolean>
@@ -46,26 +46,26 @@ class AddEditMedicinePlanViewModel(
     private val _errorStartDate = MutableLiveData<String>()
     private val _errorEndDate = MutableLiveData<String>()
 
-    private val selectedPerson: LiveData<Person> = personUseCases.getCurrPersonLive()
-    private val selectedMedicine: LiveData<Medicine>
+    private val selectedProfile: LiveData<Profile> = MutableLiveData()
+    private val selectedMedicine: LiveData<Medicine> = MutableLiveData()
     private var editMedicinePlanId: Int? = null
 
     init {
-        colorPrimaryId = Transformations.map(selectedPerson) { it.colorId }
-        selectedMedicine = Transformations.switchMap(selectedMedicineId) { medicineId ->
-            medicineId?.let { medicineUseCases.getMedicineLiveById(it) }
-        }
+//        colorPrimaryId = Transformations.map(selectedProfile) { it.color }
+//        selectedMedicine = Transformations.switchMap(selectedMedicineId) { medicineId ->
+//            medicineId?.let { medicineUseCases.getMedicineLiveById(it) }
+//        }
         selectedMedicineAvailable = Transformations.map(selectedMedicine) { it != null }
         selectedMedicineShortInfo = Transformations.map(selectedMedicine) { MedicineShortInfo(it) }
-        selectedPersonName = Transformations.map(selectedPerson) { it.name }
+        selectedPersonName = Transformations.map(selectedProfile) { it.name }
     }
 
     fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
         if (args.editMedicinePlanID != -1) {
             editMedicinePlanId = args.editMedicinePlanID
             _formTitle.postValue("Edytuj plan")
-            val editMedicinePlan = medicinePlanUseCases.getMedicinePlanById(args.editMedicinePlanID)
-            setMedicinePlanData(editMedicinePlan)
+//            val editMedicinePlan = medicinePlanUseCases.getMedicinePlanById(args.editMedicinePlanID)
+//            setMedicinePlanData(editMedicinePlan)
         } else {
             setEmptyMedicinePlanData()
         }
@@ -113,24 +113,24 @@ class AddEditMedicinePlanViewModel(
     fun saveMedicinePlan(): Boolean {
         if (isFormValid()) {
             val medicinePlanId = editMedicinePlanId
-            val inputData = MedicinePlanInputData(
-                medicineId = selectedMedicineId.value!!,
-                personId = selectedPerson.value?.personId!!,
-                durationType = durationType.value!!,
-                startDate = startDate.value!!,
-                endDate = endDate.value,
-                daysType = daysType.value,
-                daysOfWeek = daysOfWeek.value?.toDaysOfWeek(),
-                intervalOfDays = intervalOfDays.value,
-                timeDoseList = _timeDoseFormItemList.value!!.map { it.toTimeDose() }
-            )
+//            val inputData = MedicinePlanInputData(
+//                medicineId = selectedMedicineId.value!!,
+//                profileId = selectedProfile.value?.profileId!!,
+//                durationType = durationType.value!!,
+//                startDate = startDate.value!!,
+//                endDate = endDate.value,
+//                daysType = daysType.value,
+//                daysOfWeek = daysOfWeek.value?.toDaysOfWeek(),
+//                intervalOfDays = intervalOfDays.value,
+//                timeDoseList = _timeDoseFormItemList.value!!.map { it.toTimeDose() }
+//            )
             if (medicinePlanId == null) {
                 GlobalScope.launch {
-                    medicinePlanUseCases.addNewMedicinePlan(inputData)
+//                    medicinePlanUseCases.addNewMedicinePlan(inputData)
                 }
             } else {
                 GlobalScope.launch {
-                    medicinePlanUseCases.updateMedicinePlan(medicinePlanId, inputData)
+//                    medicinePlanUseCases.updateMedicinePlan(medicinePlanId, inputData)
                 }
             }
             return true

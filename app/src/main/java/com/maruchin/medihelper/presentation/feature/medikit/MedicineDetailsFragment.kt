@@ -17,6 +17,7 @@ import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.maruchin.medihelper.presentation.framework.bind
 import com.maruchin.medihelper.presentation.model.PersonItem
+import com.maruchin.medihelper.presentation.model.ProfileSimpleItem
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -39,12 +40,8 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
     }
 
     fun onClickEdit() {
-        viewModel.selectedMedicineId.value?.let { medicineID ->
-            findNavController().navigate(
-                MedicineDetailsFragmentDirections.toAddEditMedicineFragment(
-                    medicineID
-                )
-            )
+        viewModel.medicineId?.let { medicineId ->
+            findNavController().navigate(directions.toAddEditMedicineFragment(medicineId))
         }
     }
 
@@ -80,13 +77,13 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
     }
 
     private fun setupToolbar() {
-       toolbar.setNavigationOnClickListener { dismiss() }
+        toolbar.setNavigationOnClickListener { dismiss() }
     }
 
     private fun observeViewModel() {
-        viewModel.personItemListTakingMedicine.observe(viewLifecycleOwner, Observer { personItemList ->
+        viewModel.medicineDetails.observe(viewLifecycleOwner, Observer { medicineDetails ->
             val adapter = recycler_view_persons.adapter as PersonAdapter
-            adapter.updateItemsList(personItemList)
+            adapter.updateItemsList(medicineDetails.profileItemList)
         })
     }
 
@@ -96,9 +93,9 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
         }
     }
 
-    inner class PersonAdapter : RecyclerAdapter<PersonItem>(
+    inner class PersonAdapter : RecyclerAdapter<ProfileSimpleItem>(
         layoutResId = R.layout.recycler_item_person_taking_medicine,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.personId == newItem.personId }
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val personItem = itemsList[position]

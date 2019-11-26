@@ -6,7 +6,6 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.AppTime
-import com.maruchin.medihelper.domain.entities.PlannedMedicineWithMedicine
 import com.maruchin.medihelper.domain.usecases.PersonUseCases
 import com.maruchin.medihelper.domain.usecases.PlannedMedicineUseCases
 import com.maruchin.medihelper.presentation.model.PlannedMedicineItem
@@ -17,44 +16,44 @@ class CalendarDayViewModel(
 ) : ViewModel() {
 
     val date = MutableLiveData<AppDate>()
-    val morningPlannedMedicineItemList: LiveData<List<PlannedMedicineItem>>
-    val afternoonPlannedMedicineItemList: LiveData<List<PlannedMedicineItem>>
-    val eveningPlannedMedicineItemList: LiveData<List<PlannedMedicineItem>>
-    val plannedMedicineAvailable: LiveData<Boolean>
-    val morningMedicineAvailable: LiveData<Boolean>
-    val afternoonMedicineAvailable: LiveData<Boolean>
-    val eveningMedicineAvailable: LiveData<Boolean>
+    val morningPlannedMedicineItemList: LiveData<List<PlannedMedicineItem>> = MutableLiveData(emptyList())
+    val afternoonPlannedMedicineItemList: LiveData<List<PlannedMedicineItem>> = MutableLiveData(emptyList())
+    val eveningPlannedMedicineItemList: LiveData<List<PlannedMedicineItem>> = MutableLiveData(emptyList())
+    val plannedMedicineAvailable: LiveData<Boolean> = MutableLiveData(false)
+    val morningMedicineAvailable: LiveData<Boolean> = MutableLiveData(false)
+    val afternoonMedicineAvailable: LiveData<Boolean> = MutableLiveData(false)
+    val eveningMedicineAvailable: LiveData<Boolean> = MutableLiveData(false)
 
-    private val plannedMedicinesForDate: LiveData<List<PlannedMedicineWithMedicine>>
+//    private val plannedMedicinesForDate: LiveData<List<PlannedMedicineWithMedicine>>
 
     init {
-        plannedMedicinesForDate = Transformations.switchMap(date) { date ->
-            Transformations.switchMap(personUseCases.getCurrPersonLive()) { person ->
-                person?.let {
-                    plannedMedicineUseCases.getPlannedMedicineWithMedicineListLiveByDateAndPerson(date, person.personId)
-                }
-            }
-        }
-        morningPlannedMedicineItemList = Transformations.map(plannedMedicinesForDate) { list ->
-            list.filter {
-                it.plannedTime < MORNING_AFTERNOON_LIMIT
-            }.sortedBy { it.plannedTime }.map { PlannedMedicineItem(it) }
-        }
-        afternoonPlannedMedicineItemList = Transformations.map(plannedMedicinesForDate) { list ->
-            list.filter {
-                it.plannedTime >= MORNING_AFTERNOON_LIMIT &&
-                        it.plannedTime < AFTERNOON_EVENING_LIMIT
-            }.sortedBy { it.plannedTime }.map { PlannedMedicineItem(it) }
-        }
-        eveningPlannedMedicineItemList = Transformations.map(plannedMedicinesForDate) { list ->
-            list.filter {
-                it.plannedTime >= AFTERNOON_EVENING_LIMIT
-            }.sortedBy { it.plannedTime }.map { PlannedMedicineItem(it) }
-        }
-        plannedMedicineAvailable = Transformations.map(plannedMedicinesForDate) { !it.isNullOrEmpty() }
-        morningMedicineAvailable = Transformations.map(morningPlannedMedicineItemList) { !it.isNullOrEmpty() }
-        afternoonMedicineAvailable = Transformations.map(afternoonPlannedMedicineItemList) { !it.isNullOrEmpty() }
-        eveningMedicineAvailable = Transformations.map(eveningPlannedMedicineItemList) { !it.isNullOrEmpty() }
+//        plannedMedicinesForDate = Transformations.switchMap(date) { date ->
+//            Transformations.switchMap(personUseCases.getCurrPersonLive()) { person ->
+//                person?.let {
+//                    plannedMedicineUseCases.getPlannedMedicineWithMedicineListLiveByDateAndPerson(date, person.profileId)
+//                }
+//            }
+//        }
+//        morningPlannedMedicineItemList = Transformations.map(plannedMedicinesForDate) { list ->
+//            list.filter {
+//                it.plannedTime < MORNING_AFTERNOON_LIMIT
+//            }.sortedBy { it.plannedTime }.map { PlannedMedicineItem(it) }
+//        }
+//        afternoonPlannedMedicineItemList = Transformations.map(plannedMedicinesForDate) { list ->
+//            list.filter {
+//                it.plannedTime >= MORNING_AFTERNOON_LIMIT &&
+//                        it.plannedTime < AFTERNOON_EVENING_LIMIT
+//            }.sortedBy { it.plannedTime }.map { PlannedMedicineItem(it) }
+//        }
+//        eveningPlannedMedicineItemList = Transformations.map(plannedMedicinesForDate) { list ->
+//            list.filter {
+//                it.plannedTime >= AFTERNOON_EVENING_LIMIT
+//            }.sortedBy { it.plannedTime }.map { PlannedMedicineItem(it) }
+//        }
+//        plannedMedicineAvailable = Transformations.map(plannedMedicinesForDate) { !it.isNullOrEmpty() }
+//        morningMedicineAvailable = Transformations.map(morningPlannedMedicineItemList) { !it.isNullOrEmpty() }
+//        afternoonMedicineAvailable = Transformations.map(afternoonPlannedMedicineItemList) { !it.isNullOrEmpty() }
+//        eveningMedicineAvailable = Transformations.map(eveningPlannedMedicineItemList) { !it.isNullOrEmpty() }
     }
 
     companion object {

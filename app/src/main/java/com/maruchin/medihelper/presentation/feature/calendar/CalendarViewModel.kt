@@ -2,15 +2,12 @@ package com.maruchin.medihelper.presentation.feature.calendar
 
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppDate
-import com.maruchin.medihelper.domain.entities.AppMode
 import com.maruchin.medihelper.domain.usecases.DateTimeUseCases
 import com.maruchin.medihelper.domain.usecases.PersonUseCases
 import com.maruchin.medihelper.domain.usecases.PlannedMedicineUseCases
-import com.maruchin.medihelper.domain.usecases.ServerConnectionUseCases
 import kotlinx.coroutines.launch
 
 class CalendarViewModel(
-    private val serverConnectionUseCases: ServerConnectionUseCases,
     private val personUseCases: PersonUseCases,
     private val dateTimeUseCases: DateTimeUseCases,
     private val plannedMedicineUseCases: PlannedMedicineUseCases
@@ -19,18 +16,15 @@ class CalendarViewModel(
     val timelineDaysCount = 1000
     val initialDatePosition = timelineDaysCount / 2
 
-    val colorPrimaryId: LiveData<Int>
-    val currPersonName: LiveData<String>
-    val isAppModeConnectedLive: LiveData<Boolean>
+    val colorPrimaryId: LiveData<Int> = MutableLiveData()
+    val currPersonName: LiveData<String> = MutableLiveData()
+    val isAppModeConnectedLive: LiveData<Boolean> = MutableLiveData(false)
     val calendarLayoutVisible = MutableLiveData<Boolean>(false)
     val selectedDate = MutableLiveData<AppDate>()
 
     init {
-        isAppModeConnectedLive = Transformations.map(serverConnectionUseCases.getAppModeLive()) {
-            it == AppMode.CONNECTED
-        }
-        colorPrimaryId = Transformations.map(personUseCases.getCurrPersonLive()) { it.colorId }
-        currPersonName = Transformations.map(personUseCases.getCurrPersonLive()) { it.name }
+//        colorPrimaryId = Transformations.map(personUseCases.getCurrPersonLive()) { it.color }
+//        currPersonName = Transformations.map(personUseCases.getCurrPersonLive()) { it.name }
     }
 
     fun selectDate(position: Int) = selectDate(getDateForPosition(position))
@@ -56,6 +50,6 @@ class CalendarViewModel(
     }
 
     fun updateAllStatus() = viewModelScope.launch {
-        plannedMedicineUseCases.updateAllStatus()
+//        plannedMedicineUseCases.updateAllStatus()
     }
 }

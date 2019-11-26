@@ -8,8 +8,6 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.maruchin.medihelper.data.local.dao.PlannedMedicineDao
-import com.maruchin.medihelper.data.local.model.PlannedMedicineEntity
 import com.maruchin.medihelper.domain.usecases.DateTimeUseCases
 import org.koin.core.KoinComponent
 import org.koin.core.get
@@ -26,7 +24,7 @@ class UpdateRemindersWorker(private val context: Context, params: WorkerParamete
         private const val KEY_REMINDERS_LIST = "key-reminders-list"
     }
 
-    private val plannedMedicineDao: PlannedMedicineDao by inject()
+//    private val plannedMedicineDao: PlannedMedicineDao by inject()
     private val dateTimeUseCases: DateTimeUseCases by inject()
     private val alarmManager: AlarmManager by lazy {
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -37,7 +35,7 @@ class UpdateRemindersWorker(private val context: Context, params: WorkerParamete
 
     override suspend fun doWork(): Result {
         val currDate = dateTimeUseCases.getCurrDate()
-        val plannedMedicinesForCurrDate = plannedMedicineDao.getListByDate(currDate)
+//        val plannedMedicinesForCurrDate = plannedMedicineDao.getListByDate(currDate)
 
         val enablePeriodicUpdate = inputData.getBoolean(ENABLE_PERIODIC_UPDATE, false)
         if (enablePeriodicUpdate) {
@@ -45,8 +43,8 @@ class UpdateRemindersWorker(private val context: Context, params: WorkerParamete
         }
 
         cancelCurrReminders()
-        setReminders(plannedMedicinesForCurrDate)
-        savePlannedMedicinesIds(plannedMedicinesForCurrDate.map { it.plannedMedicineId })
+//        setReminders(plannedMedicinesForCurrDate)
+//        savePlannedMedicinesIds(plannedMedicinesForCurrDate.map { it.plannedMedicineId })
 
         return Result.success()
     }
@@ -57,28 +55,28 @@ class UpdateRemindersWorker(private val context: Context, params: WorkerParamete
         }
     }
 
-    private fun setReminders(list: List<PlannedMedicineEntity>) {
-        val currTime = dateTimeUseCases.getCurrTime()
-        list.forEach { plannedMedicine ->
-            if (plannedMedicine.plannedTime > currTime) {
-                val calendar = Calendar.getInstance().apply {
-                    set(
-                        plannedMedicine.plannedDate.year,
-                        plannedMedicine.plannedDate.month - 1,
-                        plannedMedicine.plannedDate.day,
-                        plannedMedicine.plannedTime.hour,
-                        plannedMedicine.plannedTime.minute,
-                        0
-                    )
-                }
-                alarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP,
-                    calendar.timeInMillis,
-                    getReminderIntent(plannedMedicine.plannedMedicineId)
-                )
-            }
-        }
-    }
+//    private fun setReminders(list: List<PlannedMedicineEntity>) {
+//        val currTime = dateTimeUseCases.getCurrTime()
+//        list.forEach { plannedMedicine ->
+//            if (plannedMedicine.plannedTime > currTime) {
+//                val calendar = Calendar.getInstance().apply {
+//                    set(
+//                        plannedMedicine.plannedDate.year,
+//                        plannedMedicine.plannedDate.month - 1,
+//                        plannedMedicine.plannedDate.day,
+//                        plannedMedicine.plannedTime.hour,
+//                        plannedMedicine.plannedTime.minute,
+//                        0
+//                    )
+//                }
+//                alarmManager.setExact(
+//                    AlarmManager.RTC_WAKEUP,
+//                    calendar.timeInMillis,
+//                    getReminderIntent(plannedMedicine.plannedMedicineId)
+//                )
+//            }
+//        }
+//    }
 
     private fun getReminderIntent(plannedMedicineId: Int): PendingIntent {
         return Intent(context, ReminderReceiver::class.java).let { intent ->

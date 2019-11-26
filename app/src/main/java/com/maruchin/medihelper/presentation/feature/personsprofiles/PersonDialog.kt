@@ -25,7 +25,7 @@ class PersonDialog : BottomSheetDialogFragment() {
     private val directions by lazyOf(PersonDialogDirections)
 
     fun onClickSelectPerson(personID: Int) {
-        viewModel.selectPerson(personID)
+//        viewModel.selectPerson(personID)
         dismiss()
     }
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.presentation.framework.AppFullScreenDialog
@@ -49,6 +50,13 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
         viewModel.setArgs(args)
         setupToolbar()
         setupTextFieldsFocusListener()
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewModel.actionMedicineSaved.observe(viewLifecycleOwner, Observer {
+            dismiss()
+        })
     }
 
     private fun setupTextFieldsFocusListener() {
@@ -79,10 +87,7 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
                 R.id.btn_save -> {
                     passPackageSizeValueToViewModel()
                     passCurrStateValueToViewModel()
-                    val medicineSaved = viewModel.saveMedicine()
-                    if (medicineSaved) {
-                        dismiss()
-                    }
+                    viewModel.saveMedicine()
                 }
             }
             true

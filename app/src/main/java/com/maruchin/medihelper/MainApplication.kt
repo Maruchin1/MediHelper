@@ -3,8 +3,9 @@ package com.maruchin.medihelper
 
 import android.app.Activity
 import android.app.Application
+import com.google.firebase.FirebaseApp
 import com.maruchin.medihelper.data.di.*
-import com.maruchin.medihelper.data.local.SharedPref
+import com.maruchin.medihelper.data.SharedPref
 import com.maruchin.medihelper.device.di.cameraModule
 import com.maruchin.medihelper.device.di.deviceApiModule
 import com.maruchin.medihelper.device.di.notificationModule
@@ -27,11 +28,8 @@ class MainApplication : Application() {
 
     private val dataModules: List<Module> by lazy {
         listOf(
-            roomMainModule,
-            retrofitModule,
             localDataModule,
-            remoteDataModule,
-            syncModule,
+            firebaseModule,
             repositoryModule
         )
     }
@@ -58,27 +56,6 @@ class MainApplication : Application() {
             androidLogger()
             androidContext(this@MainApplication)
             modules(dataModules + deviceModules + presentationModules)
-        }
-        checkAppMode()
-    }
-
-    fun reloadKoin() {
-        unloadKoinModules(dataModules + deviceModules + presentationModules)
-        loadKoinModules(dataModules + deviceModules + presentationModules)
-        checkAppMode()
-    }
-
-    private fun checkAppMode() {
-        runBlocking {
-            val sharedPref = SharedPref(this@MainApplication)
-            val authToken = sharedPref.getAuthToken()
-            val email = sharedPref.getUserEmail()
-
-            val appModeConnected = !authToken.isNullOrEmpty() && email.isNullOrEmpty()
-            if (appModeConnected) {
-                unloadKoinModules(roomMainModule)
-                loadKoinModules(roomConnectedModule)
-            }
         }
     }
 }

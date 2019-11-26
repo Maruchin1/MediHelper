@@ -27,8 +27,8 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var binding: DialogSelectMedicineBinding
 
-    fun onClickSelectMedicine(medicineID: Int) {
-        medicineSelectedListener?.invoke(medicineID)
+    fun onClickSelectMedicine(medicineId: String) {
+//        medicineSelectedListener?.invoke(medicineId)
         dismiss()
     }
 

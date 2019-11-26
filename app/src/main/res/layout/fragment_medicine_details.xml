@@ -41,7 +41,6 @@
 
                 <ImageView
                     android:id="@+id/img_medicine_picture"
-                    srcFile="@{viewModel.medicineDetails.image}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
@@ -166,7 +165,6 @@
                                 android:layout_height="wrap_content"
                                 android:onClick="@{() -> handler.onClickEdit()}"
                                 android:text="Edytuj"
-                                android:visibility="@{viewModel.appModeConnected ? View.GONE : View.VISIBLE}"
                                 app:chipIcon="@drawable/round_edit_black_24" />
 
                             <com.google.android.material.chip.Chip
@@ -175,7 +173,6 @@
                                 android:layout_height="wrap_content"
                                 android:onClick="@{() -> handler.onClickDelete()}"
                                 android:text="Usuń"
-                                android:visibility="@{viewModel.appModeConnected ? View.GONE : View.VISIBLE}"
                                 app:chipIcon="@drawable/round_delete_black_24" />
                         </com.google.android.material.chip.ChipGroup>
                     </LinearLayout>
@@ -275,8 +272,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/main_card_margin_start"
                     android:layout_marginTop="@dimen/main_card_margin_top"
-                    android:layout_marginEnd="@dimen/main_card_margin_end"
-                    android:visibility="@{viewModel.appModeConnected ? View.GONE : View.VISIBLE}">
+                    android:layout_marginEnd="@dimen/main_card_margin_end">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -292,8 +288,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="16dp"
                             android:text="Osoby przyjmujące lek"
-                            android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle"
-                            android:textColor='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
+                            android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -306,7 +301,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:orientation="horizontal"
-                                android:visibility="@{viewModel.personItemListTakingMedicineAvailable ? View.VISIBLE : View.GONE}"
+                                android:visibility="@{viewModel.medicineDetails.profileItemListAvailable ? View.VISIBLE : View.GONE}"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                                 tools:listitem="@layout/recycler_item_person_taking_medicine" />
 
@@ -317,7 +312,7 @@
                                 android:layout_marginEnd="16dp"
                                 android:text="Lek nie jest przyjmowany przez żadną osobę"
                                 android:textAppearance="@style/MedicineDetailFragment.Text.Body2"
-                                android:visibility="@{viewModel.personItemListTakingMedicineAvailable ? View.GONE : View.VISIBLE, default=gone}" />
+                                android:visibility="@{viewModel.medicineDetails.profileItemListAvailable ? View.GONE : View.VISIBLE, default=gone}" />
                         </FrameLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -345,8 +340,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Dodatkowe informacje"
-                            android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle"
-                            android:textColor='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
+                            android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle" />
 
                         <FrameLayout
                             android:layout_width="match_parent"

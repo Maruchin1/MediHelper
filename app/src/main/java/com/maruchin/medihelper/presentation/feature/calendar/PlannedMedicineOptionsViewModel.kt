@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.maruchin.medihelper.R
-import com.maruchin.medihelper.domain.entities.PlannedMedicineWithMedicine
 import com.maruchin.medihelper.domain.entities.StatusOfTaking
 import com.maruchin.medihelper.domain.usecases.MedicineUseCases
 import com.maruchin.medihelper.domain.usecases.PersonUseCases
@@ -21,51 +20,54 @@ class PlannedMedicineOptionsViewModel(
     private val medicineUseCases: MedicineUseCases
 ) : ViewModel() {
 
-    val colorPrimaryId: LiveData<Int>
-    val optionsData: LiveData<PlannedMedicineOptionsData>
-    val takeMedicineBtnText: LiveData<String>
-    val takeMedicineBtnIcon: LiveData<Int>
+    val colorPrimaryId: LiveData<Int> = MutableLiveData(R.color.colorPrimary)
+    val optionsData: LiveData<PlannedMedicineOptionsData> = MutableLiveData()
+    val takeMedicineBtnText: LiveData<String> = MutableLiveData()
+    val takeMedicineBtnIcon: LiveData<Int> = MutableLiveData()
 
     private val plannedMedicineId = MutableLiveData<Int>()
-    private val plannedMedicineWithMedicine: LiveData<PlannedMedicineWithMedicine>
+//    private val plannedMedicineWithMedicine: LiveData<PlannedMedicineWithMedicine>
 
     init {
-        colorPrimaryId = personUseCases.getCurrPersonLive().map { it.colorId }
-        plannedMedicineWithMedicine = plannedMedicineId.switchMap {
-            plannedMedicineUseCases.getPlannedMedicineWithMedicineLiveById(it)
-        }
-        optionsData = plannedMedicineWithMedicine.map { PlannedMedicineOptionsData(it) }
-        takeMedicineBtnText = plannedMedicineWithMedicine.map {
-            if (it.statusOfTaking == StatusOfTaking.TAKEN) {
-                "Anuluj przyjecie leku"
-            } else {
-                "Przyjmij lek"
-            }
-        }
-        takeMedicineBtnIcon = plannedMedicineWithMedicine.map {
-            if (it.statusOfTaking == StatusOfTaking.TAKEN) {
-                R.drawable.round_close_black_24
-            } else {
-                R.drawable.baseline_check_white_24
-            }
-        }
+//        colorPrimaryId = personUseCases.getCurrPersonLive().map { it.color }
+//        plannedMedicineWithMedicine = plannedMedicineId.switchMap {
+//            plannedMedicineUseCases.getPlannedMedicineWithMedicineLiveById(it)
+//        }
+//        optionsData = plannedMedicineWithMedicine.map { PlannedMedicineOptionsData(it) }
+//        takeMedicineBtnText = plannedMedicineWithMedicine.map {
+//            if (it.statusOfTaking == StatusOfTaking.TAKEN) {
+//                "Anuluj przyjecie leku"
+//            } else {
+//                "Przyjmij lek"
+//            }
+//        }
+//        takeMedicineBtnIcon = plannedMedicineWithMedicine.map {
+//            if (it.statusOfTaking == StatusOfTaking.TAKEN) {
+//                R.drawable.round_close_black_24
+//            } else {
+//                R.drawable.baseline_check_white_24
+//            }
+//        }
     }
 
     fun setArgs(args: PlannedMedicineOptionsDialogArgs) {
         plannedMedicineId.value = args.plannedMedicineID
     }
 
-    fun getMedicineId(): Int? = plannedMedicineWithMedicine.value?.medicine?.medicineId
+    fun getMedicineId(): Int? {
+//        plannedMedicineWithMedicine.value?.medicine?.medicineId
+        return 1
+    }
 
     fun changePlannedMedicineStatus() = GlobalScope.launch {
-        plannedMedicineWithMedicine.value?.let {
-            if (it.statusOfTaking == StatusOfTaking.TAKEN) {
-                plannedMedicineUseCases.changeMedicineTaken(it.plannedMedicineId, false)
-                medicineUseCases.increaseMedicineCurrState(it.medicine.medicineId, it.plannedDoseSize)
-            } else {
-                plannedMedicineUseCases.changeMedicineTaken(it.plannedMedicineId, true)
-                medicineUseCases.reduceMedicineCurrState(it.medicine.medicineId, it.plannedDoseSize)
-            }
-        }
+//        plannedMedicineWithMedicine.value?.let {
+//            if (it.statusOfTaking == StatusOfTaking.TAKEN) {
+//                plannedMedicineUseCases.changeMedicineTaken(it.plannedMedicineId, false)
+//                medicineUseCases.increaseMedicineCurrState(it.medicine.medicineId, it.plannedDoseSize)
+//            } else {
+//                plannedMedicineUseCases.changeMedicineTaken(it.plannedMedicineId, true)
+//                medicineUseCases.reduceMedicineCurrState(it.medicine.medicineId, it.plannedDoseSize)
+//            }
+//        }
     }
 }

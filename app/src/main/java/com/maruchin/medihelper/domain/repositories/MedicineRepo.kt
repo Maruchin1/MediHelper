@@ -1,17 +1,9 @@
 package com.maruchin.medihelper.domain.repositories
 
-import androidx.lifecycle.LiveData
 import com.maruchin.medihelper.domain.entities.Medicine
+import com.maruchin.medihelper.domain.framework.BaseRepo
 
-interface MedicineRepo {
-    suspend fun insert(medicine: Medicine)
-    suspend fun update(medicine: Medicine)
-    suspend fun deleteById(id: Int)
-    suspend fun getById(id: Int): Medicine
-    fun getLiveById(id: Int): LiveData<Medicine>
-    fun getAllListLive(): LiveData<List<Medicine>>
-    fun getListLiveFilteredByName(nameQuery: String): LiveData<List<Medicine>>
-    fun getUnitList(): List<String>
-    fun getUnitListLive(): LiveData<List<String>>
-    fun saveUnitList(list: List<String>)
+interface MedicineRepo : BaseRepo<Medicine> {
+
+    suspend fun getMedicineUnits(): List<String>
 }

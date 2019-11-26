@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1045626025795",
+    "firebase_url": "https://medihelper-eb641.firebaseio.com",
+    "project_id": "medihelper-eb641",
+    "storage_bucket": "medihelper-eb641.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045626025795:android:ada1f8d15bf16f9f8c21f6",
+        "android_client_info": {
+          "package_name": "com.maruchin.medihelper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045626025795-njfhgri9s1dnkce9m2mt11ennkb909du.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUCJhlFXvvp3aBVNmA5kjQl5NJpQi-szs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045626025795-njfhgri9s1dnkce9m2mt11ennkb909du.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

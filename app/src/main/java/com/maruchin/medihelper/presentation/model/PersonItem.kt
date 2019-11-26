@@ -1,6 +1,6 @@
 package com.maruchin.medihelper.presentation.model
 
-import com.maruchin.medihelper.domain.entities.Person
+import com.maruchin.medihelper.domain.entities.Profile
 
 data class PersonItem(
     val personId: Int,
@@ -8,10 +8,10 @@ data class PersonItem(
     val colorId: Int,
     val mainPerson: Boolean
 ) {
-    constructor(person: Person) : this(
-        personId = person.personId,
-        name = person.name,
-        colorId = person.colorId,
-        mainPerson = person.mainPerson
-    )
+//    constructor(profile: Profile) : this(
+//        personId = profile.profileId,
+//        name = profile.name,
+//        color = profile.color,
+//        mainPerson = profile.mainPerson
+//    )
 }

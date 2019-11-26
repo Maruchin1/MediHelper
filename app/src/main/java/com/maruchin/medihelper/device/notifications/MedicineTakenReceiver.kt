@@ -27,7 +27,7 @@ class MedicineTakenReceiver : BroadcastReceiver(), KoinComponent {
         if (plannedMedicineId != -1) {
             val useCases: PlannedMedicineUseCases = get()
             GlobalScope.launch {
-                useCases.changeMedicineTaken(plannedMedicineId, medicineTaken)
+//                useCases.changeMedicineTaken(plannedMedicineId, medicineTaken)
             }
             val notification: MedicineReminderNotification = get()
             notification.cancel(plannedMedicineId)

@@ -42,7 +42,6 @@
 
                 <ImageView
                     android:id="@+id/img_photo"
-                    srcFile="@{displayData.image}"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:src="@drawable/ic_pill_white_48dp"

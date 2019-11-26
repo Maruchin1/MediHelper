@@ -4,14 +4,13 @@ import com.maruchin.medihelper.R
 import java.io.File
 
 data class Medicine(
-    val medicineId: Int,
+    val medicineId: String,
     val name: String,
     val unit: String,
     val expireDate: AppExpireDate,
     val packageSize: Float?,
     var currState: Float?,
-    val additionalInfo: String?,
-    val image: File?
+    val additionalInfo: String?
 ) {
     fun reduceCurrState(doseSize: Float) {
         val currState = this.currState

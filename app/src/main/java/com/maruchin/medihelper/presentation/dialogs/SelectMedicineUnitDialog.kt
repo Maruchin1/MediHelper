@@ -52,9 +52,9 @@ class SelectMedicineUnitDialog : AppBottomSheetDialog() {
     }
 
     fun onClickConfirmAddMedicineType() = newMedicineUnitLive.value?.let { newMedicineUnit ->
-        val medicineUnitList = medicineUseCases.getMedicineUnitList().toMutableList()
-        medicineUnitList.add(newMedicineUnit)
-        medicineUseCases.saveMedicineUnitList(medicineUnitList)
+//        val medicineUnitList = medicineUseCases.getMedicineUnitList().toMutableList()
+//        medicineUnitList.add(newMedicineUnit)
+//        medicineUseCases.saveMedicineUnitList(medicineUnitList)
         onClickCancelAddMedicineType()
     }
 
@@ -82,9 +82,9 @@ class SelectMedicineUnitDialog : AppBottomSheetDialog() {
     }
 
     private fun observerData() {
-        medicineUseCases.getMedicineUnitListLive().observe(requireParentFragment().viewLifecycleOwner, Observer {
-            (binding.recyclerViewMedicineUnit.adapter as MedicineUnitAdapter).updateItemsList(it)
-        })
+//        medicineUseCases.getMedicineUnitListLive().observe(requireParentFragment().viewLifecycleOwner, Observer {
+//            (binding.recyclerViewMedicineUnit.adapter as MedicineUnitAdapter).updateItemsList(it)
+//        })
     }
 
     private fun setupRecyclerView() {

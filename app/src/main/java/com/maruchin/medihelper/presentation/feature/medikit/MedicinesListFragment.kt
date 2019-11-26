@@ -2,7 +2,6 @@ package com.maruchin.medihelper.presentation.feature.medikit
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,11 +28,11 @@ class MedicinesListFragment : BaseFragment<FragmentMedicinesListBinding>(R.layou
     private val mainActivity: MainActivity
         get() = requireActivity() as MainActivity
 
-    fun onClickOpenMedicineDetails(medicineID: Int) = findNavController().navigate(
-        directions.toMedicineDetailsFragment(medicineID)
-    )
+    fun onClickOpenMedicineDetails(medicineId: String) {
+        findNavController().navigate(directions.toMedicineDetailsFragment(medicineId))
+    }
 
-    fun onClickAddMedicine() = findNavController().navigate(directions.toAddEditMedicineFragment())
+    fun onClickAddMedicine() = findNavController().navigate(directions.toAddEditMedicineFragment(null))
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.bindingViewModel = viewModel
@@ -63,12 +62,6 @@ class MedicinesListFragment : BaseFragment<FragmentMedicinesListBinding>(R.layou
         viewModel.medicineItemList.observe(viewLifecycleOwner, Observer { medicineItemList ->
             val adapter = recycler_view_medicines.adapter as MedicineAdapter
             adapter.updateItemsList(medicineItemList)
-        })
-        viewModel.colorPrimary.observe(viewLifecycleOwner, Observer { colorResId ->
-            colorResId?.let { mainActivity.setMainColor(it) }
-        })
-        viewModel.appModeConnected.observe(viewLifecycleOwner, Observer { connected ->
-            Log.i(TAG, "appModeConnected change = $connected")
         })
     }
 

@@ -25,7 +25,7 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
     }
 
     fun onClickNavigateToMedicineDetails() = viewModel.getMedicineId()?.let {
-        findNavController().navigate(directions.toMedicineDetailsFragment(it))
+        findNavController().navigate(directions.toMedicineDetailsFragment(""))
     }
 
     fun onClickChangeForLater() {

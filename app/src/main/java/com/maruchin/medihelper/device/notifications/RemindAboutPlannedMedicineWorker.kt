@@ -26,14 +26,14 @@ class RemindAboutPlannedMedicineWorker(
 
         val plannedMedicineId = inputData.getInt(INPUT_PLANNED_MEDICINE_ID, -1)
         if (plannedMedicineId != -1) {
-            val data = plannedMedicineUseCases.getPlannedMedicineWithMedicineAndPersonById(plannedMedicineId)
-            medicineReminderNotification.notify(
-                data.plannedMedicineId,
-                personName = data.person.name,
-                personColorResId = data.person.colorId,
-                medicineName = data.medicine.name,
-                plannedTime = data.plannedTime
-            )
+//            val data = plannedMedicineUseCases.getPlannedMedicineWithMedicineAndPersonById(plannedMedicineId)
+//            medicineReminderNotification.notify(
+//                data.plannedMedicineId,
+//                personName = data.person.name,
+//                personColorResId = data.person.color,
+//                medicineName = data.medicine.name,
+//                plannedTime = data.plannedTime
+//            )
         }
         return Result.success()
     }

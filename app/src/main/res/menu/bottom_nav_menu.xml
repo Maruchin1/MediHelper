@@ -3,25 +3,23 @@
     <item
         android:id="@+id/scheduleFragment"
         android:icon="@drawable/round_event_note_black_48"
-        android:title="Kalendarz" />
+        android:title="Kalendarz"
+        android:enabled="false"/>
 
     <item
         android:id="@+id/medicinePlanListHostFragment"
         android:icon="@drawable/round_format_list_bulleted_white_48"
-        android:title="Plany" />
+        android:title="Plany"
+        android:enabled="false"/>
 
     <item
         android:id="@+id/medicinesListFragment"
         android:icon="@drawable/ic_pill_black_48dp"
         android:title="Apteczka" />
 
-<!--    <item-->
-<!--        android:id="@+id/doctors_destination"-->
-<!--        android:icon="@drawable/ic_doctor_black_48dp"-->
-<!--        android:title="Lekarze" />-->
-
     <item
         android:id="@+id/optionsFragment"
         android:icon="@drawable/round_more_horiz_white_48"
-        android:title="Więcej" />
+        android:title="Więcej"
+        android:enabled="false"/>
 </menu>
