@@ -25,14 +25,16 @@ class MedicineRepoImpl(
     private val medicinesCollectionRef: CollectionReference
         get() = db.collection("users").document(auth.getCurrUserId()).collection("medicines")
 
-    override suspend fun addNew(entity: Medicine) {
+    override suspend fun addNew(entity: Medicine) = withContext(Dispatchers.IO) {
         val medicineDb = MedicineDb(entity)
         medicinesCollectionRef.add(medicineDb)
+        return@withContext
     }
 
-    override suspend fun update(entity: Medicine) {
+    override suspend fun update(entity: Medicine) = withContext(Dispatchers.IO) {
         val medicineDb = MedicineDb(entity)
         medicinesCollectionRef.document(entity.medicineId).set(medicineDb)
+        return@withContext
     }
 
     override suspend fun deleteById(id: String) = withContext(Dispatchers.IO) {
