@@ -2,18 +2,25 @@ package com.maruchin.medihelper.domain.usecases.medicines
 
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
+import com.maruchin.medihelper.domain.model.MedicineValidator
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 
 class SaveMedicineUseCase(
     private val medicineRepo: MedicineRepo
 ) {
 
-    suspend fun execute(params: Params): ValidationErrors {
-        val validationResult = isValid(params)
-        if (validationResult.noErrors) {
+    suspend fun execute(params: Params): MedicineValidator {
+        val validator = MedicineValidator(
+            name = params.name,
+            unit = params.unit,
+            expireDate = params.expireDate,
+            packageSize = params.packageSize,
+            currState = params.currState
+        )
+        if (validator.noErrors) {
             saveMedicineToRepo(params)
         }
-        return validationResult
+        return validator
     }
 
     private suspend fun saveMedicineToRepo(params: Params) {
@@ -33,24 +40,6 @@ class SaveMedicineUseCase(
         }
     }
 
-    private fun isValid(params: Params): ValidationErrors {
-        val result = ValidationErrors()
-        with(params) {
-            if (name.isNullOrEmpty()) {
-                result.emptyName = true
-            }
-            if (unit.isNullOrEmpty()) {
-                result.emptyUnit = true
-            }
-            if (expireDate == null) {
-                result.emptyExpireDate = true
-            }
-            if (packageSize != null && currState != null && currState > packageSize) {
-                result.currStateBiggerThanPackageSize = true
-            }
-        }
-        return result
-    }
 
     data class Params(
         val medicineId: String?,
@@ -61,19 +50,4 @@ class SaveMedicineUseCase(
         val currState: Float?,
         val additionalInfo: String?
     )
-
-    data class ValidationErrors(
-        var emptyName: Boolean = false,
-        var emptyUnit: Boolean = false,
-        var emptyExpireDate: Boolean = false,
-        var currStateBiggerThanPackageSize: Boolean = false
-    ) {
-        val noErrors: Boolean
-            get() = arrayOf(
-                emptyName,
-                emptyUnit,
-                emptyExpireDate,
-                currStateBiggerThanPackageSize
-            ).all { !it }
-    }
 }

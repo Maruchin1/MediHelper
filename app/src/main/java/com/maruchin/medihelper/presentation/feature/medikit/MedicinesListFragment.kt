@@ -13,9 +13,9 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.maruchin.medihelper.databinding.FragmentMedicinesListBinding
+import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.presentation.MainActivity
 import com.maruchin.medihelper.presentation.framework.BaseFragment
-import com.maruchin.medihelper.presentation.model.MedicineItem
 import kotlinx.android.synthetic.main.fragment_medicines_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

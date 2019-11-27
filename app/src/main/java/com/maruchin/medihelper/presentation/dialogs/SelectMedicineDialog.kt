@@ -14,9 +14,9 @@ import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.maruchin.medihelper.databinding.DialogSelectMedicineBinding
 import com.maruchin.medihelper.presentation.feature.medikit.MedicinesListViewModel
-import com.maruchin.medihelper.presentation.model.MedicineItem
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.maruchin.medihelper.domain.model.MedicineItem
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SelectMedicineDialog : AppBottomSheetDialog() {
@@ -64,12 +64,10 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
     }
 
     private fun observeData() {
-        viewModel.medicineItemList.observe(
-            requireParentFragment().viewLifecycleOwner,
-            Observer { medicineItemList ->
-                val adapter = binding.recyclerViewMedicines.adapter as MedicineAdapter
-                adapter.updateItemsList(medicineItemList)
-            })
+        viewModel.medicineItemList.observe(viewLifecycleOwner, Observer { medicineItemList ->
+            val adapter = binding.recyclerViewMedicines.adapter as MedicineAdapter
+//            adapter.updateItemsList(medicineItemList)
+        })
     }
 
     private fun setupToolbar() {

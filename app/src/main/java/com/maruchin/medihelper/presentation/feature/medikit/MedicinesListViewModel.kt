@@ -1,9 +1,9 @@
 package com.maruchin.medihelper.presentation.feature.medikit
 
 import androidx.lifecycle.*
+import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.usecases.medicines.GetAllMedicinesItemsLiveUseCase
 import com.maruchin.medihelper.presentation.framework.map
-import com.maruchin.medihelper.presentation.model.MedicineItem
 
 class MedicinesListViewModel(
     private val getAllMedicinesItemsUseCase: GetAllMedicinesItemsLiveUseCase
@@ -15,9 +15,7 @@ class MedicinesListViewModel(
 
     init {
         medicineItemList = liveData {
-            val medicineItemsLive = getAllMedicinesItemsUseCase.execute().map { list ->
-                list.map { MedicineItem(it) }
-            }
+            val medicineItemsLive = getAllMedicinesItemsUseCase.execute()
             emitSource(medicineItemsLive)
         }
         anyMedicineAvailable = medicineItemList.map { !it.isNullOrEmpty()}

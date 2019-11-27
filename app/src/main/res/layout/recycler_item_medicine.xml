@@ -13,7 +13,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.MedicineItem" />
+            type="com.maruchin.medihelper.domain.model.MedicineItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"

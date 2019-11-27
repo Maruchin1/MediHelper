@@ -3,6 +3,8 @@ package com.maruchin.medihelper.presentation.feature.medikit
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
+import com.maruchin.medihelper.domain.model.MedicineEditData
+import com.maruchin.medihelper.domain.model.MedicineValidator
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineUnitsUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.SaveMedicineUseCase
@@ -49,6 +51,7 @@ class AddEditMedicineViewModel(
     init {
         viewModelScope.launch {
             medicineUnitList = getMedicineUnitsUseCase.execute()
+            medicineUnit.postValue(medicineUnitList[0])
         }
     }
 
@@ -59,8 +62,6 @@ class AddEditMedicineViewModel(
             getMedicineEditDataUseCase.execute(args.editMedicineId)?.let { editData ->
                 setEditData(editData)
             }
-        } else {
-            setDefaultData()
         }
     }
 
@@ -86,14 +87,14 @@ class AddEditMedicineViewModel(
 //        medicineUseCases.captureMedicinePhoto(_imageFile)
     }
 
-    private fun postErrors(validationErrors: SaveMedicineUseCase.ValidationErrors) {
-        val medicineNameError = if (validationErrors.emptyName) {
+    private fun postErrors(validator: MedicineValidator) {
+        val medicineNameError = if (validator.emptyName) {
             "Pole jest wymagane"
         } else null
-        val expireDateError = if (validationErrors.emptyExpireDate) {
+        val expireDateError = if (validator.emptyExpireDate) {
             "Pole jest wymagene"
         } else null
-        val currStateError = if (validationErrors.currStateBiggerThanPackageSize) {
+        val currStateError = if (validator.currStateBiggerThanPackageSize) {
             "Większe niż rozmiar opakowania"
         } else null
 
@@ -102,7 +103,7 @@ class AddEditMedicineViewModel(
         _errorCurrState.postValue(currStateError)
     }
 
-    private fun setEditData(editData: GetMedicineEditDataUseCase.MedicineEditData) {
+    private fun setEditData(editData: MedicineEditData) {
         medicineName.postValue(editData.name)
         medicineUnit.postValue(editData.unit)
         expireDate.postValue(editData.expireDate)
@@ -110,9 +111,5 @@ class AddEditMedicineViewModel(
         currState.postValue(editData.currState)
         additionalInfo.postValue(editData.additionalInfo)
 //        _imageFile.postValue(medicine.image)
-    }
-
-    private fun setDefaultData() {
-        medicineUnit.postValue(medicineUnitList[0])
     }
 }

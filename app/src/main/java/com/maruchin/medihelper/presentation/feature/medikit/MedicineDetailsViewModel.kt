@@ -3,9 +3,10 @@ package com.maruchin.medihelper.presentation.feature.medikit
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.MedicineStateData
+import com.maruchin.medihelper.domain.model.MedicineDetails
+import com.maruchin.medihelper.domain.model.ProfileSimpleItem
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDetailsUseCase
-import com.maruchin.medihelper.presentation.model.ProfileSimpleItem
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -26,7 +27,7 @@ class MedicineDetailsViewModel(
     val medicineId: String?
         get() = medicineDetails.value?.medicineId
 
-    private val medicineDetails = MutableLiveData<GetMedicineDetailsUseCase.MedicineDetails>()
+    private val medicineDetails = MutableLiveData<MedicineDetails>()
 
     init {
         medicineName = Transformations.map(medicineDetails) { it.name }
@@ -38,9 +39,7 @@ class MedicineDetailsViewModel(
         profileSimpleItemListAvailable = Transformations.map(medicineDetails) {
             !it.profileSimpleItemList.isNullOrEmpty()
         }
-        profileSimpleItemList = Transformations.map(medicineDetails) { medicineDetails ->
-            medicineDetails.profileSimpleItemList.map { ProfileSimpleItem(it) }
-        }
+        profileSimpleItemList = Transformations.map(medicineDetails) { it.profileSimpleItemList }
     }
 
     fun setArgs(args: MedicineDetailsFragmentArgs) = viewModelScope.launch {

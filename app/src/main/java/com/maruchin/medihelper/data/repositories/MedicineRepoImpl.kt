@@ -25,6 +25,10 @@ class MedicineRepoImpl(
     private val medicinesCollectionRef: CollectionReference
         get() = db.collection("users").document(auth.getCurrUserId()).collection("medicines")
 
+    init {
+        checkDefaultMedicineUnits()
+    }
+
     override suspend fun addNew(entity: Medicine) = withContext(Dispatchers.IO) {
         val medicineDb = MedicineDb(entity)
         medicinesCollectionRef.add(medicineDb)
@@ -39,7 +43,6 @@ class MedicineRepoImpl(
 
     override suspend fun deleteById(id: String) = withContext(Dispatchers.IO) {
         medicinesCollectionRef.document(id).delete()
-        //todo brak usuwania powiązanych rekordów
         return@withContext
     }
 
@@ -88,4 +91,13 @@ class MedicineRepoImpl(
     override suspend fun getMedicineUnits(): List<String> = withContext(Dispatchers.IO) {
         sharedPref.getMedicineUnitList()
     }
+
+    private fun checkDefaultMedicineUnits() {
+        val medicineUnits = sharedPref.getMedicineUnitList()
+        if (medicineUnits.isNullOrEmpty()) {
+            sharedPref.saveMedicineUnitList(getDefaultMedicineUnits())
+        }
+    }
+
+    private fun getDefaultMedicineUnits() = listOf("dawki", "tabletki", "ml", "g", "mg", "pastylki")
 }

@@ -11,13 +11,11 @@ import androidx.navigation.fragment.navArgs
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicineDetailsBinding
-import com.maruchin.medihelper.presentation.dialogs.SelectFloatNumberDialog
+import com.maruchin.medihelper.domain.model.ProfileSimpleItem
 import com.maruchin.medihelper.presentation.framework.AppFullScreenDialog
 import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.maruchin.medihelper.presentation.framework.bind
-import com.maruchin.medihelper.presentation.model.PersonItem
-import com.maruchin.medihelper.presentation.model.ProfileSimpleItem
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
