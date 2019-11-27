@@ -5,7 +5,6 @@ import androidx.lifecycle.Transformations
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineStateData
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
-import com.maruchin.medihelper.presentation.framework.map
 
 class GetAllMedicinesItemsLiveUseCase(
     private val medicineRepo: MedicineRepo
@@ -14,21 +13,21 @@ class GetAllMedicinesItemsLiveUseCase(
     suspend fun execute(): LiveData<List<MedicineItem>> {
         val allEntitiesLive = medicineRepo.getAllListLive()
         return Transformations.map(allEntitiesLive) { list ->
-            list.map { mapMedicineToMedicineItem(it) }
+            list.map { mapToMedicineItem(it) }
         }
     }
 
-    private fun mapMedicineToMedicineItem(medicine: Medicine) = MedicineItem(
+    private fun mapToMedicineItem(medicine: Medicine) = MedicineItem(
         medicineId = medicine.medicineId,
         name = medicine.name,
         unit = medicine.unit,
-        stateDate = medicine.getStateData()
+        stateData = medicine.getStateData()
     )
 
     data class MedicineItem(
         val medicineId: String,
         val name: String,
         val unit: String,
-        val stateDate: MedicineStateData
+        val stateData: MedicineStateData
     )
 }

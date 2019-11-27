@@ -13,6 +13,6 @@ data class MedicineItem(
       medicineId = data.medicineId,
       name = data.name,
       unit = data.unit,
-      stateData = data.stateDate
+      stateData = data.stateData
    )
 }

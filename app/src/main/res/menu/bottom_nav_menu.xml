@@ -2,15 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/scheduleFragment"
+        android:enabled="false"
         android:icon="@drawable/round_event_note_black_48"
-        android:title="Kalendarz"
-        android:enabled="false"/>
+        android:title="Kalendarz" />
 
     <item
         android:id="@+id/medicinePlanListHostFragment"
         android:icon="@drawable/round_format_list_bulleted_white_48"
-        android:title="Plany"
-        android:enabled="false"/>
+        android:title="Plany" />
 
     <item
         android:id="@+id/medicinesListFragment"
@@ -19,7 +18,7 @@
 
     <item
         android:id="@+id/optionsFragment"
+        android:enabled="false"
         android:icon="@drawable/round_more_horiz_white_48"
-        android:title="Więcej"
-        android:enabled="false"/>
+        android:title="Więcej" />
 </menu>

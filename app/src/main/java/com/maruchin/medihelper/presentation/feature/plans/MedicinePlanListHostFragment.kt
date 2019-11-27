@@ -22,9 +22,9 @@ class MedicinePlanListHostFragment : Fragment() {
     private val viewModel: MedicinePlanListViewModel by viewModel()
     private val directions by lazyOf(MedicinePlanListHostFragmentDirections)
 
-    fun onClickAddMedicinePlan() = findNavController().navigate(MedicinePlanListHostFragmentDirections.toAddEditMedicinePlanFragment())
+    fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddEditMedicinePlanFragment())
 
-    fun onClickSelectPerson() = findNavController().navigate(MedicinePlanListHostFragmentDirections.toPersonDialog())
+    fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
        return bind<FragmentMedicinePlanListHostBinding>(
@@ -42,11 +42,11 @@ class MedicinePlanListHostFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.colorPrimaryId.observe(viewLifecycleOwner, Observer { colorResID ->
-            if (colorResID != null) {
-                (requireActivity() as MainActivity).setMainColor(colorResID)
-            }
-        })
+//        viewModel.colorPrimaryId.observe(viewLifecycleOwner, Observer { colorResID ->
+//            if (colorResID != null) {
+//                (requireActivity() as MainActivity).setMainColor(colorResID)
+//            }
+//        })
     }
 
     private fun setupTabs() {
