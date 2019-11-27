@@ -7,13 +7,10 @@ import android.os.Handler
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.maruchin.medihelper.R
-import com.maruchin.medihelper.data.model.ProfileDb
 import com.maruchin.medihelper.domain.usecases.user.CreateUserUseCase
 import com.maruchin.medihelper.presentation.framework.BaseActivity
 import kotlinx.coroutines.runBlocking
-import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 
 class LauncherActivity : BaseActivity() {

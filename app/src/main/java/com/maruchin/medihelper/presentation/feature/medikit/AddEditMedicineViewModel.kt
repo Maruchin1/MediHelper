@@ -3,6 +3,7 @@ package com.maruchin.medihelper.presentation.feature.medikit
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
+import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineUnitsUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.SaveMedicineUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
@@ -11,6 +12,7 @@ import java.io.File
 
 class AddEditMedicineViewModel(
     private val getMedicineUnitsUseCase: GetMedicineUnitsUseCase,
+    private val getMedicineEditDataUseCase: GetMedicineEditDataUseCase,
     private val saveMedicineUseCase: SaveMedicineUseCase
 ) : ViewModel() {
 
@@ -41,23 +43,24 @@ class AddEditMedicineViewModel(
     private val _errorExpireDate = MutableLiveData<String>()
     private val _errorCurrState = MutableLiveData<String>()
 
-    private val medicineUnitList = MutableLiveData<List<String>>()
+    private lateinit var medicineUnitList: List<String>
     private var editMedicineId: String? = null
 
     init {
         viewModelScope.launch {
-            medicineUnitList.postValue(getMedicineUnitsUseCase.execute())
+            medicineUnitList = getMedicineUnitsUseCase.execute()
         }
     }
 
     fun setArgs(args: AddEditMedicineFragmentArgs) = viewModelScope.launch {
         if (args.editMedicineId != null) {
-//            editMedicineId = args.editMedicineId
             _formTitle.postValue("Edytuj lek")
-//            val editMedicine = medicineUseCases.getMedicineById(args.editMedicineId)
-//            setMedicineData(editMedicine)
+            editMedicineId = args.editMedicineId
+            getMedicineEditDataUseCase.execute(args.editMedicineId)?.let { editData ->
+                setEditData(editData)
+            }
         } else {
-//            setEmptyMedicineData()
+            setDefaultData()
         }
     }
 
@@ -99,23 +102,17 @@ class AddEditMedicineViewModel(
         _errorCurrState.postValue(currStateError)
     }
 
-    private fun setMedicineData(medicine: Medicine) {
-        medicineName.postValue(medicine.name)
-        medicineUnit.postValue(medicine.unit)
-        expireDate.postValue(medicine.expireDate)
-        packageSize.postValue(medicine.packageSize)
-        currState.postValue(medicine.currState)
-        additionalInfo.postValue(medicine.additionalInfo)
+    private fun setEditData(editData: GetMedicineEditDataUseCase.MedicineEditData) {
+        medicineName.postValue(editData.name)
+        medicineUnit.postValue(editData.unit)
+        expireDate.postValue(editData.expireDate)
+        packageSize.postValue(editData.packageSize)
+        currState.postValue(editData.currState)
+        additionalInfo.postValue(editData.additionalInfo)
 //        _imageFile.postValue(medicine.image)
     }
 
-//    private fun setEmptyMedicineData() {
-//        medicineName.postValue(null)
-//        medicineUnit.postValue(medicineUnitList[0])
-//        expireDate.postValue(null)
-//        packageSize.postValue(null)
-//        currState.postValue(null)
-//        additionalInfo.postValue(null)
-//        _imageFile.postValue(null)
-//    }
+    private fun setDefaultData() {
+        medicineUnit.postValue(medicineUnitList[0])
+    }
 }

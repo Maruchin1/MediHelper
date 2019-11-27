@@ -28,17 +28,6 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
     private val args: MedicineDetailsFragmentArgs by navArgs()
     private val directions by lazyOf(MedicineDetailsFragmentDirections)
 
-    fun onClickTake() {
-        val dialog = SelectFloatNumberDialog().apply {
-            iconResID = R.drawable.ic_pill_black_36dp
-            title = "Przyjmij dawkę leku"
-            setNumberSelectedListener { number ->
-                viewModel.takeMedicineDose(number)
-            }
-        }
-        dialog.show(childFragmentManager, dialog.TAG)
-    }
-
     fun onClickEdit() {
         viewModel.medicineId?.let { medicineId ->
             findNavController().navigate(directions.toAddEditMedicineFragment(medicineId))
@@ -71,19 +60,14 @@ class MedicineDetailsFragment : AppFullScreenDialog() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setArgs(args)
         setTransparentStatusBar()
-        setupToolbar()
         setupPersonRecyclerView()
         observeViewModel()
     }
 
-    private fun setupToolbar() {
-        toolbar.setNavigationOnClickListener { dismiss() }
-    }
-
     private fun observeViewModel() {
-        viewModel.medicineDetails.observe(viewLifecycleOwner, Observer { medicineDetails ->
+        viewModel.profileSimpleItemList.observe(viewLifecycleOwner, Observer { list ->
             val adapter = recycler_view_persons.adapter as PersonAdapter
-            adapter.updateItemsList(medicineDetails.profileItemList)
+            adapter.updateItemsList(list)
         })
     }
 

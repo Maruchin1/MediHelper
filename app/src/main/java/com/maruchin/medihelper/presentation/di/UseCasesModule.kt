@@ -1,10 +1,7 @@
 package com.maruchin.medihelper.presentation.di
 
 import com.maruchin.medihelper.domain.usecases.*
-import com.maruchin.medihelper.domain.usecases.medicines.GetAllMedicinesItemsLiveUseCase
-import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDetailsUseCase
-import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineUnitsUseCase
-import com.maruchin.medihelper.domain.usecases.medicines.SaveMedicineUseCase
+import com.maruchin.medihelper.domain.usecases.medicines.*
 import com.maruchin.medihelper.domain.usecases.user.CreateUserUseCase
 import org.koin.dsl.module
 
@@ -34,6 +31,16 @@ val useCasesModule = module {
         GetMedicineDetailsUseCase(
             medicineRepo = get(),
             profileRepo = get()
+        )
+    }
+    factory {
+        DeleteMedicineUseCase(
+            medicineRepo = get()
+        )
+    }
+    factory {
+        GetMedicineEditDataUseCase(
+            medicineRepo = get()
         )
     }
 

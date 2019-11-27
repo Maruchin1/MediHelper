@@ -16,7 +16,7 @@ import com.maruchin.medihelper.presentation.feature.plans.MedicinePlanListViewMo
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val viewModelModule = module {
+val viewModelModule = module {a
     viewModel {
         MedicinesListViewModel(
             getAllMedicinesItemsUseCase = get()
@@ -24,13 +24,15 @@ val viewModelModule = module {
     }
     viewModel {
         MedicineDetailsViewModel(
-            getMedicineDetailsUseCase = get()
+            getMedicineDetailsUseCase = get(),
+            deleteMedicineUseCase = get()
         )
     }
     viewModel {
         AddEditMedicineViewModel(
             getMedicineUnitsUseCase = get(),
-            saveMedicineUseCase = get()
+            saveMedicineUseCase = get(),
+            getMedicineEditDataUseCase = get()
         )
     }
     viewModel {

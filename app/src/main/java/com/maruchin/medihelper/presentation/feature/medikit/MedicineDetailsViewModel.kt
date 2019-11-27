@@ -1,43 +1,59 @@
 package com.maruchin.medihelper.presentation.feature.medikit
 
 import androidx.lifecycle.*
+import com.maruchin.medihelper.domain.entities.AppExpireDate
+import com.maruchin.medihelper.domain.entities.MedicineStateData
+import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDetailsUseCase
-import com.maruchin.medihelper.presentation.model.MedicineDetails
-import com.maruchin.medihelper.presentation.model.PersonItem
+import com.maruchin.medihelper.presentation.model.ProfileSimpleItem
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MedicineDetailsViewModel(
-    private val getMedicineDetailsUseCase: GetMedicineDetailsUseCase
+    private val getMedicineDetailsUseCase: GetMedicineDetailsUseCase,
+    private val deleteMedicineUseCase: DeleteMedicineUseCase
 ) : ViewModel() {
 
-    val medicineDetails: LiveData<MedicineDetails>
-        get() = _medicineDetails
-    val medicineId: String?
-        get() = _medicineDetails.value?.medicineId
+    val medicineName: LiveData<String>
+    val medicineUnit: LiveData<String>
+    val expireDate: LiveData<AppExpireDate>
+    val stateData: LiveData<MedicineStateData>
+    val additionalInfoAvailable: LiveData<Boolean>
+    val additionalInfo: LiveData<String>
+    val profileSimpleItemListAvailable: LiveData<Boolean>
+    val profileSimpleItemList: LiveData<List<ProfileSimpleItem>>
 
-    private val _medicineDetails = MutableLiveData<MedicineDetails>()
+    val medicineId: String?
+        get() = medicineDetails.value?.medicineId
+
+    private val medicineDetails = MutableLiveData<GetMedicineDetailsUseCase.MedicineDetails>()
+
+    init {
+        medicineName = Transformations.map(medicineDetails) { it.name }
+        medicineUnit = Transformations.map(medicineDetails) { it.unit }
+        expireDate = Transformations.map(medicineDetails) { it.expireDate }
+        stateData = Transformations.map(medicineDetails) { it.stateData }
+        additionalInfoAvailable = Transformations.map(medicineDetails) { !it.additionalInfo.isNullOrEmpty() }
+        additionalInfo = Transformations.map(medicineDetails) { it.additionalInfo }
+        profileSimpleItemListAvailable = Transformations.map(medicineDetails) {
+            !it.profileSimpleItemList.isNullOrEmpty()
+        }
+        profileSimpleItemList = Transformations.map(medicineDetails) { medicineDetails ->
+            medicineDetails.profileSimpleItemList.map { ProfileSimpleItem(it) }
+        }
+    }
 
     fun setArgs(args: MedicineDetailsFragmentArgs) = viewModelScope.launch {
         val medicineId = args.medicineId
         val result = getMedicineDetailsUseCase.execute(medicineId)
         if (result != null) {
-            _medicineDetails.postValue(MedicineDetails(result))
+            medicineDetails.postValue(result)
         }
     }
 
     fun deleteMedicine() = GlobalScope.launch {
-        _medicineDetails.value?.let {
-//            medicineUseCases.deleteMedicineById(it.medicineId)
+        medicineId?.let {
+            deleteMedicineUseCase.execute(it)
         }
-    }
-
-    fun takeMedicineDose(doseSize: Float) = viewModelScope.launch {
-        _medicineDetails.value?.let {
-
-        }
-//        selectedMedicineId.value?.let {
-//            medicineUseCases.reduceMedicineCurrState(it, doseSize)
-//        }
     }
 }
