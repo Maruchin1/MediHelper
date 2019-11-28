@@ -5,6 +5,8 @@ import androidx.lifecycle.Transformations
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.maruchin.medihelper.data.ProfileColor
+import com.maruchin.medihelper.data.SharedPref
 import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.data.framework.getDocumentLive
 import com.maruchin.medihelper.data.framework.getDocumentsLive
@@ -17,11 +19,16 @@ import kotlinx.coroutines.withContext
 
 class ProfileRepoImpl(
     private val db: FirebaseFirestore,
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val sharedPref: SharedPref
 ) : ProfileRepo {
 
     private val profilesCollRef: CollectionReference
         get() = db.collection("users").document(auth.getCurrUserId()).collection("profiles")
+
+    init {
+        checkDefaultProfileColors()
+    }
 
     override suspend fun addNew(entity: Profile) = withContext(Dispatchers.IO) {
         val profileDb = ProfileDb(entity)
@@ -91,4 +98,23 @@ class ProfileRepoImpl(
         //todo ogarnąć czy firebase da radę zrobić takie zapytanie
         return emptyList()
     }
+
+    private fun checkDefaultProfileColors() {
+        val profileColors = sharedPref.getProfileColorsList()
+        if (profileColors.isNullOrEmpty()) {
+            sharedPref.saveProfileColorsList(getDefaultProfileColors())
+        }
+    }
+
+    private fun getDefaultProfileColors() = listOf(
+        ProfileColor.MAIN,
+        ProfileColor.PURPLE,
+        ProfileColor.BLUE,
+        ProfileColor.BROWN,
+        ProfileColor.CYAN,
+        ProfileColor.GRAY,
+        ProfileColor.LIGHT_GREEN,
+        ProfileColor.ORANGE,
+        ProfileColor.YELLOW
+    ).map { it.colorString }
 }
