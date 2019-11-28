@@ -29,7 +29,7 @@ class RemindAboutPlannedMedicineWorker(
 //            val data = plannedMedicineUseCases.getPlannedMedicineWithMedicineAndPersonById(plannedMedicineId)
 //            medicineReminderNotification.notify(
 //                data.plannedMedicineId,
-//                personName = data.person.name,
+//                profileName = data.person.name,
 //                personColorResId = data.person.color,
 //                medicineName = data.medicine.name,
 //                plannedTime = data.plannedTime

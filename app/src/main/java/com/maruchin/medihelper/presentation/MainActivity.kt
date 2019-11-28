@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.presentation
 
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
@@ -23,15 +24,15 @@ class MainActivity : BaseActivity() {
         notificationApi.enablePeriodicRemindersUpdate()
     }
 
-    fun setMainColor(colorResID: Int) {
-        window.statusBarColor = ContextCompat.getColor(this, colorResID)
+    fun setMainColor(color: String) {
+        window.statusBarColor = Color.parseColor(color)
         val states = arrayOf(
             intArrayOf(-android.R.attr.state_selected), // unchecked
             intArrayOf(android.R.attr.state_selected)  // pressed
         )
         val colors = intArrayOf(
             ContextCompat.getColor(this, R.color.colorTextTertiary),
-            ContextCompat.getColor(this, colorResID)
+            Color.parseColor(color)
         )
         val colorStateList = ColorStateList(states, colors)
         bottom_nav.run {

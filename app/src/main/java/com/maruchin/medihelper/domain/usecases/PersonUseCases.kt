@@ -26,10 +26,10 @@ class PersonUseCases(
 //        profileRepo.insert(newPerson)
 //    }
 //
-//    suspend fun addMainPerson(personName: String) {
+//    suspend fun addMainPerson(profileName: String) {
 //        val mainPerson = Profile(
 //            profileId = 0,
-//            name = personName,
+//            name = profileName,
 //            color = R.color.colorPrimary,
 //            mainPerson = true,
 //            connectionKey = null
@@ -47,9 +47,9 @@ class PersonUseCases(
 //    }
 //
 //
-//    suspend fun updateMainPerson(personName: String) {
+//    suspend fun updateMainPerson(profileName: String) {
 //        profileRepo.getMain()?.let { mainPerson ->
-//            val updatedMain = mainPerson.copy(name = personName)
+//            val updatedMain = mainPerson.copy(name = profileName)
 //            profileRepo.update(updatedMain)
 //        }
 //    }

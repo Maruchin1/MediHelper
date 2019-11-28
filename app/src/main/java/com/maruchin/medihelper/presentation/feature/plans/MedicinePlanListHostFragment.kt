@@ -42,11 +42,11 @@ class MedicinePlanListHostFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-//        viewModel.colorPrimaryId.observe(viewLifecycleOwner, Observer { colorResID ->
-//            if (colorResID != null) {
-//                (requireActivity() as MainActivity).setMainColor(colorResID)
-//            }
-//        })
+        viewModel.colorPrimary.observe(viewLifecycleOwner, Observer { color ->
+            if (!color.isNullOrEmpty()) {
+                (requireActivity() as MainActivity).setMainColor(color)
+            }
+        })
     }
 
     private fun setupTabs() {

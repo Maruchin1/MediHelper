@@ -1,9 +1,6 @@
 package com.maruchin.medihelper.presentation.di
 
-import com.maruchin.medihelper.domain.usecases.profile.GetAllProfilesItemsLiveUseCase
-import com.maruchin.medihelper.domain.usecases.profile.GetMainProfileIdUseCase
-import com.maruchin.medihelper.domain.usecases.profile.GetProfileColorsUseCase
-import com.maruchin.medihelper.domain.usecases.profile.GetProfileSimpleItemUseCase
+import com.maruchin.medihelper.domain.usecases.profile.*
 import org.koin.dsl.module
 
 val profileUseCaseModule = module {
@@ -24,6 +21,11 @@ val profileUseCaseModule = module {
     }
     factory {
         GetProfileColorsUseCase(
+            profileRepo = get()
+        )
+    }
+    factory {
+        SaveProfileUseCase(
             profileRepo = get()
         )
     }

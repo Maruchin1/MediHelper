@@ -51,6 +51,9 @@ class AddEditPersonFragment : AppFullScreenDialog() {
             val adapter = recycler_view_color.adapter as PersonColorAdapter
             adapter.updateItemsList(colorCheckboxList)
         })
+        viewModel.actionProfileSaved.observe(viewLifecycleOwner, Observer {
+            dismiss()
+        })
     }
 
     private fun setupToolbar() {
@@ -58,10 +61,7 @@ class AddEditPersonFragment : AppFullScreenDialog() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {
-                    val personSaved = viewModel.savePerson()
-                    if (personSaved) {
-                        dismiss()
-                    }
+                    viewModel.savePerson()
                 }
             }
             true

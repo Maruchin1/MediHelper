@@ -2,7 +2,6 @@ package com.maruchin.medihelper.presentation.feature.medikit
 
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppExpireDate
-import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.model.MedicineEditData
 import com.maruchin.medihelper.domain.model.MedicineValidator
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineEditDataUseCase
@@ -75,11 +74,11 @@ class AddEditMedicineViewModel(
             currState = currState.value,
             additionalInfo = additionalInfo.value
         )
-        val result = saveMedicineUseCase.execute(params)
-        if (result.noErrors) {
+        val validator = saveMedicineUseCase.execute(params)
+        if (validator.noErrors) {
             _actionMedicineSaved.sendAction()
         } else {
-            postErrors(result)
+            postErrors(validator)
         }
     }
 

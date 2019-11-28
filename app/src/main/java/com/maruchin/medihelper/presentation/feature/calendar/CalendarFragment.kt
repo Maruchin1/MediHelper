@@ -60,10 +60,10 @@ class CalendarFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.colorPrimaryId.observe(viewLifecycleOwner, Observer { colorResID ->
-            if (colorResID != null) {
-                (requireActivity() as MainActivity).setMainColor(colorResID)
-
-            }
+//            if (colorResID != null) {
+//                (requireActivity() as MainActivity).setMainColor(colorResID)
+//
+//            }
         })
         viewModel.selectedDate.observe(viewLifecycleOwner, Observer { selectedDate ->
             val position = viewModel.getPositionForDate(selectedDate)

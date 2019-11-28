@@ -8,7 +8,6 @@ import com.maruchin.medihelper.domain.repositories.MedicineRepo
 class SaveMedicineUseCase(
     private val medicineRepo: MedicineRepo
 ) {
-
     suspend fun execute(params: Params): MedicineValidator {
         val validator = MedicineValidator(
             name = params.name,
