@@ -11,7 +11,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.PersonColorCheckboxData" />
+            type="com.maruchin.medihelper.presentation.model.ProfileColorCheckbox" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,13 +21,13 @@
         android:layout_margin="16dp">
 
         <com.google.android.material.card.MaterialCardView
-            cardBackgroundColorResID="@{displayData.colorId}"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?selectableItemBackground"
-            android:onClick="@{() -> handler.onClickSelectColor(displayData.colorId)}"
+            android:onClick="@{() -> handler.onClickSelectColor(displayData.color)}"
+            app:cardBackgroundColor='@{displayData.color, default="@color/colorPrimary"}'
             app:cardCornerRadius="24dp">
 
             <ImageView

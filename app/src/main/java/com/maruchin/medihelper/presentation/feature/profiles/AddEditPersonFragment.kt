@@ -13,7 +13,7 @@ import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.maruchin.medihelper.databinding.FragmentAddEditPersonBinding
 import com.maruchin.medihelper.presentation.framework.bind
-import com.maruchin.medihelper.presentation.model.PersonColorCheckboxData
+import com.maruchin.medihelper.presentation.model.ProfileColorCheckbox
 import kotlinx.android.synthetic.main.fragment_add_edit_person.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,8 +23,8 @@ class AddEditPersonFragment : AppFullScreenDialog() {
     private val viewModel: AddEditPersonViewModel by viewModel()
     private val args: AddEditPersonFragmentArgs by navArgs()
 
-    fun onClickSelectColor(colorResID: Int) {
-        viewModel.selectedColorId.value = colorResID
+    fun onClickSelectColor(color: String) {
+        viewModel.selectedColor.value = color
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,7 +46,7 @@ class AddEditPersonFragment : AppFullScreenDialog() {
     }
 
     private fun observeViewModel() {
-        viewModel.personColorCheckboxDataList.observe(viewLifecycleOwner, Observer { colorCheckboxList ->
+        viewModel.profileColorCheckboxList.observe(viewLifecycleOwner, Observer { colorCheckboxList ->
             Log.i(TAG, "colorCheckboxList = $colorCheckboxList")
             val adapter = recycler_view_color.adapter as PersonColorAdapter
             adapter.updateItemsList(colorCheckboxList)
@@ -75,9 +75,9 @@ class AddEditPersonFragment : AppFullScreenDialog() {
     }
 
     // Inner classes
-    inner class PersonColorAdapter : RecyclerAdapter<PersonColorCheckboxData>(
+    inner class PersonColorAdapter : RecyclerAdapter<ProfileColorCheckbox>(
         layoutResId = R.layout.recycler_item_person_color,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.colorId == newItem.colorId }
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.color == newItem.color }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val personColorCheckboxData = itemsList[position]

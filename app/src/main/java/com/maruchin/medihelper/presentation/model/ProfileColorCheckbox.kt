@@ -1,6 +1,6 @@
 package com.maruchin.medihelper.presentation.model
 
-data class PersonColorCheckboxData(
-    val colorId: Int,
+data class ProfileColorCheckbox(
+    val color: String,
     val selected: Boolean
 )

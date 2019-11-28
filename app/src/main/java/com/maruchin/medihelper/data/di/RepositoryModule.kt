@@ -20,7 +20,8 @@ val repositoryModule = module {
     single {
         ProfileRepoImpl(
             db = get(),
-            auth = get()
+            auth = get(),
+            sharedPref = get()
         ) as ProfileRepo
     }
     single {

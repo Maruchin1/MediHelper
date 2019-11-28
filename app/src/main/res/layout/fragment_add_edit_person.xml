@@ -17,7 +17,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background='@{viewModel.selectedColorId, default="@color/colorPrimary"}'
+        android:background='@{viewModel.selectedColor, default="@color/colorPrimary"}'
         android:fitsSystemWindows="true">
 
         <LinearLayout
@@ -74,12 +74,12 @@
                         android:layout_height="wrap_content"
                         android:text="Nazwa"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                        android:textColor='@{viewModel.selectedColorId, default="@color/colorPrimary"}' />
+                        android:textColor='@{viewModel.selectedColor, default="@color/colorPrimary"}' />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/in_lay_person_name"
                         style="@style/Widget.Design.TextInputLayout"
-                        inLayError="@{viewModel.personNameError}"
+                        inLayError="@{viewModel.errorProfileName}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -95,7 +95,7 @@
                         android:layout_marginTop="32dp"
                         android:text="Kolor profilu"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                        android:textColor='@{viewModel.selectedColorId, default="@color/colorPrimary"}' />
+                        android:textColor='@{viewModel.selectedColor, default="@color/colorPrimary"}' />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_color"

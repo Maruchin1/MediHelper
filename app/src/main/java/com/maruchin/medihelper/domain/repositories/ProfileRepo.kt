@@ -6,4 +6,5 @@ import com.maruchin.medihelper.domain.framework.BaseRepo
 interface ProfileRepo : BaseRepo<Profile> {
     suspend fun getMainId(): String?
     suspend fun getListByMedicine(medicineId: String): List<Profile>
+    suspend fun getColorsList(): List<String>
 }

@@ -48,7 +48,7 @@ val viewModelModule = module {
     }
     viewModel {
         AddEditPersonViewModel(
-            personUseCases = get()
+            getProfileColorsUseCase = get()
         )
     }
     viewModel {

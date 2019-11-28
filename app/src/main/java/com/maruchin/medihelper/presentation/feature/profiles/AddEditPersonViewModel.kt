@@ -1,36 +1,40 @@
 package com.maruchin.medihelper.presentation.feature.profiles
 
 import androidx.lifecycle.*
-import com.maruchin.medihelper.domain.usecases.PersonUseCases
-import com.maruchin.medihelper.presentation.model.PersonColorCheckboxData
+import com.maruchin.medihelper.domain.usecases.profile.GetProfileColorsUseCase
+import com.maruchin.medihelper.presentation.model.ProfileColorCheckbox
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AddEditPersonViewModel(
-    private val personUseCases: PersonUseCases
+    private val getProfileColorsUseCase: GetProfileColorsUseCase
 ) : ViewModel() {
 
-    val personColorCheckboxDataList: LiveData<List<PersonColorCheckboxData>>
     val personName = MutableLiveData<String>()
-    val selectedColorId = MutableLiveData<Int>()
+    val selectedColor = MutableLiveData<String>()
+    val profileColorCheckboxList: LiveData<List<ProfileColorCheckbox>>
 
     val formTitle: LiveData<String>
         get() = _formTitle
-    val personNameError: LiveData<String>
-        get() = _personNameError
+    val errorProfileName: LiveData<String>
+        get() = _errorProfileName
 
     private val _formTitle = MutableLiveData<String>("Dodaj osobę")
-    private val _personNameError = MutableLiveData<String>()
+    private val _errorProfileName = MutableLiveData<String>()
 
-    private val personColorIdList: List<Int> = emptyList()
+    private lateinit var profileColorList: List<String>
     private var editPersonId: Int? = null
 
     init {
-        personColorCheckboxDataList = Transformations.map(selectedColorId) { selectedColorId ->
-            personColorIdList.map { colorId ->
-                PersonColorCheckboxData(
-                    colorId = colorId,
-                    selected = colorId == selectedColorId
+        viewModelScope.launch {
+            profileColorList = getProfileColorsUseCase.execute()
+            selectedColor.postValue(profileColorList[0])
+        }
+        profileColorCheckboxList = Transformations.map(selectedColor) { selectedColor ->
+            profileColorList.map { color ->
+                ProfileColorCheckbox(
+                    color = color,
+                    selected = color == selectedColor
                 )
             }
         }
@@ -43,9 +47,6 @@ class AddEditPersonViewModel(
 //            val editPerson = personUseCases.getPersonById(args.editPersonID)
 //            personName.postValue(editPerson.name)
 //            selectedColorId.postValue(editPerson.color)
-        } else {
-            personName.postValue(null)
-            selectedColorId.postValue(personColorIdList[0])
         }
     }
 

@@ -99,6 +99,10 @@ class ProfileRepoImpl(
         return emptyList()
     }
 
+    override suspend fun getColorsList(): List<String> = withContext(Dispatchers.IO) {
+        return@withContext sharedPref.getProfileColorsList()
+    }
+
     private fun checkDefaultProfileColors() {
         val profileColors = sharedPref.getProfileColorsList()
         if (profileColors.isNullOrEmpty()) {
