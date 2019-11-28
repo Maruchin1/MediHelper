@@ -7,50 +7,6 @@ import com.maruchin.medihelper.domain.usecases.user.CreateUserUseCase
 import org.koin.dsl.module
 
 val useCasesModule = module {
-    factory {
-        CreateUserUseCase(
-            userRepo = get(),
-            profileRepo = get()
-        )
-    }
-    factory {
-        GetAllMedicinesItemsLiveUseCase(
-            medicineRepo = get()
-        )
-    }
-    factory {
-        GetMedicineUnitsUseCase(
-            medicineRepo = get()
-        )
-    }
-    factory {
-        SaveMedicineUseCase(
-            medicineRepo = get()
-        )
-    }
-    factory {
-        GetMedicineDetailsUseCase(
-            medicineRepo = get(),
-            profileRepo = get()
-        )
-    }
-    factory {
-        DeleteMedicineUseCase(
-            medicineRepo = get()
-        )
-    }
-    factory {
-        GetMedicineEditDataUseCase(
-            medicineRepo = get()
-        )
-    }
-    factory {
-        GetProfileSimpleItemUseCase(
-            profileRepo = get()
-        )
-    }
-
-
 
     single {
         DateTimeUseCases(calendarApi = get())

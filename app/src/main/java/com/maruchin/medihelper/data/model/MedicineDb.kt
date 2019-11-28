@@ -1,6 +1,5 @@
 package com.maruchin.medihelper.data.model
 
-import com.maruchin.medihelper.data.framework.FirebaseEntity
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
 
@@ -12,8 +11,7 @@ data class MedicineDb(
     val packageSize: Float? = null,
     val currState: Float? = null,
     val additionalInfo: String? = null
-) : FirebaseEntity<Medicine> {
-
+) {
     constructor(medicine: Medicine) : this(
         name = medicine.name,
         unit = medicine.unit,
@@ -23,15 +21,13 @@ data class MedicineDb(
         additionalInfo = medicine.additionalInfo
     )
 
-    override fun toDomainEntity(id: String): Medicine {
-        return Medicine(
-            medicineId = id,
-            name = name ?: "--",
-            unit = unit ?: "--",
-            expireDate = expireDate?.let { AppExpireDate(it) } ?: AppExpireDate(0, 0),
-            packageSize = packageSize,
-            currState = currState,
-            additionalInfo = additionalInfo
-        )
-    }
+    fun toMedicine(id: String) = Medicine(
+        medicineId = id,
+        name = name ?: "--",
+        unit = unit ?: "--",
+        expireDate = expireDate?.let { AppExpireDate(it) } ?: AppExpireDate(0, 0),
+        packageSize = packageSize,
+        currState = currState,
+        additionalInfo = additionalInfo
+    )
 }

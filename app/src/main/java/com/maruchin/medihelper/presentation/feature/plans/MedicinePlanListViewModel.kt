@@ -15,7 +15,6 @@ class MedicinePlanListViewModel(
 
     val colorPrimary: LiveData<String>
     val appModeConnected: LiveData<Boolean> = MutableLiveData(false)
-    val currPersonItem: LiveData<PersonItem> = MutableLiveData()
     val medicinePlanItemOngoingList: LiveData<List<MedicinePlanItem>> = MutableLiveData()
     val medicinePlanItemEndedList: LiveData<List<MedicinePlanItem>> = MutableLiveData()
 

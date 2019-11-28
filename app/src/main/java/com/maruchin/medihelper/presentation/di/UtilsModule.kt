@@ -9,6 +9,8 @@ val utilsModule = module {
         LoadingScreen()
     }
     single {
-        SelectedProfile()
+        SelectedProfile(
+            getMainProfileIdUseCase = get()
+        )
     }
 }

@@ -9,10 +9,7 @@ import com.maruchin.medihelper.data.SharedPref
 import com.maruchin.medihelper.device.di.cameraModule
 import com.maruchin.medihelper.device.di.deviceApiModule
 import com.maruchin.medihelper.device.di.notificationModule
-import com.maruchin.medihelper.presentation.di.domainUtilsModule
-import com.maruchin.medihelper.presentation.di.useCasesModule
-import com.maruchin.medihelper.presentation.di.utilsModule
-import com.maruchin.medihelper.presentation.di.viewModelModule
+import com.maruchin.medihelper.presentation.di.*
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -44,6 +41,9 @@ class MainApplication : Application() {
         listOf(
             domainUtilsModule,
             useCasesModule,
+            userUseCaseModule,
+            medicineUseCaseModule,
+            profileUseCaseModule,
             utilsModule,
             viewModelModule
         )
