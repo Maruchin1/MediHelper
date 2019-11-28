@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.feature.personsprofiles
+package com.maruchin.medihelper.presentation.feature.profiles
 
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.usecases.PersonUseCases

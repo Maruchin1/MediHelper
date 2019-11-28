@@ -1,9 +1,8 @@
-package com.maruchin.medihelper.presentation.feature.personsprofiles
+package com.maruchin.medihelper.presentation.feature.profiles
 
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.maruchin.medihelper.domain.entities.Profile
 import com.maruchin.medihelper.domain.usecases.PersonUseCases

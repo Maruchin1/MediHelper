@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.model.ProfileSimpleItem
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileSimpleItemUseCase
 import com.maruchin.medihelper.presentation.model.MedicinePlanItem
-import com.maruchin.medihelper.presentation.model.PersonItem
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import kotlinx.coroutines.launch
 

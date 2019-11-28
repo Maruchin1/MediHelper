@@ -43,8 +43,8 @@
     </fragment>
     <dialog
         android:id="@+id/personDialog"
-        android:name="com.maruchin.medihelper.presentation.feature.personsprofiles.PersonDialog"
-        tools:layout="@layout/dialog_person">
+        android:name="com.maruchin.medihelper.presentation.feature.profiles.SelectProfileDialog"
+        tools:layout="@layout/dialog_select_profile">
         <action
             android:id="@+id/toPersonOptionsFragment"
             app:destination="@id/personOptionsFragment" />
@@ -54,7 +54,7 @@
     </dialog>
     <dialog
         android:id="@+id/addEditPersonFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.personsprofiles.AddEditPersonFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.profiles.AddEditPersonFragment"
         tools:layout="@layout/fragment_add_edit_person">
         <argument
             android:name="editPersonID"
@@ -114,7 +114,7 @@
     </dialog>
     <dialog
         android:id="@+id/personOptionsFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.personsprofiles.PersonOptionsFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsFragment"
         tools:layout="@layout/fragment_person_options">
         <action
             android:id="@+id/toAddEditPersonFragment"

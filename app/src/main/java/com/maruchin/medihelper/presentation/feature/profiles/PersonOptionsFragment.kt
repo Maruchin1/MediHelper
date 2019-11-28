@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.feature.personsprofiles
+package com.maruchin.medihelper.presentation.feature.profiles
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -10,7 +10,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.PersonItem" />
+            type="com.maruchin.medihelper.domain.model.ProfileSimpleItem" />
     </data>
 
     <LinearLayout
@@ -21,10 +21,9 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_avatar"
-            cardBackgroundColorResID="@{displayData.colorId}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardBackgroundColor='@{displayData.color, default="@color/colorPrimary"}'
             app:cardCornerRadius="16dp"
             app:cardElevation="0dp">
 

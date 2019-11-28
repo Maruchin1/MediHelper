@@ -8,22 +8,21 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.personsprofiles.PersonDialog" />
+            type="com.maruchin.medihelper.presentation.feature.profiles.SelectProfileDialog" />
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.PersonItem" />
+            type="com.maruchin.medihelper.domain.model.ProfileItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        cardBackgroundColorResID='@{displayData.colorId, default="@color/colorPrimary"}'
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardBackgroundColor='@{displayData.color, default="@color/colorPrimary"}'
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
         app:strokeColor="@color/colorWhite"
@@ -33,12 +32,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
-            android:clickable="@{displayData.personId == -1 ? false : true}"
+            android:clickable='@{displayData.profileId == "" ? false : true}'
             android:focusable="true"
             android:gravity="center_horizontal"
-            android:onClick="@{() -> handler.onClickSelectPerson(displayData.personId)}"
+            android:onClick="@{() -> handler.onClickSelectPerson(displayData.profileId)}"
             android:orientation="vertical"
-            android:visibility="@{displayData.personId == -1 ? View.INVISIBLE : View.VISIBLE, default=visible}">
+            android:visibility='@{displayData.profileId == "" ? View.INVISIBLE : View.VISIBLE, default=visible}'>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_avatar"
@@ -75,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="?selectableItemBackgroundBorderless"
-                android:onClick="@{() -> handler.onClickOpenOptions(displayData.personId)}"
+                android:onClick="@{() -> handler.onClickOpenOptions(displayData.profileId)}"
                 android:src="@drawable/round_more_horiz_white_36"
                 android:tint="@color/colorWhite"
                 android:visibility="@{displayData.mainPerson ? View.INVISIBLE : View.VISIBLE}" />
@@ -91,7 +90,7 @@
             android:gravity="center_horizontal"
             android:onClick="@{() -> handler.onClickAddNewPerson()}"
             android:orientation="vertical"
-            android:visibility="@{displayData.personId == -1 ? View.VISIBLE : View.GONE, default=gone}">
+            android:visibility='@{displayData.profileId == "" ? View.VISIBLE : View.GONE, default=gone}'>
 
             <ImageView
                 android:layout_width="wrap_content"

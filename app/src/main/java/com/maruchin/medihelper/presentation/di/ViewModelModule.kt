@@ -7,9 +7,9 @@ import com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOpti
 import com.maruchin.medihelper.presentation.feature.medikit.AddEditMedicineViewModel
 import com.maruchin.medihelper.presentation.feature.medikit.MedicineDetailsViewModel
 import com.maruchin.medihelper.presentation.feature.medikit.MedicinesListViewModel
-import com.maruchin.medihelper.presentation.feature.personsprofiles.AddEditPersonViewModel
-import com.maruchin.medihelper.presentation.feature.personsprofiles.PersonOptionsViewModel
-import com.maruchin.medihelper.presentation.feature.personsprofiles.PersonViewModel
+import com.maruchin.medihelper.presentation.feature.profiles.AddEditPersonViewModel
+import com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsViewModel
+import com.maruchin.medihelper.presentation.feature.profiles.SelectProfileViewModel
 import com.maruchin.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel
 import com.maruchin.medihelper.presentation.feature.plans.MedicinePlanHistoryViewModel
 import com.maruchin.medihelper.presentation.feature.plans.MedicinePlanListViewModel
@@ -36,8 +36,9 @@ val viewModelModule = module {
         )
     }
     viewModel {
-        PersonViewModel(
-            personUseCases = get()
+        SelectProfileViewModel(
+            getAllProfilesItemsLiveUseCase = get(),
+            selectedProfile = get()
         )
     }
     viewModel {

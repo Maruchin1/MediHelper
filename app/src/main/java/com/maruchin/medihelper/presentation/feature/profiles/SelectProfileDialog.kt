@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.feature.personsprofiles
+package com.maruchin.medihelper.presentation.feature.profiles
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,35 +11,35 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.presentation.framework.CenterLayoutManager
 import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
-import com.maruchin.medihelper.databinding.DialogPersonBinding
 import com.maruchin.medihelper.presentation.framework.bind
-import com.maruchin.medihelper.presentation.model.PersonItem
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.dialog_person.*
+import com.maruchin.medihelper.databinding.DialogSelectProfileBinding
+import com.maruchin.medihelper.domain.model.ProfileItem
+import kotlinx.android.synthetic.main.dialog_select_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PersonDialog : BottomSheetDialogFragment() {
-    val TAG = PersonDialog::class.simpleName
+class SelectProfileDialog : BottomSheetDialogFragment() {
+    val TAG = SelectProfileDialog::class.simpleName
 
-    private val viewModel: PersonViewModel by viewModel()
-    private val directions by lazyOf(PersonDialogDirections)
+    private val viewModel: SelectProfileViewModel by viewModel()
+    private val directions by lazyOf(SelectProfileDialogDirections)
 
-    fun onClickSelectPerson(personID: Int) {
-//        viewModel.selectPerson(personID)
+    fun onClickSelectPerson(profileId: String) {
+        viewModel.selectProfile(profileId)
         dismiss()
     }
 
     fun onClickAddNewPerson() = findNavController().navigate(directions.toAddEditPersonFragment())
 
-    fun onClickOpenOptions(personID: Int) = findNavController().navigate(
-        directions.toPersonOptionsFragment(personID)
-    )
+    fun onClickOpenOptions(profileId: String) {
+//        findNavController().navigate(directions.toPersonOptionsFragment(profileId))
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bind<DialogPersonBinding>(
+        return bind<DialogSelectProfileBinding>(
             inflater = inflater,
             container = container,
-            layoutResId = R.layout.dialog_person
+            layoutResId = R.layout.dialog_select_profile
         )
     }
 
@@ -59,31 +59,31 @@ class PersonDialog : BottomSheetDialogFragment() {
     }
 
     private fun observeData() {
-        viewModel.personItemList.observe(viewLifecycleOwner, Observer { personItemList ->
+        viewModel.profileItemList.observe(viewLifecycleOwner, Observer { personItemList ->
             val adapter = recycler_view_persons.adapter as PersonAdapter
             adapter.updateItemsList(personItemList)
         })
     }
 
     // Inner classes
-    inner class PersonAdapter : RecyclerAdapter<PersonItem>(
-        layoutResId = R.layout.recycler_item_person,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.personId == newItem.personId }
+    inner class PersonAdapter : RecyclerAdapter<ProfileItem>(
+        layoutResId = R.layout.recycler_item_profile,
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }
     ) {
 
-        override fun updateItemsList(newList: List<PersonItem>?) {
-            val listWithOneEmptyItem = mutableListOf<PersonItem>().apply {
+        override fun updateItemsList(newList: List<ProfileItem>?) {
+            val listWithOneEmptyItem = mutableListOf<ProfileItem>().apply {
                 if (newList != null) {
                     addAll(newList)
                 }
-                add(PersonItem(personId = -1, name = "", colorId = 0, mainPerson = false))
+                add(ProfileItem(profileId = "", name = "", color = "", mainPerson = false))
             }
             super.updateItemsList(listWithOneEmptyItem.toList())
         }
 
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val personItem = itemsList[position]
-            holder.bind(personItem, this@PersonDialog)
+            holder.bind(personItem, this@SelectProfileDialog)
         }
     }
 }

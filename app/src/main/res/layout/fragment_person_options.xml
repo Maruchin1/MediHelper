@@ -8,11 +8,11 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.personsprofiles.PersonOptionsFragment" />
+            type="com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsFragment" />
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.personsprofiles.PersonOptionsViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
