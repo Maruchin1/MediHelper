@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.maruchin.medihelper.R
+import com.maruchin.medihelper.domain.entities.AppTime
 import com.maruchin.medihelper.domain.entities.PlannedMedicineWithMedicine
 import com.maruchin.medihelper.domain.entities.StatusOfTaking
 import com.maruchin.medihelper.domain.usecases.MedicineUseCases
@@ -66,6 +67,12 @@ class PlannedMedicineOptionsViewModel(
                 plannedMedicineUseCases.changeMedicineTaken(it.plannedMedicineId, true)
                 medicineUseCases.reduceMedicineCurrState(it.medicine.medicineId, it.plannedDoseSize)
             }
+        }
+    }
+
+    fun changePlannedTime(newTime: AppTime) = GlobalScope.launch {
+        plannedMedicineWithMedicine.value?.let {
+            plannedMedicineUseCases.changePlannedTime(it.plannedMedicineId, newTime)
         }
     }
 }

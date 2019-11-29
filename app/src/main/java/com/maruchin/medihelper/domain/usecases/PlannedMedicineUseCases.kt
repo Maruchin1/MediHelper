@@ -76,4 +76,11 @@ class PlannedMedicineUseCases(
         plannedMedicine.statusOfTaking = newStatus
         plannedMedicineRepo.update(plannedMedicine)
     }
+
+    suspend fun changePlannedTime(id: Int, newTime: AppTime) {
+        val plannedMedicine = plannedMedicineRepo.getById(id)
+        plannedMedicine.plannedTime = newTime
+        plannedMedicineRepo.update(plannedMedicine)
+        notificationApi.updatePlannedMedicinesNotifications()
+    }
 }

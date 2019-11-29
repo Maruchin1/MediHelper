@@ -10,6 +10,7 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogPlannedMedicineOptionsBinding
 import com.maruchin.medihelper.presentation.framework.bind
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.maruchin.medihelper.presentation.dialogs.SelectTimeDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
@@ -29,8 +30,13 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
     }
 
     fun onClickChangeForLater() {
-        //todo dorobić zmianę przypomnienia
-        dismiss()
+        SelectTimeDialog().apply {
+            defaultTime = viewModel.optionsData.value?.plannedTime
+            setTimeSelectedListener { selectedTime ->
+                viewModel.changePlannedTime(selectedTime)
+                this@PlannedMedicineOptionsDialog.dismiss()
+            }
+        }.show(childFragmentManager)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
