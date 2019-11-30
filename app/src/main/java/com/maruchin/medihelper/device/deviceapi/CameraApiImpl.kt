@@ -37,7 +37,7 @@ class CameraApiImpl(
                 capturedFileLive.postValue(tempImageFile)
                 val photoURI = FileProvider.getUriForFile(
                     context,
-                    "com.example.medihelper.fileprovider",
+                    "com.example.android.fileprovider",
                     tempImageFile
                 )
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
