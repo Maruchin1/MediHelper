@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.presentation.framework.AppFullScreenDialog
 import com.maruchin.medihelper.databinding.FragmentPersonOptionsBinding
+import com.maruchin.medihelper.presentation.MainActivity
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.presentation.framework.bind
 import kotlinx.android.synthetic.main.fragment_person_options.*
@@ -18,16 +19,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PersonOptionsFragment : AppFullScreenDialog() {
 
     private val viewModel: PersonOptionsViewModel by viewModel()
-    private val directions by lazy { PersonOptionsFragmentDirections }
+    private val directions by lazyOf(PersonOptionsFragmentDirections)
     private val args: PersonOptionsFragmentArgs by navArgs()
-
-    fun onClickMediHelperAccount() {
-
-    }
 
     fun onClickEdit() = viewModel.personId.value?.let { personID ->
         findNavController().navigate(
-            PersonOptionsFragmentDirections.toAddEditPersonFragment(
+            directions.toAddEditPersonFragment(
                 personID
             )
         )

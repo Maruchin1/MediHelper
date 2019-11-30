@@ -75,8 +75,8 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginStart="32dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="32dp"
                         android:alpha="0.6"
                         android:text="Wpisz lub zeskanuj kod w drugiej aplikcaji aby połączyć się w trybie podopiecznego"
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:visibility="@{viewModel.isUserLogged ? View.GONE : View.VISIBLE, default=gone}">
+                    android:visibility="@{viewModel.isUserLogged ? View.GONE : View.VISIBLE, default=visible}">
 
                     <ImageView
                         android:layout_width="100dp"
@@ -130,17 +130,17 @@
                         android:textAppearance="@style/MedicineDetailFragment.Text.Body2"
                         android:textColor="@color/colorWhite" />
 
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/AppTheme.Widget.Button.Outlined.Big.Dark"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginEnd="32dp"
-                        android:layout_marginTop="64dp"
-                        android:onClick="@{() -> handler.onClickMediHelperAccount()}"
-                        android:text="Konto MediHelper"
-                        app:icon="@drawable/cross_icon"
-                        app:iconSize="24dp" />
+                        android:alpha="0.6"
+                        android:text="Aby zalogować się na konto MediHelper lub założyć nowe przejdź do zakładki Więcej"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/MedicineDetailFragment.Text.Body2"
+                        android:textColor="@color/colorWhite" />
 
                 </LinearLayout>
             </FrameLayout>

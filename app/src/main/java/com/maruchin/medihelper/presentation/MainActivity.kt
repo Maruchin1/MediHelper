@@ -69,6 +69,10 @@ class MainActivity : BaseActivity() {
         snackbar.show()
     }
 
+    fun navigateToOptions() {
+        findNavController(R.id.nav_host_fragment).navigate(R.id.optionsFragment)
+    }
+
     fun restartActivity() {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
