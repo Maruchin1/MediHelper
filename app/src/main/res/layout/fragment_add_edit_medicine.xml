@@ -387,16 +387,18 @@
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
+            android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:onClick="@{() -> handler.onClickSave()}"
-            android:text="Zapisz"
+            android:text="Zapisz lek"
             android:textColor="@color/colorWhite"
             app:backgroundTint="@color/colorPrimary"
-            app:icon="@drawable/round_save_white_36"
-            app:iconTint="@color/colorWhite" />
+            app:icon="@drawable/baseline_check_white_36"
+            app:iconTint="@color/colorWhite"
+            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

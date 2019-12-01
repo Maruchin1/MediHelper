@@ -5,14 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicinesListBinding
 import com.maruchin.medihelper.domain.model.MedicineItem
-import com.maruchin.medihelper.presentation.MainActivity
 import com.maruchin.medihelper.presentation.framework.*
 import kotlinx.android.synthetic.main.fragment_medicines_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,7 +41,7 @@ class MedicinesListFragment : BaseMainFragment<FragmentMedicinesListBinding>(R.l
     private fun setupRecyclerView() {
         recycler_view_medicines.apply {
             adapter = MedicineAdapter()
-            addHideFabOnScroll(fab_add)
+            fab_add.hideOnScroll(this)
         }
     }
 

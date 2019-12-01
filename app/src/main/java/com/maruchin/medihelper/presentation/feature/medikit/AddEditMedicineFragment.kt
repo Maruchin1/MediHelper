@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.setupWithNavController
 import com.maruchin.medihelper.R
-import com.maruchin.medihelper.presentation.framework.AppFullScreenDialog
 import com.maruchin.medihelper.databinding.FragmentAddEditMedicineBinding
 import com.maruchin.medihelper.presentation.dialogs.SelectMedicineUnitDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectExpireDateDialog
 import com.maruchin.medihelper.presentation.framework.BaseFragment
-import com.maruchin.medihelper.presentation.framework.bind
+import com.maruchin.medihelper.presentation.framework.shrinkOnScroll
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -52,6 +52,7 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
         viewModel.setArgs(args)
         setupToolbar()
         setupTextFieldsFocusListener()
+        setupScrollView()
         observeViewModel()
     }
 
@@ -59,6 +60,10 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
         viewModel.actionMedicineSaved.observe(viewLifecycleOwner, Observer {
             findNavController().popBackStack()
         })
+    }
+
+    private fun setupScrollView() {
+        fab_save.shrinkOnScroll(items_root)
     }
 
     private fun setupTextFieldsFocusListener() {
@@ -83,18 +88,7 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
     }
 
     private fun setupToolbar() {
-        toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-        toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.btn_save -> {
-                    passPackageSizeValueToViewModel()
-                    passCurrStateValueToViewModel()
-                    viewModel.saveMedicine()
-                }
-            }
-            true
-        }
+        val navController = findNavController()
+        toolbar.setupWithNavController(navController)
     }
 }
