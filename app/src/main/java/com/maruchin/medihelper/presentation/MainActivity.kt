@@ -25,25 +25,25 @@ class MainActivity : BaseActivity() {
     }
 
     fun setMainColor(color: String) {
-        window.statusBarColor = Color.parseColor(color)
-        val states = arrayOf(
-            intArrayOf(-android.R.attr.state_selected), // unchecked
-            intArrayOf(android.R.attr.state_selected)  // pressed
-        )
-        val colors = intArrayOf(
-            ContextCompat.getColor(this, R.color.colorTextTertiary),
-            Color.parseColor(color)
-        )
-        val colorStateList = ColorStateList(states, colors)
-        bottom_nav.run {
-            itemIconTintList = colorStateList
-            itemTextColor = colorStateList
-        }
-        bottom_nav.itemIconTintList = ColorStateList(states, colors)
+//        window.statusBarColor = Color.parseColor(color)
+//        val states = arrayOf(
+//            intArrayOf(-android.R.attr.state_selected), // unchecked
+//            intArrayOf(android.R.attr.state_selected)  // pressed
+//        )
+//        val colors = intArrayOf(
+//            ContextCompat.getColor(this, R.color.colorTextTertiary),
+//            Color.parseColor(color)
+//        )
+//        val colorStateList = ColorStateList(states, colors)
+//        bottom_nav.run {
+//            itemIconTintList = colorStateList
+//            itemTextColor = colorStateList
+//        }
+//        bottom_nav.itemIconTintList = ColorStateList(states, colors)
     }
 
     private fun setupBottomNav() {
-        val navController = findNavController(R.id.nav_host_fragment)
-        bottom_nav.setupWithNavController(navController)
+//        val navController = findNavController(R.id.nav_host_fragment)
+//        bottom_nav.setupWithNavController(navController)
     }
 }

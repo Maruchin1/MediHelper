@@ -6,18 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.presentation.framework.AppFullScreenDialog
 import com.maruchin.medihelper.databinding.FragmentAddEditMedicineBinding
 import com.maruchin.medihelper.presentation.dialogs.SelectMedicineUnitDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectExpireDateDialog
+import com.maruchin.medihelper.presentation.framework.BaseFragment
 import com.maruchin.medihelper.presentation.framework.bind
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class AddEditMedicineFragment : AppFullScreenDialog() {
+class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.layout.fragment_add_edit_medicine) {
     private val TAG = "AddEditMedicineFragment"
 
     private val viewModel: AddEditMedicineViewModel by viewModel()
@@ -36,13 +38,13 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
         setMedicineUnitSelectedListener { viewModel.medicineUnit.value = it }
     }.show(childFragmentManager)
 
+    fun onClickSave() {
+        viewModel.saveMedicine()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bind<FragmentAddEditMedicineBinding>(
-            inflater = inflater,
-            layoutResId = R.layout.fragment_add_edit_medicine,
-            container = container,
-            viewModel = viewModel
-        )
+        super.bindingViewModel = viewModel
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,7 +57,7 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
 
     private fun observeViewModel() {
         viewModel.actionMedicineSaved.observe(viewLifecycleOwner, Observer {
-            dismiss()
+            findNavController().popBackStack()
         })
     }
 
@@ -81,7 +83,9 @@ class AddEditMedicineFragment : AppFullScreenDialog() {
     }
 
     private fun setupToolbar() {
-        toolbar.setNavigationOnClickListener { dismiss() }
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_save -> {

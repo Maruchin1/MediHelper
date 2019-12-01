@@ -9,9 +9,15 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import com.maruchin.medihelper.BR
+import com.maruchin.medihelper.MainApplication
+import com.maruchin.medihelper.presentation.MainActivity
 
 abstract class BaseFragment<T : ViewDataBinding>(private val layoutResId: Int) : Fragment() {
 
+    protected val mainActivity: MainActivity
+        get() = requireActivity() as MainActivity
+    protected val mainApplication: MainApplication
+        get() = requireContext().applicationContext as MainApplication
     protected var bindingViewModel: ViewModel? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

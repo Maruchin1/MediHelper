@@ -7,14 +7,20 @@
         android:title="Kalendarz" />
 
     <item
-        android:id="@+id/medicinePlanListHostFragment"
-        android:icon="@drawable/round_format_list_bulleted_white_48"
-        android:title="Plany" />
-
-    <item
         android:id="@+id/medicinesListFragment"
         android:icon="@drawable/ic_pill_black_48dp"
         android:title="Apteczka" />
+
+    <item
+        android:id="@+id/itemEmpty"
+        android:enabled="false"
+        android:title="Empty" />
+
+    <item
+        android:id="@+id/doctorsFragment"
+        android:enabled="false"
+        android:icon="@drawable/ic_doctor_black_48dp"
+        android:title="Lekarze" />
 
     <item
         android:id="@+id/optionsFragment"

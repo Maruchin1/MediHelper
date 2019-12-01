@@ -26,17 +26,25 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@color/colorPrimary">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                app:menu="@menu/toolbar_menu_add_edit"
-                app:navigationIcon="@drawable/round_close_24"
-                app:title='@{viewModel.formTitle, default="Dodaj lek"}' />
+                android:layout_height="128dp"
+                app:expandedTitleTextAppearance="@style/AppTheme.Text.ToolbarTitle.Main"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+                    app:layout_collapseMode="pin"
+                    app:navigationIcon="@drawable/round_close_24"
+                    app:title='@{viewModel.formTitle, default="Dodaj lek"}' />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -44,7 +52,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorBackground"
+            android:clipToPadding="false"
             android:fillViewport="true"
+            android:paddingBottom="128dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <LinearLayout
@@ -375,6 +385,18 @@
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_margin="16dp"
+            android:onClick="@{() -> handler.onClickSave()}"
+            android:text="Zapisz"
+            android:textColor="@color/colorWhite"
+            app:backgroundTint="@color/colorPrimary"
+            app:icon="@drawable/round_save_white_36"
+            app:iconTint="@color/colorWhite" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
