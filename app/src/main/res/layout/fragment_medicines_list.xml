@@ -39,7 +39,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
                     app:layout_collapseMode="pin"
-                    app:title="Apteczka" />
+                    app:title="Apteczka"
+                    app:menu="@menu/toolbar_menu_medicines_list"/>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
