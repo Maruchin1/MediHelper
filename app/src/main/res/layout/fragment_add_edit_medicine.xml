@@ -21,15 +21,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:background="@color/colorWhite"
         tools:context=".mainapp.kit.AddMedicineFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_appbar_round"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-            app:elevation="0dp">
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
@@ -66,7 +64,6 @@
             android:id="@+id/items_root"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite"
             android:clipToPadding="false"
             android:fillViewport="true"
             android:paddingBottom="128dp"
@@ -88,6 +85,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MediHelper.TextInputLayout"
+                        inLayError="@{viewModel.errorMedicineName}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -96,7 +94,8 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapWords" />
+                            android:inputType="textCapWords"
+                            android:text='@={viewModel.medicineName}' />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
@@ -106,6 +105,7 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MediHelper.TextInputLayout"
+                            inLayError="@{viewModel.errorMedicineUnit}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
@@ -115,11 +115,16 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="textCapWords" />
+                                android:clickable="true"
+                                android:focusable="false"
+                                android:inputType="textCapWords"
+                                android:onClick="@{() -> handler.onClickSelectMedicineUnit()}"
+                                android:text='@{viewModel.medicineUnit}' />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MediHelper.TextInputLayout"
+                            inLayError="@{viewModel.errorExpireDate}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
@@ -129,7 +134,11 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="date" />
+                                android:clickable="true"
+                                android:focusable="false"
+                                android:inputType="date"
+                                android:onClick="@{() -> handler.onClickSelectExpireDate()}"
+                                android:text='@{viewModel.expireDate.formatString}' />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -179,6 +188,7 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MediHelper.TextInputLayout"
+                            inLayError="@{viewModel.errorCurrState}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
@@ -186,9 +196,11 @@
                             android:hint="Aktualna">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etx_curr_state"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="textCapWords" />
+                                android:inputType="numberDecimal"
+                                android:text='@{viewModel.currState}' />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <TextView
@@ -208,9 +220,11 @@
                             android:hint="Całkowita">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etx_package_size"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="textCapWords" />
+                                android:inputType="numberDecimal"
+                                android:text='@{viewModel.packageSize}' />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
@@ -311,7 +325,14 @@
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp">
 
-
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:scaleType="center"
+                        android:onClick="@{() -> handler.onClickTakePhoto()}"
+                        android:src='@{viewModel.imageFile, default="@drawable/baseline_add_a_photo_black_48"}' />
                 </LinearLayout>
 
                 <!--                <com.google.android.material.card.MaterialCardView-->

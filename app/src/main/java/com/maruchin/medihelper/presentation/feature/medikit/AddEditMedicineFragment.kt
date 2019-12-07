@@ -67,24 +67,24 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
     }
 
     private fun setupTextFieldsFocusListener() {
-//        etx_package_size.setOnFocusChangeListener { view, hasFocus ->
-//            if (!hasFocus) {
-//                passPackageSizeValueToViewModel()
-//            }
-//        }
-//        etx_curr_state.setOnFocusChangeListener { view, hasFocus ->
-//            if (!hasFocus) {
-//                passCurrStateValueToViewModel()
-//            }
-//        }
+        etx_package_size.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                passPackageSizeValueToViewModel()
+            }
+        }
+        etx_curr_state.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                passCurrStateValueToViewModel()
+            }
+        }
     }
 
     private fun passPackageSizeValueToViewModel() {
-//        viewModel.packageSize.value = etx_package_size.text?.toString()?.toFloatOrNull()
+        viewModel.packageSize.value = etx_package_size.text?.toString()?.toFloatOrNull()
     }
 
     private fun passCurrStateValueToViewModel() {
-//        viewModel.currState.value = etx_curr_state.text?.toString()?.toFloatOrNull()
+        viewModel.currState.value = etx_curr_state.text?.toString()?.toFloatOrNull()
     }
 
     private fun setupToolbar() {

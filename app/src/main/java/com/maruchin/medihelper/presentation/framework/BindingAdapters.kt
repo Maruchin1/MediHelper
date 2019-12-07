@@ -99,14 +99,6 @@ fun setImageViewTintColor(imageView: ImageView, colorResId: Int?) {
     }
 }
 
-@BindingAdapter("inLayError")
-fun setTextInputError(inLay: TextInputLayout, errorMessage: String?) {
-    inLay.apply {
-        error = errorMessage
-        isErrorEnabled = errorMessage != null
-    }
-}
-
 @BindingAdapter("android:text")
 fun setFloatText(editText: TextInputEditText, newValue: Float?) {
     if (newValue != null && editText.text.toString() != newValue.toString()) {

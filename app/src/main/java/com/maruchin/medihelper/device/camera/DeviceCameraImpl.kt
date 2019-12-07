@@ -45,8 +45,7 @@ class DeviceCameraImpl(
     }
 
     private fun getTempImageFile(): File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        return File.createTempFile(timeStamp, ".jpg", externalPicturesDir).apply {
+        return File.createTempFile("medicinePicture", ".jpg", externalPicturesDir).apply {
             deleteOnExit()
         }
     }

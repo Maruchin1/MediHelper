@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.storage.StorageReference
 import java.io.File
 
 //View
@@ -41,5 +43,23 @@ fun setImageViewSrcFile(imageView: ImageView, imageFile: File?) {
             .load(imageFile)
             .centerCrop()
             .into(imageView)
+    }
+}
+
+@BindingAdapter("android:src")
+fun setImageViewStorageRef(imageView: ImageView, storageReference: StorageReference?) {
+    if (storageReference != null) {
+        Glide.with(imageView.context)
+            .load(storageReference)
+            .into(imageView)
+    }
+}
+
+//TextInputLayout
+@BindingAdapter("inLayError")
+fun setTextInputError(inLay: TextInputLayout, errorMessage: String?) {
+    inLay.apply {
+        error = errorMessage
+        isErrorEnabled = errorMessage != null
     }
 }

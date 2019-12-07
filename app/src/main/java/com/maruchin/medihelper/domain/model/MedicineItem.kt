@@ -9,13 +9,13 @@ data class MedicineItem(
     val name: String,
     val unit: String,
     val stateData: MedicineStateData,
-    val pictureFile: File?
+    val pictureName: String?
 ) {
-    constructor(medicine: Medicine, pictureFile: File?) : this(
+    constructor(medicine: Medicine) : this(
         medicineId = medicine.medicineId,
         name = medicine.name,
         unit = medicine.unit,
         stateData = medicine.getStateData(),
-        pictureFile = pictureFile
+        pictureName = medicine.pictureName
     )
 }

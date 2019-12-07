@@ -22,13 +22,10 @@ class GetAllMedicinesItemsLiveUseCase(
         }
     }
 
-    private suspend fun mapToMedicineItems(medicinesList: List<Medicine>): List<MedicineItem> {
+    private fun mapToMedicineItems(medicinesList: List<Medicine>): List<MedicineItem> {
         val itemsList = mutableListOf<MedicineItem>()
         medicinesList.forEach { medicine ->
-            val pictureFile = medicine.pictureName?.let {
-                medicineRepo.getMedicinePicture(it)
-            }
-            val medicineItem = MedicineItem(medicine, pictureFile)
+            val medicineItem = MedicineItem(medicine)
             itemsList.add(medicineItem)
         }
         return itemsList

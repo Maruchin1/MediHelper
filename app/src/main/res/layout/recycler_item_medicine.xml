@@ -12,6 +12,10 @@
             type="com.maruchin.medihelper.presentation.feature.medikit.MedicinesListFragment" />
 
         <variable
+            name="viewModel"
+            type="com.maruchin.medihelper.presentation.feature.medikit.MedicinesListViewModel" />
+
+        <variable
             name="displayData"
             type="com.maruchin.medihelper.domain.model.MedicineItem" />
     </data>
@@ -45,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:scaleType="center"
-                    android:src='@{displayData.pictureFile, default="@drawable/ic_pill_white_48dp"}'
+                    android:src='@{viewModel.getMedicinePictureRef(displayData.pictureName), default="@drawable/ic_pill_white_48dp"}'
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="4:3"
                     app:layout_constraintTop_toTopOf="parent" />

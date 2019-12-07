@@ -8,6 +8,5 @@ interface MedicineRepo : BaseRepo<Medicine> {
 
     suspend fun saveMedicinePicture(pictureFile: File)
     suspend fun deleteMedicinePicture(pictureName: String)
-    suspend fun getMedicinePicture(pictureName: String): File
     suspend fun getMedicineUnits(): List<String>
 }

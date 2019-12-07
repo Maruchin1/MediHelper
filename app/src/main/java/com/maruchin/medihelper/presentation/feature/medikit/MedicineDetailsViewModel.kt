@@ -1,13 +1,14 @@
 package com.maruchin.medihelper.presentation.feature.medikit
 
 import androidx.lifecycle.*
+import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.MedicineStateData
 import com.maruchin.medihelper.domain.model.MedicineDetails
 import com.maruchin.medihelper.domain.model.ProfileSimpleItem
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDetailsUseCase
-import com.maruchin.medihelper.domain.usecases.medicines.GetMedicinePictureUseCase
+import com.maruchin.medihelper.presentation.utils.PicturesRef
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
@@ -15,10 +16,10 @@ import java.io.File
 class MedicineDetailsViewModel(
     private val getMedicineDetailsUseCase: GetMedicineDetailsUseCase,
     private val deleteMedicineUseCase: DeleteMedicineUseCase,
-    private val getMedicinePictureUseCase: GetMedicinePictureUseCase
+    private val picturesRef: PicturesRef
 ) : ViewModel() {
 
-    val medicinePicture: LiveData<File?>
+    val medicinePicture: LiveData<StorageReference?>
     val medicineName: LiveData<String>
     val medicineUnit: LiveData<String>
     val expireDate: LiveData<AppExpireDate>
@@ -36,10 +37,9 @@ class MedicineDetailsViewModel(
     init {
         medicinePicture = Transformations.switchMap(medicineDetails) { details ->
             liveData {
-                val picture = details.pictureName?.let {
-                    getMedicinePictureUseCase.execute(it)
+                details.pictureName?.let {
+                    emit(picturesRef.get(it))
                 }
-                emit(picture)
             }
         }
         medicineName = Transformations.map(medicineDetails) { it.name }

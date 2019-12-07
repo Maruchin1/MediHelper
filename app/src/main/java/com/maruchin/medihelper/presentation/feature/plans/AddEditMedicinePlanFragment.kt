@@ -229,7 +229,7 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val timeDose = itemsList[position]
-            holder.bind(timeDose, this@AddEditMedicinePlanFragment, position)
+            holder.bind(timeDose, this@AddEditMedicinePlanFragment, position = position)
         }
     }
 }

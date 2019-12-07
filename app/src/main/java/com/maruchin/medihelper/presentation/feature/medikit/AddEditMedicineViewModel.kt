@@ -34,6 +34,8 @@ class AddEditMedicineViewModel(
         get() = _actionMedicineSaved
     val errorMedicineName: LiveData<String>
         get() = _errorMedicineName
+    val errorMedicineUnit: LiveData<String>
+        get() = _errorMedicineUnit
     val errorExpireDate: LiveData<String>
         get() = _errorExpireDate
     val errorCurrState: LiveData<String>
@@ -43,6 +45,7 @@ class AddEditMedicineViewModel(
     private val _imageFile = MutableLiveData<File>()
     private val _actionMedicineSaved = ActionLiveData()
     private val _errorMedicineName = MutableLiveData<String>()
+    private val _errorMedicineUnit = MutableLiveData<String>()
     private val _errorExpireDate = MutableLiveData<String>()
     private val _errorCurrState = MutableLiveData<String>()
 
@@ -52,7 +55,6 @@ class AddEditMedicineViewModel(
     init {
         viewModelScope.launch {
             medicineUnitList = getMedicineUnitsUseCase.execute()
-            medicineUnit.postValue(medicineUnitList[0])
         }
     }
 
@@ -93,6 +95,9 @@ class AddEditMedicineViewModel(
         val medicineNameError = if (validator.emptyName) {
             "Pole jest wymagane"
         } else null
+        val medicineUnitError = if (validator.emptyUnit) {
+            "Pole jest wymagane"
+        } else null
         val expireDateError = if (validator.emptyExpireDate) {
             "Pole jest wymagene"
         } else null
@@ -101,6 +106,7 @@ class AddEditMedicineViewModel(
         } else null
 
         _errorMedicineName.postValue(medicineNameError)
+        _errorMedicineUnit.postValue(medicineUnitError)
         _errorExpireDate.postValue(expireDateError)
         _errorCurrState.postValue(currStateError)
     }
@@ -112,6 +118,5 @@ class AddEditMedicineViewModel(
         packageSize.postValue(editData.packageSize)
         currState.postValue(editData.currState)
         additionalInfo.postValue(editData.additionalInfo)
-//        _imageFile.postValue(medicine.image)
     }
 }

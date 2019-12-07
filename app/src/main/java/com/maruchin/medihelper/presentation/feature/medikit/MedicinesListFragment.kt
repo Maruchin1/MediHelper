@@ -59,7 +59,7 @@ class MedicinesListFragment : BaseMainFragment<FragmentMedicinesListBinding>(R.l
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicineItem = itemsList[position]
-            holder.bind(medicineItem, this@MedicinesListFragment)
+            holder.bind(medicineItem, this@MedicinesListFragment, viewModel)
         }
     }
 }

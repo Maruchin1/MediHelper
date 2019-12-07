@@ -103,13 +103,6 @@ class MedicineRepoImpl(
         pictureFileRef.delete().await()
     }
 
-    override suspend fun getMedicinePicture(pictureName: String): File {
-        val pictureFile = File.createTempFile("pictures", "jpg")
-        val pictureFileRef = storage.reference.child(pictureName)
-        pictureFileRef.getFile(pictureFile).await()
-        return pictureFile
-    }
-
     override suspend fun getMedicineUnits(): List<String> = withContext(Dispatchers.IO) {
         sharedPref.getMedicineUnitList()
     }

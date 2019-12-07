@@ -19,14 +19,15 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel {
         MedicinesListViewModel(
-            getAllMedicinesItemsUseCase = get()
+            getAllMedicinesItemsUseCase = get(),
+            picturesRef = get()
         )
     }
     viewModel {
         MedicineDetailsViewModel(
             getMedicineDetailsUseCase = get(),
             deleteMedicineUseCase = get(),
-            getMedicinePictureUseCase = get()
+            picturesRef = get()
         )
     }
     viewModel {
