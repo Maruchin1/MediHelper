@@ -6,7 +6,9 @@ class DeleteMedicineUseCase(
     private val medicineRepo: MedicineRepo
 ) {
     suspend fun execute(medicineId: String) {
+        medicineRepo.getById(medicineId)?.pictureName?.let {
+            medicineRepo.deleteMedicinePicture(it)
+        }
         medicineRepo.deleteById(medicineId)
-        //todo brak usuwania powiązanych rekordów
     }
 }

@@ -98,6 +98,11 @@ class MedicineRepoImpl(
         pictureFileRef.putFile(fileUri)
     }
 
+    override suspend fun deleteMedicinePicture(pictureName: String) {
+        val pictureFileRef = storage.reference.child(pictureName)
+        pictureFileRef.delete()
+    }
+
     override suspend fun getMedicinePicture(pictureName: String): File {
         val pictureFile = File.createTempFile("pictures", "jpg")
         val pictureFileRef = storage.reference.child(pictureName)
