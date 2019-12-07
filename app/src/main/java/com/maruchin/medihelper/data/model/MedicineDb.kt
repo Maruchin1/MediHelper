@@ -2,6 +2,7 @@ package com.maruchin.medihelper.data.model
 
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
+import java.io.File
 
 
 data class MedicineDb(
@@ -11,7 +12,7 @@ data class MedicineDb(
     val packageSize: Float? = null,
     val currState: Float? = null,
     val additionalInfo: String? = null,
-    val fileName: String? = null
+    val pictureName: String? = null
 ) {
     constructor(medicine: Medicine) : this(
         name = medicine.name,
@@ -20,7 +21,7 @@ data class MedicineDb(
         packageSize = medicine.packageSize,
         currState = medicine.currState,
         additionalInfo = medicine.additionalInfo,
-        fileName = medicine.imageFile?.name
+        pictureName = medicine.pictureName
     )
 
     fun toMedicine(id: String) = Medicine(
@@ -31,6 +32,6 @@ data class MedicineDb(
         packageSize = packageSize,
         currState = currState,
         additionalInfo = additionalInfo,
-        imageFile = null
+        pictureName = pictureName
     )
 }

@@ -32,12 +32,15 @@ class SaveMedicineUseCase(
             packageSize = params.packageSize,
             currState = params.currState,
             additionalInfo = params.additionalInfo,
-            imageFile = params.imageFile
+            pictureName = params.pictureFile?.name
         )
         if (params.medicineId == null) {
             medicineRepo.addNew(medicine)
         } else {
             medicineRepo.update(medicine)
+        }
+        if (params.pictureFile != null) {
+            medicineRepo.saveMedicinePicture(params.pictureFile)
         }
     }
 
@@ -50,6 +53,6 @@ class SaveMedicineUseCase(
         val packageSize: Float?,
         val currState: Float?,
         val additionalInfo: String?,
-        val imageFile: File?
+        val pictureFile: File?
     )
 }

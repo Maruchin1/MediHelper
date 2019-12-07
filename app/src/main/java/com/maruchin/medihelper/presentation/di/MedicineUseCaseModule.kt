@@ -40,4 +40,9 @@ val medicineUseCaseModule = module {
             deviceCamera = get()
         )
     }
+    factory {
+        GetMedicinePictureUseCase(
+            medicineRepo = get()
+        )
+    }
 }

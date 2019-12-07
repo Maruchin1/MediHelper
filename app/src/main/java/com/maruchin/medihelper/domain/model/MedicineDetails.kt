@@ -4,6 +4,7 @@ import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineStateData
 import com.maruchin.medihelper.domain.entities.Profile
+import java.io.File
 
 data class MedicineDetails(
     val medicineId: String,
@@ -12,6 +13,7 @@ data class MedicineDetails(
     val expireDate: AppExpireDate,
     val stateData: MedicineStateData,
     val additionalInfo: String?,
+    val pictureName: String?,
     val profileSimpleItemList: List<ProfileSimpleItem>
 ) {
     constructor(medicine: Medicine, profileList: List<Profile>): this(
@@ -21,6 +23,7 @@ data class MedicineDetails(
         expireDate = medicine.expireDate,
         stateData = medicine.getStateData(),
         additionalInfo = medicine.additionalInfo,
+        pictureName = medicine.pictureName,
         profileSimpleItemList = profileList.map {
             ProfileSimpleItem(
                 profileId = it.profileId,

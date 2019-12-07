@@ -17,6 +17,7 @@ import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class MedicineRepoImpl(
     private val db: FirebaseFirestore,
@@ -35,26 +36,12 @@ class MedicineRepoImpl(
     override suspend fun addNew(entity: Medicine) = withContext(Dispatchers.IO) {
         val medicineDb = MedicineDb(entity)
         medicinesCollRef.add(medicineDb)
-
-        entity.imageFile?.let {
-            val imageFileRef = storage.reference.child(it.name)
-            val fileUri = Uri.fromFile(it)
-            imageFileRef.putFile(fileUri)
-        }
-
         return@withContext
     }
 
     override suspend fun update(entity: Medicine) = withContext(Dispatchers.IO) {
         val medicineDb = MedicineDb(entity)
         medicinesCollRef.document(entity.medicineId).set(medicineDb)
-
-        entity.imageFile?.let {
-            val imageFileRef = storage.reference.child(it.name)
-            val fileUri = Uri.fromFile(it)
-            imageFileRef.putFile(fileUri)
-        }
-
         return@withContext
     }
 
@@ -103,6 +90,19 @@ class MedicineRepoImpl(
             }
             return@map medicinesList.toList()
         }
+    }
+
+    override suspend fun saveMedicinePicture(pictureFile: File) {
+        val pictureFileRef = storage.reference.child(pictureFile.name)
+        val fileUri = Uri.fromFile(pictureFile)
+        pictureFileRef.putFile(fileUri)
+    }
+
+    override suspend fun getMedicinePicture(pictureName: String): File {
+        val pictureFile = File.createTempFile("pictures", "jpg")
+        val pictureFileRef = storage.reference.child(pictureName)
+        pictureFileRef.getFile(pictureFile).await()
+        return pictureFile
     }
 
     override suspend fun getMedicineUnits(): List<String> = withContext(Dispatchers.IO) {

@@ -75,7 +75,7 @@ class AddEditMedicineViewModel(
             packageSize = packageSize.value,
             currState = currState.value,
             additionalInfo = additionalInfo.value,
-            imageFile = imageFile.value
+            pictureFile = imageFile.value
         )
         val validator = saveMedicineUseCase.execute(params)
         if (validator.noErrors) {

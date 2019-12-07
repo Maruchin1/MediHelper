@@ -11,7 +11,7 @@ data class Medicine(
     val packageSize: Float?,
     var currState: Float?,
     val additionalInfo: String?,
-    val imageFile: File?
+    val pictureName: String?
 ) {
     fun reduceCurrState(doseSize: Float) {
         val currState = this.currState

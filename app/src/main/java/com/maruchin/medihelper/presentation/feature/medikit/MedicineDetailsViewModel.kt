@@ -7,14 +7,18 @@ import com.maruchin.medihelper.domain.model.MedicineDetails
 import com.maruchin.medihelper.domain.model.ProfileSimpleItem
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDetailsUseCase
+import com.maruchin.medihelper.domain.usecases.medicines.GetMedicinePictureUseCase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
 
 class MedicineDetailsViewModel(
     private val getMedicineDetailsUseCase: GetMedicineDetailsUseCase,
-    private val deleteMedicineUseCase: DeleteMedicineUseCase
+    private val deleteMedicineUseCase: DeleteMedicineUseCase,
+    private val getMedicinePictureUseCase: GetMedicinePictureUseCase
 ) : ViewModel() {
 
+    val medicinePicture: LiveData<File?>
     val medicineName: LiveData<String>
     val medicineUnit: LiveData<String>
     val expireDate: LiveData<AppExpireDate>
@@ -30,6 +34,14 @@ class MedicineDetailsViewModel(
     private val medicineDetails = MutableLiveData<MedicineDetails>()
 
     init {
+        medicinePicture = Transformations.switchMap(medicineDetails) { details ->
+            liveData {
+                val picture = details.pictureName?.let {
+                    getMedicinePictureUseCase.execute(it)
+                }
+                emit(picture)
+            }
+        }
         medicineName = Transformations.map(medicineDetails) { it.name }
         medicineUnit = Transformations.map(medicineDetails) { it.unit }
         expireDate = Transformations.map(medicineDetails) { it.expireDate }
