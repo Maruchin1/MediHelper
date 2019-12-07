@@ -44,8 +44,8 @@
                     android:id="@+id/img_photo"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:src="@drawable/ic_pill_white_48dp"
                     android:scaleType="center"
+                    android:src='@{displayData.pictureFile, default="@drawable/ic_pill_white_48dp"}'
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="4:3"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -63,11 +63,11 @@
                     android:id="@+id/txv_medicine_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text='@{displayData.name, default="Nazwa leku"}'
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textColor="@color/colorTextSecondary"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
+                    android:textColor="@color/colorTextSecondary" />
 
                 <TextView
                     android:layout_width="wrap_content"
