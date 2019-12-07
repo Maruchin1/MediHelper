@@ -23,10 +23,10 @@
         <action
             android:id="@+id/toAddEditMedicineFragment"
             app:destination="@id/addEditMedicineFragment"
-            app:enterAnim="@anim/slide_in_end"
+            app:enterAnim="@anim/slide_in_bot"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out_end" />
+            app:popExitAnim="@anim/slide_out_bot" />
         <action
             android:id="@+id/toMedicineDetailsFragment"
             app:destination="@id/medicineDetailsFragment" />

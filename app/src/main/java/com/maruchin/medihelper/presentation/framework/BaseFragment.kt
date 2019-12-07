@@ -12,7 +12,7 @@ import com.maruchin.medihelper.BR
 import com.maruchin.medihelper.MainApplication
 import com.maruchin.medihelper.presentation.MainActivity
 
-abstract class BaseFragment<T : ViewDataBinding>(private val layoutResId: Int) : Fragment() {
+abstract class BaseFragment<T : ViewDataBinding>(private val layoutResId: Int) : Fragment(){
 
     protected val mainActivity: MainActivity
         get() = requireActivity() as MainActivity
@@ -22,10 +22,12 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutResId: Int) :
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: T = DataBindingUtil.inflate(inflater, layoutResId, container, false)
-        return binding.apply {
+        val view = binding.apply {
             setVariable(BR.handler, this@BaseFragment)
             lifecycleOwner = viewLifecycleOwner
             setVariable(BR.viewModel, bindingViewModel)
         }.root
+
+        return view
     }
 }

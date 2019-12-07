@@ -34,13 +34,13 @@ class SaveMedicineUseCase(
             additionalInfo = params.additionalInfo,
             pictureName = params.pictureFile?.name
         )
+        if (params.pictureFile != null) {
+            medicineRepo.saveMedicinePicture(params.pictureFile)
+        }
         if (params.medicineId == null) {
             medicineRepo.addNew(medicine)
         } else {
             medicineRepo.update(medicine)
-        }
-        if (params.pictureFile != null) {
-            medicineRepo.saveMedicinePicture(params.pictureFile)
         }
     }
 

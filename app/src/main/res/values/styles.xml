@@ -12,6 +12,19 @@
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
+    <!--    Widget-->
+    <style name="Widget.MediHelper.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+    </style>
+
+    <!--    TextAppearance-->
+    <style name="TextAppearance.MediHelper.FormSectionTitle" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textColor">@color/colorTextTertiary</item>
+    </style>
+
     <style name="AppTheme.SlideVertical">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_down</item>

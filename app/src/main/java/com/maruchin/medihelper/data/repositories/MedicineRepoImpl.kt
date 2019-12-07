@@ -95,12 +95,12 @@ class MedicineRepoImpl(
     override suspend fun saveMedicinePicture(pictureFile: File) {
         val pictureFileRef = storage.reference.child(pictureFile.name)
         val fileUri = Uri.fromFile(pictureFile)
-        pictureFileRef.putFile(fileUri)
+        pictureFileRef.putFile(fileUri).await()
     }
 
     override suspend fun deleteMedicinePicture(pictureName: String) {
         val pictureFileRef = storage.reference.child(pictureName)
-        pictureFileRef.delete()
+        pictureFileRef.delete().await()
     }
 
     override suspend fun getMedicinePicture(pictureName: String): File {
