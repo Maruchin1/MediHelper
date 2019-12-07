@@ -1,15 +1,11 @@
 package com.maruchin.medihelper.domain.usecases
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.maruchin.medihelper.domain.deviceapi.CameraApi
-import com.maruchin.medihelper.domain.entities.Medicine
+import com.maruchin.medihelper.domain.deviceapi.DeviceCamera
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
-import java.io.File
 
 class MedicineUseCases(
     private val medicineRepo: MedicineRepo,
-    private val cameraApi: CameraApi
+    private val deviceCamera: DeviceCamera
 ) {
 
 //    suspend fun addNewMedicine(inputData: MedicineInputData) {
@@ -68,6 +64,6 @@ class MedicineUseCases(
 //    fun saveMedicineUnitList(list: List<String>) = medicineRepo.saveUnitList(list)
 //
 //    fun captureMedicinePhoto(capturedFileLive: MutableLiveData<File>) {
-//        return cameraApi.capturePhoto(capturedFileLive)
+//        return deviceCamera.capturePhoto(capturedFileLive)
 //    }
 }

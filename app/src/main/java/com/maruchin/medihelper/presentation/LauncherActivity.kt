@@ -39,14 +39,14 @@ class LauncherActivity : BaseActivity() {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 auth.currentUser?.let { currUser ->
-                    val params = CreateUserUseCase.Params(
-                        userId = currUser.uid,
-                        userName = currUser.displayName,
-                        email = currUser.email
-                    )
-                    runBlocking {
-                        createUserUseCase.execute(params)
-                    }
+//                    val params = CreateUserUseCase.Params(
+//                        userId = currUser.uid,
+//                        userName = currUser.displayName,
+//                        email = currUser.email
+//                    )
+//                    runBlocking {
+//                        createUserUseCase.execute(params)
+//                    }
                     startMainActivity()
                 }
             } else {

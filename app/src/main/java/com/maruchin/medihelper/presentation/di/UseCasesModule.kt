@@ -1,20 +1,17 @@
 package com.maruchin.medihelper.presentation.di
 
 import com.maruchin.medihelper.domain.usecases.*
-import com.maruchin.medihelper.domain.usecases.medicines.*
-import com.maruchin.medihelper.domain.usecases.profile.GetProfileSimpleItemUseCase
-import com.maruchin.medihelper.domain.usecases.user.CreateUserUseCase
 import org.koin.dsl.module
 
 val useCasesModule = module {
 
     single {
-        DateTimeUseCases(calendarApi = get())
+        DateTimeUseCases(deviceCalendar = get())
     }
     single {
         MedicineUseCases(
             medicineRepo = get(),
-            cameraApi = get()
+            deviceCamera = get()
         )
     }
     single {

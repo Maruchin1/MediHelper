@@ -10,7 +10,8 @@ data class MedicineDb(
     val expireDate: String? = null,
     val packageSize: Float? = null,
     val currState: Float? = null,
-    val additionalInfo: String? = null
+    val additionalInfo: String? = null,
+    val fileName: String? = null
 ) {
     constructor(medicine: Medicine) : this(
         name = medicine.name,
@@ -18,7 +19,8 @@ data class MedicineDb(
         expireDate = medicine.expireDate.jsonFormatString,
         packageSize = medicine.packageSize,
         currState = medicine.currState,
-        additionalInfo = medicine.additionalInfo
+        additionalInfo = medicine.additionalInfo,
+        fileName = medicine.imageFile?.name
     )
 
     fun toMedicine(id: String) = Medicine(
@@ -28,6 +30,7 @@ data class MedicineDb(
         expireDate = expireDate?.let { AppExpireDate(it) } ?: AppExpireDate(0, 0),
         packageSize = packageSize,
         currState = currState,
-        additionalInfo = additionalInfo
+        additionalInfo = additionalInfo,
+        imageFile = null
     )
 }

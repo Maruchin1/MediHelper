@@ -1,16 +1,16 @@
 package com.maruchin.medihelper.domain.usecases
 
-import com.maruchin.medihelper.domain.deviceapi.CalendarApi
+import com.maruchin.medihelper.domain.deviceapi.DeviceCalendar
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.AppTime
 
 class DateTimeUseCases(
-    private val calendarApi: CalendarApi
+    private val deviceCalendar: DeviceCalendar
 )  {
 
-    fun getCurrDate() = AppDate(calendarApi.getCurrTimeInMillis())
+    fun getCurrDate() = AppDate(deviceCalendar.getCurrTimeInMillis())
 
-    fun getCurrTime() = AppTime(calendarApi.getCurrTimeInMillis())
+    fun getCurrTime() = AppTime(deviceCalendar.getCurrTimeInMillis())
 
     fun calcDaysBetween(firstDate: AppDate, secondDate: AppDate): Long {
         val days1 = firstDate.timeInMillis / (24 * 3600 * 1000)

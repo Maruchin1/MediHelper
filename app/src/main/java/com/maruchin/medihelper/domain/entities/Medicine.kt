@@ -10,7 +10,8 @@ data class Medicine(
     val expireDate: AppExpireDate,
     val packageSize: Float?,
     var currState: Float?,
-    val additionalInfo: String?
+    val additionalInfo: String?,
+    val imageFile: File?
 ) {
     fun reduceCurrState(doseSize: Float) {
         val currState = this.currState

@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.device.deviceapi
+package com.maruchin.medihelper.device.camera
 
 import android.content.Context
 import android.content.Intent
@@ -7,16 +7,15 @@ import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
 import com.maruchin.medihelper.MainApplication
-import com.maruchin.medihelper.device.camera.CameraPermission
-import com.maruchin.medihelper.domain.deviceapi.CameraApi
+import com.maruchin.medihelper.domain.deviceapi.DeviceCamera
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CameraApiImpl(
+class DeviceCameraImpl(
     private val context: Context,
     private val cameraPermission: CameraPermission
-) : CameraApi {
+) : DeviceCamera {
 
     private val externalPicturesDir: File by lazy { context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) }
     private val mainApp: MainApplication by lazy { context.applicationContext as MainApplication }
@@ -37,7 +36,7 @@ class CameraApiImpl(
                 capturedFileLive.postValue(tempImageFile)
                 val photoURI = FileProvider.getUriForFile(
                     context,
-                    "com.example.medihelper.fileprovider",
+                    "com.maruchin.medihelper.fileprovider",
                     tempImageFile
                 )
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
@@ -47,7 +46,7 @@ class CameraApiImpl(
 
     private fun getTempImageFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        return File.createTempFile("TMP_${timeStamp}", ".jpg", externalPicturesDir).apply {
+        return File.createTempFile(timeStamp, ".jpg", externalPicturesDir).apply {
             deleteOnExit()
         }
     }

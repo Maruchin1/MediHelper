@@ -32,7 +32,8 @@ val viewModelModule = module {
         AddEditMedicineViewModel(
             getMedicineUnitsUseCase = get(),
             saveMedicineUseCase = get(),
-            getMedicineEditDataUseCase = get()
+            getMedicineEditDataUseCase = get(),
+            captureMedicinePhotoUseCase = get()
         )
     }
     viewModel {

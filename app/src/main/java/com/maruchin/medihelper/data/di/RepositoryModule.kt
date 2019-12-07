@@ -14,7 +14,8 @@ val repositoryModule = module {
         MedicineRepoImpl(
             db = get(),
             auth = get(),
-            sharedPref = get()
+            sharedPref = get(),
+            storage = get()
         ) as MedicineRepo
     }
     single {

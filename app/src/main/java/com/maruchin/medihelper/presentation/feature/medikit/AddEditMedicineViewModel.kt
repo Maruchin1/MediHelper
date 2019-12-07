@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.model.MedicineEditData
 import com.maruchin.medihelper.domain.model.MedicineValidator
+import com.maruchin.medihelper.domain.usecases.medicines.CaptureMedicinePhotoUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineUnitsUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.SaveMedicineUseCase
@@ -14,7 +15,8 @@ import java.io.File
 class AddEditMedicineViewModel(
     private val getMedicineUnitsUseCase: GetMedicineUnitsUseCase,
     private val getMedicineEditDataUseCase: GetMedicineEditDataUseCase,
-    private val saveMedicineUseCase: SaveMedicineUseCase
+    private val saveMedicineUseCase: SaveMedicineUseCase,
+    private val captureMedicinePhotoUseCase: CaptureMedicinePhotoUseCase
 ) : ViewModel() {
 
     val medicineName = MutableLiveData<String>()
@@ -72,7 +74,8 @@ class AddEditMedicineViewModel(
             expireDate = expireDate.value,
             packageSize = packageSize.value,
             currState = currState.value,
-            additionalInfo = additionalInfo.value
+            additionalInfo = additionalInfo.value,
+            imageFile = imageFile.value
         )
         val validator = saveMedicineUseCase.execute(params)
         if (validator.noErrors) {
@@ -82,8 +85,8 @@ class AddEditMedicineViewModel(
         }
     }
 
-    fun capturePhoto() {
-//        medicineUseCases.captureMedicinePhoto(_imageFile)
+    fun capturePhoto() = viewModelScope.launch {
+        captureMedicinePhotoUseCase.execute(_imageFile)
     }
 
     private fun postErrors(validator: MedicineValidator) {

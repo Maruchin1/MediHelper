@@ -1,5 +1,5 @@
 package com.maruchin.medihelper.domain.deviceapi
 
-interface CalendarApi {
+interface DeviceCalendar {
     fun getCurrTimeInMillis(): Long
 }

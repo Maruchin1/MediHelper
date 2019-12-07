@@ -1,10 +1,12 @@
 package com.maruchin.medihelper.data.repositories
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.maruchin.medihelper.data.SharedPref
 import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.data.framework.getDocumentLive
@@ -19,6 +21,7 @@ import kotlinx.coroutines.withContext
 class MedicineRepoImpl(
     private val db: FirebaseFirestore,
     private val auth: FirebaseAuth,
+    private val storage: FirebaseStorage,
     private val sharedPref: SharedPref
 ) : MedicineRepo {
 
@@ -32,12 +35,26 @@ class MedicineRepoImpl(
     override suspend fun addNew(entity: Medicine) = withContext(Dispatchers.IO) {
         val medicineDb = MedicineDb(entity)
         medicinesCollRef.add(medicineDb)
+
+        entity.imageFile?.let {
+            val imageFileRef = storage.reference.child(it.name)
+            val fileUri = Uri.fromFile(it)
+            imageFileRef.putFile(fileUri)
+        }
+
         return@withContext
     }
 
     override suspend fun update(entity: Medicine) = withContext(Dispatchers.IO) {
         val medicineDb = MedicineDb(entity)
         medicinesCollRef.document(entity.medicineId).set(medicineDb)
+
+        entity.imageFile?.let {
+            val imageFileRef = storage.reference.child(it.name)
+            val fileUri = Uri.fromFile(it)
+            imageFileRef.putFile(fileUri)
+        }
+
         return@withContext
     }
 

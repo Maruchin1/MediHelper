@@ -15,13 +15,10 @@ import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {
 
-    private val notificationApi: NotificationApi by inject()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setupBottomNav()
-        notificationApi.enablePeriodicRemindersUpdate()
     }
 
     fun setMainColor(color: String) {

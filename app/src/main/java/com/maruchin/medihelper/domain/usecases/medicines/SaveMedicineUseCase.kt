@@ -4,6 +4,7 @@ import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.model.MedicineValidator
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
+import java.io.File
 
 class SaveMedicineUseCase(
     private val medicineRepo: MedicineRepo
@@ -30,7 +31,8 @@ class SaveMedicineUseCase(
             expireDate = params.expireDate!!,
             packageSize = params.packageSize,
             currState = params.currState,
-            additionalInfo = params.additionalInfo
+            additionalInfo = params.additionalInfo,
+            imageFile = params.imageFile
         )
         if (params.medicineId == null) {
             medicineRepo.addNew(medicine)
@@ -47,6 +49,7 @@ class SaveMedicineUseCase(
         val expireDate: AppExpireDate?,
         val packageSize: Float?,
         val currState: Float?,
-        val additionalInfo: String?
+        val additionalInfo: String?,
+        val imageFile: File?
     )
 }
