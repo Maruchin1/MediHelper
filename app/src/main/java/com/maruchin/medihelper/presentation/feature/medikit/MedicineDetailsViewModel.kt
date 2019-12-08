@@ -8,6 +8,7 @@ import com.maruchin.medihelper.domain.model.MedicineDetails
 import com.maruchin.medihelper.domain.model.ProfileSimpleItem
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDetailsUseCase
+import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import com.maruchin.medihelper.presentation.utils.PicturesRef
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -28,6 +29,11 @@ class MedicineDetailsViewModel(
     val additionalInfo: LiveData<String>
     val profileSimpleItemListAvailable: LiveData<Boolean>
     val profileSimpleItemList: LiveData<List<ProfileSimpleItem>>
+
+    val actionDataLoaded: LiveData<Boolean>
+        get() = _actionDataLoaded
+
+    private val _actionDataLoaded = ActionLiveData()
 
     val medicineId: String?
         get() = medicineDetails.value?.medicineId
@@ -60,6 +66,7 @@ class MedicineDetailsViewModel(
         if (result != null) {
             medicineDetails.postValue(result)
         }
+        _actionDataLoaded.sendAction()
     }
 
     fun deleteMedicine() = GlobalScope.launch {

@@ -31,7 +31,7 @@ fun <BindingType : ViewDataBinding> Fragment.bind(
     return binding.root
 }
 
-fun DialogFragment.setTransparentStatusBar() {
+fun DialogFragment.setLightStatusBar() {
     dialog?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorTransparent)
 }
 

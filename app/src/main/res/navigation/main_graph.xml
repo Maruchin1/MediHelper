@@ -29,7 +29,11 @@
             app:popExitAnim="@anim/slide_out_bot" />
         <action
             android:id="@+id/toMedicineDetailsFragment"
-            app:destination="@id/medicineDetailsFragment" />
+            app:destination="@id/medicineDetailsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/medicinePlanListHostFragment"
@@ -93,7 +97,7 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out_end" />
     </fragment>
-    <dialog
+    <fragment
         android:id="@+id/medicineDetailsFragment"
         android:name="com.maruchin.medihelper.presentation.feature.medikit.MedicineDetailsFragment"
         tools:layout="@layout/fragment_medicine_details">
@@ -102,8 +106,12 @@
             app:argType="string" />
         <action
             android:id="@+id/toAddEditMedicineFragment"
-            app:destination="@id/addEditMedicineFragment" />
-    </dialog>
+            app:destination="@id/addEditMedicineFragment"
+            app:enterAnim="@anim/slide_in_end"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_end" />
+    </fragment>
     <dialog
         android:id="@+id/plannedMedicineOptionsDialog"
         android:name="com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOptionsDialog"

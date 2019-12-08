@@ -25,7 +25,7 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/appbar_height"
-                app:expandedTitleTextAppearance="@style/AppTheme.Text.ToolbarTitle.Main"
+                app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle"
                 app:layout_scrollFlags="noScroll"
                 app:title="Zdjęcie leku">
 

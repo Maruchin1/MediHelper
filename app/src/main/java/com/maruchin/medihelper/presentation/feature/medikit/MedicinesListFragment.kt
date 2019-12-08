@@ -5,14 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicinesListBinding
 import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.presentation.framework.*
 import kotlinx.android.synthetic.main.fragment_medicines_list.*
+import kotlinx.android.synthetic.main.recycler_item_medicine.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -22,8 +25,12 @@ class MedicinesListFragment : BaseMainFragment<FragmentMedicinesListBinding>(R.l
     private val viewModel: MedicinesListViewModel by viewModel()
     private val directions by lazyOf(MedicinesListFragmentDirections)
 
-    fun onClickOpenMedicineDetails(medicineId: String) {
-        findNavController().navigate(directions.toMedicineDetailsFragment(medicineId))
+    fun onClickOpenMedicineDetails(medicineId: String, view: View) {
+        val imageView = view.findViewById<ImageView>(R.id.img_photo)
+        val extras = FragmentNavigatorExtras(
+            imageView to "medicine_image_details"
+        )
+        findNavController().navigate(directions.toMedicineDetailsFragment(medicineId), extras)
     }
 
     fun onClickAddMedicine() = findNavController().navigate(directions.toAddEditMedicineFragment(null))
@@ -40,6 +47,7 @@ class MedicinesListFragment : BaseMainFragment<FragmentMedicinesListBinding>(R.l
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+        super.setLightStatusBar(false)
         super.setupToolbarNavigation()
         setupToolbarMenu()
         observeViewModel()
@@ -76,6 +84,7 @@ class MedicinesListFragment : BaseMainFragment<FragmentMedicinesListBinding>(R.l
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val medicineItem = itemsList[position]
+            holder.itemView.img_photo.transitionName = "medicine_image_item_$position"
             holder.bind(medicineItem, this@MedicinesListFragment, viewModel)
         }
     }

@@ -15,6 +15,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/main_graph"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:navGraph="@navigation/main_graph"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

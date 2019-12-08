@@ -20,7 +20,7 @@
         android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+        android:background="@color/colorBackground"
         tools:context=".mainapp.kit.AddMedicineFragment">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -32,7 +32,7 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/appbar_height"
-                app:expandedTitleTextAppearance="@style/AppTheme.Text.ToolbarTitle.Main"
+                app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,24 +92,12 @@
                         android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/baseline_label_black_24"
-                                android:tint="@color/colorPrimary" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/form_card_layout_header_text_margin_start"
-                                android:text="Podstawowe informacje"
-                                android:textAppearance="@style/TextAppearance.MediHelper.FormSectionTitle1" />
-                        </LinearLayout>
+                            android:text="Podstawowe informacje"
+                            android:textAppearance="@style/TextAppearance.MediHelper.CardHeader"
+                            android:textAlignment="center"/>
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MediHelper.TextInputLayout"
@@ -189,24 +177,12 @@
                         android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_pill_black_24dp"
-                                android:tint="@color/colorPrimary" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/form_card_layout_header_text_margin_start"
-                                android:text="Ilość leku"
-                                android:textAppearance="@style/TextAppearance.MediHelper.FormSectionTitle1" />
-                        </LinearLayout>
+                            android:text="Ilość leku"
+                            android:textAppearance="@style/TextAppearance.MediHelper.CardHeader"
+                            android:textAlignment="center"/>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -287,25 +263,12 @@
                         android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/round_info_black_24"
-                                android:tint="@color/colorPrimary" />
-
-                            <TextView
-                                style="@style/TextAppearance.MediHelper.FormSectionTitle1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/form_card_layout_header_text_margin_start"
-                                android:text="Dodatkowe informacje" />
-
-                        </LinearLayout>
+                            android:text="Dodatkowe informacje"
+                            android:textAppearance="@style/TextAppearance.MediHelper.CardHeader"
+                            android:textAlignment="center"/>
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MediHelper.TextInputLayout"
@@ -341,24 +304,12 @@
                         android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/baseline_photo_camera_black_24"
-                                android:tint="@color/colorPrimary" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/form_card_layout_header_text_margin_start"
-                                android:text="Zdjęcie leku"
-                                android:textAppearance="@style/TextAppearance.MediHelper.FormSectionTitle1" />
-                        </LinearLayout>
+                            android:text="Zdjęcie leku"
+                            android:textAppearance="@style/TextAppearance.MediHelper.CardHeader"
+                            android:textAlignment="center"/>
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
@@ -395,17 +346,14 @@
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab_save"
-            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+            style="@style/Widget.MediHelper.ExtendedFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:onClick="@{() -> handler.onClickSave()}"
             android:text="Zapisz lek"
-            android:textColor="@color/colorWhite"
-            app:backgroundTint="@color/colorPrimary"
-            app:icon="@drawable/baseline_check_white_36"
-            app:iconTint="@color/colorWhite" />
+            app:icon="@drawable/baseline_check_white_36" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

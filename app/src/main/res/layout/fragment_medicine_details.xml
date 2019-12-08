@@ -20,54 +20,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
-        android:fitsSystemWindows="true"
         tools:context=".presentation.feature.medikit.MedicineDetailsFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="@color/colorPrimary"
-            android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackground"
+            android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+            app:liftOnScroll="true">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:contentScrim="@color/colorPrimary"
-                app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed"
-                app:titleEnabled="false">
+                android:layout_height="?actionBarSize"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/round_close_24"
+                app:title="Szczegóły leku"
+                app:menu="@menu/toolbar_menu_medicine_details">
 
-                <ImageView
-                    android:id="@+id/img_medicine_picture"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDarkerGray"
-                    android:fitsSystemWindows="true"
-                    android:scaleType="center"
-                    android:src='@{viewModel.medicinePicture, default="@drawable/ic_pill_white_48dp"}'
-                    android:transitionName="@string/shared_image_photo"
-                    app:layout_collapseMode="parallax" />
+            </androidx.appcompat.widget.Toolbar>
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    toolbarNavigationOnClick="@{() -> handler.dismiss()}"
-                    android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    app:layout_collapseMode="parallax"
-                    app:navigationIcon="@drawable/round_close_24">
-
-                </androidx.appcompat.widget.Toolbar>
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/items_root"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:fillViewport="true"
-            app:behavior_overlapTop="54dp"
+            android:paddingBottom="128dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
@@ -76,116 +58,183 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/AppTheme.Widget.CardView"
+                    style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/form_card_margin_start"
-                    android:layout_marginTop="@dimen/form_card_margin_top"
-                    android:layout_marginEnd="@dimen/form_card_margin_end">
+                    android:layout_marginStart="@dimen/medicine_details_card_margin_start"
+                    android:layout_marginTop="@dimen/medicine_details_card_margin_top"
+                    android:layout_marginEnd="@dimen/medicine_details_card_margin_end">
 
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
-                        <TextView
+                        <ImageView
+                            android:id="@+id/img_medicine_picture"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="16dp"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text='@{viewModel.medicineName, default="Nazwa leku"}'
-                            android:textAppearance="@style/AppTheme.Text.ToolbarTitle.Main"
-                            android:textColor="@color/colorTextPrimary" />
-
-                        <TableLayout
-                            android:id="@+id/table_medicine_details"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            app:layout_constraintTop_toBottomOf="@id/toolbar">
-
-                            <TableRow android:layout_marginTop="8dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="jednostka"
-                                    android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="16dp"
-                                    android:text="@{viewModel.medicineUnit, default=tabletki}"
-                                    android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
-                            </TableRow>
-
-                            <TableRow android:layout_marginTop="8dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="ważny do"
-                                    android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="16dp"
-                                    android:text="@{viewModel.expireDate.formatString, default=data}"
-                                    android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
-                            </TableRow>
-                        </TableLayout>
-
-                        <com.google.android.material.chip.ChipGroup
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="4dp"
-                            app:chipSpacingHorizontal="8dp"
+                            android:layout_height="0dp"
+                            android:background="@color/colorDarkerGray"
+                            android:scaleType="centerCrop"
+                            android:src='@{viewModel.medicinePicture, default="@drawable/ic_pill_white_48dp"}'
+                            android:transitionName="medicine_image_details"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/table_medicine_details"
-                            app:singleLine="true">
-
-                            <com.google.android.material.chip.Chip
-                                style="@style/AppTheme.Widget.Chip.Action"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:onClick="@{() -> handler.onClickEdit()}"
-                                android:text="Edytuj"
-                                app:chipIcon="@drawable/round_edit_black_24" />
-
-                            <com.google.android.material.chip.Chip
-                                style="@style/AppTheme.Widget.Chip.Action"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:onClick="@{() -> handler.onClickDelete()}"
-                                android:text="Usuń"
-                                app:chipIcon="@drawable/round_delete_black_24" />
-                        </com.google.android.material.chip.ChipGroup>
-                    </LinearLayout>
+                            app:layout_constraintDimensionRatio="4:3"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/AppTheme.Widget.CardView"
+                    style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/form_card_margin_start"
-                    android:layout_marginTop="@dimen/form_card_margin_top"
-                    android:layout_marginEnd="@dimen/form_card_margin_end"
+                    android:layout_marginStart="@dimen/medicine_details_card_margin_start"
+                    android:layout_marginTop="@dimen/medicine_details_card_margin_top"
+                    android:layout_marginEnd="@dimen/medicine_details_card_margin_end"
+                    app:cardBackgroundColor="@color/colorPrimary">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/medicine_details_card_layout_margin_start"
+                        android:layout_marginTop="@dimen/medicine_details_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/medicine_details_card_layout_margin_end"
+                        android:layout_marginBottom="@dimen/medicine_details_card_layout_margin_bot">
+
+                        <LinearLayout
+                            android:id="@+id/lay_name_and_unit"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/img_icon"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text='@{viewModel.medicineName, default="Nazwa leku"}'
+                                android:textAppearance="@style/TextAppearance.MediHelper.AppbarTitle" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text='@{"Jednostka: " + viewModel.medicineUnit, default="Jednostka: tabletki"}'
+                                android:textAppearance="@style/TextAppearance.MediHelper.AppbarSubtitle" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/img_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_pill_white_48dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_expire_date"
+                        style="@style/Widget.MediHelper.CardView.Big"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/medicine_details_card_margin_start"
+                        android:layout_marginTop="@dimen/medicine_details_card_margin_top"
+                        android:layout_marginEnd="6dp"
+                        android:layout_marginBottom="@dimen/medicine_details_card_margin_top"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/medicine_details_card_layout_margin_start"
+                            android:layout_marginTop="@dimen/medicine_details_card_layout_margin_top"
+                            android:layout_marginEnd="@dimen/medicine_details_card_layout_margin_end"
+                            android:layout_marginBottom="@dimen/medicine_details_card_layout_margin_bot"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Ważny do"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MediHelper.CardHeader" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:text="wrz 2020"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MediHelper.Body.Big" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_days_remain"
+                        style="@style/Widget.MediHelper.CardView.Big"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="@dimen/medicine_details_card_margin_top"
+                        android:layout_marginEnd="@dimen/medicine_details_card_margin_end"
+                        android:layout_marginBottom="@dimen/medicine_details_card_margin_top"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/medicine_details_card_layout_margin_start"
+                            android:layout_marginTop="@dimen/medicine_details_card_layout_margin_top"
+                            android:layout_marginEnd="@dimen/medicine_details_card_layout_margin_end"
+                            android:layout_marginBottom="@dimen/medicine_details_card_layout_margin_bot"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Pozostało"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MediHelper.CardHeader" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:text="21 dni"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MediHelper.Body.Big" />
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MediHelper.CardView.Big"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medicine_details_card_margin_start"
+                    android:layout_marginEnd="@dimen/medicine_details_card_margin_end"
                     android:visibility="@{viewModel.stateData.stateAvailable ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginStart="@dimen/medicine_details_card_layout_margin_start"
+                        android:layout_marginTop="@dimen/medicine_details_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/medicine_details_card_layout_margin_end"
+                        android:layout_marginBottom="@dimen/medicine_details_card_layout_margin_bot"
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
@@ -259,18 +308,18 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/AppTheme.Widget.CardView"
+                    style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/form_card_margin_start"
-                    android:layout_marginTop="@dimen/form_card_margin_top"
-                    android:layout_marginEnd="@dimen/form_card_margin_end">
+                    android:layout_marginStart="@dimen/medicine_details_card_margin_start"
+                    android:layout_marginTop="@dimen/medicine_details_card_margin_top"
+                    android:layout_marginEnd="@dimen/medicine_details_card_margin_end">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginTop="@dimen/medicine_details_card_layout_margin_top"
+                        android:layout_marginBottom="@dimen/medicine_details_card_layout_margin_bot"
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
@@ -280,7 +329,8 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="16dp"
                             android:text="Osoby przyjmujące lek"
-                            android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle" />
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.MediHelper.CardHeader" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -310,21 +360,21 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/AppTheme.Widget.CardView"
+                    style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/form_card_margin_start"
-                    android:layout_marginTop="@dimen/form_card_margin_top"
-                    android:layout_marginEnd="@dimen/form_card_margin_end"
+                    android:layout_marginStart="@dimen/medicine_details_card_margin_start"
+                    android:layout_marginTop="@dimen/medicine_details_card_margin_top"
+                    android:layout_marginEnd="@dimen/medicine_details_card_margin_end"
                     android:layout_marginBottom="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginStart="@dimen/medicine_details_card_layout_margin_start"
+                        android:layout_marginTop="@dimen/medicine_details_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/medicine_details_card_layout_margin_end"
+                        android:layout_marginBottom="@dimen/medicine_details_card_layout_margin_bot"
                         android:orientation="vertical">
 
                         <TextView
@@ -332,7 +382,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Dodatkowe informacje"
-                            android:textAppearance="@style/MedicineDetailFragment.Text.Subtitle" />
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.MediHelper.CardHeader" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -359,6 +410,16 @@
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_schedule"
+            style="@style/Widget.MediHelper.ExtendedFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:text="Zaplanuj lek"
+            app:icon="@drawable/baseline_add_alert_24" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

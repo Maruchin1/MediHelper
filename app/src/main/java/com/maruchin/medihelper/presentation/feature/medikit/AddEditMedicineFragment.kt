@@ -48,6 +48,7 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setArgs(args)
+        super.setLightStatusBar(false)
         super.setupToolbarNavigation()
         setupScrollView()
         observeViewModel()
