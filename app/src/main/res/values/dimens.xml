@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="main_card_margin_top">16dp</dimen>
-    <dimen name="main_card_margin_start">12dp</dimen>
-    <dimen name="main_card_margin_end">12dp</dimen>
+    <dimen name="form_card_margin_top">16dp</dimen>
+    <dimen name="form_card_margin_start">8dp</dimen>
+    <dimen name="form_card_margin_end">8dp</dimen>
+
+    <dimen name="form_card_layout_margin_top">12dp</dimen>
+    <dimen name="form_card_layout_margin_start">12dp</dimen>
+    <dimen name="form_card_layout_margin_end">12dp</dimen>
+    <dimen name="form_card_layout_margin_bot">16dp</dimen>
+
+    <dimen name="form_card_layout_header_text_margin_start">16dp</dimen>
+    <dimen name="form_card_layout_body_margin_top">32dp</dimen>
 </resources>

@@ -73,587 +73,307 @@
                 android:id="@+id/content_frame"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MediHelper.TextInputLayout"
-                        inLayError="@{viewModel.errorMedicineName}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:hint="Nazwa leku">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textCapWords"
-                            android:text='@={viewModel.medicineName}' />
-                    </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginStart="@dimen/form_card_margin_start"
+                    android:layout_marginTop="@dimen/form_card_margin_top"
+                    android:layout_marginEnd="@dimen/form_card_margin_end">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp">
+                        android:layout_marginStart="@dimen/form_card_layout_margin_start"
+                        android:layout_marginTop="@dimen/form_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/form_card_layout_margin_end"
+                        android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/baseline_label_black_24"
+                                android:tint="@color/colorPrimary" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/form_card_layout_header_text_margin_start"
+                                android:text="Podstawowe informacje"
+                                android:textAppearance="@style/TextAppearance.MediHelper.FormSectionTitle1" />
+                        </LinearLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MediHelper.TextInputLayout"
-                            inLayError="@{viewModel.errorMedicineUnit}"
-                            android:layout_width="0dp"
+                            inLayError="@{viewModel.errorMedicineName}"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_weight="1"
-                            android:hint="Jednostka">
+                            android:layout_marginTop="@dimen/form_card_layout_body_margin_top"
+                            android:hint="Nazwa leku">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:clickable="true"
-                                android:focusable="false"
                                 android:inputType="textCapWords"
-                                android:onClick="@{() -> handler.onClickSelectMedicineUnit()}"
-                                android:text='@{viewModel.medicineUnit}' />
+                                android:text='@={viewModel.medicineName}' />
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MediHelper.TextInputLayout"
-                            inLayError="@{viewModel.errorExpireDate}"
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:hint="Ważny do">
+                            android:layout_marginTop="24dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MediHelper.TextInputLayout.Menu"
+                                inLayError="@{viewModel.errorMedicineUnit}"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:clickable="true"
-                                android:focusable="false"
-                                android:inputType="date"
-                                android:onClick="@{() -> handler.onClickSelectExpireDate()}"
-                                android:text='@{viewModel.expireDate.formatString}' />
-                        </com.google.android.material.textfield.TextInputLayout>
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:hint="Jednostka">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/filled_exposed_dropdown"
+                                    adapter="@{viewModel.medicineUnitList}"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false"
+                                    android:text="@={viewModel.medicineUnit}" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MediHelper.TextInputLayout"
+                                inLayError="@{viewModel.errorExpireDate}"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:hint="Ważny do">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:clickable="true"
+                                    android:focusable="false"
+                                    android:inputType="date"
+                                    android:onClick="@{() -> handler.onClickSelectExpireDate()}"
+                                    android:text='@{viewModel.expireDate.formatString}' />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="64dp"
-                    android:layout_marginBottom="48dp"
-                    android:gravity="center_vertical">
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_weight="1"
-                        android:alpha="0.12"
-                        android:background="@color/colorBlack" />
-
-                    <TextView
-                        style="@style/TextAppearance.MediHelper.FormSectionTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="0dp"
-                        android:text="Ilość leku" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:alpha="0.12"
-                        android:background="@color/colorBlack" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp">
+                    android:layout_marginStart="@dimen/form_card_margin_start"
+                    android:layout_marginTop="@dimen/form_card_margin_top"
+                    android:layout_marginEnd="@dimen/form_card_margin_end">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
+                        android:layout_marginStart="@dimen/form_card_layout_margin_start"
+                        android:layout_marginTop="@dimen/form_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/form_card_layout_margin_end"
+                        android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
+                        android:orientation="vertical">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MediHelper.TextInputLayout"
-                            inLayError="@{viewModel.errorCurrState}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_weight="1"
-                            android:hint="Aktualna">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etx_curr_state"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="numberDecimal"
-                                android:text='@{viewModel.currState}' />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:text="/"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MediHelper.TextInputLayout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:hint="Całkowita">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etx_package_size"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="numberDecimal"
-                                android:text='@{viewModel.packageSize}' />
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </LinearLayout>
-
-                    <SeekBar
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:max="100" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="64dp"
-                    android:layout_marginBottom="48dp"
-                    android:gravity="center_vertical">
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_weight="1"
-                        android:alpha="0.12"
-                        android:background="@color/colorBlack" />
-
-                    <TextView
-                        style="@style/TextAppearance.MediHelper.FormSectionTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="0dp"
-                        android:text="Dodatkowe informacje" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:alpha="0.12"
-                        android:background="@color/colorBlack" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MediHelper.TextInputLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Dodatkowe informacje">
-
-                        <com.google.android.material.textfield.TextInputEditText
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapSentences|textMultiLine"
-                            android:minLines="5" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
+                            android:gravity="center_vertical">
 
-                <LinearLayout
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_pill_black_24dp"
+                                android:tint="@color/colorPrimary" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/form_card_layout_header_text_margin_start"
+                                android:text="Ilość leku"
+                                android:textAppearance="@style/TextAppearance.MediHelper.FormSectionTitle1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/form_card_layout_body_margin_top"
+                            android:gravity="center_vertical">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MediHelper.TextInputLayout"
+                                inLayError="@{viewModel.errorCurrState}"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:hint="Aktualna">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etx_curr_state"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@={`` + viewModel.currState}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:text="/"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MediHelper.TextInputLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:hint="Całkowita">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etx_package_size"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@={`` + viewModel.packageSize}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="64dp"
-                    android:layout_marginBottom="48dp"
-                    android:gravity="center_vertical">
+                    android:layout_marginStart="@dimen/form_card_margin_start"
+                    android:layout_marginTop="@dimen/form_card_margin_top"
+                    android:layout_marginEnd="@dimen/form_card_margin_end">
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_weight="1"
-                        android:alpha="0.12"
-                        android:background="@color/colorBlack" />
-
-                    <TextView
-                        style="@style/TextAppearance.MediHelper.FormSectionTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="0dp"
-                        android:text="Zdjęcie leku" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:alpha="0.12"
-                        android:background="@color/colorBlack" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp">
-
-                    <ImageView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:scaleType="center"
-                        android:onClick="@{() -> handler.onClickTakePhoto()}"
-                        android:src='@{viewModel.imageFile, default="@drawable/baseline_add_a_photo_black_48"}' />
-                </LinearLayout>
+                        android:layout_marginStart="@dimen/form_card_layout_margin_start"
+                        android:layout_marginTop="@dimen/form_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/form_card_layout_margin_end"
+                        android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
+                        android:orientation="vertical">
 
-                <!--                <com.google.android.material.card.MaterialCardView-->
-                <!--                    style="@style/AppTheme.Widget.CardView"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginStart="@dimen/main_card_margin_start"-->
-                <!--                    android:layout_marginTop="@dimen/main_card_margin_top"-->
-                <!--                    android:layout_marginEnd="@dimen/main_card_margin_end">-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
 
-                <!--                    <LinearLayout-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_marginStart="16dp"-->
-                <!--                        android:layout_marginTop="8dp"-->
-                <!--                        android:layout_marginEnd="16dp"-->
-                <!--                        android:layout_marginBottom="8dp"-->
-                <!--                        android:orientation="vertical">-->
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/round_info_black_24"
+                                android:tint="@color/colorPrimary" />
 
-                <!--                        <TextView-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_gravity="center_vertical"-->
-                <!--                            android:layout_marginBottom="16dp"-->
-                <!--                            android:text="Podstawowe informacje"-->
-                <!--                            android:textAppearance="@style/AppTheme.Text.Form.CardHeader" />-->
+                            <TextView
+                                style="@style/TextAppearance.MediHelper.FormSectionTitle1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/form_card_layout_header_text_margin_start"
+                                android:text="Dodatkowe informacje" />
 
-                <!--                        <LinearLayout-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:gravity="center_vertical"-->
-                <!--                            android:orientation="horizontal">-->
+                        </LinearLayout>
 
-                <!--                            <ImageView-->
-                <!--                                android:layout_width="wrap_content"-->
-                <!--                                android:layout_height="wrap_content"-->
-                <!--                                android:layout_marginEnd="16dp"-->
-                <!--                                android:src="@drawable/round_local_offer_black_24"-->
-                <!--                                android:tint="@color/colorTextTertiary" />-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MediHelper.TextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/form_card_layout_body_margin_top"
+                            android:hint="Dodatkowe informacje">
 
-                <!--                            <com.google.android.material.textfield.TextInputLayout-->
-                <!--                                android:id="@+id/in_lay"-->
-                <!--                                style="@style/Widget.Design.TextInputLayout"-->
-                <!--                                inLayError="@{viewModel.errorMedicineName}"-->
-                <!--                                android:layout_width="match_parent"-->
-                <!--                                android:layout_height="wrap_content"-->
-                <!--                                app:hintEnabled="false">-->
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapSentences|textMultiLine"
+                                android:minLines="5" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                <!--                                <com.google.android.material.textfield.TextInputEditText-->
-                <!--                                    android:id="@+id/etx_medicine_name"-->
-                <!--                                    android:layout_width="match_parent"-->
-                <!--                                    android:layout_height="wrap_content"-->
-                <!--                                    android:hint="Nazwa leku"-->
-                <!--                                    android:inputType="text"-->
-                <!--                                    android:text="@={viewModel.medicineName}" />-->
-                <!--                            </com.google.android.material.textfield.TextInputLayout>-->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MediHelper.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/form_card_margin_start"
+                    android:layout_marginTop="@dimen/form_card_margin_top"
+                    android:layout_marginEnd="@dimen/form_card_margin_end"
+                    android:layout_marginBottom="32dp">
 
-                <!--                        </LinearLayout>-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/form_card_layout_margin_start"
+                        android:layout_marginTop="@dimen/form_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/form_card_layout_margin_end"
+                        android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
+                        android:orientation="vertical">
 
-                <!--                        <TableLayout-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="wrap_content">-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
 
-                <!--                            <TableRow android:layout_marginTop="24dp">-->
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/baseline_photo_camera_black_24"
+                                android:tint="@color/colorPrimary" />
 
-                <!--                                <ImageView-->
-                <!--                                    android:layout_width="wrap_content"-->
-                <!--                                    android:layout_height="wrap_content"-->
-                <!--                                    android:layout_gravity="center_vertical"-->
-                <!--                                    android:layout_marginEnd="20dp"-->
-                <!--                                    android:src="@drawable/ic_pill_black_24dp"-->
-                <!--                                    android:tint="@color/colorTextTertiary" />-->
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/form_card_layout_header_text_margin_start"
+                                android:text="Zdjęcie leku"
+                                android:textAppearance="@style/TextAppearance.MediHelper.FormSectionTitle1" />
+                        </LinearLayout>
 
-                <!--                                <TextView-->
-                <!--                                    android:layout_width="wrap_content"-->
-                <!--                                    android:layout_height="wrap_content"-->
-                <!--                                    android:text="Jednostka"-->
-                <!--                                    android:textAppearance="@style/AppTheme.Text.Form.Subtitle" />-->
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/form_card_layout_body_margin_top"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="0dp">
 
-                <!--                                <com.google.android.material.textfield.TextInputLayout-->
-                <!--                                    style="@style/Widget.Design.TextInputLayout"-->
-                <!--                                    android:layout_width="0dp"-->
-                <!--                                    android:layout_height="wrap_content"-->
-                <!--                                    android:layout_weight="1"-->
-                <!--                                    app:hintEnabled="false">-->
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-                <!--                                    <com.google.android.material.textfield.TextInputEditText-->
-                <!--                                        android:layout_width="match_parent"-->
-                <!--                                        android:layout_height="wrap_content"-->
-                <!--                                        android:clickable="true"-->
-                <!--                                        android:focusable="false"-->
-                <!--                                        android:onClick="@{() -> handler.onClickSelectMedicineUnit()}"-->
-                <!--                                        android:text="@{viewModel.medicineUnit}"-->
-                <!--                                        android:textAlignment="center" />-->
-                <!--                                </com.google.android.material.textfield.TextInputLayout>-->
-                <!--                            </TableRow>-->
-
-                <!--                            <TableRow-->
-                <!--                                android:layout_marginTop="24dp"-->
-                <!--                                android:gravity="center_vertical">-->
-
-                <!--                                <ImageView-->
-                <!--                                    android:layout_width="wrap_content"-->
-                <!--                                    android:layout_height="wrap_content"-->
-                <!--                                    android:layout_marginEnd="20dp"-->
-                <!--                                    android:src="@drawable/round_event_white_24"-->
-                <!--                                    android:tint="@color/colorTextTertiary" />-->
-
-                <!--                                <TextView-->
-                <!--                                    android:layout_width="wrap_content"-->
-                <!--                                    android:layout_height="wrap_content"-->
-                <!--                                    android:layout_marginEnd="16dp"-->
-                <!--                                    android:text="Data ważności"-->
-                <!--                                    android:textAppearance="@style/AppTheme.Text.Form.Subtitle" />-->
-
-                <!--                                <com.google.android.material.textfield.TextInputLayout-->
-                <!--                                    android:id="@+id/in_lay_expire_date"-->
-                <!--                                    style="@style/Widget.Design.TextInputLayout"-->
-                <!--                                    inLayError="@{viewModel.errorExpireDate}"-->
-                <!--                                    android:layout_width="0dp"-->
-                <!--                                    android:layout_height="wrap_content"-->
-                <!--                                    android:layout_weight="1"-->
-                <!--                                    app:hintEnabled="false">-->
-
-                <!--                                    <com.google.android.material.textfield.TextInputEditText-->
-                <!--                                        android:layout_width="match_parent"-->
-                <!--                                        android:layout_height="wrap_content"-->
-                <!--                                        android:clickable="true"-->
-                <!--                                        android:focusable="false"-->
-                <!--                                        android:hint="Nie wybrano"-->
-                <!--                                        android:onClick="@{() -> handler.onClickSelectExpireDate()}"-->
-                <!--                                        android:text='@{viewModel.expireDate.formatString}'-->
-                <!--                                        android:textAlignment="center" />-->
-                <!--                                </com.google.android.material.textfield.TextInputLayout>-->
-                <!--                            </TableRow>-->
-                <!--                        </TableLayout>-->
-                <!--                    </LinearLayout>-->
-                <!--                </com.google.android.material.card.MaterialCardView>-->
-
-                <!--                <com.google.android.material.card.MaterialCardView-->
-                <!--                    style="@style/AppTheme.Widget.CardView"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginStart="@dimen/main_card_margin_start"-->
-                <!--                    android:layout_marginTop="@dimen/main_card_margin_top"-->
-                <!--                    android:layout_marginEnd="@dimen/main_card_margin_end">-->
-
-                <!--                    <LinearLayout-->
-                <!--                        android:id="@+id/lay_package"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_marginStart="16dp"-->
-                <!--                        android:layout_marginTop="8dp"-->
-                <!--                        android:layout_marginEnd="16dp"-->
-                <!--                        android:layout_marginBottom="8dp"-->
-                <!--                        android:orientation="vertical">-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_gravity="center_vertical"-->
-                <!--                            android:layout_marginBottom="24dp"-->
-                <!--                            android:text="Opakowanie"-->
-                <!--                            android:textAppearance="@style/AppTheme.Text.Form.CardHeader" />-->
-
-                <!--                        <LinearLayout-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:orientation="horizontal">-->
-
-                <!--                            <TextView-->
-                <!--                                android:layout_width="0dp"-->
-                <!--                                android:layout_height="wrap_content"-->
-                <!--                                android:layout_weight="2"-->
-                <!--                                android:text="Rozmiar opakowania"-->
-                <!--                                android:textAppearance="@style/AppTheme.Text.Form.Subtitle" />-->
-
-                <!--                            <com.google.android.material.textfield.TextInputLayout-->
-                <!--                                style="@style/Widget.Design.TextInputLayout"-->
-                <!--                                android:layout_width="0dp"-->
-                <!--                                android:layout_height="wrap_content"-->
-                <!--                                android:layout_weight="1"-->
-                <!--                                app:hintEnabled="false">-->
-
-                <!--                                <com.google.android.material.textfield.TextInputEditText-->
-                <!--                                    android:id="@+id/etx_package_size"-->
-                <!--                                    android:layout_width="match_parent"-->
-                <!--                                    android:layout_height="wrap_content"-->
-                <!--                                    android:inputType="numberDecimal"-->
-                <!--                                    android:text='@{viewModel.packageSize}' />-->
-                <!--                            </com.google.android.material.textfield.TextInputLayout>-->
-                <!--                        </LinearLayout>-->
-
-                <!--                        <LinearLayout-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:gravity="center_vertical"-->
-                <!--                            android:orientation="horizontal">-->
-
-                <!--                            <TextView-->
-                <!--                                android:layout_width="0dp"-->
-                <!--                                android:layout_height="wrap_content"-->
-                <!--                                android:layout_weight="2"-->
-                <!--                                android:text="Aktualna ilość leku"-->
-                <!--                                android:textAppearance="@style/AppTheme.Text.Form.Subtitle" />-->
-
-                <!--                            <com.google.android.material.textfield.TextInputLayout-->
-                <!--                                style="@style/Widget.Design.TextInputLayout"-->
-                <!--                                inLayError="@{viewModel.errorCurrState}"-->
-                <!--                                android:layout_width="0dp"-->
-                <!--                                android:layout_height="wrap_content"-->
-                <!--                                android:layout_weight="1"-->
-                <!--                                app:hintEnabled="false">-->
-
-                <!--                                <com.google.android.material.textfield.TextInputEditText-->
-                <!--                                    android:id="@+id/etx_curr_state"-->
-                <!--                                    android:layout_width="match_parent"-->
-                <!--                                    android:layout_height="wrap_content"-->
-                <!--                                    android:inputType="numberDecimal"-->
-                <!--                                    android:text='@{viewModel.currState}' />-->
-                <!--                            </com.google.android.material.textfield.TextInputLayout>-->
-
-                <!--                        </LinearLayout>-->
-
-                <!--                    </LinearLayout>-->
-                <!--                </com.google.android.material.card.MaterialCardView>-->
-
-                <!--                <com.google.android.material.card.MaterialCardView-->
-                <!--                    android:id="@+id/card_comment"-->
-                <!--                    style="@style/AppTheme.Widget.CardView"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginStart="@dimen/main_card_margin_start"-->
-                <!--                    android:layout_marginTop="@dimen/main_card_margin_top"-->
-                <!--                    android:layout_marginEnd="@dimen/main_card_margin_end">-->
-
-                <!--                    <LinearLayout-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_marginStart="16dp"-->
-                <!--                        android:layout_marginTop="8dp"-->
-                <!--                        android:layout_marginEnd="16dp"-->
-                <!--                        android:layout_marginBottom="8dp"-->
-                <!--                        android:orientation="vertical">-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_gravity="center_vertical"-->
-                <!--                            android:layout_marginBottom="24dp"-->
-                <!--                            android:text="Uwagi"-->
-                <!--                            android:textAppearance="@style/AppTheme.Text.Form.CardHeader" />-->
-
-                <!--                        <com.google.android.material.textfield.TextInputEditText-->
-                <!--                            android:id="@+id/etx_comment"-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:hint="Wprowadź swoje uwagi"-->
-                <!--                            android:inputType="textMultiLine"-->
-                <!--                            android:minLines="4"-->
-                <!--                            android:text="@={viewModel.additionalInfo}" />-->
-                <!--                    </LinearLayout>-->
-                <!--                </com.google.android.material.card.MaterialCardView>-->
-
-                <!--                <com.google.android.material.card.MaterialCardView-->
-                <!--                    style="@style/AppTheme.Widget.CardView"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginStart="@dimen/main_card_margin_start"-->
-                <!--                    android:layout_marginTop="@dimen/main_card_margin_top"-->
-                <!--                    android:layout_marginEnd="@dimen/main_card_margin_end"-->
-                <!--                    android:layout_marginBottom="16dp">-->
-
-                <!--                    <LinearLayout-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_marginStart="16dp"-->
-                <!--                        android:layout_marginTop="8dp"-->
-                <!--                        android:layout_marginEnd="16dp"-->
-                <!--                        android:layout_marginBottom="8dp"-->
-                <!--                        android:orientation="vertical">-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_gravity="center_vertical"-->
-                <!--                            android:layout_marginBottom="24dp"-->
-                <!--                            android:text="Zdjecie opakowania"-->
-                <!--                            android:textAppearance="@style/AppTheme.Text.Form.CardHeader" />-->
-
-                <!--                        <ImageButton-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_gravity="center_horizontal"-->
-                <!--                            android:background="?selectableItemBackgroundBorderless"-->
-                <!--                            android:onClick="@{() -> handler.onClickTakePhoto()}"-->
-                <!--                            android:src="@drawable/baseline_add_a_photo_black_36"-->
-                <!--                            android:tint="@color/colorDarkerGray"-->
-                <!--                            android:visibility="@{viewModel.imageFile == null ? View.VISIBLE : View.GONE}" />-->
-
-                <!--                        <androidx.constraintlayout.widget.ConstraintLayout-->
-                <!--                            android:id="@+id/lay_image"-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:visibility="@{viewModel.imageFile == null ? View.GONE : View.VISIBLE}">-->
-
-                <!--                            <ImageView-->
-                <!--                                android:id="@+id/img_photo"-->
-                <!--                                srcFile="@{viewModel.imageFile}"-->
-                <!--                                android:layout_width="match_parent"-->
-                <!--                                android:layout_height="0dp"-->
-                <!--                                android:clickable="true"-->
-                <!--                                android:focusable="true"-->
-                <!--                                android:onClick="@{() -> handler.onClickTakePhoto()}"-->
-                <!--                                android:src="@drawable/baseline_add_a_photo_black_48"-->
-                <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                                app:layout_constraintDimensionRatio="4:3"-->
-                <!--                                app:layout_constraintTop_toTopOf="parent" />-->
-                <!--                        </androidx.constraintlayout.widget.ConstraintLayout>-->
-                <!--                    </LinearLayout>-->
-                <!--                </com.google.android.material.card.MaterialCardView>-->
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="0dp"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:onClick="@{() -> handler.onClickTakePhoto()}"
+                                    android:scaleType="center"
+                                    android:src='@{viewModel.imageFile, default="@drawable/baseline_add_a_photo_black_48"}'
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintDimensionRatio="4:3"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

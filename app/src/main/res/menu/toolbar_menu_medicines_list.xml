@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/btn_filters"
-        android:icon="@drawable/round_tune_white_48"
+        android:icon="@drawable/baseline_filter_list_white_48"
         android:orderInCategory="2"
         android:title="Filtry"
         app:showAsAction="ifRoom" />

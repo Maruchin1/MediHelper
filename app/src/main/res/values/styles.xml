@@ -20,10 +20,29 @@
         <item name="boxCornerRadiusBottomStart">16dp</item>
     </style>
 
-    <!--    TextAppearance-->
-    <style name="TextAppearance.MediHelper.FormSectionTitle" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="android:textColor">@color/colorTextTertiary</item>
+    <style name="Widget.MediHelper.TextInputLayout.Menu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
     </style>
+
+    <style name="Widget.MediHelper.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardElevation">4dp</item>
+    </style>
+
+    <!--    TextAppearance-->
+    <style name="TextAppearance.MediHelper.FormSectionTitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
+
+    <style name="TextAppearance.MediHelper.FormSectionTitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textColor">@color/colorTextSecondary</item>
+    </style>
+
+    <!--    Stare-->
 
     <style name="AppTheme.SlideVertical">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>

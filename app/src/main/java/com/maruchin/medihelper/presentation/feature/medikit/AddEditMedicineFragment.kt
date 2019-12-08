@@ -2,6 +2,7 @@ package com.maruchin.medihelper.presentation.feature.medikit
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,9 @@ import com.maruchin.medihelper.presentation.dialogs.SelectMedicineUnitDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectExpireDateDialog
 import com.maruchin.medihelper.presentation.framework.BaseFragment
 import com.maruchin.medihelper.presentation.framework.shrinkOnScroll
+import com.maruchin.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -24,6 +27,7 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
 
     private val viewModel: AddEditMedicineViewModel by viewModel()
     private val args: AddEditMedicineFragmentArgs by navArgs()
+    private val loadingScreen: LoadingScreen by inject()
 
     fun onClickTakePhoto() {
         viewModel.capturePhoto()
@@ -32,10 +36,6 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
     fun onClickSelectExpireDate() = SelectExpireDateDialog().apply {
         defaultDate = viewModel.expireDate.value
         setDateSelectedListener { viewModel.expireDate.value = it }
-    }.show(childFragmentManager)
-
-    fun onClickSelectMedicineUnit() = SelectMedicineUnitDialog().apply {
-        setMedicineUnitSelectedListener { viewModel.medicineUnit.value = it }
     }.show(childFragmentManager)
 
     fun onClickSave() {
@@ -51,7 +51,6 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
         super.onViewCreated(view, savedInstanceState)
         viewModel.setArgs(args)
         setupToolbar()
-        setupTextFieldsFocusListener()
         setupScrollView()
         observeViewModel()
     }
@@ -60,31 +59,17 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
         viewModel.actionMedicineSaved.observe(viewLifecycleOwner, Observer {
             findNavController().popBackStack()
         })
+        viewModel.loadingInProgress.observe(viewLifecycleOwner, Observer { inProgress ->
+            if (inProgress) {
+                loadingScreen.showLoadingScreen(childFragmentManager)
+            } else {
+                loadingScreen.closeLoadingScreen()
+            }
+        })
     }
 
     private fun setupScrollView() {
         fab_save.shrinkOnScroll(items_root)
-    }
-
-    private fun setupTextFieldsFocusListener() {
-        etx_package_size.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus) {
-                passPackageSizeValueToViewModel()
-            }
-        }
-        etx_curr_state.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus) {
-                passCurrStateValueToViewModel()
-            }
-        }
-    }
-
-    private fun passPackageSizeValueToViewModel() {
-        viewModel.packageSize.value = etx_package_size.text?.toString()?.toFloatOrNull()
-    }
-
-    private fun passCurrStateValueToViewModel() {
-        viewModel.currState.value = etx_curr_state.text?.toString()?.toFloatOrNull()
     }
 
     private fun setupToolbar() {

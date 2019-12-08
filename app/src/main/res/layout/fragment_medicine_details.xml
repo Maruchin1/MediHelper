@@ -79,9 +79,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/main_card_margin_start"
-                    android:layout_marginTop="@dimen/main_card_margin_top"
-                    android:layout_marginEnd="@dimen/main_card_margin_end">
+                    android:layout_marginStart="@dimen/form_card_margin_start"
+                    android:layout_marginTop="@dimen/form_card_margin_top"
+                    android:layout_marginEnd="@dimen/form_card_margin_end">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -174,9 +174,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/main_card_margin_start"
-                    android:layout_marginTop="@dimen/main_card_margin_top"
-                    android:layout_marginEnd="@dimen/main_card_margin_end"
+                    android:layout_marginStart="@dimen/form_card_margin_start"
+                    android:layout_marginTop="@dimen/form_card_margin_top"
+                    android:layout_marginEnd="@dimen/form_card_margin_end"
                     android:visibility="@{viewModel.stateData.stateAvailable ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
@@ -262,9 +262,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/main_card_margin_start"
-                    android:layout_marginTop="@dimen/main_card_margin_top"
-                    android:layout_marginEnd="@dimen/main_card_margin_end">
+                    android:layout_marginStart="@dimen/form_card_margin_start"
+                    android:layout_marginTop="@dimen/form_card_margin_top"
+                    android:layout_marginEnd="@dimen/form_card_margin_end">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -313,9 +313,9 @@
                     style="@style/AppTheme.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/main_card_margin_start"
-                    android:layout_marginTop="@dimen/main_card_margin_top"
-                    android:layout_marginEnd="@dimen/main_card_margin_end"
+                    android:layout_marginStart="@dimen/form_card_margin_start"
+                    android:layout_marginTop="@dimen/form_card_margin_top"
+                    android:layout_marginEnd="@dimen/form_card_margin_end"
                     android:layout_marginBottom="16dp">
 
                     <LinearLayout
