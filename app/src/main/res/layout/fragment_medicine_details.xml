@@ -102,13 +102,10 @@
 
                         <LinearLayout
                             android:id="@+id/lay_name_and_unit"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
                             android:orientation="vertical"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/img_icon"
-                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
@@ -126,14 +123,6 @@
                                 android:text='@{"Jednostka: " + viewModel.medicineUnit, default="Jednostka: tabletki"}'
                                 android:textAppearance="@style/TextAppearance.MediHelper.AppbarSubtitle" />
                         </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/img_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_pill_white_48dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
