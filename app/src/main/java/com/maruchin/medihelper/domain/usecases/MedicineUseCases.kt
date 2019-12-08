@@ -1,11 +1,9 @@
 package com.maruchin.medihelper.domain.usecases
 
-import com.maruchin.medihelper.domain.deviceapi.DeviceCamera
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 
 class MedicineUseCases(
-    private val medicineRepo: MedicineRepo,
-    private val deviceCamera: DeviceCamera
+    private val medicineRepo: MedicineRepo
 ) {
 
 //    suspend fun addNewMedicine(inputData: MedicineInputData) {

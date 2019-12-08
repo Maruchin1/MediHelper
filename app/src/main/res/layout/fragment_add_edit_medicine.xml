@@ -25,13 +25,13 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/appbar_height"
             android:background="@drawable/bg_appbar_round"
             android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="128dp"
+                android:layout_height="@dimen/appbar_height"
                 app:expandedTitleTextAppearance="@style/AppTheme.Text.ToolbarTitle.Main"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
@@ -360,6 +360,7 @@
                                 <ImageView
                                     android:layout_width="0dp"
                                     android:layout_height="0dp"
+                                    android:background="?selectableItemBackgroundBorderless"
                                     android:clickable="true"
                                     android:focusable="true"
                                     android:onClick="@{() -> handler.onClickTakePhoto()}"

@@ -85,6 +85,13 @@
             android:name="editMedicineId"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/toCaptureMedicinePictureFragment"
+            app:destination="@id/captureMedicinePictureFragment"
+            app:enterAnim="@anim/slide_in_end"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_end" />
     </fragment>
     <dialog
         android:id="@+id/medicineDetailsFragment"
@@ -127,4 +134,8 @@
             android:name="personID"
             app:argType="integer" />
     </dialog>
+    <fragment
+        android:id="@+id/captureMedicinePictureFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.medikit.CaptureMedicinePictureFragment"
+        tools:layout="@layout/fragment_capture_medicine_picture" />
 </navigation>

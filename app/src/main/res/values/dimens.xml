@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="appbar_height">128dp</dimen>
+
     <dimen name="form_card_margin_top">16dp</dimen>
     <dimen name="form_card_margin_start">8dp</dimen>
     <dimen name="form_card_margin_end">8dp</dimen>

@@ -4,11 +4,11 @@ import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.model.MedicineEditData
 import com.maruchin.medihelper.domain.model.MedicineValidator
-import com.maruchin.medihelper.domain.usecases.medicines.CaptureMedicinePhotoUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineUnitsUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.SaveMedicineUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
+import com.maruchin.medihelper.device.camera.DeviceCamera
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -16,7 +16,7 @@ class AddEditMedicineViewModel(
     private val getMedicineUnitsUseCase: GetMedicineUnitsUseCase,
     private val getMedicineEditDataUseCase: GetMedicineEditDataUseCase,
     private val saveMedicineUseCase: SaveMedicineUseCase,
-    private val captureMedicinePhotoUseCase: CaptureMedicinePhotoUseCase
+    private val deviceCamera: DeviceCamera
 ) : ViewModel() {
 
     val medicineUnitList: LiveData<List<String>>
@@ -46,7 +46,7 @@ class AddEditMedicineViewModel(
         get() = _errorCurrState
 
     private val _formTitle = MutableLiveData<String>("Dodaj lek")
-    private val _imageFile = MutableLiveData<File>()
+    private val _imageFile = MediatorLiveData<File>()
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
     private val _actionMedicineSaved = ActionLiveData()
     private val _errorMedicineName = MutableLiveData<String>()
@@ -62,6 +62,7 @@ class AddEditMedicineViewModel(
             emit(list)
         }
         currState.addSource(packageSize) { currState.postValue(it) }
+        _imageFile.addSource(deviceCamera.resultFile) { _imageFile.postValue(it) }
     }
 
     fun setArgs(args: AddEditMedicineFragmentArgs) = viewModelScope.launch {
@@ -94,10 +95,6 @@ class AddEditMedicineViewModel(
         } else {
             postErrors(validator)
         }
-    }
-
-    fun capturePhoto() = viewModelScope.launch {
-        captureMedicinePhotoUseCase.execute(_imageFile)
     }
 
     private fun postErrors(validator: MedicineValidator) {

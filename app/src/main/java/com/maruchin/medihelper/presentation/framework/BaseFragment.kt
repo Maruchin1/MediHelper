@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.maruchin.medihelper.BR
 import com.maruchin.medihelper.MainApplication
+import com.maruchin.medihelper.R
 import com.maruchin.medihelper.presentation.MainActivity
 
 abstract class BaseFragment<T : ViewDataBinding>(private val layoutResId: Int) : Fragment(){
@@ -22,12 +26,16 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutResId: Int) :
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: T = DataBindingUtil.inflate(inflater, layoutResId, container, false)
-        val view = binding.apply {
+
+        return binding.apply {
             setVariable(BR.handler, this@BaseFragment)
             lifecycleOwner = viewLifecycleOwner
             setVariable(BR.viewModel, bindingViewModel)
         }.root
+    }
 
-        return view
+    protected fun setupToolbarNavigation() {
+        val toolbar = view?.findViewById<Toolbar>(R.id.toolbar)
+        toolbar?.setupWithNavController(findNavController())
     }
 }

@@ -35,7 +35,7 @@ val viewModelModule = module {
             getMedicineUnitsUseCase = get(),
             saveMedicineUseCase = get(),
             getMedicineEditDataUseCase = get(),
-            captureMedicinePhotoUseCase = get()
+            deviceCamera = get()
         )
     }
     viewModel {

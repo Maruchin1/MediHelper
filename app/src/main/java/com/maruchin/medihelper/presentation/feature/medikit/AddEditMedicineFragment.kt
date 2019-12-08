@@ -2,17 +2,14 @@ package com.maruchin.medihelper.presentation.feature.medikit
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.setupWithNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentAddEditMedicineBinding
-import com.maruchin.medihelper.presentation.dialogs.SelectMedicineUnitDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectExpireDateDialog
 import com.maruchin.medihelper.presentation.framework.BaseFragment
 import com.maruchin.medihelper.presentation.framework.shrinkOnScroll
@@ -28,9 +25,10 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
     private val viewModel: AddEditMedicineViewModel by viewModel()
     private val args: AddEditMedicineFragmentArgs by navArgs()
     private val loadingScreen: LoadingScreen by inject()
+    private val directions by lazyOf(AddEditMedicineFragmentDirections)
 
     fun onClickTakePhoto() {
-        viewModel.capturePhoto()
+        findNavController().navigate(directions.toCaptureMedicinePictureFragment())
     }
 
     fun onClickSelectExpireDate() = SelectExpireDateDialog().apply {
@@ -50,7 +48,7 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setArgs(args)
-        setupToolbar()
+        super.setupToolbarNavigation()
         setupScrollView()
         observeViewModel()
     }
@@ -70,10 +68,5 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
 
     private fun setupScrollView() {
         fab_save.shrinkOnScroll(items_root)
-    }
-
-    private fun setupToolbar() {
-        val navController = findNavController()
-        toolbar.setupWithNavController(navController)
     }
 }
