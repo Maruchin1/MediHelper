@@ -407,7 +407,7 @@
                             android:paddingTop="24dp"
                             android:paddingEnd="16dp"
                             android:paddingBottom="24dp"
-                            android:text="Jakaś opcja"
+                            android:text="Opcja"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                         <include layout="@layout/line_horizontal" />
@@ -422,7 +422,7 @@
                             android:paddingTop="24dp"
                             android:paddingEnd="16dp"
                             android:paddingBottom="24dp"
-                            android:text="Jakaś opcja"
+                            android:text="Opcja"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                         <include layout="@layout/line_horizontal" />
@@ -437,7 +437,7 @@
                             android:paddingTop="24dp"
                             android:paddingEnd="16dp"
                             android:paddingBottom="24dp"
-                            android:text="Jakaś opcja"
+                            android:text="Opcja"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                         <include layout="@layout/line_horizontal" />
@@ -452,7 +452,7 @@
                             android:paddingTop="24dp"
                             android:paddingEnd="16dp"
                             android:paddingBottom="24dp"
-                            android:text="Jakaś opcja"
+                            android:text="Opcja"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                     </LinearLayout>

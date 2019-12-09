@@ -29,8 +29,8 @@ class CalendarViewModel(
         isAppModeConnectedLive = Transformations.map(serverConnectionUseCases.getAppModeLive()) {
             it == AppMode.CONNECTED
         }
-        colorPrimaryId = Transformations.map(personUseCases.getCurrPersonLive()) { it.colorId }
-        currPersonName = Transformations.map(personUseCases.getCurrPersonLive()) { it.name }
+        colorPrimaryId = Transformations.map(personUseCases.getCurrPersonLive()) { it?.colorId }
+        currPersonName = Transformations.map(personUseCases.getCurrPersonLive()) { it?.name }
     }
 
     fun selectDate(position: Int) = selectDate(getDateForPosition(position))
