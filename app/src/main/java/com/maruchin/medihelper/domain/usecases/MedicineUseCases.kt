@@ -34,6 +34,7 @@ class MedicineUseCases(
             unit = inputData.unit,
             expireDate = inputData.expireDate,
             packageSize = inputData.packageSize,
+            currState = inputData.currState,
             additionalInfo = inputData.additionalInfo,
             image = inputData.image
         )
