@@ -1,5 +1,6 @@
 package com.maruchin.medihelper.data.repositories
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.maruchin.medihelper.data.local.DeletedHistory
@@ -9,6 +10,8 @@ import com.maruchin.medihelper.data.local.dao.MedicineDao
 import com.maruchin.medihelper.data.local.model.MedicineEntity
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MedicineRepoImpl(
     private val medicineDao: MedicineDao,
@@ -16,9 +19,18 @@ class MedicineRepoImpl(
     private val deletedHistory: DeletedHistory,
     private val imagesFiles: ImagesFiles
 ) : MedicineRepo {
+    private val TAG = "MedicineRepoImpl"
 
     init {
         checkDefaultUnitList()
+
+        GlobalScope.launch {
+            val allMedicines = medicineDao.getAllList()
+            allMedicines.forEach { medicine ->
+                Log.i(TAG, medicine.toString())
+            }
+        }
+
     }
 
     override suspend fun insert(medicine: Medicine) {

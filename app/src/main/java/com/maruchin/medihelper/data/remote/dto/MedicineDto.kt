@@ -27,6 +27,6 @@ data class MedicineDto(
     @SerializedName(value = "additionalInfo")
     val additionalInfo: String?,
 
-    @SerializedName(value = "image_name")
+    @SerializedName(value = "imageName")
     val imageName: String?
 )

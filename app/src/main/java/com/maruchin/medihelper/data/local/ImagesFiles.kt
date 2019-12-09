@@ -1,11 +1,20 @@
 package com.maruchin.medihelper.data.local
 
 import android.content.Context
+import android.util.Log
 import java.io.File
 
 class ImagesFiles(private val context: Context) {
+    private val TAG = "ImagesFiles"
 
     private val internalFilesDir = context.filesDir
+
+    init {
+        val allFiles = internalFilesDir.listFiles()
+        allFiles.forEach { file ->
+            Log.i(TAG, file.name)
+        }
+    }
 
     fun getImageFile(imageName: String) = File(internalFilesDir, imageName)
 
