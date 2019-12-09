@@ -46,7 +46,7 @@ interface PersonDao  {
     @Query("SELECT * FROM persons")
     fun getAllListLive(): LiveData<List<PersonEntity>>
 
-    @Query("SELECT * FROM persons p JOIN medicines_plans mp ON p.person_id = mp.person_id JOIN medicines m ON mp.medicine_id = m.medicine_id GROUP BY p.person_id HAVING m.medicine_id = :id")
+    @Query("SELECT * FROM persons p JOIN medicines_plans mp ON p.person_id = mp.person_id JOIN medicines m ON mp.medicine_id = m.medicine_id WHERE m.medicine_id = :id GROUP BY p.person_id")
     fun getListLiveByMedicineId(id: Int): LiveData<List<PersonEntity>>
 
     //remote depended operations
