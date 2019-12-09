@@ -3,12 +3,14 @@ package com.maruchin.medihelper.presentation.feature.personsprofiles
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.PersonInputData
 import com.maruchin.medihelper.domain.usecases.PersonUseCases
+import com.maruchin.medihelper.domain.usecases.ServerConnectionUseCases
 import com.maruchin.medihelper.presentation.model.PersonColorCheckboxData
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AddEditPersonViewModel(
-    private val personUseCases: PersonUseCases
+    private val personUseCases: PersonUseCases,
+    private val serverConnectionUseCases: ServerConnectionUseCases
 ) : ViewModel() {
 
     val personColorCheckboxDataList: LiveData<List<PersonColorCheckboxData>>
@@ -61,6 +63,7 @@ class AddEditPersonViewModel(
             if (personId == null) {
                 GlobalScope.launch {
                     personUseCases.addNewPerson(inputData)
+                    serverConnectionUseCases.enqueueServerSync()
                 }
             } else {
                 GlobalScope.launch {

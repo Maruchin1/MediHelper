@@ -55,7 +55,8 @@ val viewModelModule = module {
     }
     viewModel {
         AddEditPersonViewModel(
-            personUseCases = get()
+            personUseCases = get(),
+            serverConnectionUseCases = get()
         )
     }
     viewModel {

@@ -16,6 +16,8 @@ abstract class AppBottomSheetDialog : BottomSheetDialogFragment() {
     abstract val TAG: String
     val colorPrimaryLive = MutableLiveData<Int>()
 
+    protected var collapseMode = false
+
     fun show(fragmentManager: FragmentManager) = show(fragmentManager, TAG)
 
     fun setColorPrimary(colorResId: Int) {
@@ -24,14 +26,16 @@ abstract class AppBottomSheetDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                val dialog = dialog as BottomSheetDialog?
-                val bottomSheet = dialog!!.findViewById(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
-                val behavior = BottomSheetBehavior.from(bottomSheet!!)
-                behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        })
+        if (!collapseMode) {
+            view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    val dialog = dialog as BottomSheetDialog?
+                    val bottomSheet = dialog!!.findViewById(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
+                    val behavior = BottomSheetBehavior.from(bottomSheet!!)
+                    behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+            })
+        }
     }
 }

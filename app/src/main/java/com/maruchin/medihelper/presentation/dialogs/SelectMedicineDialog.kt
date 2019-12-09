@@ -37,6 +37,7 @@ class SelectMedicineDialog : AppBottomSheetDialog() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        super.collapseMode = true
         val view = View.inflate(context, R.layout.dialog_select_medicine, null)
         binding = DataBindingUtil.bind(view)!!
 
