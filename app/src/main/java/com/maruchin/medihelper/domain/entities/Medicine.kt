@@ -53,6 +53,7 @@ data class Medicine(
                 when {
                     it >= STATE_GOOD_LIMIT -> TEXT_STATE_GOOD
                     it > STATE_MEDIUM_LIMIT -> TEXT_STATE_MEDIUM
+                    it == 0f -> TEXT_STATE_EMPTY
                     else -> TEXT_STATE_SMALL
                 }
             },
@@ -66,5 +67,6 @@ data class Medicine(
         private const val TEXT_STATE_GOOD = "Duży zapas"
         private const val TEXT_STATE_MEDIUM = "Średnia ilość"
         private const val TEXT_STATE_SMALL = "Blisko końca"
+        private const val TEXT_STATE_EMPTY = "Brak"
     }
 }
