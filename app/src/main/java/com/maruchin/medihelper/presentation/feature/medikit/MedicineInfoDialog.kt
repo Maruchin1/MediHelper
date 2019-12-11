@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogMedicineInfoBinding
 import com.maruchin.medihelper.domain.entities.MedicineInfo
@@ -52,12 +54,14 @@ class MedicineInfoDialog :
     private fun setupRecyclerView() {
         recycler_view_search_result.apply {
             adapter = SearchResultAdapter()
+            addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
         }
     }
 
     private fun changeAdapterToMedicineInfo() {
         recycler_view_search_result.apply {
             adapter = MedicineInfoAdapter()
+            super.setCollapsed()
         }
     }
 
@@ -77,7 +81,7 @@ class MedicineInfoDialog :
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val info = itemsList[position]
-            holder.bind(info, this@MedicineInfoDialog)
+            holder.bind(info, handler =  this@MedicineInfoDialog, viewModel = viewModel)
         }
     }
 }

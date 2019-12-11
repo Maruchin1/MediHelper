@@ -15,17 +15,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text='@{displayData.header, default="Nagłówek"}' />
+            android:text='@{displayData.header, default="Nagłówek"}'
+            android:textAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Light"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text='@{displayData.body, default="Treść"}' />
+            android:text='@{displayData.body, default="Treść"}'
+            android:textAppearance="@style/TextAppearance.MediHelper.Body1"/>
     </LinearLayout>
 </layout>

@@ -5,9 +5,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="handler"
             type="com.maruchin.medihelper.presentation.feature.medikit.MedicineInfoDialog" />
+
+        <variable
+            name="viewModel"
+            type="com.maruchin.medihelper.presentation.feature.medikit.MedicineInfoViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -15,43 +21,20 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_bottom_dialog">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.MediHelper.Appbar.Light"
-            app:liftOnScroll="true"
-            android:background="@drawable/bg_bottom_dialog">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/bottom_dialog_header_padding_hor"
-                android:paddingEnd="@dimen/bottom_dialog_header_padding_hor">
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/round_info_24"
-                    android:tint="@color/colorPrimary" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/bottom_dialog_header_text_margin_start"
-                    android:text="Ulotka leku"
-                    android:textAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Light" />
-            </LinearLayout>
-        </com.google.android.material.appbar.AppBarLayout>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_search_result"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/rec_item_medicine_info_search_result"
+            android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/rec_item_medicine_info_search_result" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.loadingInProgress ? View.VISIBLE : View.GONE}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

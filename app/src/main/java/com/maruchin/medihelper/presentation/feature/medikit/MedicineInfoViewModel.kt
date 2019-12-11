@@ -19,17 +19,24 @@ class MedicineInfoViewModel(
         get() = _searchResults
     val medicineInfo: LiveData<List<MedicineInfo>>
         get() = _medicineInfo
+    val loadingInProgress: LiveData<Boolean>
+        get() = _loadingInProgress
 
     private val _searchResults = MutableLiveData<List<MedicineInfoSearchResult>>()
     private val _medicineInfo = MutableLiveData<List<MedicineInfo>>()
+    private val _loadingInProgress = MutableLiveData<Boolean>(false)
 
     fun setArgs(args: MedicineInfoDialogArgs) = viewModelScope.launch {
+        _loadingInProgress.postValue(true)
         val searchResults = searchForMedicineInfoUseCase.execute(args.medicineName)
+        _loadingInProgress.postValue(false)
         _searchResults.postValue(searchResults)
     }
 
     fun getMedicineInfo(urlString: String) = viewModelScope.launch {
+        _loadingInProgress.postValue(true)
         val info = getMedicineInfoUseCase.execute(urlString)
+        _loadingInProgress.postValue(false)
         _medicineInfo.postValue(info)
     }
 }

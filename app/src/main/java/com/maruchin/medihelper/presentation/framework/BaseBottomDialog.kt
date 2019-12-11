@@ -22,7 +22,13 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
 ) : BottomSheetDialogFragment() {
     abstract val TAG: String
 
+    private lateinit var behavior: BottomSheetBehavior<View>
+
     fun show(fragmentManager: FragmentManager) = show(fragmentManager, TAG)
+
+    protected fun setCollapsed() {
+        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: T = DataBindingUtil.inflate(inflater, layoutResId, container, false)
@@ -34,8 +40,9 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (!collapsing) {
+        if (collapsing) {
+            setMinHeight(view)
+        } else {
             setupFullExpand(view)
         }
     }
@@ -47,13 +54,18 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
         }
     }
 
+    private fun setMinHeight(view: View) {
+        view.minimumHeight = getHaflScreenHeight()
+    }
+
     private fun setupCollapsing(dialog: Dialog) {
         dialog.setOnShowListener {
             val bottomDialog = it as BottomSheetDialog
             val bottomSheet = bottomDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            val behavior = BottomSheetBehavior.from(bottomSheet!!)
+            behavior = BottomSheetBehavior.from(bottomSheet!!)
 
-            behavior.peekHeight = (Resources.getSystem().displayMetrics.heightPixels) / 2
+
+            behavior.peekHeight = getHaflScreenHeight()
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
@@ -70,4 +82,6 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
             }
         })
     }
+
+    private fun getHaflScreenHeight() = (Resources.getSystem().displayMetrics.heightPixels) / 2
 }
