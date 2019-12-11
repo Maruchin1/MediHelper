@@ -111,6 +111,9 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out_end" />
+        <action
+            android:id="@+id/toMedicineInfo"
+            app:destination="@id/medicineInfoDialog" />
     </fragment>
     <dialog
         android:id="@+id/plannedMedicineOptionsDialog"
@@ -146,4 +149,12 @@
         android:id="@+id/captureMedicinePictureFragment"
         android:name="com.maruchin.medihelper.presentation.feature.medikit.CaptureMedicinePictureFragment"
         tools:layout="@layout/fragment_capture_medicine_picture" />
+    <dialog
+        android:id="@+id/medicineInfoDialog"
+        android:name="com.maruchin.medihelper.presentation.feature.medikit.MedicineInfoDialog"
+        tools:layout="@layout/dialog_medicine_info" >
+        <argument
+            android:name="medicineName"
+            app:argType="string" />
+    </dialog>
 </navigation>

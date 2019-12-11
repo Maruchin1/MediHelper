@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.maruchin.medihelper.presentation.feature.medikit.MedicineInfoDialog" />
+
+        <variable
+            name="displayData"
+            type="com.maruchin.medihelper.domain.entities.MedicineInfoSearchResult" />
+    </data>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:onClick="@{() -> handler.onClickSelectSearchResult(displayData.urlString)}"
+        android:padding="16dp"
+        android:text='@{displayData.medicineName, default="Nazwa leku"}'
+        android:textAppearance="@style/TextAppearance.MediHelper.Body1" />
+
+</layout>

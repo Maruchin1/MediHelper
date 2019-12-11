@@ -2,6 +2,9 @@
 <resources>
     <dimen name="appbar_height">128dp</dimen>
 
+    <dimen name="bottom_dialog_header_padding_hor">8dp</dimen>
+    <dimen name="bottom_dialog_header_text_margin_start">16dp</dimen>
+
     <dimen name="form_card_margin_top">24dp</dimen>
     <dimen name="form_card_margin_start">0dp</dimen>
     <dimen name="form_card_margin_end">0dp</dimen>

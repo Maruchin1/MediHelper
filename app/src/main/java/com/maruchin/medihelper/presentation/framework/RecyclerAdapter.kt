@@ -4,11 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class RecyclerAdapter<T>(
     private val layoutResId: Int,
+//    private val lifecycleOwner: LifecycleOwner,
+//    private val itemsSource: LiveData<List<T>>,
     areItemsTheSameFun: ((oldItem: T, newItem: T) -> Boolean)? = null
 ) : RecyclerView.Adapter<RecyclerItemViewHolder>() {
 

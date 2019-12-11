@@ -51,6 +51,12 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
         dialog.show(childFragmentManager, ConfirmDialog.TAG)
     }
 
+    fun onClickOpenMedicineInfo() {
+        viewModel.medicineName.value?.let {
+            findNavController().navigate(directions.toMedicineInfo(it))
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = PhotoTransition().apply {
@@ -79,10 +85,10 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
     }
 
     private fun observeViewModel() {
-        viewModel.profileSimpleItemList.observe(viewLifecycleOwner, Observer { list ->
-            val adapter = recycler_view_persons.adapter as PersonAdapter
-            adapter.updateItemsList(list)
-        })
+//        viewModel.profileSimpleItemList.observe(viewLifecycleOwner, Observer { list ->
+//            val adapter = recycler_view_persons.adapter as PersonAdapter
+//            adapter.updateItemsList(list)
+//        })
         viewModel.actionDataLoaded.observe(viewLifecycleOwner, Observer {
             (view?.parent as? ViewGroup)?.doOnPreDraw {
                 viewLifecycleOwner.lifecycleScope.launch {
@@ -95,9 +101,9 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
     }
 
     private fun setupPersonRecyclerView() {
-        recycler_view_persons.apply {
-            adapter = PersonAdapter()
-        }
+//        recycler_view_persons.apply {
+//            adapter = PersonAdapter()
+//        }
     }
 
     private fun setupToolbarMenu() {

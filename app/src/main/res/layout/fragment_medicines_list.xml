@@ -35,7 +35,7 @@
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/appbar_height"
-                    app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle"
+                    app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big"
                     app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
                     <androidx.appcompat.widget.Toolbar
