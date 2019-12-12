@@ -3,6 +3,7 @@ package com.maruchin.medihelper.domain.usecases.medicines
 import com.google.common.truth.Truth
 import com.maruchin.medihelper.domain.entities.MedicineInfo
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
+import com.maruchin.medihelper.testingframework.mock
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
@@ -12,11 +13,9 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class GetMedicineInfoUseCaseTest {
 
-    @Mock
-    private lateinit var medicineRepo: MedicineRepo
+    private val medicineRepo: MedicineRepo = mock()
 
     private val useCase: GetMedicineInfoUseCase by lazy { GetMedicineInfoUseCase(medicineRepo) }
 

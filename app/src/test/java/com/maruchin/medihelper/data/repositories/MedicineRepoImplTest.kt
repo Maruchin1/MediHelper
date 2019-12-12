@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.maruchin.medihelper.data.SharedPref
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
+import com.maruchin.medihelper.testingframework.mock
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
@@ -13,17 +14,12 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class MedicineRepoImplTest {
 
-    @Mock
-    private lateinit var auth: FirebaseAuth
-    @Mock
-    private lateinit var db: FirebaseFirestore
-    @Mock
-    private lateinit var storage: FirebaseStorage
-    @Mock
-    private lateinit var sharedPref: SharedPref
+    private val auth: FirebaseAuth = mock()
+    private val db: FirebaseFirestore = mock()
+    private val storage: FirebaseStorage = mock()
+    private val sharedPref: SharedPref = mock()
 
     private val repo: MedicineRepo by lazy { MedicineRepoImpl(db, auth, storage, sharedPref) }
 
