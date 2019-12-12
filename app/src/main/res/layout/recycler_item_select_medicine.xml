@@ -82,7 +82,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
-                android:visibility="@{displayData.stateData.stateAvailable ? View.VISIBLE : View.GONE}"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp">
 

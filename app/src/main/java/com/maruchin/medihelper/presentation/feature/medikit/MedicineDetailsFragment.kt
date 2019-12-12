@@ -80,7 +80,6 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
         super.setupToolbarNavigation()
         setupToolbarMenu()
         setupPersonRecyclerView()
-        setupFab()
         observeViewModel()
     }
 
@@ -114,10 +113,6 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
             }
             return@setOnMenuItemClickListener true
         }
-    }
-
-    private fun setupFab() {
-        fab_schedule.shrinkOnScroll(items_root)
     }
 
     inner class PersonAdapter : RecyclerAdapter<ProfileSimpleItem>(

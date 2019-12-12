@@ -35,7 +35,6 @@ class DeleteMedicineUseCaseTest {
                 expireDate = AppExpireDate(2020, 6),
                 packageSize = null,
                 currState = null,
-                additionalInfo = null,
                 pictureName = "picture.jpg"
             )
             Mockito.`when`(medicineRepo.getById(medicineId)).thenReturn(mockMedicine)
@@ -59,7 +58,6 @@ class DeleteMedicineUseCaseTest {
                 expireDate = AppExpireDate(2020, 6),
                 packageSize = null,
                 currState = null,
-                additionalInfo = null,
                 pictureName = null
             )
             Mockito.`when`(medicineRepo.getById(medicineId)).thenReturn(mockMedicine)

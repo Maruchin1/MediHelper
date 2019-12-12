@@ -5,6 +5,8 @@ import java.util.*
 
 class AppExpireDate : Comparable<AppExpireDate> {
 
+    val timeInMillis: Long
+        get() = dateCalendar.timeInMillis
     val year: Int
         get() = dateCalendar.get(Calendar.YEAR)
     val month: Int

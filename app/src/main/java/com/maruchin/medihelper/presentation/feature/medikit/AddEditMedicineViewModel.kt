@@ -26,7 +26,6 @@ class AddEditMedicineViewModel(
     val expireDate = MutableLiveData<AppExpireDate>()
     val packageSize = MutableLiveData<Float>(0f)
     val currState = MediatorLiveData<Float>()
-    val additionalInfo = MutableLiveData<String>()
 
     val formTitle: LiveData<String>
         get() = _formTitle
@@ -84,7 +83,6 @@ class AddEditMedicineViewModel(
             expireDate = expireDate.value,
             packageSize = packageSize.value,
             currState = currState.value,
-            additionalInfo = additionalInfo.value,
             pictureFile = imageFile.value
         )
         val validator = saveMedicineUseCase.execute(params)
@@ -123,6 +121,5 @@ class AddEditMedicineViewModel(
         expireDate.postValue(editData.expireDate)
         packageSize.postValue(editData.packageSize)
         currState.postValue(editData.currState)
-        additionalInfo.postValue(editData.additionalInfo)
     }
 }

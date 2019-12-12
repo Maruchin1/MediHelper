@@ -8,7 +8,7 @@ data class MedicineItem(
     val medicineId: String,
     val name: String,
     val unit: String,
-    val stateData: MedicineStateData,
+    val stateData: MedicineStateData?,
     val pictureName: String?
 ) {
     constructor(medicine: Medicine) : this(

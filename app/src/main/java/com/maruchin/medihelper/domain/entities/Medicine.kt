@@ -10,7 +10,7 @@ data class Medicine(
     var currState: Float?,
     val pictureName: String?
 ) {
-    val stateData: MedicineStateData
+    val stateData: MedicineStateData?
         get() = MedicineStateData.get(packageSize, currState)
 
     fun reduceCurrState(doseSize: Float) {

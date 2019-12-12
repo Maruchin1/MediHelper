@@ -36,9 +36,9 @@
         <item name="android:background">@color/colorTransparent</item>
     </style>
 
-    <style name="ThemeOverlay.MediHelper.Appbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+    <style name="ThemeOverlay.MediHelper.Appbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="ThemeOverlay.MediHelper.Appbar.Light" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
+    <style name="ThemeOverlay.MediHelper.Appbar.Light" parent="ThemeOverlay.MaterialComponents.ActionBar" />
 
 
     <!--    Widget-->
@@ -59,6 +59,10 @@
     <style name="Widget.MediHelper.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">8dp</item>
         <item name="cardElevation">4dp</item>
+    </style>
+
+    <style name="Widget.MediHelper.CardView.FullWidth" parent="Widget.MediHelper.CardView">
+        <item name="cardCornerRadius">0dp</item>
     </style>
 
     <style name="Widget.MediHelper.CardView.Big" parent="Widget.MediHelper.CardView">

@@ -6,24 +6,29 @@ import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.MedicineStateData
 import com.maruchin.medihelper.domain.model.MedicineDetails
 import com.maruchin.medihelper.domain.model.ProfileSimpleItem
+import com.maruchin.medihelper.domain.usecases.datetime.CalcDaysRemainUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDetailsUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import com.maruchin.medihelper.presentation.utils.PicturesRef
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.File
 
 class MedicineDetailsViewModel(
     private val getMedicineDetailsUseCase: GetMedicineDetailsUseCase,
     private val deleteMedicineUseCase: DeleteMedicineUseCase,
+    private val calcDaysRemainUseCase: CalcDaysRemainUseCase,
     private val picturesRef: PicturesRef
 ) : ViewModel() {
+
+    val medicinePictureAvailable: LiveData<Boolean>
+    val medicineStateAvailable: LiveData<Boolean>
 
     val medicinePicture: LiveData<StorageReference?>
     val medicineName: LiveData<String>
     val medicineUnit: LiveData<String>
     val expireDate: LiveData<AppExpireDate>
+    val daysRemain: LiveData<Int>
     val stateData: LiveData<MedicineStateData>
     val profileSimpleItemListAvailable: LiveData<Boolean>
     val profileSimpleItemList: LiveData<List<ProfileSimpleItem>>
@@ -49,11 +54,19 @@ class MedicineDetailsViewModel(
         medicineName = Transformations.map(medicineDetails) { it.name }
         medicineUnit = Transformations.map(medicineDetails) { it.unit }
         expireDate = Transformations.map(medicineDetails) { it.expireDate }
+        daysRemain = Transformations.switchMap(medicineDetails) {
+            liveData {
+                val days = calcDaysRemainUseCase.execute(it.expireDate)
+                emit(days)
+            }
+        }
         stateData = Transformations.map(medicineDetails) { it.stateData }
         profileSimpleItemListAvailable = Transformations.map(medicineDetails) {
             !it.profileSimpleItemList.isNullOrEmpty()
         }
         profileSimpleItemList = Transformations.map(medicineDetails) { it.profileSimpleItemList }
+        medicinePictureAvailable = Transformations.map(medicinePicture) { it != null }
+        medicineStateAvailable = Transformations.map(stateData) { it != null }
     }
 
     fun setArgs(args: MedicineDetailsFragmentArgs) = viewModelScope.launch {

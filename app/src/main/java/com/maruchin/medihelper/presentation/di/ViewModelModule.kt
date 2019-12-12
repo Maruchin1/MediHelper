@@ -28,6 +28,7 @@ val viewModelModule = module {
         MedicineDetailsViewModel(
             getMedicineDetailsUseCase = get(),
             deleteMedicineUseCase = get(),
+            calcDaysRemainUseCase = get(),
             picturesRef = get()
         )
     }

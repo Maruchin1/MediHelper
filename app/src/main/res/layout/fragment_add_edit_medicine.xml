@@ -76,7 +76,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView"
+                    style="@style/Widget.MediHelper.CardView.FullWidth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_card_margin_start"
@@ -161,7 +161,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView"
+                    style="@style/Widget.MediHelper.CardView.FullWidth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_card_margin_start"
@@ -247,47 +247,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/form_card_margin_start"
-                    android:layout_marginTop="@dimen/form_card_margin_top"
-                    android:layout_marginEnd="@dimen/form_card_margin_end">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/form_card_layout_margin_start"
-                        android:layout_marginTop="@dimen/form_card_layout_margin_top"
-                        android:layout_marginEnd="@dimen/form_card_layout_margin_end"
-                        android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Dodatkowe informacje"
-                            android:textAppearance="@style/TextAppearance.MediHelper.CardHeader"
-                            android:textAlignment="center"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MediHelper.TextInputLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/form_card_layout_body_margin_top"
-                            android:hint="Dodatkowe informacje">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textCapSentences|textMultiLine"
-                                android:minLines="5" />
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView"
+                    style="@style/Widget.MediHelper.CardView.FullWidth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_card_margin_start"
