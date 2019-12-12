@@ -1,7 +1,9 @@
 package com.maruchin.medihelper.presentation.feature.medikit
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -29,6 +31,11 @@ class MedicineInfoDialog :
         viewModel.getMedicineInfo(urlString)
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        super.bindingViewModel = viewModel
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setArgs(args)
@@ -37,9 +44,6 @@ class MedicineInfoDialog :
     }
 
     private fun observeViewModel() {
-        viewModel.loadingInProgress.observe(viewLifecycleOwner, Observer { inProgress ->
-            progress_bar.visibility = if (inProgress) View.VISIBLE else View.GONE
-        })
         viewModel.searchResults.observe(viewLifecycleOwner, Observer { list ->
             val adapter = recycler_view_search_result.adapter
             if (adapter is SearchResultAdapter) {

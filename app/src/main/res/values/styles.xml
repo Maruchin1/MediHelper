@@ -113,6 +113,10 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="TextAppearance.MediHelper.NoItemPageTitle" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/colorDarkerGray</item>
+    </style>
+
     <!--    Stare-->
 
     <style name="AppTheme.SlideVertical">

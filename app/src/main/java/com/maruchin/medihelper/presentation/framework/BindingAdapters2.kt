@@ -20,6 +20,11 @@ fun setBackgroundColor(view: View, color: String?) {
     }
 }
 
+@BindingAdapter("android:visibility")
+fun setVisibility(view: View, visible: Boolean?) {
+    view.visibility = if (visible == true) View.VISIBLE else View.GONE
+}
+
 //CardView
 @BindingAdapter("app:cardBackgroundColor")
 fun setCardBackgroundColor(materialCardView: MaterialCardView, color: String?) {

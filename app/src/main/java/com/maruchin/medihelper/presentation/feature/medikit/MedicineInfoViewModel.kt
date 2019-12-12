@@ -1,9 +1,6 @@
 package com.maruchin.medihelper.presentation.feature.medikit
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.MedicineInfo
 import com.maruchin.medihelper.domain.entities.MedicineInfoSearchResult
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineInfoUseCase
@@ -16,6 +13,8 @@ class MedicineInfoViewModel(
     private val getMedicineInfoUseCase: GetMedicineInfoUseCase
 ) : ViewModel() {
 
+    val noResults: LiveData<Boolean>
+
     val searchResults: LiveData<List<MedicineInfoSearchResult>>
         get() = _searchResults
     val medicineInfo: LiveData<List<MedicineInfo>>
@@ -26,6 +25,10 @@ class MedicineInfoViewModel(
     private val _searchResults = MutableLiveData<List<MedicineInfoSearchResult>>()
     private val _medicineInfo = MutableLiveData<List<MedicineInfo>>()
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
+
+    init {
+        noResults = Transformations.map(searchResults) { it.isNullOrEmpty() }
+    }
 
     fun setArgs(args: MedicineInfoDialogArgs) = viewModelScope.launch {
         _loadingInProgress.postValue(true)

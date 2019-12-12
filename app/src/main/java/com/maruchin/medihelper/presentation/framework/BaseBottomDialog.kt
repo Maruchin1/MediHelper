@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -21,6 +22,8 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
     private val collapsing: Boolean = false
 ) : BottomSheetDialogFragment() {
     abstract val TAG: String
+
+    protected var bindingViewModel: ViewModel? = null
 
     private lateinit var behavior: BottomSheetBehavior<View>
 
@@ -35,6 +38,7 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
         return binding.apply {
             setVariable(BR.handler, this@BaseBottomDialog)
             lifecycleOwner = viewLifecycleOwner
+            setVariable(BR.viewModel, bindingViewModel)
         }.root
     }
 
