@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 app:menu="@menu/menu_select_medicine"
                 app:title="Apteczka"
-                app:titleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle"
+                app:titleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big"
                 app:titleTextColor="@color/colorPrimary" />
 
         </com.google.android.material.appbar.AppBarLayout>

@@ -6,6 +6,7 @@ import com.maruchin.medihelper.presentation.feature.calendar.CalendarViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOptionsViewModel
 import com.maruchin.medihelper.presentation.feature.medikit.AddEditMedicineViewModel
 import com.maruchin.medihelper.presentation.feature.medikit.MedicineDetailsViewModel
+import com.maruchin.medihelper.presentation.feature.medikit.MedicineInfoViewModel
 import com.maruchin.medihelper.presentation.feature.medikit.MedicinesListViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.AddEditPersonViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsViewModel
@@ -99,6 +100,12 @@ val viewModelModule = module {
     viewModel {
         AlarmViewModel(
             plannedMedicineUseCases = get()
+        )
+    }
+    viewModel {
+        MedicineInfoViewModel(
+            searchForMedicineInfoUseCase = get(),
+            getMedicineInfoUseCase = get()
         )
     }
 }

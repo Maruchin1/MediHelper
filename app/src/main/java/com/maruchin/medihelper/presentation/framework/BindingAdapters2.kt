@@ -20,6 +20,11 @@ fun setBackgroundColor(view: View, color: String?) {
     }
 }
 
+@BindingAdapter("android:visibility")
+fun setVisibility(view: View, visible: Boolean?) {
+    view.visibility = if (visible == true) View.VISIBLE else View.GONE
+}
+
 //CardView
 @BindingAdapter("app:cardBackgroundColor")
 fun setCardBackgroundColor(materialCardView: MaterialCardView, color: String?) {
@@ -71,22 +76,4 @@ fun setTextInputError(inLay: TextInputLayout, errorMessage: String?) {
         error = errorMessage
         isErrorEnabled = errorMessage != null
     }
-}
-
-//SeekBar
-@BindingAdapter("android:max")
-fun setSeekBarMax(seekBar: SeekBar, value: Float?) {
-    if (value != null) {
-        seekBar.max = value.toInt()
-    }
-}
-
-@BindingAdapter("android:progress")
-fun setSeekBarProgress(seekBar: SeekBar, value: Float?) {
-    seekBar.progress = value?.toInt() ?: 0
-}
-
-@InverseBindingAdapter(attribute = "android:progress")
-fun getSeekBarProgress(seekBar: SeekBar): Float? {
-    return seekBar.progress.toFloat()
 }

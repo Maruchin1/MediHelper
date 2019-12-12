@@ -11,7 +11,7 @@
 
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
-        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="bottomSheetDialogTheme">@style/Theme.MediHelper.BottomDialog</item>
     </style>
 
     <!--    Theme-->
@@ -24,6 +24,21 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:layout_gravity">end</item>
     </style>
+
+    <style name="Theme.MediHelper.BottomDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="bottomSheetStyle">@style/Theme.MediHelper.BottomSheet</item>
+    </style>
+
+    <style name="Theme.MediHelper.BottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/colorTransparent</item>
+    </style>
+
+    <style name="ThemeOverlay.MediHelper.Appbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+
+    <style name="ThemeOverlay.MediHelper.Appbar.Light" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
 
 
     <!--    Widget-->
@@ -71,8 +86,15 @@
 
     <!--    TextAppearance-->
     <style name="TextAppearance.MediHelper.AppbarTitle" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textSize">34sp</item>
         <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="TextAppearance.MediHelper.AppbarTitle.Big" parent="TextAppearance.MediHelper.AppbarTitle">
+        <item name="android:textSize">34sp</item>
+    </style>
+
+    <style name="TextAppearance.MediHelper.AppbarTitle.Light" parent="TextAppearance.MediHelper.AppbarTitle">
+        <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 
     <style name="TextAppearance.MediHelper.AppbarSubtitle" parent="TextAppearance.MaterialComponents.Subtitle1">
@@ -83,8 +105,16 @@
         <item name="android:textColor">@color/colorTextTertiary</item>
     </style>
 
+    <style name="TextAppearance.MediHelper.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/colorTextSecondary</item>
+    </style>
+
     <style name="TextAppearance.MediHelper.Body.Big" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.MediHelper.NoItemPageTitle" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/colorDarkerGray</item>
     </style>
 
     <!--    Stare-->

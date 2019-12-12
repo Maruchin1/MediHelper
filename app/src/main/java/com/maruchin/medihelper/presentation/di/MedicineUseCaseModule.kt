@@ -35,4 +35,14 @@ val medicineUseCaseModule = module {
             medicineRepo = get()
         )
     }
+    factory {
+        SearchForMedicineInfoUseCase(
+            medicineRepo = get()
+        )
+    }
+    factory {
+        GetMedicineInfoUseCase(
+            medicineRepo = get()
+        )
+    }
 }
