@@ -25,7 +25,7 @@ class CalcDaysRemainUseCaseTest {
 
     @Test
     fun execute() {
-        val mockCurrDate = AppDate(12, 12, 2019)
+        val mockCurrDate = AppDate(2019, 12, 12)
         Mockito.`when`(deviceCalendar.getCurrTimeInMillis()).thenReturn(mockCurrDate.timeInMillis)
 
         val expireDate = AppExpireDate(2020, 1)
@@ -34,6 +34,6 @@ class CalcDaysRemainUseCaseTest {
             useCase.execute(expireDate)
         }
 
-        Truth.assertThat(result).isEqualTo(21)
+        Truth.assertThat(result).isEqualTo(20)
     }
 }

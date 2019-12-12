@@ -29,8 +29,8 @@ class SaveMedicineUseCase(
             name = params.name!!,
             unit = params.unit!!,
             expireDate = params.expireDate!!,
-            packageSize = params.packageSize,
-            currState = params.currState,
+            packageSize = params.packageSize ?: 0f,
+            currState = params.currState ?: 0f,
             pictureName = params.pictureFile?.name
         )
         if (params.pictureFile != null) {

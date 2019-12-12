@@ -21,7 +21,6 @@ class MedicineDetailsViewModel(
     private val picturesRef: PicturesRef
 ) : ViewModel() {
 
-    val medicinePictureAvailable: LiveData<Boolean>
     val medicineStateAvailable: LiveData<Boolean>
 
     val medicinePicture: LiveData<StorageReference?>
@@ -65,7 +64,6 @@ class MedicineDetailsViewModel(
             !it.profileSimpleItemList.isNullOrEmpty()
         }
         profileSimpleItemList = Transformations.map(medicineDetails) { it.profileSimpleItemList }
-        medicinePictureAvailable = Transformations.map(medicinePicture) { it != null }
         medicineStateAvailable = Transformations.map(stateData) { it != null }
     }
 

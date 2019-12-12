@@ -48,7 +48,7 @@
                     android:id="@+id/img_photo"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="center"
                     android:src='@{viewModel.getMedicinePictureRef(displayData.pictureName), default="@drawable/ic_pill_white_48dp"}'
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="4:3"

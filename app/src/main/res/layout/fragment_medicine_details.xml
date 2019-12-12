@@ -61,8 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/medicine_details_card_margin_start"
                     android:layout_marginTop="@dimen/medicine_details_card_margin_top"
-                    android:layout_marginEnd="@dimen/medicine_details_card_margin_end"
-                    android:visibility='@{viewModel.medicinePictureAvailable}'>
+                    android:layout_marginEnd="@dimen/medicine_details_card_margin_end">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -73,7 +72,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:background="@color/colorDarkerGray"
-                            android:scaleType="centerCrop"
+                            android:scaleType="center"
                             android:src='@{viewModel.medicinePicture, default="@drawable/ic_pill_white_48dp"}'
                             android:transitionName="medicine_image_details"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -214,8 +213,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/medicine_details_card_margin_start"
-                    android:layout_marginEnd="@dimen/medicine_details_card_margin_end"
-                    android:visibility="@{viewModel.medicineStateAvailable}">
+                    android:layout_marginEnd="@dimen/medicine_details_card_margin_end">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -225,7 +223,8 @@
                         android:layout_marginEnd="@dimen/medicine_details_card_layout_margin_end"
                         android:layout_marginBottom="@dimen/medicine_details_card_layout_margin_bot"
                         android:gravity="center_horizontal"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility='@{viewModel.medicineStateAvailable ? View.VISIBLE : View.INVISIBLE}'>
 
                         <TextView
                             android:id="@+id/txv_curr_state_text"
@@ -294,6 +293,15 @@
                                 android:textColor="@color/colorTextTertiary" />
                         </LinearLayout>
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Brak danych o ilości leku"
+                        android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle"
+                        android:visibility="@{viewModel.medicineStateAvailable ? View.GONE : View.VISIBLE, default=gone}" />
+
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout

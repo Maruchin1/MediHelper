@@ -10,8 +10,8 @@ data class MedicineStateData(
     val numberText: String?
 ) {
     companion object {
-        fun get(packageSize: Float?, currState: Float?): MedicineStateData? {
-            if (packageSize == null || currState == null) {
+        fun get(packageSize: Float, currState: Float): MedicineStateData? {
+            if (packageSize == 0f) {
                 return null
             } else {
                 val state = currState / packageSize

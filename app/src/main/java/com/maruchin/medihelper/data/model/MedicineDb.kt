@@ -27,8 +27,8 @@ data class MedicineDb(
         name = name ?: "--",
         unit = unit ?: "--",
         expireDate = expireDate?.let { AppExpireDate(it) } ?: AppExpireDate(0, 0),
-        packageSize = packageSize,
-        currState = currState,
+        packageSize = packageSize ?: 0f,
+        currState = currState ?: 0f,
         pictureName = pictureName
     )
 }
