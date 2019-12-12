@@ -6,50 +6,52 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
-import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.presentation.framework.CenterLayoutManager
 import com.maruchin.medihelper.R
-import com.maruchin.medihelper.databinding.FragmentScheduleBinding
-import com.maruchin.medihelper.presentation.MainActivity
-import kotlinx.android.synthetic.main.fragment_schedule.*
+import com.maruchin.medihelper.databinding.FragmentCalendarBinding
+import com.maruchin.medihelper.presentation.framework.BaseMainFragment
+import devs.mulham.horizontalcalendar.HorizontalCalendar
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.recycler_item_schedule_timeline.view.*
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.fragment_calendar) {
     private val TAG = CalendarFragment::class.simpleName
 
     private val viewModel: CalendarViewModel by viewModel()
     private val directions by lazyOf(CalendarFragmentDirections)
 
+    private lateinit var horizontalCalendar: HorizontalCalendar
+
     fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
 
+    fun onClickToday() = horizontalCalendar.goToday(true)
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentScheduleBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule, container, false)
-        binding.viewModel = viewModel
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        super.bindingViewModel = viewModel
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated")
         setupToolbarMenu()
-        setupTimelineRecyclerView()
+        setupHorizontalCalendar()
         setupDatesViewPager()
         setupCalendarView()
-        setInitialDate()
         observeViewModel()
     }
 
@@ -59,37 +61,45 @@ class CalendarFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.colorPrimaryId.observe(viewLifecycleOwner, Observer { colorResID ->
-//            if (colorResID != null) {
-//                (requireActivity() as MainActivity).setMainColor(colorResID)
-//
+        viewModel.currCalendarData.observe(viewLifecycleOwner, Observer { calendarData ->
+            view_pager_dates.currentItem = calendarData.position
+            horizontalCalendar.selectDate(calendarData.date,  false)
+        })
+
+//        viewModel.selectedDate.observe(viewLifecycleOwner, Observer { selectedDate ->
+
+
+
+//            viewLifecycleOwner.lifecycleScope.launch {
+//                val position = viewModel.getPositionForDate(selectedDate)
+//                val timelineAdapter = recycler_view_timeline.adapter as CalendarTimeLineAdapter
+//                timelineAdapter.selectDate(position)
+
+//                val position = viewModel.getPositionForDate(selectedDate)
+//                val timelineAdapter = recycler_view_timeline.adapter as ScheduleTimelineAdapter
+//                timelineAdapter.selectDate(position)
+
+//                if (view_pager_dates.currentItem != position) {
+//                    view_pager_dates.currentItem = position
+//                }
+
+//                val currDate = AppDate(calendar_view.date)
+//                if (currDate == selectedDate) {
+//                    calendar_view.date = selectedDate.timeInMillis
+//                }
 //            }
-        })
-        viewModel.selectedDate.observe(viewLifecycleOwner, Observer { selectedDate ->
-            val position = viewModel.getPositionForDate(selectedDate)
-            val timelineAdapter = recycler_view_timeline.adapter as ScheduleTimelineAdapter
-            timelineAdapter.selectDate(position)
-
-            if (view_pager_dates.currentItem != position) {
-                view_pager_dates.currentItem = position
-            }
-
-            val currDate = AppDate(calendar_view.date)
-            if (currDate == selectedDate) {
-                calendar_view.date = selectedDate.timeInMillis
-            }
-        })
+//        })
     }
 
     private fun setupToolbarMenu() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_today -> {
-                    viewModel.selectTodayDate()
+                    onClickToday()
                 }
                 R.id.btn_calendar -> {
-                    TransitionManager.beginDelayedTransition(root_lay)
-                    viewModel.calendarLayoutVisible.value = true
+//                    TransitionManager.beginDelayedTransition(root_lay)
+//                    viewModel.calendarLayoutVisible.value = true
                 }
             }
             true
@@ -118,115 +128,38 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    private fun setupTimelineRecyclerView() {
-        recycler_view_timeline.apply {
-            adapter = ScheduleTimelineAdapter()
-            layoutManager = CenterLayoutManager(
-                context,
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
+    private fun setupHorizontalCalendar() {
+        horizontalCalendar = HorizontalCalendar.Builder(root_lay, R.id.horizontal_calendar)
+            .range(viewModel.startCalendar, viewModel.endCalendar)
+            .datesNumberOnScreen(5)
+            .build()
+        horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
+            override fun onDateSelected(date: Calendar?, position: Int) {
+                viewModel.selectDate(position - 2)
+            }
         }
     }
 
     private fun setupCalendarView() {
-        calendar_view.setOnDateChangeListener { _, year, month, day ->
-            Log.d(TAG, "calendar date change")
-            viewModel.selectDate(AppDate(year, month + 1, day))
-            TransitionManager.beginDelayedTransition(root_lay)
-            viewModel.calendarLayoutVisible.value = false
-        }
-    }
-
-    private fun setInitialDate() {
-        (recycler_view_timeline.adapter as ScheduleTimelineAdapter).setInitialDate(viewModel.initialDatePosition)
-        view_pager_dates.currentItem = viewModel.initialDatePosition
+//        calendar_view.setOnDateChangeListener { _, year, month, day ->
+//            Log.d(TAG, "calendar date change")
+//            viewModel.selectDate(AppDate(year, month + 1, day))
+//            TransitionManager.beginDelayedTransition(root_lay)
+//            viewModel.calendarLayoutVisible.value = false
+//        }
     }
 
     // Inner classes
     inner class ScheduleDayPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getCount(): Int {
-            return viewModel.timelineDaysCount
-        }
-
-        override fun getItemPosition(`object`: Any): Int {
-            return FragmentStatePagerAdapter.POSITION_NONE
+            return viewModel.calendarDaysCount
         }
 
         override fun getItem(position: Int): Fragment {
             val fragment = CalendarDayFragment()
             fragment.date = viewModel.getDateForPosition(position)
             return fragment
-        }
-    }
-
-    inner class ScheduleTimelineAdapter :
-        RecyclerView.Adapter<ScheduleTimelineAdapter.ScheduleTimelineViewHolder>() {
-
-        private var selectedPosition = -1
-
-        fun setInitialDate(position: Int) {
-            selectedPosition = position
-            recycler_view_timeline.scrollToPosition(position)
-            notifyItemChanged(position)
-        }
-
-        fun selectDate(position: Int) {
-            if (selectedPosition != position) {
-                val prevSelectedPosition = selectedPosition
-                selectedPosition = position
-                notifyItemChanged(prevSelectedPosition)
-                notifyItemChanged(position)
-            }
-        }
-
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
-        ): ScheduleTimelineViewHolder {
-            val itemView = LayoutInflater.from(context)
-                .inflate(R.layout.recycler_item_schedule_timeline, parent, false)
-            return ScheduleTimelineViewHolder(itemView)
-        }
-
-        override fun getItemCount(): Int {
-            return viewModel.timelineDaysCount
-        }
-
-        override fun onBindViewHolder(holder: ScheduleTimelineViewHolder, position: Int) {
-            val date = viewModel.getDateForPosition(position)
-            var textColorID = R.color.colorBackground
-            var textAlpha = 0.5f
-            var selectedIndicatorVisibility = View.INVISIBLE
-
-            if (selectedPosition == position) {
-                textColorID = R.color.colorWhite
-                textAlpha = 1.0f
-                selectedIndicatorVisibility = View.VISIBLE
-                recycler_view_timeline.smoothScrollToPosition(position)
-            }
-
-            holder.view.apply {
-                txv_day.apply {
-                    text = date.dayMonthString
-                    alpha = textAlpha
-                    setTextColor(resources.getColor(textColorID))
-                }
-                txv_day_of_week.apply {
-                    text = date.dayOfWeekString
-                    alpha = textAlpha
-                    setTextColor(resources.getColor(textColorID))
-                }
-                view_selected_indicator.visibility = selectedIndicatorVisibility
-                lay_click.setOnClickListener {
-                    viewModel.selectDate(position)
-                }
-            }
-        }
-
-        inner class ScheduleTimelineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val view = itemView
         }
     }
 }

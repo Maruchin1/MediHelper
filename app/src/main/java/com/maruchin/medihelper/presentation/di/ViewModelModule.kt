@@ -80,15 +80,11 @@ val viewModelModule = module {
     }
     viewModel {
         CalendarViewModel(
-            personUseCases = get(),
-            dateTimeUseCases = get(),
-            plannedMedicineUseCases = get()
+            getCurrDateUseCase = get()
         )
     }
     viewModel {
         CalendarDayViewModel(
-            personUseCases = get(),
-            plannedMedicineUseCases = get()
         )
     }
     viewModel {

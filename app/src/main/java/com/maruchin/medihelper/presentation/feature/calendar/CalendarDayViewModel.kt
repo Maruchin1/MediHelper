@@ -11,8 +11,7 @@ import com.maruchin.medihelper.domain.usecases.PlannedMedicineUseCases
 import com.maruchin.medihelper.presentation.model.PlannedMedicineItem
 
 class CalendarDayViewModel(
-    private val personUseCases: PersonUseCases,
-    private val plannedMedicineUseCases: PlannedMedicineUseCases
+
 ) : ViewModel() {
 
     val date = MutableLiveData<AppDate>()

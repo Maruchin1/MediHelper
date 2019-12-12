@@ -33,8 +33,8 @@ class DeleteMedicineUseCaseTest {
                 name = "Lek",
                 unit = "tabletki",
                 expireDate = AppExpireDate(2020, 6),
-                packageSize = null,
-                currState = null,
+                packageSize = 0f,
+                currState = 0f,
                 pictureName = "picture.jpg"
             )
             Mockito.`when`(medicineRepo.getById(medicineId)).thenReturn(mockMedicine)
@@ -56,8 +56,8 @@ class DeleteMedicineUseCaseTest {
                 name = "Lek",
                 unit = "tabletki",
                 expireDate = AppExpireDate(2020, 6),
-                packageSize = null,
-                currState = null,
+                packageSize = 0f,
+                currState = 0f,
                 pictureName = null
             )
             Mockito.`when`(medicineRepo.getById(medicineId)).thenReturn(mockMedicine)

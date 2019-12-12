@@ -30,13 +30,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/appbar_height"
                 android:background="@drawable/bg_appbar_round"
-                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
+                android:theme="@style/ThemeOverlay.MediHelper.Appbar">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/appbar_height"
                     app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big"
-                    app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+                    app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+                    app:title="Apteczka">
 
                     <androidx.appcompat.widget.Toolbar
                         android:id="@+id/toolbar"
@@ -44,7 +45,6 @@
                         android:layout_height="?actionBarSize"
                         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                         app:layout_collapseMode="pin"
-                        app:title="Apteczka"
                         app:menu="@menu/toolbar_menu_medicines_list"/>
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
             </com.google.android.material.appbar.AppBarLayout>
@@ -82,10 +82,10 @@
                 android:onClick="@{() -> handler.onClickAddMedicine()}"
                 android:src="@drawable/round_add_white_48"
                 app:backgroundTint="@color/colorPrimary"
+                app:elevation="8dp"
                 app:layout_anchor="@id/bottom_nav"
                 app:layout_anchorGravity="center"
-                app:tint="@color/colorWhite"
-                app:elevation="8dp"/>
+                app:tint="@color/colorWhite" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -93,7 +93,7 @@
             android:id="@+id/sheet_filters"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="end"/>
+            android:layout_gravity="end" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
