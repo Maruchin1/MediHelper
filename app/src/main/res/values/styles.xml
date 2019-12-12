@@ -36,6 +36,14 @@
         <item name="android:background">@color/colorTransparent</item>
     </style>
 
+    <style name="Theme.MediHelper.CalendarView" parent="Widget.MaterialComponents.MaterialCalendar">
+        <item name="colorAccent">@color/colorDarkerGray</item>
+    </style>
+
+    <style name="Theme.Medihelper.CalendarView.Dark" parent="Theme.MediHelper.CalendarView">
+        <item name="colorAccent">@color/colorWhite</item>
+    </style>
+
     <style name="ThemeOverlay.MediHelper.Appbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
     <style name="ThemeOverlay.MediHelper.Appbar.Light" parent="ThemeOverlay.MaterialComponents.ActionBar" />

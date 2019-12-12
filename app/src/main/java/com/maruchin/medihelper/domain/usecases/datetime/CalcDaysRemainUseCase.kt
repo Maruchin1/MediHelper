@@ -15,6 +15,6 @@ class CalcDaysRemainUseCase(
         val days2 = expireDate.timeInMillis / (24 * 3600 * 1000)
         val daysDiff = days2 - days1
 
-        return@withContext daysDiff.toInt() + 1
+        return@withContext daysDiff.toInt()
     }
 }

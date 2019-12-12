@@ -36,7 +36,8 @@
                 android:layout_weight="1"
                 app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-                app:title="Kalendarz - imię">
+                app:title="Nazwa osoby"
+                android:visibility="@{!viewModel.fullCalendarMode}">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -48,12 +49,27 @@
                     app:menu="@menu/toolbar_menu_calendar" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-            <devs.mulham.horizontalcalendar.HorizontalCalendarView
-                android:id="@+id/horizontal_calendar"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorTransparent"
-                app:textColorSelected="@color/colorWhite" />
+                android:visibility="@{!viewModel.fullCalendarMode}">
+
+                <devs.mulham.horizontalcalendar.HorizontalCalendarView
+                    android:id="@+id/horizontal_calendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorTransparent"
+                    app:selectorColor="@color/colorWhite"
+                    app:textColorSelected="@color/colorWhite" />
+            </FrameLayout>
+
+            <CalendarView
+                android:id="@+id/calendar_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/Theme.Medihelper.CalendarView.Dark"
+                android:visibility="@{viewModel.fullCalendarMode}"
+                android:layout_marginBottom="16dp"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 

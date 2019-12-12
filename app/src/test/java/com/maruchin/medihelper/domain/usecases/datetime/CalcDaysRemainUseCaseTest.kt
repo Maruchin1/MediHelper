@@ -33,6 +33,6 @@ class CalcDaysRemainUseCaseTest {
             useCase.execute(expireDate)
         }
 
-        Truth.assertThat(result).isEqualTo(21)
+        Truth.assertThat(result).isEqualTo(20)
     }
 }

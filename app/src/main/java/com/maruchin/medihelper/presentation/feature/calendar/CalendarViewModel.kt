@@ -20,83 +20,54 @@ class CalendarViewModel(
     val endCalendar: Calendar
     val calendarDaysCount: Int
 
-    val currCalendarData: LiveData<CalendarData>
-        get() = _currCalendarData
+    val fullCalendarMode: LiveData<Boolean>
+        get() = _fullCalendarMode
 
-    private val _currCalendarData = MutableLiveData<CalendarData>()
+    private val _fullCalendarMode = MutableLiveData<Boolean>(false)
 
-    private val initialDate: AppDate = getCurrDateUseCase.execute()
+    private val currDate: AppDate = getCurrDateUseCase.execute()
 
     init {
+
         startCalendar = Calendar.getInstance().apply {
-            timeInMillis = initialDate.timeInMillis
+            timeInMillis = currDate.timeInMillis
             add(Calendar.DATE, -CALENDAR_DAYS_RANGE)
         }
         endCalendar = Calendar.getInstance().apply {
-            timeInMillis = initialDate.timeInMillis
+            timeInMillis = currDate.timeInMillis
             add(Calendar.DATE, CALENDAR_DAYS_RANGE)
         }
         calendarDaysCount = (CALENDAR_DAYS_RANGE * 2) + 1
+    }
 
-        val initialCalendarData = CalendarData(
-            date = Calendar.getInstance().apply {
-                timeInMillis = initialDate.timeInMillis
-            },
-            position = CALENDAR_DAYS_RANGE
-        )
-        _currCalendarData.postValue(initialCalendarData)
+    fun getInitialCalendar(): Calendar {
+        return Calendar.getInstance().apply {
+            timeInMillis = currDate.timeInMillis
+        }
+    }
 
-
+    fun getInitialPosition(): Int {
+        return CALENDAR_DAYS_RANGE
     }
 
     fun getDateForPosition(position: Int): AppDate {
-        val currDate = initialDate.copy()
+        val currDate = currDate.copy()
         currDate.addDays(position - CALENDAR_DAYS_RANGE)
         return currDate
     }
 
-    fun selectDate(position: Int) {
-        val dateForPosition = getDateForPosition(position)
-
-        val newCalendarDate = CalendarData(
-            date = Calendar.getInstance().apply {
-                timeInMillis = dateForPosition.timeInMillis
-            },
-            position = position
-        )
-        _currCalendarData.postValue(newCalendarDate)
+    fun getCalendarForPosition(position: Int): Calendar {
+        val date = getDateForPosition(position)
+        return Calendar.getInstance().apply {
+            timeInMillis = date.timeInMillis
+        }
     }
 
-//    fun selectDate(position: Int) = selectDate(getDateForPosition(position))
-//
-//    fun selectDate(date: AppDate) {
-//        val currDate = _selectedDate.value
-//        if (currDate == null) {
-//            _selectedDate.value = date
-//        } else if (date != currDate) {
-//            _selectedDate.value = date
-//        }
-//    }
-//
-//    fun selectTodayDate() = selectDate(getCurrDateUseCase.execute())
-//
-//    fun getDateForPosition(position: Int): AppDate {
-//        val currDate = getCurrDateUseCase.execute()
-//        currDate.addDays(position - (INITIAL_DATE_POSITION))
-//        return currDate
-//    }
-//
-//    suspend fun getPositionForDate(date: AppDate): Int {
-//        val daysDiff = calcDaysDiffUseCase.execute(date)
-//        return (INITIAL_DATE_POSITION) + daysDiff
-//    }
+    fun changeFullCalendarMode(enabled: Boolean) {
+        _fullCalendarMode.value = enabled
+    }
 
     fun updateAllStatus() = viewModelScope.launch {
 //        plannedMedicineUseCases.updateAllStatus()
     }
-
-    data class CalendarData(
-        val date: Calendar,
-        val position: Int
-    )
 }
