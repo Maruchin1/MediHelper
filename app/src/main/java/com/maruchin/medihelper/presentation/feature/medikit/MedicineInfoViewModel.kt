@@ -8,6 +8,7 @@ import com.maruchin.medihelper.domain.entities.MedicineInfo
 import com.maruchin.medihelper.domain.entities.MedicineInfoSearchResult
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineInfoUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.SearchForMedicineInfoUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MedicineInfoViewModel(
@@ -29,14 +30,14 @@ class MedicineInfoViewModel(
     fun setArgs(args: MedicineInfoDialogArgs) = viewModelScope.launch {
         _loadingInProgress.postValue(true)
         val searchResults = searchForMedicineInfoUseCase.execute(args.medicineName)
-        _loadingInProgress.postValue(false)
         _searchResults.postValue(searchResults)
+        _loadingInProgress.postValue(false)
     }
 
     fun getMedicineInfo(urlString: String) = viewModelScope.launch {
         _loadingInProgress.postValue(true)
         val info = getMedicineInfoUseCase.execute(urlString)
-        _loadingInProgress.postValue(false)
         _medicineInfo.postValue(info)
+        _loadingInProgress.postValue(false)
     }
 }

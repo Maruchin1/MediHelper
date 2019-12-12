@@ -29,6 +29,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="bottomSheetStyle">@style/Theme.MediHelper.BottomSheet</item>
+    </style>
+
+    <style name="Theme.MediHelper.BottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/colorTransparent</item>
     </style>
 
     <style name="ThemeOverlay.MediHelper.Appbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>

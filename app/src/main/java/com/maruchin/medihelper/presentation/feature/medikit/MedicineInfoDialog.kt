@@ -37,6 +37,9 @@ class MedicineInfoDialog :
     }
 
     private fun observeViewModel() {
+        viewModel.loadingInProgress.observe(viewLifecycleOwner, Observer { inProgress ->
+            progress_bar.visibility = if (inProgress) View.VISIBLE else View.GONE
+        })
         viewModel.searchResults.observe(viewLifecycleOwner, Observer { list ->
             val adapter = recycler_view_search_result.adapter
             if (adapter is SearchResultAdapter) {

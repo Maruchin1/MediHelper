@@ -72,21 +72,3 @@ fun setTextInputError(inLay: TextInputLayout, errorMessage: String?) {
         isErrorEnabled = errorMessage != null
     }
 }
-
-//SeekBar
-@BindingAdapter("android:max")
-fun setSeekBarMax(seekBar: SeekBar, value: Float?) {
-    if (value != null) {
-        seekBar.max = value.toInt()
-    }
-}
-
-@BindingAdapter("android:progress")
-fun setSeekBarProgress(seekBar: SeekBar, value: Float?) {
-    seekBar.progress = value?.toInt() ?: 0
-}
-
-@InverseBindingAdapter(attribute = "android:progress")
-fun getSeekBarProgress(seekBar: SeekBar): Float? {
-    return seekBar.progress.toFloat()
-}
