@@ -48,7 +48,6 @@ class MedicinesListFragment : BaseMainFragment<FragmentMedicinesListBinding>(R.l
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         super.setLightStatusBar(false)
-        super.setupToolbarNavigation()
         setupToolbarMenu()
         observeViewModel()
     }
