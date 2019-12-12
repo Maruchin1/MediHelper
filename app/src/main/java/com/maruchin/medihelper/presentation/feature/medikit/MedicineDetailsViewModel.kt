@@ -25,8 +25,6 @@ class MedicineDetailsViewModel(
     val medicineUnit: LiveData<String>
     val expireDate: LiveData<AppExpireDate>
     val stateData: LiveData<MedicineStateData>
-    val additionalInfoAvailable: LiveData<Boolean>
-    val additionalInfo: LiveData<String>
     val profileSimpleItemListAvailable: LiveData<Boolean>
     val profileSimpleItemList: LiveData<List<ProfileSimpleItem>>
 
@@ -52,8 +50,6 @@ class MedicineDetailsViewModel(
         medicineUnit = Transformations.map(medicineDetails) { it.unit }
         expireDate = Transformations.map(medicineDetails) { it.expireDate }
         stateData = Transformations.map(medicineDetails) { it.stateData }
-        additionalInfoAvailable = Transformations.map(medicineDetails) { !it.additionalInfo.isNullOrEmpty() }
-        additionalInfo = Transformations.map(medicineDetails) { it.additionalInfo }
         profileSimpleItemListAvailable = Transformations.map(medicineDetails) {
             !it.profileSimpleItemList.isNullOrEmpty()
         }

@@ -11,7 +11,6 @@ data class MedicineDb(
     val expireDate: String? = null,
     val packageSize: Float? = null,
     val currState: Float? = null,
-    val additionalInfo: String? = null,
     val pictureName: String? = null
 ) {
     constructor(medicine: Medicine) : this(
@@ -20,7 +19,6 @@ data class MedicineDb(
         expireDate = medicine.expireDate.jsonFormatString,
         packageSize = medicine.packageSize,
         currState = medicine.currState,
-        additionalInfo = medicine.additionalInfo,
         pictureName = medicine.pictureName
     )
 
@@ -31,7 +29,6 @@ data class MedicineDb(
         expireDate = expireDate?.let { AppExpireDate(it) } ?: AppExpireDate(0, 0),
         packageSize = packageSize,
         currState = currState,
-        additionalInfo = additionalInfo,
         pictureName = pictureName
     )
 }

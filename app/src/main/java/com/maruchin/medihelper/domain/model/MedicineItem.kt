@@ -15,7 +15,7 @@ data class MedicineItem(
         medicineId = medicine.medicineId,
         name = medicine.name,
         unit = medicine.unit,
-        stateData = medicine.getStateData(),
+        stateData = medicine.stateData,
         pictureName = medicine.pictureName
     )
 }

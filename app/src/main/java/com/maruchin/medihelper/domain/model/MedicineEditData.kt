@@ -9,8 +9,7 @@ data class MedicineEditData(
     val unit: String,
     val expireDate: AppExpireDate,
     val packageSize: Float?,
-    val currState: Float?,
-    val additionalInfo: String?
+    val currState: Float?
 ) {
     constructor(medicine: Medicine) : this(
         medicineId = medicine.medicineId,
@@ -18,7 +17,6 @@ data class MedicineEditData(
         name = medicine.name,
         expireDate = medicine.expireDate,
         packageSize = medicine.packageSize,
-        currState = medicine.currState,
-        additionalInfo = medicine.additionalInfo
+        currState = medicine.currState
     )
 }

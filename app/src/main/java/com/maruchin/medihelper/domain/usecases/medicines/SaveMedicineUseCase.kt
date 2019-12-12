@@ -31,7 +31,6 @@ class SaveMedicineUseCase(
             expireDate = params.expireDate!!,
             packageSize = params.packageSize,
             currState = params.currState,
-            additionalInfo = params.additionalInfo,
             pictureName = params.pictureFile?.name
         )
         if (params.pictureFile != null) {
@@ -52,7 +51,6 @@ class SaveMedicineUseCase(
         val expireDate: AppExpireDate?,
         val packageSize: Float?,
         val currState: Float?,
-        val additionalInfo: String?,
         val pictureFile: File?
     )
 }
