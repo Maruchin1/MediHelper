@@ -18,19 +18,19 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PersonOptionsFragment : AppFullScreenDialog() {
 
     private val viewModel: PersonOptionsViewModel by viewModel()
-    private val directions by lazy { PersonOptionsFragmentDirections }
-    private val args: PersonOptionsFragmentArgs by navArgs()
+//    private val directions by lazy { PersonOptionsFragmentDirections }
+//    private val args: PersonOptionsFragmentArgs by navArgs()
 
     fun onClickMediHelperAccount() {
 
     }
 
     fun onClickEdit() = viewModel.personId.value?.let { personID ->
-        findNavController().navigate(
-            PersonOptionsFragmentDirections.toAddEditPersonFragment(
-                personID
-            )
-        )
+//        findNavController().navigate(
+//            PersonOptionsFragmentDirections.toAddEditPersonFragment(
+//                personID
+//            )
+//        )
     }
 
     fun onClickDelete() = ConfirmDialog().apply {
@@ -54,7 +54,7 @@ class PersonOptionsFragment : AppFullScreenDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setTransparentStatusBar()
-        viewModel.setArgs(args)
+//        viewModel.setArgs(args)
 
         viewModel.personOptionsData.observe(viewLifecycleOwner, Observer {
             img_qr_code.setImageBitmap(it.connectionKeyQrCode)

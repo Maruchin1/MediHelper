@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.maruchin.medihelper.R
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.maruchin.medihelper.databinding.DialogSelectProfileBinding
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.presentation.framework.*
@@ -20,14 +18,14 @@ class SelectProfileDialog : BaseDialog<DialogSelectProfileBinding>(R.layout.dial
         get() = "SelectProfileDialog"
 
     private val viewModel: SelectProfileViewModel by viewModel()
-    private val directions by lazyOf(SelectProfileDialogDirections)
+//    private val directions by lazyOf(SelectProfileDialogDirections)
 
     fun onClickSelectPerson(profileId: String) {
         viewModel.selectProfile(profileId)
         dismiss()
     }
 
-    fun onClickAddNewPerson() = findNavController().navigate(directions.toAddEditPersonFragment())
+//    fun onClickAddNewPerson() = findNavController().navigate(directions.toAddEditPersonFragment())
 
     fun onClickOpenOptions(profileId: String) {
 //        findNavController().navigate(directions.toPersonOptionsFragment(profileId))
@@ -46,11 +44,7 @@ class SelectProfileDialog : BaseDialog<DialogSelectProfileBinding>(R.layout.dial
 
     private fun setupPersonRecyclerView() = recycler_view_persons.apply {
         adapter = PersonAdapter()
-        layoutManager = CenterLayoutManager(
-            requireContext(),
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
+        layoutManager = ScrollZoomLayoutManager(requireContext(), 10)
     }
 
     private fun observeData() {
@@ -62,7 +56,7 @@ class SelectProfileDialog : BaseDialog<DialogSelectProfileBinding>(R.layout.dial
 
     // Inner classes
     inner class PersonAdapter : RecyclerAdapter<ProfileItem>(
-        layoutResId = R.layout.recycler_item_profile,
+        layoutResId = R.layout.rec_item_profile,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }
     ) {
 

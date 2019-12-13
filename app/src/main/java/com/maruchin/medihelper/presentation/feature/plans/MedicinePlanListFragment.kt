@@ -34,13 +34,15 @@ class MedicinePlanListFragment : Fragment() {
     var unavailableMessage = ""
     val medicinePlanAvailableLive = MutableLiveData(false)
     private val viewModel: MedicinePlanListViewModel by sharedViewModel(from = { parentFragment!! })
-    private val directions by lazyOf(MedicinePlanListHostFragmentDirections)
+//    private val directions by lazyOf(MedicinePlanListHostFragmentDirections)
 
-    fun onClickMedicinePlanHistory(medicinePlanID: Int) =
-        findNavController().navigate(directions.toMedicinePlaHistoryDialog(medicinePlanID))
+    fun onClickMedicinePlanHistory(medicinePlanID: Int) {
+//        findNavController().navigate(directions.toMedicinePlaHistoryDialog(medicinePlanID))
+    }
 
-    fun onClickEditMedicinePlan(medicinePlanID: Int) =
-        findNavController().navigate(directions.toAddEditMedicinePlanFragment(medicinePlanID))
+    fun onClickEditMedicinePlan(medicinePlanID: Int) {
+//        findNavController().navigate(directions.toAddEditMedicinePlanFragment(medicinePlanID))
+    }
 
     fun onClickDeleteMedicinePlan(medicinePlanID: Int) {
         val dialog = ConfirmDialog().apply {

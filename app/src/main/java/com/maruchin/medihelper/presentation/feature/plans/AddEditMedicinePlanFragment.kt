@@ -34,8 +34,8 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
     private val TAG = "AddEditMedicinePlanFra"
 
     private val viewModel: AddEditMedicinePlanViewModel by viewModel()
-    private val args: AddEditMedicinePlanFragmentArgs by navArgs()
-    private val directions by lazyOf(AddEditMedicinePlanFragmentDirections)
+//    private val args: AddEditMedicinePlanFragmentArgs by navArgs()
+//    private val directions by lazyOf(AddEditMedicinePlanFragmentDirections)
     private val timeOfTakingAdapter by lazy { recycler_view_time_of_taking.adapter as TimeOfTakingAdapter }
 
     fun onClickSelectMedicine() = SelectMedicineDialog().apply {
@@ -45,7 +45,9 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
         viewModel.colorPrimaryId.value?.let { setColorPrimary(it) }
     }.show(childFragmentManager)
 
-    fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
+    fun onClickSelectPerson() {
+//        findNavController().navigate(directions.toPersonDialog())
+    }
 
     fun onClickSelectTime(position: Int, timeDoseFormItem: TimeDoseFormItem) = SelectTimeDialog().apply {
         defaultTime = timeDoseFormItem.time
@@ -80,7 +82,7 @@ class AddEditMedicinePlanFragment : AppFullScreenDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setArgs(args)
+//        viewModel.setArgs(args)
         setupToolbar()
         setupDurationTypeChipGroup()
         setupDaysTypeChipGroup()

@@ -9,11 +9,4 @@
         android:title="Kalendarz"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/btn_profile"
-        android:icon="@drawable/round_person_white_36"
-        android:orderInCategory="3"
-        android:title="Osoba"
-        app:showAsAction="always" />
-
 </menu>

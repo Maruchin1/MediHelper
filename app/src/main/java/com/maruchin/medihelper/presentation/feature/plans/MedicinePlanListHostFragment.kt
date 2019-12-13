@@ -20,11 +20,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MedicinePlanListHostFragment : Fragment() {
 
     private val viewModel: MedicinePlanListViewModel by viewModel()
-    private val directions by lazyOf(MedicinePlanListHostFragmentDirections)
+//    private val directions by lazyOf(MedicinePlanListHostFragmentDirections)
 
-    fun onClickAddMedicinePlan() = findNavController().navigate(directions.toAddEditMedicinePlanFragment())
+    fun onClickAddMedicinePlan() {
+//        findNavController().navigate(directions.toAddEditMedicinePlanFragment())
+    }
 
-    fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
+    fun onClickSelectPerson() {
+//        findNavController().navigate(directions.toPersonDialog())
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
        return bind<FragmentMedicinePlanListHostBinding>(

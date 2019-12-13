@@ -31,9 +31,9 @@ class PersonOptionsViewModel(
 //        personOptionsData = Transformations.map(profile) { mapPersonToPersonOptionsData(it) }
     }
 
-    fun setArgs(args: PersonOptionsFragmentArgs) {
-        _personId.value = args.personID
-    }
+//    fun setArgs(args: PersonOptionsFragmentArgs) {
+//        _personId.value = args.personID
+//    }
 
     fun deletePerson() = GlobalScope.launch {
 //        _personId.value?.let { personUseCases.deletePersonById(it) }

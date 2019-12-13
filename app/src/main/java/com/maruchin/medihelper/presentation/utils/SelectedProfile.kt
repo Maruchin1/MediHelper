@@ -9,6 +9,8 @@ class SelectedProfile(
     private val getMainProfileIdUseCase: GetMainProfileIdUseCase
 ) {
 
+    val profileId: String?
+        get() = _profileIdLive.value
     val profileIdLive: LiveData<String>
         get() = _profileIdLive
 

@@ -79,11 +79,16 @@
     </style>
 
     <style name="Widget.MediHelper.CardView.FullWidth" parent="Widget.MediHelper.CardView">
-        <item name="cardCornerRadius">0dp</item>
+        <item name="cardCornerRadius">4dp</item>
     </style>
 
     <style name="Widget.MediHelper.CardView.Big" parent="Widget.MediHelper.CardView">
         <item name="cardCornerRadius">16dp</item>
+    </style>
+
+    <style name="Widget.MediHelper.CardView.Profile" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">24dp</item>
+        <item name="cardBackgroundColor">@color/colorTransparent</item>
     </style>
 
     <style name="Widget.MediHelper.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">

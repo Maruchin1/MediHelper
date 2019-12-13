@@ -10,11 +10,11 @@
         android:name="com.maruchin.medihelper.presentation.feature.calendar.CalendarFragment"
         tools:layout="@layout/fragment_calendar">
         <action
-            android:id="@+id/toPersonDialog"
-            app:destination="@id/personDialog" />
-        <action
             android:id="@+id/toPlannedMedicineOptionsDialog"
             app:destination="@id/plannedMedicineOptionsDialog" />
+        <action
+            android:id="@+id/toProfileDialog"
+            app:destination="@id/profileDialog" />
     </fragment>
     <fragment
         android:id="@+id/medicinesListFragment"
@@ -35,31 +35,6 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
     </fragment>
-    <fragment
-        android:id="@+id/medicinePlanListHostFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.plans.MedicinePlanListHostFragment"
-        tools:layout="@layout/fragment_medicine_plan_list_host">
-        <action
-            android:id="@+id/toPersonDialog"
-            app:destination="@id/personDialog" />
-        <action
-            android:id="@+id/toAddEditMedicinePlanFragment"
-            app:destination="@id/addEditMedicinePlanFragment" />
-        <action
-            android:id="@+id/toMedicinePlaHistoryDialog"
-            app:destination="@id/medicinePlanHistoryDialog" />
-    </fragment>
-    <dialog
-        android:id="@+id/personDialog"
-        android:name="com.maruchin.medihelper.presentation.feature.profiles.SelectProfileDialog"
-        tools:layout="@layout/dialog_select_profile">
-        <action
-            android:id="@+id/toPersonOptionsFragment"
-            app:destination="@id/personOptionsFragment" />
-        <action
-            android:id="@+id/toAddEditPersonFragment"
-            app:destination="@id/addEditPersonFragment" />
-    </dialog>
     <dialog
         android:id="@+id/addEditPersonFragment"
         android:name="com.maruchin.medihelper.presentation.feature.profiles.AddEditPersonFragment"
@@ -69,18 +44,6 @@
             android:defaultValue="-1"
             app:argType="integer" />
     </dialog>
-    <fragment
-        android:id="@+id/addEditMedicinePlanFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.plans.AddEditMedicinePlanFragment"
-        tools:layout="@layout/fragment_add_edit_medicine_plan">
-        <action
-            android:id="@+id/toPersonDialog"
-            app:destination="@id/personDialog" />
-        <argument
-            android:name="editMedicinePlanID"
-            android:defaultValue="-1"
-            app:argType="integer" />
-    </fragment>
     <fragment
         android:id="@+id/addEditMedicineFragment"
         android:name="com.maruchin.medihelper.presentation.feature.medikit.AddEditMedicineFragment"
@@ -126,25 +89,6 @@
             android:id="@+id/toMedicineDetailsFragment"
             app:destination="@id/medicineDetailsFragment" />
     </dialog>
-    <dialog
-        android:id="@+id/medicinePlanHistoryDialog"
-        android:name="com.maruchin.medihelper.presentation.feature.plans.MedicinePlanHistoryDialog"
-        tools:layout="@layout/dialog_medicine_plan_history">
-        <argument
-            android:name="medicinePlanID"
-            app:argType="integer" />
-    </dialog>
-    <dialog
-        android:id="@+id/personOptionsFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsFragment"
-        tools:layout="@layout/fragment_person_options">
-        <action
-            android:id="@+id/toAddEditPersonFragment"
-            app:destination="@id/addEditPersonFragment" />
-        <argument
-            android:name="personID"
-            app:argType="integer" />
-    </dialog>
     <fragment
         android:id="@+id/captureMedicinePictureFragment"
         android:name="com.maruchin.medihelper.presentation.feature.medikit.CaptureMedicinePictureFragment"
@@ -152,9 +96,18 @@
     <dialog
         android:id="@+id/medicineInfoDialog"
         android:name="com.maruchin.medihelper.presentation.feature.medikit.MedicineInfoDialog"
-        tools:layout="@layout/dialog_medicine_info" >
+        tools:layout="@layout/dialog_medicine_info">
         <argument
             android:name="medicineName"
             app:argType="string" />
+    </dialog>
+    <dialog
+        android:id="@+id/profileDialog"
+        android:name="com.maruchin.medihelper.presentation.feature.calendar.ProfileDialog"
+        android:label="ProfileDialog"
+        tools:layout="@layout/dialog_profile" >
+        <action
+            android:id="@+id/toAddEditProfileFragment"
+            app:destination="@id/addEditPersonFragment" />
     </dialog>
 </navigation>

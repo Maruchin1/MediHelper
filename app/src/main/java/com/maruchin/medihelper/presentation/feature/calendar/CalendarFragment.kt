@@ -29,15 +29,13 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
 
     private lateinit var horizontalCalendar: HorizontalCalendar
 
-    fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
-
     fun onClickOpenFullCalendar() {
         TransitionManager.beginDelayedTransition(root_lay)
         viewModel.changeFullCalendarMode(enabled = true)
     }
 
     fun onClickOpenPlansList() {
-
+        findNavController().navigate(directions.toProfileDialog())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -64,9 +62,6 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
             when (menuItem.itemId) {
                 R.id.btn_calendar -> {
                     onClickOpenFullCalendar()
-                }
-                R.id.btn_profile -> {
-                    onClickSelectPerson()
                 }
             }
             true
@@ -100,7 +95,7 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
     private fun setupHorizontalCalendar() {
         horizontalCalendar = HorizontalCalendar.Builder(root_lay, R.id.horizontal_calendar)
             .range(viewModel.startCalendar, viewModel.endCalendar)
-            .datesNumberOnScreen(7)
+            .datesNumberOnScreen(5)
             .defaultSelectedDate(viewModel.initialCalendar)
             .build()
 //        horizontalCalendar.selectDate(viewModel.initialCalendar, true)
@@ -109,7 +104,7 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
                 date?.let {
                     calendar_view.date = it.timeInMillis
                 }
-                view_pager_dates.currentItem = position - 3
+                view_pager_dates.currentItem = position - 2
             }
         }
     }

@@ -48,7 +48,7 @@ class MedicinePlanHistoryViewModel(
 //        }
     }
 
-    fun setArgs(args: MedicinePlanHistoryDialogArgs) {
-        selectedMedicinePlanId.value = args.medicinePlanID
-    }
+//    fun setArgs(args: MedicinePlanHistoryDialogArgs) {
+//        selectedMedicinePlanId.value = args.medicinePlanID
+//    }
 }

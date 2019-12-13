@@ -8,6 +8,7 @@ import com.maruchin.medihelper.presentation.feature.medikit.AddEditMedicineViewM
 import com.maruchin.medihelper.presentation.feature.medikit.MedicineDetailsViewModel
 import com.maruchin.medihelper.presentation.feature.medikit.MedicineInfoViewModel
 import com.maruchin.medihelper.presentation.feature.medikit.MedicinesListViewModel
+import com.maruchin.medihelper.presentation.feature.calendar.ProfileViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.AddEditPersonViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.SelectProfileViewModel
@@ -105,6 +106,12 @@ val viewModelModule = module {
         MedicineInfoViewModel(
             searchForMedicineInfoUseCase = get(),
             getMedicineInfoUseCase = get()
+        )
+    }
+    viewModel {
+        ProfileViewModel(
+            getAllProfilesItemsLiveUseCase = get(),
+            selectedProfile = get()
         )
     }
 }

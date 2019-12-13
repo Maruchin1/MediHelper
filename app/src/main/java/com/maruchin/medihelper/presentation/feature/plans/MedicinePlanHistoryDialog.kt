@@ -21,7 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MedicinePlanHistoryDialog : AppDialog() {
 
     val viewModel: MedicinePlanHistoryViewModel by viewModel()
-    val args: MedicinePlanHistoryDialogArgs by navArgs()
+//    val args: MedicinePlanHistoryDialogArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return bind<DialogMedicinePlanHistoryBinding>(
@@ -34,7 +34,7 @@ class MedicinePlanHistoryDialog : AppDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setArgs(args)
+//        viewModel.setArgs(args)
         setupHistoryRecyclerView()
         observeViewModel()
     }

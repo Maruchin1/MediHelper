@@ -60,16 +60,16 @@ class AddEditMedicinePlanViewModel(
         selectedPersonName = Transformations.map(selectedProfile) { it.name }
     }
 
-    fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
-        if (args.editMedicinePlanID != -1) {
-            editMedicinePlanId = args.editMedicinePlanID
-            _formTitle.postValue("Edytuj plan")
+//    fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
+//        if (args.editMedicinePlanID != -1) {
+//            editMedicinePlanId = args.editMedicinePlanID
+//            _formTitle.postValue("Edytuj plan")
 //            val editMedicinePlan = medicinePlanUseCases.getMedicinePlanById(args.editMedicinePlanID)
 //            setMedicinePlanData(editMedicinePlan)
-        } else {
-            setEmptyMedicinePlanData()
-        }
-    }
+//        } else {
+//            setEmptyMedicinePlanData()
+//        }
+//    }
 
     fun refreshTimeDoseList(medicineUnit: String) {
         val currList = _timeDoseFormItemList.value

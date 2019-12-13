@@ -59,10 +59,8 @@
                     android:id="@+id/horizontal_calendar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
                     android:background="@color/colorTransparent"
-                    app:selectedDateBackground="@drawable/bg_horizontal_calendar_selected"
-                    app:selectorColor="@color/colorTransparent"
+                    app:selectorColor="@color/colorWhite"
                     app:textColorSelected="@color/colorWhite" />
             </FrameLayout>
 
@@ -107,7 +105,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
             android:onClick="@{() -> handler.onClickOpenPlansList()}"
-            android:src="@drawable/round_format_list_bulleted_white_48"
+            android:src="@drawable/round_person_white_48"
             app:backgroundTint='@{viewModel.colorPrimary, default="@color/colorPrimary"}'
             app:elevation="8dp"
             app:layout_anchor="@id/bottom_nav"
