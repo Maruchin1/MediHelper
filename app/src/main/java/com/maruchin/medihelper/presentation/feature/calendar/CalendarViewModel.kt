@@ -19,6 +19,8 @@ class CalendarViewModel(
     val startCalendar: Calendar
     val endCalendar: Calendar
     val calendarDaysCount: Int
+    val initialCalendar: Calendar
+    val initialPosition: Int
 
     val fullCalendarMode: LiveData<Boolean>
         get() = _fullCalendarMode
@@ -28,7 +30,6 @@ class CalendarViewModel(
     private val currDate: AppDate = getCurrDateUseCase.execute()
 
     init {
-
         startCalendar = Calendar.getInstance().apply {
             timeInMillis = currDate.timeInMillis
             add(Calendar.DATE, -CALENDAR_DAYS_RANGE)
@@ -38,16 +39,10 @@ class CalendarViewModel(
             add(Calendar.DATE, CALENDAR_DAYS_RANGE)
         }
         calendarDaysCount = (CALENDAR_DAYS_RANGE * 2) + 1
-    }
-
-    fun getInitialCalendar(): Calendar {
-        return Calendar.getInstance().apply {
+        initialCalendar = Calendar.getInstance().apply {
             timeInMillis = currDate.timeInMillis
         }
-    }
-
-    fun getInitialPosition(): Int {
-        return CALENDAR_DAYS_RANGE
+        initialPosition = CALENDAR_DAYS_RANGE
     }
 
     fun getDateForPosition(position: Int): AppDate {

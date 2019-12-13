@@ -59,8 +59,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorTransparent"
-                    app:selectorColor="@color/colorWhite"
-                    app:textColorSelected="@color/colorWhite" />
+                    app:selectorColor="@color/colorTransparent"
+                    app:textColorSelected="@color/colorWhite"
+                    app:selectedDateBackground="@drawable/bg_horizontal_calendar_selected"
+                    android:layout_marginBottom="4dp"/>
             </FrameLayout>
 
             <CalendarView

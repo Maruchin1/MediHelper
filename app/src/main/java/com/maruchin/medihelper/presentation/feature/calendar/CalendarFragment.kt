@@ -29,8 +29,6 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
 
     fun onClickSelectPerson() = findNavController().navigate(directions.toPersonDialog())
 
-    fun onClickToday() = horizontalCalendar.goToday(true)
-
     fun onClickOpenFullCalendar() {
         TransitionManager.beginDelayedTransition(root_lay)
         viewModel.changeFullCalendarMode(enabled = true)
@@ -57,11 +55,11 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
     private fun setupToolbarMenu() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.btn_today -> {
-                    onClickToday()
-                }
                 R.id.btn_calendar -> {
                     onClickOpenFullCalendar()
+                }
+                R.id.btn_profile -> {
+
                 }
             }
             true
@@ -72,7 +70,7 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
         view_pager_dates.apply {
             adapter = ScheduleDayPagerAdapter()
             offscreenPageLimit = 1
-            currentItem = viewModel.getInitialPosition()
+            currentItem = viewModel.initialPosition
             addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
                 }
@@ -95,21 +93,22 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
     private fun setupHorizontalCalendar() {
         horizontalCalendar = HorizontalCalendar.Builder(root_lay, R.id.horizontal_calendar)
             .range(viewModel.startCalendar, viewModel.endCalendar)
-            .datesNumberOnScreen(5)
+            .datesNumberOnScreen(7)
+            .defaultSelectedDate(viewModel.initialCalendar)
             .build()
-        horizontalCalendar.selectDate(viewModel.getInitialCalendar(), true)
+        horizontalCalendar.selectDate(viewModel.initialCalendar, true)
         horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar?, position: Int) {
                 date?.let {
                     calendar_view.date = it.timeInMillis
                 }
-                view_pager_dates.currentItem = position - 2
+                view_pager_dates.currentItem = position - 3
             }
         }
     }
 
     private fun setupCalendarView() {
-        calendar_view.date = viewModel.getInitialCalendar().timeInMillis
+        calendar_view.date = viewModel.initialCalendar.timeInMillis
         calendar_view.setOnDateChangeListener { _, year, month, day ->
             val selectedCalendar = Calendar.getInstance().apply {
                 set(year, month, day)
