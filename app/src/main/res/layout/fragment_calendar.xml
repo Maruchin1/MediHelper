@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_appbar_round"
+            android:backgroundTint="@{viewModel.colorPrimary}"
             android:minHeight="@dimen/appbar_height"
             android:theme="@style/ThemeOverlay.MediHelper.Appbar">
 
@@ -34,10 +35,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/appbar_height"
                 android:layout_weight="1"
+                android:visibility="@{!viewModel.fullCalendarMode}"
                 app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-                app:title="Nazwa osoby"
-                android:visibility="@{!viewModel.fullCalendarMode}">
+                app:title='@{viewModel.currProfileName, default="Nazwa osoby"}'>
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -58,20 +59,20 @@
                     android:id="@+id/horizontal_calendar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:background="@color/colorTransparent"
-                    app:selectorColor="@color/colorTransparent"
-                    app:textColorSelected="@color/colorWhite"
                     app:selectedDateBackground="@drawable/bg_horizontal_calendar_selected"
-                    android:layout_marginBottom="4dp"/>
+                    app:selectorColor="@color/colorTransparent"
+                    app:textColorSelected="@color/colorWhite" />
             </FrameLayout>
 
             <CalendarView
                 android:id="@+id/calendar_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:theme="@style/Theme.Medihelper.CalendarView.Dark"
-                android:visibility="@{viewModel.fullCalendarMode}"
-                android:layout_marginBottom="16dp"/>
+                android:visibility="@{viewModel.fullCalendarMode}" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -91,6 +92,7 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"
             style="@style/Widget.MaterialComponents.BottomNavigationView"
+            bottomNavColor="@{viewModel.colorPrimary}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -104,8 +106,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/round_add_white_48"
-            app:backgroundTint="@color/colorPrimary"
+            android:onClick="@{() -> handler.onClickOpenPlansList()}"
+            android:src="@drawable/round_format_list_bulleted_white_48"
+            app:backgroundTint='@{viewModel.colorPrimary, default="@color/colorPrimary"}'
             app:elevation="8dp"
             app:layout_anchor="@id/bottom_nav"
             app:layout_anchorGravity="center"

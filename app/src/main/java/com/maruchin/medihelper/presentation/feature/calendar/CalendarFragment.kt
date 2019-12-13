@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
@@ -13,6 +14,7 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarBinding
 import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
+import devs.mulham.horizontalcalendar.model.CalendarEvent
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,8 +36,13 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
         viewModel.changeFullCalendarMode(enabled = true)
     }
 
+    fun onClickOpenPlansList() {
+
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.bindingViewModel = viewModel
+        super.setStatusBarColorLive(viewModel.colorPrimary)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -59,7 +66,7 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
                     onClickOpenFullCalendar()
                 }
                 R.id.btn_profile -> {
-
+                    onClickSelectPerson()
                 }
             }
             true
@@ -96,7 +103,7 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
             .datesNumberOnScreen(7)
             .defaultSelectedDate(viewModel.initialCalendar)
             .build()
-        horizontalCalendar.selectDate(viewModel.initialCalendar, true)
+//        horizontalCalendar.selectDate(viewModel.initialCalendar, true)
         horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar?, position: Int) {
                 date?.let {

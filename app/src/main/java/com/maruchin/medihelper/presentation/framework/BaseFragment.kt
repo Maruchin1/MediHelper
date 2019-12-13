@@ -1,5 +1,6 @@
 package com.maruchin.medihelper.presentation.framework
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,8 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -49,6 +52,12 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutResId: Int) :
             } else {
                 0
             }
+    }
+
+    protected fun setStatusBarColorLive(colorLive: LiveData<String>) {
+        colorLive.observe(viewLifecycleOwner, Observer { color ->
+            mainActivity.window?.statusBarColor = Color.parseColor(color)
+        })
     }
 
     protected fun setupToolbarNavigation() {

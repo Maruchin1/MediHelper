@@ -8,18 +8,16 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.maruchin.medihelper.R
-import com.maruchin.medihelper.presentation.framework.CenterLayoutManager
-import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
-import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
-import com.maruchin.medihelper.presentation.framework.bind
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.maruchin.medihelper.databinding.DialogSelectProfileBinding
 import com.maruchin.medihelper.domain.model.ProfileItem
+import com.maruchin.medihelper.presentation.framework.*
 import kotlinx.android.synthetic.main.dialog_select_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SelectProfileDialog : BottomSheetDialogFragment() {
-    val TAG = SelectProfileDialog::class.simpleName
+class SelectProfileDialog : BaseDialog<DialogSelectProfileBinding>(R.layout.dialog_select_profile){
+    override val TAG: String
+        get() = "SelectProfileDialog"
 
     private val viewModel: SelectProfileViewModel by viewModel()
     private val directions by lazyOf(SelectProfileDialogDirections)
@@ -36,11 +34,8 @@ class SelectProfileDialog : BottomSheetDialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bind<DialogSelectProfileBinding>(
-            inflater = inflater,
-            container = container,
-            layoutResId = R.layout.dialog_select_profile
-        )
+        super.bindingViewModel = viewModel
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

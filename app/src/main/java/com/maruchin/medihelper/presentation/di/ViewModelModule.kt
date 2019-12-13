@@ -80,7 +80,9 @@ val viewModelModule = module {
     }
     viewModel {
         CalendarViewModel(
-            getCurrDateUseCase = get()
+            getCurrDateUseCase = get(),
+            getProfileSimpleItemUseCase = get(),
+            selectedProfile = get()
         )
     }
     viewModel {

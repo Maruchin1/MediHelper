@@ -1,12 +1,16 @@
 package com.maruchin.medihelper.presentation.framework
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.View
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.R
@@ -17,6 +21,13 @@ import java.io.File
 fun setBackgroundColor(view: View, color: String?) {
     if (!color.isNullOrEmpty()) {
         view.setBackgroundColor(Color.parseColor(color))
+    }
+}
+
+@BindingAdapter("android:backgroundTint")
+fun setBackgroundTint(view: View, color: String?) {
+    if (!color.isNullOrEmpty()) {
+        view.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
     }
 }
 
@@ -75,5 +86,33 @@ fun setTextInputError(inLay: TextInputLayout, errorMessage: String?) {
     inLay.apply {
         error = errorMessage
         isErrorEnabled = errorMessage != null
+    }
+}
+
+//Fab
+@BindingAdapter("app:backgroundTint")
+fun setFabBackgroundTint(fab: FloatingActionButton, color: String?) {
+    if (!color.isNullOrEmpty()) {
+        fab.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+    }
+}
+
+//BottomNav
+@BindingAdapter("bottomNavColor")
+fun setBottomNavColor(bottomNavigationView: BottomNavigationView, color: String?) {
+    if (!color.isNullOrEmpty()) {
+        val states = arrayOf(
+            intArrayOf(-android.R.attr.state_selected), // unchecked
+            intArrayOf(android.R.attr.state_selected)  // pressed
+        )
+        val colors = intArrayOf(
+            ContextCompat.getColor(bottomNavigationView.context, R.color.colorTextTertiary),
+            Color.parseColor(color)
+        )
+        val colorStateList = ColorStateList(states, colors)
+        bottomNavigationView.run {
+            itemIconTintList = colorStateList
+            itemTextColor = colorStateList
+        }
     }
 }
