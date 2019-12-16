@@ -2,7 +2,6 @@ package com.maruchin.medihelper.data.model
 
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
-import java.io.File
 
 
 data class MedicineDb(
@@ -13,16 +12,16 @@ data class MedicineDb(
     val currState: Float? = null,
     val pictureName: String? = null
 ) {
-    constructor(medicine: Medicine) : this(
-        name = medicine.name,
-        unit = medicine.unit,
-        expireDate = medicine.expireDate.jsonFormatString,
-        packageSize = medicine.packageSize,
-        currState = medicine.currState,
-        pictureName = medicine.pictureName
+    constructor(entity: Medicine) : this(
+        name = entity.name,
+        unit = entity.unit,
+        expireDate = entity.expireDate.jsonFormatString,
+        packageSize = entity.packageSize,
+        currState = entity.currState,
+        pictureName = entity.pictureName
     )
 
-    fun toMedicine(id: String) = Medicine(
+    fun toEntity(id: String) = Medicine(
         medicineId = id,
         name = name ?: "--",
         unit = unit ?: "--",

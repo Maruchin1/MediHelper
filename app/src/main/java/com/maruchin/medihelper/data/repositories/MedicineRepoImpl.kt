@@ -56,7 +56,7 @@ class MedicineRepoImpl(
     override suspend fun getById(id: String): Medicine? = withContext(Dispatchers.IO) {
         val doc = medicinesCollRef.document(id).get().await()
         val medicineDb = doc.toObject(MedicineDb::class.java)
-        val medicine = medicineDb?.toMedicine(doc.id)
+        val medicine = medicineDb?.toEntity(doc.id)
         return@withContext medicine
     }
 
@@ -64,7 +64,7 @@ class MedicineRepoImpl(
         val docLive = medicinesCollRef.document(id).getDocumentLive()
         return@withContext Transformations.map(docLive) {
             val medicineDb = it.toObject(MedicineDb::class.java)
-            val medicine = medicineDb?.toMedicine(it.id)
+            val medicine = medicineDb?.toEntity(it.id)
             return@map medicine
         }
     }
@@ -74,7 +74,7 @@ class MedicineRepoImpl(
         val medicinesList = mutableListOf<Medicine>()
         docsQuery.forEach {
             val medicineDb = it.toObject(MedicineDb::class.java)
-            val medicine = medicineDb.toMedicine(it.id)
+            val medicine = medicineDb.toEntity(it.id)
             medicinesList.add(medicine)
         }
         return@withContext medicinesList
@@ -86,7 +86,7 @@ class MedicineRepoImpl(
             val medicinesList = mutableListOf<Medicine>()
             snapshotList.forEach {
                 val medicineDb = it.toObject(MedicineDb::class.java)
-                val medicine = medicineDb?.toMedicine(it.id)
+                val medicine = medicineDb?.toEntity(it.id)
                 if (medicine != null) {
                     medicinesList.add(medicine)
                 }

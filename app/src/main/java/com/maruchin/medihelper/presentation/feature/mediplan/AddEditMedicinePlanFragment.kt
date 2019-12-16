@@ -68,7 +68,7 @@ class AddEditMedicinePlanFragment :
     fun onClickSelectNoIntakeDays() {
         SelectNumberDialog().apply {
             defaultNumber = viewModel.sequence.value?.notIntakeCount
-            title = " Dni przerwy"
+            title = "Dni przerwy"
             setNumberSelectedListener { number ->
                 viewModel.setNoIntakeDays(number)
             }
