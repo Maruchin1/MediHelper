@@ -181,20 +181,21 @@
                     android:layout_marginStart="@dimen/form_header_margin_horizontal"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="@dimen/form_header_margin_horizontal"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Czas trwania"
                         android:textAppearance="@style/TextAppearance.MediHelper.SectionHeader" />
 
-                    <TextView
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/form_header_description_margin_top"
-                        android:text="Jak długo ma byc przyjmowany lek"
-                        android:textAppearance="@style/TextAppearance.MediHelper.SectionHeaderDescription" />
+                        android:src="@drawable/round_info_black_24"
+                        android:tint="@color/colorTextSecondary" />
                 </LinearLayout>
 
 
@@ -345,21 +346,22 @@
                     android:layout_marginStart="@dimen/form_header_margin_horizontal"
                     android:layout_marginTop="@dimen/form_header_margin_top"
                     android:layout_marginEnd="@dimen/form_header_margin_horizontal"
-                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:visibility="@{viewModel.planType != PlanType.ONCE}">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Dni przyjmowania"
                         android:textAppearance="@style/TextAppearance.MediHelper.SectionHeader" />
 
-                    <TextView
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/form_header_description_margin_top"
-                        android:text="W jakie dokładnie dni ma być przyjmowany lek"
-                        android:textAppearance="@style/TextAppearance.MediHelper.SectionHeaderDescription" />
+                        android:src="@drawable/round_info_black_24"
+                        android:tint="@color/colorTextSecondary" />
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
@@ -639,20 +641,21 @@
                     android:layout_marginStart="@dimen/form_header_margin_horizontal"
                     android:layout_marginTop="@dimen/form_header_margin_top"
                     android:layout_marginEnd="@dimen/form_header_margin_horizontal"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Godziny przyjmowania"
                         android:textAppearance="@style/TextAppearance.MediHelper.SectionHeader" />
 
-                    <TextView
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/form_header_description_margin_top"
-                        android:text="O jakich godzinach i w jakich dawkach ma być przyjmowany lek"
-                        android:textAppearance="@style/TextAppearance.MediHelper.SectionHeaderDescription" />
+                        android:src="@drawable/round_info_black_24"
+                        android:tint="@color/colorTextSecondary" />
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
