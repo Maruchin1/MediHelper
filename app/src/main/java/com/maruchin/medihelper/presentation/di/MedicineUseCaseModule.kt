@@ -46,7 +46,7 @@ val medicineUseCaseModule = module {
         )
     }
     factory {
-        GetMedicineNameUseCase(
+        GetMedicineItemUseCase(
             medicineRepo = get()
         )
     }

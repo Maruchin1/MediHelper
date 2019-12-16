@@ -9,9 +9,14 @@ import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionManager
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentAddEditMedicinePlanBinding
+import com.maruchin.medihelper.domain.entities.TimeDose
 import com.maruchin.medihelper.presentation.dialogs.SelectDateDialog
+import com.maruchin.medihelper.presentation.dialogs.SelectFloatNumberDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectNumberDialog
+import com.maruchin.medihelper.presentation.dialogs.SelectTimeDialog
 import com.maruchin.medihelper.presentation.framework.BaseFragment
+import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
+import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.maruchin.medihelper.presentation.framework.shrinkOnScroll
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -70,6 +75,36 @@ class AddEditMedicinePlanFragment :
         }.show(childFragmentManager)
     }
 
+    fun onClickAddTimeDose() {
+        TransitionManager.beginDelayedTransition(root_lay)
+        viewModel.addTimeDose()
+    }
+
+    fun onClickSelectTime(timeDoseFormItem: AddEditMedicinePlanViewModel.TimeDoseFormItem) {
+        SelectTimeDialog().apply {
+            defaultTime = timeDoseFormItem.time
+            setTimeSelectedListener { time ->
+                viewModel.updateTimeDose(timeDoseFormItem.copy(time = time))
+            }
+        }.show(childFragmentManager)
+    }
+
+    fun onClickSelectDoseSize(timeDoseFormItem: AddEditMedicinePlanViewModel.TimeDoseFormItem) {
+        SelectFloatNumberDialog().apply {
+            title = "Wybierz dawkę leku"
+            iconResID = R.drawable.ic_pill_black_36dp
+            defaultNumber = timeDoseFormItem.doseSize
+            setNumberSelectedListener { number ->
+                viewModel.updateTimeDose(timeDoseFormItem.copy(doseSize = number))
+            }
+        }.show(childFragmentManager)
+    }
+
+    fun onClickDeleteTimeDose(position: Int) {
+        TransitionManager.beginDelayedTransition(root_lay)
+        viewModel.deleteTimeDose(position)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.bindingViewModel = viewModel
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -82,6 +117,7 @@ class AddEditMedicinePlanFragment :
         setupFab()
         setupDurationTypeChipGroup()
         setupIntakeDaysChipGroup()
+        setupTimeDoseReyclerView()
         observeViewModel()
     }
 
@@ -164,5 +200,28 @@ class AddEditMedicinePlanFragment :
 
     private fun setupFab() {
         fab_save.shrinkOnScroll(scroll_view)
+    }
+
+    private fun setupTimeDoseReyclerView() {
+        recycler_view_time_dose.apply {
+            adapter = TimeDoseAdapter()
+        }
+    }
+
+    private inner class TimeDoseAdapter : RecyclerAdapter<TimeDose>(
+        layoutResId = R.layout.recycler_item_time_dose,
+        lifecycleOwner = viewLifecycleOwner,
+        itemsSource = viewModel.timeDoseList
+    ) {
+        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+            val item = itemsList[position]
+            val formItem = AddEditMedicinePlanViewModel.TimeDoseFormItem(item, position)
+
+            holder.bind(
+                displayData = formItem,
+                handler = this@AddEditMedicinePlanFragment,
+                viewModel = viewModel
+            )
+        }
     }
 }

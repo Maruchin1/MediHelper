@@ -54,7 +54,9 @@
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:fillViewport="true"
+            android:paddingBottom="128dp"
             app:behavior_overlapTop="82dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
@@ -177,7 +179,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_header_margin_horizontal"
-                    android:layout_marginTop="@dimen/form_header_margin_top"
+                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="@dimen/form_header_margin_horizontal"
                     android:orientation="vertical">
 
@@ -672,12 +674,13 @@
                         android:orientation="vertical">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_view_time_of_taking"
+                            android:id="@+id/recycler_view_time_dose"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            android:orientation="vertical"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:listitem="@layout/recycler_item_time_of_taking" />
+                            tools:listitem="@layout/recycler_item_time_dose" />
 
                         <ImageButton
                             android:layout_width="wrap_content"
@@ -685,7 +688,9 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="8dp"
                             android:background="?selectableItemBackgroundBorderless"
-                            android:src="@drawable/round_add_white_36" />
+                            android:onClick="@{() -> handler.onClickAddTimeDose()}"
+                            android:src="@drawable/round_add_white_36"
+                            android:tint="@color/colorPrimary" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

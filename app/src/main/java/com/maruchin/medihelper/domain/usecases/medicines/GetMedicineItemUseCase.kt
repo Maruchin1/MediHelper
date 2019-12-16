@@ -1,12 +1,13 @@
 package com.maruchin.medihelper.domain.usecases.medicines
 
+import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 
-class GetMedicineNameUseCase(
+class GetMedicineItemUseCase(
     private val medicineRepo: MedicineRepo
 ) {
-    suspend fun execute(medicineId: String): String? {
+    suspend fun execute(medicineId: String): MedicineItem? {
         val medicine = medicineRepo.getById(medicineId)
-        return medicine?.name
+        return medicine?.let { MedicineItem(it) }
     }
 }

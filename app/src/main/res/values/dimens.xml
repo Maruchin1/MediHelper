@@ -9,7 +9,7 @@
     <dimen name="bottom_dialog_option_padding_horizontal">16dp</dimen>
     <dimen name="bottom_dialog_option_text_margin_start">32dp</dimen>
 
-    <dimen name="form_header_margin_top">32dp</dimen>
+    <dimen name="form_header_margin_top">48dp</dimen>
     <dimen name="form_header_margin_horizontal">12dp</dimen>
     <dimen name="form_header_description_margin_top">4dp</dimen>
     <dimen name="form_card_margin_top">8dp</dimen>
