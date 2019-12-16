@@ -10,6 +10,7 @@ import androidx.databinding.InverseBindingAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.storage.StorageReference
@@ -115,4 +116,17 @@ fun setBottomNavColor(bottomNavigationView: BottomNavigationView, color: String?
             itemTextColor = colorStateList
         }
     }
+}
+
+//CheckBox
+@BindingAdapter("app:checked")
+fun setCheckBoxChecked(checkBox: MaterialCheckBox, checked: Boolean?) {
+    if (checked != null) {
+        checkBox.isChecked = checked
+    }
+}
+
+@InverseBindingAdapter(attribute = "app:checked")
+fun getCheckBoxChecked(checkBox: MaterialCheckBox): Boolean? {
+    return checkBox.isChecked
 }

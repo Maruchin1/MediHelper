@@ -10,6 +10,7 @@ import androidx.transition.TransitionManager
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentAddEditMedicinePlanBinding
 import com.maruchin.medihelper.presentation.dialogs.SelectDateDialog
+import com.maruchin.medihelper.presentation.dialogs.SelectNumberDialog
 import com.maruchin.medihelper.presentation.framework.BaseFragment
 import com.maruchin.medihelper.presentation.framework.shrinkOnScroll
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*
@@ -39,15 +40,44 @@ class AddEditMedicinePlanFragment :
         }.show(childFragmentManager)
     }
 
+    fun onClickSelectInterval() {
+        SelectNumberDialog().apply {
+            defaultNumber = viewModel.interval.value?.daysCount
+            title = "Odstęp dni"
+            setNumberSelectedListener { number ->
+                viewModel.setInterval(number)
+            }
+        }.show(childFragmentManager)
+    }
+
+    fun onClickSelectIntakeDays() {
+        SelectNumberDialog().apply {
+            defaultNumber = viewModel.sequence.value?.intakeCount
+            title = "Dni przyjmowania"
+            setNumberSelectedListener { number ->
+                viewModel.setIntakeDays(number)
+            }
+        }.show(childFragmentManager)
+    }
+
+    fun onClickSelectNoIntakeDays() {
+        SelectNumberDialog().apply {
+            defaultNumber = viewModel.sequence.value?.notIntakeCount
+            title = " Dni przerwy"
+            setNumberSelectedListener { number ->
+                viewModel.setNoIntakeDays(number)
+            }
+        }.show(childFragmentManager)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.setLightStatusBar(false)
         super.bindingViewModel = viewModel
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        postponeEnterTransition()
         super.onViewCreated(view, savedInstanceState)
-        super.setupToolbarNavigation()
         viewModel.setArgs(args)
         setupFab()
         setupDurationTypeChipGroup()
@@ -63,13 +93,18 @@ class AddEditMedicinePlanFragment :
                 AddEditMedicinePlanViewModel.DurationType.CONTINUOUS -> checkDurationType(R.id.chip_continuous)
             }
         })
-        viewModel.intakeDays.observe(viewLifecycleOwner, Observer { type ->
+        viewModel.intakeDaysType.observe(viewLifecycleOwner, Observer { type ->
             when (type) {
-                AddEditMedicinePlanViewModel.IntakeDays.EVERYDAY -> checkIntakeDays(R.id.chip_everyday)
-                AddEditMedicinePlanViewModel.IntakeDays.DAYS_OF_WEEK -> checkIntakeDays(R.id.chip_days_of_week)
-                AddEditMedicinePlanViewModel.IntakeDays.INTERVAL -> checkIntakeDays(R.id.chip_interval)
-                AddEditMedicinePlanViewModel.IntakeDays.SEQUENCE -> checkIntakeDays(R.id.chip_sequence)
+                AddEditMedicinePlanViewModel.IntakeDaysType.EVERYDAY -> checkIntakeDays(R.id.chip_everyday)
+                AddEditMedicinePlanViewModel.IntakeDaysType.DAYS_OF_WEEK -> checkIntakeDays(R.id.chip_days_of_week)
+                AddEditMedicinePlanViewModel.IntakeDaysType.INTERVAL -> checkIntakeDays(R.id.chip_interval)
+                AddEditMedicinePlanViewModel.IntakeDaysType.SEQUENCE -> checkIntakeDays(R.id.chip_sequence)
             }
+        })
+        viewModel.actionDataLoaded.observe(viewLifecycleOwner, Observer {
+            super.setLightStatusBar(false)
+            super.setupToolbarNavigation()
+            startPostponedEnterTransition()
         })
     }
 
@@ -96,19 +131,20 @@ class AddEditMedicinePlanFragment :
         chip_group_intake_days.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.chip_everyday -> {
-                    viewModel.intakeDays.value = AddEditMedicinePlanViewModel.IntakeDays.EVERYDAY
+                    TransitionManager.beginDelayedTransition(root_lay)
+                    viewModel.intakeDaysType.value = AddEditMedicinePlanViewModel.IntakeDaysType.EVERYDAY
                 }
                 R.id.chip_days_of_week -> {
                     TransitionManager.beginDelayedTransition(root_lay)
-                    viewModel.intakeDays.value = AddEditMedicinePlanViewModel.IntakeDays.DAYS_OF_WEEK
+                    viewModel.intakeDaysType.value = AddEditMedicinePlanViewModel.IntakeDaysType.DAYS_OF_WEEK
                 }
                 R.id.chip_interval -> {
                     TransitionManager.beginDelayedTransition(root_lay)
-                    viewModel.intakeDays.value = AddEditMedicinePlanViewModel.IntakeDays.INTERVAL
+                    viewModel.intakeDaysType.value = AddEditMedicinePlanViewModel.IntakeDaysType.INTERVAL
                 }
                 R.id.chip_sequence -> {
                     TransitionManager.beginDelayedTransition(root_lay)
-                    viewModel.intakeDays.value = AddEditMedicinePlanViewModel.IntakeDays.SEQUENCE
+                    viewModel.intakeDaysType.value = AddEditMedicinePlanViewModel.IntakeDaysType.SEQUENCE
                 }
             }
         }

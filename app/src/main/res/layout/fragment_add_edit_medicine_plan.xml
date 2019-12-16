@@ -9,6 +9,8 @@
 
         <import type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel.DurationType" />
 
+        <import type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel.IntakeDaysType" />
+
         <variable
             name="handler"
             type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanFragment" />
@@ -44,7 +46,7 @@
                     android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                     app:layout_collapseMode="pin"
                     app:navigationIcon="@drawable/round_close_24"
-                    app:title='Zaplanuj lek' />
+                    app:title='@{viewModel.formTitle, default="Zaplanuj lek"}' />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -263,7 +265,7 @@
                                     android:clickable="true"
                                     android:focusable="false"
                                     android:inputType="date"
-                                    android:minWidth="164dp"
+                                    android:minWidth="@dimen/form_text_view_min_width"
                                     android:onClick="@{() -> handler.onClickSelectStartDate()}"
                                     android:text="@{viewModel.startDate.formatString}" />
                             </com.google.android.material.textfield.TextInputLayout>
@@ -326,7 +328,7 @@
                                     android:clickable="true"
                                     android:focusable="false"
                                     android:inputType="date"
-                                    android:minWidth="164dp"
+                                    android:minWidth="@dimen/form_text_view_min_width"
                                     android:onClick="@{() -> handler.onClickSelectStartDate()}"
                                     android:text="@{viewModel.startDate.formatString}" />
                             </com.google.android.material.textfield.TextInputLayout>
@@ -416,10 +418,216 @@
                         </com.google.android.material.chip.ChipGroup>
 
                         <FrameLayout
-                            android:id="@+id/frame_schedule_days"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp" />
+                            android:layout_marginTop="24dp">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="@{viewModel.intakeDaysType == IntakeDaysType.DAYS_OF_WEEK}">
+
+                                <TextView
+                                    android:id="@+id/label_monday"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="po"
+                                    app:layout_constraintEnd_toStartOf="@id/label_tuesday"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/label_tuesday"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="wt"
+                                    app:layout_constraintEnd_toStartOf="@id/label_wednesday"
+                                    app:layout_constraintStart_toEndOf="@id/label_monday"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/label_wednesday"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="śr"
+                                    app:layout_constraintEnd_toStartOf="@id/label_thursday"
+                                    app:layout_constraintStart_toEndOf="@id/label_tuesday"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/label_thursday"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="cz"
+                                    app:layout_constraintEnd_toStartOf="@id/label_friday"
+                                    app:layout_constraintStart_toEndOf="@id/label_wednesday"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/label_friday"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="pi"
+                                    app:layout_constraintEnd_toStartOf="@id/label_saturday"
+                                    app:layout_constraintStart_toEndOf="@id/label_thursday"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/label_saturday"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="so"
+                                    app:layout_constraintEnd_toStartOf="@id/label_sunday"
+                                    app:layout_constraintStart_toEndOf="@id/label_friday"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/label_sunday"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="nd"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/label_saturday"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.checkbox.MaterialCheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:buttonTint="@color/colorDarkerGray"
+                                    android:checked="@={viewModel.daysOfWeek.monday}"
+                                    app:layout_constraintEnd_toEndOf="@id/label_monday"
+                                    app:layout_constraintStart_toStartOf="@id/label_monday"
+                                    app:layout_constraintTop_toBottomOf="@id/label_monday" />
+
+                                <com.google.android.material.checkbox.MaterialCheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:buttonTint="@color/colorDarkerGray"
+                                    android:checked="@={viewModel.daysOfWeek.tuesday}"
+                                    app:layout_constraintEnd_toEndOf="@id/label_tuesday"
+                                    app:layout_constraintStart_toStartOf="@id/label_tuesday"
+                                    app:layout_constraintTop_toBottomOf="@id/label_tuesday" />
+
+                                <com.google.android.material.checkbox.MaterialCheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:buttonTint="@color/colorDarkerGray"
+                                    android:checked="@={viewModel.daysOfWeek.wednesday}"
+                                    app:layout_constraintEnd_toEndOf="@id/label_wednesday"
+                                    app:layout_constraintStart_toStartOf="@id/label_wednesday"
+                                    app:layout_constraintTop_toBottomOf="@id/label_wednesday" />
+
+                                <com.google.android.material.checkbox.MaterialCheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:buttonTint="@color/colorDarkerGray"
+                                    android:checked="@={viewModel.daysOfWeek.thursday}"
+                                    app:layout_constraintEnd_toEndOf="@id/label_thursday"
+                                    app:layout_constraintStart_toStartOf="@id/label_thursday"
+                                    app:layout_constraintTop_toBottomOf="@id/label_thursday" />
+
+                                <com.google.android.material.checkbox.MaterialCheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:buttonTint="@color/colorDarkerGray"
+                                    android:checked="@={viewModel.daysOfWeek.friday}"
+                                    app:layout_constraintEnd_toEndOf="@id/label_friday"
+                                    app:layout_constraintStart_toStartOf="@id/label_friday"
+                                    app:layout_constraintTop_toBottomOf="@id/label_friday" />
+
+                                <com.google.android.material.checkbox.MaterialCheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:buttonTint="@color/colorDarkerGray"
+                                    android:checked="@={viewModel.daysOfWeek.saturday}"
+                                    app:layout_constraintEnd_toEndOf="@id/label_saturday"
+                                    app:layout_constraintStart_toStartOf="@id/label_saturday"
+                                    app:layout_constraintTop_toBottomOf="@id/label_saturday" />
+
+                                <com.google.android.material.checkbox.MaterialCheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:buttonTint="@color/colorDarkerGray"
+                                    android:checked="@={viewModel.daysOfWeek.sunday}"
+                                    app:layout_constraintEnd_toEndOf="@id/label_sunday"
+                                    app:layout_constraintStart_toStartOf="@id/label_sunday"
+                                    app:layout_constraintTop_toBottomOf="@id/label_sunday" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MediHelper.TextInputLayout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:hint="Odstęp dni"
+                                android:visibility="@{viewModel.intakeDaysType == IntakeDaysType.INTERVAL}">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:clickable="true"
+                                    android:focusable="false"
+                                    android:minWidth="@dimen/form_text_view_min_width"
+                                    android:onClick="@{() -> handler.onClickSelectInterval()}"
+                                    android:text='@{"Co " + viewModel.interval.daysCount + " dni"}'
+                                    android:textAlignment="center" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility='@{viewModel.intakeDaysType == IntakeDaysType.SEQUENCE, default=gone}'>
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    style="@style/Widget.MediHelper.TextInputLayout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_weight="1"
+                                    android:hint="Dni przyjmowania">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:clickable="true"
+                                        android:focusable="false"
+                                        android:inputType="number"
+                                        android:onClick="@{() -> handler.onClickSelectIntakeDays()}"
+                                        android:text="@{`` + viewModel.sequence.intakeCount}"
+                                        android:textAlignment="center" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    style="@style/Widget.MediHelper.TextInputLayout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_weight="1"
+                                    android:hint="Dni przerwy">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:clickable="true"
+                                        android:focusable="false"
+                                        android:inputType="date"
+                                        android:onClick="@{() -> handler.onClickSelectNoIntakeDays()}"
+                                        android:text="@{`` + viewModel.sequence.notIntakeCount}"
+                                        android:textAlignment="center" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+
+                        </FrameLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

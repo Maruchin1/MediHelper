@@ -18,6 +18,7 @@
     <dimen name="form_card_layout_margin_bot">16dp</dimen>
     <dimen name="form_card_layout_margin_horizontal">16dp</dimen>
     <dimen name="form_card_layout_body_margin_top">32dp</dimen>
+    <dimen name="form_text_view_min_width">164dp</dimen>
 
     <dimen name="details_card_margin_top">16dp</dimen>
     <dimen name="details_card_margin_horizontal">12dp</dimen>
