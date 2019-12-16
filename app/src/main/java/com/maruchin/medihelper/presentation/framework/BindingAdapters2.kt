@@ -117,16 +117,3 @@ fun setBottomNavColor(bottomNavigationView: BottomNavigationView, color: String?
         }
     }
 }
-
-//CheckBox
-@BindingAdapter("app:checked")
-fun setCheckBoxChecked(checkBox: MaterialCheckBox, checked: Boolean?) {
-    if (checked != null) {
-        checkBox.isChecked = checked
-    }
-}
-
-@InverseBindingAdapter(attribute = "app:checked")
-fun getCheckBoxChecked(checkBox: MaterialCheckBox): Boolean? {
-    return checkBox.isChecked
-}

@@ -29,7 +29,7 @@ class MedicineRepoImpl(
     private val sharedPref: SharedPref
 ) : MedicineRepo {
 
-    private val medicinesCollRef: CollectionReference
+    private val collectionRef: CollectionReference
         get() = db.collection("users").document(auth.getCurrUserId()).collection("medicines")
 
     init {
@@ -38,30 +38,30 @@ class MedicineRepoImpl(
 
     override suspend fun addNew(entity: Medicine) = withContext(Dispatchers.IO) {
         val medicineDb = MedicineDb(entity)
-        medicinesCollRef.add(medicineDb)
+        collectionRef.add(medicineDb)
         return@withContext
     }
 
     override suspend fun update(entity: Medicine) = withContext(Dispatchers.IO) {
         val medicineDb = MedicineDb(entity)
-        medicinesCollRef.document(entity.medicineId).set(medicineDb)
+        collectionRef.document(entity.medicineId).set(medicineDb)
         return@withContext
     }
 
     override suspend fun deleteById(id: String) = withContext(Dispatchers.IO) {
-        medicinesCollRef.document(id).delete()
+        collectionRef.document(id).delete()
         return@withContext
     }
 
     override suspend fun getById(id: String): Medicine? = withContext(Dispatchers.IO) {
-        val doc = medicinesCollRef.document(id).get().await()
+        val doc = collectionRef.document(id).get().await()
         val medicineDb = doc.toObject(MedicineDb::class.java)
         val medicine = medicineDb?.toEntity(doc.id)
         return@withContext medicine
     }
 
     override suspend fun getLiveById(id: String): LiveData<Medicine?> = withContext(Dispatchers.IO) {
-        val docLive = medicinesCollRef.document(id).getDocumentLive()
+        val docLive = collectionRef.document(id).getDocumentLive()
         return@withContext Transformations.map(docLive) {
             val medicineDb = it.toObject(MedicineDb::class.java)
             val medicine = medicineDb?.toEntity(it.id)
@@ -70,7 +70,7 @@ class MedicineRepoImpl(
     }
 
     override suspend fun getAllList(): List<Medicine> = withContext(Dispatchers.IO) {
-        val docsQuery = medicinesCollRef.get().await()
+        val docsQuery = collectionRef.get().await()
         val medicinesList = mutableListOf<Medicine>()
         docsQuery.forEach {
             val medicineDb = it.toObject(MedicineDb::class.java)
@@ -81,7 +81,7 @@ class MedicineRepoImpl(
     }
 
     override suspend fun getAllListLive(): LiveData<List<Medicine>> = withContext(Dispatchers.IO) {
-        val docsLive = medicinesCollRef.getDocumentsLive()
+        val docsLive = collectionRef.getDocumentsLive()
         return@withContext Transformations.map(docsLive) { snapshotList ->
             val medicinesList = mutableListOf<Medicine>()
             snapshotList.forEach {

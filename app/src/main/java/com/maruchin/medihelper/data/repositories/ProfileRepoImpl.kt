@@ -23,7 +23,7 @@ class ProfileRepoImpl(
     private val sharedPref: SharedPref
 ) : ProfileRepo {
 
-    private val profilesCollRef: CollectionReference
+    private val collectionRef: CollectionReference
         get() = db.collection("users").document(auth.getCurrUserId()).collection("profiles")
 
     init {
@@ -32,30 +32,30 @@ class ProfileRepoImpl(
 
     override suspend fun addNew(entity: Profile) = withContext(Dispatchers.IO) {
         val profileDb = ProfileDb(entity)
-        profilesCollRef.add(profileDb)
+        collectionRef.add(profileDb)
         return@withContext
     }
 
     override suspend fun update(entity: Profile) = withContext(Dispatchers.IO) {
         val profileDb = ProfileDb(entity)
-        profilesCollRef.document(entity.profileId).set(profileDb)
+        collectionRef.document(entity.profileId).set(profileDb)
         return@withContext
     }
 
     override suspend fun deleteById(id: String) = withContext(Dispatchers.IO) {
-        profilesCollRef.document(id).delete()
+        collectionRef.document(id).delete()
         return@withContext
     }
 
     override suspend fun getById(id: String): Profile? = withContext(Dispatchers.IO) {
-        val doc = profilesCollRef.document(id).get().await()
+        val doc = collectionRef.document(id).get().await()
         val profileDb = doc.toObject(ProfileDb::class.java)
         val profile = profileDb?.toProfile(doc.id)
         return@withContext profile
     }
 
     override suspend fun getLiveById(id: String): LiveData<Profile?> = withContext(Dispatchers.IO) {
-        val docLive = profilesCollRef.document(id).getDocumentLive()
+        val docLive = collectionRef.document(id).getDocumentLive()
         return@withContext Transformations.map(docLive) {
             val profileDb = it.toObject(ProfileDb::class.java)
             val profile = profileDb?.toProfile(it.id)
@@ -64,7 +64,7 @@ class ProfileRepoImpl(
     }
 
     override suspend fun getAllList(): List<Profile> = withContext(Dispatchers.IO) {
-        val docsQuery = profilesCollRef.get().await()
+        val docsQuery = collectionRef.get().await()
         val profilesList = mutableListOf<Profile>()
         docsQuery.forEach {
             val profileDb = it.toObject(ProfileDb::class.java)
@@ -75,7 +75,7 @@ class ProfileRepoImpl(
     }
 
     override suspend fun getAllListLive(): LiveData<List<Profile>> = withContext(Dispatchers.IO) {
-        val docsLive = profilesCollRef.getDocumentsLive()
+        val docsLive = collectionRef.getDocumentsLive()
         return@withContext Transformations.map(docsLive) { snapshotList ->
             val profilesList = mutableListOf<Profile>()
             snapshotList.forEach {
@@ -90,7 +90,7 @@ class ProfileRepoImpl(
     }
 
     override suspend fun getMainId(): String? = withContext(Dispatchers.IO) {
-        val docs = profilesCollRef.whereEqualTo("mainPerson", true).get().await().documents
+        val docs = collectionRef.whereEqualTo("mainPerson", true).get().await().documents
         return@withContext if (docs.isNotEmpty())  docs[0].id else null
     }
 

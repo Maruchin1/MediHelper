@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionManager
 import com.maruchin.medihelper.R
@@ -18,7 +19,9 @@ import com.maruchin.medihelper.presentation.framework.BaseFragment
 import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.maruchin.medihelper.presentation.framework.shrinkOnScroll
+import com.maruchin.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddEditMedicinePlanFragment :
@@ -26,6 +29,7 @@ class AddEditMedicinePlanFragment :
 
     private val viewModel: AddEditMedicinePlanViewModel by viewModel()
     private val args: AddEditMedicinePlanFragmentArgs by navArgs()
+    private val loadingScreen: LoadingScreen by inject()
 
     fun onClickSelectStartDate() {
         SelectDateDialog().apply {
@@ -105,6 +109,10 @@ class AddEditMedicinePlanFragment :
         viewModel.deleteTimeDose(position)
     }
 
+    fun onClickSaveMedicinePlan() {
+        viewModel.saveMedicinePlan()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.bindingViewModel = viewModel
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -117,16 +125,16 @@ class AddEditMedicinePlanFragment :
         setupFab()
         setupDurationTypeChipGroup()
         setupIntakeDaysChipGroup()
-        setupTimeDoseReyclerView()
+        setupTimeDoseRecyclerView()
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        viewModel.durationType.observe(viewLifecycleOwner, Observer { type ->
+        viewModel.planType.observe(viewLifecycleOwner, Observer { type ->
             when (type) {
-                AddEditMedicinePlanViewModel.DurationType.ONCE -> checkDurationType(R.id.chip_once)
-                AddEditMedicinePlanViewModel.DurationType.PERIOD -> checkDurationType(R.id.chip_period)
-                AddEditMedicinePlanViewModel.DurationType.CONTINUOUS -> checkDurationType(R.id.chip_continuous)
+                AddEditMedicinePlanViewModel.PlanType.ONCE -> checkDurationType(R.id.chip_once)
+                AddEditMedicinePlanViewModel.PlanType.PERIOD -> checkDurationType(R.id.chip_period)
+                AddEditMedicinePlanViewModel.PlanType.CONTINUOUS -> checkDurationType(R.id.chip_continuous)
             }
         })
         viewModel.intakeDaysType.observe(viewLifecycleOwner, Observer { type ->
@@ -142,6 +150,16 @@ class AddEditMedicinePlanFragment :
             super.setupToolbarNavigation()
             startPostponedEnterTransition()
         })
+        viewModel.loadingInProgress.observe(viewLifecycleOwner, Observer { loadingInProgress ->
+            if (loadingInProgress) {
+                loadingScreen.showLoadingScreen(childFragmentManager)
+            } else {
+                loadingScreen.closeLoadingScreen()
+            }
+        })
+        viewModel.actionMedicinePlanSaved.observe(viewLifecycleOwner, Observer {
+            findNavController().popBackStack()
+        })
     }
 
     private fun setupDurationTypeChipGroup() {
@@ -149,15 +167,15 @@ class AddEditMedicinePlanFragment :
             when (checkedId) {
                 R.id.chip_once -> {
                     TransitionManager.beginDelayedTransition(root_lay)
-                    viewModel.durationType.value = AddEditMedicinePlanViewModel.DurationType.ONCE
+                    viewModel.planType.value = AddEditMedicinePlanViewModel.PlanType.ONCE
                 }
                 R.id.chip_period -> {
                     TransitionManager.beginDelayedTransition(root_lay)
-                    viewModel.durationType.value = AddEditMedicinePlanViewModel.DurationType.PERIOD
+                    viewModel.planType.value = AddEditMedicinePlanViewModel.PlanType.PERIOD
                 }
                 R.id.chip_continuous -> {
                     TransitionManager.beginDelayedTransition(root_lay)
-                    viewModel.durationType.value = AddEditMedicinePlanViewModel.DurationType.CONTINUOUS
+                    viewModel.planType.value = AddEditMedicinePlanViewModel.PlanType.CONTINUOUS
                 }
             }
         }
@@ -202,7 +220,7 @@ class AddEditMedicinePlanFragment :
         fab_save.shrinkOnScroll(scroll_view)
     }
 
-    private fun setupTimeDoseReyclerView() {
+    private fun setupTimeDoseRecyclerView() {
         recycler_view_time_dose.apply {
             adapter = TimeDoseAdapter()
         }

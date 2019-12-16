@@ -27,7 +27,8 @@ val repositoryModule = module {
     }
     single {
         MedicinePlanRepoImpl(
-
+            db = get(),
+            auth = get()
         ) as MedicinePlanRepo
     }
     single {

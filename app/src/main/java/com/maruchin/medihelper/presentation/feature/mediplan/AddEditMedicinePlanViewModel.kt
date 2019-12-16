@@ -9,6 +9,9 @@ import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.usecases.datetime.GetCurrDateUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineItemUseCase
+import com.maruchin.medihelper.domain.usecases.mediplans.SaveMedicinePlanContinuousUseCase
+import com.maruchin.medihelper.domain.usecases.mediplans.SaveMedicinePlanOnceUseCase
+import com.maruchin.medihelper.domain.usecases.mediplans.SaveMedicinePlanPeriodUseCase
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileItemUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import kotlinx.coroutines.launch
@@ -16,13 +19,16 @@ import kotlinx.coroutines.launch
 class AddEditMedicinePlanViewModel(
     private val getProfileItemUseCase: GetProfileItemUseCase,
     private val getMedicineItemUseCase: GetMedicineItemUseCase,
-    private val getCurrDateUseCase: GetCurrDateUseCase
+    private val getCurrDateUseCase: GetCurrDateUseCase,
+    private val saveMedicinePlanOnceUseCase: SaveMedicinePlanOnceUseCase,
+    private val saveMedicinePlanPeriodUseCase: SaveMedicinePlanPeriodUseCase,
+    private val saveMedicinePlanContinuousUseCase: SaveMedicinePlanContinuousUseCase
 ) : ViewModel() {
 
     val colorPrimary: LiveData<String>
     val profileName: LiveData<String>
     val medicineName: LiveData<String>
-    val durationType = MutableLiveData<DurationType>()
+    val planType = MutableLiveData<PlanType>()
     val startDate = MutableLiveData<AppDate>()
     val endDate = MutableLiveData<AppDate>()
     val intakeDaysType = MutableLiveData<IntakeDaysType>()
@@ -40,12 +46,18 @@ class AddEditMedicinePlanViewModel(
         get() = _timeDoseList
     val actionDataLoaded: LiveData<Boolean>
         get() = _actionDataLoaded
+    val loadingInProgress: LiveData<Boolean>
+        get() = _loadingInProgress
+    val actionMedicinePlanSaved: LiveData<Boolean>
+        get() = _actionMedicinePlanSaved
 
     private val _formTitle = MutableLiveData<String>("Zaplanuj lek")
     private val _interval = MutableLiveData<IntakeDays.Interval>()
     private val _sequence = MutableLiveData<IntakeDays.Sequence>()
     private val _timeDoseList = MutableLiveData<List<TimeDose>>()
     private val _actionDataLoaded = ActionLiveData()
+    private val _loadingInProgress = MutableLiveData<Boolean>(false)
+    private val _actionMedicinePlanSaved = ActionLiveData()
 
     private val profileItem = MutableLiveData<ProfileItem>()
     private val medicineItem = MutableLiveData<MedicineItem>()
@@ -100,6 +112,59 @@ class AddEditMedicinePlanViewModel(
         }
     }
 
+    fun saveMedicinePlan() = viewModelScope.launch {
+        _loadingInProgress.postValue(true)
+        when (planType.value) {
+            PlanType.ONCE -> {
+                val params = SaveMedicinePlanOnceUseCase.Params(
+                    medicinePlanId = null,
+                    profileId = profileItem.value?.profileId,
+                    medicineId = medicineItem.value?.medicineId,
+                    date = startDate.value,
+                    timeDoseList = timeDoseList.value
+                )
+                val validator = saveMedicinePlanOnceUseCase.execute(params)
+            }
+            PlanType.PERIOD -> {
+                val params = SaveMedicinePlanPeriodUseCase.Params(
+                    medicinePlanId = null,
+                    profileId = profileItem.value?.profileId,
+                    medicineId = medicineItem.value?.medicineId,
+                    startDate = startDate.value,
+                    endDate = endDate.value,
+                    intakeDays = when (intakeDaysType.value) {
+                        IntakeDaysType.EVERYDAY -> IntakeDays.Everyday
+                        IntakeDaysType.DAYS_OF_WEEK -> daysOfWeek.value
+                        IntakeDaysType.INTERVAL -> interval.value
+                        IntakeDaysType.SEQUENCE -> sequence.value
+                        else -> null
+                    },
+                    timeDoseList = timeDoseList.value
+                )
+                val validator = saveMedicinePlanPeriodUseCase.execute(params)
+            }
+            PlanType.CONTINUOUS -> {
+                val params = SaveMedicinePlanContinuousUseCase.Params(
+                    medicinePlanId = null,
+                    profileId = profileItem.value?.profileId,
+                    medicineId = medicineItem.value?.medicineId,
+                    startDate = startDate.value,
+                    intakeDays = when (intakeDaysType.value) {
+                        IntakeDaysType.EVERYDAY -> IntakeDays.Everyday
+                        IntakeDaysType.DAYS_OF_WEEK -> daysOfWeek.value
+                        IntakeDaysType.INTERVAL -> interval.value
+                        IntakeDaysType.SEQUENCE -> sequence.value
+                        else -> null
+                    },
+                    timeDoseList = timeDoseList.value
+                )
+                val validator = saveMedicinePlanContinuousUseCase.execute(params)
+            }
+        }
+        _loadingInProgress.postValue(false)
+        _actionMedicinePlanSaved.sendAction()
+    }
+
     fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
         val profileItemValue = getProfileItemUseCase.execute(args.profileId)
         val medicineItemValue = getMedicineItemUseCase.execute(args.medicineId)
@@ -110,7 +175,7 @@ class AddEditMedicinePlanViewModel(
     }
 
     private fun loadDefaultData() {
-        durationType.postValue(DurationType.ONCE)
+        planType.postValue(PlanType.ONCE)
         val currDate = getCurrDateUseCase.execute()
         startDate.postValue(currDate)
         endDate.postValue(currDate.apply { addDays(1) })
@@ -138,7 +203,7 @@ class AddEditMedicinePlanViewModel(
         )
     }
 
-    enum class DurationType {
+    enum class PlanType {
         ONCE, PERIOD, CONTINUOUS
     }
 

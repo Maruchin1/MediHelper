@@ -100,7 +100,10 @@ val viewModelModule = module {
         AddEditMedicinePlanViewModel(
             getProfileItemUseCase = get(),
             getMedicineItemUseCase = get(),
-            getCurrDateUseCase = get()
+            getCurrDateUseCase = get(),
+            saveMedicinePlanOnceUseCase = get(),
+            saveMedicinePlanPeriodUseCase = get(),
+            saveMedicinePlanContinuousUseCase = get()
         )
     }
 }
