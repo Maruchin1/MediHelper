@@ -38,41 +38,41 @@ class SelectProfileDialog : BaseDialog<DialogSelectProfileBinding>(R.layout.dial
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupPersonRecyclerView()
-        observeData()
+//        setupPersonRecyclerView()
+//        observeData()
     }
 
-    private fun setupPersonRecyclerView() = recycler_view_persons.apply {
-        adapter = PersonAdapter()
-        layoutManager = ScrollZoomLayoutManager(requireContext(), 10)
-    }
+//    private fun setupPersonRecyclerView() = recycler_view_persons.apply {
+//        adapter = PersonAdapter()
+//        layoutManager = ScrollZoomLayoutManager(requireContext(), 10)
+//    }
 
-    private fun observeData() {
-        viewModel.profileItemList.observe(viewLifecycleOwner, Observer { personItemList ->
-            val adapter = recycler_view_persons.adapter as PersonAdapter
-            adapter.updateItemsList(personItemList)
-        })
-    }
+//    private fun observeData() {
+//        viewModel.profileItemList.observe(viewLifecycleOwner, Observer { personItemList ->
+//            val adapter = recycler_view_persons.adapter as PersonAdapter
+//            adapter.updateItemsList(personItemList)
+//        })
+//    }
 
     // Inner classes
-    inner class PersonAdapter : RecyclerAdapter<ProfileItem>(
-        layoutResId = R.layout.rec_item_profile,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }
-    ) {
-
-        override fun updateItemsList(newList: List<ProfileItem>?) {
-            val listWithOneEmptyItem = mutableListOf<ProfileItem>().apply {
-                if (newList != null) {
-                    addAll(newList)
-                }
-                add(ProfileItem(profileId = "", name = "", color = "", mainPerson = false))
-            }
-            super.updateItemsList(listWithOneEmptyItem.toList())
-        }
-
-        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val personItem = itemsList[position]
-            holder.bind(personItem, this@SelectProfileDialog)
-        }
-    }
+//    inner class PersonAdapter : RecyclerAdapter<ProfileItem>(
+//        layoutResId = R.layout.rec_item_profile,
+//        areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }
+//    ) {
+//
+//        override fun updateItemsList(newList: List<ProfileItem>?) {
+//            val listWithOneEmptyItem = mutableListOf<ProfileItem>().apply {
+//                if (newList != null) {
+//                    addAll(newList)
+//                }
+//                add(ProfileItem(profileId = "", name = "", color = "", mainPerson = false))
+//            }
+//            super.updateItemsList(listWithOneEmptyItem.toList())
+//        }
+//
+//        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+//            val personItem = itemsList[position]
+//            holder.bind(personItem, this@SelectProfileDialog)
+//        }
+//    }
 }

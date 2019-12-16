@@ -59,9 +59,9 @@
                     style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/medicine_details_card_margin_start"
-                    android:layout_marginTop="@dimen/medicine_details_card_margin_top"
-                    android:layout_marginEnd="@dimen/medicine_details_card_margin_end">
+                    android:layout_marginStart="@dimen/details_card_margin_horizontal"
+                    android:layout_marginTop="@dimen/details_card_margin_top"
+                    android:layout_marginEnd="@dimen/details_card_margin_horizontal">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -85,18 +85,18 @@
                     style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/medicine_details_card_margin_start"
-                    android:layout_marginTop="@dimen/medicine_details_card_margin_top"
-                    android:layout_marginEnd="@dimen/medicine_details_card_margin_end"
+                    android:layout_marginStart="@dimen/details_card_margin_horizontal"
+                    android:layout_marginTop="@dimen/details_card_margin_top"
+                    android:layout_marginEnd="@dimen/details_card_margin_horizontal"
                     app:cardBackgroundColor="@color/colorPrimary">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/medicine_details_card_layout_margin_start"
-                        android:layout_marginTop="@dimen/medicine_details_card_layout_margin_top"
-                        android:layout_marginEnd="@dimen/medicine_details_card_layout_margin_end"
-                        android:layout_marginBottom="@dimen/medicine_details_card_layout_margin_bot">
+                        android:layout_marginStart="@dimen/details_card_layout_margin_horizontal"
+                        android:layout_marginTop="@dimen/details_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/details_card_margin_horizontal"
+                        android:layout_marginBottom="@dimen/details_card_layout_margin_bot">
 
                         <LinearLayout
                             android:id="@+id/lay_name_and_unit"
@@ -135,19 +135,19 @@
                         style="@style/Widget.MediHelper.CardView.Big"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/medicine_details_card_margin_start"
-                        android:layout_marginTop="@dimen/medicine_details_card_margin_top"
-                        android:layout_marginEnd="6dp"
-                        android:layout_marginBottom="@dimen/medicine_details_card_margin_top"
+                        android:layout_marginStart="@dimen/details_card_margin_horizontal"
+                        android:layout_marginTop="@dimen/details_card_margin_top"
+                        android:layout_marginEnd="@dimen/details_card_margin_horizontal_inner"
+                        android:layout_marginBottom="@dimen/details_card_margin_top"
                         android:layout_weight="1">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/medicine_details_card_layout_margin_start"
-                            android:layout_marginTop="@dimen/medicine_details_card_layout_margin_top"
-                            android:layout_marginEnd="@dimen/medicine_details_card_layout_margin_end"
-                            android:layout_marginBottom="@dimen/medicine_details_card_layout_margin_bot"
+                            android:layout_marginStart="@dimen/details_card_layout_margin_horizontal"
+                            android:layout_marginTop="@dimen/details_card_layout_margin_top"
+                            android:layout_marginEnd="@dimen/details_card_layout_margin_horizontal"
+                            android:layout_marginBottom="@dimen/details_card_layout_margin_bot"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -161,7 +161,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
+                                android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
                                 android:text='@{viewModel.expireDate.formatString, default="wrz 2020"}'
                                 android:textAlignment="center"
                                 android:textAppearance="@style/TextAppearance.MediHelper.Body.Big" />
@@ -173,19 +173,19 @@
                         style="@style/Widget.MediHelper.CardView.Big"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginTop="@dimen/medicine_details_card_margin_top"
-                        android:layout_marginEnd="@dimen/medicine_details_card_margin_end"
-                        android:layout_marginBottom="@dimen/medicine_details_card_margin_top"
+                        android:layout_marginStart="@dimen/details_card_margin_horizontal_inner"
+                        android:layout_marginTop="@dimen/details_card_margin_top"
+                        android:layout_marginEnd="@dimen/details_card_margin_horizontal"
+                        android:layout_marginBottom="@dimen/details_card_margin_top"
                         android:layout_weight="1">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/medicine_details_card_layout_margin_start"
-                            android:layout_marginTop="@dimen/medicine_details_card_layout_margin_top"
-                            android:layout_marginEnd="@dimen/medicine_details_card_layout_margin_end"
-                            android:layout_marginBottom="@dimen/medicine_details_card_layout_margin_bot"
+                            android:layout_marginStart="@dimen/details_card_layout_margin_horizontal"
+                            android:layout_marginTop="@dimen/details_card_layout_margin_top"
+                            android:layout_marginEnd="@dimen/details_card_layout_margin_horizontal"
+                            android:layout_marginBottom="@dimen/details_card_layout_margin_bot"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -212,16 +212,16 @@
                     style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/medicine_details_card_margin_start"
-                    android:layout_marginEnd="@dimen/medicine_details_card_margin_end">
+                    android:layout_marginStart="@dimen/details_card_margin_horizontal"
+                    android:layout_marginEnd="@dimen/details_card_margin_horizontal">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/medicine_details_card_layout_margin_start"
-                        android:layout_marginTop="@dimen/medicine_details_card_layout_margin_top"
-                        android:layout_marginEnd="@dimen/medicine_details_card_layout_margin_end"
-                        android:layout_marginBottom="@dimen/medicine_details_card_layout_margin_bot"
+                        android:layout_marginStart="@dimen/details_card_layout_margin_horizontal"
+                        android:layout_marginTop="@dimen/details_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/details_card_layout_margin_horizontal"
+                        android:layout_marginBottom="@dimen/details_card_layout_margin_bot"
                         android:gravity="center_horizontal"
                         android:orientation="vertical"
                         android:visibility='@{viewModel.medicineStateAvailable ? View.VISIBLE : View.INVISIBLE}'>
@@ -313,10 +313,10 @@
                         style="@style/Widget.MediHelper.CardView.Big"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/medicine_details_card_margin_start"
-                        android:layout_marginTop="@dimen/medicine_details_card_margin_top"
-                        android:layout_marginEnd="6dp"
-                        android:layout_marginBottom="@dimen/medicine_details_card_margin_top"
+                        android:layout_marginStart="@dimen/details_card_margin_horizontal"
+                        android:layout_marginTop="@dimen/details_card_margin_top"
+                        android:layout_marginEnd="@dimen/details_card_margin_horizontal_inner"
+                        android:layout_marginBottom="@dimen/details_card_margin_top"
                         android:layout_weight="1"
                         android:clickable="true"
                         android:focusable="true"
@@ -351,14 +351,15 @@
                         style="@style/Widget.MediHelper.CardView.Big"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginTop="@dimen/medicine_details_card_margin_top"
-                        android:layout_marginEnd="@dimen/medicine_details_card_margin_end"
-                        android:layout_marginBottom="@dimen/medicine_details_card_margin_top"
+                        android:layout_marginStart="@dimen/details_card_margin_horizontal_inner"
+                        android:layout_marginTop="@dimen/details_card_margin_top"
+                        android:layout_marginEnd="@dimen/details_card_margin_horizontal"
+                        android:layout_marginBottom="@dimen/details_card_margin_top"
                         android:layout_weight="1"
                         android:clickable="true"
                         android:focusable="true"
-                        android:foreground="?selectableItemBackground">
+                        android:foreground="?selectableItemBackground"
+                        android:onClick="@{() -> handler.onClickScheduleMedicine()}">
 
                         <LinearLayout
                             android:layout_width="match_parent"

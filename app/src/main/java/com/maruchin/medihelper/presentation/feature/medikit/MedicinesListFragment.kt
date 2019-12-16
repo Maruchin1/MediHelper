@@ -49,7 +49,6 @@ class MedicinesListFragment : BaseMainFragment<FragmentMedicinesListBinding>(R.l
         setupRecyclerView()
         super.setLightStatusBar(false)
         setupToolbarMenu()
-        observeViewModel()
     }
 
     private fun setupRecyclerView() {
@@ -57,13 +56,6 @@ class MedicinesListFragment : BaseMainFragment<FragmentMedicinesListBinding>(R.l
             adapter = MedicineAdapter()
             fab_add.hideOnScroll(this)
         }
-    }
-
-    private fun observeViewModel() {
-        viewModel.medicineItemList.observe(viewLifecycleOwner, Observer { medicineItemList ->
-            val adapter = recycler_view_medicines.adapter as MedicineAdapter
-            adapter.updateItemsList(medicineItemList)
-        })
     }
 
     private fun setupToolbarMenu() {
@@ -79,6 +71,8 @@ class MedicinesListFragment : BaseMainFragment<FragmentMedicinesListBinding>(R.l
     // Inner classes
     inner class MedicineAdapter : RecyclerAdapter<MedicineItem>(
         layoutResId = R.layout.recycler_item_medicine,
+        lifecycleOwner = viewLifecycleOwner,
+        itemsSource = viewModel.medicineItemList,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.medicineId == newItem.medicineId }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {

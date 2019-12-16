@@ -89,6 +89,18 @@
     <style name="Widget.MediHelper.CardView.Profile" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">24dp</item>
         <item name="cardBackgroundColor">@color/colorTransparent</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <style name="Widget.MediHelper.CardView.Profile.Light.Small" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardBackgroundColor">@color/colorPrimary</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <style name="Widget.MediHelper.Button" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">20dp</item>
+        <item name="iconGravity">textStart</item>
     </style>
 
     <style name="Widget.MediHelper.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
@@ -110,6 +122,14 @@
         <item name="iconTint">@color/colorWhite</item>
     </style>
 
+    <style name="Widget.MediHelper.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+<!--        <item name="android:textColor">@color/chip_single_select_text_color</item>-->
+<!--        <item name="chipBackgroundColor">@color/chip_single_select_bg</item>-->
+<!--        <item name="chipStrokeColor">@color/colorDarkerGray</item>-->
+<!--        <item name="chipStrokeWidth">1dp</item>-->
+<!--        <item name="rippleColor">@color/colorDarkerGray</item>-->
+    </style>
+
     <!--    TextAppearance-->
     <style name="TextAppearance.MediHelper.AppbarTitle" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">@color/colorWhite</item>
@@ -129,6 +149,15 @@
 
     <style name="TextAppearance.MediHelper.CardHeader" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:textColor">@color/colorTextTertiary</item>
+    </style>
+
+    <style name="TextAppearance.MediHelper.SectionHeader" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.MediHelper.SectionHeaderDescription" parent="TextAppearance.MaterialComponents.Caption">
+
     </style>
 
     <style name="TextAppearance.MediHelper.Body1" parent="TextAppearance.MaterialComponents.Body1">

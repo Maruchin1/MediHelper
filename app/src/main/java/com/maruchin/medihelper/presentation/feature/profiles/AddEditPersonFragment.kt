@@ -46,11 +46,6 @@ class AddEditPersonFragment : AppFullScreenDialog() {
     }
 
     private fun observeViewModel() {
-        viewModel.profileColorCheckboxList.observe(viewLifecycleOwner, Observer { colorCheckboxList ->
-            Log.i(TAG, "colorCheckboxList = $colorCheckboxList")
-            val adapter = recycler_view_color.adapter as PersonColorAdapter
-            adapter.updateItemsList(colorCheckboxList)
-        })
         viewModel.actionProfileSaved.observe(viewLifecycleOwner, Observer {
             dismiss()
         })
@@ -77,6 +72,8 @@ class AddEditPersonFragment : AppFullScreenDialog() {
     // Inner classes
     inner class PersonColorAdapter : RecyclerAdapter<ProfileColorCheckbox>(
         layoutResId = R.layout.recycler_item_person_color,
+        lifecycleOwner = viewLifecycleOwner,
+        itemsSource = viewModel.profileColorCheckboxList,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.color == newItem.color }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {

@@ -106,6 +106,7 @@
             android:layout_marginBottom="16dp"
             android:onClick="@{() -> handler.onClickOpenPlansList()}"
             android:src="@drawable/round_person_white_48"
+            app:fabShape="@drawable/bg_fab_profile"
             app:backgroundTint='@{viewModel.colorPrimary, default="@color/colorPrimary"}'
             app:elevation="8dp"
             app:layout_anchor="@id/bottom_nav"

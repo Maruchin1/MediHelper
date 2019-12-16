@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -45,34 +46,29 @@ class CalendarDayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.date.value = date
-        setupRecyclerView()
-        observeViewModel()
+        setupRecyclerViews()
     }
 
-    private fun observeViewModel() {
-        viewModel.morningPlannedMedicineItemList.observe(viewLifecycleOwner, Observer {
-            (recycler_view_morning_schedule.adapter as PlannedMedicineAdapter).updateItemsList(it)
-        })
-        viewModel.afternoonPlannedMedicineItemList.observe(viewLifecycleOwner, Observer {
-            (recycler_view_afternoon_schedule.adapter as PlannedMedicineAdapter).updateItemsList(it)
-        })
-        viewModel.eveningPlannedMedicineItemList.observe(viewLifecycleOwner, Observer {
-            (recycler_view_evening_schedule.adapter as PlannedMedicineAdapter).updateItemsList(it)
-        })
-    }
-
-    private fun setupRecyclerView() = listOf(
-        recycler_view_morning_schedule,
-        recycler_view_afternoon_schedule,
-        recycler_view_evening_schedule
-    ).forEach {
-        it.adapter = PlannedMedicineAdapter()
-        it.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+    private fun setupRecyclerViews() {
+        recycler_view_morning_schedule.apply {
+            adapter = PlannedMedicineAdapter(viewModel.morningPlannedMedicineItemList)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
+        recycler_view_afternoon_schedule.apply {
+            adapter = PlannedMedicineAdapter(viewModel.afternoonPlannedMedicineItemList)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
+        recycler_view_evening_schedule.apply {
+            adapter = PlannedMedicineAdapter(viewModel.eveningPlannedMedicineItemList)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
     }
 
     // Inner classes
-    inner class PlannedMedicineAdapter : RecyclerAdapter<PlannedMedicineItem>(
+    inner class PlannedMedicineAdapter(itemsSource: LiveData<List<PlannedMedicineItem>>) : RecyclerAdapter<PlannedMedicineItem>(
         layoutResId = R.layout.recycler_item_planned_medicine,
+        lifecycleOwner = viewLifecycleOwner,
+        itemsSource = itemsSource,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedMedicineId == newItem.plannedMedicineId }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {

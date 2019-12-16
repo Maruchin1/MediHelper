@@ -6,13 +6,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class RecyclerAdapter<T>(
     private val layoutResId: Int,
-//    private val lifecycleOwner: LifecycleOwner,
-//    private val itemsSource: LiveData<List<T>>,
+    lifecycleOwner: LifecycleOwner,
+    itemsSource: LiveData<List<T>>,
     areItemsTheSameFun: ((oldItem: T, newItem: T) -> Boolean)? = null
 ) : RecyclerView.Adapter<RecyclerItemViewHolder>() {
 
@@ -23,9 +24,21 @@ abstract class RecyclerAdapter<T>(
         if (areItemsTheSameFun != null) {
             diffCallback = DiffCallback(areItemsTheSameFun)
         }
+        itemsSource.observe(lifecycleOwner, Observer { list ->
+            updateItemsList(list)
+        })
     }
 
-    open fun updateItemsList(newList: List<T>?) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
+        val binding: ViewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), layoutResId, parent, false)
+        return RecyclerItemViewHolder(binding)
+    }
+
+    override fun getItemCount(): Int {
+        return itemsList.size
+    }
+
+    private fun updateItemsList(newList: List<T>?) {
         when {
             newList == null -> {
                 itemsList.clear()
@@ -44,14 +57,5 @@ abstract class RecyclerAdapter<T>(
                 diffResult.dispatchUpdatesTo(this)
             }
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
-        val binding: ViewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), layoutResId, parent, false)
-        return RecyclerItemViewHolder(binding)
-    }
-
-    override fun getItemCount(): Int {
-        return itemsList.size
     }
 }

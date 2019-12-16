@@ -40,22 +40,6 @@ class MedicineInfoDialog :
         super.onViewCreated(view, savedInstanceState)
         viewModel.setArgs(args)
         setupRecyclerView()
-        observeViewModel()
-    }
-
-    private fun observeViewModel() {
-        viewModel.searchResults.observe(viewLifecycleOwner, Observer { list ->
-            val adapter = recycler_view_search_result.adapter
-            if (adapter is SearchResultAdapter) {
-                adapter.updateItemsList(list)
-            }
-        })
-        viewModel.medicineInfo.observe(viewLifecycleOwner, Observer { list ->
-            val adapter = recycler_view_search_result.adapter
-            if (adapter is MedicineInfoAdapter) {
-                adapter.updateItemsList(list)
-            }
-        })
     }
 
     private fun setupRecyclerView() {
@@ -74,6 +58,8 @@ class MedicineInfoDialog :
 
     inner class SearchResultAdapter : RecyclerAdapter<MedicineInfoSearchResult>(
         layoutResId = R.layout.rec_item_medicine_info_search_result,
+        lifecycleOwner = viewLifecycleOwner,
+        itemsSource = viewModel.searchResults,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.medicineName == newItem.medicineName }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
@@ -84,6 +70,8 @@ class MedicineInfoDialog :
 
     inner class MedicineInfoAdapter : RecyclerAdapter<MedicineInfo>(
         layoutResId = R.layout.rec_item_medicine_info,
+        lifecycleOwner = viewLifecycleOwner,
+        itemsSource = viewModel.medicineInfo,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.header == newItem.header }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {

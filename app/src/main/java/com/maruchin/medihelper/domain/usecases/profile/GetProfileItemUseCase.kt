@@ -1,14 +1,14 @@
 package com.maruchin.medihelper.domain.usecases.profile
 
-import com.maruchin.medihelper.domain.model.ProfileSimpleItem
+import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.repositories.ProfileRepo
 
-class GetProfileSimpleItemUseCase(
+class GetProfileItemUseCase(
     private val profileRepo: ProfileRepo
 ) {
-    suspend fun execute(profileId: String): ProfileSimpleItem? {
+    suspend fun execute(profileId: String): ProfileItem? {
         return profileRepo.getById(profileId)?.let { profile ->
-            ProfileSimpleItem(profile)
+            ProfileItem(profile)
         }
     }
 }

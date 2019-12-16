@@ -24,6 +24,6 @@
         android:paddingTop="24dp"
         android:paddingBottom="24dp"
         android:text='@{displayData.medicineName, default="Nazwa leku"}'
-        android:textAppearance="@style/TextAppearance.MediHelper.Body1" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
 </layout>

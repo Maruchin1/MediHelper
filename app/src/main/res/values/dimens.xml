@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="appbar_height">128dp</dimen>
+    <dimen name="appbar_height_overlap">224</dimen>
 
     <dimen name="bottom_dialog_header_padding_hor">8dp</dimen>
     <dimen name="bottom_dialog_header_text_margin_start">16dp</dimen>
+    <dimen name="bottom_dialog_option_height">56dp</dimen>
+    <dimen name="bottom_dialog_option_padding_horizontal">16dp</dimen>
+    <dimen name="bottom_dialog_option_text_margin_start">32dp</dimen>
 
-    <dimen name="form_card_margin_top">24dp</dimen>
-    <dimen name="form_card_margin_start">0dp</dimen>
-    <dimen name="form_card_margin_end">0dp</dimen>
-
+    <dimen name="form_header_margin_top">32dp</dimen>
+    <dimen name="form_header_margin_horizontal">12dp</dimen>
+    <dimen name="form_header_description_margin_top">4dp</dimen>
+    <dimen name="form_card_margin_top">8dp</dimen>
+    <dimen name="form_card_margin_horizontal">0dp</dimen>
     <dimen name="form_card_layout_margin_top">8dp</dimen>
-    <dimen name="form_card_layout_margin_start">12dp</dimen>
-    <dimen name="form_card_layout_margin_end">12dp</dimen>
     <dimen name="form_card_layout_margin_bot">16dp</dimen>
-
-    <dimen name="form_card_layout_header_text_margin_start">16dp</dimen>
+    <dimen name="form_card_layout_margin_horizontal">16dp</dimen>
     <dimen name="form_card_layout_body_margin_top">32dp</dimen>
 
-    <dimen name="medicine_details_card_margin_start">12dp</dimen>
-    <dimen name="medicine_details_card_margin_end">12dp</dimen>
-    <dimen name="medicine_details_card_margin_top">16dp</dimen>
+    <dimen name="details_card_margin_top">16dp</dimen>
+    <dimen name="details_card_margin_horizontal">12dp</dimen>
+    <dimen name="details_card_margin_horizontal_inner">6dp</dimen>
+    <dimen name="details_card_layout_margin_top">8dp</dimen>
+    <dimen name="details_card_layout_margin_bot">20dp</dimen>
+    <dimen name="details_card_layout_margin_horizontal">16dp</dimen>
+    <dimen name="details_card_layout_body_margin_top">16dp</dimen>
 
-    <dimen name="medicine_details_card_layout_margin_top">8dp</dimen>
-    <dimen name="medicine_details_card_layout_margin_start">16dp</dimen>
-    <dimen name="medicine_details_card_layout_margin_end">16dp</dimen>
-    <dimen name="medicine_details_card_layout_margin_bot">16dp</dimen>
+
 </resources>

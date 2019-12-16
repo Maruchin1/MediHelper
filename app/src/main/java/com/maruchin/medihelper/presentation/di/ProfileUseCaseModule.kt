@@ -5,7 +5,7 @@ import org.koin.dsl.module
 
 val profileUseCaseModule = module {
     factory {
-        GetProfileSimpleItemUseCase(
+        GetProfileItemUseCase(
             profileRepo = get()
         )
     }

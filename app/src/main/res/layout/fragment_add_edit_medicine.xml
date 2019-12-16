@@ -79,16 +79,16 @@
                     style="@style/Widget.MediHelper.CardView.FullWidth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/form_card_margin_start"
+                    android:layout_marginStart="@dimen/form_card_margin_horizontal"
                     android:layout_marginTop="@dimen/form_card_margin_top"
-                    android:layout_marginEnd="@dimen/form_card_margin_end">
+                    android:layout_marginEnd="@dimen/form_card_margin_horizontal">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/form_card_layout_margin_start"
+                        android:layout_marginStart="@dimen/form_card_layout_margin_horizontal"
                         android:layout_marginTop="@dimen/form_card_layout_margin_top"
-                        android:layout_marginEnd="@dimen/form_card_layout_margin_end"
+                        android:layout_marginEnd="@dimen/form_card_layout_margin_horizontal"
                         android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
                         android:orientation="vertical">
 
@@ -164,16 +164,16 @@
                     style="@style/Widget.MediHelper.CardView.FullWidth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/form_card_margin_start"
+                    android:layout_marginStart="@dimen/form_card_margin_horizontal"
                     android:layout_marginTop="@dimen/form_card_margin_top"
-                    android:layout_marginEnd="@dimen/form_card_margin_end">
+                    android:layout_marginEnd="@dimen/form_card_margin_horizontal">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/form_card_layout_margin_start"
+                        android:layout_marginStart="@dimen/form_card_layout_margin_horizontal"
                         android:layout_marginTop="@dimen/form_card_layout_margin_top"
-                        android:layout_marginEnd="@dimen/form_card_layout_margin_end"
+                        android:layout_marginEnd="@dimen/form_card_layout_margin_horizontal"
                         android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
                         android:orientation="vertical">
 
@@ -250,17 +250,17 @@
                     style="@style/Widget.MediHelper.CardView.FullWidth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/form_card_margin_start"
+                    android:layout_marginStart="@dimen/form_card_margin_horizontal"
                     android:layout_marginTop="@dimen/form_card_margin_top"
-                    android:layout_marginEnd="@dimen/form_card_margin_end"
+                    android:layout_marginEnd="@dimen/form_card_margin_horizontal"
                     android:layout_marginBottom="32dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/form_card_layout_margin_start"
+                        android:layout_marginStart="@dimen/form_card_layout_margin_horizontal"
                         android:layout_marginTop="@dimen/form_card_layout_margin_top"
-                        android:layout_marginEnd="@dimen/form_card_layout_margin_end"
+                        android:layout_marginEnd="@dimen/form_card_layout_margin_horizontal"
                         android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
                         android:orientation="vertical">
 

@@ -5,7 +5,7 @@ import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.MedicineStateData
 import com.maruchin.medihelper.domain.model.MedicineDetails
-import com.maruchin.medihelper.domain.model.ProfileSimpleItem
+import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.usecases.datetime.CalcDaysRemainUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDetailsUseCase
@@ -30,7 +30,7 @@ class MedicineDetailsViewModel(
     val daysRemain: LiveData<Int>
     val stateData: LiveData<MedicineStateData>
     val profileSimpleItemListAvailable: LiveData<Boolean>
-    val profileSimpleItemList: LiveData<List<ProfileSimpleItem>>
+    val profileSimpleItemList: LiveData<List<ProfileItem>>
 
     val actionDataLoaded: LiveData<Boolean>
         get() = _actionDataLoaded

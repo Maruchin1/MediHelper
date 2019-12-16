@@ -10,7 +10,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.domain.model.ProfileSimpleItem" />
+            type="com.maruchin.medihelper.domain.model.ProfileItem" />
     </data>
 
     <LinearLayout

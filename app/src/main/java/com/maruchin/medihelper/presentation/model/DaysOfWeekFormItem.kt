@@ -3,7 +3,6 @@ package com.maruchin.medihelper.presentation.model
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
-import com.maruchin.medihelper.domain.entities.DaysOfWeek
 
 data class DaysOfWeekFormItem(
     private var _monday: Boolean = false,
@@ -64,17 +63,17 @@ data class DaysOfWeekFormItem(
             notifyPropertyChanged(BR.sunday)
         }
 
-    constructor(daysOfWeek: DaysOfWeek) : this(
-        daysOfWeek.monday,
-        daysOfWeek.tuesday,
-        daysOfWeek.wednesday,
-        daysOfWeek.thursday,
-        daysOfWeek.friday,
-        daysOfWeek.saturday,
-        daysOfWeek.sunday
-    )
-
-    fun toDaysOfWeek() = DaysOfWeek(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
+//    constructor(daysOfWeek: DaysOfWeek) : this(
+//        daysOfWeek.monday,
+//        daysOfWeek.tuesday,
+//        daysOfWeek.wednesday,
+//        daysOfWeek.thursday,
+//        daysOfWeek.friday,
+//        daysOfWeek.saturday,
+//        daysOfWeek.sunday
+//    )
+//
+//    fun toDaysOfWeek() = DaysOfWeek(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
 
     fun isAnySelected(): Boolean {
         return arrayOf(monday, tuesday, wednesday, thursday, friday, saturday, sunday).any { it }

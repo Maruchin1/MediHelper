@@ -22,10 +22,10 @@ class AddEditMedicinePlanViewModel(
     val selectedMedicineId = MutableLiveData<Int>()
     val selectedMedicineAvailable: LiveData<Boolean>
     val selectedMedicineShortInfo: LiveData<MedicineShortInfo>
-    val durationType = MutableLiveData<DurationType>()
+//    val durationType = MutableLiveData<DurationType>()
     val startDate = MutableLiveData<AppDate>()
     val endDate = MutableLiveData<AppDate>()
-    val daysType = MutableLiveData<DaysType>()
+//    val daysType = MutableLiveData<DaysType>()
     val daysOfWeek = MutableLiveData<DaysOfWeekFormItem>()
     val intervalOfDays = MutableLiveData<Int>()
 
@@ -140,10 +140,10 @@ class AddEditMedicinePlanViewModel(
 
     private fun isFormValid(): Boolean {
         val medicineId = selectedMedicineId.value
-        val durationType = durationType.value
+//        val durationType = durationType.value
         val startDate = startDate.value
         val endDate = endDate.value
-        val daysType = daysType.value
+//        val daysType = daysType.value
         val daysOfWeek = daysOfWeek.value
 
         val medicineError = if (medicineId == null) {
@@ -152,15 +152,15 @@ class AddEditMedicinePlanViewModel(
         val startDateError = if (startDate == null) {
             "Pole jest wymagane"
         } else null
-        val endDateError = if (durationType == DurationType.PERIOD && endDate == null) {
-            "Pole jest wymagane"
-        } else null
-        val daysOfWeekError = if (
-            daysType == DaysType.DAYS_OF_WEEK &&
-            (daysOfWeek == null || !daysOfWeek.isAnySelected())
-        ) {
-            "Nie wybrano dni tygodnia"
-        } else null
+//        val endDateError = if (durationType == DurationType.PERIOD && endDate == null) {
+//            "Pole jest wymagane"
+//        } else null
+//        val daysOfWeekError = if (
+//            daysType == DaysType.DAYS_OF_WEEK &&
+//            (daysOfWeek == null || !daysOfWeek.isAnySelected())
+//        ) {
+//            "Nie wybrano dni tygodnia"
+//        } else null
         val datesOrderError = if (
             startDate != null &&
             endDate != null &&
@@ -171,47 +171,48 @@ class AddEditMedicinePlanViewModel(
 
         _errorGlobal.postValue(medicineError)
         _errorStartDate.postValue(startDateError)
-        _errorEndDate.postValue(endDateError)
+//        _errorEndDate.postValue(endDateError)
         if (medicineError == null) {
-            _errorGlobal.postValue(daysOfWeekError)
+//            _errorGlobal.postValue(daysOfWeekError)
         }
-        if (startDateError == null && endDateError == null) {
-            _errorStartDate.postValue(datesOrderError)
-            _errorEndDate.postValue(datesOrderError)
-        }
+//        if (startDateError == null && endDateError == null) {
+//            _errorStartDate.postValue(datesOrderError)
+//            _errorEndDate.postValue(datesOrderError)
+//        }
 
-        return arrayOf(medicineError, startDateError, endDateError, daysOfWeekError, datesOrderError).all { it == null }
+//        return arrayOf(medicineError, startDateError, endDateError, daysOfWeekError, datesOrderError).all { it == null }
+        return true
     }
 
     private fun setMedicinePlanData(medicinePlan: MedicinePlan) {
-        selectedMedicineId.postValue(medicinePlan.medicineId)
-        durationType.postValue(medicinePlan.durationType)
-        startDate.postValue(medicinePlan.startDate)
-        endDate.postValue(medicinePlan.endDate)
-        daysType.postValue(medicinePlan.daysType)
-        daysOfWeek.postValue(medicinePlan.daysOfWeek?.let { DaysOfWeekFormItem(it) })
-        intervalOfDays.postValue(medicinePlan.intervalOfDays)
-        _timeDoseFormItemList.postValue(medicinePlan.timeDoseList.map {
-            TimeDoseFormItem(it, selectedMedicine.value?.unit)
-        }.toMutableList())
+//        selectedMedicineId.postValue(medicinePlan.medicineId)
+//        durationType.postValue(medicinePlan.durationType)
+//        startDate.postValue(medicinePlan.startDate)
+//        endDate.postValue(medicinePlan.endDate)
+//        daysType.postValue(medicinePlan.daysType)
+//        daysOfWeek.postValue(medicinePlan.daysOfWeek?.let { DaysOfWeekFormItem(it) })
+//        intervalOfDays.postValue(medicinePlan.intervalOfDays)
+//        _timeDoseFormItemList.postValue(medicinePlan.timeDoseList.map {
+//            TimeDoseFormItem(it, selectedMedicine.value?.unit)
+//        }.toMutableList())
     }
 
     private fun setEmptyMedicinePlanData() {
-        selectedMedicineId.postValue(null)
-        durationType.postValue(DurationType.ONCE)
-        startDate.postValue(dateTimeUseCases.getCurrDate())
-        endDate.postValue(null)
-        daysType.postValue(null)
-        daysOfWeek.postValue(DaysOfWeekFormItem())
-        intervalOfDays.postValue(1)
-        _timeDoseFormItemList.postValue(
-            mutableListOf(
-                TimeDoseFormItem(
-                    time = AppTime(8, 0),
-                    doseSize = 1f,
-                    medicineUnit = selectedMedicine.value?.unit ?: "--"
-                )
-            )
-        )
+//        selectedMedicineId.postValue(null)
+//        durationType.postValue(DurationType.ONCE)
+//        startDate.postValue(dateTimeUseCases.getCurrDate())
+//        endDate.postValue(null)
+//        daysType.postValue(null)
+//        daysOfWeek.postValue(DaysOfWeekFormItem())
+//        intervalOfDays.postValue(1)
+//        _timeDoseFormItemList.postValue(
+//            mutableListOf(
+//                TimeDoseFormItem(
+//                    time = AppTime(8, 0),
+//                    doseSize = 1f,
+//                    medicineUnit = selectedMedicine.value?.unit ?: "--"
+//                )
+//            )
+//        )
     }
 }

@@ -35,10 +35,6 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
     }
 
     private fun observeViewModel() {
-        viewModel.profileItems.observe(viewLifecycleOwner, Observer { list ->
-            val adapter = recycler_view_profile.adapter as ProfileAdapter
-            adapter.updateItemsList(list)
-        })
         viewModel.selectedProfilePosition.observe(viewLifecycleOwner, Observer { position ->
             recycler_view_profile.scrollToPosition(position)
         })
@@ -68,6 +64,8 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
 
     inner class ProfileAdapter : RecyclerAdapter<ProfileItem>(
         layoutResId = R.layout.rec_item_profile,
+        lifecycleOwner = viewLifecycleOwner,
+        itemsSource = viewModel.profileItems,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {

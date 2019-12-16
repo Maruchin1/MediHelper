@@ -2,27 +2,23 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-
         <variable
-            name="handler"
-            type="com.maruchin.medihelper.presentation.feature.profiles.SelectProfileDialog" />
+            name="handle"
+            type="com.maruchin.medihelper.presentation.dialogs.SelectProfileDialog" />
     </data>
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_bottom_dialog">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_persons"
+            android:id="@+id/recycler_view_profile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/rec_item_profile" />
-
-    </LinearLayout>
-
+            android:orientation="horizontal"
+            tools:listitem="@layout/rec_item_select_profile"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

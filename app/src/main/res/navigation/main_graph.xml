@@ -77,6 +77,13 @@
         <action
             android:id="@+id/toMedicineInfo"
             app:destination="@id/medicineInfoDialog" />
+        <action
+            android:id="@+id/toAddEditMedicinePlanFragment"
+            app:destination="@id/addEditMedicinePlanFragment2"
+            app:enterAnim="@anim/slide_in_end"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_end" />
     </fragment>
     <dialog
         android:id="@+id/plannedMedicineOptionsDialog"
@@ -105,9 +112,20 @@
         android:id="@+id/profileDialog"
         android:name="com.maruchin.medihelper.presentation.feature.calendar.ProfileDialog"
         android:label="ProfileDialog"
-        tools:layout="@layout/dialog_profile" >
+        tools:layout="@layout/dialog_profile">
         <action
             android:id="@+id/toAddEditProfileFragment"
             app:destination="@id/addEditPersonFragment" />
     </dialog>
+    <fragment
+        android:id="@+id/addEditMedicinePlanFragment2"
+        android:name="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanFragment"
+        tools:layout="@layout/fragment_add_edit_medicine_plan" >
+        <argument
+            android:name="profileId"
+            app:argType="string" />
+        <argument
+            android:name="medicineId"
+            app:argType="string" />
+    </fragment>
 </navigation>

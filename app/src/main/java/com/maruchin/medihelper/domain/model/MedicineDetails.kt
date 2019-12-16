@@ -13,7 +13,7 @@ data class MedicineDetails(
     val expireDate: AppExpireDate,
     val stateData: MedicineStateData?,
     val pictureName: String?,
-    val profileSimpleItemList: List<ProfileSimpleItem>
+    val profileSimpleItemList: List<ProfileItem>
 ) {
     constructor(medicine: Medicine, profileList: List<Profile>) : this(
         medicineId = medicine.medicineId,
@@ -23,10 +23,11 @@ data class MedicineDetails(
         stateData = medicine.stateData,
         pictureName = medicine.pictureName,
         profileSimpleItemList = profileList.map {
-            ProfileSimpleItem(
+            ProfileItem(
                 profileId = it.profileId,
                 name = it.name,
-                color = it.color
+                color = it.color,
+                mainPerson = it.mainPerson
             )
         }
     )

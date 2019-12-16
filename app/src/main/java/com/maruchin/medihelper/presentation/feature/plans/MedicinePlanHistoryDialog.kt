@@ -35,43 +35,43 @@ class MedicinePlanHistoryDialog : AppDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        viewModel.setArgs(args)
-        setupHistoryRecyclerView()
-        observeViewModel()
+//        setupHistoryRecyclerView()
+//        observeViewModel()
     }
 
-    private fun observeViewModel() {
-        viewModel.historyItemList.observe(viewLifecycleOwner, Observer { historyItemDisplayDataList ->
-            val adapter = recycler_view_history.adapter as HistoryAdapter
-            adapter.updateItemsList(historyItemDisplayDataList)
-        })
-    }
+//    private fun observeViewModel() {
+//        viewModel.historyItemList.observe(viewLifecycleOwner, Observer { historyItemDisplayDataList ->
+//            val adapter = recycler_view_history.adapter as HistoryAdapter
+//            adapter.updateItemsList(historyItemDisplayDataList)
+//        })
+//    }
 
-    private fun setupHistoryRecyclerView() {
-        recycler_view_history.apply {
-            adapter = HistoryAdapter()
-            layoutManager = CenterLayoutManager(
-                context,
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-        }
-    }
+//    private fun setupHistoryRecyclerView() {
+//        recycler_view_history.apply {
+//            adapter = HistoryAdapter()
+//            layoutManager = CenterLayoutManager(
+//                context,
+//                LinearLayoutManager.HORIZONTAL,
+//                false
+//            )
+//        }
+//    }
 
-    inner class HistoryAdapter : RecyclerAdapter<MedicinePlanHistoryItem>(
-        layoutResId = R.layout.recycler_item_history,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedDate == newItem.plannedDate }
-    ) {
-        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val historyItemDisplayData = itemsList[position]
-            holder.bind(historyItemDisplayData, this@MedicinePlanHistoryDialog)
-            holder.view.lay_history_checkboxes.apply {
-                removeAllViews()
-                historyItemDisplayData.historyCheckboxList.forEach { historyCheckbox ->
-                    val binding = DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, R.layout.view_history_checkbox, this, true)
-                    binding.setVariable(BR.displayData, historyCheckbox)
-                }
-            }
-        }
-    }
+//    inner class HistoryAdapter : RecyclerAdapter<MedicinePlanHistoryItem>(
+//        layoutResId = R.layout.recycler_item_history,
+//        areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedDate == newItem.plannedDate }
+//    ) {
+//        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+//            val historyItemDisplayData = itemsList[position]
+//            holder.bind(historyItemDisplayData, this@MedicinePlanHistoryDialog)
+//            holder.view.lay_history_checkboxes.apply {
+//                removeAllViews()
+//                historyItemDisplayData.historyCheckboxList.forEach { historyCheckbox ->
+//                    val binding = DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, R.layout.view_history_checkbox, this, true)
+//                    binding.setVariable(BR.displayData, historyCheckbox)
+//                }
+//            }
+//        }
+//    }
 
 }

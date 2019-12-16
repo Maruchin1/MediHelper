@@ -8,10 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicinePlanListHostBinding
-import com.maruchin.medihelper.domain.entities.MedicinePlanType
 import com.maruchin.medihelper.presentation.MainActivity
 import com.maruchin.medihelper.presentation.framework.bind
 import kotlinx.android.synthetic.main.fragment_medicine_plan_list_host.*
@@ -54,29 +52,29 @@ class MedicinePlanListHostFragment : Fragment() {
     }
 
     private fun setupTabs() {
-        view_pager_medicine_plan_list.adapter = MedicinePlanListPagerAdapter()
-        tab_layout.setupWithViewPager(view_pager_medicine_plan_list)
+//        view_pager_medicine_plan_list.adapter = MedicinePlanListPagerAdapter()
+//        tab_layout.setupWithViewPager(view_pager_medicine_plan_list)
     }
 
     // Inner classes
-    inner class MedicinePlanListPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-
-        private val pagesList = listOf(
-            MedicinePlanListFragment().apply { medicinePlanType = MedicinePlanType.ONGOING },
-            MedicinePlanListFragment().apply { medicinePlanType = MedicinePlanType.ENDED }
-        )
-
-        override fun getCount(): Int {
-            return pagesList.size
-        }
-
-        override fun getItem(position: Int): Fragment {
-            return pagesList[position]
-        }
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return pagesList[position].medicinePlanType?.title
-        }
-
-    }
+//    inner class MedicinePlanListPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+//
+////        private val pagesList = listOf(
+////            MedicinePlanListFragment().apply { medicinePlanType = MedicinePlanType.ONGOING },
+////            MedicinePlanListFragment().apply { medicinePlanType = MedicinePlanType.ENDED }
+////        )
+//
+//        override fun getCount(): Int {
+//            return pagesList.size
+//        }
+//
+//        override fun getItem(position: Int): Fragment {
+//            return pagesList[position]
+//        }
+//
+//        override fun getPageTitle(position: Int): CharSequence? {
+//            return pagesList[position].medicinePlanType?.title
+//        }
+//
+//    }
 }

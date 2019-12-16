@@ -9,28 +9,22 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
-import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
-import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.maruchin.medihelper.databinding.FragmentMedicinePlanListBinding
-import com.maruchin.medihelper.domain.entities.MedicinePlanType
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
-import com.maruchin.medihelper.presentation.model.MedicinePlanItem
-import kotlinx.android.synthetic.main.fragment_medicine_plan_list.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class MedicinePlanListFragment : Fragment() {
 
-    var medicinePlanType: MedicinePlanType? = null
-        set(value) {
-            field = value
-            when (medicinePlanType) {
-                MedicinePlanType.ENDED -> unavailableMessage = "Brak zakończonych planów"
-                MedicinePlanType.ONGOING -> unavailableMessage = "Brak trwających planów"
-            }
-        }
+//    var medicinePlanType: MedicinePlanType? = null
+//        set(value) {
+//            field = value
+//            when (medicinePlanType) {
+//                MedicinePlanType.ENDED -> unavailableMessage = "Brak zakończonych planów"
+//                MedicinePlanType.ONGOING -> unavailableMessage = "Brak trwających planów"
+//            }
+//        }
     var unavailableMessage = ""
     val medicinePlanAvailableLive = MutableLiveData(false)
     private val viewModel: MedicinePlanListViewModel by sharedViewModel(from = { parentFragment!! })
@@ -67,37 +61,37 @@ class MedicinePlanListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+//        setupRecyclerView()
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        medicinePlanType?.let {
-            val medicinePlanItemList = when (medicinePlanType) {
-                MedicinePlanType.ONGOING -> viewModel.medicinePlanItemOngoingList
-                MedicinePlanType.ENDED -> viewModel.medicinePlanItemEndedList
-                else -> null
-            }
-            medicinePlanItemList?.observe(viewLifecycleOwner, Observer { medicinePlanList ->
-                val adapter = recycler_view_medicine_plan.adapter as MedicinePlanAdapter
-                adapter.updateItemsList(medicinePlanList)
-                medicinePlanAvailableLive.value = !medicinePlanList.isNullOrEmpty()
-            })
-        }
+//        medicinePlanType?.let {
+//            val medicinePlanItemList = when (medicinePlanType) {
+//                MedicinePlanType.ONGOING -> viewModel.medicinePlanItemOngoingList
+//                MedicinePlanType.ENDED -> viewModel.medicinePlanItemEndedList
+//                else -> null
+//            }
+//            medicinePlanItemList?.observe(viewLifecycleOwner, Observer { medicinePlanList ->
+////                val adapter = recycler_view_medicine_plan.adapter as MedicinePlanAdapter
+////                adapter.updateItemsList(medicinePlanList)
+////                medicinePlanAvailableLive.value = !medicinePlanList.isNullOrEmpty()
+//            })
+//        }
     }
 
-    private fun setupRecyclerView() {
-        recycler_view_medicine_plan.adapter = MedicinePlanAdapter()
-    }
+//    private fun setupRecyclerView() {
+//        recycler_view_medicine_plan.adapter = MedicinePlanAdapter()
+//    }
 
     // Inner classes
-    inner class MedicinePlanAdapter : RecyclerAdapter<MedicinePlanItem>(
-        layoutResId = R.layout.recycler_item_medicine_plan,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.medicinePlanId == newItem.medicinePlanId }
-    ) {
-        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val medicinePlanItem = itemsList[position]
-            holder.bind(medicinePlanItem, this@MedicinePlanListFragment)
-        }
-    }
+//    inner class MedicinePlanAdapter : RecyclerAdapter<MedicinePlanItem>(
+//        layoutResId = R.layout.recycler_item_medicine_plan,
+//        areItemsTheSameFun = { oldItem, newItem -> oldItem.medicinePlanId == newItem.medicinePlanId }
+//    ) {
+//        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+//            val medicinePlanItem = itemsList[position]
+//            holder.bind(medicinePlanItem, this@MedicinePlanListFragment)
+//        }
+//    }
 }

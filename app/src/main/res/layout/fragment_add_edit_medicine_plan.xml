@@ -7,459 +7,492 @@
 
         <import type="android.view.View" />
 
-        <variable
-            name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel" />
+        <import type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel.DurationType" />
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.plans.AddEditMedicinePlanFragment" />
+            type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackground"
-        android:fitsSystemWindows="true"
-        tools:context=".presentation.feature.plans.AddEditMedicinePlanFragment">
+        android:background="@color/colorBackground">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@{viewModel.colorPrimaryId}">
+            android:layout_height="224dp"
+            android:background="@drawable/bg_appbar_round"
+            android:theme="@style/ThemeOverlay.MediHelper.Appbar">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-                app:titleEnabled="false">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="?actionBarSize">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_horizontal"
-                        android:onClick="@{() -> handler.onClickSelectPerson()}"
-                        android:orientation="vertical"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp"
-                        app:layout_collapseMode="none">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardBackgroundColor="@color/colorTransparent"
-                            app:cardCornerRadius="24dp"
-                            app:cardElevation="0dp"
-                            app:strokeColor="@color/colorWhite"
-                            app:strokeWidth="3dp">
-
-                            <ImageView
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_margin="8dp"
-                                android:src="@drawable/round_person_24"
-                                android:tint="@color/colorWhite" />
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text='@{viewModel.selectedPersonName, default="Nazwa osoby"}'
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                            android:textColor="@color/colorWhite" />
-                    </LinearLayout>
-                </FrameLayout>
+                android:layout_height="match_parent"
+                app:expandedTitleMarginBottom="120dp"
+                app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
-                    android:background="@{viewModel.colorPrimaryId}"
                     android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                     app:layout_collapseMode="pin"
-                    app:menu="@menu/toolbar_menu_add_edit"
                     app:navigationIcon="@drawable/round_close_24"
-                    app:title='@{viewModel.formTitle, default="Zaplanuj lek"}' />
-
+                    app:title='Zaplanuj lek' />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
+            app:behavior_overlapTop="82dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/AppTheme.Widget.CardView"
+                <LinearLayout
+                    android:id="@+id/lay_profile_medicine"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/form_card_margin_start"
-                    android:layout_marginTop="@dimen/form_card_margin_top"
-                    android:layout_marginEnd="@dimen/form_card_margin_end"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?selectableItemBackground"
-                    android:onClick="@{() -> handler.onClickSelectMedicine()}">
+                    android:layout_height="wrap_content">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <com.google.android.material.card.MaterialCardView
+                        style="@style/Widget.MediHelper.CardView.Big"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:orientation="vertical">
+                        android:layout_marginStart="@dimen/details_card_margin_horizontal"
+                        android:layout_marginTop="@dimen/details_card_margin_top"
+                        android:layout_marginEnd="@dimen/details_card_margin_horizontal_inner"
+                        android:layout_marginBottom="@dimen/details_card_margin_top"
+                        android:layout_weight="1">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-
-                            <ImageView
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:src="@drawable/pill"
-                                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="Lek do zaplanowania"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                android:textColor='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginStart="@dimen/details_card_layout_margin_horizontal"
+                            android:layout_marginTop="@dimen/details_card_layout_margin_top"
+                            android:layout_marginEnd="@dimen/details_card_layout_margin_horizontal"
+                            android:layout_marginBottom="@dimen/details_card_layout_margin_bot"
+                            android:gravity="center"
                             android:orientation="vertical">
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="8dp"
+                                    android:src="@drawable/round_person_white_18"
+                                    android:tint="@color/colorDarkerGray" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Osoba"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.MediHelper.CardHeader" />
+                            </LinearLayout>
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
-                                android:text="Wybierz z apteczki"
+                                android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text='@{viewModel.profileName, default="Nazwa osoby"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:textColor="@color/colorTextTertiary"
-                                android:visibility="@{viewModel.selectedMedicineAvailable ? View.GONE : View.VISIBLE, default=gone}" />
-
-                            <TableLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:visibility="@{viewModel.selectedMedicineAvailable ? View.VISIBLE : View.GONE, default=visible}">
-
-                                <TableRow android:layout_marginTop="16dp">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Nazwa leku"
-                                        android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="16dp"
-                                        android:text='@{viewModel.selectedMedicineShortInfo.name, default="nazwa"}'
-                                        android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
-                                </TableRow>
-
-                                <TableRow android:layout_marginTop="16dp">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Jednostka"
-                                        android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="16dp"
-                                        android:text='@{viewModel.selectedMedicineShortInfo.unit, default="jednostka"}'
-                                        android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
-                                </TableRow>
-
-                                <TableRow android:layout_marginTop="16dp">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Ważny do"
-                                        android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="16dp"
-                                        android:text='@{viewModel.selectedMedicineShortInfo.expireDate.formatString, default="data"}'
-                                        android:textAppearance="@style/MedicineDetailFragment.Text.Body2" />
-                                </TableRow>
-                            </TableLayout>
+                                android:textAppearance="@style/TextAppearance.MediHelper.Body.Big" />
                         </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/AppTheme.Widget.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/form_card_margin_start"
-                    android:layout_marginTop="@dimen/form_card_margin_top"
-                    android:layout_marginEnd="@dimen/form_card_margin_end">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <com.google.android.material.card.MaterialCardView
+                        style="@style/Widget.MediHelper.CardView.Big"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:orientation="vertical">
+                        android:layout_marginStart="@dimen/details_card_margin_horizontal_inner"
+                        android:layout_marginTop="@dimen/details_card_margin_top"
+                        android:layout_marginEnd="@dimen/details_card_margin_horizontal"
+                        android:layout_marginBottom="@dimen/details_card_margin_top"
+                        android:layout_weight="1">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-
-                            <ImageView
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:src="@drawable/round_event_24"
-                                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
-
-                            <TextView
-                                android:id="@+id/txv_title_schedule_type"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="Czas trwania"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                android:textColor='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="@dimen/details_card_layout_margin_horizontal"
+                            android:layout_marginTop="@dimen/details_card_layout_margin_top"
+                            android:layout_marginEnd="@dimen/details_card_layout_margin_horizontal"
+                            android:layout_marginBottom="@dimen/details_card_layout_margin_bot"
+                            android:gravity="center"
                             android:orientation="vertical">
 
-                            <com.google.android.material.chip.ChipGroup
-                                android:id="@+id/chip_group_duration_type"
-                                style="@style/Widget.MaterialComponents.ChipGroup"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
-                                app:chipSpacingHorizontal="16dp"
-                                app:layout_constraintTop_toBottomOf="@id/txv_title_schedule_type"
-                                app:singleSelection="true">
+                                android:gravity="center">
 
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chip_once"
-                                    style="@style/AppTheme.Widget.Chip.Choice"
+                                <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Jednorazowo" />
+                                    android:layout_marginEnd="8dp"
+                                    android:src="@drawable/ic_pill_grey600_18dp"
+                                    android:tint="@color/colorDarkerGray" />
 
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chip_period"
-                                    style="@style/AppTheme.Widget.Chip.Choice"
+                                <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Liczba dni" />
-
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chip_continuous"
-                                    style="@style/AppTheme.Widget.Chip.Choice"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Przyjmowanie ciągłe" />
-                            </com.google.android.material.chip.ChipGroup>
-
-                            <FrameLayout
-                                android:id="@+id/frame_schedule_type"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginTop="16dp"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginBottom="16dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/chip_group_duration_type" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_schedule_days_type"
-                    style="@style/AppTheme.Widget.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/form_card_margin_start"
-                    android:layout_marginTop="@dimen/form_card_margin_top"
-                    android:layout_marginEnd="@dimen/form_card_margin_end"
-                    android:visibility="@{viewModel.daysType == null ? View.GONE : View.VISIBLE}">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-
-                            <ImageView
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:src="@drawable/round_event_24"
-                                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
+                                    android:text="Lek"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.MediHelper.CardHeader" />
+                            </LinearLayout>
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="Dni przyjmowania"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                android:textColor='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
+                                android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text='@{viewModel.medicineName, default="Nazwa leku"}'
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MediHelper.Body.Big" />
                         </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
-                        <LinearLayout
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/form_header_margin_horizontal"
+                    android:layout_marginTop="@dimen/form_header_margin_top"
+                    android:layout_marginEnd="@dimen/form_header_margin_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Czas trwania"
+                        android:textAppearance="@style/TextAppearance.MediHelper.SectionHeader" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/form_header_description_margin_top"
+                        android:text="Jak długo ma byc przyjmowany lek"
+                        android:textAppearance="@style/TextAppearance.MediHelper.SectionHeaderDescription" />
+                </LinearLayout>
+
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MediHelper.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/form_card_margin_horizontal"
+                    android:layout_marginTop="@dimen/form_card_margin_top"
+                    android:layout_marginEnd="@dimen/form_card_margin_horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/form_card_layout_margin_horizontal"
+                        android:layout_marginTop="@dimen/form_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/form_card_layout_margin_horizontal"
+                        android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chip_group_duration_type"
+                            style="@style/Widget.MaterialComponents.ChipGroup"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:orientation="vertical">
+                            app:chipSpacingHorizontal="16dp"
+                            app:singleSelection="true">
 
-                            <com.google.android.material.chip.ChipGroup
-                                android:id="@+id/chip_group_days_type"
-                                style="@style/Widget.MaterialComponents.ChipGroup"
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_once"
+                                style="@style/Widget.MediHelper.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Jednorazowo" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_period"
+                                style="@style/Widget.MediHelper.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Przez okres dni" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_continuous"
+                                style="@style/Widget.MediHelper.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Przyjmowanie ciągłe" />
+                        </com.google.android.material.chip.ChipGroup>
+
+                        <FrameLayout
+                            android:id="@+id/frame_schedule_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/chip_group_duration_type">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MediHelper.TextInputLayout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:hint="Data przyjęcia"
+                                android:visibility="@{viewModel.durationType == DurationType.ONCE}">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:clickable="true"
+                                    android:focusable="false"
+                                    android:inputType="date"
+                                    android:minWidth="164dp"
+                                    android:onClick="@{() -> handler.onClickSelectStartDate()}"
+                                    android:text="@{viewModel.startDate.formatString}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
-                                app:chipSpacingHorizontal="16dp"
-                                app:singleSelection="true">
+                                android:visibility='@{viewModel.durationType == DurationType.PERIOD, default=gone}'>
 
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chip_everyday"
-                                    style="@style/AppTheme.Widget.Chip.Choice"
-                                    android:layout_width="wrap_content"
+                                <com.google.android.material.textfield.TextInputLayout
+                                    style="@style/Widget.MediHelper.TextInputLayout"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:text="Każdego dnia" />
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_weight="1"
+                                    android:hint="Data początku">
 
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chip_days_of_week"
-                                    style="@style/AppTheme.Widget.Chip.Choice"
-                                    android:layout_width="wrap_content"
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:clickable="true"
+                                        android:focusable="false"
+                                        android:inputType="date"
+                                        android:onClick="@{() -> handler.onClickSelectStartDate()}"
+                                        android:text="@{viewModel.startDate.formatString}" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    style="@style/Widget.MediHelper.TextInputLayout"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:text="Wybrane dni tygodnia" />
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_weight="1"
+                                    android:hint="Data końca">
 
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chip_interval_of_days"
-                                    style="@style/AppTheme.Widget.Chip.Choice"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Odstęp w dniach" />
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:clickable="true"
+                                        android:focusable="false"
+                                        android:inputType="date"
+                                        android:onClick="@{() -> handler.onClickSelectEndDate()}"
+                                        android:text="@{viewModel.endDate.formatString}" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
 
-                            </com.google.android.material.chip.ChipGroup>
-
-                            <FrameLayout
-                                android:id="@+id/frame_schedule_days"
-                                android:layout_width="match_parent"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MediHelper.TextInputLayout"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp" />
-                        </LinearLayout>
+                                android:layout_gravity="center"
+                                android:hint="Data początku"
+                                android:visibility="@{viewModel.durationType == DurationType.CONTINUOUS, default=gone}">
 
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:clickable="true"
+                                    android:focusable="false"
+                                    android:inputType="date"
+                                    android:minWidth="164dp"
+                                    android:onClick="@{() -> handler.onClickSelectStartDate()}"
+                                    android:text="@{viewModel.startDate.formatString}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </FrameLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/AppTheme.Widget.CardView"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/form_card_margin_start"
+                    android:layout_marginStart="@dimen/form_header_margin_horizontal"
+                    android:layout_marginTop="@dimen/form_header_margin_top"
+                    android:layout_marginEnd="@dimen/form_header_margin_horizontal"
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.durationType != DurationType.ONCE}">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Dni przyjmowania"
+                        android:textAppearance="@style/TextAppearance.MediHelper.SectionHeader" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/form_header_description_margin_top"
+                        android:text="W jakie dokładnie dni ma być przyjmowany lek"
+                        android:textAppearance="@style/TextAppearance.MediHelper.SectionHeaderDescription" />
+                </LinearLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MediHelper.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/form_card_margin_horizontal"
                     android:layout_marginTop="@dimen/form_card_margin_top"
-                    android:layout_marginEnd="@dimen/form_card_margin_end"
+                    android:layout_marginEnd="@dimen/form_card_margin_horizontal"
+                    android:visibility="@{viewModel.durationType != DurationType.ONCE}">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/form_card_layout_margin_horizontal"
+                        android:layout_marginTop="@dimen/form_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/form_card_layout_margin_horizontal"
+                        android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chip_group_intake_days"
+                            style="@style/Widget.MaterialComponents.ChipGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            app:chipSpacingHorizontal="16dp"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_everyday"
+                                style="@style/Widget.MediHelper.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Codziennie" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_days_of_week"
+                                style="@style/Widget.MediHelper.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Wybrane dni tygodnia" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_interval"
+                                style="@style/Widget.MediHelper.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Co kilka dni" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_sequence"
+                                style="@style/Widget.MediHelper.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sekwencja dni" />
+
+                        </com.google.android.material.chip.ChipGroup>
+
+                        <FrameLayout
+                            android:id="@+id/frame_schedule_days"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/form_header_margin_horizontal"
+                    android:layout_marginTop="@dimen/form_header_margin_top"
+                    android:layout_marginEnd="@dimen/form_header_margin_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Godziny przyjmowania"
+                        android:textAppearance="@style/TextAppearance.MediHelper.SectionHeader" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/form_header_description_margin_top"
+                        android:text="O jakich godzinach i w jakich dawkach ma być przyjmowany lek"
+                        android:textAppearance="@style/TextAppearance.MediHelper.SectionHeaderDescription" />
+                </LinearLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MediHelper.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/form_card_margin_horizontal"
+                    android:layout_marginTop="@dimen/form_card_margin_top"
+                    android:layout_marginEnd="@dimen/form_card_margin_horizontal"
                     android:layout_marginBottom="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
+                        android:layout_marginStart="@dimen/form_card_layout_margin_horizontal"
+                        android:layout_marginTop="@dimen/form_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/form_card_layout_margin_horizontal"
+                        android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_time_of_taking"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
+                            android:layout_marginTop="16dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/recycler_item_time_of_taking" />
 
-                            <ImageView
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:src="@drawable/round_access_time_24"
-                                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="Godziny przyjmowania"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                                android:textColor='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <ImageButton
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:orientation="vertical">
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recycler_view_time_of_taking"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
-                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                                tools:listitem="@layout/recycler_item_time_of_taking" />
-
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="8dp"
-                                android:background="?selectableItemBackgroundBorderless"
-                                android:onClick="@{() -> viewModel.addTimeOfTaking()}"
-                                android:src="@drawable/round_add_white_36"
-                                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
-                        </LinearLayout>
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="8dp"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:src="@drawable/round_add_white_36" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_save"
+            style="@style/Widget.MediHelper.ExtendedFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:text="Zapisz plan"
+            app:icon="@drawable/baseline_check_white_36" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

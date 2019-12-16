@@ -4,15 +4,11 @@ import com.maruchin.medihelper.presentation.feature.alarm.AlarmViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.CalendarDayViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.CalendarViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOptionsViewModel
-import com.maruchin.medihelper.presentation.feature.medikit.AddEditMedicineViewModel
-import com.maruchin.medihelper.presentation.feature.medikit.MedicineDetailsViewModel
-import com.maruchin.medihelper.presentation.feature.medikit.MedicineInfoViewModel
-import com.maruchin.medihelper.presentation.feature.medikit.MedicinesListViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.ProfileViewModel
+import com.maruchin.medihelper.presentation.feature.medikit.*
+import com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.AddEditPersonViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsViewModel
-import com.maruchin.medihelper.presentation.feature.profiles.SelectProfileViewModel
-import com.maruchin.medihelper.presentation.feature.plans.AddEditMedicinePlanViewModel
 import com.maruchin.medihelper.presentation.feature.plans.MedicinePlanHistoryViewModel
 import com.maruchin.medihelper.presentation.feature.plans.MedicinePlanListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -42,12 +38,6 @@ val viewModelModule = module {
         )
     }
     viewModel {
-        SelectProfileViewModel(
-            getAllProfilesItemsLiveUseCase = get(),
-            selectedProfile = get()
-        )
-    }
-    viewModel {
         PersonOptionsViewModel(
             personUseCases = get()
         )
@@ -61,7 +51,7 @@ val viewModelModule = module {
     viewModel {
         MedicinePlanListViewModel(
             selectedProfile = get(),
-            getProfileSimpleItemUseCase = get()
+            getProfileItemUseCase = get()
         )
     }
     viewModel {
@@ -72,17 +62,9 @@ val viewModelModule = module {
         )
     }
     viewModel {
-        AddEditMedicinePlanViewModel(
-            personUseCases = get(),
-            medicineUseCases = get(),
-            medicinePlanUseCases = get(),
-            dateTimeUseCases = get()
-        )
-    }
-    viewModel {
         CalendarViewModel(
             getCurrDateUseCase = get(),
-            getProfileSimpleItemUseCase = get(),
+            getProfileItemUseCase = get(),
             selectedProfile = get()
         )
     }
@@ -112,6 +94,13 @@ val viewModelModule = module {
         ProfileViewModel(
             getAllProfilesItemsLiveUseCase = get(),
             selectedProfile = get()
+        )
+    }
+    viewModel {
+        AddEditMedicinePlanViewModel(
+            getProfileItemUseCase = get(),
+            getMedicineNameUseCase = get(),
+            getCurrDateUseCase = get()
         )
     }
 }

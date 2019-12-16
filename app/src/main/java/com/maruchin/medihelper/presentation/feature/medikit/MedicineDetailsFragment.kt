@@ -2,7 +2,6 @@ package com.maruchin.medihelper.presentation.feature.medikit
 
 
 import android.os.Bundle
-import android.transition.ChangeBounds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,8 @@ import androidx.navigation.fragment.navArgs
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicineDetailsBinding
-import com.maruchin.medihelper.domain.model.ProfileSimpleItem
+import com.maruchin.medihelper.domain.model.ProfileItem
+import com.maruchin.medihelper.presentation.dialogs.SelectProfileDialog
 import com.maruchin.medihelper.presentation.framework.*
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import kotlinx.coroutines.delay
@@ -39,7 +39,7 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
     }
 
     fun onClickDelete() {
-        val dialog = ConfirmDialog().apply {
+        ConfirmDialog().apply {
             title = "Usuń lek"
             message = "Wybrany lek zostanie usunięty. Czy chcesz kontynuować?"
             iconResId = R.drawable.round_delete_black_36
@@ -47,14 +47,23 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
                 viewModel.deleteMedicine()
                 findNavController().popBackStack()
             }
-        }
-        dialog.show(childFragmentManager, ConfirmDialog.TAG)
+        }.show(childFragmentManager)
     }
 
     fun onClickOpenMedicineInfo() {
         viewModel.medicineName.value?.let {
             findNavController().navigate(directions.toMedicineInfo(it))
         }
+    }
+
+    fun onClickScheduleMedicine() {
+        SelectProfileDialog().apply {
+            setProfileSelectedLsitener { profileId ->
+                viewModel.medicineId?.let { medicineId ->
+                    findNavController().navigate(directions.toAddEditMedicinePlanFragment(profileId, medicineId))
+                }
+            }
+        }.show(childFragmentManager)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,13 +124,15 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
         }
     }
 
-    inner class PersonAdapter : RecyclerAdapter<ProfileSimpleItem>(
-        layoutResId = R.layout.recycler_item_person_taking_medicine,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }
-    ) {
-        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-            val personItem = itemsList[position]
-            holder.bind(personItem, this@MedicineDetailsFragment)
-        }
-    }
+//    inner class PersonAdapter : RecyclerAdapter<ProfileItem>(
+//        layoutResId = R.layout.recycler_item_person_taking_medicine,
+//        lifecycleOwner = viewLifecycleOwner,
+//        itemsSource = viewModel.
+//        areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }
+//    ) {
+//        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+//            val personItem = itemsList[position]
+//            holder.bind(personItem, this@MedicineDetailsFragment)
+//        }
+//    }
 }

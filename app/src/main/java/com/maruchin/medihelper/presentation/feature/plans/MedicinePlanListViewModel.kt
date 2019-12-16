@@ -1,15 +1,15 @@
 package com.maruchin.medihelper.presentation.feature.plans
 
 import androidx.lifecycle.*
-import com.maruchin.medihelper.domain.model.ProfileSimpleItem
-import com.maruchin.medihelper.domain.usecases.profile.GetProfileSimpleItemUseCase
+import com.maruchin.medihelper.domain.model.ProfileItem
+import com.maruchin.medihelper.domain.usecases.profile.GetProfileItemUseCase
 import com.maruchin.medihelper.presentation.model.MedicinePlanItem
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import kotlinx.coroutines.launch
 
 class MedicinePlanListViewModel(
     private val selectedProfile: SelectedProfile,
-    private val getProfileSimpleItemUseCase: GetProfileSimpleItemUseCase
+    private val getProfileItemUseCase: GetProfileItemUseCase
 ) : ViewModel() {
 
     val colorPrimary: LiveData<String>
@@ -17,7 +17,7 @@ class MedicinePlanListViewModel(
     val medicinePlanItemOngoingList: LiveData<List<MedicinePlanItem>> = MutableLiveData()
     val medicinePlanItemEndedList: LiveData<List<MedicinePlanItem>> = MutableLiveData()
 
-    val selectedProfileSimpleItem: LiveData<ProfileSimpleItem?>
+    val selectedProfileSimpleItem: LiveData<ProfileItem?>
 
     private val selectedProfileId: LiveData<String> = selectedProfile.profileIdLive
 //    private val medicinePlanWithMedicineList: LiveData<List<MedicinePlanWithMedicine>>
@@ -25,7 +25,7 @@ class MedicinePlanListViewModel(
     init {
         selectedProfileSimpleItem = Transformations.switchMap(selectedProfileId) { profileId ->
             liveData {
-                val data = getProfileSimpleItemUseCase.execute(profileId)
+                val data = getProfileItemUseCase.execute(profileId)
                 emit(data)
             }
         }
