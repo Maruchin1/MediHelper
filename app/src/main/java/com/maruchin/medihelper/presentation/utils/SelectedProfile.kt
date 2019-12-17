@@ -18,12 +18,16 @@ class SelectedProfile(
 
     init {
         GlobalScope.launch {
-            val mainProfileId = getMainProfileIdUseCase.execute()
-            _profileIdLive.postValue(mainProfileId)
+            setMain()
         }
     }
 
     fun setProfileId(profileId: String) {
         _profileIdLive.value = profileId
+    }
+
+    suspend fun setMain() {
+        val mainProfileId = getMainProfileIdUseCase.execute()
+        _profileIdLive.postValue(mainProfileId)
     }
 }

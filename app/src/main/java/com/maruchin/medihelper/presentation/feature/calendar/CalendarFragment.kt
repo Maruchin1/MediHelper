@@ -1,5 +1,6 @@
 package com.maruchin.medihelper.presentation.feature.calendar
 
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarBinding
 import com.maruchin.medihelper.presentation.framework.BaseMainFragment
@@ -34,6 +36,9 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
     }
 
     fun onClickOpenProfileData() {
+//        BottomSheetBehavior.from(bottom_sheet_profile).apply {
+//            state = BottomSheetBehavior.STATE_COLLAPSED
+//        }
         ProfileDialog().show(childFragmentManager)
     }
 
@@ -49,6 +54,7 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
         setupHorizontalCalendar()
         setupDatesViewPager()
         setupCalendarView()
+//        setupProfileBottomSheet()
     }
 
     override fun onResume() {
@@ -119,6 +125,13 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
             viewModel.changeFullCalendarMode(enabled = false)
         }
     }
+
+//    private fun setupProfileBottomSheet() {
+//        BottomSheetBehavior.from(bottom_sheet_profile).apply {
+//            peekHeight = (Resources.getSystem().displayMetrics.heightPixels) / 2
+//            state = BottomSheetBehavior.STATE_HIDDEN
+//        }
+//    }
 
     // Inner classes
     inner class ScheduleDayPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

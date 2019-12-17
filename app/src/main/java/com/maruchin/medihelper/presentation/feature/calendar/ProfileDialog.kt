@@ -16,6 +16,7 @@ import com.maruchin.medihelper.databinding.DialogProfileBinding
 import com.maruchin.medihelper.domain.entities.MedicinePlan
 import com.maruchin.medihelper.domain.model.MedicinePlanItem
 import com.maruchin.medihelper.domain.model.ProfileItem
+import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.presentation.framework.*
 import kotlinx.android.synthetic.main.dialog_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,7 +37,13 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
     }
 
     fun onClickDeleteProfile() {
-
+        ConfirmDialog().apply {
+            title = "Usuń profil"
+            message = "Wybrany profil zostanie usunięty, wraz z jego wpisami w kalendarzu. Czy chcesz kontynuować?"
+            setOnConfirmClickListener {
+                viewModel.deleteProfile()
+            }
+        }.show(childFragmentManager)
     }
 
     fun onClickMedicinePlanDetails() {

@@ -92,9 +92,10 @@ val viewModelModule = module {
     }
     viewModel {
         ProfileViewModel(
-            getLiveAllProfilesItemsUseCase = get(),
             selectedProfile = get(),
-            getLiveMedicinesPlansItemsByProfileUseCase = get()
+            getLiveAllProfilesItemsUseCase = get(),
+            getLiveMedicinesPlansItemsByProfileUseCase = get(),
+            deleteProfileUseCase = get()
         )
     }
     viewModel {

@@ -29,4 +29,9 @@ val profileUseCaseModule = module {
             profileRepo = get()
         )
     }
+    factory {
+        DeleteProfileUseCase(
+            profileRepo = get()
+        )
+    }
 }

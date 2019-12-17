@@ -52,7 +52,6 @@ class MedicineInfoDialog :
     private fun changeAdapterToMedicineInfo() {
         recycler_view_search_result.apply {
             adapter = MedicineInfoAdapter()
-            super.setCollapsed()
         }
     }
 

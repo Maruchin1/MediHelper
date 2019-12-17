@@ -1,19 +1,19 @@
 package com.maruchin.medihelper.presentation.feature.calendar
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.model.MedicinePlanItem
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.usecases.mediplans.GetLiveMedicinesPlansItemsByProfileUseCase
+import com.maruchin.medihelper.domain.usecases.profile.DeleteProfileUseCase
 import com.maruchin.medihelper.domain.usecases.profile.GetLiveAllProfilesItemsUseCase
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
+import kotlinx.coroutines.launch
 
 class ProfileViewModel(
-    private val getLiveAllProfilesItemsUseCase: GetLiveAllProfilesItemsUseCase,
     private val selectedProfile: SelectedProfile,
-    private val getLiveMedicinesPlansItemsByProfileUseCase: GetLiveMedicinesPlansItemsByProfileUseCase
+    private val getLiveAllProfilesItemsUseCase: GetLiveAllProfilesItemsUseCase,
+    private val getLiveMedicinesPlansItemsByProfileUseCase: GetLiveMedicinesPlansItemsByProfileUseCase,
+    private val deleteProfileUseCase: DeleteProfileUseCase
     ) : ViewModel() {
 
     val selectedProfileId: String?
@@ -39,6 +39,14 @@ class ProfileViewModel(
                 }
             }
             emitSource(source)
+        }
+    }
+
+    fun deleteProfile() = viewModelScope.launch {
+        val selectedProfileId = selectedProfile.profileId
+        selectedProfile.setMain()
+        if (selectedProfileId != null) {
+            deleteProfileUseCase.execute(selectedProfileId)
         }
     }
 
