@@ -122,6 +122,12 @@
         <item name="iconTint">@color/colorWhite</item>
     </style>
 
+    <style name="Widget.MediHelper.ExtendedFab.Dark" parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="backgroundTint">@color/colorWhite</item>
+        <item name="iconTint">@color/colorBlack</item>
+    </style>
+
     <style name="Widget.MediHelper.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textColor">@color/chip_single_select_text_color</item>
         <item name="chipBackgroundColor">@color/chip_single_select_bg</item>

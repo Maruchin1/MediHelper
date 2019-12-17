@@ -20,6 +20,7 @@ class CreateUserUseCase (
         userRepo.addNew(newUser)
 
         val mainProfile = Profile(
+            profileId = "",
             name = "User",
             color = ProfileColor.MAIN.colorString,
             mainPerson = true

@@ -3,6 +3,8 @@
     <dimen name="appbar_height">128dp</dimen>
     <dimen name="appbar_height_overlap">224</dimen>
 
+    <dimen name="fab_margin">16dp</dimen>
+
     <dimen name="bottom_dialog_header_padding_hor">8dp</dimen>
     <dimen name="bottom_dialog_header_text_margin_start">16dp</dimen>
     <dimen name="bottom_dialog_option_height">56dp</dimen>

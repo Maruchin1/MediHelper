@@ -36,9 +36,6 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
     }
 
     fun onClickOpenProfileData() {
-//        BottomSheetBehavior.from(bottom_sheet_profile).apply {
-//            state = BottomSheetBehavior.STATE_COLLAPSED
-//        }
         ProfileDialog().show(childFragmentManager)
     }
 
@@ -54,7 +51,6 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
         setupHorizontalCalendar()
         setupDatesViewPager()
         setupCalendarView()
-//        setupProfileBottomSheet()
     }
 
     override fun onResume() {
@@ -125,13 +121,6 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
             viewModel.changeFullCalendarMode(enabled = false)
         }
     }
-
-//    private fun setupProfileBottomSheet() {
-//        BottomSheetBehavior.from(bottom_sheet_profile).apply {
-//            peekHeight = (Resources.getSystem().displayMetrics.heightPixels) / 2
-//            state = BottomSheetBehavior.STATE_HIDDEN
-//        }
-//    }
 
     // Inner classes
     inner class ScheduleDayPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

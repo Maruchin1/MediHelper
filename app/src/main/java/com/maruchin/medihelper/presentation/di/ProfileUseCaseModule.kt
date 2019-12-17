@@ -34,4 +34,9 @@ val profileUseCaseModule = module {
             profileRepo = get()
         )
     }
+    factory {
+        GetProfileEditDataUseCase(
+            profileRepo = get()
+        )
+    }
 }

@@ -16,11 +16,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddEditProfileFragment : BaseFragment<FragmentAddEditProfileBinding>(R.layout.fragment_add_edit_profile) {
 
-    private val viewModel: AddEditPersonViewModel by viewModel()
+    private val viewModel: AddEditProfileViewModel by viewModel()
     private val args: AddEditProfileFragmentArgs by navArgs()
 
     fun onClickSelectColor(color: String) {
         viewModel.selectedColor.value = color
+    }
+
+    fun onClickSaveProfile() {
+        viewModel.saveProfile()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -34,6 +38,7 @@ class AddEditProfileFragment : BaseFragment<FragmentAddEditProfileBinding>(R.lay
         super.setStatusBarColorLive(viewModel.selectedColor)
         super.setupToolbarNavigation()
         setupColorRecyclerView()
+        setupFab()
         observeViewModel()
     }
 
@@ -47,6 +52,10 @@ class AddEditProfileFragment : BaseFragment<FragmentAddEditProfileBinding>(R.lay
         recycler_view_color.apply {
             adapter = PersonColorAdapter()
         }
+    }
+
+    private fun setupFab() {
+        fab_save.shrinkOnScroll(scroll_view)
     }
 
     // Inner classes

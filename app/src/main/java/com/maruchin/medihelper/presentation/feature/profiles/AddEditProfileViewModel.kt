@@ -3,13 +3,15 @@ package com.maruchin.medihelper.presentation.feature.profiles
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.model.ProfileValidator
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileColorsUseCase
+import com.maruchin.medihelper.domain.usecases.profile.GetProfileEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.profile.SaveProfileUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import com.maruchin.medihelper.presentation.model.ProfileColorCheckbox
 import kotlinx.coroutines.launch
 
-class AddEditPersonViewModel(
+class AddEditProfileViewModel(
     private val getProfileColorsUseCase: GetProfileColorsUseCase,
+    private val getProfileEditDataUseCase: GetProfileEditDataUseCase,
     private val saveProfileUseCase: SaveProfileUseCase
 ) : ViewModel() {
 
@@ -24,7 +26,7 @@ class AddEditPersonViewModel(
     val errorProfileName: LiveData<String>
         get() = _errorProfileName
 
-    private val _formTitle = MutableLiveData<String>("Dodaj osobę")
+    private val _formTitle = MutableLiveData<String>("Dodaj profil")
     private val _actionProfileSaved = ActionLiveData()
     private val _errorProfileName = MutableLiveData<String>()
 
@@ -50,16 +52,15 @@ class AddEditPersonViewModel(
         editProfileId = args.editProfileId
         if (editProfileId != null) {
             _formTitle.postValue("Edytuj profil")
-        }
-        if (args.editProfileId != null) {
-
-//            val editPerson = personUseCases.getPersonById(args.editPersonID)
-//            profileName.postValue(editPerson.name)
-//            selectedColorId.postValue(editPerson.color)
+            val editData = getProfileEditDataUseCase.execute(editProfileId!!)
+            if (editData != null) {
+                profileName.postValue(editData.name)
+                selectedColor.postValue(editData.color)
+            }
         }
     }
 
-    fun savePerson() = viewModelScope.launch {
+    fun saveProfile() = viewModelScope.launch {
         val params = SaveProfileUseCase.Params(
             profileId = editProfileId,
             name = profileName.value,

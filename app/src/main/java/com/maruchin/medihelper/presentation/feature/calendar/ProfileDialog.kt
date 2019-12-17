@@ -33,7 +33,8 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
     }
 
     fun onClickEditProfile() {
-//        findNavController().navigate(directions.toAddEditProfileFragment(editProfileId = viewModel.selectedProfileId))
+        requireParentFragment().findNavController()
+            .navigate(directions.toAddEditProfileFragment(editProfileId = viewModel.selectedProfileId))
     }
 
     fun onClickDeleteProfile() {
