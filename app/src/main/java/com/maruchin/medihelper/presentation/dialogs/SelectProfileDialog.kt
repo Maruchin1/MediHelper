@@ -6,7 +6,7 @@ import androidx.lifecycle.liveData
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogSelectProfileBinding
 import com.maruchin.medihelper.domain.model.ProfileItem
-import com.maruchin.medihelper.domain.usecases.profile.GetAllProfilesItemsLiveUseCase
+import com.maruchin.medihelper.domain.usecases.profile.GetLiveAllProfilesItemsUseCase
 import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
 import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
@@ -18,9 +18,9 @@ class SelectProfileDialog :
     override val TAG: String
         get() = "SelectProfileDialog"
 
-    private val getAllProfilesItemsLiveUseCase: GetAllProfilesItemsLiveUseCase by inject()
+    private val getLiveAllProfilesItemsUseCase: GetLiveAllProfilesItemsUseCase by inject()
     private val dataSource = liveData {
-        val source = getAllProfilesItemsLiveUseCase.execute()
+        val source = getLiveAllProfilesItemsUseCase.execute()
         emitSource(source)
     }
     private var profileSelectedListener: ((profileId: String) -> Unit)? = null

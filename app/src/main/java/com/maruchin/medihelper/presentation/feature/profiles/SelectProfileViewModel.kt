@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.maruchin.medihelper.domain.model.ProfileItem
-import com.maruchin.medihelper.domain.usecases.profile.GetAllProfilesItemsLiveUseCase
+import com.maruchin.medihelper.domain.usecases.profile.GetLiveAllProfilesItemsUseCase
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
 
 class SelectProfileViewModel(
-    private val getAllProfilesItemsLiveUseCase: GetAllProfilesItemsLiveUseCase,
+    private val getLiveAllProfilesItemsUseCase: GetLiveAllProfilesItemsUseCase,
     private val selectedProfile: SelectedProfile
 ) : ViewModel() {
 
@@ -16,7 +16,7 @@ class SelectProfileViewModel(
 
     init {
         profileItemList = liveData {
-            val source = getAllProfilesItemsLiveUseCase.execute()
+            val source = getLiveAllProfilesItemsUseCase.execute()
             emitSource(source)
         }
     }

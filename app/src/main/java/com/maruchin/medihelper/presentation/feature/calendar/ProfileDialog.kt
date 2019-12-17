@@ -12,6 +12,8 @@ import com.leochuan.CenterSnapHelper
 import com.leochuan.ScaleLayoutManager
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogProfileBinding
+import com.maruchin.medihelper.domain.entities.MedicinePlan
+import com.maruchin.medihelper.domain.model.MedicinePlanItem
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.presentation.framework.*
 import kotlinx.android.synthetic.main.dialog_profile.*
@@ -31,6 +33,7 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupProfileRecyclerView()
+        setupMedicinesPlansRecyclerView()
         observeViewModel()
     }
 
@@ -62,11 +65,29 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         })
     }
 
-    inner class ProfileAdapter : RecyclerAdapter<ProfileItem>(
+    private fun setupMedicinesPlansRecyclerView() {
+        recycler_view_medicine_plan.apply {
+            adapter = MedicinePlanAdapter()
+        }
+    }
+
+    private inner class ProfileAdapter : RecyclerAdapter<ProfileItem>(
         layoutResId = R.layout.rec_item_profile,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.profileItems,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }
+    ) {
+        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+            val item = itemsList[position]
+            holder.bind(item, this@ProfileDialog)
+        }
+    }
+
+    private inner class MedicinePlanAdapter : RecyclerAdapter<MedicinePlanItem>(
+        layoutResId = R.layout.recycler_item_medicine_plan,
+        lifecycleOwner = viewLifecycleOwner,
+        itemsSource = viewModel.medicinesPlans,
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.medicinePlanId == newItem.medicinePlanId }
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val item = itemsList[position]

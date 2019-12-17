@@ -6,7 +6,7 @@ import com.maruchin.medihelper.domain.entities.Profile
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.repositories.ProfileRepo
 
-class GetAllProfilesItemsLiveUseCase(
+class GetLiveAllProfilesItemsUseCase(
     private val profileRepo: ProfileRepo
 ) {
     suspend fun execute(): LiveData<List<ProfileItem>> {

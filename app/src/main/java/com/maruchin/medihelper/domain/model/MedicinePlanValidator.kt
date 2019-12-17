@@ -2,11 +2,13 @@ package com.maruchin.medihelper.domain.model
 
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.IntakeDays
+import com.maruchin.medihelper.domain.entities.MedicinePlan
 import com.maruchin.medihelper.domain.entities.TimeDose
 
-class MedicinePlanPeriodValidator(
+class MedicinePlanValidator(
     profileId: String?,
     medicineId: String?,
+    planType: MedicinePlan.Type?,
     startDate: AppDate?,
     endDate: AppDate?,
     intakeDays: IntakeDays?,
@@ -16,6 +18,7 @@ class MedicinePlanPeriodValidator(
         get() = arrayOf(
             emptyProfileId,
             emptyMedicineId,
+            emptyPlanType,
             emptyStartDate,
             emptyEndDate,
             incorrectDatesOrder,
@@ -25,6 +28,8 @@ class MedicinePlanPeriodValidator(
     var emptyProfileId: Boolean = false
         private set
     var emptyMedicineId: Boolean = false
+        private set
+    var emptyPlanType: Boolean = false
         private set
     var emptyStartDate: Boolean = false
         private set
@@ -44,20 +49,41 @@ class MedicinePlanPeriodValidator(
         if (medicineId.isNullOrEmpty()) {
             emptyMedicineId = true
         }
-        if (startDate == null) {
-            emptyStartDate = true
+        if (planType == null) {
+            emptyPlanType = true
         }
-        if (endDate == null) {
-            emptyEndDate = true
-        }
-        if (startDate != null &&
-            endDate != null &&
-            startDate > endDate
-        ) {
-            incorrectDatesOrder = true
-        }
-        if (intakeDays == null) {
-            emptyIntakeDays = true
+        when (planType) {
+            null -> emptyPlanType = true
+            MedicinePlan.Type.ONCE -> {
+                if (startDate == null) {
+                    emptyStartDate = true
+                }
+            }
+            MedicinePlan.Type.PERIOD -> {
+                if (startDate == null) {
+                    emptyStartDate = true
+                }
+                if (endDate == null) {
+                    emptyEndDate = true
+                }
+                if (startDate != null &&
+                    endDate != null &&
+                    startDate > endDate
+                ) {
+                    incorrectDatesOrder = true
+                }
+                if (intakeDays == null) {
+                    emptyIntakeDays = true
+                }
+            }
+            MedicinePlan.Type.CONTINUOUS -> {
+                if (startDate == null) {
+                    emptyStartDate = true
+                }
+                if (intakeDays == null) {
+                    emptyIntakeDays = true
+                }
+            }
         }
         if (timeDoseList.isNullOrEmpty()) {
             emptyTimeDoseList = true

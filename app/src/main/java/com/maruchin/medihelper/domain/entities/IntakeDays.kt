@@ -1,8 +1,11 @@
 package com.maruchin.medihelper.domain.entities
 
-sealed class IntakeDays {
+import java.io.Serializable
 
-    object Everyday : IntakeDays()
+
+sealed class IntakeDays{
+
+    object Everyday : IntakeDays(), Serializable
 
     data class DaysOfWeek(
         var monday: Boolean,
@@ -12,9 +15,9 @@ sealed class IntakeDays {
         var friday: Boolean,
         var saturday: Boolean,
         var sunday: Boolean
-    ) : IntakeDays()
+    ) : IntakeDays(), Serializable
 
-    data class Interval(var daysCount: Int) : IntakeDays()
+    data class Interval(var daysCount: Int) : IntakeDays(), Serializable
 
-    data class Sequence(var intakeCount: Int, var notIntakeCount: Int) : IntakeDays()
+    data class Sequence(var intakeCount: Int, var notIntakeCount: Int) : IntakeDays(), Serializable
 }

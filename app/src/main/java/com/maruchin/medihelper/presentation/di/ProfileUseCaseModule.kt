@@ -10,7 +10,7 @@ val profileUseCaseModule = module {
         )
     }
     factory {
-        GetAllProfilesItemsLiveUseCase(
+        GetLiveAllProfilesItemsUseCase(
             profileRepo = get()
         )
     }

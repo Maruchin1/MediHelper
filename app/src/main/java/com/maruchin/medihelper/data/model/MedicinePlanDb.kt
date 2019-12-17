@@ -1,31 +1,35 @@
 package com.maruchin.medihelper.data.model
 
 import com.maruchin.medihelper.domain.entities.AppDate
-import com.maruchin.medihelper.domain.entities.IntakeDays
-import com.maruchin.medihelper.domain.entities.MedicinePlanContinuous
+import com.maruchin.medihelper.domain.entities.MedicinePlan
 
-data class MedicinePlanContinuousDb(
-    val planType: String = "CONTINUOUS",
+data class MedicinePlanDb(
     val profileId: String? = null,
     val medicineId: String? = null,
+    val planType: MedicinePlan.Type? = null,
     val startDate: String? = null,
-    val intakeDays: IntakeDays? = null,
+    val endDate: String? = null,
+    val intakeDays: IntakeDaysDb? = null,
     val timeDoseList: List<TimeDoseDb>? = null
 ) {
-    constructor(entity: MedicinePlanContinuous) : this(
+    constructor(entity: MedicinePlan) : this(
         profileId = entity.profileId,
         medicineId = entity.medicineId,
+        planType = entity.planType,
         startDate = entity.startDate.jsonFormatString,
-        intakeDays = entity.intakeDays,
+        endDate = entity.endDate?.jsonFormatString,
+        intakeDays = entity.intakeDays?.let { IntakeDaysDb(it) },
         timeDoseList = entity.timeDoseList.map { TimeDoseDb(it) }
     )
 
-    fun toEntity(id: String) = MedicinePlanContinuous(
+    fun toEntity(id: String) = MedicinePlan(
         medicinePlanId = id,
         profileId = profileId!!,
         medicineId = medicineId!!,
+        planType = planType!!,
         startDate = AppDate(startDate!!),
-        intakeDays = intakeDays!!,
+        endDate = endDate?.let { AppDate(it) },
+        intakeDays = intakeDays?.toEntity(),
         timeDoseList = timeDoseList!!.map { it.toEntity() }
     )
 }

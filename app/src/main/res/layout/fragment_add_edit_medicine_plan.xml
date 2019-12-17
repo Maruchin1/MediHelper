@@ -7,7 +7,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel.PlanType" />
+        <import type="com.maruchin.medihelper.domain.entities.MedicinePlan.Type" />
 
         <import type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel.IntakeDaysType" />
 
@@ -260,7 +260,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:hint="Data przyjęcia"
-                                android:visibility="@{viewModel.planType == PlanType.ONCE}">
+                                android:visibility="@{viewModel.planType == Type.ONCE}">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:layout_width="wrap_content"
@@ -276,7 +276,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:visibility="@{viewModel.planType == PlanType.PERIOD, default=gone}">
+                                android:visibility="@{viewModel.planType == Type.PERIOD, default=gone}">
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     style="@style/Widget.MediHelper.TextInputLayout"
@@ -323,7 +323,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:hint="Data początku"
-                                android:visibility="@{viewModel.planType == PlanType.CONTINUOUS, default=gone}">
+                                android:visibility="@{viewModel.planType == Type.CONTINUOUS, default=gone}">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:layout_width="wrap_content"
@@ -348,7 +348,7 @@
                     android:layout_marginEnd="@dimen/form_header_margin_horizontal"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:visibility="@{viewModel.planType != PlanType.ONCE}">
+                    android:visibility="@{viewModel.planType != Type.ONCE}">
 
                     <TextView
                         android:layout_width="0dp"
@@ -371,7 +371,7 @@
                     android:layout_marginStart="@dimen/form_card_margin_horizontal"
                     android:layout_marginTop="@dimen/form_card_margin_top"
                     android:layout_marginEnd="@dimen/form_card_margin_horizontal"
-                    android:visibility="@{viewModel.planType != PlanType.ONCE}">
+                    android:visibility="@{viewModel.planType != Type.ONCE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"

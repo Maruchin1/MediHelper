@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionManager
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentAddEditMedicinePlanBinding
+import com.maruchin.medihelper.domain.entities.MedicinePlan
 import com.maruchin.medihelper.domain.entities.TimeDose
 import com.maruchin.medihelper.presentation.dialogs.SelectDateDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectFloatNumberDialog
@@ -132,9 +133,9 @@ class AddEditMedicinePlanFragment :
     private fun observeViewModel() {
         viewModel.planType.observe(viewLifecycleOwner, Observer { type ->
             when (type) {
-                AddEditMedicinePlanViewModel.PlanType.ONCE -> checkDurationType(R.id.chip_once)
-                AddEditMedicinePlanViewModel.PlanType.PERIOD -> checkDurationType(R.id.chip_period)
-                AddEditMedicinePlanViewModel.PlanType.CONTINUOUS -> checkDurationType(R.id.chip_continuous)
+                MedicinePlan.Type.ONCE -> checkDurationType(R.id.chip_once)
+                MedicinePlan.Type.PERIOD -> checkDurationType(R.id.chip_period)
+                MedicinePlan.Type.CONTINUOUS -> checkDurationType(R.id.chip_continuous)
             }
         })
         viewModel.intakeDaysType.observe(viewLifecycleOwner, Observer { type ->
@@ -167,15 +168,15 @@ class AddEditMedicinePlanFragment :
             when (checkedId) {
                 R.id.chip_once -> {
                     TransitionManager.beginDelayedTransition(root_lay)
-                    viewModel.planType.value = AddEditMedicinePlanViewModel.PlanType.ONCE
+                    viewModel.planType.value = MedicinePlan.Type.ONCE
                 }
                 R.id.chip_period -> {
                     TransitionManager.beginDelayedTransition(root_lay)
-                    viewModel.planType.value = AddEditMedicinePlanViewModel.PlanType.PERIOD
+                    viewModel.planType.value = MedicinePlan.Type.PERIOD
                 }
                 R.id.chip_continuous -> {
                     TransitionManager.beginDelayedTransition(root_lay)
-                    viewModel.planType.value = AddEditMedicinePlanViewModel.PlanType.CONTINUOUS
+                    viewModel.planType.value = MedicinePlan.Type.CONTINUOUS
                 }
             }
         }

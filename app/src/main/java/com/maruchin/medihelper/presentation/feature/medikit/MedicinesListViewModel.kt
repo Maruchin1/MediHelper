@@ -3,12 +3,12 @@ package com.maruchin.medihelper.presentation.feature.medikit
 import androidx.lifecycle.*
 import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.domain.model.MedicineItem
-import com.maruchin.medihelper.domain.usecases.medicines.GetAllMedicinesItemsLiveUseCase
+import com.maruchin.medihelper.domain.usecases.medicines.GetLiveAllMedicinesItemsUseCase
 import com.maruchin.medihelper.presentation.framework.map
 import com.maruchin.medihelper.presentation.utils.PicturesRef
 
 class MedicinesListViewModel(
-    private val getAllMedicinesItemsUseCase: GetAllMedicinesItemsLiveUseCase,
+    private val getAllMedicinesItemsUseCase: GetLiveAllMedicinesItemsUseCase,
     private val picturesRef: PicturesRef
 ) : ViewModel() {
 

@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
@@ -46,6 +47,16 @@ fun DocumentReference.getDocumentLive(): LiveData<DocumentSnapshot> {
 }
 
 fun CollectionReference.getDocumentsLive(): LiveData<List<DocumentSnapshot>> {
+    val result = MutableLiveData<List<DocumentSnapshot>>()
+    addSnapshotListener { snapshot, exception ->
+        if (snapshot != null) {
+            result.postValue(snapshot.documents)
+        }
+    }
+    return result
+}
+
+fun Query.getDocumenstLive(): LiveData<List<DocumentSnapshot>> {
     val result = MutableLiveData<List<DocumentSnapshot>>()
     addSnapshotListener { snapshot, exception ->
         if (snapshot != null) {

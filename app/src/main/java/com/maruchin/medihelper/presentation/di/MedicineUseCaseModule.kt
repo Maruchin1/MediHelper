@@ -15,7 +15,7 @@ val medicineUseCaseModule = module {
         )
     }
     factory {
-        GetAllMedicinesItemsLiveUseCase(
+        GetLiveAllMedicinesItemsUseCase(
             medicineRepo = get()
         )
     }

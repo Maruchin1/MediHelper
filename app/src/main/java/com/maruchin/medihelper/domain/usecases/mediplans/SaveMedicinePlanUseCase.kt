@@ -2,18 +2,19 @@ package com.maruchin.medihelper.domain.usecases.mediplans
 
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.IntakeDays
-import com.maruchin.medihelper.domain.entities.MedicinePlanPeriod
+import com.maruchin.medihelper.domain.entities.MedicinePlan
 import com.maruchin.medihelper.domain.entities.TimeDose
-import com.maruchin.medihelper.domain.model.MedicinePlanPeriodValidator
+import com.maruchin.medihelper.domain.model.MedicinePlanValidator
 import com.maruchin.medihelper.domain.repositories.MedicinePlanRepo
 
-class SaveMedicinePlanPeriodUseCase(
+class SaveMedicinePlanUseCase(
     private val medicinePlanRepo: MedicinePlanRepo
 ) {
-    suspend fun execute(params: Params): MedicinePlanPeriodValidator {
-        val validator = MedicinePlanPeriodValidator(
+    suspend fun execute(params: Params): MedicinePlanValidator {
+        val validator = MedicinePlanValidator(
             profileId = params.profileId,
             medicineId = params.medicineId,
+            planType = params.planType,
             startDate = params.startDate,
             endDate = params.endDate,
             intakeDays = params.intakeDays,
@@ -26,10 +27,11 @@ class SaveMedicinePlanPeriodUseCase(
     }
 
     private suspend fun saveMedicinePlanToRepo(params: Params) {
-        val medicinePlan = MedicinePlanPeriod(
+        val medicinePlan = MedicinePlan(
             medicinePlanId = params.medicinePlanId ?: "",
             profileId = params.profileId!!,
             medicineId = params.medicineId!!,
+            planType = params.planType!!,
             startDate = params.startDate!!,
             endDate = params.endDate!!,
             intakeDays = params.intakeDays!!,
@@ -46,6 +48,7 @@ class SaveMedicinePlanPeriodUseCase(
         val medicinePlanId: String?,
         val profileId: String?,
         val medicineId: String?,
+        val planType: MedicinePlan.Type?,
         val startDate: AppDate?,
         val endDate: AppDate?,
         val intakeDays: IntakeDays?,

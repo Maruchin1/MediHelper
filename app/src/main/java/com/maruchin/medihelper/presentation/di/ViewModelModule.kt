@@ -92,8 +92,9 @@ val viewModelModule = module {
     }
     viewModel {
         ProfileViewModel(
-            getAllProfilesItemsLiveUseCase = get(),
-            selectedProfile = get()
+            getLiveAllProfilesItemsUseCase = get(),
+            selectedProfile = get(),
+            getLiveMedicinesPlansItemsByProfileUseCase = get()
         )
     }
     viewModel {
@@ -101,9 +102,7 @@ val viewModelModule = module {
             getProfileItemUseCase = get(),
             getMedicineItemUseCase = get(),
             getCurrDateUseCase = get(),
-            saveMedicinePlanOnceUseCase = get(),
-            saveMedicinePlanPeriodUseCase = get(),
-            saveMedicinePlanContinuousUseCase = get()
+            saveMedicinePlanUseCase = get()
         )
     }
 }

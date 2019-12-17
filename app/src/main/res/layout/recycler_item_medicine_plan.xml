@@ -8,11 +8,11 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.plans.MedicinePlanListFragment" />
+            type="com.maruchin.medihelper.presentation.feature.calendar.ProfileDialog" />
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.MedicinePlanItem" />
+            type="com.maruchin.medihelper.domain.model.MedicinePlanItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -28,112 +28,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="vertical">
+                android:text='@{displayData.startDate.formatString}' />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/round_event_24"
-                        android:tint='@{displayData.colorPrimaryId, default="@color/colorPrimary"}' />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text='@{displayData.durationType, default="01 sty 2019 - 11 sty 2019"}'
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                        android:textColor="@color/colorTextSecondary" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/pill"
-                        android:tint='@{displayData.colorPrimaryId, default="@color/colorPrimary"}' />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text='@{displayData.medicineName, default="Nazwa leku"}'
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                        android:textColor="@color/colorTextSecondary" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center_vertical"
-                    android:visibility='@{displayData.daysType != null ? View.VISIBLE : View.GONE}'>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_check_24"
-                        android:tint='@{displayData.colorPrimaryId, default="@color/colorPrimary"}' />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text='@{displayData.daysType, default="Dni przyjmowania"}'
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                        android:textColor="@color/colorTextSecondary" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <com.google.android.material.chip.ChipGroup
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:chipSpacingHorizontal="8dp"
-                app:singleLine="true">
+                android:text='@{displayData.endDate.formatString}' />
 
-                <com.google.android.material.chip.Chip
-                    style="@style/AppTheme.Widget.Chip.Action"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:onClick="@{() -> handler.onClickMedicinePlanHistory(displayData.medicinePlanId)}"
-                    android:text="Historia"
-                    app:chipIcon="@drawable/round_history_24" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/AppTheme.Widget.Chip.Action"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{() -> handler.onClickEditMedicinePlan(displayData.medicinePlanId)}"
-                    android:text="Edytuj"
-                    android:visibility="@{displayData.appModeConnected ? View.GONE : View.VISIBLE}"
-                    app:chipIcon="@drawable/round_edit_24" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/AppTheme.Widget.Chip.Action"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{() -> handler.onClickDeleteMedicinePlan(displayData.medicinePlanId)}"
-                    android:text="Usuń"
-                    android:visibility="@{displayData.appModeConnected ? View.GONE : View.VISIBLE}"
-                    app:chipIcon="@drawable/round_delete_24" />
-            </com.google.android.material.chip.ChipGroup>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text='@{displayData.medicineName}' />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

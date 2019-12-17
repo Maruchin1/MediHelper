@@ -23,11 +23,11 @@ data class MedicineDb(
 
     fun toEntity(id: String) = Medicine(
         medicineId = id,
-        name = name ?: "--",
-        unit = unit ?: "--",
-        expireDate = expireDate?.let { AppExpireDate(it) } ?: AppExpireDate(0, 0),
-        packageSize = packageSize ?: 0f,
-        currState = currState ?: 0f,
+        name = name!!,
+        unit = unit!!,
+        expireDate = AppExpireDate(expireDate!!),
+        packageSize = packageSize!!,
+        currState = currState!!,
         pictureName = pictureName
     )
 }

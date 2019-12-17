@@ -1,23 +1,18 @@
 package com.maruchin.medihelper.presentation.di
 
-import com.maruchin.medihelper.domain.usecases.mediplans.SaveMedicinePlanContinuousUseCase
-import com.maruchin.medihelper.domain.usecases.mediplans.SaveMedicinePlanOnceUseCase
-import com.maruchin.medihelper.domain.usecases.mediplans.SaveMedicinePlanPeriodUseCase
+import com.maruchin.medihelper.domain.usecases.mediplans.GetLiveMedicinesPlansItemsByProfileUseCase
+import com.maruchin.medihelper.domain.usecases.mediplans.SaveMedicinePlanUseCase
 import org.koin.dsl.module
 
 val medicinePlanUseCaseModule = module {
-    factory {
-        SaveMedicinePlanOnceUseCase(
-            medicinePlanRepo = get()
+    factory { 
+        GetLiveMedicinesPlansItemsByProfileUseCase(
+            medicinePlanRepo = get(),
+            medicineRepo = get()
         )
     }
-    factory {
-        SaveMedicinePlanPeriodUseCase(
-            medicinePlanRepo = get()
-        )
-    }
-    factory {
-        SaveMedicinePlanContinuousUseCase(
+    factory { 
+        SaveMedicinePlanUseCase(
             medicinePlanRepo = get()
         )
     }

@@ -9,25 +9,16 @@ import com.maruchin.medihelper.domain.entities.MedicineStateData
 import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 
-class GetAllMedicinesItemsLiveUseCase(
+class GetLiveAllMedicinesItemsUseCase(
     private val medicineRepo: MedicineRepo
 ) {
     suspend fun execute(): LiveData<List<MedicineItem>> {
         val allEntitiesLive = medicineRepo.getAllListLive()
         return Transformations.switchMap(allEntitiesLive) { list ->
             liveData {
-                val itemsList = mapToMedicineItems(list)
+                val itemsList = list.map { MedicineItem(it) }
                 emit(itemsList)
             }
         }
-    }
-
-    private fun mapToMedicineItems(medicinesList: List<Medicine>): List<MedicineItem> {
-        val itemsList = mutableListOf<MedicineItem>()
-        medicinesList.forEach { medicine ->
-            val medicineItem = MedicineItem(medicine)
-            itemsList.add(medicineItem)
-        }
-        return itemsList
     }
 }
