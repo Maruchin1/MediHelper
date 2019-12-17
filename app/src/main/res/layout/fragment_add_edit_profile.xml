@@ -124,7 +124,7 @@
 
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:spanCount="3"
-                            tools:listitem="@layout/recycler_item_person_color" />
+                            tools:listitem="@layout/rec_item_profile_color" />
 
                     </LinearLayout>
 

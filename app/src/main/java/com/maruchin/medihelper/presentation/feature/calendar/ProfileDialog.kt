@@ -1,7 +1,6 @@
 package com.maruchin.medihelper.presentation.feature.calendar
 
 import android.os.Bundle
-import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -138,7 +137,7 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
     }
 
     private inner class MedicinePlanAdapter : RecyclerAdapter<MedicinePlanItem>(
-        layoutResId = R.layout.recycler_item_medicine_plan,
+        layoutResId = R.layout.rec_item_medicine_plan,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.medicinesPlans,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.medicinePlanId == newItem.medicinePlanId }

@@ -124,7 +124,7 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
     }
 
 //    inner class PersonAdapter : RecyclerAdapter<ProfileItem>(
-//        layoutResId = R.layout.recycler_item_person_taking_medicine,
+//        layoutResId = R.layout.rec_item_person_taking_medicine,
 //        lifecycleOwner = viewLifecycleOwner,
 //        itemsSource = viewModel.
 //        areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }

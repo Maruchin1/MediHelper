@@ -61,7 +61,7 @@
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                 app:spanCount="2"
-                tools:listitem="@layout/recycler_item_medicine" />
+                tools:listitem="@layout/rec_item_medicine" />
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_nav"

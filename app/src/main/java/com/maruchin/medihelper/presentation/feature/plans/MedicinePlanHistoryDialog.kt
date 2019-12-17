@@ -15,7 +15,7 @@ import com.maruchin.medihelper.databinding.DialogMedicinePlanHistoryBinding
 import com.maruchin.medihelper.presentation.framework.*
 import com.maruchin.medihelper.presentation.model.MedicinePlanHistoryItem
 import kotlinx.android.synthetic.main.dialog_medicine_plan_history.*
-import kotlinx.android.synthetic.main.recycler_item_history.view.*
+import kotlinx.android.synthetic.main.rec_item_history.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MedicinePlanHistoryDialog : AppDialog() {
@@ -58,7 +58,7 @@ class MedicinePlanHistoryDialog : AppDialog() {
 //    }
 
 //    inner class HistoryAdapter : RecyclerAdapter<MedicinePlanHistoryItem>(
-//        layoutResId = R.layout.recycler_item_history,
+//        layoutResId = R.layout.rec_item_history,
 //        areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedDate == newItem.plannedDate }
 //    ) {
 //        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {

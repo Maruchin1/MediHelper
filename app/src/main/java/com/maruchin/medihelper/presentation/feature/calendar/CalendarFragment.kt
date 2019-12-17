@@ -47,6 +47,7 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        super.setLightStatusBar(false)
         setupToolbarMenu()
         setupHorizontalCalendar()
         setupDatesViewPager()

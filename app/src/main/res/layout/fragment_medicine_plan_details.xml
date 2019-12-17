@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
 
+        <variable
+            name="handler"
+            type="com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -9,6 +18,36 @@
         android:layout_height="match_parent"
         android:background="@color/colorBackground">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackground"
+            android:theme="@style/ThemeOverlay.MediHelper.Appbar.Light"
+            app:liftOnScroll="true">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:layout_collapseMode="pin"
+                app:menu="@menu/toolbar_menu_medicine_details"
+                app:navigationIcon="@drawable/round_close_24"
+                app:title="Szczegóły planu" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/items_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:paddingBottom="128dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

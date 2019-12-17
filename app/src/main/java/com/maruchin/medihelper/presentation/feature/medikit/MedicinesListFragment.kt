@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
@@ -15,7 +14,7 @@ import com.maruchin.medihelper.databinding.FragmentMedicinesListBinding
 import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.presentation.framework.*
 import kotlinx.android.synthetic.main.fragment_medicines_list.*
-import kotlinx.android.synthetic.main.recycler_item_medicine.view.*
+import kotlinx.android.synthetic.main.rec_item_medicine.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -70,7 +69,7 @@ class MedicinesListFragment : BaseMainFragment<FragmentMedicinesListBinding>(R.l
 
     // Inner classes
     inner class MedicineAdapter : RecyclerAdapter<MedicineItem>(
-        layoutResId = R.layout.recycler_item_medicine,
+        layoutResId = R.layout.rec_item_medicine,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.medicineItemList,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.medicineId == newItem.medicineId }

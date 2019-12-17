@@ -60,7 +60,7 @@ class AddEditProfileFragment : BaseFragment<FragmentAddEditProfileBinding>(R.lay
 
     // Inner classes
     inner class PersonColorAdapter : RecyclerAdapter<ProfileColorCheckbox>(
-        layoutResId = R.layout.recycler_item_person_color,
+        layoutResId = R.layout.rec_item_profile_color,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.profileColorCheckboxList,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.color == newItem.color }

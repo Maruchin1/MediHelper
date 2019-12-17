@@ -7,6 +7,7 @@ import com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOpti
 import com.maruchin.medihelper.presentation.feature.calendar.ProfileViewModel
 import com.maruchin.medihelper.presentation.feature.medikit.*
 import com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel
+import com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.AddEditProfileViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsViewModel
 import com.maruchin.medihelper.presentation.feature.plans.MedicinePlanHistoryViewModel
@@ -105,6 +106,11 @@ val viewModelModule = module {
             getMedicineItemUseCase = get(),
             getCurrDateUseCase = get(),
             saveMedicinePlanUseCase = get()
+        )
+    }
+    viewModel {
+        MedicinePlanDetailViewModel(
+
         )
     }
 }

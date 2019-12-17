@@ -61,7 +61,7 @@
                     android:orientation="vertical"
                     android:paddingBottom="8dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/recycler_item_medicine_plan" />
+                    tools:listitem="@layout/rec_item_medicine_plan" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

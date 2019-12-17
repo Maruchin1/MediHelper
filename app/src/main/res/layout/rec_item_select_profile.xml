@@ -13,46 +13,65 @@
             type="com.maruchin.medihelper.domain.model.ProfileItem" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_dialog_option_height"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?selectableItemBackground"
-        android:gravity="center_vertical"
-        android:onClick="@{() -> handler.onClickSelectProfile(displayData.profileId)}"
-        android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
-        android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_profile"
-            style="@style/Widget.MediHelper.CardView.Profile.Light.Small"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            app:cardBackgroundColor="@{displayData.color}"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:src="@drawable/round_person_24"
-                android:tint="@color/colorWhite" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:layout_width="0dp"
+            style="@style/Widget.MediHelper.CardView.Profile"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
-            android:text='@{displayData.name, default="Nazwa profilu"}'
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/card_profile"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?selectableItemBackground"
+            android:onClick="@{() -> handler.onClickSelectProfile(displayData.profileId)}"
+            app:cardBackgroundColor='@{displayData.color, default="@color/colorPrimary"}'
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_avatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/colorTransparent"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/colorWhite"
+                    app:strokeWidth="3dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="8dp"
+                        android:src="@drawable/round_person_white_36"
+                        android:tint="@color/colorWhite" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text='@{displayData.name, default="Nazwa"}'
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textColor="@color/colorWhite" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

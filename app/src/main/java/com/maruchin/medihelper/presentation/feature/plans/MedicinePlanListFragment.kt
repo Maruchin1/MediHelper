@@ -86,7 +86,7 @@ class MedicinePlanListFragment : Fragment() {
 
     // Inner classes
 //    inner class MedicinePlanAdapter : RecyclerAdapter<MedicinePlanItem>(
-//        layoutResId = R.layout.recycler_item_medicine_plan,
+//        layoutResId = R.layout.rec_item_medicine_plan,
 //        areItemsTheSameFun = { oldItem, newItem -> oldItem.medicinePlanId == newItem.medicinePlanId }
 //    ) {
 //        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {

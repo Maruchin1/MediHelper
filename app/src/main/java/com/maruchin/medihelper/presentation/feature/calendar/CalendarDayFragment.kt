@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.maruchin.medihelper.domain.entities.AppDate
@@ -66,7 +65,7 @@ class CalendarDayFragment : Fragment() {
 
     // Inner classes
     inner class PlannedMedicineAdapter(itemsSource: LiveData<List<PlannedMedicineItem>>) : RecyclerAdapter<PlannedMedicineItem>(
-        layoutResId = R.layout.recycler_item_planned_medicine,
+        layoutResId = R.layout.rec_item_planned_medicine,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = itemsSource,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedMedicineId == newItem.plannedMedicineId }
