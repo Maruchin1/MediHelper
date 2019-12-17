@@ -25,7 +25,6 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
     private val TAG = CalendarFragment::class.simpleName
 
     private val viewModel: CalendarViewModel by viewModel()
-    private val directions by lazyOf(CalendarFragmentDirections)
 
     private lateinit var horizontalCalendar: HorizontalCalendar
 
@@ -34,8 +33,8 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
         viewModel.changeFullCalendarMode(enabled = true)
     }
 
-    fun onClickOpenPlansList() {
-        findNavController().navigate(directions.toProfileDialog())
+    fun onClickOpenProfileData() {
+        ProfileDialog().show(childFragmentManager)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -14,7 +14,7 @@
     <dimen name="form_header_description_margin_top">4dp</dimen>
     <dimen name="form_card_margin_top">8dp</dimen>
     <dimen name="form_card_margin_horizontal">0dp</dimen>
-    <dimen name="form_card_layout_margin_top">8dp</dimen>
+    <dimen name="form_card_layout_margin_top">16dp</dimen>
     <dimen name="form_card_layout_margin_bot">16dp</dimen>
     <dimen name="form_card_layout_margin_horizontal">16dp</dimen>
     <dimen name="form_card_layout_body_margin_top">32dp</dimen>
@@ -28,5 +28,10 @@
     <dimen name="details_card_layout_margin_horizontal">16dp</dimen>
     <dimen name="details_card_layout_body_margin_top">16dp</dimen>
 
-
+    <dimen name="list_card_margin_top">8dp</dimen>
+    <dimen name="list_card_margin_horizontal">8dp</dimen>
+    <dimen name="list_card_margin_horizontal_inner">4dp</dimen>
+    <dimen name="list_card_layout_margin_top">8dp</dimen>
+    <dimen name="list_card_layout_margin_bot">16dp</dimen>
+    <dimen name="list_card_layout_margin_horizontal">16dp</dimen>
 </resources>

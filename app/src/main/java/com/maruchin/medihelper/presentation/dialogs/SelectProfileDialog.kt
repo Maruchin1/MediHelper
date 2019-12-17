@@ -3,6 +3,7 @@ package com.maruchin.medihelper.presentation.dialogs
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.liveData
+import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogSelectProfileBinding
 import com.maruchin.medihelper.domain.model.ProfileItem
@@ -30,7 +31,7 @@ class SelectProfileDialog :
         dismiss()
     }
 
-    fun setProfileSelectedLsitener(listener: (profileId: String) -> Unit) {
+    fun setProfileSelectedListener(listener: (profileId: String) -> Unit) {
         profileSelectedListener = listener
     }
 

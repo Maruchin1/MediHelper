@@ -6,7 +6,6 @@ import com.maruchin.medihelper.domain.usecases.profile.GetProfileColorsUseCase
 import com.maruchin.medihelper.domain.usecases.profile.SaveProfileUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import com.maruchin.medihelper.presentation.model.ProfileColorCheckbox
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AddEditPersonViewModel(
@@ -47,10 +46,13 @@ class AddEditPersonViewModel(
         }
     }
 
-    fun setArgs(args: AddEditPersonFragmentArgs) = viewModelScope.launch {
-        if (args.editPersonID != -1) {
-//            editProfileId = args.editPersonID
-            _formTitle.postValue("Edytuj osobę")
+    fun setArgs(args: AddEditProfileFragmentArgs) = viewModelScope.launch {
+        editProfileId = args.editProfileId
+        if (editProfileId != null) {
+            _formTitle.postValue("Edytuj profil")
+        }
+        if (args.editProfileId != null) {
+
 //            val editPerson = personUseCases.getPersonById(args.editPersonID)
 //            profileName.postValue(editPerson.name)
 //            selectedColorId.postValue(editPerson.color)

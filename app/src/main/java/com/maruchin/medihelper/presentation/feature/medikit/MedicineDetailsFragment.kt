@@ -13,7 +13,6 @@ import androidx.navigation.fragment.navArgs
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicineDetailsBinding
-import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.presentation.dialogs.SelectProfileDialog
 import com.maruchin.medihelper.presentation.framework.*
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
@@ -58,7 +57,7 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
 
     fun onClickScheduleMedicine() {
         SelectProfileDialog().apply {
-            setProfileSelectedLsitener { profileId ->
+            setProfileSelectedListener { profileId ->
                 viewModel.medicineId?.let { medicineId ->
                     findNavController().navigate(directions.toAddEditMedicinePlanFragment(profileId, medicineId))
                 }

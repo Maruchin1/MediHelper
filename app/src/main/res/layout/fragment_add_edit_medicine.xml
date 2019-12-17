@@ -75,6 +75,23 @@
                 android:layout_height="0dp"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/form_header_margin_horizontal"
+                    android:layout_marginTop="@dimen/form_header_margin_top"
+                    android:layout_marginEnd="@dimen/form_header_margin_horizontal"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Podstawowe informacje"
+                        android:textAppearance="@style/TextAppearance.MediHelper.Header" />
+                </LinearLayout>
+
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.MediHelper.CardView.FullWidth"
                     android:layout_width="match_parent"
@@ -92,19 +109,11 @@
                         android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Podstawowe informacje"
-                            android:textAppearance="@style/TextAppearance.MediHelper.CardHeader"
-                            android:textAlignment="center"/>
-
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MediHelper.TextInputLayout"
                             inLayError="@{viewModel.errorMedicineName}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/form_card_layout_body_margin_top"
                             android:hint="Nazwa leku">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -160,6 +169,23 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/form_header_margin_horizontal"
+                    android:layout_marginTop="@dimen/form_header_margin_top"
+                    android:layout_marginEnd="@dimen/form_header_margin_horizontal"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Ilość leku"
+                        android:textAppearance="@style/TextAppearance.MediHelper.Header" />
+                </LinearLayout>
+
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.MediHelper.CardView.FullWidth"
                     android:layout_width="match_parent"
@@ -177,17 +203,9 @@
                         android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Ilość leku"
-                            android:textAppearance="@style/TextAppearance.MediHelper.CardHeader"
-                            android:textAlignment="center"/>
-
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/form_card_layout_body_margin_top">
+                            android:layout_height="wrap_content">
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/in_lay_curr_state"
@@ -246,6 +264,23 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/form_header_margin_horizontal"
+                    android:layout_marginTop="@dimen/form_header_margin_top"
+                    android:layout_marginEnd="@dimen/form_header_margin_horizontal"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Zdjęcie leku"
+                        android:textAppearance="@style/TextAppearance.MediHelper.Header" />
+                </LinearLayout>
+
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.MediHelper.CardView.FullWidth"
                     android:layout_width="match_parent"
@@ -258,23 +293,11 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/form_card_layout_margin_horizontal"
-                        android:layout_marginTop="@dimen/form_card_layout_margin_top"
-                        android:layout_marginEnd="@dimen/form_card_layout_margin_horizontal"
-                        android:layout_marginBottom="@dimen/form_card_layout_margin_bot"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Zdjęcie leku"
-                            android:textAppearance="@style/TextAppearance.MediHelper.CardHeader"
-                            android:textAlignment="center"/>
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/form_card_layout_body_margin_top"
                             app:cardCornerRadius="16dp"
                             app:cardElevation="0dp">
 

@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="com.maruchin.medihelper.domain.entities.MedicinePlan.Type" />
+
         <import type="android.view.View" />
 
         <variable
@@ -19,30 +21,58 @@
         style="@style/AppTheme.Widget.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp">
+        android:layout_marginStart="@dimen/list_card_margin_horizontal"
+        android:layout_marginTop="@dimen/list_card_margin_top"
+        android:layout_marginEnd="@dimen/list_card_margin_horizontal"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="@{() -> handler.onClickMedicinePlanDetails()}">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/list_card_layout_margin_horizontal"
+            android:layout_marginTop="@dimen/list_card_layout_margin_top"
+            android:layout_marginEnd="@dimen/list_card_layout_margin_horizontal"
+            android:layout_marginBottom="@dimen/list_card_layout_margin_bot"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text='@{displayData.startDate.formatString}' />
+                android:text='@{displayData.medicineName, default="Nazwa leku"}'
+                android:textAppearance="@style/TextAppearance.MediHelper.Header" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text='@{displayData.medicineUnit, default="Jednostka"}'
+                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text='@{displayData.endDate.formatString}' />
+                android:layout_marginTop="16dp"
+                android:text='@{"Jednorazowo " + displayData.startDate, default="Jednorazowo"}'
+                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
+                android:visibility="@{displayData.planType == Type.ONCE}" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text='@{displayData.medicineName}' />
+                android:layout_marginTop="16dp"
+                android:text='@{"Od " + displayData.startDate + " do " + displayData.endDate, default="Prze okres dni"}'
+                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
+                android:visibility="@{displayData.planType == Type.PERIOD}" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text='@{"Przyjmowanie ciągłe od " + displayData.startDate, default="Przyjmowanie ciągłe"}'
+                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
+                android:visibility="@{displayData.planType == Type.CONTINUOUS}" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

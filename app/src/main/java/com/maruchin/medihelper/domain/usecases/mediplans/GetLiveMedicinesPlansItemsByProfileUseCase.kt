@@ -12,15 +12,29 @@ class GetLiveMedicinesPlansItemsByProfileUseCase(
     private val medicineRepo: MedicineRepo
 ) {
     suspend fun execute(profileId: String): LiveData<List<MedicinePlanItem>> {
-        val medicinesPlansLive = medicinePlanRepo.getListLiveByProfile(profileId)
-        return Transformations.switchMap(medicinesPlansLive) { list ->
+        val allMedicinesPlansLive = medicinePlanRepo.getAllListLive()
+        return Transformations.switchMap(allMedicinesPlansLive) { list ->
             liveData {
-                val itemsList = list.map { medicinePlan ->
+                val itemsList = list.filter { medicinePlan ->
+                    medicinePlan.profileId == profileId
+                }.map { medicinePlan ->
                     val medicine = medicineRepo.getById(medicinePlan.medicineId)?: throw Exception("Medicine doesn't exists")
                     MedicinePlanItem(medicinePlan, medicine)
                 }
                 emit(itemsList)
             }
         }
+
+
+//        val medicinesPlansLive = medicinePlanRepo.getListLiveByProfile(profileId)
+//        return Transformations.switchMap(medicinesPlansLive) { list ->
+//            liveData {
+//                val itemsList = list.map { medicinePlan ->
+//                    val medicine = medicineRepo.getById(medicinePlan.medicineId)?: throw Exception("Medicine doesn't exists")
+//                    MedicinePlanItem(medicinePlan, medicine)
+//                }
+//                emit(itemsList)
+//            }
+//        }
     }
 }

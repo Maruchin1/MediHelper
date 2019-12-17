@@ -120,7 +120,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:text='@{"Jednostka: " + viewModel.medicineUnit, default="Jednostka: tabletki"}'
-                                android:textAppearance="@style/TextAppearance.MediHelper.AppbarSubtitle" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1.Dark" />
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -156,7 +156,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Ważny do"
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.CardHeader" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -164,7 +164,7 @@
                                 android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
                                 android:text='@{viewModel.expireDate.formatString, default="wrz 2020"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.Body.Big" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.Header.Color" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -194,7 +194,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Pozostało"
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.CardHeader" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -202,7 +202,7 @@
                                 android:layout_marginTop="16dp"
                                 android:text='@{viewModel.daysRemain + " dni", default="21 dni"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.Body.Big" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.Header.Color" />
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
@@ -343,7 +343,7 @@
                                 android:layout_marginTop="8dp"
                                 android:text="Pokaż ulotkę"
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.CardHeader" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -381,7 +381,7 @@
                                 android:layout_marginTop="8dp"
                                 android:text="Zaplanuj lek"
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.CardHeader" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>

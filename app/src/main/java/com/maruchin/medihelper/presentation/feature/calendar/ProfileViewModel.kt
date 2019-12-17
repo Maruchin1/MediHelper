@@ -16,6 +16,8 @@ class ProfileViewModel(
     private val getLiveMedicinesPlansItemsByProfileUseCase: GetLiveMedicinesPlansItemsByProfileUseCase
     ) : ViewModel() {
 
+    val selectedProfileId: String?
+        get() = selectedProfile.profileId
     val profileItems: LiveData<List<ProfileItem>>
     val selectedProfilePosition: LiveData<Int>
     val medicinesPlans: LiveData<List<MedicinePlanItem>>

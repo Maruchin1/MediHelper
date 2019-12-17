@@ -7,7 +7,7 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.profiles.AddEditPersonFragment" />
+            type="com.maruchin.medihelper.presentation.feature.profiles.AddEditProfileFragment" />
 
         <variable
             name="viewModel"
@@ -17,8 +17,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background='@{viewModel.selectedColor, default="@color/colorPrimary"}'
-        android:fitsSystemWindows="true">
+        android:background='@{viewModel.selectedColor, default="@color/colorPrimary"}'>
 
         <LinearLayout
             android:layout_width="match_parent"

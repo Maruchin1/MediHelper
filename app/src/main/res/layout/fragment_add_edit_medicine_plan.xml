@@ -107,7 +107,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Osoba"
                                     android:textAlignment="center"
-                                    android:textAppearance="@style/TextAppearance.MediHelper.CardHeader" />
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
                             </LinearLayout>
 
                             <TextView
@@ -118,7 +118,7 @@
                                 android:maxLines="1"
                                 android:text='@{viewModel.profileName, default="Nazwa osoby"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.Body.Big" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.Header.Color" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -159,7 +159,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Lek"
                                     android:textAlignment="center"
-                                    android:textAppearance="@style/TextAppearance.MediHelper.CardHeader" />
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
                             </LinearLayout>
 
                             <TextView
@@ -170,7 +170,7 @@
                                 android:maxLines="1"
                                 android:text='@{viewModel.medicineName, default="Nazwa leku"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.Body.Big" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.Header.Color" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
@@ -189,7 +189,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Czas trwania"
-                        android:textAppearance="@style/TextAppearance.MediHelper.SectionHeader" />
+                        android:textAppearance="@style/TextAppearance.MediHelper.Header" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -250,7 +250,7 @@
                             android:id="@+id/frame_schedule_type"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="32dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/chip_group_duration_type">
 
@@ -355,7 +355,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Dni przyjmowania"
-                        android:textAppearance="@style/TextAppearance.MediHelper.SectionHeader" />
+                        android:textAppearance="@style/TextAppearance.MediHelper.Header" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -424,7 +424,7 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp">
+                            android:layout_marginTop="32dp">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
@@ -649,7 +649,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Godziny przyjmowania"
-                        android:textAppearance="@style/TextAppearance.MediHelper.SectionHeader" />
+                        android:textAppearance="@style/TextAppearance.MediHelper.Header" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -680,7 +680,6 @@
                             android:id="@+id/recycler_view_time_dose"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
                             android:orientation="vertical"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:listitem="@layout/recycler_item_time_dose" />

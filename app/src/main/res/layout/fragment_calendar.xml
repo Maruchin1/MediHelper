@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
-            android:onClick="@{() -> handler.onClickOpenPlansList()}"
+            android:onClick="@{() -> handler.onClickOpenProfileData()}"
             android:src="@drawable/round_person_white_48"
             app:fabShape="@drawable/bg_fab_profile"
             app:backgroundTint='@{viewModel.colorPrimary, default="@color/colorPrimary"}'

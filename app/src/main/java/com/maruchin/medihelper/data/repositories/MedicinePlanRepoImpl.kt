@@ -60,8 +60,19 @@ class MedicinePlanRepoImpl(
         return@withContext medicinesPlansList
     }
 
-    override suspend fun getAllListLive(): LiveData<List<MedicinePlan>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun getAllListLive(): LiveData<List<MedicinePlan>> = withContext(Dispatchers.IO) {
+        val docsLive = collectionRef.getDocumentsLive()
+        return@withContext Transformations.map(docsLive) { snapshotList ->
+            val medicinesPlansList = mutableListOf<MedicinePlan>()
+            snapshotList.forEach {
+                val medicinePlanDb = it.toObject(MedicinePlanDb::class.java)
+                val medicinePlan = medicinePlanDb?.toEntity(it.id)
+                if (medicinePlan != null) {
+                    medicinesPlansList.add(medicinePlan)
+                }
+            }
+            return@map medicinesPlansList.toList()
+        }
     }
 
     override suspend fun getListLiveByProfile(profileId: String): LiveData<List<MedicinePlan>> = withContext(Dispatchers.IO) {

@@ -25,9 +25,9 @@
         style="@style/AppTheme.Widget.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginStart="@dimen/list_card_margin_horizontal_inner"
+        android:layout_marginTop="@dimen/list_card_margin_top"
+        android:layout_marginEnd="@dimen/list_card_margin_horizontal_inner"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?selectableItemBackground"
@@ -36,7 +36,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,9 +57,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/list_card_layout_margin_horizontal"
+                android:layout_marginTop="@dimen/list_card_layout_margin_top"
+                android:layout_marginEnd="@dimen/list_card_layout_margin_horizontal"
+                android:layout_marginBottom="@dimen/list_card_layout_margin_bot"
                 android:orientation="vertical">
 
                 <TextView
@@ -70,50 +70,46 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text='@{displayData.name, default="Nazwa leku"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textColor="@color/colorTextSecondary" />
+                    android:textAppearance="@style/TextAppearance.MediHelper.Header" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{displayData.unit, default=jednostka}"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                    android:textColor="@color/colorTextTertiary" />
+                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
 
-            </LinearLayout>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                android:visibility="@{displayData.stateData != null ? View.VISIBLE : View.GONE}"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="0dp">
-
-                <LinearLayout
-                    android:id="@+id/lay_curr_state_line"
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:visibility="@{displayData.stateData != null ? View.VISIBLE : View.GONE}"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp">
 
-                    <View
-                        android:id="@+id/line_state"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:id="@+id/lay_curr_state_line"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="@{displayData.stateData.stateWeight, default=7}"
-                        android:background='@{displayData.stateData.colorId, default="@android:color/holo_green_light"}' />
+                        android:orientation="horizontal">
 
-                    <View
-                        android:id="@+id/line_empty"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="@{displayData.stateData.emptyWeight, default=3}"
-                        android:background="@color/colorBackground" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        <View
+                            android:id="@+id/line_state"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="@{displayData.stateData.stateWeight, default=7}"
+                            android:background='@{displayData.stateData.colorId, default="@android:color/holo_green_light"}' />
 
+                        <View
+                            android:id="@+id/line_empty"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="@{displayData.stateData.emptyWeight, default=3}"
+                            android:background="@color/colorBackground" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.leochuan.CarouselLayoutManager
@@ -24,6 +25,23 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         get() = "MedicinesPlansFragment"
 
     private val viewModel: ProfileViewModel by viewModel()
+    private val directions by lazy { CalendarFragmentDirections }
+
+    fun onClickAddProfile() {
+        requireParentFragment().findNavController().navigate(directions.toAddEditProfileFragment(editProfileId = null))
+    }
+
+    fun onClickEditProfile() {
+//        findNavController().navigate(directions.toAddEditProfileFragment(editProfileId = viewModel.selectedProfileId))
+    }
+
+    fun onClickDeleteProfile() {
+
+    }
+
+    fun onClickMedicinePlanDetails() {
+        requireParentFragment().findNavController().navigate(directions.toMedicinePlanDetailsFragment())
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.bindingViewModel = viewModel
@@ -34,6 +52,7 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         super.onViewCreated(view, savedInstanceState)
         setupProfileRecyclerView()
         setupMedicinesPlansRecyclerView()
+        setupToolbarMenu()
         observeViewModel()
     }
 
@@ -68,6 +87,17 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
     private fun setupMedicinesPlansRecyclerView() {
         recycler_view_medicine_plan.apply {
             adapter = MedicinePlanAdapter()
+        }
+    }
+
+    private fun setupToolbarMenu() {
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.btn_add -> onClickAddProfile()
+                R.id.btn_edit -> onClickEditProfile()
+                R.id.btn_delete -> onClickDeleteProfile()
+            }
+            return@setOnMenuItemClickListener true
         }
     }
 

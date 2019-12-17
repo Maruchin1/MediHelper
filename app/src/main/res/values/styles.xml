@@ -123,11 +123,11 @@
     </style>
 
     <style name="Widget.MediHelper.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
-<!--        <item name="android:textColor">@color/chip_single_select_text_color</item>-->
-<!--        <item name="chipBackgroundColor">@color/chip_single_select_bg</item>-->
-<!--        <item name="chipStrokeColor">@color/colorDarkerGray</item>-->
-<!--        <item name="chipStrokeWidth">1dp</item>-->
-<!--        <item name="rippleColor">@color/colorDarkerGray</item>-->
+        <item name="android:textColor">@color/chip_single_select_text_color</item>
+        <item name="chipBackgroundColor">@color/chip_single_select_bg</item>
+        <item name="chipStrokeColor">@color/colorDarkerGray</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="rippleColor">@color/colorDarkerGray</item>
     </style>
 
     <!--    TextAppearance-->
@@ -143,25 +143,28 @@
         <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 
-    <style name="TextAppearance.MediHelper.AppbarSubtitle" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="android:textColor">@color/colorWhite</item>
+    <style name="TextAppearance.MediHelper.Header" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
 
-    <style name="TextAppearance.MediHelper.CardHeader" parent="TextAppearance.MaterialComponents.Subtitle2">
+    <style name="TextAppearance.MediHelper.Header.Color" parent="TextAppearance.MediHelper.Header">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.MediHelper.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textColor">@color/colorTextTertiary</item>
     </style>
 
-    <style name="TextAppearance.MediHelper.SectionHeader" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textColor">@color/colorTextSecondary</item>
-<!--        <item name="android:textSize">16sp</item>-->
+    <style name="TextAppearance.MediHelper.Subtitle1.Dark" parent="TextAppearance.MediHelper.Subtitle1">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="TextAppearance.MediHelper.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textColor">@color/colorTextTertiary</item>
     </style>
 
     <style name="TextAppearance.MediHelper.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textColor">@color/colorTextSecondary</item>
-    </style>
-
-    <style name="TextAppearance.MediHelper.Body.Big" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
     <style name="TextAppearance.MediHelper.NoItemPageTitle" parent="TextAppearance.MaterialComponents.Headline6">

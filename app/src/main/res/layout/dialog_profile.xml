@@ -30,29 +30,35 @@
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
-                    app:titleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Light"
-                    app:title="Profil osoby"
+                    android:theme="@style/ThemeOverlay.MediHelper.Appbar.Light"
                     app:menu="@menu/toolbar_menu_profile"
-                    android:theme="@style/ThemeOverlay.MediHelper.Appbar.Light"/>
+                    app:title="Profil osoby"
+                    app:titleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Light" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
                     android:nestedScrollingEnabled="false"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/rec_item_profile" />
 
+                <include layout="@layout/line_horizontal" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_medicine_plan"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
                     android:orientation="vertical"
+                    android:paddingBottom="8dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/recycler_item_medicine_plan" />
             </LinearLayout>

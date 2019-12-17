@@ -10,12 +10,14 @@ import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.maruchin.medihelper.BR
+import com.maruchin.medihelper.R
 
 abstract class BaseBottomDialog<T : ViewDataBinding>(
     private val layoutResId: Int,
