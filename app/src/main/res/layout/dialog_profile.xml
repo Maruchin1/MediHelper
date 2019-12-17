@@ -29,6 +29,14 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    app:titleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Light"
+                    app:title="Profil osoby"
+                    app:menu="@menu/toolbar_menu_profile"
+                    android:theme="@style/ThemeOverlay.MediHelper.Appbar.Light"/>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_profile"
                     android:layout_width="match_parent"
