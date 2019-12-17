@@ -122,6 +122,7 @@ class AddEditMedicinePlanFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         postponeEnterTransition()
         super.onViewCreated(view, savedInstanceState)
+        super.setStatusBarColorLive(viewModel.colorPrimary)
         viewModel.setArgs(args)
         setupFab()
         setupDurationTypeChipGroup()

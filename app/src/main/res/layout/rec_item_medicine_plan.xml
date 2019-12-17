@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text='@{"Jednorazowo " + displayData.startDate, default="Jednorazowo"}'
-                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
+                android:textAppearance="@style/TextAppearance.MediHelper.Body2"
                 android:visibility="@{displayData.planType == Type.ONCE}" />
 
             <TextView
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text='@{"Od " + displayData.startDate + " do " + displayData.endDate, default="Prze okres dni"}'
-                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
+                android:textAppearance="@style/TextAppearance.MediHelper.Body2"
                 android:visibility="@{displayData.planType == Type.PERIOD}" />
 
             <TextView
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text='@{"Przyjmowanie ciągłe od " + displayData.startDate, default="Przyjmowanie ciągłe"}'
-                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
+                android:textAppearance="@style/TextAppearance.MediHelper.Body2"
                 android:visibility="@{displayData.planType == Type.CONTINUOUS}" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

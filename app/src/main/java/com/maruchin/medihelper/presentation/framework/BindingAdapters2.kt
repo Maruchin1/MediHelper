@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.storage.StorageReference
@@ -81,6 +82,14 @@ fun setImageViewStorageRef(imageView: ImageView, storageReference: StorageRefere
     }
 }
 
+//ImageButton
+@BindingAdapter("android:tint")
+fun setImageButtonTint(imageButton: ImageButton, color: String?) {
+    if (!color.isNullOrEmpty()) {
+        imageButton.imageTintList = ColorStateList.valueOf(Color.parseColor(color))
+    }
+}
+
 //TextInput
 @BindingAdapter("inLayError")
 fun setTextInputError(inLay: TextInputLayout, errorMessage: String?) {
@@ -93,6 +102,13 @@ fun setTextInputError(inLay: TextInputLayout, errorMessage: String?) {
 //Fab
 @BindingAdapter("app:backgroundTint")
 fun setFabBackgroundTint(fab: FloatingActionButton, color: String?) {
+    if (!color.isNullOrEmpty()) {
+        fab.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+    }
+}
+
+@BindingAdapter("app:backgroundTint")
+fun setExFabBackgroundTine(fab: ExtendedFloatingActionButton, color: String?) {
     if (!color.isNullOrEmpty()) {
         fab.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
     }

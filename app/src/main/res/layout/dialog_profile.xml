@@ -50,7 +50,14 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/rec_item_profile" />
 
-                <include layout="@layout/line_horizontal" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Przyjmowane leki"
+                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_medicine_plan"

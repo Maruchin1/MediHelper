@@ -30,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="224dp"
             android:background="@drawable/bg_appbar_round"
+            android:backgroundTint="@{viewModel.colorPrimary}"
             android:theme="@style/ThemeOverlay.MediHelper.Appbar">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -118,7 +119,8 @@
                                 android:maxLines="1"
                                 android:text='@{viewModel.profileName, default="Nazwa osoby"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.Header.Color" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.Header.Color"
+                                android:textColor="@{viewModel.colorPrimary}" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -170,7 +172,8 @@
                                 android:maxLines="1"
                                 android:text='@{viewModel.medicineName, default="Nazwa leku"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.Header.Color" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.Header.Color"
+                                android:textColor="@{viewModel.colorPrimary}" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
@@ -692,7 +695,7 @@
                             android:background="?selectableItemBackgroundBorderless"
                             android:onClick="@{() -> handler.onClickAddTimeDose()}"
                             android:src="@drawable/round_add_white_36"
-                            android:tint="@color/colorPrimary" />
+                            android:tint='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -708,6 +711,7 @@
             android:layout_margin="@dimen/fab_margin"
             android:onClick="@{() -> handler.onClickSaveMedicinePlan()}"
             android:text="Zapisz plan"
+            app:backgroundTint="@{viewModel.colorPrimary}"
             app:icon="@drawable/baseline_check_white_36" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
