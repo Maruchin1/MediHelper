@@ -24,13 +24,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable='@{displayData.profileId == "" ? false : true}'
-            android:focusable="true"
-            android:gravity="center"
-            android:orientation="vertical"
             android:layout_gravity="center"
-            android:visibility='@{displayData.profileId == "" ? View.INVISIBLE : View.VISIBLE, default=visible}'>
+            android:gravity="center"
+            android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_avatar"
@@ -63,34 +59,6 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textColor="@color/colorWhite" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorDarkerGray"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:visibility='@{displayData.profileId == "" ? View.VISIBLE : View.GONE, default=gone}'>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/round_add_white_48" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:text="Dodaj osobę"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="@color/colorWhite" />
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>

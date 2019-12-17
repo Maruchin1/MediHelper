@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.leochuan.CarouselLayoutManager
 import com.leochuan.CenterSnapHelper
+import com.leochuan.ScaleLayoutManager
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogProfileBinding
 import com.maruchin.medihelper.domain.model.MedicinePlanItem
@@ -78,8 +79,8 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
     private fun setupProfileRecyclerView() {
         recycler_view_profile.apply {
             adapter = ProfileAdapter()
-            layoutManager = CarouselLayoutManager.Builder(requireContext(), 0)
-                .setMaxVisibleItemCount(5)
+            layoutManager = ScaleLayoutManager.Builder(requireContext(), 0)
+                .setMinScale(0.75f)
                 .setOrientation(CarouselLayoutManager.HORIZONTAL)
                 .build()
             CenterSnapHelper().attachToRecyclerView(this)
@@ -92,7 +93,7 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    val layoutManager = recyclerView.layoutManager as CarouselLayoutManager
+                    val layoutManager = recyclerView.layoutManager as ScaleLayoutManager
                     val selectedPosition = layoutManager.currentPosition
                     viewModel.selectProfile(selectedPosition)
                 }
