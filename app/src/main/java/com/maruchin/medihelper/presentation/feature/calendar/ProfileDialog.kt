@@ -1,19 +1,18 @@
 package com.maruchin.medihelper.presentation.feature.calendar
 
 import android.os.Bundle
+import android.transition.TransitionManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.leochuan.CarouselLayoutManager
 import com.leochuan.CenterSnapHelper
-import com.leochuan.ScaleLayoutManager
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogProfileBinding
-import com.maruchin.medihelper.domain.entities.MedicinePlan
 import com.maruchin.medihelper.domain.model.MedicinePlanItem
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
@@ -23,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_profile, collapsing = true) {
     override val TAG: String
-        get() = "MedicinesPlansFragment"
+        get() = "ProfileDialog"
 
     private val viewModel: ProfileViewModel by viewModel()
     private val directions by lazy { CalendarFragmentDirections }
@@ -68,12 +67,21 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         viewModel.selectedProfilePosition.observe(viewLifecycleOwner, Observer { position ->
             recycler_view_profile.scrollToPosition(position)
         })
+        viewModel.profileItems.observe(viewLifecycleOwner, Observer { list ->
+            Log.i(TAG, "list = $list")
+        })
+        viewModel.mainProfileSelected.observe(viewLifecycleOwner, Observer { mainSelected ->
+            setEditDeleteProfileEnabled(!mainSelected)
+        })
     }
 
     private fun setupProfileRecyclerView() {
         recycler_view_profile.apply {
             adapter = ProfileAdapter()
-            layoutManager = CarouselLayoutManager(requireContext(), 0)
+            layoutManager = CarouselLayoutManager.Builder(requireContext(), 0)
+                .setMaxVisibleItemCount(5)
+                .setOrientation(CarouselLayoutManager.HORIZONTAL)
+                .build()
             CenterSnapHelper().attachToRecyclerView(this)
         }
         setupProfileSelectedListener()
@@ -109,11 +117,18 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         }
     }
 
+    private fun setEditDeleteProfileEnabled(enabled: Boolean) {
+//        TransitionManager.beginDelayedTransition(root_lay)
+        with(toolbar.menu) {
+            findItem(R.id.btn_edit).isVisible = enabled
+            findItem(R.id.btn_delete).isVisible = enabled
+        }
+    }
+
     private inner class ProfileAdapter : RecyclerAdapter<ProfileItem>(
         layoutResId = R.layout.rec_item_profile,
         lifecycleOwner = viewLifecycleOwner,
-        itemsSource = viewModel.profileItems,
-        areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }
+        itemsSource = viewModel.profileItems
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val item = itemsList[position]

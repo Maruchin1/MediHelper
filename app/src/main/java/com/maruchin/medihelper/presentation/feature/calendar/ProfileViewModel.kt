@@ -20,6 +20,7 @@ class ProfileViewModel(
         get() = selectedProfile.profileId
     val profileItems: LiveData<List<ProfileItem>>
     val selectedProfilePosition: LiveData<Int>
+    val mainProfileSelected: LiveData<Boolean> = selectedProfile.mainProfileSelectedLive
     val medicinesPlans: LiveData<List<MedicinePlanItem>>
 
     init {

@@ -12,7 +12,7 @@ class GetLiveAllProfilesItemsUseCase(
     suspend fun execute(): LiveData<List<ProfileItem>> {
         val allEntitiesLive = profileRepo.getAllListLive()
         return Transformations.map(allEntitiesLive) { list ->
-            list.map { ProfileItem(it)}
+            list.map { ProfileItem(it) }.sortedBy { it.name }
         }
     }
 }
