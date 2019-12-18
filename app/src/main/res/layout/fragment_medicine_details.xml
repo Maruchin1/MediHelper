@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/details_card_margin_horizontal"
-                    android:layout_marginTop="@dimen/details_card_margin_top"
+                    android:layout_marginTop="@dimen/details_header_margin_top"
                     android:layout_marginEnd="@dimen/details_card_margin_horizontal">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -164,7 +164,7 @@
                                 android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
                                 android:text='@{viewModel.expireDate.formatString, default="wrz 2020"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -202,7 +202,7 @@
                                 android:layout_marginTop="16dp"
                                 android:text='@{viewModel.daysRemain + " dni", default="21 dni"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1" />
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>

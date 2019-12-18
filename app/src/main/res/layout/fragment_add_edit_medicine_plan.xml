@@ -119,7 +119,7 @@
                                 android:maxLines="1"
                                 android:text='@{viewModel.profileName, default="Nazwa osoby"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig"
+                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1"
                                 android:textColor="@{viewModel.colorPrimary}" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
@@ -172,7 +172,7 @@
                                 android:maxLines="1"
                                 android:text='@{viewModel.medicineName, default="Nazwa leku"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig"
+                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1"
                                 android:textColor="@{viewModel.colorPrimary}" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>

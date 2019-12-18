@@ -112,7 +112,7 @@ val viewModelModule = module {
     }
     viewModel {
         MedicinePlanDetailViewModel(
-
+            getMedicinePlanDetailsUseCase = get()
         )
     }
 }

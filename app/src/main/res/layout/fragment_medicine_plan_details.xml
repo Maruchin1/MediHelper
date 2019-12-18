@@ -51,32 +51,54 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/details_card_margin_horizontal"
-                    android:layout_marginTop="@dimen/details_card_margin_top"
+                    android:layout_marginTop="@dimen/details_header_margin_top"
                     android:layout_marginEnd="@dimen/details_card_margin_horizontal"
-                    android:orientation="vertical">
+                    app:cardBackgroundColor='@{viewModel.colorPrimary, default="@color/colorPrimary"}'>
 
-                    <TextView
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Nazwa leku"
-                        android:textAppearance="@style/TextAppearance.MediHelper.HeaderBig" />
+                        android:layout_marginStart="@dimen/details_card_layout_margin_horizontal"
+                        android:layout_marginTop="@dimen/details_card_layout_margin_top"
+                        android:layout_marginEnd="@dimen/details_card_margin_horizontal"
+                        android:layout_marginBottom="@dimen/details_card_layout_margin_bot">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Jednostka: tabletki"
-                        android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
-                </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/lay_name_and_unit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text='@{viewModel.medicineName, default="Nazwa leku"}'
+                                android:textAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text='@{"Jednostka: " + viewModel.medicineUnit, default="Jednostka: tabletki"}'
+                                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1.Dark" />
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp">
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -88,9 +110,9 @@
                             style="@style/Widget.MediHelper.CardView.Big"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="4dp">
+                            android:layout_marginStart="@dimen/details_card_margin_horizontal"
+                            android:layout_marginTop="@dimen/details_card_margin_top"
+                            android:layout_marginEnd="@dimen/details_card_margin_horizontal_inner">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -112,38 +134,38 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginEnd="8dp"
                                         android:src="@drawable/round_event_white_18"
-                                        android:tint="@color/colorDarkerGray" />
+                                        android:tint="@color/colorBlack" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Czas trwania"
                                         android:textAlignment="center"
-                                        android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
-                                        android:textColor="@color/colorTextTertiary" />
+                                        android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
                                 </LinearLayout>
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="24dp"
-                                    android:text="Przyjmowanie ciągłe"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                                    android:textColor="@color/colorPrimary" />
+                                    android:layout_marginTop="16dp"
+                                    android:text='@{viewModel.durationTime.planType, default="Przyjmowanie ciągłe"}'
+                                    android:textAppearance="@style/TextAppearance.MediHelper.BodyBig2"
+                                    android:textColor="@{viewModel.colorPrimary}" />
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
-                                    android:text="Od 01 wrz 2019"
+                                    android:text='@{viewModel.durationTime.startDate, default="Od 01 wrz 2019"}'
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
-                                    android:text="Do 11 wrz 2019"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+                                    android:text='@{viewModel.durationTime.endDate, default="Do 12 wrz 2019"}'
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                                    android:visibility="@{viewModel.durationTime.endDate != null}" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -151,57 +173,36 @@
                             style="@style/Widget.MediHelper.CardView.Big"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="4dp"
-                            android:layout_marginBottom="8dp">
+                            android:layout_marginStart="@dimen/details_card_margin_horizontal"
+                            android:layout_marginTop="@dimen/details_card_margin_top"
+                            android:layout_marginEnd="@dimen/details_card_margin_horizontal_inner"
+                            android:layout_marginBottom="@dimen/details_card_margin_top"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?selectableItemBackground"
+                            android:onClick="@{() -> handler.onClickOpenMedicineDetails()}">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/details_card_layout_margin_horizontal"
-                                android:layout_marginTop="@dimen/details_card_layout_margin_top"
-                                android:layout_marginEnd="@dimen/details_card_layout_margin_horizontal"
-                                android:layout_marginBottom="@dimen/details_card_layout_margin_bot"
+                                android:layout_marginTop="32dp"
+                                android:layout_marginBottom="32dp"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center">
-
-                                    <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginEnd="8dp"
-                                        android:src="@drawable/round_event_white_18"
-                                        android:tint="@color/colorDarkerGray" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Dni"
-                                        android:textAlignment="center"
-                                        android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
-                                        android:textColor="@color/colorTextTertiary" />
-                                </LinearLayout>
+                                <ImageView
+                                    android:layout_width="64dp"
+                                    android:layout_height="64dp"
+                                    android:src="@drawable/round_info_24"
+                                    android:tint='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
 
                                 <TextView
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="24dp"
-                                    android:text="Wybrane dni tygodnia"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                                    android:textColor="@color/colorPrimary" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
-                                    android:text="pn, śr, so"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-
+                                    android:layout_marginTop="8dp"
+                                    android:text="Informacje o leku"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -217,34 +218,55 @@
                             style="@style/Widget.MediHelper.CardView.Big"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="?selectableItemBackground">
+                            android:layout_marginStart="@dimen/details_card_margin_horizontal_inner"
+                            android:layout_marginTop="@dimen/details_card_margin_top"
+                            android:layout_marginEnd="@dimen/details_card_margin_horizontal">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="32dp"
-                                android:layout_marginBottom="32dp"
+                                android:layout_marginStart="@dimen/details_card_layout_margin_horizontal"
+                                android:layout_marginTop="@dimen/details_card_layout_margin_top"
+                                android:layout_marginEnd="@dimen/details_card_layout_margin_horizontal"
+                                android:layout_marginBottom="@dimen/details_card_layout_margin_bot"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
-                                <ImageView
-                                    android:layout_width="64dp"
-                                    android:layout_height="64dp"
-                                    android:src="@drawable/round_info_24"
-                                    android:tint="@color/colorPrimary" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center">
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="8dp"
+                                        android:src="@drawable/round_event_white_18"
+                                        android:tint="@color/colorBlack" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Dni"
+                                        android:textAlignment="center"
+                                        android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
+                                </LinearLayout>
 
                                 <TextView
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:text="Informacje o leku"
-                                    android:textAlignment="center"
-                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
+                                    android:layout_marginTop="16dp"
+                                    android:text="Wybrane dni tygodnia"
+                                    android:textAppearance="@style/TextAppearance.MediHelper.BodyBig2"
+                                    android:textColor="@{viewModel.colorPrimary}" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
+                                    android:text="pn, śr, so"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -252,10 +274,10 @@
                             style="@style/Widget.MediHelper.CardView.Big"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="8dp">
+                            android:layout_marginStart="@dimen/details_card_margin_horizontal_inner"
+                            android:layout_marginTop="@dimen/details_card_margin_top"
+                            android:layout_marginEnd="@dimen/details_card_margin_horizontal"
+                            android:layout_marginBottom="@dimen/details_card_margin_top">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -277,15 +299,14 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginEnd="8dp"
                                         android:src="@drawable/round_access_time_white_18"
-                                        android:tint="@color/colorDarkerGray" />
+                                        android:tint="@color/colorBlack" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Godziny"
                                         android:textAlignment="center"
-                                        android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
-                                        android:textColor="@color/colorTextTertiary" />
+                                        android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
                                 </LinearLayout>
 
                                 <GridLayout
@@ -300,8 +321,7 @@
                                         android:layout_columnWeight="1"
                                         android:layout_gravity="center_vertical"
                                         android:text="08:30"
-                                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                                        android:textColor="@color/colorPrimary" />
+                                        android:textAppearance="@style/TextAppearance.MediHelper.BodyBig2" />
 
                                     <TextView
                                         android:layout_width="0dp"
@@ -318,8 +338,7 @@
                                         android:layout_gravity="center_vertical"
                                         android:layout_marginTop="8dp"
                                         android:text="08:30"
-                                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                                        android:textColor="@color/colorPrimary" />
+                                        android:textAppearance="@style/TextAppearance.MediHelper.BodyBig2" />
 
                                     <TextView
                                         android:layout_width="0dp"
@@ -337,8 +356,7 @@
                                         android:layout_gravity="center_vertical"
                                         android:layout_marginTop="8dp"
                                         android:text="08:30"
-                                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                                        android:textColor="@color/colorPrimary" />
+                                        android:textAppearance="@style/TextAppearance.MediHelper.BodyBig2" />
 
                                     <TextView
                                         android:layout_width="0dp"
@@ -354,17 +372,22 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <androidx.appcompat.widget.Toolbar
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="Historia przyjmowania" />
+                    android:layout_marginStart="@dimen/details_card_margin_horizontal"
+                    android:layout_marginTop="@dimen/details_header_margin_top"
+                    android:layout_marginEnd="@dimen/details_card_margin_horizontal"
+                    android:text="Historia przyjmowania"
+                    android:textAppearance="@style/TextAppearance.MediHelper.Header" />
 
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="@dimen/details_card_margin_horizontal"
+                    android:layout_marginTop="@dimen/details_card_margin_top"
+                    android:layout_marginEnd="@dimen/details_card_margin_horizontal"
                     android:layout_marginBottom="12dp">
 
 

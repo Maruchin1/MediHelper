@@ -33,8 +33,12 @@ class SaveMedicinePlanUseCase(
             medicineId = params.medicineId!!,
             planType = params.planType!!,
             startDate = params.startDate!!,
-            endDate = params.endDate!!,
-            intakeDays = params.intakeDays!!,
+            endDate = if (params.planType == MedicinePlan.Type.PERIOD) {
+                params.endDate!!
+            } else null,
+            intakeDays = if (params.planType != MedicinePlan.Type.ONCE) {
+                params.intakeDays!!
+            } else null,
             timeDoseList = params.timeDoseList!!
         )
         if (params.medicinePlanId == null) {

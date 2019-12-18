@@ -30,7 +30,7 @@
         android:layout_marginEnd="@dimen/list_card_margin_horizontal"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="@{() -> handler.onClickMedicinePlanDetails()}">
+        android:onClick="@{() -> handler.onClickMedicinePlanDetails(displayData.medicinePlanId)}">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -149,16 +149,16 @@
         <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 
-    <style name="TextAppearance.MediHelper.HeaderBig" parent="TextAppearance.MaterialComponents.Headline4">
+    <style name="TextAppearance.MediHelper.Header" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 
-    <style name="TextAppearance.MediHelper.Header" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textColor">@color/colorTextSecondary</item>
+    <style name="TextAppearance.MediHelper.HeaderBig" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 
     <style name="TextAppearance.MediHelper.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="android:textColor">@color/colorTextTertiary</item>
+        <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
 
     <style name="TextAppearance.MediHelper.Subtitle1.Dark" parent="TextAppearance.MediHelper.Subtitle1">
@@ -169,7 +169,11 @@
         <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 
-    <style name="TextAppearance.MediHelper.BodyBig" parent="TextAppearance.MaterialComponents.Headline5">
+    <style name="TextAppearance.MediHelper.BodyBig1" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.MediHelper.BodyBig2" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 

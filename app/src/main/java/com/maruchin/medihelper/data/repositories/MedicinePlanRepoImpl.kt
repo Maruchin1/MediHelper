@@ -38,11 +38,11 @@ class MedicinePlanRepoImpl(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getById(id: String): MedicinePlan? {
-//        val doc = collectionRef.document(id).get().await()
-//        val planType = doc.data?.get("planType")
-
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun getById(id: String): MedicinePlan? = withContext(Dispatchers.IO) {
+        val doc = collectionRef.document(id).get().await()
+        val medicinePlanDb = doc.toObject(MedicinePlanDb::class.java)
+        val medicinePlan = medicinePlanDb?.toEntity(doc.id)
+        return@withContext medicinePlan
     }
 
     override suspend fun getLiveById(id: String): LiveData<MedicinePlan?> {
@@ -75,18 +75,19 @@ class MedicinePlanRepoImpl(
         }
     }
 
-    override suspend fun getListLiveByProfile(profileId: String): LiveData<List<MedicinePlan>> = withContext(Dispatchers.IO) {
-        val docsLive = collectionRef.whereEqualTo("profileId", profileId).getDocumenstLive()
-        return@withContext Transformations.map(docsLive) { snapshotList ->
-            val medicinesPlansList = mutableListOf<MedicinePlan>()
-            snapshotList.forEach {
-                val medicinePlanDb = it.toObject(MedicinePlanDb::class.java)
-                val medicinePlan = medicinePlanDb?.toEntity(it.id)
-                if (medicinePlan != null) {
-                    medicinesPlansList.add(medicinePlan)
+    override suspend fun getListLiveByProfile(profileId: String): LiveData<List<MedicinePlan>> =
+        withContext(Dispatchers.IO) {
+            val docsLive = collectionRef.whereEqualTo("profileId", profileId).getDocumenstLive()
+            return@withContext Transformations.map(docsLive) { snapshotList ->
+                val medicinesPlansList = mutableListOf<MedicinePlan>()
+                snapshotList.forEach {
+                    val medicinePlanDb = it.toObject(MedicinePlanDb::class.java)
+                    val medicinePlan = medicinePlanDb?.toEntity(it.id)
+                    if (medicinePlan != null) {
+                        medicinesPlansList.add(medicinePlan)
+                    }
                 }
+                return@map medicinesPlansList.toList()
             }
-            return@map medicinesPlansList.toList()
         }
-    }
 }

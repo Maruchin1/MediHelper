@@ -47,8 +47,8 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         }.show(childFragmentManager)
     }
 
-    fun onClickMedicinePlanDetails() {
-        requireParentFragment().findNavController().navigate(directions.toMedicinePlanDetailsFragment())
+    fun onClickMedicinePlanDetails(medicinePlanId: String) {
+        requireParentFragment().findNavController().navigate(directions.toMedicinePlanDetailsFragment(medicinePlanId))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

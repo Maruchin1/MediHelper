@@ -141,5 +141,16 @@
     <fragment
         android:id="@+id/medicinePlanDetailsFragment"
         android:name="com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsFragment"
-        tools:layout="@layout/fragment_medicine_plan_details" />
+        tools:layout="@layout/fragment_medicine_plan_details" >
+        <argument
+            android:name="medicinePlanId"
+            app:argType="string" />
+        <action
+            android:id="@+id/toMedicineDetailsFragment"
+            app:destination="@id/medicineDetailsFragment"
+            app:enterAnim="@anim/slide_in_end"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_end" />
+    </fragment>
 </navigation>

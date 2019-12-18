@@ -34,11 +34,10 @@ class MedicineDetailsViewModel(
 
     val actionDataLoaded: LiveData<Boolean>
         get() = _actionDataLoaded
-
-    private val _actionDataLoaded = ActionLiveData()
-
     val medicineId: String?
         get() = medicineDetails.value?.medicineId
+
+    private val _actionDataLoaded = ActionLiveData()
 
     private val medicineDetails = MutableLiveData<MedicineDetails>()
 
@@ -68,10 +67,9 @@ class MedicineDetailsViewModel(
     }
 
     fun setArgs(args: MedicineDetailsFragmentArgs) = viewModelScope.launch {
-        val medicineId = args.medicineId
-        val result = getMedicineDetailsUseCase.execute(medicineId)
-        if (result != null) {
-            medicineDetails.postValue(result)
+        val data = getMedicineDetailsUseCase.execute(args.medicineId)
+        if (data != null) {
+            medicineDetails.postValue(data)
         }
         _actionDataLoaded.sendAction()
     }
