@@ -35,7 +35,8 @@ val viewModelModule = module {
             getMedicineUnitsUseCase = get(),
             saveMedicineUseCase = get(),
             getMedicineEditDataUseCase = get(),
-            deviceCamera = get()
+            deviceCamera = get(),
+            picturesRef = get()
         )
     }
     viewModel {
@@ -95,6 +96,7 @@ val viewModelModule = module {
     viewModel {
         ProfileViewModel(
             selectedProfile = get(),
+            getProfileItemUseCase = get(),
             getLiveAllProfilesItemsUseCase = get(),
             getLiveMedicinesPlansItemsByProfileUseCase = get(),
             deleteProfileUseCase = get()

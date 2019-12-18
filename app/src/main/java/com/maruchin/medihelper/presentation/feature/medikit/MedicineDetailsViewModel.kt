@@ -61,9 +61,9 @@ class MedicineDetailsViewModel(
         }
         stateData = Transformations.map(medicineDetails) { it.stateData }
         profileSimpleItemListAvailable = Transformations.map(medicineDetails) {
-            !it.profileSimpleItemList.isNullOrEmpty()
+            !it.profileItems.isNullOrEmpty()
         }
-        profileSimpleItemList = Transformations.map(medicineDetails) { it.profileSimpleItemList }
+        profileSimpleItemList = Transformations.map(medicineDetails) { it.profileItems }
         medicineStateAvailable = Transformations.map(stateData) { it != null }
     }
 

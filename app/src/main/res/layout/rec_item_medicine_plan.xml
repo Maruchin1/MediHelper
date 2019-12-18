@@ -15,6 +15,10 @@
         <variable
             name="displayData"
             type="com.maruchin.medihelper.domain.model.MedicinePlanItem" />
+
+        <variable
+            name="viewModel"
+            type="com.maruchin.medihelper.presentation.feature.calendar.ProfileViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -50,29 +54,46 @@
                 android:text='@{displayData.medicineUnit, default="Jednostka"}'
                 android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text='@{"Jednorazowo " + displayData.startDate, default="Jednorazowo"}'
-                android:textAppearance="@style/TextAppearance.MediHelper.Body2"
-                android:visibility="@{displayData.planType == Type.ONCE}" />
+                android:gravity="center_vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text='@{"Od " + displayData.startDate + " do " + displayData.endDate, default="Prze okres dni"}'
-                android:textAppearance="@style/TextAppearance.MediHelper.Body2"
-                android:visibility="@{displayData.planType == Type.PERIOD}" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/round_event_24"
+                    android:tint='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text='@{"Przyjmowanie ciągłe od " + displayData.startDate, default="Przyjmowanie ciągłe"}'
-                android:textAppearance="@style/TextAppearance.MediHelper.Body2"
-                android:visibility="@{displayData.planType == Type.CONTINUOUS}" />
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{"Jednorazowo " + displayData.startDate, default="Jednorazowo"}'
+                        android:textAppearance="@style/TextAppearance.MediHelper.Body2"
+                        android:visibility="@{displayData.planType == Type.ONCE}" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{"Od " + displayData.startDate + " do " + displayData.endDate, default="Prze okres dni"}'
+                        android:textAppearance="@style/TextAppearance.MediHelper.Body2"
+                        android:visibility="@{displayData.planType == Type.PERIOD}" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{"Przyjmowanie ciągłe od " + displayData.startDate, default="Przyjmowanie ciągłe"}'
+                        android:textAppearance="@style/TextAppearance.MediHelper.Body2"
+                        android:visibility="@{displayData.planType == Type.CONTINUOUS}" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

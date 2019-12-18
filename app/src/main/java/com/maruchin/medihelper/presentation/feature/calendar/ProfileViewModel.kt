@@ -6,31 +6,45 @@ import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.usecases.mediplans.GetLiveMedicinesPlansItemsByProfileUseCase
 import com.maruchin.medihelper.domain.usecases.profile.DeleteProfileUseCase
 import com.maruchin.medihelper.domain.usecases.profile.GetLiveAllProfilesItemsUseCase
+import com.maruchin.medihelper.domain.usecases.profile.GetProfileItemUseCase
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val selectedProfile: SelectedProfile,
+    private val getProfileItemUseCase: GetProfileItemUseCase,
     private val getLiveAllProfilesItemsUseCase: GetLiveAllProfilesItemsUseCase,
     private val getLiveMedicinesPlansItemsByProfileUseCase: GetLiveMedicinesPlansItemsByProfileUseCase,
     private val deleteProfileUseCase: DeleteProfileUseCase
     ) : ViewModel() {
 
-    val selectedProfileId: String?
-        get() = selectedProfile.profileId
+    val colorPrimary: LiveData<String>
     val profileItems: LiveData<List<ProfileItem>>
     val selectedProfilePosition: LiveData<Int>
     val mainProfileSelected: LiveData<Boolean> = selectedProfile.mainProfileSelectedLive
     val medicinesPlans: LiveData<List<MedicinePlanItem>>
+
+    val selectedProfileId: String?
+        get() = selectedProfile.profileId
+
+    private val selectedProfileItem: LiveData<ProfileItem?>
 
     init {
         profileItems = liveData {
             val source = getLiveAllProfilesItemsUseCase.execute()
             emitSource(source)
         }
-        selectedProfilePosition = Transformations.map(profileItems) { list ->
-            val selectedProfileId = selectedProfile.profileId
-            return@map list.indexOfFirst { it.profileId == selectedProfileId }
+        selectedProfileItem = Transformations.switchMap(selectedProfile.profileIdLive) { selectedProfileId ->
+            liveData {
+                val value = getProfileItemUseCase.execute(selectedProfileId)
+                emit(value)
+            }
+        }
+        colorPrimary = Transformations.map(selectedProfileItem) { it?.color }
+        selectedProfilePosition = Transformations.switchMap(profileItems) { list ->
+            Transformations.map(selectedProfile.profileIdLive) { selectedProfileId ->
+                list.indexOfFirst { it.profileId == selectedProfileId }
+            }
         }
         medicinesPlans = liveData {
             val source = Transformations.switchMap(selectedProfile.profileIdLive) { profileId ->

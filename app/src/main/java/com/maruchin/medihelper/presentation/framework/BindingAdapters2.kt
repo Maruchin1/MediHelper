@@ -82,6 +82,13 @@ fun setImageViewStorageRef(imageView: ImageView, storageReference: StorageRefere
     }
 }
 
+@BindingAdapter("android:tint")
+fun setImageViewTint(imageView: ImageView, color: String?) {
+    if (!color.isNullOrEmpty()) {
+        imageView.imageTintList = ColorStateList.valueOf(Color.parseColor(color))
+    }
+}
+
 //ImageButton
 @BindingAdapter("android:tint")
 fun setImageButtonTint(imageButton: ImageButton, color: String?) {

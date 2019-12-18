@@ -101,7 +101,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="8dp"
                                     android:src="@drawable/round_person_white_18"
-                                    android:tint="@color/colorDarkerGray" />
+                                    android:tint="@color/colorTextSecondary" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -119,7 +119,7 @@
                                 android:maxLines="1"
                                 android:text='@{viewModel.profileName, default="Nazwa osoby"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.Header.Color"
+                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig"
                                 android:textColor="@{viewModel.colorPrimary}" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
@@ -154,7 +154,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="8dp"
                                     android:src="@drawable/ic_pill_grey600_18dp"
-                                    android:tint="@color/colorDarkerGray" />
+                                    android:tint="@color/colorTextSecondary" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -172,7 +172,7 @@
                                 android:maxLines="1"
                                 android:text='@{viewModel.medicineName, default="Nazwa leku"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.Header.Color"
+                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig"
                                 android:textColor="@{viewModel.colorPrimary}" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>

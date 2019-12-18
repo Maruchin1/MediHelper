@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import com.leochuan.CarouselLayoutManager
 import com.leochuan.CenterSnapHelper
 import com.leochuan.ScaleLayoutManager
@@ -118,10 +119,12 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
     }
 
     private fun setEditDeleteProfileEnabled(enabled: Boolean) {
-//        TransitionManager.beginDelayedTransition(root_lay)
         with(toolbar.menu) {
-            findItem(R.id.btn_edit).isVisible = enabled
-            findItem(R.id.btn_delete).isVisible = enabled
+            val btnDelete = findItem(R.id.btn_delete)
+            if (btnDelete.isVisible != enabled) {
+                TransitionManager.beginDelayedTransition(root_lay)
+                btnDelete.isVisible = enabled
+            }
         }
     }
 
@@ -144,7 +147,7 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
     ) {
         override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
             val item = itemsList[position]
-            holder.bind(item, this@ProfileDialog)
+            holder.bind(item, this@ProfileDialog, viewModel = viewModel)
         }
     }
 }
