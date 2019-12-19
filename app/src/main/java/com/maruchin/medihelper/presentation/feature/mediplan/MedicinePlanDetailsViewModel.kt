@@ -50,7 +50,7 @@ class MedicinePlanDetailsViewModel(
     private fun getDurationTime(details: MedicinePlanDetails): DurationTime {
         return DurationTime(
             planType = when (details.planType) {
-                MedicinePlan.Type.ONCE -> "Jednorazowo"
+                MedicinePlan.Type.ONCE -> "Jednego dnia"
                 MedicinePlan.Type.PERIOD -> "Przez okres dni"
                 MedicinePlan.Type.CONTINUOUS -> "Przyjmowanie ciągłe"
             },
