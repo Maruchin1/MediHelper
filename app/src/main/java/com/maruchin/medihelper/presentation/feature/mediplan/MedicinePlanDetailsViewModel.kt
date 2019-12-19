@@ -92,7 +92,7 @@ class MedicinePlanDetailsViewModel(
             }
             is IntakeDays.Sequence -> {
                 daysType = "Sekwencja dni"
-                daysDetails = "${intakeDays.intakeCount} dni przyjmowania, ${intakeDays.notIntakeCount} dni przerwy"
+                daysDetails = "${intakeDays.intakeCount} dni przyjmowania,\n${intakeDays.notIntakeCount} dni przerwy"
             }
         }
         return Days(daysType, daysDetails)
