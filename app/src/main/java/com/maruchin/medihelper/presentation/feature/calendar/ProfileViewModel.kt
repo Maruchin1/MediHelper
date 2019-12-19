@@ -16,13 +16,14 @@ class ProfileViewModel(
     private val getLiveAllProfilesItemsUseCase: GetLiveAllProfilesItemsUseCase,
     private val getLiveMedicinesPlansItemsByProfileUseCase: GetLiveMedicinesPlansItemsByProfileUseCase,
     private val deleteProfileUseCase: DeleteProfileUseCase
-    ) : ViewModel() {
+) : ViewModel() {
 
     val colorPrimary: LiveData<String>
     val profileItems: LiveData<List<ProfileItem>>
     val selectedProfilePosition: LiveData<Int>
     val mainProfileSelected: LiveData<Boolean> = selectedProfile.mainProfileSelectedLive
     val medicinesPlans: LiveData<List<MedicinePlanItem>>
+    val medicinesPlansAvailable: LiveData<Boolean>
 
     val selectedProfileId: String?
         get() = selectedProfile.profileId
@@ -55,6 +56,7 @@ class ProfileViewModel(
             }
             emitSource(source)
         }
+        medicinesPlansAvailable = Transformations.map(medicinesPlans) { !it.isNullOrEmpty() }
     }
 
     fun deleteProfile() = viewModelScope.launch {

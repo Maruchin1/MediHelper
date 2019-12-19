@@ -21,47 +21,67 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_bottom_dialog">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_search_result"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/rec_item_medicine_info_search_result" />
+            android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility='@{viewModel.loadingInProgress}' />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_search_result"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:listitem="@layout/rec_item_medicine_info_search_result" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility='@{viewModel.noResults}'
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp">
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/hor_guideline"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/round_search_24"
-                android:tint="@color/colorDarkerGray" />
-
-            <TextView
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Brak wyników dla wybranego leku"
-                android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle"
-                android:textAlignment="center"/>
-        </LinearLayout>
+                android:layout_gravity="center"
+                android:visibility='@{viewModel.loadingInProgress}'
+                app:layout_constraintBottom_toTopOf="@id/hor_guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="48dp"
+                android:layout_marginEnd="48dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility='@{viewModel.noResults}'
+                app:layout_constraintBottom_toTopOf="@id/hor_guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/round_search_24"
+                    android:tint="@color/colorDarkerGray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Brak wyników dla wybranego leku"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
