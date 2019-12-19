@@ -5,10 +5,14 @@ import com.maruchin.medihelper.domain.entities.IntakeDays
 import com.maruchin.medihelper.domain.entities.MedicinePlan
 import com.maruchin.medihelper.domain.entities.TimeDose
 import com.maruchin.medihelper.domain.model.MedicinePlanValidator
+import com.maruchin.medihelper.domain.repositories.MedicineCalendarEntryRepo
 import com.maruchin.medihelper.domain.repositories.MedicinePlanRepo
+import com.maruchin.medihelper.domain.utils.MedicineScheduler
 
 class SaveMedicinePlanUseCase(
-    private val medicinePlanRepo: MedicinePlanRepo
+    private val medicinePlanRepo: MedicinePlanRepo,
+    private val medicineCalendarEntryRepo: MedicineCalendarEntryRepo,
+    private val medicineScheduler: MedicineScheduler
 ) {
     suspend fun execute(params: Params): MedicinePlanValidator {
         val validator = MedicinePlanValidator(
@@ -43,9 +47,22 @@ class SaveMedicinePlanUseCase(
         )
         if (params.medicinePlanId == null) {
             medicinePlanRepo.addNew(medicinePlan)
+            addNewCalendarEntries(medicinePlan)
         } else {
             medicinePlanRepo.update(medicinePlan)
+            updateExistingCalendarEntries(medicinePlan)
         }
+    }
+
+    private suspend fun addNewCalendarEntries(medicinePlan:MedicinePlan) {
+        val entriesList = medicineScheduler.getCalendarEntries(medicinePlan)
+        entriesList.forEach { entry ->
+            medicineCalendarEntryRepo.addNew(entry)
+        }
+    }
+
+    private suspend fun updateExistingCalendarEntries(medicinPlan: MedicinePlan) {
+        //todo dopisać logikę z usuwaniem tylko w przód
     }
 
     data class Params(

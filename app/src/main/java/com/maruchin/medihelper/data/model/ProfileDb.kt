@@ -7,16 +7,17 @@ data class ProfileDb(
     val color: String? = null,
     val mainPerson: Boolean? = null
 ) {
+
     constructor(profile: Profile) : this(
         name = profile.name,
         color = profile.color,
         mainPerson = profile.mainPerson
     )
 
-    fun toProfile(id: String) = Profile(
+    fun toEntity(id: String) = Profile(
         profileId = id,
-        name = name ?: "--",
-        color = color ?: "--",
-        mainPerson = mainPerson ?: false
+        name = name!!,
+        color = color!!,
+        mainPerson = mainPerson!!
     )
 }

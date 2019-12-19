@@ -50,7 +50,7 @@ class ProfileRepoImpl(
     override suspend fun getById(id: String): Profile? = withContext(Dispatchers.IO) {
         val doc = collectionRef.document(id).get().await()
         val profileDb = doc.toObject(ProfileDb::class.java)
-        val profile = profileDb?.toProfile(doc.id)
+        val profile = profileDb?.toEntity(doc.id)
         return@withContext profile
     }
 
@@ -58,7 +58,7 @@ class ProfileRepoImpl(
         val docLive = collectionRef.document(id).getDocumentLive()
         return@withContext Transformations.map(docLive) {
             val profileDb = it.toObject(ProfileDb::class.java)
-            val profile = profileDb?.toProfile(it.id)
+            val profile = profileDb?.toEntity(it.id)
             return@map profile
         }
     }
@@ -68,7 +68,7 @@ class ProfileRepoImpl(
         val profilesList = mutableListOf<Profile>()
         docsQuery.forEach {
             val profileDb = it.toObject(ProfileDb::class.java)
-            val profile = profileDb.toProfile(it.id)
+            val profile = profileDb.toEntity(it.id)
             profilesList.add(profile)
         }
         return@withContext profilesList
@@ -80,7 +80,7 @@ class ProfileRepoImpl(
             val profilesList = mutableListOf<Profile>()
             snapshotList.forEach {
                 val profileDb = it.toObject(ProfileDb::class.java)
-                val profile = profileDb?.toProfile(it.id)
+                val profile = profileDb?.toEntity(it.id)
                 if (profile != null) {
                     profilesList.add(profile)
                 }

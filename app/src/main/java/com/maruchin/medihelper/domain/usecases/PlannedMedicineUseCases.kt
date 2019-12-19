@@ -1,14 +1,12 @@
 package com.maruchin.medihelper.domain.usecases
 
-import androidx.lifecycle.LiveData
 import com.maruchin.medihelper.domain.deviceapi.NotificationApi
-import com.maruchin.medihelper.domain.entities.*
-import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
+import com.maruchin.medihelper.domain.repositories.MedicineCalendarEntryRepo
 import com.maruchin.medihelper.domain.utils.MedicineScheduler
 import com.maruchin.medihelper.domain.utils.StatusOfTakingCalculator
 
 class PlannedMedicineUseCases(
-    private val plannedMedicineRepo: PlannedMedicineRepo,
+    private val medicineCalendarEntryRepo: MedicineCalendarEntryRepo,
     private val statusOfTakingCalculator: StatusOfTakingCalculator,
     private val dateTimeUseCases: DateTimeUseCases,
     private val medicineScheduler: MedicineScheduler,

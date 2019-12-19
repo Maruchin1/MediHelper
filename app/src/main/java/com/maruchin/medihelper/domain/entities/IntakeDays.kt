@@ -15,7 +15,14 @@ sealed class IntakeDays{
         var friday: Boolean,
         var saturday: Boolean,
         var sunday: Boolean
-    ) : IntakeDays(), Serializable
+    ) : IntakeDays(), Serializable {
+
+        fun isDaySelected(dayOfWeek: Int): Boolean {
+            //todo dopisać logikę
+
+            return true
+        }
+    }
 
     data class Interval(var daysCount: Int) : IntakeDays(), Serializable
 

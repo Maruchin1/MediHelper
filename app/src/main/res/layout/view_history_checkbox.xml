@@ -3,9 +3,6 @@
 
     <data>
 
-        <variable
-            name="displayData"
-            type="com.maruchin.medihelper.presentation.model.MedicinePlanHistoryCheckbox" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,9 +16,7 @@
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{displayData.plannedTime.formatString, default="00:00"}'
-            android:textColor="@color/colorWhite"
-            app:chipBackgroundColor='@{displayData.statusOfTaking.colorResID, default="@color/colorDarkerGray"}' />
+            android:textColor="@color/colorWhite" />
 
     </LinearLayout>
 

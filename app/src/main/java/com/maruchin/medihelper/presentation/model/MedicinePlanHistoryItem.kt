@@ -1,20 +1,18 @@
 package com.maruchin.medihelper.presentation.model
 
 import com.maruchin.medihelper.domain.entities.AppDate
-import com.maruchin.medihelper.domain.entities.PlannedMedicine
+import com.maruchin.medihelper.domain.entities.MedicineCalendarEntry
 
 data class MedicinePlanHistoryItem(
     val plannedDate: AppDate,
-    val historyCheckboxList: List<MedicinePlanHistoryCheckbox>,
     val isToday: Boolean
 ) {
     constructor(
         plannedDate: AppDate,
-        plannedMedicineList: List<PlannedMedicine>,
+        medicineCalendarEntryList: List<MedicineCalendarEntry>,
         currDate: AppDate
     ) : this(
         plannedDate = plannedDate,
-        historyCheckboxList = plannedMedicineList.map { MedicinePlanHistoryCheckbox(it) },
         isToday = plannedDate == currDate
     )
 }
