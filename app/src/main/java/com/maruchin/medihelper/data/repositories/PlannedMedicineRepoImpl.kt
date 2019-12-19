@@ -31,8 +31,9 @@ class PlannedMedicineRepoImpl(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun deleteById(id: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun deleteById(id: String) = withContext(Dispatchers.IO) {
+        collectionRef.document(id).delete()
+        return@withContext
     }
 
     override suspend fun getById(id: String): PlannedMedicine? {

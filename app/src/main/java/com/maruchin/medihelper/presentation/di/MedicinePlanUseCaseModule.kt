@@ -32,7 +32,8 @@ val medicinePlanUseCaseModule = module {
     }
     factory {
         DeleteMedicinePlanUseCase(
-            medicinePlanRepo = get()
+            medicinePlanRepo = get(),
+            plannedMedicineRepo = get()
         )
     }
 }
