@@ -3,11 +3,10 @@ package com.maruchin.medihelper.domain.utils
 import com.maruchin.medihelper.domain.entities.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlin.collections.ArrayList
 
-class MedicineScheduler {
+class PlannedMedicineScheduler {
 
-    suspend fun getCalendarEntries(medicinePlan: MedicinePlan): List<MedicineCalendarEntry> =
+    suspend fun getPlannedMedicines(medicinePlan: MedicinePlan): List<PlannedMedicine> =
         withContext(Dispatchers.Default) {
             return@withContext when (medicinePlan.planType) {
                 MedicinePlan.Type.ONCE -> getForDate(
@@ -39,8 +38,8 @@ class MedicineScheduler {
             }
         }
 
-    private fun getForEveryday(medicinePlan: MedicinePlan): List<MedicineCalendarEntry> {
-        val entriesList = mutableListOf<MedicineCalendarEntry>()
+    private fun getForEveryday(medicinePlan: MedicinePlan): List<PlannedMedicine> {
+        val entriesList = mutableListOf<PlannedMedicine>()
         val currDate = medicinePlan.startDate.copy()
 
         while (currDate <= medicinePlan.endDate!!) {
@@ -56,8 +55,8 @@ class MedicineScheduler {
         return entriesList
     }
 
-    private fun getForDaysOfWeek(medicinePlan: MedicinePlan): List<MedicineCalendarEntry> {
-        val entriesList = mutableListOf<MedicineCalendarEntry>()
+    private fun getForDaysOfWeek(medicinePlan: MedicinePlan): List<PlannedMedicine> {
+        val entriesList = mutableListOf<PlannedMedicine>()
         val currDate = medicinePlan.startDate.copy()
 
         while (currDate <= medicinePlan.endDate!!) {
@@ -76,8 +75,8 @@ class MedicineScheduler {
         return entriesList
     }
 
-    private fun getForInterval(medicinePlan: MedicinePlan): List<MedicineCalendarEntry> {
-        val entriesList = mutableListOf<MedicineCalendarEntry>()
+    private fun getForInterval(medicinePlan: MedicinePlan): List<PlannedMedicine> {
+        val entriesList = mutableListOf<PlannedMedicine>()
         val currDate = medicinePlan.startDate.copy()
 
         while (currDate <= medicinePlan.endDate!!) {
@@ -94,8 +93,16 @@ class MedicineScheduler {
         return entriesList
     }
 
-    private fun getForSequence(medicinePlan: MedicinePlan): List<MedicineCalendarEntry> {
-        val entriesList = mutableListOf<MedicineCalendarEntry>()
+    private fun getForSequence(medicinePlan: MedicinePlan): List<PlannedMedicine> {
+        val entriesList = mutableListOf<PlannedMedicine>()
+        val currDate = medicinePlan.startDate.copy()
+
+        val intakeDays = medicinePlan.intakeDays as IntakeDays.Sequence
+
+        while (currDate <= medicinePlan.endDate!!) {
+
+        }
+
         //todo dopisać logikę dla sekwencji
         return entriesList
     }
@@ -104,17 +111,17 @@ class MedicineScheduler {
         medicinePlanId: String,
         plannedDate: AppDate,
         timeDoseList: List<TimeDose>
-    ): List<MedicineCalendarEntry> {
-        val entriesList = mutableListOf<MedicineCalendarEntry>()
+    ): List<PlannedMedicine> {
+        val entriesList = mutableListOf<PlannedMedicine>()
         timeDoseList.forEach { timeDose ->
             entriesList.add(
-                MedicineCalendarEntry(
-                    medicineCalendarEntryId = "",
+                PlannedMedicine(
+                    plannedMedicineId = "",
                     medicinePlanId = medicinePlanId,
                     plannedDate = plannedDate,
                     plannedTime = timeDose.time,
                     plannedDoseSize = timeDose.doseSize,
-                    status = MedicineCalendarEntry.Status.WAITING
+                    status = PlannedMedicine.Status.PENDING
                 )
             )
         }

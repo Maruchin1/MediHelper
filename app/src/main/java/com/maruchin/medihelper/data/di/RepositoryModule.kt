@@ -32,9 +32,9 @@ val repositoryModule = module {
         ) as MedicinePlanRepo
     }
     single {
-        MedicineCalendarEntryRepoImpl(
+        PlannedMedicineRepoImpl(
             db = get(),
             auth = get()
-        ) as MedicineCalendarEntryRepo
+        ) as PlannedMedicineRepo
     }
 }

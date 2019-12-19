@@ -1,15 +1,15 @@
 package com.maruchin.medihelper.domain.usecases
 
 import com.maruchin.medihelper.domain.deviceapi.NotificationApi
-import com.maruchin.medihelper.domain.repositories.MedicineCalendarEntryRepo
-import com.maruchin.medihelper.domain.utils.MedicineScheduler
+import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
+import com.maruchin.medihelper.domain.utils.PlannedMedicineScheduler
 import com.maruchin.medihelper.domain.utils.StatusOfTakingCalculator
 
 class PlannedMedicineUseCases(
-    private val medicineCalendarEntryRepo: MedicineCalendarEntryRepo,
+    private val plannedMedicineRepo: PlannedMedicineRepo,
     private val statusOfTakingCalculator: StatusOfTakingCalculator,
     private val dateTimeUseCases: DateTimeUseCases,
-    private val medicineScheduler: MedicineScheduler,
+    private val plannedMedicineScheduler: PlannedMedicineScheduler,
     private val notificationApi: NotificationApi
 ) {
 

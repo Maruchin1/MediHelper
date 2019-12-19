@@ -36,10 +36,11 @@ class MedicineRepoImpl(
         checkDefaultMedicineUnits()
     }
 
-    override suspend fun addNew(entity: Medicine) = withContext(Dispatchers.IO) {
+    override suspend fun addNew(entity: Medicine): String? = withContext(Dispatchers.IO) {
         val medicineDb = MedicineDb(entity)
-        collectionRef.add(medicineDb)
-        return@withContext
+        val newDoc = collectionRef.document()
+        newDoc.set(medicineDb)
+        return@withContext newDoc.id
     }
 
     override suspend fun update(entity: Medicine) = withContext(Dispatchers.IO) {

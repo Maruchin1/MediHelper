@@ -24,10 +24,11 @@ class MedicinePlanRepoImpl(
     private val collectionRef: CollectionReference
         get() = db.collection("users").document(auth.getCurrUserId()).collection("medicinesPlans")
 
-    override suspend fun addNew(entity: MedicinePlan) = withContext(Dispatchers.IO) {
+    override suspend fun addNew(entity: MedicinePlan): String? = withContext(Dispatchers.IO) {
         val medicinePlanDb = MedicinePlanDb(entity)
-        collectionRef.add(medicinePlanDb)
-        return@withContext
+        val newDoc = collectionRef.document()
+        newDoc.set(medicinePlanDb)
+        return@withContext newDoc.id
     }
 
     override suspend fun update(entity: MedicinePlan) {

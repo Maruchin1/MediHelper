@@ -1,7 +1,7 @@
 package com.maruchin.medihelper.presentation.model
 
 import com.maruchin.medihelper.domain.entities.AppDate
-import com.maruchin.medihelper.domain.entities.MedicineCalendarEntry
+import com.maruchin.medihelper.domain.entities.PlannedMedicine
 
 data class MedicinePlanHistoryItem(
     val plannedDate: AppDate,
@@ -9,7 +9,7 @@ data class MedicinePlanHistoryItem(
 ) {
     constructor(
         plannedDate: AppDate,
-        medicineCalendarEntryList: List<MedicineCalendarEntry>,
+        plannedMedicineList: List<PlannedMedicine>,
         currDate: AppDate
     ) : this(
         plannedDate = plannedDate,

@@ -1,18 +1,17 @@
 package com.maruchin.medihelper.domain.usecases.mediplans
 
-import com.maruchin.medihelper.domain.entities.AppDate
-import com.maruchin.medihelper.domain.entities.IntakeDays
-import com.maruchin.medihelper.domain.entities.MedicinePlan
-import com.maruchin.medihelper.domain.entities.TimeDose
+import com.maruchin.medihelper.domain.deviceapi.DeviceCalendar
+import com.maruchin.medihelper.domain.entities.*
 import com.maruchin.medihelper.domain.model.MedicinePlanValidator
-import com.maruchin.medihelper.domain.repositories.MedicineCalendarEntryRepo
+import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
 import com.maruchin.medihelper.domain.repositories.MedicinePlanRepo
-import com.maruchin.medihelper.domain.utils.MedicineScheduler
+import com.maruchin.medihelper.domain.utils.PlannedMedicineScheduler
 
 class SaveMedicinePlanUseCase(
     private val medicinePlanRepo: MedicinePlanRepo,
-    private val medicineCalendarEntryRepo: MedicineCalendarEntryRepo,
-    private val medicineScheduler: MedicineScheduler
+    private val plannedMedicineRepo: PlannedMedicineRepo,
+    private val plannedMedicineScheduler: PlannedMedicineScheduler,
+    private val deviceCalendar: DeviceCalendar
 ) {
     suspend fun execute(params: Params): MedicinePlanValidator {
         val validator = MedicinePlanValidator(
@@ -46,23 +45,42 @@ class SaveMedicinePlanUseCase(
             timeDoseList = params.timeDoseList!!
         )
         if (params.medicinePlanId == null) {
-            medicinePlanRepo.addNew(medicinePlan)
-            addNewCalendarEntries(medicinePlan)
+            val addedMedicinePlanId = medicinePlanRepo.addNew(medicinePlan)
+            addedMedicinePlanId?.let {
+                val addedMedicinePlan = medicinePlan.copy(medicinePlanId = it)
+                addNewCalendarEntries(addedMedicinePlan)
+            }
         } else {
             medicinePlanRepo.update(medicinePlan)
             updateExistingCalendarEntries(medicinePlan)
         }
     }
 
-    private suspend fun addNewCalendarEntries(medicinePlan:MedicinePlan) {
-        val entriesList = medicineScheduler.getCalendarEntries(medicinePlan)
-        entriesList.forEach { entry ->
-            medicineCalendarEntryRepo.addNew(entry)
+    private suspend fun addNewCalendarEntries(medicinePlan: MedicinePlan) {
+        val plannedMedicines = plannedMedicineScheduler.getPlannedMedicines(medicinePlan)
+        plannedMedicines.forEach { entry ->
+            plannedMedicineRepo.addNew(entry)
         }
     }
 
-    private suspend fun updateExistingCalendarEntries(medicinPlan: MedicinePlan) {
-        //todo dopisać logikę z usuwaniem tylko w przód
+    private suspend fun updateExistingCalendarEntries(medicinePlan: MedicinePlan) {
+        val currTimeInMillis = deviceCalendar.getCurrTimeInMillis()
+        val currDate = AppDate(currTimeInMillis)
+        val currTime = AppTime(currTimeInMillis)
+
+        val existingPlannedMedicines = plannedMedicineRepo.getListByMedicinePlan(medicinePlan.medicinePlanId)
+        val existingPlannedMedicinesFromNow = existingPlannedMedicines.filter {
+            it.plannedDate >= currDate && it.plannedTime >= currTime
+        }
+        existingPlannedMedicinesFromNow.forEach { plannedMedicine ->
+            plannedMedicineRepo.deleteById(plannedMedicine.plannedMedicineId)
+        }
+
+        val medicinePlanFromNow = medicinePlan.copy(startDate = currDate)
+        val scheduledPlannedMedicines = plannedMedicineScheduler.getPlannedMedicines(medicinePlanFromNow)
+        scheduledPlannedMedicines.forEach { plannedMedicine ->
+            plannedMedicineRepo.addNew(plannedMedicine)
+        }
     }
 
     data class Params(

@@ -1,7 +1,7 @@
 package com.maruchin.medihelper.domain.entities
 
-data class MedicineCalendarEntry(
-    val medicineCalendarEntryId: String,
+data class PlannedMedicine(
+    val plannedMedicineId: String,
     val medicinePlanId: String,
     val plannedDate: AppDate,
     val plannedTime: AppTime,
@@ -9,6 +9,6 @@ data class MedicineCalendarEntry(
     var status: Status
 ) {
     enum class Status {
-        TAKEN, NOT_TAKEN, WAITING
+        TAKEN, NOT_TAKEN, PENDING
     }
 }

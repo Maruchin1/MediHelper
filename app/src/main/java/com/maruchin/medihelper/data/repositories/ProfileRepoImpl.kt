@@ -30,10 +30,11 @@ class ProfileRepoImpl(
         checkDefaultProfileColors()
     }
 
-    override suspend fun addNew(entity: Profile) = withContext(Dispatchers.IO) {
+    override suspend fun addNew(entity: Profile): String? = withContext(Dispatchers.IO) {
         val profileDb = ProfileDb(entity)
-        collectionRef.add(profileDb)
-        return@withContext
+        val newDoc = collectionRef.document()
+        newDoc.set(profileDb)
+        return@withContext newDoc.id
     }
 
     override suspend fun update(entity: Profile) = withContext(Dispatchers.IO) {
