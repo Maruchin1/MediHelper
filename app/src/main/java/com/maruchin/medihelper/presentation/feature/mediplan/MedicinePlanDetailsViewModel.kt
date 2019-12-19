@@ -3,13 +3,14 @@ package com.maruchin.medihelper.presentation.feature.mediplan
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.IntakeDays
 import com.maruchin.medihelper.domain.entities.MedicinePlan
+import com.maruchin.medihelper.domain.entities.TimeDose
 import com.maruchin.medihelper.domain.model.MedicinePlanDetails
 import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanDetailsUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
 
-class MedicinePlanDetailViewModel(
+class MedicinePlanDetailsViewModel(
     private val getMedicinePlanDetailsUseCase: GetMedicinePlanDetailsUseCase
 ) : ViewModel() {
 
@@ -18,6 +19,7 @@ class MedicinePlanDetailViewModel(
     val medicineUnit: LiveData<String>
     val durationTime: LiveData<DurationTime>
     val days: LiveData<Days>
+    val timesDoses: LiveData<List<TimeDose>>
 
     val actionDataLoaded: LiveData<Boolean>
         get() = _actionDataLoaded
@@ -34,6 +36,7 @@ class MedicinePlanDetailViewModel(
         medicineUnit = Transformations.map(medicinePlanDetails) { it.medicineUnit }
         durationTime = Transformations.map(medicinePlanDetails) { getDurationTime(it) }
         days = Transformations.map(medicinePlanDetails) { details -> details.intakeDays?.let { getDays(it) } }
+        timesDoses = Transformations.map(medicinePlanDetails) { it.timeDoseList }
     }
 
     fun setArgs(args: MedicinePlanDetailsFragmentArgs) = viewModelScope.launch {

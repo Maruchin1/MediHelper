@@ -34,9 +34,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_marginTop="16dp">
+                    android:orientation="vertical">
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="wrap_content"
@@ -68,8 +68,8 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
-                    app:navigationIcon="@drawable/round_close_24"
-                    app:layout_collapseMode="pin"/>
+                    app:layout_collapseMode="pin"
+                    app:navigationIcon="@drawable/round_close_24" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -121,7 +121,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="38dp"
-
+                            android:nestedScrollingEnabled="false"
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:spanCount="3"
                             tools:listitem="@layout/rec_item_profile_color" />

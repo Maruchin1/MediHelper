@@ -9,13 +9,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicinePlanDetailsBinding
+import com.maruchin.medihelper.domain.entities.TimeDose
 import com.maruchin.medihelper.presentation.framework.BaseFragment
+import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
+import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
+import kotlinx.android.synthetic.main.fragment_medicine_plan_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MedicinePlanDetailsFragment :
     BaseFragment<FragmentMedicinePlanDetailsBinding>(R.layout.fragment_medicine_plan_details) {
 
-    private val viewModel: MedicinePlanDetailViewModel by viewModel()
+    private val viewModel: MedicinePlanDetailsViewModel by viewModel()
     private val args: MedicinePlanDetailsFragmentArgs by navArgs()
     private val directions by lazy { MedicinePlanDetailsFragmentDirections }
 
@@ -33,6 +37,8 @@ class MedicinePlanDetailsFragment :
         super.onViewCreated(view, savedInstanceState)
         super.setupToolbarNavigation()
         viewModel.setArgs(args)
+
+        setupTimeDoseRecyclerView()
         observeViewModel()
     }
 
@@ -41,5 +47,22 @@ class MedicinePlanDetailsFragment :
             startPostponedEnterTransition()
             super.setLightStatusBar(true)
         })
+    }
+
+    private fun setupTimeDoseRecyclerView() {
+        recycler_view_time_dose.apply {
+            adapter = TimeDoseAdapter()
+        }
+    }
+
+    private inner class TimeDoseAdapter : RecyclerAdapter<TimeDose>(
+        layoutResId = R.layout.rec_item_time_dose,
+        itemsSource = viewModel.timesDoses,
+        lifecycleOwner = viewLifecycleOwner
+    ) {
+        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+            val item = itemsList[position]
+            holder.bind(displayData = item, handler = this@MedicinePlanDetailsFragment, viewModel = viewModel)
+        }
     }
 }

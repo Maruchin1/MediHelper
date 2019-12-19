@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -10,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -147,7 +148,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
+                                    android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
                                     android:text='@{viewModel.durationTime.planType, default="Przyjmowanie ciągłe"}'
                                     android:textAppearance="@style/TextAppearance.MediHelper.BodyBig2"
                                     android:textColor="@{viewModel.colorPrimary}" />
@@ -256,7 +257,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
+                                    android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
                                     android:text='@{viewModel.days.daysType, default="Wybrane dni tygodnia"}'
                                     android:textAppearance="@style/TextAppearance.MediHelper.BodyBig2"
                                     android:textColor="@{viewModel.colorPrimary}" />
@@ -311,64 +312,14 @@
                                         android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
                                 </LinearLayout>
 
-                                <GridLayout
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recycler_view_time_dose"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="24dp"
-                                    android:columnCount="2">
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_columnWeight="1"
-                                        android:layout_gravity="center_vertical"
-                                        android:text="08:30"
-                                        android:textAppearance="@style/TextAppearance.MediHelper.BodyBig2" />
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_columnWeight="1"
-                                        android:layout_gravity="center_vertical"
-                                        android:text="3 tabletki"
-                                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_columnWeight="1"
-                                        android:layout_gravity="center_vertical"
-                                        android:layout_marginTop="8dp"
-                                        android:text="08:30"
-                                        android:textAppearance="@style/TextAppearance.MediHelper.BodyBig2" />
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_columnWeight="1"
-                                        android:layout_gravity="center_vertical"
-                                        android:layout_marginTop="8dp"
-                                        android:text="3 tabletki"
-                                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_columnWeight="1"
-                                        android:layout_gravity="center_vertical"
-                                        android:layout_marginTop="8dp"
-                                        android:text="08:30"
-                                        android:textAppearance="@style/TextAppearance.MediHelper.BodyBig2" />
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_columnWeight="1"
-                                        android:layout_gravity="center_vertical"
-                                        android:layout_marginTop="8dp"
-                                        android:text="3 tabletki"
-                                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
-                                </GridLayout>
+                                    android:layout_marginTop="8dp"
+                                    android:orientation="vertical"
+                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                    tools:listitem="@layout/rec_item_time_dose" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
                     </LinearLayout>

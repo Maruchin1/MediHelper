@@ -685,7 +685,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:listitem="@layout/rec_item_time_dose" />
+                            tools:listitem="@layout/rec_item_time_dose_edit" />
 
                         <ImageButton
                             android:layout_width="wrap_content"

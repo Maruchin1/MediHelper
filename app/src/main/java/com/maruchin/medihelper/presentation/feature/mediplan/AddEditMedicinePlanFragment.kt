@@ -229,7 +229,7 @@ class AddEditMedicinePlanFragment :
     }
 
     private inner class TimeDoseAdapter : RecyclerAdapter<TimeDose>(
-        layoutResId = R.layout.rec_item_time_dose,
+        layoutResId = R.layout.rec_item_time_dose_edit,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.timeDoseList
     ) {
