@@ -32,11 +32,6 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
 
     private lateinit var horizontalCalendar: HorizontalCalendar
 
-    fun onClickOpenFullCalendar() {
-        TransitionManager.beginDelayedTransition(root_lay)
-        viewModel.changeFullCalendarMode(enabled = true)
-    }
-
     fun onClickOpenProfileData() {
         ProfileDialog().show(childFragmentManager)
     }
@@ -53,7 +48,6 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
         setupToolbarMenu()
         setupHorizontalCalendar()
         setupDatesViewPager()
-        setupCalendarView()
     }
 
     override fun onResume() {
@@ -64,9 +58,7 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
     private fun setupToolbarMenu() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.btn_calendar -> {
-                    onClickOpenFullCalendar()
-                }
+                R.id.btn_today -> view_pager_dates.currentItem = viewModel.initialPosition
             }
             true
         }
@@ -92,26 +84,10 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
             .datesNumberOnScreen(5)
             .defaultSelectedDate(viewModel.initialCalendar)
             .build()
-//        horizontalCalendar.selectDate(viewModel.initialCalendar, true)
         horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar?, position: Int) {
-                date?.let {
-                    calendar_view.date = it.timeInMillis
-                }
                 view_pager_dates.currentItem = position - 2
             }
-        }
-    }
-
-    private fun setupCalendarView() {
-        calendar_view.date = viewModel.initialCalendar.timeInMillis
-        calendar_view.setOnDateChangeListener { _, year, month, day ->
-            val selectedCalendar = Calendar.getInstance().apply {
-                set(year, month, day)
-            }
-            horizontalCalendar.selectDate(selectedCalendar, true)
-            TransitionManager.beginDelayedTransition(root_lay)
-            viewModel.changeFullCalendarMode(enabled = false)
         }
     }
 

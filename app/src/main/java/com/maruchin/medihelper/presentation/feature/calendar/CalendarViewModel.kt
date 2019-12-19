@@ -27,11 +27,6 @@ class CalendarViewModel(
     val initialCalendar: Calendar
     val initialPosition: Int
 
-    val fullCalendarMode: LiveData<Boolean>
-        get() = _fullCalendarMode
-
-    private val _fullCalendarMode = MutableLiveData<Boolean>(false)
-
     private val currProfile: LiveData<ProfileItem?>
     private val currDate: AppDate = getCurrDateUseCase.execute()
 
@@ -71,10 +66,6 @@ class CalendarViewModel(
         return Calendar.getInstance().apply {
             timeInMillis = date.timeInMillis
         }
-    }
-
-    fun changeFullCalendarMode(enabled: Boolean) {
-        _fullCalendarMode.value = enabled
     }
 
     fun updateAllStatus() = viewModelScope.launch {

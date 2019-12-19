@@ -35,7 +35,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/appbar_height"
                 android:layout_weight="1"
-                android:visibility="@{!viewModel.fullCalendarMode}"
                 app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big"
                 app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed"
                 app:title='@{viewModel.currProfileName, default="Nazwa osoby"}'>
@@ -52,8 +51,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{!viewModel.fullCalendarMode}">
+                android:layout_height="wrap_content">
 
                 <devs.mulham.horizontalcalendar.HorizontalCalendarView
                     android:id="@+id/horizontal_calendar"
@@ -63,14 +61,6 @@
                     app:selectorColor="@color/colorWhite"
                     app:textColorSelected="@color/colorWhite" />
             </FrameLayout>
-
-            <CalendarView
-                android:id="@+id/calendar_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:theme="@style/Theme.Medihelper.CalendarView.Dark"
-                android:visibility="@{viewModel.fullCalendarMode}" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

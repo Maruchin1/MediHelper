@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/btn_calendar"
-        android:icon="@drawable/round_event_white_36"
-        android:orderInCategory="2"
-        android:title="Kalendarz"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/btn_today"
+        android:orderInCategory="1"
+        android:title="Dzisiaj"
+        app:showAsAction="always" />
 
 </menu>
