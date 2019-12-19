@@ -3,6 +3,7 @@ package com.maruchin.medihelper.domain.entities
 data class PlannedMedicine(
     val plannedMedicineId: String,
     val medicinePlanId: String,
+    val medicineId: String,
     val plannedDate: AppDate,
     val plannedTime: AppTime,
     val plannedDoseSize: Float,

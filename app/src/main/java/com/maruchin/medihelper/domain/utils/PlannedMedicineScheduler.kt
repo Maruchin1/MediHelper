@@ -11,6 +11,7 @@ class PlannedMedicineScheduler {
             return@withContext when (medicinePlan.planType) {
                 MedicinePlan.Type.ONCE -> getForDate(
                     medicinePlanId = medicinePlan.medicinePlanId,
+                    medicineId = medicinePlan.medicineId,
                     plannedDate = medicinePlan.startDate,
                     timeDoseList = medicinePlan.timeDoseList
                 )
@@ -46,6 +47,7 @@ class PlannedMedicineScheduler {
             entriesList.addAll(
                 getForDate(
                     medicinePlanId = medicinePlan.medicinePlanId,
+                    medicineId = medicinePlan.medicineId,
                     plannedDate = currDate.copy(),
                     timeDoseList = medicinePlan.timeDoseList
                 )
@@ -65,6 +67,7 @@ class PlannedMedicineScheduler {
                 entriesList.addAll(
                     getForDate(
                         medicinePlanId = medicinePlan.medicinePlanId,
+                        medicineId = medicinePlan.medicineId,
                         plannedDate = currDate.copy(),
                         timeDoseList = medicinePlan.timeDoseList
                     )
@@ -83,6 +86,7 @@ class PlannedMedicineScheduler {
             entriesList.addAll(
                 getForDate(
                     medicinePlanId = medicinePlan.medicinePlanId,
+                    medicineId = medicinePlan.medicineId,
                     plannedDate = currDate.copy(),
                     timeDoseList = medicinePlan.timeDoseList
                 )
@@ -109,6 +113,7 @@ class PlannedMedicineScheduler {
 
     private fun getForDate(
         medicinePlanId: String,
+        medicineId: String,
         plannedDate: AppDate,
         timeDoseList: List<TimeDose>
     ): List<PlannedMedicine> {
@@ -118,6 +123,7 @@ class PlannedMedicineScheduler {
                 PlannedMedicine(
                     plannedMedicineId = "",
                     medicinePlanId = medicinePlanId,
+                    medicineId = medicineId,
                     plannedDate = plannedDate,
                     plannedTime = timeDose.time,
                     plannedDoseSize = timeDose.doseSize,

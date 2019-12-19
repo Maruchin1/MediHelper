@@ -11,6 +11,8 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarBinding
@@ -72,20 +74,9 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
 
     private fun setupDatesViewPager() {
         view_pager_dates.apply {
-            adapter = ScheduleDayPagerAdapter()
-            offscreenPageLimit = 1
+            adapter = CalendarDayAdapter()
             currentItem = viewModel.initialPosition
-            addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrollStateChanged(state: Int) {
-                }
-
-                override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int
-                ) {
-                }
-
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     val selectedCalendar = viewModel.getCalendarForPosition(position)
                     horizontalCalendar.selectDate(selectedCalendar, false)
@@ -124,16 +115,17 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
     }
 
     // Inner classes
-    inner class ScheduleDayPagerAdapter : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    private inner class CalendarDayAdapter : FragmentStateAdapter(this) {
 
-        override fun getCount(): Int {
+        override fun getItemCount(): Int {
             return viewModel.calendarDaysCount
         }
 
-        override fun getItem(position: Int): Fragment {
-            val fragment = CalendarDayFragment()
-            fragment.date = viewModel.getDateForPosition(position)
-            return fragment
+        override fun createFragment(position: Int): Fragment {
+            return CalendarDayFragment().apply {
+                date = viewModel.getDateForPosition(position)
+            }
         }
+
     }
 }

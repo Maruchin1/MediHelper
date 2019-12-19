@@ -2,13 +2,10 @@ package com.maruchin.medihelper.presentation.feature.calendar
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.AppTime
-import com.maruchin.medihelper.domain.usecases.PersonUseCases
-import com.maruchin.medihelper.domain.usecases.PlannedMedicineUseCases
-import com.maruchin.medihelper.presentation.model.PlannedMedicineItem
+import com.maruchin.medihelper.domain.model.PlannedMedicineItem
 
 class CalendarDayViewModel(
 

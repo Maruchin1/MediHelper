@@ -10,8 +10,6 @@ import com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlan
 import com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.AddEditProfileViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsViewModel
-import com.maruchin.medihelper.presentation.feature.plans.MedicinePlanHistoryViewModel
-import com.maruchin.medihelper.presentation.feature.plans.MedicinePlanListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -49,19 +47,6 @@ val viewModelModule = module {
             getProfileColorsUseCase = get(),
             getProfileEditDataUseCase = get(),
             saveProfileUseCase = get()
-        )
-    }
-    viewModel {
-        MedicinePlanListViewModel(
-            selectedProfile = get(),
-            getProfileItemUseCase = get()
-        )
-    }
-    viewModel {
-        MedicinePlanHistoryViewModel(
-            personUseCases = get(),
-            medicinePlanUseCases = get(),
-            dateTimeUseCases = get()
         )
     }
     viewModel {

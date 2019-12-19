@@ -14,8 +14,8 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.maruchin.medihelper.databinding.FragmentScheduleDayBinding
+import com.maruchin.medihelper.domain.model.PlannedMedicineItem
 import com.maruchin.medihelper.presentation.framework.bind
-import com.maruchin.medihelper.presentation.model.PlannedMedicineItem
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
