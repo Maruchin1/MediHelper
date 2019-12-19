@@ -3,15 +3,18 @@ package com.maruchin.medihelper.presentation.feature.mediplan
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.*
 import com.maruchin.medihelper.domain.model.MedicineItem
+import com.maruchin.medihelper.domain.model.MedicinePlanEditData
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.usecases.datetime.GetCurrDateUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineItemUseCase
+import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.SaveMedicinePlanUseCase
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileItemUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import kotlinx.coroutines.launch
 
 class AddEditMedicinePlanViewModel(
+    private val getMedicinePlanEditDataUseCase: GetMedicinePlanEditDataUseCase,
     private val getProfileItemUseCase: GetProfileItemUseCase,
     private val getMedicineItemUseCase: GetMedicineItemUseCase,
     private val getCurrDateUseCase: GetCurrDateUseCase,
@@ -59,7 +62,7 @@ class AddEditMedicinePlanViewModel(
         colorPrimary = Transformations.map(profileItem) { it.color }
         profileName = Transformations.map(profileItem) { it.name }
         medicineName = Transformations.map(medicineItem) { it.name }
-        loadDefaultData()
+        setDefaultData()
     }
 
     fun setInterval(value: Int) {
@@ -134,15 +137,51 @@ class AddEditMedicinePlanViewModel(
     }
 
     fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
-        val profileItemValue = getProfileItemUseCase.execute(args.profileId)
-        val medicineItemValue = getMedicineItemUseCase.execute(args.medicineId)
+        if (args.medicinePlanId != null) {
+            val editData = getMedicinePlanEditDataUseCase.execute(args.medicinePlanId) ?: throw Exception("EditData not found")
+            setEditData(editData)
+        } else {
+            val profileId = args.profileId ?: throw Exception("ProfileId is null")
+            val medicineId = args.medicineId ?: throw Exception("MedicineId is null")
 
-        profileItem.postValue(profileItemValue)
-        medicineItem.postValue(medicineItemValue)
+            val profileItemValue = getProfileItemUseCase.execute(profileId)
+            val medicineItemValue = getMedicineItemUseCase.execute(medicineId)
+
+            profileItem.postValue(profileItemValue)
+            medicineItem.postValue(medicineItemValue)
+        }
         _actionDataLoaded.sendAction()
     }
 
-    private fun loadDefaultData() {
+    private suspend fun setEditData(editData: MedicinePlanEditData) {
+        val profileItemValue = getProfileItemUseCase.execute(editData.profileId)
+        val medicineItemValue = getMedicineItemUseCase.execute(editData.medicineId)
+        profileItem.postValue(profileItemValue)
+        medicineItem.postValue(medicineItemValue)
+        planType.postValue(editData.planType)
+        startDate.postValue(editData.startDate)
+        endDate.postValue(editData.endDate)
+        when (editData.intakeDays) {
+            is IntakeDays.Everyday -> {
+                intakeDaysType.postValue(IntakeDaysType.EVERYDAY)
+            }
+            is IntakeDays.DaysOfWeek -> {
+                intakeDaysType.postValue(IntakeDaysType.DAYS_OF_WEEK)
+                daysOfWeek.postValue(editData.intakeDays)
+            }
+            is IntakeDays.Interval -> {
+                intakeDaysType.postValue(IntakeDaysType.INTERVAL)
+                _interval.postValue(editData.intakeDays)
+            }
+            is IntakeDays.Sequence -> {
+                intakeDaysType.postValue(IntakeDaysType.SEQUENCE)
+                _sequence.postValue(editData.intakeDays)
+            }
+        }
+        _timeDoseList.postValue(editData.timeDoseList)
+    }
+
+    private fun setDefaultData() {
         planType.postValue(MedicinePlan.Type.ONCE)
         val currDate = getCurrDateUseCase.execute()
         startDate.postValue(currDate)

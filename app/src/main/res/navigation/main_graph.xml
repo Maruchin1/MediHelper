@@ -133,10 +133,16 @@
         tools:layout="@layout/fragment_add_edit_medicine_plan" >
         <argument
             android:name="profileId"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="medicineId"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="medicinePlanId"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/medicinePlanDetailsFragment"
@@ -148,6 +154,13 @@
         <action
             android:id="@+id/toMedicineDetailsFragment"
             app:destination="@id/medicineDetailsFragment"
+            app:enterAnim="@anim/slide_in_end"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_end" />
+        <action
+            android:id="@+id/toAddEditMedicinePlanFragment"
+            app:destination="@id/addEditMedicinePlanFragment"
             app:enterAnim="@anim/slide_in_end"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"

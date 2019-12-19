@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicinePlanDetailsBinding
 import com.maruchin.medihelper.domain.entities.TimeDose
+import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.presentation.framework.BaseFragment
 import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
@@ -22,6 +23,28 @@ class MedicinePlanDetailsFragment :
     private val viewModel: MedicinePlanDetailsViewModel by viewModel()
     private val args: MedicinePlanDetailsFragmentArgs by navArgs()
     private val directions by lazy { MedicinePlanDetailsFragmentDirections }
+
+    fun onClickEditPlan() {
+        findNavController().navigate(
+            directions.toAddEditMedicinePlanFragment(
+                profileId = null,
+                medicineId = null,
+                medicinePlanId = viewModel.medicinePlanId
+            )
+        )
+    }
+
+    fun onClickDeletePlan() {
+        ConfirmDialog().apply {
+            title = "Usuń plan"
+            message = "Plan przyjmowania leku zostanie usunięty, wraz z odpowiadającymi mu wpisami w kalendarzu. Czy chcesz kontynuować?"
+            iconResId = R.drawable.round_delete_black_36
+            setOnConfirmClickListener {
+                viewModel.deletePlan()
+                findNavController().popBackStack()
+            }
+        }.show(childFragmentManager)
+    }
 
     fun onClickOpenMedicineDetails() {
         findNavController().navigate(directions.toMedicineDetailsFragment(viewModel.medicineId))
@@ -39,6 +62,7 @@ class MedicinePlanDetailsFragment :
         viewModel.setArgs(args)
 
         setupTimeDoseRecyclerView()
+        setupToolbarMenu()
         observeViewModel()
     }
 
@@ -52,6 +76,16 @@ class MedicinePlanDetailsFragment :
     private fun setupTimeDoseRecyclerView() {
         recycler_view_time_dose.apply {
             adapter = TimeDoseAdapter()
+        }
+    }
+
+    private fun setupToolbarMenu() {
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.btn_edit -> onClickEditPlan()
+                R.id.btn_delete -> onClickDeletePlan()
+            }
+            true
         }
     }
 

@@ -5,13 +5,16 @@ import com.maruchin.medihelper.domain.entities.IntakeDays
 import com.maruchin.medihelper.domain.entities.MedicinePlan
 import com.maruchin.medihelper.domain.entities.TimeDose
 import com.maruchin.medihelper.domain.model.MedicinePlanDetails
+import com.maruchin.medihelper.domain.usecases.mediplans.DeleteMedicinePlanUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanDetailsUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
 
 class MedicinePlanDetailsViewModel(
-    private val getMedicinePlanDetailsUseCase: GetMedicinePlanDetailsUseCase
+    private val getMedicinePlanDetailsUseCase: GetMedicinePlanDetailsUseCase,
+    private val deleteMedicinePlanUseCase: DeleteMedicinePlanUseCase
 ) : ViewModel() {
 
     val colorPrimary: LiveData<String>
@@ -21,10 +24,12 @@ class MedicinePlanDetailsViewModel(
     val days: LiveData<Days>
     val timesDoses: LiveData<List<TimeDose>>
 
-    val actionDataLoaded: LiveData<Boolean>
-        get() = _actionDataLoaded
+    val medicinePlanId: String
+        get() = medicinePlanDetails.value?.medicinePlanId ?: throw Exception("medicinePlanId is null")
     val medicineId: String
         get() = medicinePlanDetails.value?.medicineId ?: throw Exception("medicineId is null")
+    val actionDataLoaded: LiveData<Boolean>
+        get() = _actionDataLoaded
 
     private val _actionDataLoaded = ActionLiveData()
 
@@ -37,6 +42,10 @@ class MedicinePlanDetailsViewModel(
         durationTime = Transformations.map(medicinePlanDetails) { getDurationTime(it) }
         days = Transformations.map(medicinePlanDetails) { details -> details.intakeDays?.let { getDays(it) } }
         timesDoses = Transformations.map(medicinePlanDetails) { it.timeDoseList }
+    }
+
+    fun deletePlan() = GlobalScope.launch {
+        deleteMedicinePlanUseCase.execute(medicinePlanId)
     }
 
     fun setArgs(args: MedicinePlanDetailsFragmentArgs) = viewModelScope.launch {

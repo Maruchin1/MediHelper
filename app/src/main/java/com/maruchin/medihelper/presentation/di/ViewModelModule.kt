@@ -104,6 +104,7 @@ val viewModelModule = module {
     }
     viewModel {
         AddEditMedicinePlanViewModel(
+            getMedicinePlanEditDataUseCase = get(),
             getProfileItemUseCase = get(),
             getMedicineItemUseCase = get(),
             getCurrDateUseCase = get(),
@@ -112,7 +113,8 @@ val viewModelModule = module {
     }
     viewModel {
         MedicinePlanDetailsViewModel(
-            getMedicinePlanDetailsUseCase = get()
+            getMedicinePlanDetailsUseCase = get(),
+            deleteMedicinePlanUseCase = get()
         )
     }
 }

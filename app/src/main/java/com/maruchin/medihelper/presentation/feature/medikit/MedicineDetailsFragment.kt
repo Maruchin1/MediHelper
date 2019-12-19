@@ -59,7 +59,13 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
         SelectProfileDialog().apply {
             setProfileSelectedListener { profileId ->
                 viewModel.medicineId?.let { medicineId ->
-                    findNavController().navigate(directions.toAddEditMedicinePlanFragment(profileId, medicineId))
+                    findNavController().navigate(
+                        directions.toAddEditMedicinePlanFragment(
+                            profileId = profileId,
+                            medicineId = medicineId,
+                            medicinePlanId = null
+                        )
+                    )
                 }
             }
         }.show(childFragmentManager)
