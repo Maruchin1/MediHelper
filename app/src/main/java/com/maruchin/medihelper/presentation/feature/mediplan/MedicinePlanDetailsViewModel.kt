@@ -41,7 +41,9 @@ class MedicinePlanDetailsViewModel(
         medicineUnit = Transformations.map(medicinePlanDetails) { it.medicineUnit }
         durationTime = Transformations.map(medicinePlanDetails) { getDurationTime(it) }
         days = Transformations.map(medicinePlanDetails) { details -> details.intakeDays?.let { getDays(it) } }
-        timesDoses = Transformations.map(medicinePlanDetails) { it.timeDoseList }
+        timesDoses = Transformations.map(medicinePlanDetails) { details ->
+            details.timeDoseList.sortedBy { it.time }
+        }
     }
 
     fun deletePlan() = GlobalScope.launch {
