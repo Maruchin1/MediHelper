@@ -89,6 +89,13 @@ fun setImageViewTint(imageView: ImageView, color: String?) {
     }
 }
 
+@BindingAdapter("android:tint")
+fun setImageViewTint(imageView: ImageView, colorResId: Int?) {
+    if (colorResId != null) {
+        imageView.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(imageView. context, colorResId))
+    }
+}
+
 //ImageButton
 @BindingAdapter("android:tint")
 fun setImageButtonTint(imageButton: ImageButton, color: String?) {

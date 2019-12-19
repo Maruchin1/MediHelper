@@ -1,11 +1,14 @@
 package com.maruchin.medihelper.data.repositories
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.maruchin.medihelper.data.framework.getCurrUserId
+import com.maruchin.medihelper.data.framework.getDocumenstLive
 import com.maruchin.medihelper.data.model.PlannedMedicineDb
+import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
 import kotlinx.coroutines.Dispatchers
@@ -54,13 +57,29 @@ class PlannedMedicineRepoImpl(
 
     override suspend fun getListByMedicinePlan(medicinePlanId: String): List<PlannedMedicine> =
         withContext(Dispatchers.IO) {
-            val docsQuery = collectionRef.whereEqualTo("medicinePlanId", medicinePlanId).get().await()
             val plannedMedicinesList = mutableListOf<PlannedMedicine>()
+            val docsQuery = collectionRef.whereEqualTo("medicinePlanId", medicinePlanId).get().await()
             docsQuery.forEach {
                 val plannedMedicineDb = it.toObject(PlannedMedicineDb::class.java)
-                val plannedMedicine = plannedMedicineDb?.toEntity(it.id)
+                val plannedMedicine = plannedMedicineDb.toEntity(it.id)
                 plannedMedicinesList.add(plannedMedicine)
             }
             return@withContext plannedMedicinesList
         }
+
+    override suspend fun getLiveListByProfileAndDate(profileId: String, date: AppDate): LiveData<List<PlannedMedicine>> = withContext(Dispatchers.IO) {
+        val docsLive = collectionRef.whereEqualTo("profileId", profileId)
+            .whereEqualTo("plannedDate", date.jsonFormatString).getDocumenstLive()
+        return@withContext Transformations.map(docsLive) { snapshotList ->
+            val plannedMedicinesList = mutableListOf<PlannedMedicine>()
+            snapshotList.forEach {
+                val plannedMedicineDb = it.toObject(PlannedMedicineDb::class.java)
+                val plannedMedicine = plannedMedicineDb?.toEntity(it.id)
+                if (plannedMedicine != null) {
+                    plannedMedicinesList.add(plannedMedicine)
+                }
+            }
+            return@map plannedMedicinesList.toList()
+        }
+    }
 }

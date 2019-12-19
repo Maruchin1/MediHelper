@@ -185,7 +185,7 @@ class AddEditMedicinePlanViewModel(
         planType.postValue(MedicinePlan.Type.ONCE)
         val currDate = getCurrDateUseCase.execute()
         startDate.postValue(currDate)
-        endDate.postValue(currDate.apply { addDays(1) })
+        endDate.postValue(currDate.copy().apply { addDays(1) })
         intakeDaysType.postValue(IntakeDaysType.EVERYDAY)
         daysOfWeek.postValue(
             IntakeDays.DaysOfWeek(

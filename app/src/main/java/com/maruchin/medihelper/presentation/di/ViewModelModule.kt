@@ -58,6 +58,8 @@ val viewModelModule = module {
     }
     viewModel {
         CalendarDayViewModel(
+            getLivePlannedMedicinesItemsByDateUseCase = get(),
+            selectedProfile = get()
         )
     }
     viewModel {

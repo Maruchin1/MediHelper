@@ -10,10 +10,8 @@ class PlannedMedicineScheduler {
         withContext(Dispatchers.Default) {
             return@withContext when (medicinePlan.planType) {
                 MedicinePlan.Type.ONCE -> getForDate(
-                    medicinePlanId = medicinePlan.medicinePlanId,
-                    medicineId = medicinePlan.medicineId,
-                    plannedDate = medicinePlan.startDate,
-                    timeDoseList = medicinePlan.timeDoseList
+                    medicinePlan = medicinePlan,
+                    plannedDate = medicinePlan.startDate
                 )
                 MedicinePlan.Type.PERIOD -> when (medicinePlan.intakeDays) {
                     is IntakeDays.Everyday -> getForEveryday(medicinePlan)
@@ -46,10 +44,8 @@ class PlannedMedicineScheduler {
         while (currDate <= medicinePlan.endDate!!) {
             entriesList.addAll(
                 getForDate(
-                    medicinePlanId = medicinePlan.medicinePlanId,
-                    medicineId = medicinePlan.medicineId,
-                    plannedDate = currDate.copy(),
-                    timeDoseList = medicinePlan.timeDoseList
+                    medicinePlan = medicinePlan,
+                    plannedDate = currDate.copy()
                 )
             )
             currDate.addDays(1)
@@ -66,10 +62,8 @@ class PlannedMedicineScheduler {
             if (daysOfWeek.isDaySelected(currDate.dayOfWeek)) {
                 entriesList.addAll(
                     getForDate(
-                        medicinePlanId = medicinePlan.medicinePlanId,
-                        medicineId = medicinePlan.medicineId,
-                        plannedDate = currDate.copy(),
-                        timeDoseList = medicinePlan.timeDoseList
+                        medicinePlan = medicinePlan,
+                        plannedDate = currDate.copy()
                     )
                 )
             }
@@ -85,10 +79,8 @@ class PlannedMedicineScheduler {
         while (currDate <= medicinePlan.endDate!!) {
             entriesList.addAll(
                 getForDate(
-                    medicinePlanId = medicinePlan.medicinePlanId,
-                    medicineId = medicinePlan.medicineId,
-                    plannedDate = currDate.copy(),
-                    timeDoseList = medicinePlan.timeDoseList
+                    medicinePlan = medicinePlan,
+                    plannedDate = currDate.copy()
                 )
             )
             val interval = medicinePlan.intakeDays as IntakeDays.Interval
@@ -112,18 +104,17 @@ class PlannedMedicineScheduler {
     }
 
     private fun getForDate(
-        medicinePlanId: String,
-        medicineId: String,
-        plannedDate: AppDate,
-        timeDoseList: List<TimeDose>
+        medicinePlan: MedicinePlan,
+        plannedDate: AppDate
     ): List<PlannedMedicine> {
         val entriesList = mutableListOf<PlannedMedicine>()
-        timeDoseList.forEach { timeDose ->
+        medicinePlan.timeDoseList.forEach { timeDose ->
             entriesList.add(
                 PlannedMedicine(
                     plannedMedicineId = "",
-                    medicinePlanId = medicinePlanId,
-                    medicineId = medicineId,
+                    medicinePlanId = medicinePlan.medicinePlanId,
+                    profileId = medicinePlan.profileId,
+                    medicineId = medicinePlan.medicineId,
                     plannedDate = plannedDate,
                     plannedTime = timeDose.time,
                     plannedDoseSize = timeDose.doseSize,

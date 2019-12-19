@@ -37,7 +37,7 @@
                 android:layout_weight="1"
                 android:visibility="@{!viewModel.fullCalendarMode}"
                 app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+                app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed"
                 app:title='@{viewModel.currProfileName, default="Nazwa osoby"}'>
 
                 <androidx.appcompat.widget.Toolbar

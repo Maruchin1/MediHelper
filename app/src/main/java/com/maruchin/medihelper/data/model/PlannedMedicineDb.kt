@@ -6,6 +6,7 @@ import com.maruchin.medihelper.domain.entities.PlannedMedicine
 
 data class PlannedMedicineDb(
     val medicinePlanId: String? = null,
+    val profileId: String? = null,
     val medicineId: String? = null,
     val plannedDate: String? = null,
     val plannedTime: String? = null,
@@ -14,6 +15,7 @@ data class PlannedMedicineDb(
 ) {
     constructor(entity: PlannedMedicine) : this(
         medicinePlanId = entity.medicinePlanId,
+        profileId = entity.profileId,
         medicineId = entity.medicineId,
         plannedDate = entity.plannedDate.jsonFormatString,
         plannedTime = entity.plannedTime.jsonFormatString,
@@ -24,6 +26,7 @@ data class PlannedMedicineDb(
     fun toEntity(id: String) = PlannedMedicine(
         plannedMedicineId = id,
         medicinePlanId = medicinePlanId!!,
+        profileId = profileId!!,
         medicineId = medicineId!!,
         plannedDate = AppDate(plannedDate!!),
         plannedTime = AppTime(plannedTime!!),

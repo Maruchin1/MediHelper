@@ -12,7 +12,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.PlannedMedicineItem" />
+            type="com.maruchin.medihelper.domain.model.PlannedMedicineItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -43,8 +43,8 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src='@{displayData.statusOfTaking.iconResID, default="@drawable/round_check_circle_black_24"}'
-                    android:tint='@{displayData.statusOfTaking.colorResID, default="@color/colorStateGood"}' />
+                    android:src="@{displayData.status.iconResId}"
+                    android:tint="@{displayData.status.colorResId}" />
             </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout

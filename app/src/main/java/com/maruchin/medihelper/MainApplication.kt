@@ -37,6 +37,7 @@ class MainApplication : Application() {
             medicineUseCaseModule,
             profileUseCaseModule,
             medicinePlanUseCaseModule,
+            plannedMedicineUseCaseModule,
             dateTimeUseCaseModule,
             utilsModule,
             viewModelModule
