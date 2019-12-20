@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.leochuan.CarouselLayoutManager
@@ -68,11 +70,11 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         viewModel.selectedProfilePosition.observe(viewLifecycleOwner, Observer { position ->
             recycler_view_profile.scrollToPosition(position)
         })
-        viewModel.profileItems.observe(viewLifecycleOwner, Observer { list ->
-            Log.i(TAG, "list = $list")
-        })
         viewModel.mainProfileSelected.observe(viewLifecycleOwner, Observer { mainSelected ->
             setEditDeleteProfileEnabled(!mainSelected)
+        })
+        viewModel.medicinesPlansAvailable.observe(viewLifecycleOwner, Observer {
+            TransitionManager.beginDelayedTransition(lay_medicines_plans)
         })
     }
 
@@ -122,7 +124,7 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         with(toolbar.menu) {
             val btnDelete = findItem(R.id.btn_delete)
             if (btnDelete.isVisible != enabled) {
-                TransitionManager.beginDelayedTransition(root_lay)
+                TransitionManager.beginDelayedTransition(toolbar)
                 btnDelete.isVisible = enabled
             }
         }
