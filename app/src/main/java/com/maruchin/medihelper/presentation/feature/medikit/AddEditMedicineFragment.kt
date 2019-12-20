@@ -48,6 +48,7 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setArgs(args)
+        loadingScreen.bind(this, viewModel.loadingInProgress)
         super.setLightStatusBar(false)
         super.setupToolbarNavigation()
         setupScrollView()
@@ -57,13 +58,6 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
     private fun observeViewModel() {
         viewModel.actionMedicineSaved.observe(viewLifecycleOwner, Observer {
             findNavController().popBackStack()
-        })
-        viewModel.loadingInProgress.observe(viewLifecycleOwner, Observer { inProgress ->
-            if (inProgress) {
-                loadingScreen.showLoadingScreen(childFragmentManager)
-            } else {
-                loadingScreen.closeLoadingScreen()
-            }
         })
     }
 

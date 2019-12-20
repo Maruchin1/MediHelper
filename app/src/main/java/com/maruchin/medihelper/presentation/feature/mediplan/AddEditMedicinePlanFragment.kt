@@ -124,6 +124,7 @@ class AddEditMedicinePlanFragment :
         super.onViewCreated(view, savedInstanceState)
         super.setStatusBarColorLive(viewModel.colorPrimary)
         viewModel.setArgs(args)
+        loadingScreen.bind(this, viewModel.loadingInProgress)
         setupFab()
         setupDurationTypeChipGroup()
         setupIntakeDaysChipGroup()
@@ -151,13 +152,6 @@ class AddEditMedicinePlanFragment :
             super.setLightStatusBar(false)
             super.setupToolbarNavigation()
             startPostponedEnterTransition()
-        })
-        viewModel.loadingInProgress.observe(viewLifecycleOwner, Observer { loadingInProgress ->
-            if (loadingInProgress) {
-                loadingScreen.showLoadingScreen(childFragmentManager)
-            } else {
-                loadingScreen.closeLoadingScreen()
-            }
         })
         viewModel.actionMedicinePlanSaved.observe(viewLifecycleOwner, Observer {
             findNavController().popBackStack()

@@ -32,12 +32,18 @@ class MedicineDetailsViewModel(
     val profileSimpleItemListAvailable: LiveData<Boolean>
     val profileSimpleItemList: LiveData<List<ProfileItem>>
 
+    val medicineId: String
+        get() = medicineDetails.value!!.medicineId
     val actionDataLoaded: LiveData<Boolean>
         get() = _actionDataLoaded
-    val medicineId: String?
-        get() = medicineDetails.value?.medicineId
+    val actionMedicineDeleted: LiveData<Boolean>
+        get() = _actionMedicineDeleted
+    val loadingInProgress: LiveData<Boolean>
+        get() = _loadingInProgress
 
     private val _actionDataLoaded = ActionLiveData()
+    private val _actionMedicineDeleted = ActionLiveData()
+    private val _loadingInProgress = MutableLiveData<Boolean>(false)
 
     private val medicineDetails = MutableLiveData<MedicineDetails>()
 
@@ -74,9 +80,12 @@ class MedicineDetailsViewModel(
         _actionDataLoaded.sendAction()
     }
 
-    fun deleteMedicine() = GlobalScope.launch {
-        medicineId?.let {
-            deleteMedicineUseCase.execute(it)
-        }
+    fun deleteMedicine() = viewModelScope.launch {
+        _loadingInProgress.postValue(true)
+
+        deleteMedicineUseCase.execute(medicineId)
+
+        _loadingInProgress.postValue(false)
+        _actionMedicineDeleted.sendAction()
     }
 }

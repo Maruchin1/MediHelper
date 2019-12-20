@@ -14,7 +14,9 @@ import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.presentation.framework.BaseFragment
 import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
+import com.maruchin.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_medicine_plan_details.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MedicinePlanDetailsFragment :
@@ -23,6 +25,7 @@ class MedicinePlanDetailsFragment :
     private val viewModel: MedicinePlanDetailsViewModel by viewModel()
     private val args: MedicinePlanDetailsFragmentArgs by navArgs()
     private val directions by lazy { MedicinePlanDetailsFragmentDirections }
+    private val loadingScreen: LoadingScreen by inject()
 
     fun onClickEditPlan() {
         findNavController().navigate(
@@ -41,7 +44,6 @@ class MedicinePlanDetailsFragment :
             iconResId = R.drawable.round_delete_black_36
             setOnConfirmClickListener {
                 viewModel.deletePlan()
-                findNavController().popBackStack()
             }
         }.show(childFragmentManager)
     }
@@ -60,6 +62,7 @@ class MedicinePlanDetailsFragment :
         super.onViewCreated(view, savedInstanceState)
         super.setupToolbarNavigation()
         viewModel.setArgs(args)
+        loadingScreen.bind(this, viewModel.loadingInProgress)
 
         setupTimeDoseRecyclerView()
         setupToolbarMenu()
@@ -70,6 +73,9 @@ class MedicinePlanDetailsFragment :
         viewModel.actionDataLoaded.observe(viewLifecycleOwner, Observer {
             startPostponedEnterTransition()
             super.setLightStatusBar(true)
+        })
+        viewModel.actionPlanDeleted.observe(viewLifecycleOwner, Observer {
+            findNavController().popBackStack()
         })
     }
 

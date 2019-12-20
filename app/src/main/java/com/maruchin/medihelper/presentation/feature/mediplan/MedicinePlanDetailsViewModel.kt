@@ -30,8 +30,14 @@ class MedicinePlanDetailsViewModel(
         get() = medicinePlanDetails.value?.medicineId ?: throw Exception("medicineId is null")
     val actionDataLoaded: LiveData<Boolean>
         get() = _actionDataLoaded
+    val actionPlanDeleted: LiveData<Boolean>
+        get() = _actionPlanDeleted
+    val loadingInProgress: LiveData<Boolean>
+        get() = _loadingInProgress
 
     private val _actionDataLoaded = ActionLiveData()
+    private val _actionPlanDeleted = ActionLiveData()
+    private val _loadingInProgress = MutableLiveData<Boolean>()
 
     private val medicinePlanDetails = MutableLiveData<MedicinePlanDetails>()
 
@@ -46,8 +52,13 @@ class MedicinePlanDetailsViewModel(
         }
     }
 
-    fun deletePlan() = GlobalScope.launch {
+    fun deletePlan() = viewModelScope.launch {
+        _loadingInProgress.postValue(true)
+
         deleteMedicinePlanUseCase.execute(medicinePlanId)
+
+        _loadingInProgress.postValue(false)
+        _actionPlanDeleted.sendAction()
     }
 
     fun setArgs(args: MedicinePlanDetailsFragmentArgs) = viewModelScope.launch {

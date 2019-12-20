@@ -15,9 +15,11 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicineDetailsBinding
 import com.maruchin.medihelper.presentation.dialogs.SelectProfileDialog
 import com.maruchin.medihelper.presentation.framework.*
+import com.maruchin.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_medicine_details.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -30,6 +32,7 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
     private val viewModel: MedicineDetailsViewModel by viewModel()
     private val args: MedicineDetailsFragmentArgs by navArgs()
     private val directions by lazyOf(MedicineDetailsFragmentDirections)
+    private val loadingScreen: LoadingScreen by inject()
 
     fun onClickEdit() {
         viewModel.medicineId?.let { medicineId ->
@@ -44,7 +47,6 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
             iconResId = R.drawable.round_delete_black_36
             setOnConfirmClickListener {
                 viewModel.deleteMedicine()
-                findNavController().popBackStack()
             }
         }.show(childFragmentManager)
     }
@@ -91,6 +93,7 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.setArgs(args)
+        loadingScreen.bind(this, viewModel.loadingInProgress)
         super.setupToolbarNavigation()
         setupToolbarMenu()
         setupPersonRecyclerView()
@@ -110,6 +113,9 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
                 }
                 startPostponedEnterTransition()
             }
+        })
+        viewModel.actionMedicineDeleted.observe(viewLifecycleOwner, Observer {
+            findNavController().popBackStack()
         })
     }
 
