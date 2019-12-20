@@ -16,9 +16,11 @@ class UpdateAllPlannedMedicinesStatusUseCase(
         val currTime = AppTime(currTimeInMillis)
         val allPlannedMedicines = plannedMedicineRepo.getAllList()
         allPlannedMedicines.forEach { plannedMedicine ->
-            val newStatus = getNewStatus(plannedMedicine, currDate, currTime)
-            plannedMedicine.status = newStatus
-            plannedMedicineRepo.update(plannedMedicine)
+            if (plannedMedicine.status != PlannedMedicine.Status.TAKEN) {
+                val newStatus = getNewStatus(plannedMedicine, currDate, currTime)
+                plannedMedicine.status = newStatus
+                plannedMedicineRepo.update(plannedMedicine)
+            }
         }
     }
 
