@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.transition.TransitionManager
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarDayBinding
@@ -25,12 +26,11 @@ class CalendarDayFragment : BaseFragment<FragmentCalendarDayBinding>(R.layout.fr
     lateinit var date: AppDate
 
     private val viewModel: CalendarDayViewModel by viewModel()
-    private val directions by lazyOf(CalendarFragmentDirections)
 
     fun onClickOpenPlannedMedicineOptions(plannedMedicineId: String) {
-
-//        val parentFrag = parentFragment as CalendarFragment
-//        parentFrag.findNavController().navigate(directions.toPlannedMedicineOptionsDialog(plannedMedicineID))
+        PlannedMedicineOptionsDialog().apply {
+            this.plannedMedicineId = plannedMedicineId
+        }.show(childFragmentManager)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -40,8 +40,15 @@ class CalendarDayFragment : BaseFragment<FragmentCalendarDayBinding>(R.layout.fr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.initViewModel(calendarDayDate = date)
+        viewModel.initData(calendarDayDate = date)
         setupRecyclerViews()
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewModel.plannedMedicinesAvailable.observe(viewLifecycleOwner, Observer {
+            TransitionManager.beginDelayedTransition(root_lay)
+        })
     }
 
     private fun setupRecyclerViews() {

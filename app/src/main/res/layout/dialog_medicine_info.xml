@@ -57,8 +57,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="48dp"
-                android:layout_marginEnd="48dp"
+                android:layout_marginStart="@dimen/no_item_page_margin_horizontal"
+                android:layout_marginEnd="@dimen/no_item_page_margin_horizontal"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:visibility='@{viewModel.noResults}'
@@ -68,15 +68,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="@dimen/no_item_page_icon_size"
+                    android:layout_height="@dimen/no_item_page_icon_size"
                     android:src="@drawable/round_search_24"
                     android:tint="@color/colorDarkerGray" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/no_item_page_text_margin_top"
                     android:text="Brak wyników dla wybranego leku"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle" />

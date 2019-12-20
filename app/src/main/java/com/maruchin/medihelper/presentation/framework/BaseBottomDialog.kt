@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
@@ -34,8 +36,21 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
         }.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (!collapsing) {
+            setupStandardBehavior(view)
+        }
+    }
+
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
+        if (collapsing) {
+            setupCollapsingBehavior(dialog)
+        }
+    }
+
+    private fun setupCollapsingBehavior(dialog: Dialog) {
         dialog.setOnShowListener {
             val bottomDialog = it as BottomSheetDialog
             val bottomSheet = bottomDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
@@ -43,12 +58,22 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
             params?.height = ViewGroup.LayoutParams.MATCH_PARENT
             bottomSheet?.layoutParams = params
 
-            if (collapsing) {
-                val behavior = BottomSheetBehavior.from(bottomSheet!!)
-                behavior.peekHeight = getHalfScreenHeight()
-                behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            }
+            val behavior = BottomSheetBehavior.from(bottomSheet!!)
+            behavior.peekHeight = getHalfScreenHeight()
+            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
+    }
+
+    private fun setupStandardBehavior(view: View) {
+        view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                val dialog = dialog as BottomSheetDialog?
+                val bottomSheet = dialog!!.findViewById(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
+                val behavior = BottomSheetBehavior.from(bottomSheet!!)
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        })
     }
 
     private fun setMinHeight(view: View) {

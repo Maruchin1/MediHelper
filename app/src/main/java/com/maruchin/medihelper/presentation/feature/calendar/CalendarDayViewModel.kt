@@ -59,7 +59,7 @@ class CalendarDayViewModel(
         eveningAvailable = Transformations.map(eveningPlannedMedicines) { !it.isNullOrEmpty() }
     }
 
-    fun initViewModel(calendarDayDate: AppDate) {
+    fun initData(calendarDayDate: AppDate) {
         this.calendarDayDate.postValue(calendarDayDate)
     }
 }

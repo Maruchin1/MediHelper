@@ -1,24 +1,16 @@
 package com.maruchin.medihelper.presentation.feature.calendar
 
-import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.navigation.fragment.findNavController
-import androidx.transition.TransitionManager
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarBinding
 import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
-import devs.mulham.horizontalcalendar.model.CalendarEvent
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,7 +18,7 @@ import java.util.*
 
 
 class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.fragment_calendar) {
-    private val TAG = CalendarFragment::class.simpleName
+    private val TAG = "CalendarFragment"
 
     private val viewModel: CalendarViewModel by viewModel()
 

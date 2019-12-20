@@ -30,8 +30,10 @@ class PlannedMedicineRepoImpl(
         return@withContext newDoc.id
     }
 
-    override suspend fun update(entity: PlannedMedicine) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun update(entity: PlannedMedicine) = withContext(Dispatchers.IO) {
+        val plannedMedicineDb = PlannedMedicineDb(entity)
+        collectionRef.document(entity.plannedMedicineId).set(plannedMedicineDb)
+        return@withContext
     }
 
     override suspend fun deleteById(id: String) = withContext(Dispatchers.IO) {
@@ -39,8 +41,11 @@ class PlannedMedicineRepoImpl(
         return@withContext
     }
 
-    override suspend fun getById(id: String): PlannedMedicine? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun getById(id: String): PlannedMedicine? = withContext(Dispatchers.IO) {
+        val doc = collectionRef.document(id).get().await()
+        val plannedMedicineDb = doc.toObject(PlannedMedicineDb::class.java)
+        val plannedMedicine = plannedMedicineDb?.toEntity(doc.id)
+        return@withContext plannedMedicine
     }
 
     override suspend fun getLiveById(id: String): LiveData<PlannedMedicine?> {

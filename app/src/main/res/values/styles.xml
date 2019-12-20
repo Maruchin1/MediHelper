@@ -185,6 +185,10 @@
         <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
 
+    <style name="TextAppearance.MediHelper.Body2.Tertiary" parent="TextAppearance.MediHelper.Body2">
+        <item name="android:textColor">@color/colorTextTertiary</item>
+    </style>
+
     <style name="TextAppearance.MediHelper.NoItemPageTitle" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">@color/colorDarkerGray</item>
     </style>

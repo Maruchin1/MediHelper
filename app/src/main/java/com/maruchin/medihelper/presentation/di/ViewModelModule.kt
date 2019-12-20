@@ -64,9 +64,9 @@ val viewModelModule = module {
     }
     viewModel {
         PlannedMedicineOptionsViewModel(
-            personUseCases = get(),
-            plannedMedicineUseCases = get(),
-            medicineUseCases = get()
+            getPlannedMedicineDetailsUseCase = get(),
+            changePlannedMedicineTakenUseCase = get(),
+            selectedProfile = get()
         )
     }
     viewModel {

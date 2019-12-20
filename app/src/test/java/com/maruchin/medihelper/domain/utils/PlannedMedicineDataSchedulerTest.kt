@@ -6,7 +6,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-class PlannedMedicineSchedulerTest {
+class PlannedMedicineDataSchedulerTest {
 
     private lateinit var scheduler: PlannedMedicineScheduler
 
@@ -45,6 +45,8 @@ class PlannedMedicineSchedulerTest {
         val firstExpectedResult = PlannedMedicine(
             plannedMedicineId = "",
             medicinePlanId = "xyz",
+            profileId = "",
+            medicineId = "",
             plannedDate = AppDate(2019, 11, 20),
             plannedTime = AppTime(9, 30),
             plannedDoseSize = 2f,
@@ -53,6 +55,8 @@ class PlannedMedicineSchedulerTest {
         val secondExpectedResult = PlannedMedicine(
             plannedMedicineId = "",
             medicinePlanId = "xyz",
+            profileId = "",
+            medicineId = "",
             plannedDate = AppDate(2019, 11, 20),
             plannedTime = AppTime(20, 0),
             plannedDoseSize = 4f,
@@ -87,6 +91,8 @@ class PlannedMedicineSchedulerTest {
         val firstExpectedResult = PlannedMedicine(
             plannedMedicineId = "",
             medicinePlanId = "xyz",
+            profileId = "",
+            medicineId = "",
             plannedDate = AppDate(2019, 11, 20),
             plannedTime = AppTime(9, 30),
             plannedDoseSize = 2f,
@@ -139,6 +145,8 @@ class PlannedMedicineSchedulerTest {
         val firstExpectedResult = PlannedMedicine(
             plannedMedicineId = "",
             medicinePlanId = "xyz",
+            profileId = "",
+            medicineId = "",
             plannedDate = AppDate(2019, 11, 21),
             plannedTime = AppTime(9, 30),
             plannedDoseSize = 2f,
@@ -179,6 +187,8 @@ class PlannedMedicineSchedulerTest {
         val firstExpectedResult = PlannedMedicine(
             plannedMedicineId = "",
             medicinePlanId = "xyz",
+            profileId = "",
+            medicineId = "",
             plannedDate = AppDate(2019, 11, 20),
             plannedTime = AppTime(9, 30),
             plannedDoseSize = 2f,

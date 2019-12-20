@@ -11,7 +11,8 @@ val utilsModule = module {
     }
     single {
         SelectedProfile(
-            getMainProfileIdUseCase = get()
+            getMainProfileIdUseCase = get(),
+            getProfileColorUseCase = get()
         )
     }
     factory {

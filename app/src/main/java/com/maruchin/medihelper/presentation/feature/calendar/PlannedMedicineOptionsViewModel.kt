@@ -1,73 +1,56 @@
 package com.maruchin.medihelper.presentation.feature.calendar
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.maruchin.medihelper.R
-import com.maruchin.medihelper.domain.entities.StatusOfTaking
-import com.maruchin.medihelper.domain.usecases.MedicineUseCases
-import com.maruchin.medihelper.domain.usecases.PersonUseCases
-import com.maruchin.medihelper.domain.usecases.PlannedMedicineUseCases
-import com.maruchin.medihelper.presentation.framework.map
-import com.maruchin.medihelper.presentation.framework.switchMap
-import com.maruchin.medihelper.presentation.model.PlannedMedicineOptionsData
+import com.maruchin.medihelper.domain.entities.PlannedMedicine
+import com.maruchin.medihelper.domain.model.PlannedMedicineDetails
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.ChangePlannedMedicineTakenUseCase
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetPlannedMedicineDetailsUseCase
+import com.maruchin.medihelper.presentation.framework.ActionLiveData
+import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class PlannedMedicineOptionsViewModel(
-    private val personUseCases: PersonUseCases,
-    private val plannedMedicineUseCases: PlannedMedicineUseCases,
-    private val medicineUseCases: MedicineUseCases
+    private val getPlannedMedicineDetailsUseCase: GetPlannedMedicineDetailsUseCase,
+    private val changePlannedMedicineTakenUseCase: ChangePlannedMedicineTakenUseCase,
+    selectedProfile: SelectedProfile
 ) : ViewModel() {
 
-    val colorPrimaryId: LiveData<Int> = MutableLiveData(R.color.colorPrimary)
-    val optionsData: LiveData<PlannedMedicineOptionsData> = MutableLiveData()
-    val takeMedicineBtnText: LiveData<String> = MutableLiveData()
-    val takeMedicineBtnIcon: LiveData<Int> = MutableLiveData()
+    val colorPrimary: LiveData<String?> = selectedProfile.profileColorLive
+    val changeStatusText: LiveData<String>
+    val changeStatusIcon: LiveData<Int>
 
-    private val plannedMedicineId = MutableLiveData<Int>()
-//    private val plannedMedicineWithMedicine: LiveData<PlannedMedicineWithMedicine>
+    val details: LiveData<PlannedMedicineDetails>
+        get() = _details
+
+    private val _details = MutableLiveData<PlannedMedicineDetails>()
 
     init {
-//        colorPrimaryId = personUseCases.getCurrPersonLive().map { it.color }
-//        plannedMedicineWithMedicine = plannedMedicineId.switchMap {
-//            plannedMedicineUseCases.getPlannedMedicineWithMedicineLiveById(it)
-//        }
-//        optionsData = plannedMedicineWithMedicine.map { PlannedMedicineOptionsData(it) }
-//        takeMedicineBtnText = plannedMedicineWithMedicine.map {
-//            if (it.statusOfTaking == StatusOfTaking.TAKEN) {
-//                "Anuluj przyjecie leku"
-//            } else {
-//                "Przyjmij lek"
-//            }
-//        }
-//        takeMedicineBtnIcon = plannedMedicineWithMedicine.map {
-//            if (it.statusOfTaking == StatusOfTaking.TAKEN) {
-//                R.drawable.round_close_black_24
-//            } else {
-//                R.drawable.baseline_check_white_24
-//            }
-//        }
+        changeStatusText = Transformations.map(_details) {
+            if (it.status == PlannedMedicine.Status.TAKEN) {
+                "Anuluj przyjęcie leku"
+            } else {
+                "Przyjmj lek"
+            }
+        }
+        changeStatusIcon = Transformations.map(_details) {
+            if (it.status == PlannedMedicine.Status.TAKEN) {
+                R.drawable.round_close_24
+            } else {
+                R.drawable.baseline_check_24
+            }
+        }
     }
 
-    fun setArgs(args: PlannedMedicineOptionsDialogArgs) {
-        plannedMedicineId.value = args.plannedMedicineID
+    fun initData(plannedMedicineId: String) = viewModelScope.launch {
+        val data = getPlannedMedicineDetailsUseCase.execute(plannedMedicineId)
+        _details.postValue(data)
     }
 
-    fun getMedicineId(): Int? {
-//        plannedMedicineWithMedicine.value?.medicine?.medicineId
-        return 1
-    }
-
-    fun changePlannedMedicineStatus() = GlobalScope.launch {
-//        plannedMedicineWithMedicine.value?.let {
-//            if (it.statusOfTaking == StatusOfTaking.TAKEN) {
-//                plannedMedicineUseCases.changeMedicineTaken(it.plannedMedicineId, false)
-//                medicineUseCases.increaseMedicineCurrState(it.medicine.medicineId, it.plannedDoseSize)
-//            } else {
-//                plannedMedicineUseCases.changeMedicineTaken(it.plannedMedicineId, true)
-//                medicineUseCases.reduceMedicineCurrState(it.medicine.medicineId, it.plannedDoseSize)
-//            }
-//        }
+    fun changePlannedMedicineTaken() = GlobalScope.launch {
+        _details.value?.plannedMedicineId?.let { plannedMedicineId ->
+            changePlannedMedicineTakenUseCase.execute(plannedMedicineId)
+        }
     }
 }

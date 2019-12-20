@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_bottom_dialog"
+        android:backgroundTint="@color/colorWhite"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,12 +28,12 @@
                 android:id="@+id/txv_medicine_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/bottom_dialog_header_margin_horizontal"
+                android:layout_marginTop="@dimen/bottom_dialog_header_margin_top"
+                android:layout_marginEnd="@dimen/bottom_dialog_header_margin_horizontal"
                 android:maxLines="1"
-                android:text='@{viewModel.optionsData.medicineName, default="Nazwa leku"}'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:text='@{viewModel.details.medicineName, default="Nazwa leku"}'
+                android:textAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Light"
                 app:layout_constraintEnd_toStartOf="@id/lay_status"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -52,25 +53,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text='@{viewModel.optionsData.plannedDate.formatString + " godz. " + viewModel.optionsData.plannedTime.formatString, default="Zaplanowano na 01 sty 2019 godz. 08:00"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                    android:textColor="@color/colorTextTertiary" />
+                    android:text='@{viewModel.details.plannedDate.formatString + " godz. " + viewModel.details.plannedTime.formatString, default="Zaplanowano na 01 sty 2019 godz. 08:00"}'
+                    android:textAppearance="@style/TextAppearance.MediHelper.Body2.Tertiary" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text='@{"Do przyjęcia " + viewModel.optionsData.plannedDoseSize + " " + viewModel.optionsData.medicineUnit, default="Do przyjęcia 2.0 pigułki"}'
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                    android:textColor="@color/colorTextTertiary" />
+                    android:text='@{"Do przyjęcia " + viewModel.details.plannedDoseSize + " " + viewModel.details.medicineUnit, default="Do przyjęcia 2.0 pigułki"}'
+                    android:textAppearance="@style/TextAppearance.MediHelper.Body2.Tertiary" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/lay_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginTop="@dimen/bottom_dialog_header_margin_top"
+                android:layout_marginEnd="@dimen/bottom_dialog_header_margin_top"
                 android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -79,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="@{viewModel.optionsData.statusOfTaking.string, default=status}"
+                    android:text="@{viewModel.details.status.text, default=status}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
                 <com.google.android.material.card.MaterialCardView
@@ -91,8 +90,8 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src='@{viewModel.optionsData.statusOfTaking.iconResID, default="@drawable/round_check_circle_black_24"}'
-                        android:tint='@{viewModel.optionsData.statusOfTaking.colorResID, default="@color/colorStateGood"}' />
+                        android:src='@{viewModel.details.status.iconResId, default="@drawable/round_check_circle_black_24"}'
+                        android:tint='@{viewModel.details.status.colorResId, default="@color/colorStateGood"}' />
 
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
@@ -102,76 +101,78 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/bottom_dialog_option_height"
             android:layout_marginTop="16dp"
-            android:background="?selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="@{() -> handler.onClickChangePlannedMedicineStatus()}"
-            android:padding="16dp">
+            android:onClick="@{() -> handler.onClickChangePlannedMedicineTaken()}"
+            android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
+            android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src='@{viewModel.takeMedicineBtnIcon, default="@drawable/baseline_check_white_36"}'
-                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
+                android:layout_width="@dimen/bottom_dialog_option_icon_size"
+                android:layout_height="@dimen/bottom_dialog_option_icon_size"
+                android:src='@{viewModel.changeStatusIcon, default="@drawable/baseline_check_white_36"}'
+                android:tint='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:text='@{viewModel.takeMedicineBtnText, default="Przyjmij lek"}'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
+                android:text='@{viewModel.changeStatusText, default="Przyjmij lek"}'
+                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="?selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?selectableItemBackground"
             android:gravity="center_vertical"
             android:onClick="@{() -> handler.onClickChangeForLater()}"
-            android:padding="16dp">
+            android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
+            android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src='@drawable/baseline_access_time_black_36'
-                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
+                android:layout_width="@dimen/bottom_dialog_option_icon_size"
+                android:layout_height="@dimen/bottom_dialog_option_icon_size"
+                android:src='@drawable/round_access_time_24'
+                android:tint='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
                 android:text='Przełóż na później'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="?selectableItemBackground"
+            android:layout_height="@dimen/bottom_dialog_option_height"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="@{() -> handler.onClickNavigateToMedicineDetails()}"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:onClick="@{() -> handler.onClickOpenMedicinePlan(viewModel.details.medicinePlanId)}"
+            android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
+            android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src='@drawable/ic_pill_black_36dp'
-                android:tint='@{viewModel.colorPrimaryId, default="@color/colorPrimary"}' />
+                android:layout_width="@dimen/bottom_dialog_option_icon_size"
+                android:layout_height="@dimen/bottom_dialog_option_icon_size"
+                android:src='@drawable/round_event_note_24'
+                android:tint='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:text='Szczegóły leku'
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
+                android:text='Przejdź do planu'
+                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
         </LinearLayout>
 
     </LinearLayout>

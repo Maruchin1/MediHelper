@@ -3,13 +3,19 @@
     <dimen name="appbar_height">128dp</dimen>
     <dimen name="appbar_height_overlap">224</dimen>
 
+    <dimen name="no_item_page_margin_top">64dp</dimen>
+    <dimen name="no_item_page_margin_horizontal">48dp</dimen>
+    <dimen name="no_item_page_icon_size">100dp</dimen>
+    <dimen name="no_item_page_text_margin_top">8dp</dimen>
+
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="bottom_dialog_header_padding_hor">8dp</dimen>
-    <dimen name="bottom_dialog_header_text_margin_start">16dp</dimen>
+    <dimen name="bottom_dialog_header_margin_top">8dp</dimen>
+    <dimen name="bottom_dialog_header_margin_horizontal">16dp</dimen>
     <dimen name="bottom_dialog_option_height">56dp</dimen>
     <dimen name="bottom_dialog_option_padding_horizontal">16dp</dimen>
     <dimen name="bottom_dialog_option_text_margin_start">32dp</dimen>
+    <dimen name="bottom_dialog_option_icon_size">24dp</dimen>
 
     <dimen name="form_header_margin_top">48dp</dimen>
     <dimen name="form_header_margin_horizontal">8dp</dimen>

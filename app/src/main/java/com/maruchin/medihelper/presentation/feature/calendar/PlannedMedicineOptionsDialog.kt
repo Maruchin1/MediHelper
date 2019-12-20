@@ -4,28 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogPlannedMedicineOptionsBinding
-import com.maruchin.medihelper.presentation.framework.bind
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
-    val TAG = PlannedMedicineOptionsDialog::class.simpleName
+class PlannedMedicineOptionsDialog :
+    BaseBottomDialog<DialogPlannedMedicineOptionsBinding>(R.layout.dialog_planned_medicine_options) {
+    override val TAG: String
+        get() = "PlannedMedicineOptionsDialog"
+
+    lateinit var plannedMedicineId: String
 
     private val viewModel: PlannedMedicineOptionsViewModel by viewModel()
-    private val args: PlannedMedicineOptionsDialogArgs by navArgs()
-    private val directions by lazy { PlannedMedicineOptionsDialogDirections }
+    private val directions by lazyOf(CalendarFragmentDirections)
 
-    fun onClickChangePlannedMedicineStatus() {
-        viewModel.changePlannedMedicineStatus()
+    fun onClickChangePlannedMedicineTaken() {
+        viewModel.changePlannedMedicineTaken()
         dismiss()
     }
 
-    fun onClickNavigateToMedicineDetails() = viewModel.getMedicineId()?.let {
-        findNavController().navigate(directions.toMedicineDetailsFragment(""))
+    fun onClickOpenMedicinePlan(medicinePlanId: String) {
+        requireParentFragment().findNavController().navigate(directions.toMedicinePlanDetailsFragment(medicinePlanId))
     }
 
     fun onClickChangeForLater() {
@@ -34,14 +36,12 @@ class PlannedMedicineOptionsDialog : BottomSheetDialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewModel.setArgs(args)
-        return bind<DialogPlannedMedicineOptionsBinding>(
-            inflater = inflater,
-            container = container,
-            layoutResId = R.layout.dialog_planned_medicine_options,
-            viewModel = viewModel
-        )
+        super.bindingViewModel = viewModel
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.initData(plannedMedicineId)
+    }
 }

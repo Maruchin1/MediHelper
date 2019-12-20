@@ -39,4 +39,9 @@ val profileUseCaseModule = module {
             profileRepo = get()
         )
     }
+    factory {
+        GetProfileColorUseCase(
+            profileRepo = get()
+        )
+    }
 }

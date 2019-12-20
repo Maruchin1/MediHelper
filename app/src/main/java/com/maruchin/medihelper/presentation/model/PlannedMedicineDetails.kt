@@ -4,7 +4,7 @@ import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.AppTime
 import com.maruchin.medihelper.domain.entities.StatusOfTaking
 
-class PlannedMedicineOptionsData(
+class PlannedMedicineDetails(
     val medicineName: String,
     val medicineUnit: String,
     val plannedDate: AppDate,
