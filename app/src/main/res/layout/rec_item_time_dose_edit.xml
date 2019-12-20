@@ -65,7 +65,7 @@
             android:background="?selectableItemBackgroundBorderless"
             android:onClick="@{() -> handler.onClickDeleteTimeDose(displayData.position)}"
             android:src="@drawable/round_delete_black_24"
-            android:visibility="@{displayData.position != 0}"
+            visibleOrGone="@{displayData.position != 0}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -161,12 +161,12 @@
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
                                 <TextView
+                                    visibleOrGone="@{viewModel.durationTime.endDate != null}"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
                                     android:text='@{viewModel.durationTime.endDate, default="Do 12 wrz 2019"}'
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                                    android:visibility="@{viewModel.durationTime.endDate != null}" />
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -217,12 +217,12 @@
 
                         <com.google.android.material.card.MaterialCardView
                             style="@style/Widget.MediHelper.CardView.Big"
+                            visibleOrGone="@{viewModel.days != null}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/details_card_margin_horizontal_inner"
                             android:layout_marginTop="@dimen/details_card_margin_top"
-                            android:layout_marginEnd="@dimen/details_card_margin_horizontal"
-                            android:visibility="@{viewModel.days != null}">
+                            android:layout_marginEnd="@dimen/details_card_margin_horizontal">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -263,12 +263,12 @@
                                     android:textColor="@{viewModel.colorPrimary}" />
 
                                 <TextView
+                                    visibleOrGone="@{viewModel.days.daysDetails != null}"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
                                     android:text='@{viewModel.days.daysDetails, default="pn, śr, so"}'
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                                    android:visibility="@{viewModel.days.daysDetails != null}" />
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>

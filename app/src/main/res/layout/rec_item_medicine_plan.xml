@@ -73,25 +73,25 @@
                     android:orientation="vertical">
 
                     <TextView
+                        visibleOrGone="@{displayData.planType == Type.ONCE}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text='@{"Jednorazowo " + displayData.startDate, default="Jednorazowo"}'
-                        android:textAppearance="@style/TextAppearance.MediHelper.Body2"
-                        android:visibility="@{displayData.planType == Type.ONCE}" />
+                        android:textAppearance="@style/TextAppearance.MediHelper.Body2" />
 
                     <TextView
+                        visibleOrGone="@{displayData.planType == Type.PERIOD}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text='@{"Od " + displayData.startDate + " do " + displayData.endDate, default="Prze okres dni"}'
-                        android:textAppearance="@style/TextAppearance.MediHelper.Body2"
-                        android:visibility="@{displayData.planType == Type.PERIOD}" />
+                        android:textAppearance="@style/TextAppearance.MediHelper.Body2" />
 
                     <TextView
+                        visibleOrGone="@{displayData.planType == Type.CONTINUOUS}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text='@{"Przyjmowanie ciągłe od " + displayData.startDate, default="Przyjmowanie ciągłe"}'
-                        android:textAppearance="@style/TextAppearance.MediHelper.Body2"
-                        android:visibility="@{displayData.planType == Type.CONTINUOUS}" />
+                        android:textAppearance="@style/TextAppearance.MediHelper.Body2" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </LinearLayout>
         </LinearLayout>

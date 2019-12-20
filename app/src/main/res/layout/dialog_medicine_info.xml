@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility='@{viewModel.loadingInProgress}'
+                visibleOrGone='@{viewModel.loadingInProgress}'
                 app:layout_constraintBottom_toTopOf="@id/hor_guideline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +61,7 @@
                 android:layout_marginEnd="@dimen/no_item_page_margin_horizontal"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility='@{viewModel.noResults}'
+                visibleOrGone='@{viewModel.noResults}'
                 app:layout_constraintBottom_toTopOf="@id/hor_guideline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

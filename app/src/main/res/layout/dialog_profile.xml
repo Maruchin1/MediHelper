@@ -21,6 +21,7 @@
         android:background="@drawable/bg_bottom_dialog">
 
         <androidx.core.widget.NestedScrollView
+            visibleOrInvisible="@{viewModel.profileItemsAvailable}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
@@ -66,30 +67,36 @@
                     android:orientation="vertical">
 
                     <TextView
+                        visibleOrGone="@{!viewModel.medicinesPlansAvailable}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
                         android:text="Brak przyjmowanych leków"
-                        android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle"
-                        android:visibility="@{!viewModel.medicinesPlansAvailable}" />
+                        android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_medicine_plan"
+                        visibleOrGone="@{viewModel.medicinesPlansAvailable}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="8dp"
                         android:clipToPadding="false"
                         android:orientation="vertical"
                         android:paddingBottom="8dp"
-                        android:visibility="@{viewModel.medicinesPlansAvailable}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/rec_item_medicine_plan" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
+        <ProgressBar
+            visibleOrGone="@{!viewModel.profileItemsAvailable}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/progress_bar_margin_top" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

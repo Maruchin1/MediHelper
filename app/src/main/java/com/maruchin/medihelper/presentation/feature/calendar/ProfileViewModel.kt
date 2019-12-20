@@ -20,6 +20,7 @@ class ProfileViewModel(
 
     val colorPrimary: LiveData<String>
     val profileItems: LiveData<List<ProfileItem>>
+    val profileItemsAvailable: LiveData<Boolean>
     val selectedProfilePosition: LiveData<Int>
     val mainProfileSelected: LiveData<Boolean> = selectedProfile.mainProfileSelectedLive
     val medicinesPlans: LiveData<List<MedicinePlanItem>>
@@ -35,6 +36,7 @@ class ProfileViewModel(
             val source = getLiveAllProfilesItemsUseCase.execute()
             emitSource(source)
         }
+        profileItemsAvailable = Transformations.map(profileItems) { !it.isNullOrEmpty() }
         selectedProfileItem = Transformations.switchMap(selectedProfile.profileIdLive) { selectedProfileId ->
             liveData {
                 val value = getProfileItemUseCase.execute(selectedProfileId)

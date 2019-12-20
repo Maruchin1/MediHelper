@@ -20,10 +20,10 @@
         android:orientation="vertical">
 
         <androidx.core.widget.NestedScrollView
+            visibleOrGone="@{viewModel.plannedMedicinesAvailable}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:visibility="@{viewModel.plannedMedicinesAvailable}">
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -33,12 +33,12 @@
 
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.MediHelper.CardView"
+                    visibleOrGone="@{viewModel.morningAvailable}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:visibility="@{viewModel.morningAvailable}">
+                    android:layout_marginEnd="8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -80,12 +80,12 @@
 
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.MediHelper.CardView"
+                    visibleOrGone="@{viewModel.afternoonAvailable}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:visibility="@{viewModel.afternoonAvailable}">
+                    android:layout_marginEnd="8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -127,12 +127,12 @@
 
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.MediHelper.CardView"
+                    visibleOrGone="@{viewModel.eveningAvailable}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:visibility="@{viewModel.eveningAvailable}">
+                    android:layout_marginEnd="8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -176,14 +176,14 @@
         </androidx.core.widget.NestedScrollView>
 
         <LinearLayout
+            visibleOrGone='@{!viewModel.plannedMedicinesAvailable, default=gone}'
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/no_item_page_margin_horizontal"
             android:layout_marginTop="@dimen/no_item_page_margin_top"
             android:layout_marginEnd="@dimen/no_item_page_margin_horizontal"
             android:gravity="center_horizontal|top"
-            android:orientation="vertical"
-            android:visibility='@{!viewModel.plannedMedicinesAvailable, default=gone}'>
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="@dimen/no_item_page_icon_size"

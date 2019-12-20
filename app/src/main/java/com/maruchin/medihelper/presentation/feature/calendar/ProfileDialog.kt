@@ -73,8 +73,11 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         viewModel.mainProfileSelected.observe(viewLifecycleOwner, Observer { mainSelected ->
             setEditDeleteProfileEnabled(!mainSelected)
         })
+        viewModel.profileItemsAvailable.observe(viewLifecycleOwner, Observer {
+            root_lay.beginDelayedFade()
+        })
         viewModel.medicinesPlansAvailable.observe(viewLifecycleOwner, Observer {
-            TransitionManager.beginDelayedTransition(lay_medicines_plans)
+            lay_medicines_plans.beginDelayedFade()
         })
     }
 
@@ -124,7 +127,7 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         with(toolbar.menu) {
             val btnDelete = findItem(R.id.btn_delete)
             if (btnDelete.isVisible != enabled) {
-                TransitionManager.beginDelayedTransition(toolbar)
+                toolbar.beginDelayedTransition()
                 btnDelete.isVisible = enabled
             }
         }
