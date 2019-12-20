@@ -1,7 +1,6 @@
 package com.maruchin.medihelper.presentation.feature.calendar
 
 import android.os.Bundle
-import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,8 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogPlannedMedicineOptionsBinding
 import com.maruchin.medihelper.presentation.dialogs.SelectTimeDialog
 import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
+import com.maruchin.medihelper.presentation.framework.beginDelayedFade
+import com.maruchin.medihelper.presentation.framework.beginDelayedTransition
 import kotlinx.android.synthetic.main.dialog_planned_medicine_options.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,8 +56,8 @@ class PlannedMedicineOptionsDialog :
     }
 
     private fun observeViewModel() {
-        viewModel.details.observe(viewLifecycleOwner, Observer {
-            TransitionManager.beginDelayedTransition(root_lay)
+        viewModel.loadingInProgress.observe(viewLifecycleOwner, Observer {
+            root_lay.beginDelayedFade()
         })
     }
 }

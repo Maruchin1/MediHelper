@@ -26,8 +26,11 @@ class PlannedMedicineOptionsViewModel(
 
     val details: LiveData<PlannedMedicineDetails>
         get() = _details
+    val loadingInProgress: LiveData<Boolean>
+        get() = _loadingInProgress
 
     private val _details = MutableLiveData<PlannedMedicineDetails>()
+    private val _loadingInProgress = MutableLiveData<Boolean>(true)
 
     init {
         changeStatusText = Transformations.map(_details) {
@@ -49,6 +52,7 @@ class PlannedMedicineOptionsViewModel(
     fun initData(plannedMedicineId: String) = viewModelScope.launch {
         val data = getPlannedMedicineDetailsUseCase.execute(plannedMedicineId)
         _details.postValue(data)
+        _loadingInProgress.postValue(false)
     }
 
     fun changePlannedMedicineTaken() = GlobalScope.launch {
