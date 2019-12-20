@@ -53,6 +53,7 @@ val viewModelModule = module {
         CalendarViewModel(
             getCurrDateUseCase = get(),
             getProfileItemUseCase = get(),
+            updateAllPlannedMedicinesStatusUseCase = get(),
             selectedProfile = get()
         )
     }

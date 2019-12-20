@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.usecases.datetime.GetCurrDateUseCase
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.UpdateAllPlannedMedicinesStatusUseCase
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileItemUseCase
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import kotlinx.coroutines.launch
@@ -12,6 +13,7 @@ import java.util.*
 class CalendarViewModel(
     private val getCurrDateUseCase: GetCurrDateUseCase,
     private val getProfileItemUseCase: GetProfileItemUseCase,
+    private val updateAllPlannedMedicinesStatusUseCase: UpdateAllPlannedMedicinesStatusUseCase,
     private val selectedProfile: SelectedProfile
 ) : ViewModel() {
 
@@ -69,6 +71,6 @@ class CalendarViewModel(
     }
 
     fun updateAllStatus() = viewModelScope.launch {
-//        plannedMedicineUseCases.updateAllStatus()
+        updateAllPlannedMedicinesStatusUseCase.execute()
     }
 }

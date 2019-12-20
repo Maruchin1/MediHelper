@@ -5,6 +5,7 @@ import androidx.lifecycle.Transformations
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.data.framework.getDocumenstLive
 import com.maruchin.medihelper.data.model.PlannedMedicineDb
@@ -52,8 +53,15 @@ class PlannedMedicineRepoImpl(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getAllList(): List<PlannedMedicine> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun getAllList(): List<PlannedMedicine> = withContext(Dispatchers.IO){
+        val plannedMedicinesList = mutableListOf<PlannedMedicine>()
+        val docsQuery = collectionRef.get().await()
+        docsQuery.forEach {
+            val plannedMedicineDb = it.toObject(PlannedMedicineDb::class.java)
+            val plannedMedicine = plannedMedicineDb.toEntity(it.id)
+            plannedMedicinesList.add(plannedMedicine)
+        }
+        return@withContext plannedMedicinesList
     }
 
     override suspend fun getAllListLive(): LiveData<List<PlannedMedicine>> {
