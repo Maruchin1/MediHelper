@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentAddEditMedicineBinding
+import com.maruchin.medihelper.device.camera.CameraPermission
 import com.maruchin.medihelper.presentation.dialogs.SelectExpireDateDialog
 import com.maruchin.medihelper.presentation.framework.BaseFragment
 import com.maruchin.medihelper.presentation.framework.shrinkOnScroll
@@ -26,9 +27,14 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
     private val args: AddEditMedicineFragmentArgs by navArgs()
     private val loadingScreen: LoadingScreen by inject()
     private val directions by lazyOf(AddEditMedicineFragmentDirections)
+    private val cameraPermission: CameraPermission by inject()
 
     fun onClickTakePhoto() {
-        findNavController().navigate(directions.toCaptureMedicinePictureFragment())
+        if (cameraPermission.isGranted()) {
+            findNavController().navigate(directions.toCaptureMedicinePictureFragment())
+        } else {
+            cameraPermission.askForCameraPermission()
+        }
     }
 
     fun onClickSelectExpireDate() = SelectExpireDateDialog().apply {
