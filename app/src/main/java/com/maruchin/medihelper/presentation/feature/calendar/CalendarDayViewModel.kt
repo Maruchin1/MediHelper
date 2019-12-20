@@ -34,6 +34,7 @@ class CalendarDayViewModel(
                 liveData {
                     val source = getLivePlannedMedicinesItemsByDateUseCase.execute(profileId, date)
                     emitSource(source)
+
                 }
             }
         }

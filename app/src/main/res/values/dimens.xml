@@ -8,6 +8,8 @@
     <dimen name="no_item_page_icon_size">100dp</dimen>
     <dimen name="no_item_page_text_margin_top">8dp</dimen>
 
+    <dimen name="progress_bar_margin_top">32dp</dimen>
+
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="bottom_dialog_header_margin_top">8dp</dimen>

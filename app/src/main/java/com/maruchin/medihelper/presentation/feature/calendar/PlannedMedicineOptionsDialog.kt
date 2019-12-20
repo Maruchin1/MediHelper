@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.presentation.feature.calendar
 
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,9 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogPlannedMedicineOptionsBinding
+import com.maruchin.medihelper.presentation.dialogs.SelectTimeDialog
 import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
+import kotlinx.android.synthetic.main.dialog_planned_medicine_options.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlannedMedicineOptionsDialog :
@@ -31,8 +34,13 @@ class PlannedMedicineOptionsDialog :
     }
 
     fun onClickChangeForLater() {
-        //todo dorobić zmianę przypomnienia
-        dismiss()
+        SelectTimeDialog().apply {
+            defaultTime = viewModel.details.value?.plannedTime
+            setTimeSelectedListener { newTime ->
+                viewModel.changePlannedTime(newTime)
+                this@PlannedMedicineOptionsDialog.dismiss()
+            }
+        }.show(childFragmentManager)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,5 +51,12 @@ class PlannedMedicineOptionsDialog :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.initData(plannedMedicineId)
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewModel.details.observe(viewLifecycleOwner, Observer {
+            TransitionManager.beginDelayedTransition(root_lay)
+        })
     }
 }

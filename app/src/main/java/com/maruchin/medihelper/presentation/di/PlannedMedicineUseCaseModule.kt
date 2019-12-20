@@ -1,9 +1,6 @@
 package com.maruchin.medihelper.presentation.di
 
-import com.maruchin.medihelper.domain.usecases.plannedmedicines.ChangePlannedMedicineTakenUseCase
-import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetLivePlannedMedicinesItemsByDateUseCase
-import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetPlannedMedicineDetailsUseCase
-import com.maruchin.medihelper.domain.usecases.plannedmedicines.UpdateAllPlannedMedicinesStatusUseCase
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.*
 import org.koin.dsl.module
 
 val plannedMedicineUseCaseModule = module {
@@ -29,6 +26,11 @@ val plannedMedicineUseCaseModule = module {
         UpdateAllPlannedMedicinesStatusUseCase(
             plannedMedicineRepo = get(),
             deviceCalendar = get()
+        )
+    }
+    factory {
+        ChangePlannedMedicineTimeUseCase(
+            plannedMedicineRepo = get()
         )
     }
 }

@@ -2,9 +2,11 @@ package com.maruchin.medihelper.presentation.feature.calendar
 
 import androidx.lifecycle.*
 import com.maruchin.medihelper.R
+import com.maruchin.medihelper.domain.entities.AppTime
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.model.PlannedMedicineDetails
 import com.maruchin.medihelper.domain.usecases.plannedmedicines.ChangePlannedMedicineTakenUseCase
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.ChangePlannedMedicineTimeUseCase
 import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetPlannedMedicineDetailsUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
@@ -14,6 +16,7 @@ import kotlinx.coroutines.launch
 class PlannedMedicineOptionsViewModel(
     private val getPlannedMedicineDetailsUseCase: GetPlannedMedicineDetailsUseCase,
     private val changePlannedMedicineTakenUseCase: ChangePlannedMedicineTakenUseCase,
+    private val changePlannedMedicineTimeUseCase: ChangePlannedMedicineTimeUseCase,
     selectedProfile: SelectedProfile
 ) : ViewModel() {
 
@@ -51,6 +54,12 @@ class PlannedMedicineOptionsViewModel(
     fun changePlannedMedicineTaken() = GlobalScope.launch {
         _details.value?.plannedMedicineId?.let { plannedMedicineId ->
             changePlannedMedicineTakenUseCase.execute(plannedMedicineId)
+        }
+    }
+
+    fun changePlannedTime(newTime: AppTime) = GlobalScope.launch {
+        _details.value?.plannedMedicineId?.let { plannedMedicineId ->
+            changePlannedMedicineTimeUseCase.execute(plannedMedicineId, newTime)
         }
     }
 }

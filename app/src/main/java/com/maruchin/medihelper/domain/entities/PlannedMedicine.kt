@@ -8,7 +8,7 @@ data class PlannedMedicine(
     val profileId: String,
     val medicineId: String,
     val plannedDate: AppDate,
-    val plannedTime: AppTime,
+    var plannedTime: AppTime,
     val plannedDoseSize: Float,
     var status: Status
 ) {
