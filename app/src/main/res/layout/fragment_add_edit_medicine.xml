@@ -93,7 +93,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.FullWidth"
+                    style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_card_margin_horizontal"
@@ -187,7 +187,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.FullWidth"
+                    style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_card_margin_horizontal"
@@ -282,7 +282,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.FullWidth"
+                    style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_card_margin_horizontal"
@@ -290,38 +290,25 @@
                     android:layout_marginEnd="@dimen/form_card_margin_horizontal"
                     android:layout_marginBottom="32dp">
 
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="0dp">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <ImageView
-                                    android:layout_width="0dp"
-                                    android:layout_height="0dp"
-                                    android:background="?selectableItemBackgroundBorderless"
-                                    android:clickable="true"
-                                    android:focusable="true"
-                                    android:onClick="@{() -> handler.onClickTakePhoto()}"
-                                    android:scaleType="center"
-                                    android:src='@{viewModel.imageFile, default="@drawable/baseline_add_a_photo_black_48"}'
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintDimensionRatio="4:3"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-                        </com.google.android.material.card.MaterialCardView>
-                    </LinearLayout>
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:onClick="@{() -> handler.onClickTakePhoto()}"
+                            android:scaleType="center"
+                            android:src='@{viewModel.imageFile, default="@drawable/baseline_add_a_photo_black_48"}'
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintDimensionRatio="4:3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
