@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.maruchin.medihelper.domain.usecases.PlannedMedicineUseCases
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
@@ -25,7 +24,7 @@ class MedicineTakenReceiver : BroadcastReceiver(), KoinComponent {
         val medicineTaken = intent.getBooleanExtra(EXTRA_MEDICINE_TAKEN, false)
 
         if (plannedMedicineId != -1) {
-            val useCases: PlannedMedicineUseCases = get()
+//            val useCases: PlannedMedicineUseCases = get()
             GlobalScope.launch {
 //                useCases.changeMedicineTaken(plannedMedicineId, medicineTaken)
             }

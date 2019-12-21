@@ -2,11 +2,10 @@ package com.maruchin.medihelper.presentation.feature.alarm
 
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppTime
-import com.maruchin.medihelper.domain.usecases.PlannedMedicineUseCases
 import kotlinx.coroutines.launch
 
 class AlarmViewModel(
-    private val plannedMedicineUseCases: PlannedMedicineUseCases
+//    private val plannedMedicineUseCases: PlannedMedicineUseCases
 ) : ViewModel() {
     private val TAG = "AlarmViewModel"
 

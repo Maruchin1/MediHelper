@@ -8,11 +8,9 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.maruchin.medihelper.domain.usecases.DateTimeUseCases
 import org.koin.core.KoinComponent
 import org.koin.core.get
 import org.koin.core.inject
-import java.util.*
 
 class UpdateRemindersWorker(private val context: Context, params: WorkerParameters) : CoroutineWorker(context, params),
     KoinComponent {
@@ -25,7 +23,7 @@ class UpdateRemindersWorker(private val context: Context, params: WorkerParamete
     }
 
 //    private val plannedMedicineDao: PlannedMedicineDao by inject()
-    private val dateTimeUseCases: DateTimeUseCases by inject()
+//    private val dateTimeUseCases: DateTimeUseCases by inject()
     private val alarmManager: AlarmManager by lazy {
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
@@ -34,7 +32,7 @@ class UpdateRemindersWorker(private val context: Context, params: WorkerParamete
     }
 
     override suspend fun doWork(): Result {
-        val currDate = dateTimeUseCases.getCurrDate()
+//        val currDate = dateTimeUseCases.getCurrDate()
 //        val plannedMedicinesForCurrDate = plannedMedicineDao.getListByDate(currDate)
 
         val enablePeriodicUpdate = inputData.getBoolean(ENABLE_PERIODIC_UPDATE, false)

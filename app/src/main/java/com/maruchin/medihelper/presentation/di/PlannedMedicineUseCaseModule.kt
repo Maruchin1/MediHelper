@@ -23,12 +23,6 @@ val plannedMedicineUseCaseModule = module {
         )
     }
     factory {
-        UpdateAllPlannedMedicinesStatusUseCase(
-            plannedMedicineRepo = get(),
-            deviceCalendar = get()
-        )
-    }
-    factory {
         ChangePlannedMedicineTimeUseCase(
             plannedMedicineRepo = get()
         )

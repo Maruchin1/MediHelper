@@ -47,7 +47,6 @@ val viewModelModule = module {
         CalendarViewModel(
             getCurrDateUseCase = get(),
             getProfileItemUseCase = get(),
-            updateAllPlannedMedicinesStatusUseCase = get(),
             selectedProfile = get()
         )
     }
@@ -67,7 +66,6 @@ val viewModelModule = module {
     }
     viewModel {
         AlarmViewModel(
-            plannedMedicineUseCases = get()
         )
     }
     viewModel {

@@ -1,9 +1,6 @@
 package com.maruchin.medihelper.data.di
 
-import com.maruchin.medihelper.data.mappers.MedicineMapper
-import com.maruchin.medihelper.data.mappers.PlannedMedicineMapper
-import com.maruchin.medihelper.data.mappers.ProfileMapper
-import com.maruchin.medihelper.data.mappers.UserMapper
+import com.maruchin.medihelper.data.mappers.*
 import org.koin.dsl.module
 
 val mapperModule = module {
@@ -18,5 +15,8 @@ val mapperModule = module {
     }
     factory {
         UserMapper()
+    }
+    factory {
+        MedicinePlanMapper()
     }
 }

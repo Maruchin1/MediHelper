@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.maruchin.medihelper.domain.usecases.PlannedMedicineUseCases
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -18,8 +17,8 @@ class RemindAboutPlannedMedicineWorker(
         const val INPUT_PLANNED_MEDICINE_ID = "input-planned-medicine-id"
     }
 
-    private val plannedMedicineUseCases: PlannedMedicineUseCases by inject()
-    private val medicineReminderNotification: MedicineReminderNotification by inject()
+//    private val plannedMedicineUseCases: PlannedMedicineUseCases by inject()
+//    private val medicineReminderNotification: MedicineReminderNotification by inject()
 
     override suspend fun doWork(): Result {
         Log.i(TAG, "doWork")
