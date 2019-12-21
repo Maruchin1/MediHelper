@@ -13,7 +13,7 @@ data class MedicinePlanItem(
     val endDate: AppDate?
 ) {
     constructor(medicinePlan: MedicinePlan, medicine: Medicine) : this(
-        medicinePlanId = medicinePlan.medicinePlanId,
+        medicinePlanId = medicinePlan.entityId,
         medicineName = medicine.name,
         medicineUnit = medicine.unit,
         planType = medicinePlan.planType,

@@ -18,7 +18,7 @@ class PlannedMedicineDataSchedulerTest {
     @Test
     fun getPlannedMedicines_Once() {
         val medicinePlan = MedicinePlan(
-            medicinePlanId = "xyz",
+            entityId = "xyz",
             profileId = "",
             medicineId = "",
             planType = MedicinePlan.Type.ONCE,
@@ -43,7 +43,7 @@ class PlannedMedicineDataSchedulerTest {
 
         Truth.assertThat(result.size).isEqualTo(2)
         val firstExpectedResult = PlannedMedicine(
-            plannedMedicineId = "",
+            entityId = "",
             medicinePlanId = "xyz",
             profileId = "",
             medicineId = "",
@@ -53,7 +53,7 @@ class PlannedMedicineDataSchedulerTest {
             status = PlannedMedicine.Status.PENDING
         )
         val secondExpectedResult = PlannedMedicine(
-            plannedMedicineId = "",
+            entityId = "",
             medicinePlanId = "xyz",
             profileId = "",
             medicineId = "",
@@ -69,7 +69,7 @@ class PlannedMedicineDataSchedulerTest {
     @Test
     fun getPlannedMedicines_Period_Everyday() {
         val medicinePlan = MedicinePlan(
-            medicinePlanId = "xyz",
+            entityId = "xyz",
             profileId = "",
             medicineId = "",
             planType = MedicinePlan.Type.PERIOD,
@@ -89,7 +89,7 @@ class PlannedMedicineDataSchedulerTest {
         }
 
         val firstExpectedResult = PlannedMedicine(
-            plannedMedicineId = "",
+            entityId = "",
             medicinePlanId = "xyz",
             profileId = "",
             medicineId = "",
@@ -115,7 +115,7 @@ class PlannedMedicineDataSchedulerTest {
     @Test
     fun getPlannedMedicines_Period_DaysOfWeek() {
         val medicinePlan = MedicinePlan(
-            medicinePlanId = "xyz",
+            entityId = "xyz",
             profileId = "",
             medicineId = "",
             planType = MedicinePlan.Type.PERIOD,
@@ -143,7 +143,7 @@ class PlannedMedicineDataSchedulerTest {
         }
 
         val firstExpectedResult = PlannedMedicine(
-            plannedMedicineId = "",
+            entityId = "",
             medicinePlanId = "xyz",
             profileId = "",
             medicineId = "",
@@ -165,7 +165,7 @@ class PlannedMedicineDataSchedulerTest {
     @Test
     fun getPlannedMedicines_Period_Interval() {
         val medicinePlan = MedicinePlan(
-            medicinePlanId = "xyz",
+            entityId = "xyz",
             profileId = "",
             medicineId = "",
             planType = MedicinePlan.Type.PERIOD,
@@ -185,7 +185,7 @@ class PlannedMedicineDataSchedulerTest {
         }
 
         val firstExpectedResult = PlannedMedicine(
-            plannedMedicineId = "",
+            entityId = "",
             medicinePlanId = "xyz",
             profileId = "",
             medicineId = "",

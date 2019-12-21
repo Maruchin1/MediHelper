@@ -31,7 +31,7 @@ class SaveMedicinePlanUseCase(
 
     private suspend fun saveMedicinePlanToRepo(params: Params) {
         val medicinePlan = MedicinePlan(
-            medicinePlanId = params.medicinePlanId ?: "",
+            entityId = params.medicinePlanId ?: "",
             profileId = params.profileId!!,
             medicineId = params.medicineId!!,
             planType = params.planType!!,
@@ -47,7 +47,7 @@ class SaveMedicinePlanUseCase(
         if (params.medicinePlanId == null) {
             val addedMedicinePlanId = medicinePlanRepo.addNew(medicinePlan)
             addedMedicinePlanId?.let {
-                val addedMedicinePlan = medicinePlan.copy(medicinePlanId = it)
+                val addedMedicinePlan = medicinePlan.copy(entityId = it)
                 addNewCalendarEntries(addedMedicinePlan)
             }
         } else {
@@ -68,12 +68,12 @@ class SaveMedicinePlanUseCase(
         val currDate = AppDate(currTimeInMillis)
         val currTime = AppTime(currTimeInMillis)
 
-        val existingPlannedMedicines = plannedMedicineRepo.getListByMedicinePlan(medicinePlan.medicinePlanId)
+        val existingPlannedMedicines = plannedMedicineRepo.getListByMedicinePlan(medicinePlan.entityId)
         val existingPlannedMedicinesFromNow = existingPlannedMedicines.filter {
             it.plannedDate >= currDate && it.plannedTime >= currTime
         }
         existingPlannedMedicinesFromNow.forEach { plannedMedicine ->
-            plannedMedicineRepo.deleteById(plannedMedicine.plannedMedicineId)
+            plannedMedicineRepo.deleteById(plannedMedicine.entityId)
         }
 
         val medicinePlanFromNow = medicinePlan.copy(startDate = currDate)

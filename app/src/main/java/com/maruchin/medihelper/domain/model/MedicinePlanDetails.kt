@@ -15,7 +15,7 @@ data class MedicinePlanDetails(
     val timeDoseList: List<TimeDose>
 ) {
     constructor(medicinePlan: MedicinePlan, medicine: Medicine, profile: Profile) : this(
-        medicinePlanId = medicinePlan.medicinePlanId,
+        medicinePlanId = medicinePlan.entityId,
         profileColor = profile.color,
         medicineId = medicinePlan.medicineId,
         medicineName = medicine.name,

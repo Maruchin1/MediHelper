@@ -9,7 +9,7 @@ data class ProfileItem(
     val mainPerson: Boolean
 ) {
     constructor(profile: Profile) : this(
-        profileId = profile.profileId,
+        profileId = profile.entityId,
         name = profile.name,
         color = profile.color,
         mainPerson = profile.mainPerson

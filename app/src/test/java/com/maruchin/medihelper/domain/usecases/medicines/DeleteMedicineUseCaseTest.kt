@@ -7,9 +7,7 @@ import com.maruchin.medihelper.testingframework.mock
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
-import org.junit.Assert.*
 import org.junit.Before
-import org.mockito.Mock
 import org.mockito.Mockito
 
 class DeleteMedicineUseCaseTest {
@@ -29,7 +27,7 @@ class DeleteMedicineUseCaseTest {
 
         runBlocking {
             val mockMedicine = Medicine(
-                medicineId = "ABCD",
+                entityId = "ABCD",
                 name = "Lek",
                 unit = "tabletki",
                 expireDate = AppExpireDate(2020, 6),
@@ -52,7 +50,7 @@ class DeleteMedicineUseCaseTest {
 
         runBlocking {
             val mockMedicine = Medicine(
-                medicineId = "ABCD",
+                entityId = "ABCD",
                 name = "Lek",
                 unit = "tabletki",
                 expireDate = AppExpireDate(2020, 6),

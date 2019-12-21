@@ -11,7 +11,7 @@ class DeleteMedicinePlanUseCase(
         medicinePlanRepo.deleteById(medicinePlanId)
         val plannedMedicines = plannedMedicineRepo.getListByMedicinePlan(medicinePlanId)
         plannedMedicines.forEach {
-            plannedMedicineRepo.deleteById(it.plannedMedicineId)
+            plannedMedicineRepo.deleteById(it.entityId)
         }
     }
 }

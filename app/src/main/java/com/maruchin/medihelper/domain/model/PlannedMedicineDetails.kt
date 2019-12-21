@@ -16,7 +16,7 @@ data class PlannedMedicineDetails(
     val status: PlannedMedicine.Status
 ) {
     constructor(plannedMedicine: PlannedMedicine, medicine: Medicine) : this(
-        plannedMedicineId = plannedMedicine.plannedMedicineId,
+        plannedMedicineId = plannedMedicine.entityId,
         medicinePlanId = plannedMedicine.medicinePlanId,
         medicineName = medicine.name,
         medicineUnit = medicine.unit,

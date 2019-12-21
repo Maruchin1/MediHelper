@@ -20,7 +20,7 @@ class SaveProfileUseCase(
 
     private suspend fun saveProfileToRepo(params: Params) {
         val profile = Profile(
-            profileId = params.profileId ?: "",
+            entityId = params.profileId ?: "",
             name = params.name!!,
             color = params.color!!,
             mainPerson = false

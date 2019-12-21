@@ -13,14 +13,14 @@ class CreateUserUseCase (
 
     suspend fun execute(params: Params) {
         val newUser = User(
-            userId = params.userId,
+            entityId = params.userId,
             userName = params.userName ?: "--",
             email = params.email ?: "--"
         )
         userRepo.addNew(newUser)
 
         val mainProfile = Profile(
-            profileId = "",
+            entityId = "",
             name = "User",
             color = ProfileColor.MAIN.colorString,
             mainPerson = true

@@ -1,7 +1,9 @@
 package com.maruchin.medihelper.domain.entities
 
+import com.maruchin.medihelper.domain.framework.BaseEntity
+
 data class MedicinePlan(
-    val medicinePlanId: String,
+    override val entityId: String,
     val profileId: String,
     val medicineId: String,
     val planType: Type,
@@ -9,7 +11,7 @@ data class MedicinePlan(
     val endDate: AppDate?,
     val intakeDays: IntakeDays?,
     val timeDoseList: List<TimeDose>
-) {
+) : BaseEntity() {
     enum class Type {
         ONCE, PERIOD, CONTINUOUS
     }

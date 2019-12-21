@@ -2,7 +2,6 @@ package com.maruchin.medihelper.domain.model
 
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineStateData
-import java.io.File
 
 data class MedicineItem(
     val medicineId: String,
@@ -12,7 +11,7 @@ data class MedicineItem(
     val pictureName: String?
 ) {
     constructor(medicine: Medicine) : this(
-        medicineId = medicine.medicineId,
+        medicineId = medicine.entityId,
         name = medicine.name,
         unit = medicine.unit,
         stateData = medicine.stateData,

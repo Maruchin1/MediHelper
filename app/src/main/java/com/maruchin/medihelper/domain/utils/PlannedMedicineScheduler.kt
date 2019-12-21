@@ -111,8 +111,8 @@ class PlannedMedicineScheduler {
         medicinePlan.timeDoseList.forEach { timeDose ->
             entriesList.add(
                 PlannedMedicine(
-                    plannedMedicineId = "",
-                    medicinePlanId = medicinePlan.medicinePlanId,
+                    entityId = "",
+                    medicinePlanId = medicinePlan.entityId,
                     profileId = medicinePlan.profileId,
                     medicineId = medicinePlan.medicineId,
                     plannedDate = plannedDate,

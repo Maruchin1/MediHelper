@@ -21,7 +21,8 @@ class MainApplication : Application() {
         listOf(
             localDataModule,
             firebaseModule,
-            repositoryModule
+            repositoryModule,
+            mapperModule
         )
     }
     private val deviceModules: List<Module> by lazy {

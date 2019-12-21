@@ -1,15 +1,17 @@
 package com.maruchin.medihelper.domain.entities
 
+import com.maruchin.medihelper.domain.framework.BaseEntity
+
 
 data class Medicine(
-    val medicineId: String,
+    override val entityId: String,
     val name: String,
     val unit: String,
     val expireDate: AppExpireDate,
     val packageSize: Float,
     var currState: Float,
     val pictureName: String?
-) {
+) : BaseEntity() {
     val stateData: MedicineStateData?
         get() = MedicineStateData.get(packageSize, currState)
 

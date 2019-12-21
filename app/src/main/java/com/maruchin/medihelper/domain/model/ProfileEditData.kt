@@ -8,7 +8,7 @@ data class ProfileEditData(
     val color: String
 ) {
     constructor(profile: Profile) : this(
-        profileId = profile.profileId,
+        profileId = profile.entityId,
         name = profile.name,
         color = profile.color
     )

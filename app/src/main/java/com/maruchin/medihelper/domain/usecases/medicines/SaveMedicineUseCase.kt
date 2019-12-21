@@ -25,7 +25,7 @@ class SaveMedicineUseCase(
 
     private suspend fun saveMedicineToRepo(params: Params) {
         val medicine = Medicine(
-            medicineId = params.medicineId ?: "",
+            entityId = params.medicineId ?: "",
             name = params.name!!,
             unit = params.unit!!,
             expireDate = params.expireDate!!,

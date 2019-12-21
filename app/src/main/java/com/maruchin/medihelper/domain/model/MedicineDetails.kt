@@ -15,7 +15,7 @@ data class MedicineDetails(
     val profileItems: List<ProfileItem>
 ) {
     constructor(medicine: Medicine, profileList: List<Profile>) : this(
-        medicineId = medicine.medicineId,
+        medicineId = medicine.entityId,
         name = medicine.name,
         unit = medicine.unit,
         expireDate = medicine.expireDate,
@@ -23,7 +23,7 @@ data class MedicineDetails(
         pictureName = medicine.pictureName,
         profileItems = profileList.map {
             ProfileItem(
-                profileId = it.profileId,
+                profileId = it.entityId,
                 name = it.name,
                 color = it.color,
                 mainPerson = it.mainPerson

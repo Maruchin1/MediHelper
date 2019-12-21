@@ -1,17 +1,13 @@
 package com.maruchin.medihelper.data.repositories
 
 import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.maruchin.medihelper.data.SharedPref
+import com.maruchin.medihelper.data.framework.FirestoreRepo
 import com.maruchin.medihelper.data.framework.getCurrUserId
-import com.maruchin.medihelper.data.framework.getDocumentLive
-import com.maruchin.medihelper.data.framework.getDocumentsLive
-import com.maruchin.medihelper.data.model.MedicineDb
+import com.maruchin.medihelper.data.mappers.MedicineMapper
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineInfo
 import com.maruchin.medihelper.domain.entities.MedicineInfoSearchResult
@@ -26,74 +22,15 @@ class MedicineRepoImpl(
     private val db: FirebaseFirestore,
     private val auth: FirebaseAuth,
     private val storage: FirebaseStorage,
-    private val sharedPref: SharedPref
-) : MedicineRepo {
-
-    private val collectionRef: CollectionReference
-        get() = db.collection("users").document(auth.getCurrUserId()).collection("medicines")
+    private val sharedPref: SharedPref,
+    private val mapper: MedicineMapper
+) : FirestoreRepo<Medicine>(
+    collectionRef = db.collection("users").document(auth.getCurrUserId()).collection("medicines"),
+    mapper = mapper
+), MedicineRepo {
 
     init {
         checkDefaultMedicineUnits()
-    }
-
-    override suspend fun addNew(entity: Medicine): String? = withContext(Dispatchers.IO) {
-        val medicineDb = MedicineDb(entity)
-        val newDoc = collectionRef.document()
-        newDoc.set(medicineDb)
-        return@withContext newDoc.id
-    }
-
-    override suspend fun update(entity: Medicine) = withContext(Dispatchers.IO) {
-        val medicineDb = MedicineDb(entity)
-        collectionRef.document(entity.medicineId).set(medicineDb)
-        return@withContext
-    }
-
-    override suspend fun deleteById(id: String) = withContext(Dispatchers.IO) {
-        collectionRef.document(id).delete()
-        return@withContext
-    }
-
-    override suspend fun getById(id: String): Medicine? = withContext(Dispatchers.IO) {
-        val doc = collectionRef.document(id).get().await()
-        val medicineDb = doc.toObject(MedicineDb::class.java)
-        val medicine = medicineDb?.toEntity(doc.id)
-        return@withContext medicine
-    }
-
-    override suspend fun getLiveById(id: String): LiveData<Medicine?> = withContext(Dispatchers.IO) {
-        val docLive = collectionRef.document(id).getDocumentLive()
-        return@withContext Transformations.map(docLive) {
-            val medicineDb = it.toObject(MedicineDb::class.java)
-            val medicine = medicineDb?.toEntity(it.id)
-            return@map medicine
-        }
-    }
-
-    override suspend fun getAllList(): List<Medicine> = withContext(Dispatchers.IO) {
-        val docsQuery = collectionRef.get().await()
-        val medicinesList = mutableListOf<Medicine>()
-        docsQuery.forEach {
-            val medicineDb = it.toObject(MedicineDb::class.java)
-            val medicine = medicineDb.toEntity(it.id)
-            medicinesList.add(medicine)
-        }
-        return@withContext medicinesList
-    }
-
-    override suspend fun getAllListLive(): LiveData<List<Medicine>> = withContext(Dispatchers.IO) {
-        val docsLive = collectionRef.getDocumentsLive()
-        return@withContext Transformations.map(docsLive) { snapshotList ->
-            val medicinesList = mutableListOf<Medicine>()
-            snapshotList.forEach {
-                val medicineDb = it.toObject(MedicineDb::class.java)
-                val medicine = medicineDb?.toEntity(it.id)
-                if (medicine != null) {
-                    medicinesList.add(medicine)
-                }
-            }
-            return@map medicinesList.toList()
-        }
     }
 
     override suspend fun saveMedicinePicture(pictureFile: File) {

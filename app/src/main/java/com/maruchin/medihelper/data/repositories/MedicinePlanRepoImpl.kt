@@ -2,10 +2,10 @@ package com.maruchin.medihelper.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.liveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.data.framework.getDocumenstLive
 import com.maruchin.medihelper.data.framework.getDocumentsLive
@@ -35,19 +35,19 @@ class MedicinePlanRepoImpl(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun deleteById(id: String) = withContext(Dispatchers.IO) {
-        collectionRef.document(id).delete()
+    override suspend fun deleteById(entityId: String) = withContext(Dispatchers.IO) {
+        collectionRef.document(entityId).delete()
         return@withContext
     }
 
-    override suspend fun getById(id: String): MedicinePlan? = withContext(Dispatchers.IO) {
-        val doc = collectionRef.document(id).get().await()
+    override suspend fun getById(entityId: String): MedicinePlan? = withContext(Dispatchers.IO) {
+        val doc = collectionRef.document(entityId).get().await()
         val medicinePlanDb = doc.toObject(MedicinePlanDb::class.java)
         val medicinePlan = medicinePlanDb?.toEntity(doc.id)
         return@withContext medicinePlan
     }
 
-    override suspend fun getLiveById(id: String): LiveData<MedicinePlan?> {
+    override suspend fun getLiveById(entityId: String): LiveData<MedicinePlan> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -64,16 +64,14 @@ class MedicinePlanRepoImpl(
 
     override suspend fun getAllListLive(): LiveData<List<MedicinePlan>> = withContext(Dispatchers.IO) {
         val docsLive = collectionRef.getDocumentsLive()
-        return@withContext Transformations.map(docsLive) { snapshotList ->
-            val medicinesPlansList = mutableListOf<MedicinePlan>()
-            snapshotList.forEach {
-                val medicinePlanDb = it.toObject(MedicinePlanDb::class.java)
-                val medicinePlan = medicinePlanDb?.toEntity(it.id)
-                if (medicinePlan != null) {
-                    medicinesPlansList.add(medicinePlan)
+        return@withContext Transformations.switchMap(docsLive) { snapshotList ->
+            liveData {
+                val value = snapshotList.map {
+                    val medicinePlanDb = it.toObject(MedicinePlanDb::class.java)
+                    medicinePlanDb!!.toEntity(it.id)
                 }
+                emit(value)
             }
-            return@map medicinesPlansList.toList()
         }
     }
 

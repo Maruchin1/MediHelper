@@ -23,7 +23,7 @@ data class MedicinePlanDb(
     )
 
     fun toEntity(id: String) = MedicinePlan(
-        medicinePlanId = id,
+        entityId = id,
         profileId = profileId!!,
         medicineId = medicineId!!,
         planType = planType!!,

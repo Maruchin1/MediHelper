@@ -1,5 +1,6 @@
 package com.maruchin.medihelper.data.di
 
+import com.maruchin.medihelper.data.mappers.UserMapper
 import com.maruchin.medihelper.data.repositories.*
 import com.maruchin.medihelper.domain.repositories.*
 import org.koin.dsl.module
@@ -7,7 +8,8 @@ import org.koin.dsl.module
 val repositoryModule = module {
     single {
         UserRepoImpl(
-            db = get()
+            db = get(),
+            mapper = get()
         ) as UserRepo
     }
     single {
@@ -15,14 +17,16 @@ val repositoryModule = module {
             db = get(),
             auth = get(),
             sharedPref = get(),
-            storage = get()
+            storage = get(),
+            mapper = get()
         ) as MedicineRepo
     }
     single {
         ProfileRepoImpl(
             db = get(),
             auth = get(),
-            sharedPref = get()
+            sharedPref = get(),
+            mapper = get()
         ) as ProfileRepo
     }
     single {
@@ -34,7 +38,8 @@ val repositoryModule = module {
     single {
         PlannedMedicineRepoImpl(
             db = get(),
-            auth = get()
+            auth = get(),
+            mapper = get()
         ) as PlannedMedicineRepo
     }
 }

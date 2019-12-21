@@ -16,7 +16,7 @@ data class MedicinePlanEditData(
     val timeDoseList: List<TimeDose>
 ) {
     constructor(entity: MedicinePlan) : this(
-        medicinePlanId = entity.medicinePlanId,
+        medicinePlanId = entity.entityId,
         profileId = entity.profileId,
         medicineId = entity.medicineId,
         planType = entity.planType,

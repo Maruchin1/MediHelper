@@ -13,7 +13,7 @@ data class MedicineEditData(
     val pictureName: String?
 ) {
     constructor(medicine: Medicine) : this(
-        medicineId = medicine.medicineId,
+        medicineId = medicine.entityId,
         unit = medicine.unit,
         name = medicine.name,
         expireDate = medicine.expireDate,
