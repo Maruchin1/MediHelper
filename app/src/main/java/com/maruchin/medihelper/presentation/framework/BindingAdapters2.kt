@@ -40,6 +40,11 @@ fun setBackgroundTint(view: View, color: String?) {
     }
 }
 
+@BindingAdapter("android:visibility")
+fun setVisibility(view: View, visible: Boolean?) {
+    view.visibility = if (visible == true) View.VISIBLE else View.GONE
+}
+
 @BindingAdapter("visibleOrGone")
 fun setVisibleOrGone(view: View, visible: Boolean?) {
     when (visible) {

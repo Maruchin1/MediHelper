@@ -56,7 +56,7 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
         view_pager_dates.apply {
             adapter = CalendarDayAdapter()
             setCurrentItem(viewModel.initialPosition, false)
-            offscreenPageLimit = 1
+//            offscreenPageLimit = 1
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     val selectedCalendar = viewModel.getCalendarForPosition(position)

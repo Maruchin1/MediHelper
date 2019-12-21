@@ -21,10 +21,9 @@ class CalendarDayViewModel(
     val afternoonPlannedMedicines: LiveData<List<PlannedMedicineItem>>
     val eveningPlannedMedicines: LiveData<List<PlannedMedicineItem>>
 
-    val loadingInProgress: LiveData<Boolean>
     val medicinesAvailable: LiveData<Boolean>
-    val noMedicinesForDay: LiveData<Boolean>
-
+    val dataLoaded: LiveData<Boolean>
+    val noPlannedMedicines: LiveData<Boolean>
     val morningAvailable: LiveData<Boolean>
     val afternoonAvailable: LiveData<Boolean>
     val eveningAvailable: LiveData<Boolean>
@@ -57,9 +56,9 @@ class CalendarDayViewModel(
                 it.plannedTime >= AFTERNOON_EVENING_LIMIT
             }.sortedBy { it.plannedTime }
         }
-        loadingInProgress = Transformations.map(plannedMedicines) { it == null }
+        dataLoaded = Transformations.map(plannedMedicines) { it != null }
+        noPlannedMedicines = Transformations.map(plannedMedicines) { it.isEmpty() }
         medicinesAvailable = Transformations.map(plannedMedicines) { it.isNotEmpty() }
-        noMedicinesForDay = Transformations.map(plannedMedicines) { it.size == 0 }
         morningAvailable = Transformations.map(morningPlannedMedicines) { !it.isNullOrEmpty() }
         afternoonAvailable = Transformations.map(afternoonPlannedMedicines) { !it.isNullOrEmpty() }
         eveningAvailable = Transformations.map(eveningPlannedMedicines) { !it.isNullOrEmpty() }

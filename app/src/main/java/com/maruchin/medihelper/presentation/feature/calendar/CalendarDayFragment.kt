@@ -45,8 +45,7 @@ class CalendarDayFragment : BaseFragment<FragmentCalendarDayBinding>(R.layout.fr
     }
 
     private fun observeViewModel() {
-        viewModel.noMedicinesForDay.observe(viewLifecycleOwner, Observer {
-            Log.i(TAG, "plannedMedicineAvailable = $it")
+        viewModel.dataLoaded.observe(viewLifecycleOwner, Observer {
             root_lay.beginDelayedFade()
         })
     }
