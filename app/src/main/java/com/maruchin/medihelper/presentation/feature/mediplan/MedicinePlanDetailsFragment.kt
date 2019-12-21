@@ -12,8 +12,8 @@ import com.maruchin.medihelper.databinding.FragmentMedicinePlanDetailsBinding
 import com.maruchin.medihelper.domain.entities.TimeDose
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.presentation.framework.BaseFragment
-import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
-import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
+import com.maruchin.medihelper.presentation.framework.BaseRecyclerAdapter
+import com.maruchin.medihelper.presentation.framework.BaseViewHolder
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_medicine_plan_details.*
 import org.koin.android.ext.android.inject
@@ -38,10 +38,11 @@ class MedicinePlanDetailsFragment :
     }
 
     fun onClickDeletePlan() {
-        ConfirmDialog().apply {
-            title = "Usuń plan"
-            message = "Plan przyjmowania leku zostanie usunięty, wraz z odpowiadającymi mu wpisami w kalendarzu. Czy chcesz kontynuować?"
+        ConfirmDialog(
+            title = "Usuń plan",
+            message = "Plan przyjmowania leku zostanie usunięty, wraz z odpowiadającymi mu wpisami w kalendarzu. Czy chcesz kontynuować?",
             iconResId = R.drawable.round_delete_black_36
+        ).apply {
             setOnConfirmClickListener {
                 viewModel.deletePlan()
             }
@@ -95,12 +96,12 @@ class MedicinePlanDetailsFragment :
         }
     }
 
-    private inner class TimeDoseAdapter : RecyclerAdapter<TimeDose>(
+    private inner class TimeDoseAdapter : BaseRecyclerAdapter<TimeDose>(
         layoutResId = R.layout.rec_item_time_dose,
         itemsSource = viewModel.timesDoses,
         lifecycleOwner = viewLifecycleOwner
     ) {
-        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
             val item = itemsList[position]
             holder.bind(displayData = item, handler = this@MedicinePlanDetailsFragment, viewModel = viewModel)
         }

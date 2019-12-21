@@ -37,9 +37,10 @@ class AddEditMedicineFragment : BaseFragment<FragmentAddEditMedicineBinding>(R.l
         }
     }
 
-    fun onClickSelectExpireDate() = SelectExpireDateDialog().apply {
+    fun onClickSelectExpireDate() = SelectExpireDateDialog(
         defaultDate = viewModel.expireDate.value
-        setDateSelectedListener { viewModel.expireDate.value = it }
+    ).apply {
+        setOnDateSelectedListener { viewModel.expireDate.value = it }
     }.show(childFragmentManager)
 
     fun onClickSave() {

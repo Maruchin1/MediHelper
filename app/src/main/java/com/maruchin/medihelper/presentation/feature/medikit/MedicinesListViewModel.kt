@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.usecases.medicines.GetLiveAllMedicinesItemsUseCase
-import com.maruchin.medihelper.presentation.framework.map
 import com.maruchin.medihelper.presentation.utils.PicturesRef
 
 class MedicinesListViewModel(
@@ -21,7 +20,7 @@ class MedicinesListViewModel(
             val medicineItemsLive = getAllMedicinesItemsUseCase.execute()
             emitSource(medicineItemsLive)
         }
-        anyMedicineAvailable = medicineItemList.map { !it.isNullOrEmpty() }
+        anyMedicineAvailable = Transformations.map(medicineItemList) { !it.isNullOrEmpty() }
         //todo wyłączono wyszukiwanie
 //        medicineList = Transformations.switchMap(nameQuery) { nameQuery ->
 //            if (nameQuery.isNullOrEmpty()) {

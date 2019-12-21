@@ -3,15 +3,7 @@
 
     <data>
 
-        <import type="android.view.View" />
 
-        <variable
-            name="handler"
-            type="com.maruchin.medihelper.presentation.feature.profiles.AddEditProfileFragment" />
-
-        <variable
-            name="displayData"
-            type="com.maruchin.medihelper.presentation.model.ProfileColorCheckbox" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,16 +18,13 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?selectableItemBackground"
-            android:onClick="@{() -> handler.onClickSelectColor(displayData.color)}"
-            app:cardBackgroundColor='@{displayData.color, default="@color/colorPrimary"}'
             app:cardCornerRadius="24dp">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/baseline_check_white_36"
-                android:visibility="@{displayData.selected ? View.VISIBLE : View.GONE}" />
+                android:src="@drawable/baseline_check_white_36" />
         </com.google.android.material.card.MaterialCardView>
 
     </FrameLayout>

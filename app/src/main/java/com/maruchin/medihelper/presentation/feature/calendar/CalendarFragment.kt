@@ -9,6 +9,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarBinding
+import com.maruchin.medihelper.presentation.feature.profiles.ProfileDialog
 import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener

@@ -11,7 +11,6 @@ import com.maruchin.medihelper.databinding.DialogPlannedMedicineOptionsBinding
 import com.maruchin.medihelper.presentation.dialogs.SelectTimeDialog
 import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
 import com.maruchin.medihelper.presentation.framework.beginDelayedFade
-import com.maruchin.medihelper.presentation.framework.beginDelayedTransition
 import kotlinx.android.synthetic.main.dialog_planned_medicine_options.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -35,9 +34,10 @@ class PlannedMedicineOptionsDialog :
     }
 
     fun onClickChangeForLater() {
-        SelectTimeDialog().apply {
+        SelectTimeDialog(
             defaultTime = viewModel.details.value?.plannedTime
-            setTimeSelectedListener { newTime ->
+        ).apply {
+            setOnTimeSelectedListener { newTime ->
                 viewModel.changePlannedTime(newTime)
                 this@PlannedMedicineOptionsDialog.dismiss()
             }

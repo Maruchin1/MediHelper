@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/round_access_time_white_36"
-                android:tint='@{handler.colorPrimaryLive, default="@color/colorPrimary"}' />
+                android:tint="@color/colorPrimary" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
                 android:layout_marginStart="16dp"
                 android:text="Wybierz godzinę"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor='@{handler.colorPrimaryLive, default="@color/colorPrimary"}' />
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
 
         <TimePicker
@@ -62,7 +62,7 @@
                 android:onClick="@{() -> handler.onClickCancel()}"
                 android:text="Odrzuć"
                 app:cornerRadius="20dp"
-                android:textColor='@{handler.colorPrimaryLive, default="@color/colorPrimary"}'/>
+                android:textColor="@color/colorPrimary"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_confirm"
@@ -72,7 +72,7 @@
                 android:onClick="@{() -> handler.onClickConfirm()}"
                 android:text="Zatwierdź"
                 app:cornerRadius="20dp"
-                android:backgroundTint='@{handler.colorPrimaryLive, default="@color/colorPrimary"}'/>
+                android:backgroundTint="@color/colorPrimary"/>
         </LinearLayout>
 
     </LinearLayout>

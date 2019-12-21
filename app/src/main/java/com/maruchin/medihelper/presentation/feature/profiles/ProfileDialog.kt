@@ -1,16 +1,12 @@
-package com.maruchin.medihelper.presentation.feature.calendar
+package com.maruchin.medihelper.presentation.feature.profiles
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.TransitionManager
 import com.leochuan.CarouselLayoutManager
 import com.leochuan.CenterSnapHelper
 import com.leochuan.ScaleLayoutManager
@@ -19,6 +15,7 @@ import com.maruchin.medihelper.databinding.DialogProfileBinding
 import com.maruchin.medihelper.domain.model.MedicinePlanItem
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
+import com.maruchin.medihelper.presentation.feature.calendar.CalendarFragmentDirections
 import com.maruchin.medihelper.presentation.framework.*
 import kotlinx.android.synthetic.main.dialog_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,18 +28,28 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
     private val directions by lazy { CalendarFragmentDirections }
 
     fun onClickAddProfile() {
-        requireParentFragment().findNavController().navigate(directions.toAddEditProfileFragment(editProfileId = null))
+        requireParentFragment().findNavController().navigate(
+            directions.toAddEditProfileFragment(
+                editProfileId = null
+            )
+        )
     }
 
     fun onClickEditProfile() {
         requireParentFragment().findNavController()
-            .navigate(directions.toAddEditProfileFragment(editProfileId = viewModel.selectedProfileId))
+            .navigate(
+                directions.toAddEditProfileFragment(
+                    editProfileId = viewModel.selectedProfileId
+                )
+            )
     }
 
     fun onClickDeleteProfile() {
-        ConfirmDialog().apply {
-            title = "Usuń profil"
-            message = "Wybrany profil zostanie usunięty, wraz z jego wpisami w kalendarzu. Czy chcesz kontynuować?"
+        ConfirmDialog(
+            title = "Usuń profil",
+            message = "Wybrany profil zostanie usunięty, wraz z jego wpisami w kalendarzu. Czy chcesz kontynuować?",
+            iconResId = R.drawable.round_delete_black_36
+        ).apply {
             setOnConfirmClickListener {
                 viewModel.deleteProfile()
             }
@@ -50,7 +57,11 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
     }
 
     fun onClickMedicinePlanDetails(medicinePlanId: String) {
-        requireParentFragment().findNavController().navigate(directions.toMedicinePlanDetailsFragment(medicinePlanId))
+        requireParentFragment().findNavController().navigate(
+            directions.toMedicinePlanDetailsFragment(
+                medicinePlanId
+            )
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -133,24 +144,24 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         }
     }
 
-    private inner class ProfileAdapter : RecyclerAdapter<ProfileItem>(
+    private inner class ProfileAdapter : BaseRecyclerAdapter<ProfileItem>(
         layoutResId = R.layout.rec_item_profile,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.profileItems
     ) {
-        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
             val item = itemsList[position]
             holder.bind(item, this@ProfileDialog)
         }
     }
 
-    private inner class MedicinePlanAdapter : RecyclerAdapter<MedicinePlanItem>(
+    private inner class MedicinePlanAdapter : BaseRecyclerAdapter<MedicinePlanItem>(
         layoutResId = R.layout.rec_item_medicine_plan,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.medicinesPlans,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.medicinePlanId == newItem.medicinePlanId }
     ) {
-        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
             val item = itemsList[position]
             holder.bind(item, this@ProfileDialog, viewModel = viewModel)
         }

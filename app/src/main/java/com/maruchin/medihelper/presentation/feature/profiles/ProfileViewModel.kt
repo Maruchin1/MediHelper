@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.feature.calendar
+package com.maruchin.medihelper.presentation.feature.profiles
 
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.model.MedicinePlanItem

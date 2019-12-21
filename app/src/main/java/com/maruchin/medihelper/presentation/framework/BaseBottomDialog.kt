@@ -11,11 +11,15 @@ import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.maruchin.medihelper.BR
+import com.maruchin.medihelper.presentation.utils.SelectedProfile
+import org.koin.android.ext.android.inject
 
 abstract class BaseBottomDialog<T : ViewDataBinding>(
     private val layoutResId: Int,
@@ -23,9 +27,20 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
 ) : BottomSheetDialogFragment() {
     abstract val TAG: String
 
+    val selectedProfileColor: LiveData<String?>
+
     protected var bindingViewModel: ViewModel? = null
 
+    private val selectedProfile: SelectedProfile by inject()
+
     fun show(fragmentManager: FragmentManager) = show(fragmentManager, TAG)
+
+    init {
+        selectedProfileColor = liveData {
+            val source = selectedProfile.profileColorLive
+            emitSource(source)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: T = DataBindingUtil.inflate(inflater, layoutResId, container, false)
@@ -69,7 +84,8 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
             override fun onGlobalLayout() {
                 view.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 val dialog = dialog as BottomSheetDialog?
-                val bottomSheet = dialog!!.findViewById(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
+                val bottomSheet =
+                    dialog!!.findViewById(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
                 val behavior = BottomSheetBehavior.from(bottomSheet!!)
                 behavior.state = BottomSheetBehavior.STATE_EXPANDED
             }

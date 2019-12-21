@@ -39,15 +39,15 @@ class AlarmActivity : AppCompatActivity() {
     }
 
     fun onClickChangeTime() {
-        SelectTimeDialog().apply {
-            defaultTime = viewModel.plannedTimeLive.value
-            setTimeSelectedListener {
-                viewModel.changedTimeLive.value = it
-                circularRevealView(this@AlarmActivity.lay_time_changed)
-                delayedActivityFinish(FINISH_ACTIVITY_DELAY + REVEAL_ANIM_TIME)
-            }
-            viewModel.personColorLive.value?.let { setColorPrimary(it) }
-        }.show(supportFragmentManager)
+//        SelectTimeDialog().apply {
+//            defaultTime = viewModel.plannedTimeLive.value
+//            setOnTimeSelectedListener {
+//                viewModel.changedTimeLive.value = it
+//                circularRevealView(this@AlarmActivity.lay_time_changed)
+//                delayedActivityFinish(FINISH_ACTIVITY_DELAY + REVEAL_ANIM_TIME)
+//            }
+//            viewModel.personColorLive.value?.let { setColorPrimary(it) }
+//        }.show(supportFragmentManager)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

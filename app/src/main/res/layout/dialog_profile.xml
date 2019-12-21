@@ -7,11 +7,11 @@
 
         <variable
             name="hanler"
-            type="com.maruchin.medihelper.presentation.feature.calendar.ProfileDialog" />
+            type="com.maruchin.medihelper.presentation.feature.profiles.ProfileDialog" />
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.calendar.ProfileViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.profiles.ProfileViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

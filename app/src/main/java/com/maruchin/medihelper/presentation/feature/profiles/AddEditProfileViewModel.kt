@@ -6,7 +6,6 @@ import com.maruchin.medihelper.domain.usecases.profile.GetProfileColorsUseCase
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.profile.SaveProfileUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
-import com.maruchin.medihelper.presentation.model.ProfileColorCheckbox
 import kotlinx.coroutines.launch
 
 class AddEditProfileViewModel(
@@ -17,7 +16,7 @@ class AddEditProfileViewModel(
 
     val profileName = MutableLiveData<String>()
     val selectedColor = MutableLiveData<String>()
-    val profileColorCheckboxList: LiveData<List<ProfileColorCheckbox>>
+    val colorCheckboxList: LiveData<List<ColorCheckbox>>
 
     val formTitle: LiveData<String>
         get() = _formTitle
@@ -38,9 +37,9 @@ class AddEditProfileViewModel(
             profileColorList = getProfileColorsUseCase.execute()
             selectedColor.postValue(profileColorList[0])
         }
-        profileColorCheckboxList = Transformations.map(selectedColor) { selectedColor ->
+        colorCheckboxList = Transformations.map(selectedColor) { selectedColor ->
             profileColorList.map { color ->
-                ProfileColorCheckbox(
+                ColorCheckbox(
                     color = color,
                     selected = color == selectedColor
                 )
@@ -81,4 +80,9 @@ class AddEditProfileViewModel(
 
         _errorProfileName.postValue(profileNameError)
     }
+
+    data class ColorCheckbox(
+        val color: String,
+        val selected: Boolean
+    )
 }

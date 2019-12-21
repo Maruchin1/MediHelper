@@ -35,12 +35,27 @@ fun setBackgroundTint(view: View, color: String?) {
 
 @BindingAdapter("visibleOrGone")
 fun setVisibleOrGone(view: View, visible: Boolean?) {
-    view.visibility = if (visible == true) View.VISIBLE else View.GONE
+    when (visible) {
+        true -> view.visibility = View.VISIBLE
+        false -> view.visibility = View.GONE
+    }
 }
 
 @BindingAdapter("visibleOrInvisible")
-fun setVisibleOrinvisible(view: View, visible: Boolean?) {
-    view.visibility = if (visible == true) View.VISIBLE else View.INVISIBLE
+fun setVisibleOrInvisible(view: View, visible: Boolean?) {
+    when (visible) {
+        true -> view.visibility = View.VISIBLE
+        false -> view.visibility = View.INVISIBLE
+    }
+}
+
+@BindingAdapter("android:layout_weight")
+fun setLayoutWeight(view: View, weight: Float?) {
+    val layoutParams = view.layoutParams as? LinearLayout.LayoutParams
+    if (weight != null) {
+        layoutParams?.weight = weight
+    }
+    view.layoutParams = layoutParams
 }
 
 //CardView
@@ -69,6 +84,13 @@ fun setMenuAdapter(autoCompleteTextView: AutoCompleteTextView, items: List<Strin
 
 //ImageView
 @BindingAdapter("android:src")
+fun setImageViewSrc(imageView: ImageView, imageResId: Int?) {
+    if (imageResId != null) {
+        imageView.setImageResource(imageResId)
+    }
+}
+
+@BindingAdapter("android:src")
 fun setImageViewSrcFile(imageView: ImageView, imageFile: File?) {
     if (imageFile != null) {
         Glide.with(imageView.context)
@@ -96,8 +118,8 @@ fun setImageViewTint(imageView: ImageView, color: String?) {
 
 @BindingAdapter("android:tint")
 fun setImageViewTint(imageView: ImageView, colorResId: Int?) {
-    if (colorResId != null) {
-        imageView.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(imageView. context, colorResId))
+    if (colorResId != null && colorResId != 0) {
+        imageView.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(imageView.context, colorResId))
     }
 }
 

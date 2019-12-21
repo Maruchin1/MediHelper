@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src='@{handler.iconResId, default="@drawable/round_delete_black_36"}'
-                android:tint="@color/colorPrimary" />
+                android:tint='@{handler.selectedProfileColor, default="@color/colorPrimary"}' />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
                 android:layout_marginStart="16dp"
                 android:text="@{handler.title, default=Tytuł}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="@color/colorPrimary" />
+                android:textColor='@{handler.selectedProfileColor, default="@color/colorPrimary"}' />
         </LinearLayout>
 
         <TextView

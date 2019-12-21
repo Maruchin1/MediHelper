@@ -1,20 +1,18 @@
 package com.maruchin.medihelper.presentation.dialogs
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.maruchin.medihelper.R
-import com.maruchin.medihelper.presentation.framework.AppBottomSheetDialog
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.databinding.DialogSelectExpireDateBinding
-import com.maruchin.medihelper.domain.usecases.DateTimeUseCases
 import com.maruchin.medihelper.domain.usecases.datetime.GetCurrDateUseCase
-import com.maruchin.medihelper.presentation.framework.bind
+import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
 import kotlinx.android.synthetic.main.dialog_select_expire_date.*
 import org.koin.android.ext.android.inject
 
-class SelectExpireDateDialog : AppBottomSheetDialog() {
+class SelectExpireDateDialog(
+    private val defaultDate: AppExpireDate? = null
+) : BaseBottomDialog<DialogSelectExpireDateBinding>(R.layout.dialog_select_expire_date) {
     override val TAG = "SelectMontDateDialog"
 
     companion object {
@@ -22,26 +20,17 @@ class SelectExpireDateDialog : AppBottomSheetDialog() {
         private const val MAX_YEAR = 2100
     }
 
-    var defaultDate: AppExpireDate? = null
-    private var dateSelectedListener: ((date: AppExpireDate) -> Unit)? = null
+    private var onDateSelectedListener: ((date: AppExpireDate) -> Unit)? = null
     private val getCurrDateUseCase: GetCurrDateUseCase by inject()
 
     fun onClickConfirm() {
         val selectedDate = AppExpireDate(year = year_picker.value, month = month_picker.value)
-        dateSelectedListener?.invoke(selectedDate)
+        onDateSelectedListener?.invoke(selectedDate)
         dismiss()
     }
 
-    fun setDateSelectedListener(listener: (date: AppExpireDate) -> Unit) {
-        dateSelectedListener = listener
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return bind<DialogSelectExpireDateBinding>(
-            inflater = inflater,
-            container = container,
-            layoutResId = R.layout.dialog_select_expire_date
-        )
+    fun setOnDateSelectedListener(listener: (date: AppExpireDate) -> Unit) {
+        onDateSelectedListener = listener
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -41,10 +41,11 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
     }
 
     fun onClickDelete() {
-        ConfirmDialog().apply {
-            title = "Usuń lek"
-            message = "Wybrany lek zostanie usunięty. Czy chcesz kontynuować?"
+        ConfirmDialog(
+            title = "Usuń lek",
+            message = "Wybrany lek zostanie usunięty. Czy chcesz kontynuować?",
             iconResId = R.drawable.round_delete_black_36
+        ).apply {
             setOnConfirmClickListener {
                 viewModel.deleteMedicine()
             }
@@ -59,7 +60,7 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
 
     fun onClickScheduleMedicine() {
         SelectProfileDialog().apply {
-            setProfileSelectedListener { profileId ->
+            setOnProfileSelectedListener { profileId ->
                 viewModel.medicineId?.let { medicineId ->
                     findNavController().navigate(
                         directions.toAddEditMedicinePlanFragment(

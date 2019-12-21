@@ -1,38 +1,20 @@
 package com.maruchin.medihelper.presentation.dialogs
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.maruchin.medihelper.R
-import com.maruchin.medihelper.presentation.framework.AppBottomSheetDialog
 import com.maruchin.medihelper.databinding.DialogConfirmBinding
+import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
 
-class ConfirmDialog : AppBottomSheetDialog() {
+class ConfirmDialog(
+    val title: String,
+    val message: String,
+    val iconResId: Int
+) : BaseBottomDialog<DialogConfirmBinding>(R.layout.dialog_confirm) {
     override val TAG = "ConfirmDialog"
 
-    var title = ""
-    var message = ""
-    var iconResId: Int? = null
-
     private var onConfirmClickListener: (() -> Unit)? = null
-    private var onCancelClickListener: (() -> Unit)? = null
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: DialogConfirmBinding = DataBindingUtil.inflate(inflater,
-            R.layout.dialog_confirm, container, false)
-        binding.handler = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
-    }
 
     fun setOnConfirmClickListener(listener: () -> Unit) {
         onConfirmClickListener = listener
-    }
-
-    fun setOnCancelClickListener(listener: () -> Unit) {
-        onCancelClickListener = listener
     }
 
     fun onClickConfirm() {
@@ -41,11 +23,6 @@ class ConfirmDialog : AppBottomSheetDialog() {
     }
 
     fun onClickCancel() {
-        onCancelClickListener?.invoke()
         dismiss()
-    }
-
-    companion object {
-        val TAG = ConfirmDialog::class.simpleName
     }
 }

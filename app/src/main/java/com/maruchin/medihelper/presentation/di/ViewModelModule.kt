@@ -4,12 +4,11 @@ import com.maruchin.medihelper.presentation.feature.alarm.AlarmViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.CalendarDayViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.CalendarViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOptionsViewModel
-import com.maruchin.medihelper.presentation.feature.calendar.ProfileViewModel
+import com.maruchin.medihelper.presentation.feature.profiles.ProfileViewModel
 import com.maruchin.medihelper.presentation.feature.medikit.*
 import com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel
 import com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.AddEditProfileViewModel
-import com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -35,11 +34,6 @@ val viewModelModule = module {
             getMedicineEditDataUseCase = get(),
             deviceCamera = get(),
             picturesRef = get()
-        )
-    }
-    viewModel {
-        PersonOptionsViewModel(
-            personUseCases = get()
         )
     }
     viewModel {

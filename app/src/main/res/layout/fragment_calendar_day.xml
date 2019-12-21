@@ -12,7 +12,7 @@
             type="com.maruchin.medihelper.presentation.feature.calendar.CalendarDayViewModel" />
     </data>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/root_lay"
         android:layout_width="match_parent"
@@ -20,7 +20,8 @@
         android:orientation="vertical">
 
         <androidx.core.widget.NestedScrollView
-            visibleOrGone="@{viewModel.plannedMedicinesAvailable}"
+            visibleOrGone="@{viewModel.medicinesAvailable}"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
@@ -176,9 +177,10 @@
         </androidx.core.widget.NestedScrollView>
 
         <LinearLayout
-            visibleOrGone='@{!viewModel.plannedMedicinesAvailable, default=gone}'
+            visibleOrGone='@{viewModel.noMedicinesForDay}'
+            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/no_item_page_margin_horizontal"
             android:layout_marginTop="@dimen/no_item_page_margin_top"
             android:layout_marginEnd="@dimen/no_item_page_margin_horizontal"
@@ -201,6 +203,12 @@
 
         </LinearLayout>
 
+        <ProgressBar
+            visibleOrGone="@{viewModel.loadingInProgress, default=gone}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/progress_bar_margin_top" />
 
-    </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

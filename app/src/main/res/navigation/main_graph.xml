@@ -124,7 +124,7 @@
     </dialog>
     <dialog
         android:id="@+id/profileDialog"
-        android:name="com.maruchin.medihelper.presentation.feature.calendar.ProfileDialog"
+        android:name="com.maruchin.medihelper.presentation.feature.profiles.ProfileDialog"
         android:label="ProfileDialog"
         tools:layout="@layout/dialog_profile"/>
     <fragment

@@ -17,8 +17,8 @@ import com.maruchin.medihelper.presentation.dialogs.SelectFloatNumberDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectNumberDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectTimeDialog
 import com.maruchin.medihelper.presentation.framework.BaseFragment
-import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
-import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
+import com.maruchin.medihelper.presentation.framework.BaseRecyclerAdapter
+import com.maruchin.medihelper.presentation.framework.BaseViewHolder
 import com.maruchin.medihelper.presentation.framework.shrinkOnScroll
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*
@@ -33,48 +33,56 @@ class AddEditMedicinePlanFragment :
     private val loadingScreen: LoadingScreen by inject()
 
     fun onClickSelectStartDate() {
-        SelectDateDialog().apply {
+        SelectDateDialog(
             defaultDate = viewModel.startDate.value
-            setDateSelectedListener { date ->
+        ).apply {
+            setOnDateSelectedListener { date ->
                 viewModel.startDate.value = date
             }
         }.show(childFragmentManager)
     }
 
     fun onClickSelectEndDate() {
-        SelectDateDialog().apply {
+        SelectDateDialog(
             defaultDate = viewModel.endDate.value
-            setDateSelectedListener { date ->
+        ).apply {
+            setOnDateSelectedListener { date ->
                 viewModel.endDate.value = date
             }
         }.show(childFragmentManager)
     }
 
     fun onClickSelectInterval() {
-        SelectNumberDialog().apply {
+        SelectNumberDialog(
+            title = "Odstęp dni",
+            iconResId = R.drawable.round_event_white_36,
             defaultNumber = viewModel.interval.value?.daysCount
-            title = "Odstęp dni"
-            setNumberSelectedListener { number ->
+        ).apply {
+            setOnNumberSelectedListener { number ->
                 viewModel.setInterval(number)
             }
         }.show(childFragmentManager)
     }
 
     fun onClickSelectIntakeDays() {
-        SelectNumberDialog().apply {
+        SelectNumberDialog(
+            title = "Dni przyjmowania",
+            iconResId = R.drawable.round_event_white_36,
             defaultNumber = viewModel.sequence.value?.intakeCount
-            title = "Dni przyjmowania"
-            setNumberSelectedListener { number ->
+        ).apply {
+            setOnNumberSelectedListener { number ->
                 viewModel.setIntakeDays(number)
             }
         }.show(childFragmentManager)
     }
 
     fun onClickSelectNoIntakeDays() {
-        SelectNumberDialog().apply {
+        SelectNumberDialog(
+            title = "Dni przerwy",
+            iconResId = R.drawable.round_event_white_36,
             defaultNumber = viewModel.sequence.value?.notIntakeCount
-            title = "Dni przerwy"
-            setNumberSelectedListener { number ->
+        ).apply {
+            setOnNumberSelectedListener { number ->
                 viewModel.setNoIntakeDays(number)
             }
         }.show(childFragmentManager)
@@ -86,20 +94,22 @@ class AddEditMedicinePlanFragment :
     }
 
     fun onClickSelectTime(timeDoseFormItem: AddEditMedicinePlanViewModel.TimeDoseFormItem) {
-        SelectTimeDialog().apply {
+        SelectTimeDialog(
             defaultTime = timeDoseFormItem.time
-            setTimeSelectedListener { time ->
+        ).apply {
+            setOnTimeSelectedListener { time ->
                 viewModel.updateTimeDose(timeDoseFormItem.copy(time = time))
             }
         }.show(childFragmentManager)
     }
 
     fun onClickSelectDoseSize(timeDoseFormItem: AddEditMedicinePlanViewModel.TimeDoseFormItem) {
-        SelectFloatNumberDialog().apply {
-            title = "Wybierz dawkę leku"
-            iconResID = R.drawable.ic_pill_black_36dp
+        SelectFloatNumberDialog(
+            title = "Wybierz dawkę leku",
+            iconResId = R.drawable.ic_pill_black_36dp,
             defaultNumber = timeDoseFormItem.doseSize
-            setNumberSelectedListener { number ->
+        ).apply {
+            setOnNumberSelectedListener { number ->
                 viewModel.updateTimeDose(timeDoseFormItem.copy(doseSize = number))
             }
         }.show(childFragmentManager)
@@ -222,12 +232,12 @@ class AddEditMedicinePlanFragment :
         }
     }
 
-    private inner class TimeDoseAdapter : RecyclerAdapter<TimeDose>(
+    private inner class TimeDoseAdapter : BaseRecyclerAdapter<TimeDose>(
         layoutResId = R.layout.rec_item_time_dose_edit,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.timeDoseList
     ) {
-        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
             val item = itemsList[position]
             val formItem = AddEditMedicinePlanViewModel.TimeDoseFormItem(item, position)
 

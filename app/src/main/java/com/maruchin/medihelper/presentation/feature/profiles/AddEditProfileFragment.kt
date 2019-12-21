@@ -10,7 +10,6 @@ import androidx.navigation.fragment.navArgs
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentAddEditProfileBinding
 import com.maruchin.medihelper.presentation.framework.*
-import com.maruchin.medihelper.presentation.model.ProfileColorCheckbox
 import kotlinx.android.synthetic.main.fragment_add_edit_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -59,13 +58,13 @@ class AddEditProfileFragment : BaseFragment<FragmentAddEditProfileBinding>(R.lay
     }
 
     // Inner classes
-    inner class PersonColorAdapter : RecyclerAdapter<ProfileColorCheckbox>(
+    inner class PersonColorAdapter : BaseRecyclerAdapter<AddEditProfileViewModel.ColorCheckbox>(
         layoutResId = R.layout.rec_item_profile_color,
         lifecycleOwner = viewLifecycleOwner,
-        itemsSource = viewModel.profileColorCheckboxList,
+        itemsSource = viewModel.colorCheckboxList,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.color == newItem.color }
     ) {
-        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
             val personColorCheckboxData = itemsList[position]
             holder.bind(personColorCheckboxData, this@AddEditProfileFragment)
         }

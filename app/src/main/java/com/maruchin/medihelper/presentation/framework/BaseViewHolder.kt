@@ -5,7 +5,7 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerItemViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
+class BaseViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
     val view = binding.root
 
     fun bind(displayData: Any, handler: Any? = null, viewModel: ViewModel? = null) {

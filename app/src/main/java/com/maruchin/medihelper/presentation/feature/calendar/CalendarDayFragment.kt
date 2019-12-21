@@ -2,6 +2,7 @@ package com.maruchin.medihelper.presentation.feature.calendar
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,8 @@ import androidx.transition.TransitionManager
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarDayBinding
-import com.maruchin.medihelper.presentation.framework.RecyclerAdapter
-import com.maruchin.medihelper.presentation.framework.RecyclerItemViewHolder
 import com.maruchin.medihelper.domain.model.PlannedMedicineItem
-import com.maruchin.medihelper.presentation.framework.BaseFragment
+import com.maruchin.medihelper.presentation.framework.*
 import kotlinx.android.synthetic.main.fragment_calendar_day.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -46,8 +45,9 @@ class CalendarDayFragment : BaseFragment<FragmentCalendarDayBinding>(R.layout.fr
     }
 
     private fun observeViewModel() {
-        viewModel.plannedMedicinesAvailable.observe(viewLifecycleOwner, Observer {
-            TransitionManager.beginDelayedTransition(root_lay)
+        viewModel.noMedicinesForDay.observe(viewLifecycleOwner, Observer {
+            Log.i(TAG, "plannedMedicineAvailable = $it")
+            root_lay.beginDelayedFade()
         })
     }
 
@@ -68,13 +68,13 @@ class CalendarDayFragment : BaseFragment<FragmentCalendarDayBinding>(R.layout.fr
 
     // Inner classes
     private inner class PlannedMedicineAdapter(itemsSource: LiveData<List<PlannedMedicineItem>>) :
-        RecyclerAdapter<PlannedMedicineItem>(
+        BaseRecyclerAdapter<PlannedMedicineItem>(
             layoutResId = R.layout.rec_item_planned_medicine,
             lifecycleOwner = viewLifecycleOwner,
             itemsSource = itemsSource,
             areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedMedicineId == newItem.plannedMedicineId }
         ) {
-        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
             val plannedMedicine = itemsList[position]
             holder.bind(plannedMedicine, this@CalendarDayFragment)
         }

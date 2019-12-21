@@ -4,21 +4,11 @@
 
     <data>
 
-        <import type="android.view.View" />
-
-        <variable
-            name="handler"
-            type="com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsFragment" />
-
-        <variable
-            name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.profiles.PersonOptionsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background='@{viewModel.personOptionsData.colorId, default="@color/colorPrimary"}'
         android:fitsSystemWindows="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,13 +17,11 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
-                toolbarNavigationOnClick="@{() -> handler.dismiss()}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                 app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/round_close_white_24"
-                app:title='@{viewModel.personOptionsData.name + " - opcje", default="Nazwa osoby - opcje"}' />
+                app:navigationIcon="@drawable/round_close_white_24" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -45,8 +33,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="@{viewModel.isUserLogged ? View.VISIBLE : View.GONE, default=visible}">
+                    android:orientation="vertical">
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="200dp"
@@ -67,7 +54,6 @@
                         android:layout_marginTop="48dp"
                         android:letterSpacing="0.3"
                         android:maxLines="1"
-                        android:text='@{viewModel.personOptionsData.connectionKey, default="123456"}'
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
                         android:textColor="@color/colorWhite" />
@@ -89,8 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:visibility="@{viewModel.isUserLogged ? View.GONE : View.VISIBLE, default=gone}">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="100dp"
@@ -137,7 +122,6 @@
                         android:layout_marginStart="32dp"
                         android:layout_marginEnd="32dp"
                         android:layout_marginTop="64dp"
-                        android:onClick="@{() -> handler.onClickMediHelperAccount()}"
                         android:text="Konto MediHelper"
                         app:icon="@drawable/cross_icon"
                         app:iconSize="24dp" />
@@ -160,7 +144,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_weight="1"
-                    android:onClick="@{() -> handler.onClickEdit()}"
                     android:text="Edytuj"
                     app:icon="@drawable/round_edit_24" />
 
@@ -170,7 +153,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
-                    android:onClick="@{() -> handler.onClickDelete()}"
                     android:text="Usuń"
                     app:icon="@drawable/round_delete_24" />
             </LinearLayout>

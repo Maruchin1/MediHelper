@@ -10,12 +10,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class RecyclerAdapter<T>(
+abstract class BaseRecyclerAdapter<T>(
     private val layoutResId: Int,
     lifecycleOwner: LifecycleOwner,
     itemsSource: LiveData<List<T>>,
     areItemsTheSameFun: ((oldItem: T, newItem: T) -> Boolean)? = null
-) : RecyclerView.Adapter<RecyclerItemViewHolder>() {
+) : RecyclerView.Adapter<BaseViewHolder>() {
 
     protected val itemsList = mutableListOf<T>()
     private var diffCallback: DiffCallback<T>? = null
@@ -29,9 +29,9 @@ abstract class RecyclerAdapter<T>(
         })
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val binding: ViewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), layoutResId, parent, false)
-        return RecyclerItemViewHolder(binding)
+        return BaseViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
