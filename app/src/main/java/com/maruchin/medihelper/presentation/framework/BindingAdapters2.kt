@@ -26,6 +26,13 @@ fun setBackgroundColor(view: View, color: String?) {
     }
 }
 
+@BindingAdapter("android:background")
+fun setBackgroundColor(view: View, colorResId: Int?) {
+    if (colorResId != null && colorResId != 0) {
+        view.setBackgroundColor(ContextCompat.getColor(view.context, colorResId))
+    }
+}
+
 @BindingAdapter("android:backgroundTint")
 fun setBackgroundTint(view: View, color: String?) {
     if (!color.isNullOrEmpty()) {

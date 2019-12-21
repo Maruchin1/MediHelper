@@ -12,7 +12,8 @@ class MedicinesListViewModel(
 ) : ViewModel() {
 
     val medicineItemList: LiveData<List<MedicineItem>>
-    val anyMedicineAvailable: LiveData<Boolean>
+    val loadingInProgress: LiveData<Boolean>
+    val medicineAvailable: LiveData<Boolean>
     val nameQuery = MutableLiveData<String>("")
 
     init {
@@ -20,7 +21,8 @@ class MedicinesListViewModel(
             val medicineItemsLive = getAllMedicinesItemsUseCase.execute()
             emitSource(medicineItemsLive)
         }
-        anyMedicineAvailable = Transformations.map(medicineItemList) { !it.isNullOrEmpty() }
+        loadingInProgress = Transformations.map(medicineItemList) { it == null }
+        medicineAvailable = Transformations.map(medicineItemList) { it.isNotEmpty()}
         //todo wyłączono wyszukiwanie
 //        medicineList = Transformations.switchMap(nameQuery) { nameQuery ->
 //            if (nameQuery.isNullOrEmpty()) {

@@ -45,19 +45,19 @@
                         android:layout_height="?actionBarSize"
                         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                         app:layout_collapseMode="pin"
-                        app:menu="@menu/toolbar_menu_medicines_list"/>
+                        app:menu="@menu/toolbar_menu_medicines_list" />
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_medicines"
+                visibleOrInvisible="@{viewModel.medicineAvailable}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:paddingBottom="128dp"
-                android:visibility='@{viewModel.anyMedicineAvailable ? View.VISIBLE : View.GONE, default=visible}'
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                 app:spanCount="2"
@@ -86,6 +86,13 @@
                 app:layout_anchor="@id/bottom_nav"
                 app:layout_anchorGravity="center"
                 app:tint="@color/colorWhite" />
+
+            <ProgressBar
+                visibleOrGone="@{viewModel.loadingInProgress}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_anchor="@id/recycler_view_medicines"
+                app:layout_anchorGravity="center" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
