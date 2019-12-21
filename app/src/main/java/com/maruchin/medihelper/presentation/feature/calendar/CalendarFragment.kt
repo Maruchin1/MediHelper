@@ -43,11 +43,6 @@ class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.frag
         setupDatesViewPager()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateAllStatus()
-    }
-
     private fun setupToolbarMenu() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {

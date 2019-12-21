@@ -67,8 +67,4 @@ class CalendarViewModel(
             timeInMillis = date.timeInMillis
         }
     }
-
-    fun updateAllStatus() = viewModelScope.launch {
-//        updateAllPlannedMedicinesStatusUseCase.execute()
-    }
 }

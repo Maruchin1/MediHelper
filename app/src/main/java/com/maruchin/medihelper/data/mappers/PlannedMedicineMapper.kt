@@ -15,7 +15,7 @@ class PlannedMedicineMapper : BaseMapper<PlannedMedicine>() {
     private val plannedDate = "plannedDate"
     private val plannedTime = "plannedTime"
     private val plannedDoseSize = "plannedDoseSize"
-    private val status = "status"
+    private val taken = "taken"
 
     override suspend fun entityToMap(entity: PlannedMedicine): Map<String, Any?> = withContext(Dispatchers.Default) {
         return@withContext hashMapOf(
@@ -25,7 +25,7 @@ class PlannedMedicineMapper : BaseMapper<PlannedMedicine>() {
             plannedDate to entity.plannedDate.jsonFormatString,
             plannedTime to entity.plannedTime.jsonFormatString,
             plannedDoseSize to entity.plannedDoseSize,
-            status to entity.status.toString()
+            taken to entity.taken
         )
     }
 
@@ -38,7 +38,7 @@ class PlannedMedicineMapper : BaseMapper<PlannedMedicine>() {
             plannedDate = AppDate(map[plannedDate] as String),
             plannedTime = AppTime(map[plannedTime] as String),
             plannedDoseSize = (map[plannedDoseSize] as Double).toFloat(),
-            status = PlannedMedicine.Status.valueOf(map[status] as String)
+            taken = map[taken] as Boolean
         )
     }
 }

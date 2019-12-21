@@ -118,7 +118,7 @@ class PlannedMedicineScheduler {
                     plannedDate = plannedDate,
                     plannedTime = timeDose.time,
                     plannedDoseSize = timeDose.doseSize,
-                    status = PlannedMedicine.Status.PENDING
+                    taken = false
                 )
             )
         }

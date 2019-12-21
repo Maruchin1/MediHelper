@@ -22,10 +22,10 @@
         android:background="@drawable/bg_bottom_dialog">
 
         <LinearLayout
+            visibleOrInvisible="@{!viewModel.loadingInProgress}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            visibleOrInvisible="@{!viewModel.loadingInProgress}">
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/lay_details"
@@ -86,7 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:text="@{viewModel.details.status.text, default=status}"
+                        android:text="Status"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
                     <com.google.android.material.card.MaterialCardView
@@ -98,8 +98,8 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src='@{viewModel.details.status.iconResId, default="@drawable/round_check_circle_black_24"}'
-                            android:tint='@{viewModel.details.status.colorResId, default="@color/colorStateGood"}' />
+                            android:src='@{viewModel.details.statusIconId, default="@drawable/round_check_circle_black_24"}'
+                            android:tint='@{viewModel.details.statusColorId, default="@color/colorStateGood"}' />
 
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
@@ -187,10 +187,10 @@
         </LinearLayout>
 
         <ProgressBar
+            visibleOrGone="@{viewModel.loadingInProgress}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/progress_bar_margin_top"
-            visibleOrGone="@{viewModel.loadingInProgress}" />
+            android:layout_marginTop="@dimen/progress_bar_margin_top" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
