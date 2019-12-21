@@ -50,6 +50,7 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
             message = "Wybrany profil zostanie usunięty, wraz z jego wpisami w kalendarzu. Czy chcesz kontynuować?",
             iconResId = R.drawable.round_delete_black_36
         ).apply {
+            setColorPrimary(viewModel.colorPrimary.value)
             setOnConfirmClickListener {
                 viewModel.deleteProfile()
             }

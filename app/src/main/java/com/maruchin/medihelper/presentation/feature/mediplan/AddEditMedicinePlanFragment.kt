@@ -36,6 +36,7 @@ class AddEditMedicinePlanFragment :
         SelectDateDialog(
             defaultDate = viewModel.startDate.value
         ).apply {
+            setColorPrimary(viewModel.colorPrimary.value)
             setOnDateSelectedListener { date ->
                 viewModel.startDate.value = date
             }
@@ -46,6 +47,7 @@ class AddEditMedicinePlanFragment :
         SelectDateDialog(
             defaultDate = viewModel.endDate.value
         ).apply {
+            setColorPrimary(viewModel.colorPrimary.value)
             setOnDateSelectedListener { date ->
                 viewModel.endDate.value = date
             }
@@ -58,6 +60,7 @@ class AddEditMedicinePlanFragment :
             iconResId = R.drawable.round_event_white_36,
             defaultNumber = viewModel.interval.value?.daysCount
         ).apply {
+            setColorPrimary(viewModel.colorPrimary.value)
             setOnNumberSelectedListener { number ->
                 viewModel.setInterval(number)
             }
@@ -70,6 +73,7 @@ class AddEditMedicinePlanFragment :
             iconResId = R.drawable.round_event_white_36,
             defaultNumber = viewModel.sequence.value?.intakeCount
         ).apply {
+            setColorPrimary(viewModel.colorPrimary.value)
             setOnNumberSelectedListener { number ->
                 viewModel.setIntakeDays(number)
             }
@@ -82,6 +86,7 @@ class AddEditMedicinePlanFragment :
             iconResId = R.drawable.round_event_white_36,
             defaultNumber = viewModel.sequence.value?.notIntakeCount
         ).apply {
+            setColorPrimary(viewModel.colorPrimary.value)
             setOnNumberSelectedListener { number ->
                 viewModel.setNoIntakeDays(number)
             }
@@ -97,6 +102,7 @@ class AddEditMedicinePlanFragment :
         SelectTimeDialog(
             defaultTime = timeDoseFormItem.time
         ).apply {
+            setColorPrimary(viewModel.colorPrimary.value)
             setOnTimeSelectedListener { time ->
                 viewModel.updateTimeDose(timeDoseFormItem.copy(time = time))
             }
@@ -109,6 +115,7 @@ class AddEditMedicinePlanFragment :
             iconResId = R.drawable.ic_pill_black_36dp,
             defaultNumber = timeDoseFormItem.doseSize
         ).apply {
+            setColorPrimary(viewModel.colorPrimary.value)
             setOnNumberSelectedListener { number ->
                 viewModel.updateTimeDose(timeDoseFormItem.copy(doseSize = number))
             }

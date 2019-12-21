@@ -14,10 +14,15 @@
 
     <dimen name="bottom_dialog_header_margin_top">8dp</dimen>
     <dimen name="bottom_dialog_header_margin_horizontal">16dp</dimen>
+    <dimen name="bottom_dialog_header_icon_size">36dp</dimen>
+    <dimen name="bottom_dialog_header_text_margin_start">16dp</dimen>
     <dimen name="bottom_dialog_option_height">56dp</dimen>
     <dimen name="bottom_dialog_option_padding_horizontal">16dp</dimen>
     <dimen name="bottom_dialog_option_text_margin_start">32dp</dimen>
     <dimen name="bottom_dialog_option_icon_size">24dp</dimen>
+    <dimen name="bottom_dialog_body_margin">16dp</dimen>
+    <dimen name="bottom_dialog_buttons_margin_bot">4dp</dimen>
+    <dimen name="bottom_dialog_buttons_margin_horizontal">16dp</dimen>
 
     <dimen name="form_header_margin_top">48dp</dimen>
     <dimen name="form_header_margin_horizontal">8dp</dimen>

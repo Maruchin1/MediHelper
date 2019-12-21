@@ -123,6 +123,11 @@
         <item name="iconTint">@color/colorWhite</item>
     </style>
 
+    <style name="Widget.MediHelper.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="cornerRadius">20dp</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+
     <style name="Widget.MediHelper.ExtendedFab" parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
         <item name="android:textColor">@color/colorWhite</item>
         <item name="backgroundTint">@color/colorPrimary</item>

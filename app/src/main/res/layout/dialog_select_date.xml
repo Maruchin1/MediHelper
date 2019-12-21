@@ -18,22 +18,22 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:gravity="center_vertical"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:paddingStart="@dimen/bottom_dialog_header_margin_horizontal"
+            android:paddingEnd="@dimen/bottom_dialog_header_margin_horizontal">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/bottom_dialog_header_icon_size"
+                android:layout_height="@dimen/bottom_dialog_header_icon_size"
                 android:src="@drawable/round_event_white_36"
-                android:tint="@color/colorPrimary" />
+                android:tint='@{handler.colorPrimary, default="@color/colorPrimary"}' />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/bottom_dialog_header_text_margin_start"
                 android:text="Wybierz datę"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="@color/colorPrimary" />
+                android:textAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Light"
+                android:textColor='@{handler.colorPrimary, default="@color/colorPrimary"}' />
         </LinearLayout>
 
         <CalendarView
@@ -46,30 +46,29 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="@dimen/bottom_dialog_buttons_margin_bot"
             android:gravity="end"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cancel"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/Widget.MediHelper.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/bottom_dialog_buttons_margin_horizontal"
                 android:onClick="@{() -> handler.onClickCancel()}"
                 android:text="Odrzuć"
-                android:textColor="@color/colorPrimary"
-                app:cornerRadius="20dp" />
+                android:textColor='@{handler.colorPrimary}' />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_confirm"
+                style="@style/Widget.MediHelper.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="@color/colorPrimary"
+                android:layout_marginEnd="@dimen/bottom_dialog_buttons_margin_horizontal"
+                android:backgroundTint='@{handler.colorPrimary}'
                 android:onClick="@{() -> handler.onClickConfirm()}"
-                android:text="Zatwierdź"
-                app:cornerRadius="20dp" />
+                android:text="Zatwierdź" />
         </LinearLayout>
     </LinearLayout>
 </layout>

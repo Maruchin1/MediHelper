@@ -12,13 +12,12 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val selectedProfile: SelectedProfile,
-    private val getProfileItemUseCase: GetProfileItemUseCase,
     private val getLiveAllProfilesItemsUseCase: GetLiveAllProfilesItemsUseCase,
     private val getLiveMedicinesPlansItemsByProfileUseCase: GetLiveMedicinesPlansItemsByProfileUseCase,
     private val deleteProfileUseCase: DeleteProfileUseCase
 ) : ViewModel() {
 
-    val colorPrimary: LiveData<String>
+    val colorPrimary: LiveData<String?> = selectedProfile.profileColorLive
     val profileItems: LiveData<List<ProfileItem>>
     val profileItemsAvailable: LiveData<Boolean>
     val selectedProfilePosition: LiveData<Int>
@@ -29,7 +28,6 @@ class ProfileViewModel(
     val selectedProfileId: String?
         get() = selectedProfile.profileId
 
-    private val selectedProfileItem: LiveData<ProfileItem?>
 
     init {
         profileItems = liveData {
@@ -37,13 +35,6 @@ class ProfileViewModel(
             emitSource(source)
         }
         profileItemsAvailable = Transformations.map(profileItems) { !it.isNullOrEmpty() }
-        selectedProfileItem = Transformations.switchMap(selectedProfile.profileIdLive) { selectedProfileId ->
-            liveData {
-                val value = getProfileItemUseCase.execute(selectedProfileId)
-                emit(value)
-            }
-        }
-        colorPrimary = Transformations.map(selectedProfileItem) { it?.color }
         selectedProfilePosition = Transformations.switchMap(profileItems) { list ->
             Transformations.map(selectedProfile.profileIdLive) { selectedProfileId ->
                 list.indexOfFirst { it.profileId == selectedProfileId }

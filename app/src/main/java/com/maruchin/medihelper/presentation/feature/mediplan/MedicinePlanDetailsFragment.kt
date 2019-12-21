@@ -43,6 +43,7 @@ class MedicinePlanDetailsFragment :
             message = "Plan przyjmowania leku zostanie usunięty, wraz z odpowiadającymi mu wpisami w kalendarzu. Czy chcesz kontynuować?",
             iconResId = R.drawable.round_delete_black_36
         ).apply {
+            setColorPrimary(viewModel.colorPrimary.value)
             setOnConfirmClickListener {
                 viewModel.deletePlan()
             }

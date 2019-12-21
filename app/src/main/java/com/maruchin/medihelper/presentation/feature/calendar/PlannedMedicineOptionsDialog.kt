@@ -37,6 +37,7 @@ class PlannedMedicineOptionsDialog :
         SelectTimeDialog(
             defaultTime = viewModel.details.value?.plannedTime
         ).apply {
+            setColorPrimary(viewModel.colorPrimary.value)
             setOnTimeSelectedListener { newTime ->
                 viewModel.changePlannedTime(newTime)
                 this@PlannedMedicineOptionsDialog.dismiss()

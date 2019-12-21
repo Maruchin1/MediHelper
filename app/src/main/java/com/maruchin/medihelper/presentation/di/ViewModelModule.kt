@@ -79,7 +79,6 @@ val viewModelModule = module {
     viewModel {
         ProfileViewModel(
             selectedProfile = get(),
-            getProfileItemUseCase = get(),
             getLiveAllProfilesItemsUseCase = get(),
             getLiveMedicinesPlansItemsByProfileUseCase = get(),
             deleteProfileUseCase = get()

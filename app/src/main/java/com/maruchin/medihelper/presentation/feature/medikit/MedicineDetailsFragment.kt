@@ -35,7 +35,7 @@ class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.l
     private val loadingScreen: LoadingScreen by inject()
 
     fun onClickEdit() {
-        viewModel.medicineId?.let { medicineId ->
+        viewModel.medicineId.let { medicineId ->
             findNavController().navigate(directions.toAddEditMedicineFragment(medicineId))
         }
     }

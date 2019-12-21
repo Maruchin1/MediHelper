@@ -12,12 +12,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.maruchin.medihelper.BR
+import com.maruchin.medihelper.data.ProfileColor
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import org.koin.android.ext.android.inject
 
@@ -27,19 +29,15 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
 ) : BottomSheetDialogFragment() {
     abstract val TAG: String
 
-    val selectedProfileColor: LiveData<String?>
-
+    val colorPrimary: LiveData<String>
+        get() = _colorPrimary
     protected var bindingViewModel: ViewModel? = null
-
-    private val selectedProfile: SelectedProfile by inject()
+    private val _colorPrimary = MutableLiveData<String>(ProfileColor.MAIN.colorString)
 
     fun show(fragmentManager: FragmentManager) = show(fragmentManager, TAG)
 
-    init {
-        selectedProfileColor = liveData {
-            val source = selectedProfile.profileColorLive
-            emitSource(source)
-        }
+    fun setColorPrimary(colorString: String?) {
+        _colorPrimary.value = colorString
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
