@@ -23,6 +23,8 @@ class ProfileViewModel(
     val selectedProfilePosition: LiveData<Int>
     val mainProfileSelected: LiveData<Boolean> = selectedProfile.mainProfileSelectedLive
     val medicinesPlans: LiveData<List<MedicinePlanItem>>
+    val medicinesPlansLoaded: LiveData<Boolean>
+    val noMedicinesPlans: LiveData<Boolean>
     val medicinesPlansAvailable: LiveData<Boolean>
 
     val selectedProfileId: String?
@@ -49,7 +51,9 @@ class ProfileViewModel(
             }
             emitSource(source)
         }
-        medicinesPlansAvailable = Transformations.map(medicinesPlans) { !it.isNullOrEmpty() }
+        medicinesPlansLoaded = Transformations.map(medicinesPlans) { it != null }
+        noMedicinesPlans = Transformations.map(medicinesPlans) { it.isEmpty() }
+        medicinesPlansAvailable = Transformations.map(medicinesPlans) { it.isNotEmpty() }
     }
 
     fun deleteProfile() = viewModelScope.launch {
