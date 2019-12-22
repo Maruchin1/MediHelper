@@ -30,7 +30,7 @@ class MedicineMapper : BaseMapper<Medicine>() {
         return@withContext Medicine(
             entityId = entityId,
             name = map[name] as String,
-            unit = map[name] as String,
+            unit = map[unit] as String,
             expireDate = AppExpireDate(map[expireDate] as String),
             packageSize = (map[packageSize] as Double).toFloat(),
             currState = (map[currState] as Double).toFloat(),

@@ -118,7 +118,7 @@ class PlannedMedicineScheduler {
                     plannedDate = plannedDate,
                     plannedTime = timeDose.time,
                     plannedDoseSize = timeDose.doseSize,
-                    taken = false
+                    status = PlannedMedicine.Status.NOT_TAKEN
                 )
             )
         }
@@ -126,6 +126,6 @@ class PlannedMedicineScheduler {
     }
 
     companion object {
-        private const val CONTINUOUS_DAYS_COUNT = 60
+        private const val CONTINUOUS_DAYS_COUNT = 30
     }
 }

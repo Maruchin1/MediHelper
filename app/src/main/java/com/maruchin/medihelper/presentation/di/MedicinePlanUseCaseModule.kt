@@ -36,4 +36,9 @@ val medicinePlanUseCaseModule = module {
             plannedMedicineRepo = get()
         )
     }
+    factory { 
+        GetMedicinePlanHistoryUseCase(
+            plannedMedicineRepo = get()
+        )
+    }
 }

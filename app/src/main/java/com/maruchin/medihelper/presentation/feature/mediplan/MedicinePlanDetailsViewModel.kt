@@ -4,16 +4,18 @@ import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.IntakeDays
 import com.maruchin.medihelper.domain.entities.MedicinePlan
 import com.maruchin.medihelper.domain.entities.TimeDose
+import com.maruchin.medihelper.domain.model.HistoryItem
 import com.maruchin.medihelper.domain.model.MedicinePlanDetails
 import com.maruchin.medihelper.domain.usecases.mediplans.DeleteMedicinePlanUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanDetailsUseCase
+import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanHistoryUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
 
 class MedicinePlanDetailsViewModel(
     private val getMedicinePlanDetailsUseCase: GetMedicinePlanDetailsUseCase,
+    private val getMedicinePlanHistoryUseCase: GetMedicinePlanHistoryUseCase,
     private val deleteMedicinePlanUseCase: DeleteMedicinePlanUseCase
 ) : ViewModel() {
 
@@ -34,10 +36,13 @@ class MedicinePlanDetailsViewModel(
         get() = _actionPlanDeleted
     val loadingInProgress: LiveData<Boolean>
         get() = _loadingInProgress
+    val historyItems: LiveData<List<HistoryItem>>
+        get() = _historyItems
 
     private val _actionDataLoaded = ActionLiveData()
     private val _actionPlanDeleted = ActionLiveData()
     private val _loadingInProgress = MutableLiveData<Boolean>()
+    private val _historyItems = MutableLiveData<List<HistoryItem>>()
 
     private val medicinePlanDetails = MutableLiveData<MedicinePlanDetails>()
 
@@ -62,11 +67,13 @@ class MedicinePlanDetailsViewModel(
     }
 
     fun setArgs(args: MedicinePlanDetailsFragmentArgs) = viewModelScope.launch {
-        val data = getMedicinePlanDetailsUseCase.execute(args.medicinePlanId)
-        if (data != null) {
-            medicinePlanDetails.postValue(data)
+        val details = getMedicinePlanDetailsUseCase.execute(args.medicinePlanId)
+        if (details != null) {
+            medicinePlanDetails.postValue(details)
         }
         _actionDataLoaded.sendAction()
+        val history = getMedicinePlanHistoryUseCase.execute(args.medicinePlanId)
+        _historyItems.postValue(history)
     }
 
     private fun getDurationTime(details: MedicinePlanDetails): DurationTime {

@@ -34,14 +34,14 @@ class PlannedMedicineOptionsViewModel(
 
     init {
         changeStatusText = Transformations.map(_details) {
-            if (it.taken) {
+            if (it.status == PlannedMedicine.Status.TAKEN) {
                 "Anuluj przyjęcie leku"
             } else {
                 "Przyjmj lek"
             }
         }
         changeStatusIcon = Transformations.map(_details) {
-            if (it.taken) {
+            if (it.status == PlannedMedicine.Status.TAKEN) {
                 R.drawable.round_close_24
             } else {
                 R.drawable.baseline_check_24

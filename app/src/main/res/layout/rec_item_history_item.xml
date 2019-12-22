@@ -4,9 +4,16 @@
 
     <data>
 
+        <variable
+            name="handler"
+            type="com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsFragment" />
+
+        <variable
+            name="displayData"
+            type="com.maruchin.medihelper.domain.entities.AppDate" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -26,11 +33,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{displayData.dayOfWeekString, default=dzień}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{displayData.dayMonthString, default=Data}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:textColor="@color/colorTextTertiary" />
 
@@ -49,21 +58,5 @@
             </LinearLayout>
 
         </LinearLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            app:cardBackgroundColor="@color/colorTransparent"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:strokeColor="@color/colorDarkerGray"
-            app:strokeWidth="2dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

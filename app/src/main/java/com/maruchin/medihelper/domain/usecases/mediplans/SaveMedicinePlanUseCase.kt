@@ -58,9 +58,7 @@ class SaveMedicinePlanUseCase(
 
     private suspend fun addNewCalendarEntries(medicinePlan: MedicinePlan) {
         val plannedMedicines = plannedMedicineScheduler.getPlannedMedicines(medicinePlan)
-        plannedMedicines.forEach { entry ->
-            plannedMedicineRepo.addNew(entry)
-        }
+        plannedMedicineRepo.addNewList(plannedMedicines)
     }
 
     private suspend fun updateExistingCalendarEntries(medicinePlan: MedicinePlan) {
@@ -69,18 +67,16 @@ class SaveMedicinePlanUseCase(
         val currTime = AppTime(currTimeInMillis)
 
         val existingPlannedMedicines = plannedMedicineRepo.getListByMedicinePlan(medicinePlan.entityId)
-        val existingPlannedMedicinesFromNow = existingPlannedMedicines.filter {
+        val existingPlannedMedicinesIdFromNow = existingPlannedMedicines.filter {
             it.plannedDate >= currDate && it.plannedTime >= currTime
+        }.map {
+            it.entityId
         }
-        existingPlannedMedicinesFromNow.forEach { plannedMedicine ->
-            plannedMedicineRepo.deleteById(plannedMedicine.entityId)
-        }
+        plannedMedicineRepo.deleteListById(existingPlannedMedicinesIdFromNow)
 
         val medicinePlanFromNow = medicinePlan.copy(startDate = currDate)
         val scheduledPlannedMedicines = plannedMedicineScheduler.getPlannedMedicines(medicinePlanFromNow)
-        scheduledPlannedMedicines.forEach { plannedMedicine ->
-            plannedMedicineRepo.addNew(plannedMedicine)
-        }
+        plannedMedicineRepo.addNewList(scheduledPlannedMedicines)
     }
 
     data class Params(

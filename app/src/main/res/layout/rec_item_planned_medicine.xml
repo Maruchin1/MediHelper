@@ -43,8 +43,8 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@{displayData.statusIconId}"
-                    android:tint="@{displayData.statusColorId}" />
+                    android:src="@{displayData.status.iconId}"
+                    android:tint="@{displayData.status.colorId}" />
             </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout

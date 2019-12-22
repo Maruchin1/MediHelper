@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="displayData"
+            type="com.maruchin.medihelper.domain.model.HistoryItem.CheckBox" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +18,9 @@
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite" />
+            android:text='@{displayData.plannedTime.formatString, default="00:00"}'
+            android:textColor="@color/colorWhite"
+            app:chipBackgroundColor='@{displayData.status.colorId, default="@color/colorDarkerGray"}' />
 
     </LinearLayout>
 
