@@ -31,6 +31,7 @@ class PlannedMedicineOptionsDialog :
 
     fun onClickOpenMedicinePlan(medicinePlanId: String) {
         requireParentFragment().findNavController().navigate(directions.toMedicinePlanDetailsFragment(medicinePlanId))
+        dismiss()
     }
 
     fun onClickChangeForLater() {
