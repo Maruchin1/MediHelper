@@ -168,6 +168,13 @@ fun setExFabBackgroundTine(fab: ExtendedFloatingActionButton, color: String?) {
     }
 }
 
+@BindingAdapter("app:iconTint")
+fun setExFabIconTint(fab: ExtendedFloatingActionButton, color: String?) {
+    if (!color.isNullOrEmpty()) {
+        fab.iconTint = ColorStateList.valueOf(Color.parseColor(color))
+    }
+}
+
 //BottomNav
 @BindingAdapter("bottomNavColor")
 fun setBottomNavColor(bottomNavigationView: BottomNavigationView, color: String?) {

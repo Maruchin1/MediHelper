@@ -37,7 +37,7 @@ class AddEditProfileFragment : BaseFragment<FragmentAddEditProfileBinding>(R.lay
         super.setStatusBarColorLive(viewModel.selectedColor)
         super.setupToolbarNavigation()
         setupColorRecyclerView()
-        setupFab()
+        setupToolbar()
         observeViewModel()
     }
 
@@ -53,8 +53,13 @@ class AddEditProfileFragment : BaseFragment<FragmentAddEditProfileBinding>(R.lay
         }
     }
 
-    private fun setupFab() {
-        fab_save.shrinkOnScroll(scroll_view)
+    private fun setupToolbar() {
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.btn_save -> onClickSaveProfile()
+            }
+            return@setOnMenuItemClickListener true
+        }
     }
 
     // Inner classes

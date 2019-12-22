@@ -69,6 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
                     app:layout_collapseMode="pin"
+                    app:menu="@menu/toolbar_menu_save"
                     app:navigationIcon="@drawable/round_close_24" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -131,17 +132,6 @@
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fab_save"
-            style="@style/Widget.MediHelper.ExtendedFab.Dark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:onClick="@{() -> handler.onClickSaveProfile()}"
-            android:text="Zapisz profil"
-            app:icon="@drawable/baseline_check_white_36" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
