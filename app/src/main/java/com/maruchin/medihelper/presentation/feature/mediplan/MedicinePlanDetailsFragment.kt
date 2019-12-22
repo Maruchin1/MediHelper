@@ -18,6 +18,7 @@ import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.presentation.framework.BaseFragment
 import com.maruchin.medihelper.presentation.framework.BaseRecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.BaseViewHolder
+import com.maruchin.medihelper.presentation.framework.beginDelayedTransition
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_medicine_plan_details.*
 import kotlinx.android.synthetic.main.rec_item_history_item.view.*
@@ -65,8 +66,8 @@ class MedicinePlanDetailsFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        postponeEnterTransition()
         super.onViewCreated(view, savedInstanceState)
+        super.setLightStatusBar(true)
         super.setupToolbarNavigation()
         viewModel.setArgs(args)
         loadingScreen.bind(this, viewModel.loadingInProgress)
@@ -78,9 +79,11 @@ class MedicinePlanDetailsFragment :
     }
 
     private fun observeViewModel() {
-        viewModel.actionDataLoaded.observe(viewLifecycleOwner, Observer {
-            startPostponedEnterTransition()
-            super.setLightStatusBar(true)
+        viewModel.actionDetailsLoaded.observe(viewLifecycleOwner, Observer {
+            lay_details.beginDelayedTransition()
+        })
+        viewModel.actionHistoryLoaded.observe(viewLifecycleOwner, Observer {
+            lay_history.beginDelayedTransition()
         })
         viewModel.actionPlanDeleted.observe(viewLifecycleOwner, Observer {
             findNavController().popBackStack()

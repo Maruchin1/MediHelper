@@ -30,8 +30,10 @@ class MedicinePlanDetailsViewModel(
         get() = medicinePlanDetails.value?.medicinePlanId ?: throw Exception("medicinePlanId is null")
     val medicineId: String
         get() = medicinePlanDetails.value?.medicineId ?: throw Exception("medicineId is null")
-    val actionDataLoaded: LiveData<Boolean>
-        get() = _actionDataLoaded
+    val actionDetailsLoaded: LiveData<Boolean>
+        get() = _actionDetailsLoaded
+    val actionHistoryLoaded: LiveData<Boolean>
+        get() = _actionHistoryLoaded
     val actionPlanDeleted: LiveData<Boolean>
         get() = _actionPlanDeleted
     val loadingInProgress: LiveData<Boolean>
@@ -39,7 +41,8 @@ class MedicinePlanDetailsViewModel(
     val historyItems: LiveData<List<HistoryItem>>
         get() = _historyItems
 
-    private val _actionDataLoaded = ActionLiveData()
+    private val _actionDetailsLoaded = ActionLiveData()
+    private val _actionHistoryLoaded = ActionLiveData()
     private val _actionPlanDeleted = ActionLiveData()
     private val _loadingInProgress = MutableLiveData<Boolean>()
     private val _historyItems = MutableLiveData<List<HistoryItem>>()
@@ -71,9 +74,11 @@ class MedicinePlanDetailsViewModel(
         if (details != null) {
             medicinePlanDetails.postValue(details)
         }
-        _actionDataLoaded.sendAction()
+        _actionDetailsLoaded.sendAction()
+
         val history = getMedicinePlanHistoryUseCase.execute(args.medicinePlanId)
         _historyItems.postValue(history)
+        _actionHistoryLoaded.sendAction()
     }
 
     private fun getDurationTime(details: MedicinePlanDetails): DurationTime {
