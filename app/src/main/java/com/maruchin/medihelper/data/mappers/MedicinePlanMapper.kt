@@ -69,11 +69,11 @@ class MedicinePlanMapper : BaseMapper<MedicinePlan>() {
         return when (type) {
             IntakeDaysType.EVERYDAY -> IntakeDays.Everyday
             IntakeDaysType.INTERVAL -> IntakeDays.Interval(
-                daysCount = map[daysCount] as Int
+                daysCount = (map[daysCount] as Long).toInt()
             )
             IntakeDaysType.SEQUENCE -> IntakeDays.Sequence(
-                intakeCount = map[intakeCount] as Int,
-                notIntakeCount = map[notIntakeCount] as Int
+                intakeCount = (map[intakeCount] as Long).toInt(),
+                notIntakeCount = (map[notIntakeCount] as Long).toInt()
             )
             IntakeDaysType.DAYS_OF_WEEK -> IntakeDays.DaysOfWeek(
                 monday = map[monday] as Boolean,

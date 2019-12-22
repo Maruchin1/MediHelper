@@ -57,8 +57,10 @@ class PlannedMedicineRepoImpl(
     override suspend fun getListByMedicinePlan(medicinePlanId: String): List<PlannedMedicine> =
         withContext(Dispatchers.IO) {
             val docsQuery = collectionRef.whereEqualTo("medicinePlanId", medicinePlanId).get().await()
-            return@withContext docsQuery.map {
-                mapper.mapToEntity(it.id, it.data)
+            return@withContext withContext(Dispatchers.Default) {
+                docsQuery.map {
+                    mapper.mapToEntity(it.id, it.data)
+                }
             }
         }
 
@@ -70,8 +72,10 @@ class PlannedMedicineRepoImpl(
             .whereEqualTo("plannedDate", date.jsonFormatString).getDocumenstLive()
         return@withContext Transformations.switchMap(docsLive) { snapshotList ->
             liveData {
-                val value = snapshotList.map {
-                    mapper.mapToEntity(it.id, it.data!!)
+                val value = withContext(Dispatchers.Default) {
+                    snapshotList.map {
+                        mapper.mapToEntity(it.id, it.data!!)
+                    }
                 }
                 emit(value)
             }

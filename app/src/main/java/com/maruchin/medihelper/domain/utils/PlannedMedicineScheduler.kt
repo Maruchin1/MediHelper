@@ -9,10 +9,7 @@ class PlannedMedicineScheduler {
     suspend fun getPlannedMedicines(medicinePlan: MedicinePlan): List<PlannedMedicine> =
         withContext(Dispatchers.Default) {
             return@withContext when (medicinePlan.planType) {
-                MedicinePlan.Type.ONCE -> getForDate(
-                    medicinePlan = medicinePlan,
-                    plannedDate = medicinePlan.startDate
-                )
+                MedicinePlan.Type.ONCE -> getForDate(medicinePlan, medicinePlan.startDate)
                 MedicinePlan.Type.PERIOD -> when (medicinePlan.intakeDays) {
                     is IntakeDays.Everyday -> getForEveryday(medicinePlan)
                     is IntakeDays.DaysOfWeek -> getForDaysOfWeek(medicinePlan)
@@ -43,10 +40,7 @@ class PlannedMedicineScheduler {
 
         while (currDate <= medicinePlan.endDate!!) {
             entriesList.addAll(
-                getForDate(
-                    medicinePlan = medicinePlan,
-                    plannedDate = currDate.copy()
-                )
+                getForDate(medicinePlan, currDate.copy())
             )
             currDate.addDays(1)
         }
@@ -61,10 +55,7 @@ class PlannedMedicineScheduler {
             val daysOfWeek = medicinePlan.intakeDays as IntakeDays.DaysOfWeek
             if (daysOfWeek.isDaySelected(currDate.dayOfWeek)) {
                 entriesList.addAll(
-                    getForDate(
-                        medicinePlan = medicinePlan,
-                        plannedDate = currDate.copy()
-                    )
+                    getForDate(medicinePlan, currDate.copy())
                 )
             }
             currDate.addDays(1)
@@ -78,10 +69,7 @@ class PlannedMedicineScheduler {
 
         while (currDate <= medicinePlan.endDate!!) {
             entriesList.addAll(
-                getForDate(
-                    medicinePlan = medicinePlan,
-                    plannedDate = currDate.copy()
-                )
+                getForDate(medicinePlan, currDate.copy())
             )
             val interval = medicinePlan.intakeDays as IntakeDays.Interval
             currDate.addDays(interval.daysCount)
@@ -94,12 +82,21 @@ class PlannedMedicineScheduler {
         val currDate = medicinePlan.startDate.copy()
 
         val intakeDays = medicinePlan.intakeDays as IntakeDays.Sequence
+        var intakeCountIterator = 1
+
 
         while (currDate <= medicinePlan.endDate!!) {
-
+            if (intakeCountIterator > intakeDays.intakeCount) {
+                currDate.addDays(intakeDays.notIntakeCount)
+                intakeCountIterator = 1
+            } else {
+                entriesList.addAll(
+                    getForDate(medicinePlan, currDate.copy())
+                )
+                currDate.addDays(1)
+                intakeCountIterator++
+            }
         }
-
-        //todo dopisać logikę dla sekwencji
         return entriesList
     }
 
