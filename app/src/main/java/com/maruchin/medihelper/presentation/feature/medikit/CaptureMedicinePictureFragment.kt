@@ -25,6 +25,7 @@ class CaptureMedicinePictureFragment :
         super.onViewCreated(view, savedInstanceState)
         deviceCamera.bindCameraPreview(viewLifecycleOwner, texture_view)
         super.setupToolbarNavigation()
+        super.setStatusBarColor(R.color.colorBlack)
 
         deviceCamera.actionPictureTaken.observe(viewLifecycleOwner, Observer {
             findNavController().popBackStack()
