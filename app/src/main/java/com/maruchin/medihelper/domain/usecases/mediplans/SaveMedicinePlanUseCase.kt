@@ -66,11 +66,10 @@ class SaveMedicinePlanUseCase(
     private suspend fun updateExistingCalendarEntries(medicinePlan: MedicinePlan) {
         val currTimeInMillis = deviceCalendar.getCurrTimeInMillis()
         val currDate = AppDate(currTimeInMillis)
-        val currTime = AppTime(currTimeInMillis)
 
         val existingPlannedMedicines = plannedMedicineRepo.getListByMedicinePlan(medicinePlan.entityId)
         val existingPlannedMedicinesIdFromNow = existingPlannedMedicines.filter {
-            it.plannedDate >= currDate && it.plannedTime >= currTime
+            it.plannedDate >= currDate
         }.map {
             it.entityId
         }

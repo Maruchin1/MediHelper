@@ -14,25 +14,30 @@ class AddEditProfileViewModel(
     private val saveProfileUseCase: SaveProfileUseCase
 ) : ViewModel() {
 
+    val formTitle: LiveData<String>
     val profileName = MutableLiveData<String>()
     val selectedColor = MutableLiveData<String>()
     val colorCheckboxList: LiveData<List<ColorCheckbox>>
 
-    val formTitle: LiveData<String>
-        get() = _formTitle
     val actionProfileSaved: LiveData<Boolean>
         get() = _actionProfileSaved
     val errorProfileName: LiveData<String>
         get() = _errorProfileName
 
-    private val _formTitle = MutableLiveData<String>("Dodaj profil")
     private val _actionProfileSaved = ActionLiveData()
     private val _errorProfileName = MutableLiveData<String>()
 
     private lateinit var profileColorList: List<String>
-    private var editProfileId: String? = null
+    private var editProfileId = MutableLiveData<String>()
 
     init {
+        formTitle = Transformations.map(editProfileId) {
+            if (it == null) {
+                "Dodaj profil"
+            } else {
+                "Edytuj profil"
+            }
+        }
         viewModelScope.launch {
             profileColorList = getProfileColorsUseCase.execute()
             selectedColor.postValue(profileColorList[0])
@@ -48,10 +53,9 @@ class AddEditProfileViewModel(
     }
 
     fun setArgs(args: AddEditProfileFragmentArgs) = viewModelScope.launch {
-        editProfileId = args.editProfileId
-        if (editProfileId != null) {
-            _formTitle.postValue("Edytuj profil")
-            val editData = getProfileEditDataUseCase.execute(editProfileId!!)
+        editProfileId.postValue(args.editProfileId)
+        if (args.editProfileId != null) {
+            val editData = getProfileEditDataUseCase.execute(args.editProfileId)
             if (editData != null) {
                 profileName.postValue(editData.name)
                 selectedColor.postValue(editData.color)
@@ -61,7 +65,7 @@ class AddEditProfileViewModel(
 
     fun saveProfile() = viewModelScope.launch {
         val params = SaveProfileUseCase.Params(
-            profileId = editProfileId,
+            profileId = editProfileId.value,
             name = profileName.value,
             color = selectedColor.value
         )

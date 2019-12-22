@@ -23,14 +23,13 @@ class AddEditMedicineViewModel(
 
     val medicineUnitList: LiveData<List<String>>
 
+    val formTitle: LiveData<String>
     val medicineName = MutableLiveData<String>()
     val medicineUnit = MutableLiveData<String>()
     val expireDate = MutableLiveData<AppExpireDate>()
     val packageSize = MutableLiveData<Float>(0f)
     val currState = MediatorLiveData<Float>()
 
-    val formTitle: LiveData<String>
-        get() = _formTitle
     val imageFile: LiveData<File>
         get() = _imageFile
     val loadingInProgress: LiveData<Boolean>
@@ -46,7 +45,6 @@ class AddEditMedicineViewModel(
     val errorCurrState: LiveData<String>
         get() = _errorCurrState
 
-    private val _formTitle = MutableLiveData<String>("Dodaj lek")
     private val _imageFile = MediatorLiveData<File>()
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
     private val _actionMedicineSaved = ActionLiveData()
@@ -55,9 +53,16 @@ class AddEditMedicineViewModel(
     private val _errorExpireDate = MutableLiveData<String>()
     private val _errorCurrState = MutableLiveData<String>()
 
-    private var editMedicineId: String? = null
+    private var editMedicineId = MutableLiveData<String>()
 
     init {
+        formTitle = Transformations.map(editMedicineId) {
+            if (it == null) {
+                "Dodaj lek"
+            } else {
+                "Edytuj lek"
+            }
+        }
         medicineUnitList = liveData {
             val list = getMedicineUnitsUseCase.execute()
             emit(list)
@@ -67,9 +72,8 @@ class AddEditMedicineViewModel(
     }
 
     fun setArgs(args: AddEditMedicineFragmentArgs) = viewModelScope.launch {
+        editMedicineId.postValue(args.editMedicineId)
         if (args.editMedicineId != null) {
-            _formTitle.postValue("Edytuj lek")
-            editMedicineId = args.editMedicineId
             getMedicineEditDataUseCase.execute(args.editMedicineId)?.let { editData ->
                 setEditData(editData)
             }
@@ -79,7 +83,7 @@ class AddEditMedicineViewModel(
     fun saveMedicine() = viewModelScope.launch {
         _loadingInProgress.postValue(true)
         val params = SaveMedicineUseCase.Params(
-            medicineId = editMedicineId,
+            medicineId = editMedicineId.value,
             name = medicineName.value,
             unit = medicineUnit.value,
             expireDate = expireDate.value,

@@ -21,6 +21,7 @@ class AddEditMedicinePlanViewModel(
     private val saveMedicinePlanUseCase: SaveMedicinePlanUseCase
 ) : ViewModel() {
 
+    val formTitle: LiveData<String>
     val colorPrimary: LiveData<String>
     val profileName: LiveData<String>
     val medicineName: LiveData<String>
@@ -32,8 +33,6 @@ class AddEditMedicinePlanViewModel(
 
     val medicineUnit: String?
         get() = medicineItem.value?.unit
-    val formTitle: LiveData<String>
-        get() = _formTitle
     val interval: LiveData<IntakeDays.Interval>
         get() = _interval
     val sequence: LiveData<IntakeDays.Sequence>
@@ -47,7 +46,6 @@ class AddEditMedicinePlanViewModel(
     val actionMedicinePlanSaved: LiveData<Boolean>
         get() = _actionMedicinePlanSaved
 
-    private val _formTitle = MutableLiveData<String>("Zaplanuj lek")
     private val _interval = MutableLiveData<IntakeDays.Interval>()
     private val _sequence = MutableLiveData<IntakeDays.Sequence>()
     private val _timeDoseList = MutableLiveData<List<TimeDose>>()
@@ -57,8 +55,16 @@ class AddEditMedicinePlanViewModel(
 
     private val profileItem = MutableLiveData<ProfileItem>()
     private val medicineItem = MutableLiveData<MedicineItem>()
+    private val editEntityId = MutableLiveData<String>()
 
     init {
+        formTitle = Transformations.map(editEntityId) {
+            if (it == null) {
+                "Zaplanuj lek"
+            } else {
+                "Edytuj plan"
+            }
+        }
         colorPrimary = Transformations.map(profileItem) { it.color }
         profileName = Transformations.map(profileItem) { it.name }
         medicineName = Transformations.map(medicineItem) { it.name }
@@ -111,7 +117,7 @@ class AddEditMedicinePlanViewModel(
     fun saveMedicinePlan() = viewModelScope.launch {
         _loadingInProgress.postValue(true)
         val params = SaveMedicinePlanUseCase.Params(
-            medicinePlanId = null,
+            medicinePlanId = editEntityId.value,
             profileId = profileItem.value?.profileId,
             medicineId = medicineItem.value?.medicineId,
             planType = planType.value,
@@ -137,6 +143,7 @@ class AddEditMedicinePlanViewModel(
     }
 
     fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
+        editEntityId.postValue(args.medicinePlanId)
         if (args.medicinePlanId != null) {
             val editData = getMedicinePlanEditDataUseCase.execute(args.medicinePlanId) ?: throw Exception("EditData not found")
             setEditData(editData)
