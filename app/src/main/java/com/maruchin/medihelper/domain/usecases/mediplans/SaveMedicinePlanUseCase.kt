@@ -6,6 +6,8 @@ import com.maruchin.medihelper.domain.model.MedicinePlanValidator
 import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
 import com.maruchin.medihelper.domain.repositories.MedicinePlanRepo
 import com.maruchin.medihelper.domain.utils.PlannedMedicineScheduler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class SaveMedicinePlanUseCase(
     private val medicinePlanRepo: MedicinePlanRepo,
@@ -13,7 +15,7 @@ class SaveMedicinePlanUseCase(
     private val plannedMedicineScheduler: PlannedMedicineScheduler,
     private val deviceCalendar: DeviceCalendar
 ) {
-    suspend fun execute(params: Params): MedicinePlanValidator {
+    suspend fun execute(params: Params): MedicinePlanValidator = withContext(Dispatchers.Default) {
         val validator = MedicinePlanValidator(
             profileId = params.profileId,
             medicineId = params.medicineId,
@@ -26,7 +28,7 @@ class SaveMedicinePlanUseCase(
         if (validator.noErrors) {
             saveMedicinePlanToRepo(params)
         }
-        return validator
+        return@withContext validator
     }
 
     private suspend fun saveMedicinePlanToRepo(params: Params) {

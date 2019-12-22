@@ -4,12 +4,14 @@ import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.model.MedicineValidator
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class SaveMedicineUseCase(
     private val medicineRepo: MedicineRepo
 ) {
-    suspend fun execute(params: Params): MedicineValidator {
+    suspend fun execute(params: Params): MedicineValidator = withContext(Dispatchers.Default) {
         val validator = MedicineValidator(
             name = params.name,
             unit = params.unit,
@@ -20,7 +22,7 @@ class SaveMedicineUseCase(
         if (validator.noErrors) {
             saveMedicineToRepo(params)
         }
-        return validator
+        return@withContext validator
     }
 
     private suspend fun saveMedicineToRepo(params: Params) {

@@ -8,16 +8,20 @@ import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineStateData
 import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class GetLiveAllMedicinesItemsUseCase(
     private val medicineRepo: MedicineRepo
 ) {
-    suspend fun execute(): LiveData<List<MedicineItem>> {
+    suspend fun execute(): LiveData<List<MedicineItem>> = withContext(Dispatchers.Default) {
         val allEntitiesLive = medicineRepo.getAllListLive()
-        return Transformations.switchMap(allEntitiesLive) { list ->
+        return@withContext Transformations.switchMap(allEntitiesLive) { list ->
             liveData {
-                val itemsList = list.map { MedicineItem(it) }
-                emit(itemsList)
+                withContext(Dispatchers.Default) {
+                    val itemsList = list.map { MedicineItem(it) }
+                    emit(itemsList)
+                }
             }
         }
     }

@@ -3,12 +3,14 @@ package com.maruchin.medihelper.domain.usecases.plannedmedicines
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ChangePlannedMedicineTakenUseCase(
     private val plannedMedicineRepo: PlannedMedicineRepo,
     private val medicineRepo: MedicineRepo
 ) {
-    suspend fun execute(plannedMedicineId: String) {
+    suspend fun execute(plannedMedicineId: String) = withContext(Dispatchers.Default) {
         plannedMedicineRepo.getById(plannedMedicineId)?.let { plannedMedicine ->
             val newStatus = when (plannedMedicine.status) {
                 PlannedMedicine.Status.NOT_TAKEN -> PlannedMedicine.Status.TAKEN
@@ -19,6 +21,7 @@ class ChangePlannedMedicineTakenUseCase(
 
             changeMedicineState(plannedMedicine.medicineId, newStatus, plannedMedicine.plannedDoseSize)
         }
+        return@withContext
     }
 
     private suspend fun changeMedicineState(medicineId: String, newStatus: PlannedMedicine.Status, doseSize: Float) {

@@ -6,7 +6,6 @@ import com.maruchin.medihelper.domain.repositories.MedicineRepo
 class SearchForMedicineInfoUseCase(
     private val medicineRepo: MedicineRepo
 ) {
-
     suspend fun execute(medicineName: String): List<MedicineInfoSearchResult> {
         return medicineRepo.searchForMedicineInfo(medicineName)
     }

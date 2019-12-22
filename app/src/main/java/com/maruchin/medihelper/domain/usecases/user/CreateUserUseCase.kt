@@ -5,13 +5,15 @@ import com.maruchin.medihelper.domain.entities.Profile
 import com.maruchin.medihelper.domain.entities.User
 import com.maruchin.medihelper.domain.repositories.ProfileRepo
 import com.maruchin.medihelper.domain.repositories.UserRepo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class CreateUserUseCase (
     private val userRepo: UserRepo,
     private val profileRepo: ProfileRepo
 ) {
 
-    suspend fun execute(params: Params) {
+    suspend fun execute(params: Params) = withContext(Dispatchers.Default) {
         val newUser = User(
             entityId = params.userId,
             userName = params.userName ?: "--",
@@ -26,6 +28,7 @@ class CreateUserUseCase (
             mainPerson = true
         )
         profileRepo.addNew(mainProfile)
+        return@withContext
     }
 
     data class Params(
