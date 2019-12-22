@@ -18,7 +18,8 @@ val plannedMedicineUseCaseModule = module {
     }
     factory {
         ChangePlannedMedicineTakenUseCase(
-            plannedMedicineRepo = get()
+            plannedMedicineRepo = get(),
+            medicineRepo = get()
         )
     }
     factory {

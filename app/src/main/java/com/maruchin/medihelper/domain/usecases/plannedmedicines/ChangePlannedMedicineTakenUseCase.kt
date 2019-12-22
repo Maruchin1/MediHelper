@@ -1,10 +1,12 @@
 package com.maruchin.medihelper.domain.usecases.plannedmedicines
 
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
+import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
 
 class ChangePlannedMedicineTakenUseCase(
-    private val plannedMedicineRepo: PlannedMedicineRepo
+    private val plannedMedicineRepo: PlannedMedicineRepo,
+    private val medicineRepo: MedicineRepo
 ) {
     suspend fun execute(plannedMedicineId: String) {
         plannedMedicineRepo.getById(plannedMedicineId)?.let { plannedMedicine ->
@@ -14,6 +16,18 @@ class ChangePlannedMedicineTakenUseCase(
             }
             plannedMedicine.status = newStatus
             plannedMedicineRepo.update(plannedMedicine)
+
+            changeMedicineState(plannedMedicine.medicineId, newStatus, plannedMedicine.plannedDoseSize)
         }
+    }
+
+    private suspend fun changeMedicineState(medicineId: String, newStatus: PlannedMedicine.Status, doseSize: Float) {
+        val medicine = medicineRepo.getById(medicineId)!!
+        if (newStatus == PlannedMedicine.Status.TAKEN) {
+            medicine.reduceCurrState(doseSize)
+        } else {
+            medicine.increaseCurrState(doseSize)
+        }
+        medicineRepo.update(medicine)
     }
 }
