@@ -27,7 +27,7 @@ class MedicineInfoViewModel(
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
 
     init {
-        noResults = Transformations.map(searchResults) { it.isNullOrEmpty() }
+        noResults = Transformations.map(searchResults) { it.isEmpty() }
     }
 
     fun setArgs(args: MedicineInfoDialogArgs) = viewModelScope.launch {
