@@ -87,6 +87,13 @@ fun setTextColor(textView: TextView, color: String?) {
     }
 }
 
+@BindingAdapter("android:textColor")
+fun setTextColor(textView: TextView, colorResId: Int?) {
+    if (colorResId != null && colorResId != 0) {
+        textView.setTextColor(ContextCompat.getColor(textView.context, colorResId))
+    }
+}
+
 @BindingAdapter("adapter")
 fun setMenuAdapter(autoCompleteTextView: AutoCompleteTextView, items: List<String>?) {
     if (items != null) {

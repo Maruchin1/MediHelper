@@ -29,7 +29,8 @@ data class MedicineStateData(
                         when {
                             it >= STATE_GOOD_LIMIT -> TEXT_STATE_GOOD
                             it > STATE_MEDIUM_LIMIT -> TEXT_STATE_MEDIUM
-                            else -> TEXT_STATE_SMALL
+                            it > 0 -> TEXT_STATE_SMALL
+                            else -> TEXT_STATE_EMPTY
                         }
                     },
                     numberText = "${currState}/${packageSize}"
@@ -42,5 +43,6 @@ data class MedicineStateData(
         private const val TEXT_STATE_GOOD = "Duży zapas"
         private const val TEXT_STATE_MEDIUM = "Średnia ilość"
         private const val TEXT_STATE_SMALL = "Blisko końca"
+        private const val TEXT_STATE_EMPTY = "Brak"
     }
 }
