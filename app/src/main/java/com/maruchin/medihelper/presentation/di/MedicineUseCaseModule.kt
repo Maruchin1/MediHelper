@@ -6,7 +6,8 @@ import org.koin.dsl.module
 val medicineUseCaseModule = module {
     factory {
         SaveMedicineUseCase(
-            medicineRepo = get()
+            medicineRepo = get(),
+            validator = get()
         )
     }
     factory {

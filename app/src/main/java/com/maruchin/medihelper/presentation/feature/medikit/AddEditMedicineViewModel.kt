@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.model.MedicineEditData
-import com.maruchin.medihelper.domain.model.MedicineValidator
+import com.maruchin.medihelper.domain.utils.MedicineValidator
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineUnitsUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.SaveMedicineUseCase
@@ -93,27 +93,27 @@ class AddEditMedicineViewModel(
             pictureName = pictureRef.value?.name,
             pictureFile = pictureFile.value
         )
-        val validator = saveMedicineUseCase.execute(params)
+        val errors = saveMedicineUseCase.execute(params)
         _loadingInProgress.postValue(false)
 
-        if (validator.noErrors) {
+        if (errors.noErrors) {
             _actionMedicineSaved.sendAction()
         } else {
-            postErrors(validator)
+            postErrors(errors)
         }
     }
 
-    private fun postErrors(validator: MedicineValidator) {
-        val medicineNameError = if (validator.emptyName) {
+    private fun postErrors(errors: MedicineValidator.Errors) {
+        val medicineNameError = if (errors.emptyName) {
             "Pole jest wymagane"
         } else null
-        val medicineUnitError = if (validator.emptyUnit) {
+        val medicineUnitError = if (errors.emptyUnit) {
             "Pole jest wymagane"
         } else null
-        val expireDateError = if (validator.emptyExpireDate) {
+        val expireDateError = if (errors.emptyExpireDate) {
             "Pole jest wymagene"
         } else null
-        val currStateError = if (validator.currStateBiggerThanPackageSize) {
+        val currStateError = if (errors.currStateBiggerThanPackageSize) {
             "Większe niż rozmiar opakowania"
         } else null
 

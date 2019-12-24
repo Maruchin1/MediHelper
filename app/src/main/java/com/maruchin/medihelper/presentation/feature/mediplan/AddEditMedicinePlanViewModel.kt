@@ -132,10 +132,10 @@ class AddEditMedicinePlanViewModel(
             },
             timeDoseList = timeDoseList.value
         )
-        val validator = saveMedicinePlanUseCase.execute(params)
+        val errors = saveMedicinePlanUseCase.execute(params)
         _loadingInProgress.postValue(false)
 
-        if (validator.noErrors) {
+        if (errors.noErrors) {
             _actionMedicinePlanSaved.sendAction()
         } else {
             //todo postErrors
@@ -145,7 +145,8 @@ class AddEditMedicinePlanViewModel(
     fun setArgs(args: AddEditMedicinePlanFragmentArgs) = viewModelScope.launch {
         editEntityId.postValue(args.medicinePlanId)
         if (args.medicinePlanId != null) {
-            val editData = getMedicinePlanEditDataUseCase.execute(args.medicinePlanId) ?: throw Exception("EditData not found")
+            val editData =
+                getMedicinePlanEditDataUseCase.execute(args.medicinePlanId) ?: throw Exception("EditData not found")
             setEditData(editData)
         } else {
             val profileId = args.profileId ?: throw Exception("ProfileId is null")

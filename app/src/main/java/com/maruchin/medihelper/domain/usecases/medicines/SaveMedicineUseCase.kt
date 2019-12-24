@@ -2,27 +2,30 @@ package com.maruchin.medihelper.domain.usecases.medicines
 
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
-import com.maruchin.medihelper.domain.model.MedicineValidator
+import com.maruchin.medihelper.domain.utils.MedicineValidator
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
 class SaveMedicineUseCase(
-    private val medicineRepo: MedicineRepo
+    private val medicineRepo: MedicineRepo,
+    private val validator: MedicineValidator
 ) {
-    suspend fun execute(params: Params): MedicineValidator = withContext(Dispatchers.Default) {
-        val validator = MedicineValidator(
+    suspend fun execute(params: Params): MedicineValidator.Errors = withContext(Dispatchers.Default) {
+        val validatorParams = MedicineValidator.Params(
             name = params.name,
             unit = params.unit,
             expireDate = params.expireDate,
             packageSize = params.packageSize,
             currState = params.currState
         )
-        if (validator.noErrors) {
+        val errors = validator.validate(validatorParams)
+
+        if (errors.noErrors) {
             saveMedicineToRepo(params)
         }
-        return@withContext validator
+        return@withContext errors
     }
 
     private suspend fun saveMedicineToRepo(params: Params) {

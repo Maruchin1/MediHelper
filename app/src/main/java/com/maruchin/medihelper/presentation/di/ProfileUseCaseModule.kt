@@ -26,7 +26,8 @@ val profileUseCaseModule = module {
     }
     factory {
         SaveProfileUseCase(
-            profileRepo = get()
+            profileRepo = get(),
+            validator = get()
         )
     }
     factory {

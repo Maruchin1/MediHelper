@@ -2,7 +2,7 @@ package com.maruchin.medihelper.domain.usecases.mediplans
 
 import com.maruchin.medihelper.domain.deviceapi.DeviceCalendar
 import com.maruchin.medihelper.domain.entities.*
-import com.maruchin.medihelper.domain.model.MedicinePlanValidator
+import com.maruchin.medihelper.domain.utils.MedicinePlanValidator
 import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
 import com.maruchin.medihelper.domain.repositories.MedicinePlanRepo
 import com.maruchin.medihelper.domain.utils.PlannedMedicineScheduler
@@ -13,10 +13,11 @@ class SaveMedicinePlanUseCase(
     private val medicinePlanRepo: MedicinePlanRepo,
     private val plannedMedicineRepo: PlannedMedicineRepo,
     private val plannedMedicineScheduler: PlannedMedicineScheduler,
-    private val deviceCalendar: DeviceCalendar
+    private val deviceCalendar: DeviceCalendar,
+    private val validator: MedicinePlanValidator
 ) {
-    suspend fun execute(params: Params): MedicinePlanValidator = withContext(Dispatchers.Default) {
-        val validator = MedicinePlanValidator(
+    suspend fun execute(params: Params): MedicinePlanValidator.Errors = withContext(Dispatchers.Default) {
+        val validatorParams = MedicinePlanValidator.Params(
             profileId = params.profileId,
             medicineId = params.medicineId,
             planType = params.planType,
@@ -25,10 +26,12 @@ class SaveMedicinePlanUseCase(
             intakeDays = params.intakeDays,
             timeDoseList = params.timeDoseList
         )
-        if (validator.noErrors) {
+        val errors = validator.validate(validatorParams)
+
+        if (errors.noErrors) {
             saveMedicinePlanToRepo(params)
         }
-        return@withContext validator
+        return@withContext errors
     }
 
     private suspend fun saveMedicinePlanToRepo(params: Params) {
