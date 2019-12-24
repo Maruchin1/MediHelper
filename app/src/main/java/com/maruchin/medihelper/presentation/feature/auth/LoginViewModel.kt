@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maruchin.medihelper.domain.usecases.user.SignInUseCase
+import com.maruchin.medihelper.domain.utils.SignInValidator
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import kotlinx.coroutines.launch
 
@@ -19,21 +20,42 @@ class LoginViewModel(
         get() = _loadingInProgress
     val actionSignInSuccessful: LiveData<Boolean>
         get() = _actionSignInSuccessful
+    val errorEmail: LiveData<String>
+        get() = _errorEmail
+    val errorPassword: LiveData<String>
+        get() = _errorPassword
 
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
     private val _actionSignInSuccessful = ActionLiveData()
+    private val _errorEmail = MutableLiveData<String>()
+    private val _errorPassword = MutableLiveData<String>()
 
     fun signIn() = viewModelScope.launch {
         _loadingInProgress.postValue(true)
 
-        val email = email.value!!
-        val password = password.value!!
-
-        val success = signInUseCase.execute(email, password)
+        val params = SignInUseCase.Params(
+            email = email.value,
+            password = password.value
+        )
+        val errors = signInUseCase.execute(params)
 
         _loadingInProgress.postValue(false)
-        if (success) {
+        if (errors.noErrors) {
             _actionSignInSuccessful.sendAction()
+        } else {
+            postErrors(errors)
         }
+    }
+
+    private fun postErrors(errors: SignInValidator.Errors) {
+        val emailError = if (errors.emptyEmail) {
+            "Nie podano adresu e-mail"
+        } else null
+        val passwordError = if (errors.emptyPassword) {
+            "Nie podano hasła"
+        } else null
+
+        _errorEmail.postValue(emailError)
+        _errorPassword.postValue(passwordError)
     }
 }

@@ -7,7 +7,8 @@ import org.koin.dsl.module
 val userUseCaseModule = module {
     factory {
         SignInUseCase(
-            userRepo = get()
+            userRepo = get(),
+            validator = get()
         )
     }
     factory {
