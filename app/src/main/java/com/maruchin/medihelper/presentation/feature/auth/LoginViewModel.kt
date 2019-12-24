@@ -19,14 +19,14 @@ class LoginViewModel(
     val loadingInProgress: LiveData<Boolean>
         get() = _loadingInProgress
     val actionSignInSuccessful: LiveData<Boolean>
-        get() = _actionSignInSuccessful
+        get() = _actionSignInSuccess
     val errorEmail: LiveData<String>
         get() = _errorEmail
     val errorPassword: LiveData<String>
         get() = _errorPassword
 
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
-    private val _actionSignInSuccessful = ActionLiveData()
+    private val _actionSignInSuccess = ActionLiveData()
     private val _errorEmail = MutableLiveData<String>()
     private val _errorPassword = MutableLiveData<String>()
 
@@ -41,7 +41,7 @@ class LoginViewModel(
 
         _loadingInProgress.postValue(false)
         if (errors.noErrors) {
-            _actionSignInSuccessful.sendAction()
+            _actionSignInSuccess.sendAction()
         } else {
             postErrors(errors)
         }

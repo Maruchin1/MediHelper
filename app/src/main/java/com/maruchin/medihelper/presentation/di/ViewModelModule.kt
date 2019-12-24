@@ -9,6 +9,7 @@ import com.maruchin.medihelper.presentation.feature.profiles.ProfileViewModel
 import com.maruchin.medihelper.presentation.feature.medikit.*
 import com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel
 import com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsViewModel
+import com.maruchin.medihelper.presentation.feature.options.OptionsViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.AddEditProfileViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -102,6 +103,11 @@ val viewModelModule = module {
     viewModel {
         LoginViewModel(
             signInUseCase = get()
+        )
+    }
+    viewModel {
+        OptionsViewModel(
+            signOutUseCase = get()
         )
     }
 }

@@ -98,6 +98,9 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out_end" />
+        <action
+            android:id="@+id/toAddEditProfileFragment"
+            app:destination="@id/addEditProfileFragment" />
     </fragment>
     <dialog
         android:id="@+id/plannedMedicineOptionsDialog"
@@ -126,11 +129,11 @@
         android:id="@+id/profileDialog"
         android:name="com.maruchin.medihelper.presentation.feature.profiles.ProfileDialog"
         android:label="ProfileDialog"
-        tools:layout="@layout/dialog_profile"/>
+        tools:layout="@layout/dialog_profile" />
     <fragment
         android:id="@+id/addEditMedicinePlanFragment"
         android:name="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanFragment"
-        tools:layout="@layout/fragment_add_edit_medicine_plan" >
+        tools:layout="@layout/fragment_add_edit_medicine_plan">
         <argument
             android:name="profileId"
             app:argType="string"
@@ -147,7 +150,7 @@
     <fragment
         android:id="@+id/medicinePlanDetailsFragment"
         android:name="com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsFragment"
-        tools:layout="@layout/fragment_medicine_plan_details" >
+        tools:layout="@layout/fragment_medicine_plan_details">
         <argument
             android:name="medicinePlanId"
             app:argType="string" />
@@ -166,4 +169,9 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out_end" />
     </fragment>
+    <fragment
+        android:id="@+id/optionsFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.options.OptionsFragment"
+        android:label="OptionsFragment"
+        tools:layout="@layout/fragment_options" />
 </navigation>

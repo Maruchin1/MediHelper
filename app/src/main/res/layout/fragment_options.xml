@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.maruchin.medihelper.presentation.feature.options.OptionsFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.maruchin.medihelper.presentation.feature.options.OptionsViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/appbar_height"
+            android:background="@drawable/bg_appbar_round"
+            android:theme="@style/ThemeOverlay.MediHelper.Appbar">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:title="Opcje" />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:paddingBottom="@dimen/appbar_height"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MediHelper.CardView.Big"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/list_card_margin_horizontal"
+                    android:layout_marginTop="@dimen/list_card_layout_margin_top"
+                    android:layout_marginEnd="@dimen/list_card_margin_horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/list_card_layout_margin_horizontal"
+                            android:layout_marginTop="@dimen/list_card_layout_margin_top"
+                            android:layout_marginEnd="@dimen/list_card_layout_margin_horizontal"
+                            android:layout_marginBottom="@dimen/list_card_layout_margin_bot"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    android:src="@drawable/baseline_account_circle_24"
+                                    android:tint="@color/colorPrimary" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:text="Konto użytkownika"
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/bottom_dialog_option_height"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:onClick="@{() -> handler.onClickSignOut()}"
+                            android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
+                            android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/bottom_dialog_option_icon_size"
+                                android:layout_height="@dimen/bottom_dialog_option_icon_size"
+                                android:src="@drawable/baseline_exit_to_app_24"
+                                android:tint="@color/colorBlack" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
+                                android:text="Wyloguj się"
+                                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

@@ -9,7 +9,7 @@ class SignInValidator {
             errors.emptyEmail = true
         }
         if (params.password.isNullOrEmpty()) {
-            errors.emptyPassword
+            errors.emptyPassword = true
         }
         return errors
     }
@@ -26,7 +26,7 @@ class SignInValidator {
         val noErrors: Boolean
             get() = arrayOf(
                 emptyEmail,
-                emptyEmail
-            ).any { it }
+                emptyPassword
+            ).all { !it }
     }
 }
