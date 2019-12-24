@@ -1,5 +1,6 @@
 package com.maruchin.medihelper.presentation.di
 
+import com.maruchin.medihelper.domain.usecases.user.IsUserSignedInUseCase
 import com.maruchin.medihelper.domain.usecases.user.SignInUseCase
 import com.maruchin.medihelper.domain.usecases.user.SignUpUseCase
 import org.koin.dsl.module
@@ -15,6 +16,11 @@ val userUseCaseModule = module {
         SignUpUseCase(
             userRepo = get(),
             profileRepo = get()
+        )
+    }
+    factory {
+        IsUserSignedInUseCase(
+            userRepo = get()
         )
     }
 }

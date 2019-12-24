@@ -9,12 +9,13 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentLogoBinding
-import com.maruchin.medihelper.presentation.LauncherActivity
+import com.maruchin.medihelper.domain.usecases.user.IsUserSignedInUseCase
 import com.maruchin.medihelper.presentation.framework.BaseLauncherFragment
-import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import kotlinx.android.synthetic.main.fragment_logo.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import kotlin.math.sign
 
 class LogoFragment : BaseLauncherFragment<FragmentLogoBinding>(R.layout.fragment_logo) {
 
@@ -23,20 +24,27 @@ class LogoFragment : BaseLauncherFragment<FragmentLogoBinding>(R.layout.fragment
         private const val ANIM_TIME = 1000L
     }
 
+    private val isUserSignedInUseCase: IsUserSignedInUseCase by inject()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
+            val signedIn = isUserSignedInUseCase.execute()
+
             delay(LOGO_TIME)
-            super.setLightStatusBar()
-            circularHideBackground()
-        }
-        lifecycleScope.launch {
-            delay(LOGO_TIME + ANIM_TIME)
-            navigateToWelcomeFragment()
+            if (signedIn) {
+                super.launcherActivity.startMainActivity()
+            } else {
+                super.setLightStatusBar()
+                circularHideBackground()
+
+                delay(ANIM_TIME)
+                navigateToLoginFragment()
+            }
         }
     }
 
-    private fun navigateToWelcomeFragment() {
+    private fun navigateToLoginFragment() {
         val extras = FragmentNavigatorExtras(
             card_logo to "card_logo_login"
         )

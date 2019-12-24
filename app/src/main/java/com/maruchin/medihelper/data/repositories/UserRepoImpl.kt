@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.maruchin.medihelper.data.framework.FirestoreRepo
+import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.data.mappers.UserMapper
 import com.maruchin.medihelper.domain.entities.User
 import com.maruchin.medihelper.domain.repositories.UserRepo
@@ -30,5 +31,9 @@ class UserRepoImpl(
 
     override suspend fun signOut() {
         auth.signOut()
+    }
+
+    override suspend fun getCurrUserId(): String? {
+        return auth.currentUser?.uid
     }
 }
