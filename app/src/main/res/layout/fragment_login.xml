@@ -7,6 +7,10 @@
         <variable
             name="handler"
             type="com.maruchin.medihelper.presentation.feature.auth.LoginFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.maruchin.medihelper.presentation.feature.auth.LoginViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -41,10 +45,10 @@
                         android:id="@+id/card_logo"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
+                        android:transitionName="card_logo_login"
                         app:cardBackgroundColor="@color/colorPrimary"
                         app:cardCornerRadius="50dp"
-                        app:cardElevation="0dp"
-                        android:transitionName="card_logo_login">
+                        app:cardElevation="0dp">
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -89,7 +93,8 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress" />
+                            android:inputType="textEmailAddress"
+                            android:text="@={viewModel.email}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -103,7 +108,8 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPassword" />
+                            android:inputType="textPassword"
+                            android:text="@={viewModel.password}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
@@ -138,6 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="32dp"
+                    android:onClick="@{() -> handler.onClickSignIn()}"
                     android:text="Zaloguj"
                     app:layout_constraintBottom_toTopOf="@id/txv_app_version" />
 

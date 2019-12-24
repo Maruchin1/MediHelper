@@ -16,7 +16,7 @@ import com.maruchin.medihelper.presentation.dialogs.SelectDateDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectFloatNumberDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectNumberDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectTimeDialog
-import com.maruchin.medihelper.presentation.framework.BaseFragment
+import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import com.maruchin.medihelper.presentation.framework.BaseRecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.BaseViewHolder
 import com.maruchin.medihelper.presentation.framework.shrinkOnScroll
@@ -26,7 +26,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddEditMedicinePlanFragment :
-    BaseFragment<FragmentAddEditMedicinePlanBinding>(R.layout.fragment_add_edit_medicine_plan) {
+    BaseMainFragment<FragmentAddEditMedicinePlanBinding>(R.layout.fragment_add_edit_medicine_plan) {
 
     private val viewModel: AddEditMedicinePlanViewModel by viewModel()
     private val args: AddEditMedicinePlanFragmentArgs by navArgs()

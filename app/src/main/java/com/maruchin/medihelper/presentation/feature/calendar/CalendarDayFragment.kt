@@ -2,14 +2,12 @@ package com.maruchin.medihelper.presentation.feature.calendar
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.transition.TransitionManager
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarDayBinding
@@ -19,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_calendar_day.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class CalendarDayFragment : BaseFragment<FragmentCalendarDayBinding>(R.layout.fragment_calendar_day) {
+class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layout.fragment_calendar_day) {
     private val TAG = CalendarDayFragment::class.simpleName
 
     lateinit var date: AppDate

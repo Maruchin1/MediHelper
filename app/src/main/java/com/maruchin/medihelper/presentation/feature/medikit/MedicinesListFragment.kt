@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.rec_item_medicine.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MedicinesListFragment : BaseMainFragment<FragmentMedicinesListBinding>(R.layout.fragment_medicines_list) {
+class MedicinesListFragment : BaseHomeFragment<FragmentMedicinesListBinding>(R.layout.fragment_medicines_list) {
     private val TAG = "MedicinesListFragment"
 
     private val viewModel: MedicinesListViewModel by viewModel()

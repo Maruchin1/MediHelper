@@ -10,7 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarBinding
 import com.maruchin.medihelper.presentation.feature.profiles.ProfileDialog
-import com.maruchin.medihelper.presentation.framework.BaseMainFragment
+import com.maruchin.medihelper.presentation.framework.BaseHomeFragment
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.fragment_calendar.*
@@ -18,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 
-class CalendarFragment : BaseMainFragment<FragmentCalendarBinding>(R.layout.fragment_calendar) {
+class CalendarFragment : BaseHomeFragment<FragmentCalendarBinding>(R.layout.fragment_calendar) {
     private val TAG = "CalendarFragment"
 
     private val viewModel: CalendarViewModel by viewModel()

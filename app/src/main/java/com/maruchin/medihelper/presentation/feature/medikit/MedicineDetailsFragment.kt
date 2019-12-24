@@ -23,7 +23,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MedicineDetailsFragment : BaseFragment<FragmentMedicineDetailsBinding>(R.layout.fragment_medicine_details) {
+class MedicineDetailsFragment : BaseMainFragment<FragmentMedicineDetailsBinding>(R.layout.fragment_medicine_details) {
 
     companion object {
         private const val TRANSITION_DURATION = 300L

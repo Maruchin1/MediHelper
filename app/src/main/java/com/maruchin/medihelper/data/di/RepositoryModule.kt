@@ -1,6 +1,5 @@
 package com.maruchin.medihelper.data.di
 
-import com.maruchin.medihelper.data.mappers.UserMapper
 import com.maruchin.medihelper.data.repositories.*
 import com.maruchin.medihelper.domain.repositories.*
 import org.koin.dsl.module
@@ -9,6 +8,7 @@ val repositoryModule = module {
     single {
         UserRepoImpl(
             db = get(),
+            auth = get(),
             mapper = get()
         ) as UserRepo
     }

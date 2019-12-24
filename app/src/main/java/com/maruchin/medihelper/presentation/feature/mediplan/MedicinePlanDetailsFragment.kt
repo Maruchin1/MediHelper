@@ -15,7 +15,7 @@ import com.maruchin.medihelper.databinding.FragmentMedicinePlanDetailsBinding
 import com.maruchin.medihelper.domain.entities.TimeDose
 import com.maruchin.medihelper.domain.model.HistoryItem
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
-import com.maruchin.medihelper.presentation.framework.BaseFragment
+import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import com.maruchin.medihelper.presentation.framework.BaseRecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.BaseViewHolder
 import com.maruchin.medihelper.presentation.framework.beginDelayedTransition
@@ -26,7 +26,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MedicinePlanDetailsFragment :
-    BaseFragment<FragmentMedicinePlanDetailsBinding>(R.layout.fragment_medicine_plan_details) {
+    BaseMainFragment<FragmentMedicinePlanDetailsBinding>(R.layout.fragment_medicine_plan_details) {
 
     private val viewModel: MedicinePlanDetailsViewModel by viewModel()
     private val args: MedicinePlanDetailsFragmentArgs by navArgs()

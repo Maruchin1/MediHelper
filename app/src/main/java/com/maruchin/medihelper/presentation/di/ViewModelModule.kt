@@ -101,7 +101,7 @@ val viewModelModule = module {
     }
     viewModel {
         LoginViewModel(
-
+            signInUseCase = get()
         )
     }
 }

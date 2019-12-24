@@ -10,25 +10,24 @@ import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentLogoBinding
 import com.maruchin.medihelper.presentation.LauncherActivity
-import com.maruchin.medihelper.presentation.framework.BaseFragment
+import com.maruchin.medihelper.presentation.framework.BaseLauncherFragment
+import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import kotlinx.android.synthetic.main.fragment_logo.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class LogoFragment : BaseFragment<FragmentLogoBinding>(R.layout.fragment_logo) {
+class LogoFragment : BaseLauncherFragment<FragmentLogoBinding>(R.layout.fragment_logo) {
 
     companion object {
         private const val LOGO_TIME = 300L
         private const val ANIM_TIME = 1000L
     }
 
-    private val launcherActivity: LauncherActivity by lazy { requireActivity() as LauncherActivity }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
             delay(LOGO_TIME)
-            launcherActivity.setLightStatusBar()
+            super.setLightStatusBar()
             circularHideBackground()
         }
         lifecycleScope.launch {

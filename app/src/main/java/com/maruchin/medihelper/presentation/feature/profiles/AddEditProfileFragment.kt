@@ -13,7 +13,7 @@ import com.maruchin.medihelper.presentation.framework.*
 import kotlinx.android.synthetic.main.fragment_add_edit_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AddEditProfileFragment : BaseFragment<FragmentAddEditProfileBinding>(R.layout.fragment_add_edit_profile) {
+class AddEditProfileFragment : BaseMainFragment<FragmentAddEditProfileBinding>(R.layout.fragment_add_edit_profile) {
 
     private val viewModel: AddEditProfileViewModel by viewModel()
     private val args: AddEditProfileFragmentArgs by navArgs()

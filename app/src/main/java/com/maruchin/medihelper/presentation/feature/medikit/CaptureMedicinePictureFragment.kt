@@ -6,14 +6,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCaptureMedicinePictureBinding
-import com.maruchin.medihelper.device.camera.CameraPermission
-import com.maruchin.medihelper.presentation.framework.BaseFragment
+import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import com.maruchin.medihelper.device.camera.DeviceCamera
 import kotlinx.android.synthetic.main.fragment_capture_medicine_picture.*
 import org.koin.android.ext.android.inject
 
 class CaptureMedicinePictureFragment :
-    BaseFragment<FragmentCaptureMedicinePictureBinding>(R.layout.fragment_capture_medicine_picture) {
+    BaseMainFragment<FragmentCaptureMedicinePictureBinding>(R.layout.fragment_capture_medicine_picture) {
 
     private val deviceCamera: DeviceCamera by inject()
 
