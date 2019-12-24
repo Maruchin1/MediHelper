@@ -110,6 +110,12 @@
         <item name="iconGravity">textStart</item>
     </style>
 
+    <style name="Widget.MediHelper.Button.Big" parent="Widget.MediHelper.Button">
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="cornerRadius">26dp</item>
+    </style>
+
     <style name="Widget.MediHelper.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="cornerRadius">20dp</item>
         <item name="strokeColor">@color/colorDarkerGray</item>

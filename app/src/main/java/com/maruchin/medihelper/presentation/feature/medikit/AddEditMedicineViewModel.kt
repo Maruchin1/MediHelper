@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.presentation.feature.medikit
 
 import androidx.lifecycle.*
+import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.model.MedicineEditData
 import com.maruchin.medihelper.domain.model.MedicineValidator
@@ -28,10 +29,11 @@ class AddEditMedicineViewModel(
     val medicineUnit = MutableLiveData<String>()
     val expireDate = MutableLiveData<AppExpireDate>()
     val packageSize = MutableLiveData<Float>(0f)
-    val currState = MediatorLiveData<Float>()
+    val currState = MutableLiveData<Float>(0f)
+    val pictureFile: LiveData<File>
 
-    val imageFile: LiveData<File>
-        get() = _imageFile
+    val pictureRef: LiveData<StorageReference>
+        get() = _pictureRef
     val loadingInProgress: LiveData<Boolean>
         get() = _loadingInProgress
     val actionMedicineSaved: LiveData<Boolean>
@@ -45,7 +47,7 @@ class AddEditMedicineViewModel(
     val errorCurrState: LiveData<String>
         get() = _errorCurrState
 
-    private val _imageFile = MediatorLiveData<File>()
+    private val _pictureRef = MutableLiveData<StorageReference>()
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
     private val _actionMedicineSaved = ActionLiveData()
     private val _errorMedicineName = MutableLiveData<String>()
@@ -67,8 +69,7 @@ class AddEditMedicineViewModel(
             val list = getMedicineUnitsUseCase.execute()
             emit(list)
         }
-        currState.addSource(packageSize) { currState.postValue(it) }
-        _imageFile.addSource(deviceCamera.resultFile) { _imageFile.postValue(it) }
+        pictureFile = deviceCamera.resultFile
     }
 
     fun setArgs(args: AddEditMedicineFragmentArgs) = viewModelScope.launch {
@@ -89,7 +90,8 @@ class AddEditMedicineViewModel(
             expireDate = expireDate.value,
             packageSize = packageSize.value,
             currState = currState.value,
-            pictureFile = imageFile.value
+            pictureName = pictureRef.value?.name,
+            pictureFile = pictureFile.value
         )
         val validator = saveMedicineUseCase.execute(params)
         _loadingInProgress.postValue(false)
@@ -127,6 +129,8 @@ class AddEditMedicineViewModel(
         expireDate.postValue(editData.expireDate)
         packageSize.postValue(editData.packageSize)
         currState.postValue(editData.currState)
-//        _imageFile.postValue(picturesRef.get(editData.pictureName))
+        editData.pictureName?.let {
+            _pictureRef.postValue(picturesRef.get(it))
+        }
     }
 }

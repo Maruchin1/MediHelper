@@ -216,10 +216,10 @@
                                 android:layout_marginEnd="8dp"
                                 android:layout_weight="1"
                                 android:hint="Aktualna"
-                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/txv_curr_state_package_size_divider"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toStartOf="@id/txv_curr_state_package_size_divider">
+                                app:layout_constraintTop_toTopOf="parent">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/etx_curr_state"
@@ -236,10 +236,10 @@
                                 android:layout_marginEnd="8dp"
                                 android:text="/"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
-                                app:layout_constraintStart_toEndOf="@id/in_lay_curr_state"
-                                app:layout_constraintTop_toTopOf="@id/in_lay_package_size"
                                 app:layout_constraintBottom_toBottomOf="@id/in_lay_package_size"
-                                app:layout_constraintEnd_toStartOf="@id/in_lay_package_size"/>
+                                app:layout_constraintEnd_toStartOf="@id/in_lay_package_size"
+                                app:layout_constraintStart_toEndOf="@id/in_lay_curr_state"
+                                app:layout_constraintTop_toTopOf="@id/in_lay_package_size" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/in_lay_package_size"
@@ -249,9 +249,9 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_weight="1"
                                 android:hint="Całkowita"
-                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@id/txv_curr_state_package_size_divider">
+                                app:layout_constraintStart_toEndOf="@id/txv_curr_state_package_size_divider"
+                                app:layout_constraintTop_toTopOf="parent">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/etx_package_size"
@@ -302,7 +302,24 @@
                             android:focusable="true"
                             android:onClick="@{() -> handler.onClickTakePhoto()}"
                             android:scaleType="center"
-                            android:src='@{viewModel.imageFile, default="@drawable/baseline_add_a_photo_black_48"}'
+                            android:src='@{viewModel.pictureFile, default="@drawable/baseline_add_a_photo_black_48"}'
+                            android:visibility="@{viewModel.pictureFile != null}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintDimensionRatio="4:3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:onClick="@{() -> handler.onClickTakePhoto()}"
+                            android:scaleType="center"
+                            android:src='@{viewModel.pictureRef, default="@drawable/baseline_add_a_photo_black_48"}'
+                            android:visibility="@{viewModel.pictureFile == null}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintDimensionRatio="4:3"
                             app:layout_constraintEnd_toEndOf="parent"

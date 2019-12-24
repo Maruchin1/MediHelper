@@ -1,16 +1,14 @@
 package com.maruchin.medihelper.presentation
 
-import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
+import android.view.View
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.domain.usecases.user.CreateUserUseCase
 import com.maruchin.medihelper.presentation.framework.BaseActivity
-import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 
 class LauncherActivity : BaseActivity() {
@@ -27,57 +25,22 @@ class LauncherActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launcher)
 
-        Handler().postDelayed({
-            if (isUserAuthenticated()) startMainActivity() else startAuthActivity()
-        }, LOGO_TIME)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_AUTH) {
-            val response = IdpResponse.fromResultIntent(data)
-            if (resultCode == Activity.RESULT_OK) {
-                auth.currentUser?.let { currUser ->
-//                    val params = CreateUserUseCase.Params(
-//                        userId = currUser.uid,
-//                        userName = currUser.displayName,
-//                        email = currUser.email
-//                    )
-//                    runBlocking {
-//                        createUserUseCase.execute(params)
-//                    }
-                    startMainActivity()
-                }
-            } else {
-                //todo niepowodzenie uwierzytelniania
-            }
-        }
-    }
-
-    private fun isUserAuthenticated(): Boolean {
-        return auth.currentUser != null
-    }
-
-    private fun startAuthActivity() {
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.AnonymousBuilder().build()
-        )
-        startActivityForResult(
-            AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setIsSmartLockEnabled(false)
-                .setAvailableProviders(providers)
-                .setLogo(R.mipmap.ic_launcher_round)
-                .build(),
-            RC_AUTH
-        )
+        setTransparentStatusBar()
     }
 
     fun startMainActivity() {
         val mainActivityIntent = Intent(this, MainActivity::class.java)
         startActivity(mainActivityIntent)
         finish()
+    }
+
+    fun setLightStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+    }
+
+    private fun setTransparentStatusBar() {
+        window?.statusBarColor = ContextCompat.getColor(this, R.color.colorTransparent)
     }
 }

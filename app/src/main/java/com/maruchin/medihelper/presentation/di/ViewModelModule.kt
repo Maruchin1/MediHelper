@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.presentation.di
 
 import com.maruchin.medihelper.presentation.feature.alarm.AlarmViewModel
+import com.maruchin.medihelper.presentation.feature.auth.LoginViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.CalendarDayViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.CalendarViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOptionsViewModel
@@ -96,6 +97,11 @@ val viewModelModule = module {
             getMedicinePlanDetailsUseCase = get(),
             getMedicinePlanHistoryUseCase = get(),
             deleteMedicinePlanUseCase = get()
+        )
+    }
+    viewModel {
+        LoginViewModel(
+
         )
     }
 }
