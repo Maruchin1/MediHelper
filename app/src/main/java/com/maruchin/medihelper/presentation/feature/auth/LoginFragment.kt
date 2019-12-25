@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.transition.Fade
 import androidx.transition.TransitionInflater
 import androidx.transition.TransitionSet
@@ -20,6 +21,10 @@ class LoginFragment : BaseLauncherFragment<FragmentLoginBinding>(R.layout.fragme
 
     private val viewModel: LoginViewModel by viewModel()
     private val loadingScreen: LoadingScreen by inject()
+
+    fun onClickRegister() {
+        findNavController().navigate(LoginFragmentDirections.toRegisterFragment())
+    }
 
     fun onClickSignIn() {
         viewModel.signIn()
@@ -46,6 +51,7 @@ class LoginFragment : BaseLauncherFragment<FragmentLoginBinding>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        super.setStatusBarColor(R.color.colorBackground)
         loadingScreen.bind(this, viewModel.loadingInProgress)
         observeViewModel()
     }

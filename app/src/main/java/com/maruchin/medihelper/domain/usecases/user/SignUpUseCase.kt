@@ -5,20 +5,32 @@ import com.maruchin.medihelper.domain.entities.Profile
 import com.maruchin.medihelper.domain.entities.User
 import com.maruchin.medihelper.domain.repositories.ProfileRepo
 import com.maruchin.medihelper.domain.repositories.UserRepo
+import com.maruchin.medihelper.domain.utils.SignUpValidator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class SignUpUseCase(
     private val userRepo: UserRepo,
-    private val profileRepo: ProfileRepo
+    private val profileRepo: ProfileRepo,
+    private val validator: SignUpValidator
 ) {
-    suspend fun execute(email: String, password: String, userName: String): Boolean = withContext(Dispatchers.Default) {
-        val userId = userRepo.signUp(email, password) ?: return@withContext false
+    suspend fun execute(params: Params): SignUpValidator.Errors = withContext(Dispatchers.Default) {
+        val validatorParams = SignUpValidator.Params(
+            email = params.email,
+            password = params.password,
+            passwordConfirm = params.passwordConfirm,
+            userName = params.userName
+        )
+        val errors = validator.validate(validatorParams)
 
-        addUserEntity(userId, userName, email)
-        addUserMainProfile(userName)
+        if (errors.noErrors) {
+            val userId = userRepo.signUp(params.email!!, params.password!!)
 
-        return@withContext true
+            addUserEntity(userId!!, params.userName!!, params.email)
+            addUserMainProfile(params.userName)
+        }
+
+        return@withContext errors
     }
 
     private suspend fun addUserEntity(userId: String, userName: String, email: String) {
@@ -39,4 +51,11 @@ class SignUpUseCase(
         )
         profileRepo.addNew(mainProfile)
     }
+
+    data class Params(
+        val email: String?,
+        val password: String?,
+        val passwordConfirm: String?,
+        val userName: String?
+    )
 }

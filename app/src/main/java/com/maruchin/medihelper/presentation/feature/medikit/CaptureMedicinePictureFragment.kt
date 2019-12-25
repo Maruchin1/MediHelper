@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCaptureMedicinePictureBinding
 import com.maruchin.medihelper.presentation.framework.BaseMainFragment
@@ -23,7 +24,7 @@ class CaptureMedicinePictureFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         deviceCamera.bindCameraPreview(viewLifecycleOwner, texture_view)
-        super.setupToolbarNavigation()
+        toolbar.setupWithNavController(findNavController())
         super.setStatusBarColor(R.color.colorBlack)
 
         deviceCamera.actionPictureTaken.observe(viewLifecycleOwner, Observer {

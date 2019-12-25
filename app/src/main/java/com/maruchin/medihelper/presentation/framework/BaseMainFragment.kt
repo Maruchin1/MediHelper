@@ -50,9 +50,4 @@ abstract class BaseMainFragment<T : ViewDataBinding>(layoutResId: Int) : BaseFra
     protected fun setStatusBarColor(colorId: Int) {
         mainActivity.window?.statusBarColor = ContextCompat.getColor(requireContext(), colorId)
     }
-
-    protected fun setupToolbarNavigation() {
-        val toolbar = view?.findViewById<Toolbar>(R.id.toolbar)
-        toolbar?.setupWithNavController(findNavController())
-    }
 }

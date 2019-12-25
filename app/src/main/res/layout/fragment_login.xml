@@ -16,6 +16,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorBackground"
         android:fitsSystemWindows="true">
 
         <androidx.core.widget.NestedScrollView
@@ -81,7 +82,7 @@
                     android:layout_margin="32dp"
                     android:gravity="center"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@id/btn_login"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/lay_logo">
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -134,34 +135,21 @@
                             android:background="?selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"
+                            android:onClick="@{() -> handler.onClickRegister()}"
                             android:text="Zarejestruj"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                             android:textColor="@color/colorPrimary" />
                     </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_login"
+                        style="@style/Widget.MediHelper.Button.Big"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="48dp"
+                        android:onClick="@{() -> handler.onClickSignIn()}"
+                        android:text="Zaloguj" />
                 </LinearLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_login"
-                    style="@style/Widget.MediHelper.Button.Big"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="32dp"
-                    android:onClick="@{() -> handler.onClickSignIn()}"
-                    android:text="Zaloguj"
-                    app:layout_constraintBottom_toTopOf="@id/txv_app_version" />
-
-
-                <TextView
-                    android:id="@+id/txv_app_version"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/version"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                    android:textColor="@color/colorTextTertiary"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

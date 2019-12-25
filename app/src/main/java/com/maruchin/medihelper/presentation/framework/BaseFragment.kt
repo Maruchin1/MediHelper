@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.maruchin.medihelper.BR
 import com.maruchin.medihelper.MainApplication
+import com.maruchin.medihelper.R
 
 abstract class BaseFragment<T : ViewDataBinding>(private val layoutResId: Int) : Fragment() {
 

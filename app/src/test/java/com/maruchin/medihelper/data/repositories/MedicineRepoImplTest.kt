@@ -25,40 +25,40 @@ class MedicineRepoImplTest {
 
     private val repo: MedicineRepo by lazy { MedicineRepoImpl(db, auth, storage, sharedPref, mapper) }
 
-    @Test
-    fun searchMedicineInfo_ResultFound() {
-        val medicineName = "hitaxa"
-
-        val result = runBlocking {
-            repo.searchForMedicineInfo(medicineName = medicineName)
-        }
-
-        Truth.assertThat(result.size).isEqualTo(4)
-        Truth.assertThat(result[0].medicineName).isEqualTo("Hitaxa (roztwór doustny)")
-        Truth.assertThat(result[0].urlString)
-            .isEqualTo("https://www.mp.pl/pacjent/leki/lek/82959,Hitaxa-roztwor-doustny")
-    }
-
-    @Test
-    fun searchMedicineInfo_NoResult() {
-        val medicineName = "dadasadggasvafvxvzcadf"
-
-        val result = runBlocking {
-            repo.searchForMedicineInfo(medicineName = medicineName)
-        }
-
-        Truth.assertThat(result.size).isEqualTo(0)
-    }
-
-    @Test
-    fun getMedicineInfo() {
-        val urlString = "https://www.mp.pl/pacjent/leki/lek/82959,Hitaxa-roztwor-doustny"
-
-        val result = runBlocking {
-            repo.getMedicineInfo(urlString = urlString)
-        }
-
-        Truth.assertThat(result.size).isEqualTo(9)
-        Truth.assertThat(result[0].header).isEqualTo("Co to jest Hitaxa?")
-    }
+//    @Test
+//    fun searchMedicineInfo_ResultFound() {
+//        val medicineName = "hitaxa"
+//
+//        val result = runBlocking {
+//            repo.searchForMedicineInfo(medicineName = medicineName)
+//        }
+//
+//        Truth.assertThat(result.size).isEqualTo(4)
+//        Truth.assertThat(result[0].medicineName).isEqualTo("Hitaxa (roztwór doustny)")
+//        Truth.assertThat(result[0].urlString)
+//            .isEqualTo("https://www.mp.pl/pacjent/leki/lek/82959,Hitaxa-roztwor-doustny")
+//    }
+//
+//    @Test
+//    fun searchMedicineInfo_NoResult() {
+//        val medicineName = "dadasadggasvafvxvzcadf"
+//
+//        val result = runBlocking {
+//            repo.searchForMedicineInfo(medicineName = medicineName)
+//        }
+//
+//        Truth.assertThat(result.size).isEqualTo(0)
+//    }
+//
+//    @Test
+//    fun getMedicineInfo() {
+//        val urlString = "https://www.mp.pl/pacjent/leki/lek/82959,Hitaxa-roztwor-doustny"
+//
+//        val result = runBlocking {
+//            repo.getMedicineInfo(urlString = urlString)
+//        }
+//
+//        Truth.assertThat(result.size).isEqualTo(9)
+//        Truth.assertThat(result[0].header).isEqualTo("Co to jest Hitaxa?")
+//    }
 }

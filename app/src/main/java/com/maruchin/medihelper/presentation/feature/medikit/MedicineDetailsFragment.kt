@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.setupWithNavController
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicineDetailsBinding
@@ -95,7 +96,7 @@ class MedicineDetailsFragment : BaseMainFragment<FragmentMedicineDetailsBinding>
 
         viewModel.setArgs(args)
         loadingScreen.bind(this, viewModel.loadingInProgress)
-        super.setupToolbarNavigation()
+        toolbar.setupWithNavController(findNavController())
         setupToolbarMenu()
         setupPersonRecyclerView()
         observeViewModel()

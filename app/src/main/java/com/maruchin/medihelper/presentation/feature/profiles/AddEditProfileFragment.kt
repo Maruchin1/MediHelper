@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.setupWithNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentAddEditProfileBinding
 import com.maruchin.medihelper.presentation.framework.*
@@ -35,7 +36,7 @@ class AddEditProfileFragment : BaseMainFragment<FragmentAddEditProfileBinding>(R
         super.onViewCreated(view, savedInstanceState)
         viewModel.setArgs(args)
         super.setStatusBarColorLive(viewModel.selectedColor)
-        super.setupToolbarNavigation()
+        toolbar.setupWithNavController(findNavController())
         setupColorRecyclerView()
         setupToolbar()
         observeViewModel()

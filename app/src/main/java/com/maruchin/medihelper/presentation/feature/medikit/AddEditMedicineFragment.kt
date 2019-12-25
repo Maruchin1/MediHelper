@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.setupWithNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentAddEditMedicineBinding
 import com.maruchin.medihelper.device.camera.CameraPermission
@@ -57,7 +58,7 @@ class AddEditMedicineFragment : BaseMainFragment<FragmentAddEditMedicineBinding>
         viewModel.setArgs(args)
         loadingScreen.bind(this, viewModel.loadingInProgress)
         super.setLightStatusBar(false)
-        super.setupToolbarNavigation()
+        toolbar.setupWithNavController(findNavController())
         setupScrollView()
         observeViewModel()
     }

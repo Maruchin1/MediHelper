@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.setupWithNavController
 import androidx.transition.TransitionManager
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentAddEditMedicinePlanBinding
@@ -167,7 +168,7 @@ class AddEditMedicinePlanFragment :
         })
         viewModel.actionDataLoaded.observe(viewLifecycleOwner, Observer {
             super.setLightStatusBar(false)
-            super.setupToolbarNavigation()
+            toolbar.setupWithNavController(findNavController())
             startPostponedEnterTransition()
         })
         viewModel.actionMedicinePlanSaved.observe(viewLifecycleOwner, Observer {

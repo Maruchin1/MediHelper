@@ -16,7 +16,8 @@ val userUseCaseModule = module {
     factory {
         SignUpUseCase(
             userRepo = get(),
-            profileRepo = get()
+            profileRepo = get(),
+            validator = get()
         )
     }
     factory {

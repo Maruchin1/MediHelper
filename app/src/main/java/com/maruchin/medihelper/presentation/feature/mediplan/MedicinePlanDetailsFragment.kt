@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.setupWithNavController
 import com.maruchin.medihelper.BR
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicinePlanDetailsBinding
@@ -68,7 +69,7 @@ class MedicinePlanDetailsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         super.setLightStatusBar(true)
-        super.setupToolbarNavigation()
+        toolbar.setupWithNavController(findNavController())
         viewModel.setArgs(args)
         loadingScreen.bind(this, viewModel.loadingInProgress)
 

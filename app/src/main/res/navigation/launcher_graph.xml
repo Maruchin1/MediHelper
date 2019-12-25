@@ -18,5 +18,17 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.maruchin.medihelper.presentation.feature.auth.LoginFragment"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/toRegisterFragment"
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/slide_in_end"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_end" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.auth.RegisterFragment"
+        tools:layout="@layout/fragment_register" />
 </navigation>

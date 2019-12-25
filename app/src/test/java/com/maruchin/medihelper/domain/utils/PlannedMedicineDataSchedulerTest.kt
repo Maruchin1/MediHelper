@@ -50,7 +50,7 @@ class PlannedMedicineDataSchedulerTest {
             plannedDate = AppDate(2019, 11, 20),
             plannedTime = AppTime(9, 30),
             plannedDoseSize = 2f,
-            status = PlannedMedicine.Status.PENDING
+            status = PlannedMedicine.Status.NOT_TAKEN
         )
         val secondExpectedResult = PlannedMedicine(
             entityId = "",
@@ -60,7 +60,7 @@ class PlannedMedicineDataSchedulerTest {
             plannedDate = AppDate(2019, 11, 20),
             plannedTime = AppTime(20, 0),
             plannedDoseSize = 4f,
-            status = PlannedMedicine.Status.PENDING
+            status = PlannedMedicine.Status.NOT_TAKEN
         )
         Truth.assertThat(result[0]).isEqualTo(firstExpectedResult)
         Truth.assertThat(result[1]).isEqualTo(secondExpectedResult)
@@ -96,7 +96,7 @@ class PlannedMedicineDataSchedulerTest {
             plannedDate = AppDate(2019, 11, 20),
             plannedTime = AppTime(9, 30),
             plannedDoseSize = 2f,
-            status = PlannedMedicine.Status.PENDING
+            status = PlannedMedicine.Status.NOT_TAKEN
         )
 
         Truth.assertThat(result.size).isEqualTo(8)
@@ -150,7 +150,7 @@ class PlannedMedicineDataSchedulerTest {
             plannedDate = AppDate(2019, 11, 21),
             plannedTime = AppTime(9, 30),
             plannedDoseSize = 2f,
-            status = PlannedMedicine.Status.PENDING
+            status = PlannedMedicine.Status.NOT_TAKEN
         )
 
         Truth.assertThat(result.size).isEqualTo(3)
@@ -192,7 +192,7 @@ class PlannedMedicineDataSchedulerTest {
             plannedDate = AppDate(2019, 11, 20),
             plannedTime = AppTime(9, 30),
             plannedDoseSize = 2f,
-            status = PlannedMedicine.Status.PENDING
+            status = PlannedMedicine.Status.NOT_TAKEN
         )
 
         Truth.assertThat(result.size).isEqualTo(4)
