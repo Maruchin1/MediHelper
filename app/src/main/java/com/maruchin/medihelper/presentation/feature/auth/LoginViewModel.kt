@@ -24,11 +24,14 @@ class LoginViewModel(
         get() = _errorEmail
     val errorPassword: LiveData<String>
         get() = _errorPassword
+    val errorGlobal: LiveData<String>
+        get() = _errorGlobal
 
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
     private val _actionSignInSuccess = ActionLiveData()
     private val _errorEmail = MutableLiveData<String>()
     private val _errorPassword = MutableLiveData<String>()
+    private val _errorGlobal = MutableLiveData<String>()
 
     fun signIn() = viewModelScope.launch {
         _loadingInProgress.postValue(true)
@@ -40,7 +43,7 @@ class LoginViewModel(
         val errors = signInUseCase.execute(params)
 
         _loadingInProgress.postValue(false)
-        if (errors.noErrors) {
+        if (errors.noErrors && errors.globalMessage.isEmpty()) {
             _actionSignInSuccess.sendAction()
         } else {
             postErrors(errors)
@@ -57,5 +60,9 @@ class LoginViewModel(
 
         _errorEmail.postValue(emailError)
         _errorPassword.postValue(passwordError)
+
+        if (errors.globalMessage.isNotEmpty()) {
+            _errorGlobal.postValue(errors.globalMessage)
+        }
     }
 }

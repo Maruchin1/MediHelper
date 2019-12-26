@@ -1,5 +1,6 @@
 package com.maruchin.medihelper.domain.usecases.user
 
+import com.maruchin.medihelper.domain.entities.AuthResult
 import com.maruchin.medihelper.domain.repositories.UserRepo
 import com.maruchin.medihelper.domain.utils.SignInValidator
 
@@ -15,10 +16,13 @@ class SignInUseCase(
         val errors = validator.validate(validatorParams)
 
         if (errors.noErrors) {
-            userRepo.signIn(
+            val authResult = userRepo.signIn(
                 email = params.email!!,
                 password = params.password!!
             )
+            if (authResult is AuthResult.Error) {
+                errors.globalMessage = authResult.message
+            }
         }
         return errors
     }

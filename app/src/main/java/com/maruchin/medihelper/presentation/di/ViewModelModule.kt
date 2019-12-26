@@ -113,7 +113,7 @@ val viewModelModule = module {
     }
     viewModel {
         RegisterViewModel(
-//            signUpUseCase = get()
+            signUpUseCase = get()
         )
     }
 }

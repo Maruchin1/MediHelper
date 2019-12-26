@@ -19,4 +19,7 @@ val domainUtilsModule = module {
     factory {
         SignInValidator()
     }
+    factory {
+        SignUpValidator()
+    }
 }

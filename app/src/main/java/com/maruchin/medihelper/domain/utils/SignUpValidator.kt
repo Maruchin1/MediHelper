@@ -34,6 +34,7 @@ class SignUpValidator {
     )
 
     data class Errors(
+        var globalMessage: String = "",
         var emptyEmail: Boolean = false,
         var emptyPassword: Boolean = false,
         var emptyPasswordConfirm: Boolean = false,

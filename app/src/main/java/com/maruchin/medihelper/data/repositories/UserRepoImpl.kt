@@ -1,11 +1,10 @@
 package com.maruchin.medihelper.data.repositories
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.maruchin.medihelper.data.framework.FirestoreRepo
-import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.data.mappers.UserMapper
+import com.maruchin.medihelper.domain.entities.AuthResult
 import com.maruchin.medihelper.domain.entities.User
 import com.maruchin.medihelper.domain.repositories.UserRepo
 import kotlinx.coroutines.tasks.await
@@ -19,14 +18,28 @@ class UserRepoImpl(
     mapper = mapper
 ), UserRepo {
 
-    override suspend fun signIn(email: String, password: String): String? {
-        auth.signInWithEmailAndPassword(email, password).await()
-        return auth.currentUser?.uid
+    override suspend fun signIn(email: String, password: String): AuthResult {
+        return try {
+            auth.signInWithEmailAndPassword(email, password).await()
+            AuthResult.Success(userId = getCurrUserId()!!)
+        } catch (ex: FirebaseAuthInvalidUserException) {
+            AuthResult.Error(message = "Niepoprawny adres e-mail")
+        } catch (ex: FirebaseAuthInvalidCredentialsException) {
+            AuthResult.Error(message = "Niepoprawne hasło")
+        } catch (ex: FirebaseAuthException) {
+            println(ex.message)
+            println(ex.errorCode)
+            AuthResult.Error(message = "Błąd logowania")
+        }
     }
 
-    override suspend fun signUp(email: String, password: String): String? {
-        auth.createUserWithEmailAndPassword(email, password).await()
-        return auth.currentUser?.uid
+    override suspend fun signUp(email: String, password: String): AuthResult {
+        return try {
+            auth.createUserWithEmailAndPassword(email, password).await()
+            AuthResult.Success(userId = getCurrUserId()!!)
+        } catch (ex: FirebaseAuthException) {
+            AuthResult.Error(message = "Błąd rejestracji")
+        }
     }
 
     override suspend fun signOut() {

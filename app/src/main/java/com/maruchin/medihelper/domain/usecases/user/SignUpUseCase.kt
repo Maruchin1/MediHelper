@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.domain.usecases.user
 
 import com.maruchin.medihelper.data.ProfileColor
+import com.maruchin.medihelper.domain.entities.AuthResult
 import com.maruchin.medihelper.domain.entities.Profile
 import com.maruchin.medihelper.domain.entities.User
 import com.maruchin.medihelper.domain.repositories.ProfileRepo
@@ -24,10 +25,14 @@ class SignUpUseCase(
         val errors = validator.validate(validatorParams)
 
         if (errors.noErrors) {
-            val userId = userRepo.signUp(params.email!!, params.password!!)
+            val authResult = userRepo.signUp(params.email!!, params.password!!)
 
-            addUserEntity(userId!!, params.userName!!, params.email)
-            addUserMainProfile(params.userName)
+            if (authResult is AuthResult.Success) {
+                addUserEntity(authResult.userId, params.userName!!, params.email)
+                addUserMainProfile(params.userName)
+            } else if (authResult is AuthResult.Error) {
+                errors.globalMessage = authResult.message
+            }
         }
 
         return@withContext errors

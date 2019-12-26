@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.presentation.framework
 
 import android.os.Bundle
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.snackbar.Snackbar
 import com.maruchin.medihelper.BR
 import com.maruchin.medihelper.MainApplication
 import com.maruchin.medihelper.R
@@ -28,5 +30,9 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutResId: Int) :
             lifecycleOwner = viewLifecycleOwner
             setVariable(BR.viewModel, bindingViewModel)
         }.root
+    }
+
+    protected fun showSnackbar(view: View, message: String) {
+        Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
     }
 }

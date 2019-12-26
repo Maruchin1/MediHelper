@@ -14,6 +14,7 @@ import com.maruchin.medihelper.databinding.FragmentLoginBinding
 import com.maruchin.medihelper.presentation.framework.BaseLauncherFragment
 import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
+import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -59,6 +60,9 @@ class LoginFragment : BaseLauncherFragment<FragmentLoginBinding>(R.layout.fragme
     private fun observeViewModel() {
         viewModel.actionSignInSuccessful.observe(viewLifecycleOwner, Observer {
             super.launcherActivity.startMainActivity()
+        })
+        viewModel.errorGlobal.observe(viewLifecycleOwner, Observer {
+            super.showSnackbar(root_lay, it)
         })
     }
 }
