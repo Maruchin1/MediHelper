@@ -9,12 +9,16 @@ import com.maruchin.medihelper.domain.repositories.UserRepo
 import com.maruchin.medihelper.domain.utils.SignUpValidator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class SignUpUseCase(
     private val userRepo: UserRepo,
-    private val profileRepo: ProfileRepo,
     private val validator: SignUpValidator
-) {
+) : KoinComponent {
+
+    private val profileRepo: ProfileRepo by inject()
+
     suspend fun execute(params: Params): SignUpValidator.Errors = withContext(Dispatchers.Default) {
         val validatorParams = SignUpValidator.Params(
             email = params.email,

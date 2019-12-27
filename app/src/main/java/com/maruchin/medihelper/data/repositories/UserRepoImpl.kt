@@ -27,8 +27,6 @@ class UserRepoImpl(
         } catch (ex: FirebaseAuthInvalidCredentialsException) {
             AuthResult.Error(message = "Niepoprawne hasło")
         } catch (ex: FirebaseAuthException) {
-            println(ex.message)
-            println(ex.errorCode)
             AuthResult.Error(message = "Błąd logowania")
         }
     }
@@ -37,6 +35,12 @@ class UserRepoImpl(
         return try {
             auth.createUserWithEmailAndPassword(email, password).await()
             AuthResult.Success(userId = getCurrUserId()!!)
+        } catch (ex: FirebaseAuthEmailException) {
+            AuthResult.Error(message = "Niepoprawny adres e-mail")
+        } catch (ex: FirebaseAuthUserCollisionException) {
+            AuthResult.Error(message = "Użytkownik o podanym adresie e-mail już istnieje")
+        } catch (ex: FirebaseAuthWeakPasswordException) {
+            AuthResult.Error(message = "Hasło jest zbyt słabe")
         } catch (ex: FirebaseAuthException) {
             AuthResult.Error(message = "Błąd rejestracji")
         }
