@@ -21,11 +21,7 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/toRegisterFragment"
-            app:destination="@id/registerFragment"
-            app:enterAnim="@anim/slide_in_end"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out_end" />
+            app:destination="@id/registerFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"

@@ -1,18 +1,20 @@
 package com.maruchin.medihelper.presentation.feature.auth
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Fade
+import androidx.transition.Slide
 import androidx.transition.TransitionInflater
 import androidx.transition.TransitionSet
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentLoginBinding
 import com.maruchin.medihelper.presentation.framework.BaseLauncherFragment
-import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject
@@ -41,6 +43,13 @@ class LoginFragment : BaseLauncherFragment<FragmentLoginBinding>(R.layout.fragme
         enterTransition = Fade().apply {
             duration = 500
             startDelay = 1000
+        }
+        exitTransition = Slide(Gravity.BOTTOM).apply {
+            duration = 300
+        }
+        reenterTransition = Slide(Gravity.BOTTOM).apply {
+            startDelay = 600
+            duration = 300
         }
     }
 
