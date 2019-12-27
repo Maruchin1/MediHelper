@@ -6,18 +6,15 @@ import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.MedicineStateData
 import com.maruchin.medihelper.domain.model.MedicineDetails
 import com.maruchin.medihelper.domain.model.ProfileItem
-import com.maruchin.medihelper.domain.usecases.datetime.CalcDaysRemainUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDetailsUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import com.maruchin.medihelper.presentation.utils.PicturesRef
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MedicineDetailsViewModel(
     private val getMedicineDetailsUseCase: GetMedicineDetailsUseCase,
     private val deleteMedicineUseCase: DeleteMedicineUseCase,
-    private val calcDaysRemainUseCase: CalcDaysRemainUseCase,
     private val picturesRef: PicturesRef
 ) : ViewModel() {
 
@@ -58,12 +55,7 @@ class MedicineDetailsViewModel(
         medicineName = Transformations.map(medicineDetails) { it.name }
         medicineUnit = Transformations.map(medicineDetails) { it.unit }
         expireDate = Transformations.map(medicineDetails) { it.expireDate }
-        daysRemain = Transformations.switchMap(medicineDetails) {
-            liveData {
-                val days = calcDaysRemainUseCase.execute(it.expireDate)
-                emit(days)
-            }
-        }
+        daysRemain = Transformations.map(medicineDetails) { it.daysRemains }
         stateData = Transformations.map(medicineDetails) { it.stateData }
         profileSimpleItemListAvailable = Transformations.map(medicineDetails) {
             !it.profileItems.isNullOrEmpty()

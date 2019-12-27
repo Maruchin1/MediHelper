@@ -173,5 +173,13 @@
         android:id="@+id/optionsFragment"
         android:name="com.maruchin.medihelper.presentation.feature.options.OptionsFragment"
         android:label="OptionsFragment"
-        tools:layout="@layout/fragment_options" />
+        tools:layout="@layout/fragment_options" >
+        <action
+            android:id="@+id/toChangePasswordDialog"
+            app:destination="@id/changePasswordDialog" />
+    </fragment>
+    <dialog
+        android:id="@+id/changePasswordDialog"
+        android:name="com.maruchin.medihelper.presentation.feature.options.ChangePasswordDialog"
+        tools:layout="@layout/dialog_change_password" />
 </navigation>

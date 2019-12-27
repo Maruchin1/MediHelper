@@ -1,7 +1,7 @@
 package com.maruchin.medihelper.domain.usecases.datetime
 
 import com.google.common.truth.Truth
-import com.maruchin.medihelper.domain.deviceapi.DeviceCalendar
+import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.testingframework.mock

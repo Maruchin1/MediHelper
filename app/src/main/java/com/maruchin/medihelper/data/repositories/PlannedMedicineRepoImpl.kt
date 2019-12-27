@@ -31,17 +31,20 @@ class PlannedMedicineRepoImpl(
     private val collectionRef: CollectionReference
         get() = db.collection("users").document(auth.getCurrUserId()).collection("plannedMedicines")
 
-    override suspend fun addNewList(entityList: List<PlannedMedicine>) = withContext(Dispatchers.IO) {
+    override suspend fun addNewList(entityList: List<PlannedMedicine>): List<PlannedMedicine> = withContext(Dispatchers.IO) {
+        val added = mutableListOf<PlannedMedicine>()
         db.runBatch { batch ->
             entityList.forEach { entity ->
                 val newDoc = collectionRef.document()
                 val data = runBlocking {
                     mapper.entityToMap(entity)
                 }
+
+                added.add(entity.copy(entityId = newDoc.id))
                 batch.set(newDoc, data)
             }
         }
-        return@withContext
+        return@withContext added
     }
 
     override suspend fun deleteListById(entityIdList: List<String>) = withContext(Dispatchers.IO) {

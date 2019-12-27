@@ -8,9 +8,9 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.maruchin.medihelper.device.reminder.ReminderReceiver
 import org.koin.core.KoinComponent
 import org.koin.core.get
-import org.koin.core.inject
 
 class UpdateRemindersWorker(private val context: Context, params: WorkerParameters) : CoroutineWorker(context, params),
     KoinComponent {

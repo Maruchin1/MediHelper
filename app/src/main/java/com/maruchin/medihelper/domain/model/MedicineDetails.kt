@@ -10,15 +10,17 @@ data class MedicineDetails(
     val name: String,
     val unit: String,
     val expireDate: AppExpireDate,
+    val daysRemains: Int,
     val stateData: MedicineStateData?,
     val pictureName: String?,
     val profileItems: List<ProfileItem>
 ) {
-    constructor(medicine: Medicine, profileList: List<Profile>) : this(
+    constructor(medicine: Medicine, daysRemains: Int, profileList: List<Profile>) : this(
         medicineId = medicine.entityId,
         name = medicine.name,
         unit = medicine.unit,
         expireDate = medicine.expireDate,
+        daysRemains = daysRemains,
         stateData = medicine.stateData,
         pictureName = medicine.pictureName,
         profileItems = profileList.map {

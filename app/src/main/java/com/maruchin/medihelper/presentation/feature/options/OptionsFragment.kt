@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentOptionsBinding
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
@@ -17,6 +18,10 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
 
     private val viewModel: OptionsViewModel by viewModel()
     private val loadingScreen: LoadingScreen by inject()
+
+    fun onClickChangePassword() {
+        findNavController().navigate(OptionsFragmentDirections.toChangePasswordDialog())
+    }
 
     fun onClickSignOut() {
         ConfirmDialog(

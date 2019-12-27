@@ -5,7 +5,7 @@ import android.view.View
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.databinding.DialogSelectExpireDateBinding
-import com.maruchin.medihelper.domain.usecases.datetime.GetCurrDateUseCase
+import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
 import kotlinx.android.synthetic.main.dialog_select_expire_date.*
 import org.koin.android.ext.android.inject
@@ -21,7 +21,7 @@ class SelectExpireDateDialog(
     }
 
     private var onDateSelectedListener: ((date: AppExpireDate) -> Unit)? = null
-    private val getCurrDateUseCase: GetCurrDateUseCase by inject()
+    private val deviceCalendar: DeviceCalendar by inject()
 
     fun onClickConfirm() {
         val selectedDate = AppExpireDate(year = year_picker.value, month = month_picker.value)
@@ -39,7 +39,7 @@ class SelectExpireDateDialog(
     }
 
     private fun setupNumberPickers() {
-        val curDate = getCurrDateUseCase.execute()
+        val curDate = deviceCalendar.getCurrDate()
         month_picker.run {
             minValue = 1
             maxValue = 12

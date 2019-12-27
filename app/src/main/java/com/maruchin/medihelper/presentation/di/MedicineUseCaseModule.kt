@@ -28,7 +28,9 @@ val medicineUseCaseModule = module {
     factory {
         GetMedicineDetailsUseCase(
             medicineRepo = get(),
-            profileRepo = get()
+            profileRepo = get(),
+            deviceCalendar = get(),
+            dateTimeCalculator = get()
         )
     }
     factory {

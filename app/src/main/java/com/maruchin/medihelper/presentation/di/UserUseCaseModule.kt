@@ -27,6 +27,12 @@ val userUseCaseModule = module {
         )
     }
     factory {
+        ChangePasswordUseCase(
+            userRepo = get(),
+            validator = get()
+        )
+    }
+    factory {
         GetCurrUserUseCase(
             userRepo = get()
         )

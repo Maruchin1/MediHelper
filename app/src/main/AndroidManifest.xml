@@ -53,7 +53,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
         <receiver
-            android:name="com.maruchin.medihelper.device.notifications.ReminderReceiver"
+            android:name="com.maruchin.medihelper.device.reminder.ReminderReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true">

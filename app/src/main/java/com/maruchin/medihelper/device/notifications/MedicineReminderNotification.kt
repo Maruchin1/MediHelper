@@ -80,7 +80,8 @@ class MedicineReminderNotification(private val context: Context) {
 //            .addAction(
 //                R.drawable.round_close_24,
 //                "Nieprzyjęty",
-//                getMedicineTakenIntent(plannedMedicineId, medicineTaken = false)
+//                getMedicineTakenIntent(plannedMedicineId, med
+//                icineTaken = false)
 //            )
             .build()
     }

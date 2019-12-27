@@ -50,6 +50,10 @@ class UserRepoImpl(
         auth.signOut()
     }
 
+    override suspend fun changePassword(newPassword: String) {
+        auth.currentUser?.updatePassword(newPassword)
+    }
+
     override suspend fun getCurrUserId(): String? {
         return auth.currentUser?.uid
     }

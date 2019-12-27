@@ -10,6 +10,7 @@ import com.maruchin.medihelper.presentation.feature.profiles.ProfileViewModel
 import com.maruchin.medihelper.presentation.feature.medikit.*
 import com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel
 import com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsViewModel
+import com.maruchin.medihelper.presentation.feature.options.ChangePasswordViewModel
 import com.maruchin.medihelper.presentation.feature.options.OptionsViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.AddEditProfileViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -26,7 +27,6 @@ val viewModelModule = module {
         MedicineDetailsViewModel(
             getMedicineDetailsUseCase = get(),
             deleteMedicineUseCase = get(),
-            calcDaysRemainUseCase = get(),
             picturesRef = get()
         )
     }
@@ -48,9 +48,9 @@ val viewModelModule = module {
     }
     viewModel {
         CalendarViewModel(
-            getCurrDateUseCase = get(),
             getProfileItemUseCase = get(),
-            selectedProfile = get()
+            selectedProfile = get(),
+            deviceCalendar = get()
         )
     }
     viewModel {
@@ -90,8 +90,8 @@ val viewModelModule = module {
             getMedicinePlanEditDataUseCase = get(),
             getProfileItemUseCase = get(),
             getMedicineItemUseCase = get(),
-            getCurrDateUseCase = get(),
-            saveMedicinePlanUseCase = get()
+            saveMedicinePlanUseCase = get(),
+            deviceCalendar = get()
         )
     }
     viewModel {
@@ -115,6 +115,11 @@ val viewModelModule = module {
     viewModel {
         RegisterViewModel(
             signUpUseCase = get()
+        )
+    }
+    viewModel {
+        ChangePasswordViewModel(
+            changePasswordUseCase = get()
         )
     }
 }

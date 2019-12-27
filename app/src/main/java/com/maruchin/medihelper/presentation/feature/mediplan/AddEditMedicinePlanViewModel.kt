@@ -1,11 +1,11 @@
 package com.maruchin.medihelper.presentation.feature.mediplan
 
 import androidx.lifecycle.*
+import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.domain.entities.*
 import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.model.MedicinePlanEditData
 import com.maruchin.medihelper.domain.model.ProfileItem
-import com.maruchin.medihelper.domain.usecases.datetime.GetCurrDateUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineItemUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.SaveMedicinePlanUseCase
@@ -17,8 +17,8 @@ class AddEditMedicinePlanViewModel(
     private val getMedicinePlanEditDataUseCase: GetMedicinePlanEditDataUseCase,
     private val getProfileItemUseCase: GetProfileItemUseCase,
     private val getMedicineItemUseCase: GetMedicineItemUseCase,
-    private val getCurrDateUseCase: GetCurrDateUseCase,
-    private val saveMedicinePlanUseCase: SaveMedicinePlanUseCase
+    private val saveMedicinePlanUseCase: SaveMedicinePlanUseCase,
+    private val deviceCalendar: DeviceCalendar
 ) : ViewModel() {
 
     val formTitle: LiveData<String>
@@ -191,7 +191,7 @@ class AddEditMedicinePlanViewModel(
 
     private fun setDefaultData() {
         planType.postValue(MedicinePlan.Type.ONCE)
-        val currDate = getCurrDateUseCase.execute()
+        val currDate = deviceCalendar.getCurrDate()
         startDate.postValue(currDate)
         endDate.postValue(currDate.copy().apply { addDays(1) })
         intakeDaysType.postValue(IntakeDaysType.EVERYDAY)

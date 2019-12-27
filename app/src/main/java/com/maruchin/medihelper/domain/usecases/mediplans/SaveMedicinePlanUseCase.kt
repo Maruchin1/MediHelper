@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.domain.usecases.mediplans
 
-import com.maruchin.medihelper.domain.deviceapi.DeviceCalendar
+import com.maruchin.medihelper.domain.device.DeviceCalendar
+import com.maruchin.medihelper.domain.device.DeviceReminder
 import com.maruchin.medihelper.domain.entities.*
 import com.maruchin.medihelper.domain.utils.MedicinePlanValidator
 import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
@@ -14,6 +15,7 @@ class SaveMedicinePlanUseCase(
     private val plannedMedicineRepo: PlannedMedicineRepo,
     private val plannedMedicineScheduler: PlannedMedicineScheduler,
     private val deviceCalendar: DeviceCalendar,
+    private val deviceReminder: DeviceReminder,
     private val validator: MedicinePlanValidator
 ) {
     suspend fun execute(params: Params): MedicinePlanValidator.Errors = withContext(Dispatchers.Default) {
@@ -53,34 +55,36 @@ class SaveMedicinePlanUseCase(
             val addedMedicinePlanId = medicinePlanRepo.addNew(medicinePlan)
             addedMedicinePlanId?.let {
                 val addedMedicinePlan = medicinePlan.copy(entityId = it)
-                addNewCalendarEntries(addedMedicinePlan)
+                addNewPlannedMedicines(addedMedicinePlan)
             }
         } else {
             medicinePlanRepo.update(medicinePlan)
-            updateExistingCalendarEntries(medicinePlan)
+            updatePlannedMedicines(medicinePlan)
         }
     }
 
-    private suspend fun addNewCalendarEntries(medicinePlan: MedicinePlan) {
+    private suspend fun addNewPlannedMedicines(medicinePlan: MedicinePlan) {
         val plannedMedicines = plannedMedicineScheduler.getPlannedMedicines(medicinePlan)
-        plannedMedicineRepo.addNewList(plannedMedicines)
+
+        val addedPlannedMedicines = plannedMedicineRepo.addNewList(plannedMedicines)
+        deviceReminder.addReminders(addedPlannedMedicines)
     }
 
-    private suspend fun updateExistingCalendarEntries(medicinePlan: MedicinePlan) {
-        val currTimeInMillis = deviceCalendar.getCurrTimeInMillis()
-        val currDate = AppDate(currTimeInMillis)
-
+    private suspend fun updatePlannedMedicines(medicinePlan: MedicinePlan) {
+        val currDate = deviceCalendar.getCurrDate()
         val existingPlannedMedicines = plannedMedicineRepo.getListByMedicinePlan(medicinePlan.entityId)
-        val existingPlannedMedicinesIdFromNow = existingPlannedMedicines.filter {
+        val existingPlannedMedicinesFromNow = existingPlannedMedicines.filter {
             it.plannedDate >= currDate
-        }.map {
-            it.entityId
         }
-        plannedMedicineRepo.deleteListById(existingPlannedMedicinesIdFromNow)
+
+        plannedMedicineRepo.deleteListById(existingPlannedMedicinesFromNow.map { it.entityId })
+        deviceReminder.cancelReminders(existingPlannedMedicinesFromNow)
 
         val medicinePlanFromNow = medicinePlan.copy(startDate = currDate)
         val scheduledPlannedMedicines = plannedMedicineScheduler.getPlannedMedicines(medicinePlanFromNow)
-        plannedMedicineRepo.addNewList(scheduledPlannedMedicines)
+
+        val addedPlannedMedicines = plannedMedicineRepo.addNewList(scheduledPlannedMedicines)
+        deviceReminder.addReminders(addedPlannedMedicines)
     }
 
     data class Params(

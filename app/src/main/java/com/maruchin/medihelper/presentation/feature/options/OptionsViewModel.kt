@@ -2,6 +2,7 @@ package com.maruchin.medihelper.presentation.feature.options
 
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.User
+import com.maruchin.medihelper.domain.usecases.user.ChangePasswordUseCase
 import com.maruchin.medihelper.domain.usecases.user.GetCurrUserUseCase
 import com.maruchin.medihelper.domain.usecases.user.SignOutUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData

@@ -22,4 +22,10 @@ val domainUtilsModule = module {
     factory {
         SignUpValidator()
     }
+    factory { 
+        ChangePasswordValidator()
+    }
+    factory {
+        DateTimeCalculator()
+    }
 }

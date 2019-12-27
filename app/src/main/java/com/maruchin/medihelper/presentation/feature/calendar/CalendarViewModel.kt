@@ -1,18 +1,17 @@
 package com.maruchin.medihelper.presentation.feature.calendar
 
 import androidx.lifecycle.*
+import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.model.ProfileItem
-import com.maruchin.medihelper.domain.usecases.datetime.GetCurrDateUseCase
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileItemUseCase
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
-import kotlinx.coroutines.launch
 import java.util.*
 
 class CalendarViewModel(
-    private val getCurrDateUseCase: GetCurrDateUseCase,
     private val getProfileItemUseCase: GetProfileItemUseCase,
-    private val selectedProfile: SelectedProfile
+    private val selectedProfile: SelectedProfile,
+    private val deviceCalendar: DeviceCalendar
 ) : ViewModel() {
 
     companion object {
@@ -28,7 +27,7 @@ class CalendarViewModel(
     val initialPosition: Int
 
     private val currProfile: LiveData<ProfileItem?>
-    private val currDate: AppDate = getCurrDateUseCase.execute()
+    private val currDate: AppDate = deviceCalendar.getCurrDate()
 
     init {
         currProfile = Transformations.switchMap(selectedProfile.profileIdLive) { profileId ->

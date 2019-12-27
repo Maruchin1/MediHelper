@@ -109,7 +109,7 @@
                             android:focusable="true"
                             android:foreground="?selectableItemBackground"
                             android:gravity="center_vertical"
-                            android:onClick="@{() -> handler.onClickSignOut()}"
+                            android:onClick="@{() -> handler.onClickChangePassword()}"
                             android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
                             android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
 

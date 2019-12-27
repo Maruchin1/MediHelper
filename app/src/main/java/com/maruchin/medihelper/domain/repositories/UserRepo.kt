@@ -9,5 +9,6 @@ interface UserRepo : BaseRepo<User> {
     suspend fun signIn(email: String, password: String): AuthResult
     suspend fun signUp(email: String, password: String): AuthResult
     suspend fun signOut()
+    suspend fun changePassword(newPassword: String)
     suspend fun getCurrUserId(): String?
 }
