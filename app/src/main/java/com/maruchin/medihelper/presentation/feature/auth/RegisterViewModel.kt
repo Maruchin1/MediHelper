@@ -53,7 +53,7 @@ class RegisterViewModel(
         val errors = signUpUseCase.execute(params)
 
         _loadingInProgress.postValue(false)
-        if (errors.noErrors) {
+        if (errors.noErrors && errors.globalMessage.isEmpty()) {
             _actionUserSignedUp.sendAction()
         } else {
             postErrors(errors)
@@ -84,5 +84,9 @@ class RegisterViewModel(
         _errorEmail.postValue(emailError)
         _errorPassword.postValue(passwordError)
         _errorPasswordConfirm.postValue(passwordConfirmError)
+
+        if (errors.globalMessage.isNotEmpty()) {
+            _errorGlobal.postValue(errors.globalMessage)
+        }
     }
 }

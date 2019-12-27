@@ -26,4 +26,9 @@ val userUseCaseModule = module {
             userRepo = get()
         )
     }
+    factory {
+        GetCurrUserUseCase(
+            userRepo = get()
+        )
+    }
 }

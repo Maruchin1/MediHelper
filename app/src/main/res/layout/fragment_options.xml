@@ -27,8 +27,8 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-                app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big">
+                app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
@@ -79,8 +79,8 @@
                                 android:gravity="center_vertical">
 
                                 <ImageView
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
                                     android:src="@drawable/baseline_account_circle_24"
                                     android:tint="@color/colorPrimary" />
 
@@ -89,8 +89,42 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="16dp"
                                     android:text="Konto użytkownika"
-                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
+                                    android:textColor="@color/colorPrimary" />
                             </LinearLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:text='@{viewModel.userEmail, default="marcinpk.mp@gmail.com"}'
+                                android:textAppearance="@style/TextAppearance.MediHelper.Body1" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/bottom_dialog_option_height"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:onClick="@{() -> handler.onClickSignOut()}"
+                            android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
+                            android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/bottom_dialog_option_icon_size"
+                                android:layout_height="@dimen/bottom_dialog_option_icon_size"
+                                android:src="@drawable/round_lock_24"
+                                android:tint="@color/colorBlack" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
+                                android:text="Zmień hasło"
+                                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -121,8 +155,77 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MediHelper.CardView.Big"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/list_card_margin_horizontal"
+                    android:layout_marginTop="@dimen/list_card_margin_top"
+                    android:layout_marginEnd="@dimen/list_card_margin_horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/list_card_layout_margin_horizontal"
+                            android:layout_marginTop="@dimen/list_card_layout_margin_top"
+                            android:layout_marginEnd="@dimen/list_card_layout_margin_horizontal"
+                            android:layout_marginBottom="@dimen/list_card_layout_margin_bot"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/round_settings_24"
+                                    android:tint="@color/colorPrimary" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:text="Ustawienia"
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
+                                    android:textColor="@color/colorPrimary" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            style="@style/Widget.MaterialComponents.BottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:labelVisibilityMode="selected"
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+            app:menu="@menu/bottom_nav_menu" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/round_add_white_48"
+            app:backgroundTint="@color/colorPrimary"
+            app:elevation="8dp"
+            app:layout_anchor="@id/bottom_nav"
+            app:layout_anchorGravity="center"
+            app:tint="@color/colorWhite" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

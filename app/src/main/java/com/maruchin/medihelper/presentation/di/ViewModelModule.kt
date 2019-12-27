@@ -108,6 +108,7 @@ val viewModelModule = module {
     }
     viewModel {
         OptionsViewModel(
+            getCurrUserUseCase = get(),
             signOutUseCase = get()
         )
     }

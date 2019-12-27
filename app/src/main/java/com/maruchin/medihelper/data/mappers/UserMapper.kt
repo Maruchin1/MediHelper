@@ -21,7 +21,7 @@ class UserMapper : BaseMapper<User>() {
         return@withContext User(
             entityId = entityId,
             userName = map[userName] as String,
-            email = map[userName] as String
+            email = map[email] as String
         )
     }
 }
