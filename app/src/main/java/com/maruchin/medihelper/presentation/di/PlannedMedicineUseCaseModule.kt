@@ -48,4 +48,14 @@ val plannedMedicineUseCaseModule = module {
             settingsRepo = get()
         )
     }
+    factory {
+        ChangePlannedMedicineReminderModeUseCase(
+            settingsRepo = get()
+        )
+    }
+    factory {
+        GetLivePlannedMedicineReminderModeUseCase(
+            settingsRepo = get()
+        )
+    }
 }

@@ -3,6 +3,7 @@ package com.maruchin.medihelper.data.utils
 import android.content.Context
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.maruchin.medihelper.data.framework.SharedPrefLiveData
 import com.maruchin.medihelper.domain.entities.ReminderMode
 
@@ -53,11 +54,10 @@ class SharedPref (context: Context) {
     }
 
     fun getLiveReminderMode(): LiveData<ReminderMode> {
-        return SharedPrefLiveData(
-            pref,
-            KEY_REMINDER_MODE,
-            ReminderMode.NOTIFICATION
-        )
+        val modeStringLive = SharedPrefLiveData(pref, KEY_REMINDER_MODE, "")
+        return Transformations.map(modeStringLive) { modeString ->
+            return@map if (modeString.isEmpty()) null else ReminderMode.valueOf(modeString)
+        }
     }
 
     fun saveProfileColorsList(list: List<String>) = pref.edit(true) {

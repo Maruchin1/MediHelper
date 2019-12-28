@@ -185,17 +185,42 @@
                                 <ImageView
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
-                                    android:src="@drawable/round_settings_24"
+                                    android:src="@drawable/round_add_alert_24"
                                     android:tint="@color/colorPrimary" />
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="16dp"
-                                    android:text="Ustawienia"
+                                    android:text="Przypominanie o lekach"
                                     android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
                                     android:textColor="@color/colorPrimary" />
                             </LinearLayout>
+
+                            <com.google.android.material.chip.ChipGroup
+                                android:id="@+id/chip_group_reminder_mode"
+                                style="@style/Widget.MaterialComponents.ChipGroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="32dp"
+                                app:chipSpacingHorizontal="16dp"
+                                app:singleSelection="true">
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/chip_notification"
+                                    style="@style/Widget.MediHelper.Chip.Choice"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Powiadomienie" />
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/chip_alarm"
+                                    style="@style/Widget.MediHelper.Chip.Choice"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Alarm z dźwiękiem" />
+
+                            </com.google.android.material.chip.ChipGroup>
 
                         </LinearLayout>
                     </LinearLayout>

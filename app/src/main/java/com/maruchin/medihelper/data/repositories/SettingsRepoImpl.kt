@@ -4,21 +4,24 @@ import androidx.lifecycle.LiveData
 import com.maruchin.medihelper.data.utils.SharedPref
 import com.maruchin.medihelper.domain.entities.ReminderMode
 import com.maruchin.medihelper.domain.repositories.SettingsRepo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class SettingsRepoImpl(
     private val sharedPref: SharedPref
 ) : SettingsRepo {
 
-    override fun setReminderMode(mode: ReminderMode) {
+    override suspend fun setReminderMode(mode: ReminderMode) = withContext(Dispatchers.IO) {
         sharedPref.saveReminderMode(mode)
+        return@withContext
     }
 
-    override fun getReminderMode(): ReminderMode {
-        return sharedPref.getReminderMode()
+    override suspend fun getReminderMode(): ReminderMode = withContext(Dispatchers.IO) {
+        return@withContext sharedPref.getReminderMode()
     }
 
-    override fun getLiveReminderMode(): LiveData<ReminderMode> {
-        return sharedPref.getLiveReminderMode()
+    override suspend fun getLiveReminderMode(): LiveData<ReminderMode> = withContext(Dispatchers.IO) {
+        return@withContext sharedPref.getLiveReminderMode()
     }
 
 

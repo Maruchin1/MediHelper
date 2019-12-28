@@ -112,7 +112,9 @@ val viewModelModule = module {
     viewModel {
         OptionsViewModel(
             getCurrUserUseCase = get(),
-            signOutUseCase = get()
+            getLivePlannedMedicineReminderModeUseCase = get(),
+            signOutUseCase = get(),
+            changePlannedMedicineReminderModeUseCase = get()
         )
     }
     viewModel {

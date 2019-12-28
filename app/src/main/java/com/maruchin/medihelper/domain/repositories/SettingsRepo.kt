@@ -5,7 +5,7 @@ import com.maruchin.medihelper.domain.entities.ReminderMode
 
 interface SettingsRepo {
 
-    fun setReminderMode(mode: ReminderMode)
-    fun getReminderMode(): ReminderMode
-    fun getLiveReminderMode(): LiveData<ReminderMode>
+    suspend fun setReminderMode(mode: ReminderMode)
+    suspend fun getReminderMode(): ReminderMode
+    suspend fun getLiveReminderMode(): LiveData<ReminderMode>
 }

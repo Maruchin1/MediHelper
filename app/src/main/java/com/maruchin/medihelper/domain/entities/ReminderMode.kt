@@ -1,5 +1,6 @@
 package com.maruchin.medihelper.domain.entities
 
-enum class ReminderMode {
-    NOTIFICATION, ALARM
+enum class ReminderMode(val text: String) {
+    NOTIFICATION("Powiadomienie"),
+    ALARM("Alarm z dźwiękiem")
 }

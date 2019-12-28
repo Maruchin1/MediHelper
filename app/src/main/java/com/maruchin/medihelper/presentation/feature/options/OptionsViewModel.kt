@@ -1,7 +1,10 @@
 package com.maruchin.medihelper.presentation.feature.options
 
 import androidx.lifecycle.*
+import com.maruchin.medihelper.domain.entities.ReminderMode
 import com.maruchin.medihelper.domain.entities.User
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.ChangePlannedMedicineReminderModeUseCase
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetLivePlannedMedicineReminderModeUseCase
 import com.maruchin.medihelper.domain.usecases.user.ChangePasswordUseCase
 import com.maruchin.medihelper.domain.usecases.user.GetCurrUserUseCase
 import com.maruchin.medihelper.domain.usecases.user.SignOutUseCase
@@ -10,10 +13,13 @@ import kotlinx.coroutines.launch
 
 class OptionsViewModel(
     private val getCurrUserUseCase: GetCurrUserUseCase,
-    private val signOutUseCase: SignOutUseCase
+    private val getLivePlannedMedicineReminderModeUseCase: GetLivePlannedMedicineReminderModeUseCase,
+    private val signOutUseCase: SignOutUseCase,
+    private val changePlannedMedicineReminderModeUseCase: ChangePlannedMedicineReminderModeUseCase
 ) : ViewModel() {
 
     val userEmail: LiveData<String>
+    val reminderMode: LiveData<ReminderMode>
 
     val loadingInProgress: LiveData<Boolean>
         get() = _loadingInProgress
@@ -31,6 +37,10 @@ class OptionsViewModel(
             emit(value)
         }
         userEmail = Transformations.map(currUser) { it.email }
+        reminderMode = liveData {
+            val source = getLivePlannedMedicineReminderModeUseCase.execute()
+            emitSource(source)
+        }
     }
 
     fun signOutUser() = viewModelScope.launch {
@@ -40,5 +50,9 @@ class OptionsViewModel(
 
         _loadingInProgress.postValue(false)
         _actionSignOutSuccessful.sendAction()
+    }
+
+    fun setReminderMode(newMode: ReminderMode) = viewModelScope.launch {
+        changePlannedMedicineReminderModeUseCase.execute(newMode)
     }
 }
