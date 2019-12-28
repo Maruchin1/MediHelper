@@ -7,7 +7,6 @@ import android.os.Build
 
 abstract class BaseNotification(private val context: Context) {
 
-    protected abstract val notificationId: Int
     protected abstract val channelId: String
     protected abstract val channelName: String
 

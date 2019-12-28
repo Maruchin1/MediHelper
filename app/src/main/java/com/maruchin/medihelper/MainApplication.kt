@@ -7,6 +7,7 @@ import com.maruchin.medihelper.data.di.*
 import com.maruchin.medihelper.device.di.calendarModule
 import com.maruchin.medihelper.device.di.cameraModule
 import com.maruchin.medihelper.device.di.reminderModule
+import com.maruchin.medihelper.device.di.ringtoneModule
 import com.maruchin.medihelper.presentation.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -30,7 +31,8 @@ class MainApplication : Application() {
         listOf(
             cameraModule,
             calendarModule,
-            reminderModule
+            reminderModule,
+            ringtoneModule
         )
     }
     private val presentationModules: List<Module> by lazy {

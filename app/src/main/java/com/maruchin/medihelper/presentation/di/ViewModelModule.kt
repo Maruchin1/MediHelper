@@ -69,6 +69,8 @@ val viewModelModule = module {
     }
     viewModel {
         AlarmViewModel(
+            setPlannedMedicineTakenUseCase = get(),
+            changePlannedMedicineTimeUseCase = get()
         )
     }
     viewModel {

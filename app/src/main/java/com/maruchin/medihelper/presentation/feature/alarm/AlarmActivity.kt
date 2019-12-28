@@ -9,10 +9,16 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.lifecycle.lifecycleScope
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.ActivityAlarmBinding
+import com.maruchin.medihelper.domain.device.DeviceRingtone
+import com.maruchin.medihelper.domain.model.PlannedMedicineNotfiData
 import com.maruchin.medihelper.presentation.dialogs.SelectTimeDialog
 import kotlinx.android.synthetic.main.activity_alarm.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.hypot
 
@@ -21,14 +27,16 @@ class AlarmActivity : AppCompatActivity() {
     private val TAG = "AlarmActivity"
 
     companion object {
-        const val EXTRA_PLANNED_MEDICINE_ID = "extra-planned-medicine-id"
+        const val EXTRA_NOTIF_DATA = "extra-notif-data"
         private const val REVEAL_ANIM_TIME = 500L
         private const val FINISH_ACTIVITY_DELAY = 1000L
     }
 
     private val viewModel: AlarmViewModel by viewModel()
+    private val deviceRingtone: DeviceRingtone by inject()
 
-    fun onClickMedicineTaken() {
+    fun onClickMedicineTaken(plannedMedicineId: String) {
+        viewModel.setPlannedMedicineTaken(plannedMedicineId)
         circularRevealView(txv_medicine_taken)
         delayedActivityFinish()
     }
@@ -59,7 +67,16 @@ class AlarmActivity : AppCompatActivity() {
 
         setupAlarmActivityFlags()
 
-        intent.extras?.getInt(EXTRA_PLANNED_MEDICINE_ID)?.let { viewModel.loadPlannedMedicineID(it) }
+        intent.extras?.getSerializable(EXTRA_NOTIF_DATA)?.let { serializable ->
+            val notifData = serializable as PlannedMedicineNotfiData
+            viewModel.setData(notifData)
+        }
+        deviceRingtone.playAlarmRingtone()
+    }
+
+    override fun onDestroy() {
+        deviceRingtone.stopAlarmRingtone()
+        super.onDestroy()
     }
 
     private fun setupAlarmActivityFlags() {
@@ -86,8 +103,10 @@ class AlarmActivity : AppCompatActivity() {
         anim.start()
     }
 
-    private fun delayedActivityFinish(delay: Long = FINISH_ACTIVITY_DELAY) =
-        Handler().postDelayed({ finish() },
-            FINISH_ACTIVITY_DELAY
-        )
+    private fun delayedActivityFinish() {
+        lifecycleScope.launch {
+            delay(FINISH_ACTIVITY_DELAY)
+            finish()
+        }
+    }
 }

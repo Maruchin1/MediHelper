@@ -1,28 +1,39 @@
 package com.maruchin.medihelper.presentation.feature.alarm
 
 import androidx.lifecycle.*
+import com.maruchin.medihelper.domain.device.DeviceRingtone
 import com.maruchin.medihelper.domain.entities.AppTime
+import com.maruchin.medihelper.domain.model.PlannedMedicineNotfiData
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.ChangePlannedMedicineTimeUseCase
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetPlannedMedicineNotifDataUseCase
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.SetPlannedMedicineTakenUseCase
+import com.maruchin.medihelper.presentation.framework.ActionLiveData
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AlarmViewModel(
-//    private val plannedMedicineUseCases: PlannedMedicineUseCases
+    private val setPlannedMedicineTakenUseCase: SetPlannedMedicineTakenUseCase,
+    private val changePlannedMedicineTimeUseCase: ChangePlannedMedicineTimeUseCase
 ) : ViewModel() {
-    private val TAG = "AlarmViewModel"
 
-    val plannedTimeLive = MutableLiveData<AppTime>()
-    val personNameLive = MutableLiveData<String>()
-    val medicineNameLive = MutableLiveData<String>()
-    val medicineDoseLive = MutableLiveData<String>()
-    val personColorLive = MutableLiveData<Int>()
+    val data: LiveData<PlannedMedicineNotfiData>
+        get() = _data
+    val changedTime: LiveData<String>
+        get() = _changedTime
 
-    val changedTimeLive = MutableLiveData<AppTime>()
+    private val _data = MutableLiveData<PlannedMedicineNotfiData>()
+    private val _changedTime = MutableLiveData<String>()
 
-    fun loadPlannedMedicineID(plannedMedicineID: Int) = viewModelScope.launch {
-//        val alarmData = plannedMedicineService.getAlarmData(plannedMedicineID)
-//        plannedTimeLive.postValue(alarmData.plannedTime)
-//        personNameLive.postValue(alarmData.profileName)
-//        medicineNameLive.postValue(alarmData.medicineName)
-//        medicineDoseLive.postValue("${alarmData.plannedDoseSize} ${alarmData.medicineUnit}")
-//        personColorLive.postValue(alarmData.personColorResId)
+    fun setData(data: PlannedMedicineNotfiData) {
+        _data.postValue(data)
+    }
+
+    fun setPlannedMedicineTaken(plannedMedicineId: String) = GlobalScope.launch {
+        setPlannedMedicineTakenUseCase.execute(plannedMedicineId)
+    }
+
+    fun changePlannedTime(plannedMedicineId: String, newTime: AppTime) = GlobalScope.launch {
+        _changedTime.postValue(newTime.formatString)
+        changePlannedMedicineTimeUseCase.execute(plannedMedicineId, newTime)
     }
 }

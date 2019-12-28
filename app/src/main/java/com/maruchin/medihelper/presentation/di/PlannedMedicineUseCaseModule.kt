@@ -35,4 +35,10 @@ val plannedMedicineUseCaseModule = module {
             profileRepo = get()
         )
     }
+    factory {
+        SetPlannedMedicineTakenUseCase(
+            plannedMedicineRepo = get(),
+            medicineRepo = get()
+        )
+    }
 }
