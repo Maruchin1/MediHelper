@@ -14,9 +14,6 @@ val mapperModule = module {
         MedicineMapper()
     }
     factory {
-        UserMapper()
-    }
-    factory {
         MedicinePlanMapper()
     }
 }

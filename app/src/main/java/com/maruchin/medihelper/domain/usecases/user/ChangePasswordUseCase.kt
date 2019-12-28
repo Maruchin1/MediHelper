@@ -1,10 +1,10 @@
 package com.maruchin.medihelper.domain.usecases.user
 
-import com.maruchin.medihelper.domain.repositories.UserRepo
+import com.maruchin.medihelper.domain.repositories.UserAuthRepo
 import com.maruchin.medihelper.domain.utils.ChangePasswordValidator
 
 class ChangePasswordUseCase(
-    private val userRepo: UserRepo,
+    private val userAuthRepo: UserAuthRepo,
     private val validator: ChangePasswordValidator
 ) {
     suspend fun execute(params: Params): ChangePasswordValidator.Errors {
@@ -15,7 +15,7 @@ class ChangePasswordUseCase(
         val errors = validator.validate(validatorParams)
 
         if (errors.noErrors) {
-            userRepo.changePassword(params.newPassword!!)
+            userAuthRepo.changePassword(params.newPassword!!)
         }
         return errors
     }

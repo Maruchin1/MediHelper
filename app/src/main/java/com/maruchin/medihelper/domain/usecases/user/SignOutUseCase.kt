@@ -1,11 +1,11 @@
 package com.maruchin.medihelper.domain.usecases.user
 
-import com.maruchin.medihelper.domain.repositories.UserRepo
+import com.maruchin.medihelper.domain.repositories.UserAuthRepo
 
 class SignOutUseCase(
-    private val userRepo: UserRepo
+    private val userAuthRepo: UserAuthRepo
 ) {
     suspend fun execute() {
-        userRepo.signOut()
+        userAuthRepo.signOut()
     }
 }

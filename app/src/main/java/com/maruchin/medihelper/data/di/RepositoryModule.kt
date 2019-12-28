@@ -6,11 +6,9 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     single {
-        UserRepoImpl(
-            db = get(),
-            auth = get(),
-            mapper = get()
-        ) as UserRepo
+        UserAuthRepoImpl(
+            auth = get()
+        ) as UserAuthRepo
     }
     single {
         MedicineRepoImpl(
