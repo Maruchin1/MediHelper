@@ -1,19 +1,12 @@
 package com.maruchin.medihelper.data.repositories
 
-import com.google.common.truth.Truth
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.maruchin.medihelper.data.SharedPref
+import com.maruchin.medihelper.data.utils.SharedPref
 import com.maruchin.medihelper.data.mappers.MedicineMapper
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import com.maruchin.medihelper.testingframework.mock
-import kotlinx.coroutines.runBlocking
-import org.junit.Test
-
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
 
 class MedicineRepoImplTest {
 

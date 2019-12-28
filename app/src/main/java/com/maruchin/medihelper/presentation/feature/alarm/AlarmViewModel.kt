@@ -1,30 +1,30 @@
 package com.maruchin.medihelper.presentation.feature.alarm
 
 import androidx.lifecycle.*
-import com.maruchin.medihelper.domain.device.DeviceRingtone
 import com.maruchin.medihelper.domain.entities.AppTime
-import com.maruchin.medihelper.domain.model.PlannedMedicineNotfiData
+import com.maruchin.medihelper.domain.model.PlannedMedicineNotifData
 import com.maruchin.medihelper.domain.usecases.plannedmedicines.ChangePlannedMedicineTimeUseCase
 import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetPlannedMedicineNotifDataUseCase
 import com.maruchin.medihelper.domain.usecases.plannedmedicines.SetPlannedMedicineTakenUseCase
-import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AlarmViewModel(
     private val setPlannedMedicineTakenUseCase: SetPlannedMedicineTakenUseCase,
-    private val changePlannedMedicineTimeUseCase: ChangePlannedMedicineTimeUseCase
+    private val changePlannedMedicineTimeUseCase: ChangePlannedMedicineTimeUseCase,
+    private val getPlannedMedicineNotifDataUseCase: GetPlannedMedicineNotifDataUseCase
 ) : ViewModel() {
 
-    val data: LiveData<PlannedMedicineNotfiData>
+    val data: LiveData<PlannedMedicineNotifData>
         get() = _data
     val changedTime: LiveData<String>
         get() = _changedTime
 
-    private val _data = MutableLiveData<PlannedMedicineNotfiData>()
+    private val _data = MutableLiveData<PlannedMedicineNotifData>()
     private val _changedTime = MutableLiveData<String>()
 
-    fun setData(data: PlannedMedicineNotfiData) {
+    fun initData(plannedMedicineId: String) = viewModelScope.launch {
+        val data = getPlannedMedicineNotifDataUseCase.execute(plannedMedicineId)
         _data.postValue(data)
     }
 

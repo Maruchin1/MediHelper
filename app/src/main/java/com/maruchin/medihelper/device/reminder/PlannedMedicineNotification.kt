@@ -9,18 +9,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import com.maruchin.medihelper.R
-import com.maruchin.medihelper.domain.entities.AppTime
+import com.maruchin.medihelper.domain.model.PlannedMedicineNotifData
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetPlannedMedicineNotifDataUseCase
 import com.maruchin.medihelper.presentation.LauncherActivity
+import org.koin.core.inject
 
 class PlannedMedicineNotification(
-    private val context: Context,
-    private val plannedMedicineId: String,
-    profileName: String,
-    profileColor: String,
-    medicineName: String,
-    medicineUnit: String,
-    plannedTime: String,
-    doseSize: Float
+    private val context: Context
 ) : BaseNotification(context) {
 
     companion object {
@@ -41,23 +36,31 @@ class PlannedMedicineNotification(
     override val channelName: String
         get() = "planned-medicine-notification-channel-name"
 
-    private val notification: Notification
+    private val getPlannedMedicineNotifDataUseCase: GetPlannedMedicineNotifDataUseCase by inject()
 
-    init {
-        notification = NotificationCompat.Builder(context, channelId)
+    suspend fun notify(plannedMedicineId: String) {
+        val data = getPlannedMedicineNotifDataUseCase.execute(plannedMedicineId)
+        val notification = buildNotification(data)
+        val manager = NotificationManagerCompat.from(context)
+
+        manager.notify(plannedMedicineId, NOTIFICATION_ID, notification)
+    }
+
+    private fun buildNotification(data: PlannedMedicineNotifData): Notification {
+        return NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.mipmap.ic_launcher_round)
-            .setContentTitle("$profileName, pora przyjąć lek!")
+            .setContentTitle("${data.profileName}, pora przyjąć lek!")
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(
-                    "$plannedTime - $medicineName $doseSize $medicineUnit"
+                    "${data.plannedTime} - ${data.medicineName} ${data.doseSize} ${data.medicineUnit}"
                 )
             )
-            .setColor(Color.parseColor(profileColor))
+            .setColor(Color.parseColor(data.profileColor))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .addAction(
                 R.drawable.baseline_check_24,
                 "Przyjęty",
-                getMedicineTakenPendingIntent(plannedMedicineId)
+                getMedicineTakenPendingIntent(data.plannedMedicineId)
             )
             .addAction(
                 R.drawable.ic_pill_black_24dp,
@@ -65,11 +68,6 @@ class PlannedMedicineNotification(
                 getOpenAppPendingIntent()
             )
             .build()
-    }
-
-    fun show() {
-        val manager = NotificationManagerCompat.from(context)
-        manager.notify(plannedMedicineId, NOTIFICATION_ID, notification)
     }
 
     private fun getMedicineTakenPendingIntent(plannedMedicineId: String): PendingIntent {

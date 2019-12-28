@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.data
+package com.maruchin.medihelper.data.utils
 
 enum class ProfileColor(val colorString: String) {
     MAIN("#f44336"),

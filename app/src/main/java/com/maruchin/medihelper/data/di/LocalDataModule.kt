@@ -1,6 +1,6 @@
 package com.maruchin.medihelper.data.di
 
-import com.maruchin.medihelper.data.SharedPref
+import com.maruchin.medihelper.data.utils.SharedPref
 import org.koin.dsl.module
 
 val localDataModule = module {

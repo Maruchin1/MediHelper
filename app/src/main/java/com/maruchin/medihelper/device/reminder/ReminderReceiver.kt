@@ -22,10 +22,10 @@ class ReminderReceiver : BroadcastReceiver() {
 
     private fun notifyAboutPlannedMedicine(context: Context, intent: Intent) {
         val plannedMedicineId = intent.data.toString()
-        val work = OneTimeWorkRequestBuilder<PlannedMedicineWorker>()
+        val work = OneTimeWorkRequestBuilder<NotifyAboutPlannedMedicineWorker>()
             .setInputData(
                 workDataOf(
-                    PlannedMedicineWorker.INPUT_PLANNED_MEDICINE_ID to plannedMedicineId
+                    NotifyAboutPlannedMedicineWorker.INPUT_PLANNED_MEDICINE_ID to plannedMedicineId
                 )
             )
             .build()

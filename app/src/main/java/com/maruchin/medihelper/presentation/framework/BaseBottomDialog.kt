@@ -14,14 +14,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.maruchin.medihelper.BR
-import com.maruchin.medihelper.data.ProfileColor
-import com.maruchin.medihelper.presentation.utils.SelectedProfile
-import org.koin.android.ext.android.inject
+import com.maruchin.medihelper.data.utils.ProfileColor
 
 abstract class BaseBottomDialog<T : ViewDataBinding>(
     private val layoutResId: Int,

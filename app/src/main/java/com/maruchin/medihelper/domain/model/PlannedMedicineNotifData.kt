@@ -6,7 +6,7 @@ import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.entities.Profile
 import java.io.Serializable
 
-data class PlannedMedicineNotfiData(
+data class PlannedMedicineNotifData(
     val plannedMedicineId: String,
     val profileName: String,
     val profileColor: String,

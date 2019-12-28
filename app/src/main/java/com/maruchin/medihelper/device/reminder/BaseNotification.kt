@@ -4,8 +4,9 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import org.koin.core.KoinComponent
 
-abstract class BaseNotification(private val context: Context) {
+abstract class BaseNotification(private val context: Context) : KoinComponent {
 
     protected abstract val channelId: String
     protected abstract val channelName: String

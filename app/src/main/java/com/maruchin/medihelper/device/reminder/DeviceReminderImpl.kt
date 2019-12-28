@@ -10,6 +10,8 @@ import com.maruchin.medihelper.domain.device.DeviceReminder
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.AppTime
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetPlannedMedicineNotifDataUseCase
+import com.maruchin.medihelper.presentation.feature.alarm.AlarmActivity
 import java.util.*
 
 class DeviceReminderImpl(
@@ -56,6 +58,18 @@ class DeviceReminderImpl(
             cancelReminder(plannedMedicine.entityId)
             addReminder(plannedMedicine)
         }
+    }
+
+    override suspend fun launchReminderNotification(plannedMedicineId: String) {
+        PlannedMedicineNotification(context).notify(plannedMedicineId)
+    }
+
+    override fun launchReminderAlarm(plannedMedicineId: String) {
+        val intent = Intent(context, AlarmActivity::class.java).apply {
+            putExtra(AlarmActivity.EXTRA_PLANNED_MEDICINE_ID, plannedMedicineId)
+        }
+
+        context.startActivity(intent)
     }
 
     private fun isUpToDate(

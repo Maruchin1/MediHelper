@@ -4,7 +4,7 @@ import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.maruchin.medihelper.data.SharedPref
+import com.maruchin.medihelper.data.utils.SharedPref
 import com.maruchin.medihelper.data.framework.FirestoreRepo
 import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.data.mappers.MedicineMapper
@@ -28,10 +28,6 @@ class MedicineRepoImpl(
     collectionRef = db.collection("users").document(auth.getCurrUserId()).collection("medicines"),
     mapper = mapper
 ), MedicineRepo {
-
-    init {
-        checkDefaultMedicineUnits()
-    }
 
     override suspend fun saveMedicinePicture(pictureFile: File) {
         val pictureFileRef = storage.reference.child(pictureFile.name)
@@ -90,13 +86,4 @@ class MedicineRepoImpl(
 
         return@withContext infoResults
     }
-
-    private fun checkDefaultMedicineUnits() {
-        val medicineUnits = sharedPref.getMedicineUnitList()
-        if (medicineUnits.isNullOrEmpty()) {
-            sharedPref.saveMedicineUnitList(getDefaultMedicineUnits())
-        }
-    }
-
-    private fun getDefaultMedicineUnits() = listOf("dawki", "tabletki", "ml", "g", "mg", "pastylki")
 }

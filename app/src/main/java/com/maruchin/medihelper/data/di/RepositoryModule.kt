@@ -43,4 +43,9 @@ val repositoryModule = module {
             mapper = get()
         ) as PlannedMedicineRepo
     }
+    single {
+        SettingsRepoImpl(
+            sharedPref = get()
+        ) as SettingsRepo
+    }
 }

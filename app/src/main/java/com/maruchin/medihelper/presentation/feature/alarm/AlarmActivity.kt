@@ -2,7 +2,6 @@ package com.maruchin.medihelper.presentation.feature.alarm
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.WindowManager
@@ -13,8 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.ActivityAlarmBinding
 import com.maruchin.medihelper.domain.device.DeviceRingtone
-import com.maruchin.medihelper.domain.model.PlannedMedicineNotfiData
-import com.maruchin.medihelper.presentation.dialogs.SelectTimeDialog
+import com.maruchin.medihelper.domain.model.PlannedMedicineNotifData
 import kotlinx.android.synthetic.main.activity_alarm.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -27,7 +25,7 @@ class AlarmActivity : AppCompatActivity() {
     private val TAG = "AlarmActivity"
 
     companion object {
-        const val EXTRA_NOTIF_DATA = "extra-notif-data"
+        const val EXTRA_PLANNED_MEDICINE_ID = "extra-planned-medicine-id"
         private const val REVEAL_ANIM_TIME = 500L
         private const val FINISH_ACTIVITY_DELAY = 1000L
     }
@@ -67,9 +65,8 @@ class AlarmActivity : AppCompatActivity() {
 
         setupAlarmActivityFlags()
 
-        intent.extras?.getSerializable(EXTRA_NOTIF_DATA)?.let { serializable ->
-            val notifData = serializable as PlannedMedicineNotfiData
-            viewModel.setData(notifData)
+        intent.extras?.getString(EXTRA_PLANNED_MEDICINE_ID)?.let { plannedMedicineId ->
+            viewModel.initData(plannedMedicineId)
         }
         deviceRingtone.playAlarmRingtone()
     }

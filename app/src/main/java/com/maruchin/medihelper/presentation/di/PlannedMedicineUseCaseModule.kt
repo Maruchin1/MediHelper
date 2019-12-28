@@ -41,4 +41,11 @@ val plannedMedicineUseCaseModule = module {
             medicineRepo = get()
         )
     }
+    factory {
+        NotifyAboutPlannedMedicineUseCase(
+            plannedMedicineRepo = get(),
+            deviceReminder = get(),
+            settingsRepo = get()
+        )
+    }
 }
