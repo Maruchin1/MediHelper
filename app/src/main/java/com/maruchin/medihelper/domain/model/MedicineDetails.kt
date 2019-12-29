@@ -2,7 +2,7 @@ package com.maruchin.medihelper.domain.model
 
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
-import com.maruchin.medihelper.domain.entities.MedicineStateData
+import com.maruchin.medihelper.domain.entities.MedicineState
 import com.maruchin.medihelper.domain.entities.Profile
 
 data class MedicineDetails(
@@ -11,7 +11,7 @@ data class MedicineDetails(
     val unit: String,
     val expireDate: AppExpireDate,
     val daysRemains: Int,
-    val stateData: MedicineStateData?,
+    val state: MedicineState?,
     val pictureName: String?,
     val profileItems: List<ProfileItem>
 ) {
@@ -21,7 +21,7 @@ data class MedicineDetails(
         unit = medicine.unit,
         expireDate = medicine.expireDate,
         daysRemains = daysRemains,
-        stateData = medicine.stateData,
+        state = medicine.state,
         pictureName = medicine.pictureName,
         profileItems = profileList.map {
             ProfileItem(

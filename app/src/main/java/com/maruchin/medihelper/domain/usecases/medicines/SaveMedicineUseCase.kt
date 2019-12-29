@@ -2,6 +2,7 @@ package com.maruchin.medihelper.domain.usecases.medicines
 
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
+import com.maruchin.medihelper.domain.entities.MedicineState
 import com.maruchin.medihelper.domain.utils.MedicineValidator
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import kotlinx.coroutines.Dispatchers
@@ -34,8 +35,10 @@ class SaveMedicineUseCase(
             name = params.name!!,
             unit = params.unit!!,
             expireDate = params.expireDate!!,
-            packageSize = params.packageSize ?: 0f,
-            currState = params.currState ?: 0f,
+            state = MedicineState(
+                packageSize = params.packageSize ?: 0f,
+                currState = params.currState ?: 0f
+            ),
             pictureName = params.pictureFile?.name ?: params.pictureName
         )
         if (params.pictureFile != null) {

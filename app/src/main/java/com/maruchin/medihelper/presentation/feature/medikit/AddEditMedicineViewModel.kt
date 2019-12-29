@@ -127,8 +127,8 @@ class AddEditMedicineViewModel(
         medicineName.postValue(editData.name)
         medicineUnit.postValue(editData.unit)
         expireDate.postValue(editData.expireDate)
-        packageSize.postValue(editData.packageSize)
-        currState.postValue(editData.currState)
+        packageSize.postValue(editData.state.packageSize)
+        currState.postValue(editData.state.currState)
         editData.pictureName?.let {
             _pictureRef.postValue(picturesRef.get(it))
         }

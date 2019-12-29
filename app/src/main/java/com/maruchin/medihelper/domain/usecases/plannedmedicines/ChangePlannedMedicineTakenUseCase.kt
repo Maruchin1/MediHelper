@@ -27,9 +27,9 @@ class ChangePlannedMedicineTakenUseCase(
     private suspend fun changeMedicineState(medicineId: String, newStatus: PlannedMedicine.Status, doseSize: Float) {
         val medicine = medicineRepo.getById(medicineId)!!
         if (newStatus == PlannedMedicine.Status.TAKEN) {
-            medicine.reduceCurrState(doseSize)
+            medicine.state.reduce(doseSize)
         } else {
-            medicine.increaseCurrState(doseSize)
+            medicine.state.increase(doseSize)
         }
         medicineRepo.update(medicine)
     }

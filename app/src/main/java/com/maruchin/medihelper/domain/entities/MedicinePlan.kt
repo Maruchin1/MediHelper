@@ -12,6 +12,7 @@ data class MedicinePlan(
     val intakeDays: IntakeDays?,
     val timeDoseList: List<TimeDose>
 ) : BaseEntity() {
+
     enum class Type {
         ONCE, PERIOD, CONTINUOUS
     }

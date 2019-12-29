@@ -82,7 +82,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="16dp"
                     android:layout_marginTop="24dp"
-                    android:visibility="@{displayData.stateData != null ? View.VISIBLE : View.GONE}"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp">
 
@@ -95,15 +94,12 @@
                         <View
                             android:id="@+id/line_state"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="@{displayData.stateData.stateWeight, default=7}"
-                            android:background='@{displayData.stateData.colorId, default="@android:color/holo_green_light"}' />
+                            android:layout_height="match_parent" />
 
                         <View
                             android:id="@+id/line_empty"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="@{displayData.stateData.emptyWeight, default=3}"
                             android:background="@color/colorBackground" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

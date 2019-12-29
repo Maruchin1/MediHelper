@@ -3,7 +3,7 @@ package com.maruchin.medihelper.presentation.feature.medikit
 import androidx.lifecycle.*
 import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.domain.entities.AppExpireDate
-import com.maruchin.medihelper.domain.entities.MedicineStateData
+import com.maruchin.medihelper.domain.entities.MedicineState
 import com.maruchin.medihelper.domain.model.MedicineDetails
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
@@ -25,7 +25,7 @@ class MedicineDetailsViewModel(
     val medicineUnit: LiveData<String>
     val expireDate: LiveData<AppExpireDate>
     val daysRemain: LiveData<Int>
-    val stateData: LiveData<MedicineStateData>
+    val state: LiveData<MedicineState>
     val profileSimpleItemListAvailable: LiveData<Boolean>
     val profileSimpleItemList: LiveData<List<ProfileItem>>
 
@@ -56,12 +56,12 @@ class MedicineDetailsViewModel(
         medicineUnit = Transformations.map(medicineDetails) { it.unit }
         expireDate = Transformations.map(medicineDetails) { it.expireDate }
         daysRemain = Transformations.map(medicineDetails) { it.daysRemains }
-        stateData = Transformations.map(medicineDetails) { it.stateData }
+        state = Transformations.map(medicineDetails) { it.state }
         profileSimpleItemListAvailable = Transformations.map(medicineDetails) {
             !it.profileItems.isNullOrEmpty()
         }
         profileSimpleItemList = Transformations.map(medicineDetails) { it.profileItems }
-        medicineStateAvailable = Transformations.map(stateData) { it != null }
+        medicineStateAvailable = Transformations.map(state) { it != null }
     }
 
     fun setArgs(args: MedicineDetailsFragmentArgs) = viewModelScope.launch {

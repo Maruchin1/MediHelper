@@ -2,6 +2,7 @@ package com.maruchin.medihelper.domain.usecases.medicines
 
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
+import com.maruchin.medihelper.domain.entities.MedicineState
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import com.maruchin.medihelper.testingframework.mock
 import kotlinx.coroutines.runBlocking
@@ -31,8 +32,10 @@ class DeleteMedicineUseCaseTest {
                 name = "Lek",
                 unit = "tabletki",
                 expireDate = AppExpireDate(2020, 6),
-                packageSize = 0f,
-                currState = 0f,
+                state = MedicineState(
+                    packageSize = 0f,
+                    currState = 0f
+                ),
                 pictureName = "picture.jpg"
             )
             Mockito.`when`(medicineRepo.getById(medicineId)).thenReturn(mockMedicine)
@@ -54,8 +57,10 @@ class DeleteMedicineUseCaseTest {
                 name = "Lek",
                 unit = "tabletki",
                 expireDate = AppExpireDate(2020, 6),
-                packageSize = 0f,
-                currState = 0f,
+                state = MedicineState(
+                    packageSize = 0f,
+                    currState = 0f
+                ),
                 pictureName = null
             )
             Mockito.`when`(medicineRepo.getById(medicineId)).thenReturn(mockMedicine)

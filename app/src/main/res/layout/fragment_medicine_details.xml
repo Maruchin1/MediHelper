@@ -230,9 +230,7 @@
                             android:id="@+id/txv_curr_state_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.stateData.text, default=Stan}"
-                            android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1"
-                            android:textColor='@{viewModel.stateData.colorId, default="@color/colorStateGood"}' />
+                            android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
@@ -250,16 +248,12 @@
                                 <View
                                     android:id="@+id/line_state"
                                     android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="@{viewModel.stateData.stateWeight, default=7}"
-                                    android:background='@{viewModel.stateData.colorId, default="@android:color/holo_green_light"}' />
+                                    android:layout_height="match_parent"/>
 
                                 <View
                                     android:id="@+id/line_empty"
                                     android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="@{viewModel.stateData.emptyWeight, default=3}"
-                                    android:background="@color/colorBackground" />
+                                    android:layout_height="match_parent"/>
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -275,7 +269,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="8dp"
-                                android:text="@{viewModel.stateData.numberText, default=stan}"
                                 android:textAlignment="viewEnd"
                                 android:textAppearance="@style/TextAppearance.MediHelper.Body1"
                                 android:textColor="@color/colorTextTertiary" />
@@ -286,7 +279,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="8dp"
-                                android:text="@{viewModel.medicineUnit, default=typ}"
                                 android:textAlignment="viewStart"
                                 android:textAppearance="@style/TextAppearance.MediHelper.Body1"
                                 android:textColor="@color/colorTextTertiary" />
@@ -298,8 +290,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="Brak danych o ilości leku"
-                        android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle"
-                        android:visibility="@{viewModel.medicineStateAvailable ? View.GONE : View.VISIBLE, default=gone}" />
+                        android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle" />
 
                 </com.google.android.material.card.MaterialCardView>
 
