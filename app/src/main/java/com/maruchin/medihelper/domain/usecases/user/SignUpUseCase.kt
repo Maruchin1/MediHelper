@@ -1,7 +1,6 @@
 package com.maruchin.medihelper.domain.usecases.user
 
 import com.maruchin.medihelper.data.utils.ProfileColor
-import com.maruchin.medihelper.domain.entities.AuthResult
 import com.maruchin.medihelper.domain.entities.Profile
 import com.maruchin.medihelper.domain.model.SignUpErrors
 import com.maruchin.medihelper.domain.repositories.ProfileRepo

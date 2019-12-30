@@ -1,56 +1,58 @@
 package com.maruchin.medihelper.presentation.di
 
 import com.maruchin.medihelper.domain.usecases.medicines.*
+import com.maruchin.medihelper.domain.usecasesimpl.medicines.GetLiveAllMedicinesItemsUseCaseImpl
+import com.maruchin.medihelper.domain.usecasesimpl.medicines.*
 import org.koin.dsl.module
 
 val medicineUseCaseModule = module {
     factory {
-        SaveMedicineUseCase(
+        SaveMedicineUseCaseImpl(
             medicineRepo = get(),
             validator = get()
-        )
+        ) as SaveMedicineUseCase
     }
     factory {
-        DeleteMedicineUseCase(
+        DeleteMedicineUseCaseImpl(
             medicineRepo = get()
-        )
+        ) as DeleteMedicineUseCase
     }
     factory {
-        GetLiveAllMedicinesItemsUseCase(
+        GetLiveAllMedicinesItemsUseCaseImpl(
             medicineRepo = get()
-        )
+        ) as GetLiveAllMedicinesItemsUseCase
     }
     factory {
-        GetMedicineUnitsUseCase(
+        GetMedicineUnitsUseCaseImpl(
             medicineRepo = get()
-        )
+        ) as GetMedicineUnitsUseCase
     }
     factory {
-        GetMedicineDetailsUseCase(
+        GetMedicineDetailsUseCaseImpl(
             medicineRepo = get(),
             profileRepo = get(),
             deviceCalendar = get(),
             dateTimeCalculator = get()
-        )
+        ) as GetMedicineDetailsUseCase
     }
     factory {
-        GetMedicineEditDataUseCase(
+        GetMedicineEditDataUseCaseImpl(
             medicineRepo = get()
-        )
+        ) as GetMedicineEditDataUseCase
     }
     factory {
-        SearchForMedicineInfoUseCase(
+        SearchForMedicineInfoUseCaseImpl(
             medicineRepo = get()
-        )
+        ) as SearchForMedicineInfoUseCase
     }
     factory {
-        GetMedicineInfoUseCase(
+        GetMedicineInfoUseCaseImpl(
             medicineRepo = get()
-        )
+        ) as GetMedicineInfoUseCase
     }
     factory {
-        GetMedicineItemUseCase(
+        GetMedicineSimpleItemUseCaseImpl(
             medicineRepo = get()
-        )
+        ) as GetMedicineSimpleItemUseCase
     }
 }

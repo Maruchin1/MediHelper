@@ -92,7 +92,7 @@ val viewModelModule = module {
         AddEditMedicinePlanViewModel(
             getMedicinePlanEditDataUseCase = get(),
             getProfileItemUseCase = get(),
-            getMedicineItemUseCase = get(),
+            getMedicineSimpleItemUseCase = get(),
             saveMedicinePlanUseCase = get(),
             deviceCalendar = get()
         )

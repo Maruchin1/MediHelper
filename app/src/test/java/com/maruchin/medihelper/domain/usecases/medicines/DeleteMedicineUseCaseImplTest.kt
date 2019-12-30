@@ -4,6 +4,7 @@ import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineState
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
+import com.maruchin.medihelper.domain.usecasesimpl.medicines.DeleteMedicineUseCaseImpl
 import com.maruchin.medihelper.testingframework.mock
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -11,7 +12,7 @@ import org.junit.Test
 import org.junit.Before
 import org.mockito.Mockito
 
-class DeleteMedicineUseCaseTest {
+class DeleteMedicineUseCaseImplTest {
 
     private val medicineRepo: MedicineRepo = mock()
 
@@ -19,7 +20,9 @@ class DeleteMedicineUseCaseTest {
 
     @Before
     fun before() {
-        useCase = DeleteMedicineUseCase(medicineRepo)
+        useCase = DeleteMedicineUseCaseImpl(
+            medicineRepo
+        )
     }
 
     @Test

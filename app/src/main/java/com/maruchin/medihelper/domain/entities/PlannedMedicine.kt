@@ -14,6 +14,7 @@ data class PlannedMedicine(
     var status: Status
 ) : BaseEntity() {
 
+    //todo Enum nie może mieć konkretnych danych z widoków
     enum class Status(val text: String, val colorId: Int, val iconId: Int) {
         TAKEN("pryjęty", R.color.colorStateGood, R.drawable.round_check_circle_24),
         NOT_TAKEN("nieprzyjęty", R.color.colorDarkerGray, R.drawable.round_radio_button_unchecked_24)

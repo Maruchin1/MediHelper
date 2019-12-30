@@ -1,9 +1,7 @@
 package com.maruchin.medihelper.data.repositories
 
 import com.google.firebase.auth.*
-import com.google.firebase.firestore.FirebaseFirestore
 import com.maruchin.medihelper.data.framework.getCurrUserId
-import com.maruchin.medihelper.domain.entities.AuthResult
 import com.maruchin.medihelper.domain.entities.User
 import com.maruchin.medihelper.domain.model.SignInErrors
 import com.maruchin.medihelper.domain.model.SignUpErrors

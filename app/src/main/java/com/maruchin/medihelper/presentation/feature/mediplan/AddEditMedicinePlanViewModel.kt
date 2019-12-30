@@ -5,8 +5,9 @@ import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.domain.entities.*
 import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.model.MedicinePlanEditData
+import com.maruchin.medihelper.domain.model.MedicineSimpleItem
 import com.maruchin.medihelper.domain.model.ProfileItem
-import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineItemUseCase
+import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineSimpleItemUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.SaveMedicinePlanUseCase
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileItemUseCase
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 class AddEditMedicinePlanViewModel(
     private val getMedicinePlanEditDataUseCase: GetMedicinePlanEditDataUseCase,
     private val getProfileItemUseCase: GetProfileItemUseCase,
-    private val getMedicineItemUseCase: GetMedicineItemUseCase,
+    private val getMedicineSimpleItemUseCase: GetMedicineSimpleItemUseCase,
     private val saveMedicinePlanUseCase: SaveMedicinePlanUseCase,
     private val deviceCalendar: DeviceCalendar
 ) : ViewModel() {
@@ -32,7 +33,7 @@ class AddEditMedicinePlanViewModel(
     val daysOfWeek = MutableLiveData<IntakeDays.DaysOfWeek>()
 
     val medicineUnit: String?
-        get() = medicineItem.value?.unit
+        get() = medicineSimpleItem.value?.unit
     val interval: LiveData<IntakeDays.Interval>
         get() = _interval
     val sequence: LiveData<IntakeDays.Sequence>
@@ -54,7 +55,7 @@ class AddEditMedicinePlanViewModel(
     private val _actionMedicinePlanSaved = ActionLiveData()
 
     private val profileItem = MutableLiveData<ProfileItem>()
-    private val medicineItem = MutableLiveData<MedicineItem>()
+    private val medicineSimpleItem = MutableLiveData<MedicineSimpleItem>()
     private val editEntityId = MutableLiveData<String>()
 
     init {
@@ -67,7 +68,7 @@ class AddEditMedicinePlanViewModel(
         }
         colorPrimary = Transformations.map(profileItem) { it.color }
         profileName = Transformations.map(profileItem) { it.name }
-        medicineName = Transformations.map(medicineItem) { it.name }
+        medicineName = Transformations.map(medicineSimpleItem) { it.name }
         setDefaultData()
     }
 
@@ -119,7 +120,7 @@ class AddEditMedicinePlanViewModel(
         val params = SaveMedicinePlanUseCase.Params(
             medicinePlanId = editEntityId.value,
             profileId = profileItem.value?.profileId,
-            medicineId = medicineItem.value?.medicineId,
+            medicineId = medicineSimpleItem.value?.medicineId,
             planType = planType.value,
             startDate = startDate.value,
             endDate = endDate.value,
@@ -153,19 +154,19 @@ class AddEditMedicinePlanViewModel(
             val medicineId = args.medicineId ?: throw Exception("MedicineId is null")
 
             val profileItemValue = getProfileItemUseCase.execute(profileId)
-            val medicineItemValue = getMedicineItemUseCase.execute(medicineId)
+            val medicineItemValue = getMedicineSimpleItemUseCase.execute(medicineId)
 
             profileItem.postValue(profileItemValue)
-            medicineItem.postValue(medicineItemValue)
+            medicineSimpleItem.postValue(medicineItemValue)
         }
         _actionDataLoaded.sendAction()
     }
 
     private suspend fun setEditData(editData: MedicinePlanEditData) {
         val profileItemValue = getProfileItemUseCase.execute(editData.profileId)
-        val medicineItemValue = getMedicineItemUseCase.execute(editData.medicineId)
+        val medicineItemValue = getMedicineSimpleItemUseCase.execute(editData.medicineId)
         profileItem.postValue(profileItemValue)
-        medicineItem.postValue(medicineItemValue)
+        medicineSimpleItem.postValue(medicineItemValue)
         planType.postValue(editData.planType)
         startDate.postValue(editData.startDate)
         endDate.postValue(editData.endDate)
