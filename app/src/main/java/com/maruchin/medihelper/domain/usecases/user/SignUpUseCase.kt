@@ -3,7 +3,7 @@ package com.maruchin.medihelper.domain.usecases.user
 import com.maruchin.medihelper.data.utils.ProfileColor
 import com.maruchin.medihelper.domain.entities.AuthResult
 import com.maruchin.medihelper.domain.entities.Profile
-import com.maruchin.medihelper.domain.entities.User
+import com.maruchin.medihelper.domain.model.SignUpErrors
 import com.maruchin.medihelper.domain.repositories.ProfileRepo
 import com.maruchin.medihelper.domain.repositories.UserAuthRepo
 import com.maruchin.medihelper.domain.utils.SignUpValidator
@@ -19,7 +19,7 @@ class SignUpUseCase(
 
     private val profileRepo: ProfileRepo by inject()
 
-    suspend fun execute(params: Params): SignUpValidator.Errors = withContext(Dispatchers.Default) {
+    suspend fun execute(params: Params): SignUpErrors = withContext(Dispatchers.Default) {
         val validatorParams = SignUpValidator.Params(
             email = params.email,
             password = params.password,
@@ -29,12 +29,10 @@ class SignUpUseCase(
         val errors = validator.validate(validatorParams)
 
         if (errors.noErrors) {
-            val authResult = userAuthRepo.signUp(params.email!!, params.password!!)
+            val userId = userAuthRepo.signUp(params.email!!, params.password!!, errors)
 
-            if (authResult is AuthResult.Success) {
+            if (userId != null) {
                 addUserMainProfile(params.userName!!)
-            } else if (authResult is AuthResult.Error) {
-                errors.globalMessage = authResult.message
             }
         }
 

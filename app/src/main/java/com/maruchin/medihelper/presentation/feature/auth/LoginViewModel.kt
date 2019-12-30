@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.maruchin.medihelper.domain.model.SignInErrors
 import com.maruchin.medihelper.domain.usecases.user.SignInUseCase
 import com.maruchin.medihelper.domain.utils.SignInValidator
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
@@ -43,14 +44,14 @@ class LoginViewModel(
         val errors = signInUseCase.execute(params)
 
         _loadingInProgress.postValue(false)
-        if (errors.noErrors && errors.globalMessage.isEmpty()) {
+        if (errors.noErrors) {
             _actionSignInSuccess.sendAction()
         } else {
             postErrors(errors)
         }
     }
 
-    private fun postErrors(errors: SignInValidator.Errors) {
+    private fun postErrors(errors: SignInErrors) {
         val emailError = if (errors.emptyEmail) {
             "Nie podano adresu e-mail"
         } else null
@@ -61,8 +62,6 @@ class LoginViewModel(
         _errorEmail.postValue(emailError)
         _errorPassword.postValue(passwordError)
 
-        if (errors.globalMessage.isNotEmpty()) {
-            _errorGlobal.postValue(errors.globalMessage)
-        }
+        //todo obsłużyć pozostałe błędy
     }
 }

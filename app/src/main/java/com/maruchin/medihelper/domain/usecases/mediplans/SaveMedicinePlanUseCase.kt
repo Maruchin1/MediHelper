@@ -3,6 +3,7 @@ package com.maruchin.medihelper.domain.usecases.mediplans
 import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.domain.device.DeviceReminder
 import com.maruchin.medihelper.domain.entities.*
+import com.maruchin.medihelper.domain.model.MedicinePlanErrors
 import com.maruchin.medihelper.domain.utils.MedicinePlanValidator
 import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
 import com.maruchin.medihelper.domain.repositories.MedicinePlanRepo
@@ -18,7 +19,7 @@ class SaveMedicinePlanUseCase(
     private val deviceReminder: DeviceReminder,
     private val validator: MedicinePlanValidator
 ) {
-    suspend fun execute(params: Params): MedicinePlanValidator.Errors = withContext(Dispatchers.Default) {
+    suspend fun execute(params: Params): MedicinePlanErrors = withContext(Dispatchers.Default) {
         val validatorParams = MedicinePlanValidator.Params(
             profileId = params.profileId,
             medicineId = params.medicineId,

@@ -4,20 +4,19 @@ import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.IntakeDays
 import com.maruchin.medihelper.domain.entities.MedicinePlan
 import com.maruchin.medihelper.domain.entities.TimeDose
+import com.maruchin.medihelper.domain.framework.BaseValidator
+import com.maruchin.medihelper.domain.model.MedicinePlanErrors
 
-class MedicinePlanValidator{
+class MedicinePlanValidator : BaseValidator<MedicinePlanValidator.Params, MedicinePlanErrors>() {
 
-    fun validate(params: Params): Errors {
-        val errors = Errors()
+    override fun validate(params: Params): MedicinePlanErrors {
+        val errors = MedicinePlanErrors()
 
         if (params.profileId.isNullOrEmpty()) {
             errors.emptyProfileId = true
         }
         if (params.medicineId.isNullOrEmpty()) {
             errors.emptyMedicineId = true
-        }
-        if (params.planType == null) {
-            errors.emptyPlanType = true
         }
         when (params.planType) {
             null -> errors.emptyPlanType = true
@@ -67,27 +66,4 @@ class MedicinePlanValidator{
         val intakeDays: IntakeDays?,
         val timeDoseList: List<TimeDose>?
     )
-
-    data class Errors(
-        var emptyProfileId: Boolean = false,
-        var emptyMedicineId: Boolean = false,
-        var emptyPlanType: Boolean = false,
-        var emptyStartDate: Boolean = false,
-        var emptyEndDate: Boolean = false,
-        var incorrectDatesOrder: Boolean = false,
-        var emptyIntakeDays: Boolean = false,
-        var emptyTimeDoseList: Boolean = false
-    ) {
-        val noErrors: Boolean
-            get() = arrayOf(
-                emptyProfileId,
-                emptyMedicineId,
-                emptyPlanType,
-                emptyStartDate,
-                emptyEndDate,
-                incorrectDatesOrder,
-                emptyIntakeDays,
-                emptyTimeDoseList
-            ).all { !it }
-    }
 }

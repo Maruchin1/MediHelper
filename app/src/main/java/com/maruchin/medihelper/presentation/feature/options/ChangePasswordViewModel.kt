@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.maruchin.medihelper.domain.model.ChangePasswordErrors
 import com.maruchin.medihelper.domain.usecases.user.ChangePasswordUseCase
 import com.maruchin.medihelper.domain.utils.ChangePasswordValidator
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
@@ -47,7 +48,7 @@ class ChangePasswordViewModel(
         }
     }
 
-    private fun postErrors(errors: ChangePasswordValidator.Errors) {
+    private fun postErrors(errors: ChangePasswordErrors) {
         var passwordError = if (errors.emptyPassword) {
             "Hasło jest wymagane"
         } else null

@@ -10,6 +10,7 @@ import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineUnitsUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.SaveMedicineUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import com.maruchin.medihelper.device.camera.DeviceCamera
+import com.maruchin.medihelper.domain.model.MedicineErrors
 import com.maruchin.medihelper.presentation.utils.PicturesRef
 import kotlinx.coroutines.launch
 import java.io.File
@@ -103,7 +104,7 @@ class AddEditMedicineViewModel(
         }
     }
 
-    private fun postErrors(errors: MedicineValidator.Errors) {
+    private fun postErrors(errors: MedicineErrors) {
         val medicineNameError = if (errors.emptyName) {
             "Pole jest wymagane"
         } else null

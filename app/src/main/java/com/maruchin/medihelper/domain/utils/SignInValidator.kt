@@ -1,9 +1,12 @@
 package com.maruchin.medihelper.domain.utils
 
-class SignInValidator {
+import com.maruchin.medihelper.domain.framework.BaseValidator
+import com.maruchin.medihelper.domain.model.SignInErrors
 
-    fun validate(params: Params): Errors {
-        val errors = Errors()
+class SignInValidator : BaseValidator<SignInValidator.Params, SignInErrors>() {
+
+    override fun validate(params: Params): SignInErrors {
+        val errors = SignInErrors()
 
         if (params.email.isNullOrEmpty()) {
             errors.emptyEmail = true
@@ -18,16 +21,4 @@ class SignInValidator {
         val email: String?,
         val password: String?
     )
-
-    data class Errors(
-        var globalMessage: String = "",
-        var emptyEmail: Boolean = false,
-        var emptyPassword: Boolean = false
-    ) {
-        val noErrors: Boolean
-            get() = arrayOf(
-                emptyEmail,
-                emptyPassword
-            ).all { !it }
-    }
 }

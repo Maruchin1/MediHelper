@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.maruchin.medihelper.domain.model.SignUpErrors
 import com.maruchin.medihelper.domain.usecases.user.SignUpUseCase
 import com.maruchin.medihelper.domain.utils.SignUpValidator
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
@@ -53,14 +54,14 @@ class RegisterViewModel(
         val errors = signUpUseCase.execute(params)
 
         _loadingInProgress.postValue(false)
-        if (errors.noErrors && errors.globalMessage.isEmpty()) {
+        if (errors.noErrors) {
             _actionUserSignedUp.sendAction()
         } else {
             postErrors(errors)
         }
     }
 
-    private fun postErrors(errors: SignUpValidator.Errors) {
+    private fun postErrors(errors: SignUpErrors) {
         val userNameError = if (errors.emptyUserName) {
             "Imię jest wymagane"
         } else null
@@ -85,8 +86,6 @@ class RegisterViewModel(
         _errorPassword.postValue(passwordError)
         _errorPasswordConfirm.postValue(passwordConfirmError)
 
-        if (errors.globalMessage.isNotEmpty()) {
-            _errorGlobal.postValue(errors.globalMessage)
-        }
+        //todo obsłużyć pozostałe błędy
     }
 }

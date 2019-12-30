@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.domain.usecases.profile
 
 import com.maruchin.medihelper.domain.entities.Profile
+import com.maruchin.medihelper.domain.model.ProfileErrors
 import com.maruchin.medihelper.domain.utils.ProfileValidator
 import com.maruchin.medihelper.domain.repositories.ProfileRepo
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +11,7 @@ class SaveProfileUseCase(
     private val profileRepo: ProfileRepo,
     private val validator: ProfileValidator
 ) {
-    suspend fun execute(params: Params): ProfileValidator.Errors = withContext(Dispatchers.Default) {
+    suspend fun execute(params: Params): ProfileErrors = withContext(Dispatchers.Default) {
         val validatorParams = ProfileValidator.Params(
             name = params.name,
             color = params.color

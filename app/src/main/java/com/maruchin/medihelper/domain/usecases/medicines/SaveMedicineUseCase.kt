@@ -3,6 +3,7 @@ package com.maruchin.medihelper.domain.usecases.medicines
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineState
+import com.maruchin.medihelper.domain.model.MedicineErrors
 import com.maruchin.medihelper.domain.utils.MedicineValidator
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +14,7 @@ class SaveMedicineUseCase(
     private val medicineRepo: MedicineRepo,
     private val validator: MedicineValidator
 ) {
-    suspend fun execute(params: Params): MedicineValidator.Errors = withContext(Dispatchers.Default) {
+    suspend fun execute(params: Params): MedicineErrors = withContext(Dispatchers.Default) {
         val validatorParams = MedicineValidator.Params(
             name = params.name,
             unit = params.unit,

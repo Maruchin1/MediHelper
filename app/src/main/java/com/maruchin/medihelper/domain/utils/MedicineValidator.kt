@@ -1,11 +1,13 @@
 package com.maruchin.medihelper.domain.utils
 
 import com.maruchin.medihelper.domain.entities.AppExpireDate
+import com.maruchin.medihelper.domain.framework.BaseValidator
+import com.maruchin.medihelper.domain.model.MedicineErrors
 
-class MedicineValidator {
+class MedicineValidator : BaseValidator<MedicineValidator.Params, MedicineErrors>() {
 
-    fun validate(params: Params): Errors {
-        val errors = Errors()
+    override fun validate(params: Params): MedicineErrors {
+        val errors = MedicineErrors()
 
         if (params.name.isNullOrEmpty()) {
             errors.emptyName = true
@@ -29,19 +31,4 @@ class MedicineValidator {
         val packageSize: Float?,
         val currState: Float?
     )
-
-    data class Errors(
-        var emptyName: Boolean = false,
-        var emptyUnit: Boolean = false,
-        var emptyExpireDate: Boolean = false,
-        var currStateBiggerThanPackageSize: Boolean = false
-    ) {
-        val noErrors: Boolean
-            get() = arrayOf(
-                emptyName,
-                emptyUnit,
-                emptyExpireDate,
-                currStateBiggerThanPackageSize
-            ).all { !it }
-    }
 }

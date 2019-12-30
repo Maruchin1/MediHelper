@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.presentation.feature.profiles
 
 import androidx.lifecycle.*
+import com.maruchin.medihelper.domain.model.ProfileErrors
 import com.maruchin.medihelper.domain.utils.ProfileValidator
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileColorsUseCase
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileEditDataUseCase
@@ -77,7 +78,7 @@ class AddEditProfileViewModel(
         }
     }
 
-    private fun postErrors(errors: ProfileValidator.Errors) {
+    private fun postErrors(errors: ProfileErrors) {
         val profileNameError = if (errors.emptyName) {
             "Podanie nazwy jest wyamgane"
         } else null

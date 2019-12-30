@@ -5,6 +5,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.domain.entities.AuthResult
 import com.maruchin.medihelper.domain.entities.User
+import com.maruchin.medihelper.domain.model.SignInErrors
+import com.maruchin.medihelper.domain.model.SignUpErrors
 import com.maruchin.medihelper.domain.repositories.UserAuthRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -14,31 +16,38 @@ class UserAuthRepoImpl(
     private val auth: FirebaseAuth
 ) : UserAuthRepo {
 
-    override suspend fun signIn(email: String, password: String): AuthResult = withContext(Dispatchers.IO) {
+    override suspend fun signIn(email: String, password: String, errors: SignInErrors): String? = withContext(Dispatchers.IO) {
         return@withContext try {
             auth.signInWithEmailAndPassword(email, password).await()
-            AuthResult.Success(userId = auth.getCurrUserId())
+            auth.getCurrUserId()
         } catch (ex: FirebaseAuthInvalidUserException) {
-            AuthResult.Error(message = "Niepoprawny adres e-mail")
+            errors.incorrectEmail = true
+            null
         } catch (ex: FirebaseAuthInvalidCredentialsException) {
-            AuthResult.Error(message = "Niepoprawne hasło")
+            errors.incorrectPassword = true
+            null
         } catch (ex: FirebaseAuthException) {
-            AuthResult.Error(message = "Błąd logowania")
+            errors.undefinedError = true
+            null
         }
     }
 
-    override suspend fun signUp(email: String, password: String): AuthResult = withContext(Dispatchers.IO) {
+    override suspend fun signUp(email: String, password: String, errors: SignUpErrors): String? = withContext(Dispatchers.IO) {
         return@withContext try {
             auth.createUserWithEmailAndPassword(email, password).await()
-            AuthResult.Success(userId = auth.getCurrUserId())
+            auth.getCurrUserId()
         } catch (ex: FirebaseAuthEmailException) {
-            AuthResult.Error(message = "Niepoprawny adres e-mail")
+            errors.incorrectEmail = true
+            null
         } catch (ex: FirebaseAuthUserCollisionException) {
-            AuthResult.Error(message = "Użytkownik o podanym adresie e-mail już istnieje")
+            errors.userAlreadyExists = true
+            null
         } catch (ex: FirebaseAuthWeakPasswordException) {
-            AuthResult.Error(message = "Hasło jest zbyt słabe")
+            errors.weakPassword = true
+            null
         } catch (ex: FirebaseAuthException) {
-            AuthResult.Error(message = "Błąd rejestracji")
+            errors.undefinedError = true
+            null
         }
     }
 

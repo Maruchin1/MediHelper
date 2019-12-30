@@ -1,9 +1,12 @@
 package com.maruchin.medihelper.domain.utils
 
-class ProfileValidator {
+import com.maruchin.medihelper.domain.framework.BaseValidator
+import com.maruchin.medihelper.domain.model.ProfileErrors
 
-    fun validate(params: Params): Errors {
-        val errors = Errors()
+class ProfileValidator : BaseValidator<ProfileValidator.Params, ProfileErrors>() {
+
+    override fun validate(params: Params): ProfileErrors {
+        val errors = ProfileErrors()
 
         if (params.name.isNullOrEmpty()) {
             errors.emptyName = true
@@ -18,15 +21,4 @@ class ProfileValidator {
         val name: String?,
         val color: String?
     )
-
-    data class Errors(
-        var emptyName: Boolean = false,
-        var emptyColor: Boolean = false
-    ) {
-        val noErrors: Boolean
-            get() = arrayOf(
-                emptyName,
-                emptyColor
-            ).all { !it }
-    }
 }
