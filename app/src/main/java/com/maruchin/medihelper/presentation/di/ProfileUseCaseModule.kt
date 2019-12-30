@@ -1,48 +1,49 @@
 package com.maruchin.medihelper.presentation.di
 
 import com.maruchin.medihelper.domain.usecases.profile.*
+import com.maruchin.medihelper.domain.usecasesimpl.profiles.*
 import org.koin.dsl.module
 
 val profileUseCaseModule = module {
     factory {
-        GetProfileItemUseCase(
+        GetProfileSimpleItemUseCaseImpl(
             profileRepo = get()
-        )
+        ) as GetProfileSimpleItemUseCase
     }
     factory {
-        GetLiveAllProfilesItemsUseCase(
+        GetLiveAllProfilesItemsUseCaseImpl(
             profileRepo = get()
-        )
+        ) as GetLiveAllProfilesItemsUseCase
     }
     factory {
-        GetMainProfileIdUseCase(
+        GetMainProfileIdUseCaseImpl(
             profileRepo = get()
-        )
+        ) as GetMainProfileIdUseCase
     }
     factory {
-        GetProfileColorsUseCase(
+        GetProfileColorsUseCaseImpl(
             profileRepo = get()
-        )
+        ) as GetProfileColorsUseCase
     }
     factory {
-        SaveProfileUseCase(
+        SaveProfileUseCaseImpl(
             profileRepo = get(),
             validator = get()
-        )
+        ) as SaveProfileUseCase
     }
     factory {
-        DeleteProfileUseCase(
+        DeleteProfileUseCaseImpl(
             profileRepo = get()
-        )
+        ) as DeleteProfileUseCase
     }
     factory {
-        GetProfileEditDataUseCase(
+        GetProfileEditDataUseCaseImpl(
             profileRepo = get()
-        )
+        ) as GetProfileEditDataUseCase
     }
     factory {
-        GetProfileColorUseCase(
+        GetProfileColorUseCaseImpl(
             profileRepo = get()
-        )
+        ) as GetProfileColorUseCase
     }
 }

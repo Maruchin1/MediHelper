@@ -6,7 +6,6 @@ import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.usecases.mediplans.GetLiveMedicinesPlansItemsByProfileUseCase
 import com.maruchin.medihelper.domain.usecases.profile.DeleteProfileUseCase
 import com.maruchin.medihelper.domain.usecases.profile.GetLiveAllProfilesItemsUseCase
-import com.maruchin.medihelper.domain.usecases.profile.GetProfileItemUseCase
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import kotlinx.coroutines.launch
 

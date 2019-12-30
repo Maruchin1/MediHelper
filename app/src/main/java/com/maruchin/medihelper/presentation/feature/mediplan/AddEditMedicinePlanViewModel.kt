@@ -3,20 +3,20 @@ package com.maruchin.medihelper.presentation.feature.mediplan
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.domain.entities.*
-import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.model.MedicinePlanEditData
 import com.maruchin.medihelper.domain.model.MedicineSimpleItem
 import com.maruchin.medihelper.domain.model.ProfileItem
+import com.maruchin.medihelper.domain.model.ProfileSimpleItem
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineSimpleItemUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.SaveMedicinePlanUseCase
-import com.maruchin.medihelper.domain.usecases.profile.GetProfileItemUseCase
+import com.maruchin.medihelper.domain.usecases.profile.GetProfileSimpleItemUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import kotlinx.coroutines.launch
 
 class AddEditMedicinePlanViewModel(
     private val getMedicinePlanEditDataUseCase: GetMedicinePlanEditDataUseCase,
-    private val getProfileItemUseCase: GetProfileItemUseCase,
+    private val getProfileSimpleItemUseCase: GetProfileSimpleItemUseCase,
     private val getMedicineSimpleItemUseCase: GetMedicineSimpleItemUseCase,
     private val saveMedicinePlanUseCase: SaveMedicinePlanUseCase,
     private val deviceCalendar: DeviceCalendar
@@ -54,7 +54,7 @@ class AddEditMedicinePlanViewModel(
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
     private val _actionMedicinePlanSaved = ActionLiveData()
 
-    private val profileItem = MutableLiveData<ProfileItem>()
+    private val profileSimpleItem = MutableLiveData<ProfileSimpleItem>()
     private val medicineSimpleItem = MutableLiveData<MedicineSimpleItem>()
     private val editEntityId = MutableLiveData<String>()
 
@@ -66,8 +66,8 @@ class AddEditMedicinePlanViewModel(
                 "Edytuj plan"
             }
         }
-        colorPrimary = Transformations.map(profileItem) { it.color }
-        profileName = Transformations.map(profileItem) { it.name }
+        colorPrimary = Transformations.map(profileSimpleItem) { it.color }
+        profileName = Transformations.map(profileSimpleItem) { it.name }
         medicineName = Transformations.map(medicineSimpleItem) { it.name }
         setDefaultData()
     }
@@ -119,7 +119,7 @@ class AddEditMedicinePlanViewModel(
         _loadingInProgress.postValue(true)
         val params = SaveMedicinePlanUseCase.Params(
             medicinePlanId = editEntityId.value,
-            profileId = profileItem.value?.profileId,
+            profileId = profileSimpleItem.value?.profileId,
             medicineId = medicineSimpleItem.value?.medicineId,
             planType = planType.value,
             startDate = startDate.value,
@@ -153,19 +153,19 @@ class AddEditMedicinePlanViewModel(
             val profileId = args.profileId ?: throw Exception("ProfileId is null")
             val medicineId = args.medicineId ?: throw Exception("MedicineId is null")
 
-            val profileItemValue = getProfileItemUseCase.execute(profileId)
+            val profileItemValue = getProfileSimpleItemUseCase.execute(profileId)
             val medicineItemValue = getMedicineSimpleItemUseCase.execute(medicineId)
 
-            profileItem.postValue(profileItemValue)
+            profileSimpleItem.postValue(profileItemValue)
             medicineSimpleItem.postValue(medicineItemValue)
         }
         _actionDataLoaded.sendAction()
     }
 
     private suspend fun setEditData(editData: MedicinePlanEditData) {
-        val profileItemValue = getProfileItemUseCase.execute(editData.profileId)
+        val profileItemValue = getProfileSimpleItemUseCase.execute(editData.profileId)
         val medicineItemValue = getMedicineSimpleItemUseCase.execute(editData.medicineId)
-        profileItem.postValue(profileItemValue)
+        profileSimpleItem.postValue(profileItemValue)
         medicineSimpleItem.postValue(medicineItemValue)
         planType.postValue(editData.planType)
         startDate.postValue(editData.startDate)

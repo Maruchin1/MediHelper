@@ -48,7 +48,7 @@ val viewModelModule = module {
     }
     viewModel {
         CalendarViewModel(
-            getProfileItemUseCase = get(),
+            getProfileSimpleItemUseCase = get(),
             selectedProfile = get(),
             deviceCalendar = get()
         )
@@ -91,7 +91,7 @@ val viewModelModule = module {
     viewModel {
         AddEditMedicinePlanViewModel(
             getMedicinePlanEditDataUseCase = get(),
-            getProfileItemUseCase = get(),
+            getProfileSimpleItemUseCase = get(),
             getMedicineSimpleItemUseCase = get(),
             saveMedicinePlanUseCase = get(),
             deviceCalendar = get()
