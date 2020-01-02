@@ -1,26 +1,22 @@
 package com.maruchin.medihelper.domain.usecasesimpl.mediplans
 
-import com.maruchin.medihelper.domain.device.DeviceReminder
 import com.maruchin.medihelper.domain.repositories.MedicinePlanRepo
 import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
-import com.maruchin.medihelper.domain.usecases.mediplans.DeleteMedicinePlanUseCase
+import com.maruchin.medihelper.domain.usecases.mediplans.DeleteSingleMedicinePlanUseCase
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.DeletePlannedMedicinesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class DeleteMedicinePlanUseCaseImpl(
+class DeleteSingleMedicinePlanUseCaseImpl(
     private val medicinePlanRepo: MedicinePlanRepo,
     private val plannedMedicineRepo: PlannedMedicineRepo,
-    private val deviceReminder: DeviceReminder
-) : DeleteMedicinePlanUseCase {
+    private val deletePlannedMedicinesUseCase: DeletePlannedMedicinesUseCase
+) : DeleteSingleMedicinePlanUseCase {
 
     override suspend fun execute(medicinePlanId: String) = withContext(Dispatchers.Default) {
         val plannedMedicines = plannedMedicineRepo.getListByMedicinePlan(medicinePlanId)
-        val plannedMedicinesIds = plannedMedicines.map { it.entityId }
-
         medicinePlanRepo.deleteById(medicinePlanId)
-        plannedMedicineRepo.deleteListById(plannedMedicinesIds)
-        deviceReminder.cancelReminders(plannedMedicines)
-
+        deletePlannedMedicinesUseCase.execute(plannedMedicines)
         return@withContext
     }
 }

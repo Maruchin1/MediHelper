@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.di
+package com.maruchin.medihelper.domain.di
 
 import com.maruchin.medihelper.domain.usecases.profile.*
 import com.maruchin.medihelper.domain.usecasesimpl.profiles.*
@@ -33,7 +33,9 @@ val profileUseCaseModule = module {
     }
     factory {
         DeleteProfileUseCaseImpl(
-            profileRepo = get()
+            profileRepo = get(),
+            medicinePlanRepo = get(),
+            deleteMedicinesPlansUseCase = get()
         ) as DeleteProfileUseCase
     }
     factory {

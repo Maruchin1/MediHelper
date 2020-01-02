@@ -1,6 +1,6 @@
 package com.maruchin.medihelper.domain.usecases.mediplans
 
-interface DeleteMedicinePlanUseCase {
+interface DeleteSingleMedicinePlanUseCase {
 
     suspend fun execute(medicinePlanId: String)
 }

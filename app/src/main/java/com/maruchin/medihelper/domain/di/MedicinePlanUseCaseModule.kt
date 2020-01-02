@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.di
+package com.maruchin.medihelper.domain.di
 
 import com.maruchin.medihelper.domain.usecases.mediplans.*
 import com.maruchin.medihelper.domain.usecasesimpl.mediplans.*
@@ -34,11 +34,18 @@ val medicinePlanUseCaseModule = module {
         ) as SaveMedicinePlanUseCase
     }
     factory {
-        DeleteMedicinePlanUseCaseImpl(
+        DeleteSingleMedicinePlanUseCaseImpl(
             medicinePlanRepo = get(),
             plannedMedicineRepo = get(),
-            deviceReminder = get()
-        ) as DeleteMedicinePlanUseCase
+            deletePlannedMedicinesUseCase = get()
+        ) as DeleteSingleMedicinePlanUseCase
+    }
+    factory {
+        DeleteMedicinesPlansUseCaseImpl(
+            medicinePlanRepo = get(),
+            plannedMedicineRepo = get(),
+            deletePlannedMedicinesUseCase = get()
+        )
     }
     factory { 
         GetMedicinePlanHistoryUseCaseImpl(

@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.di
+package com.maruchin.medihelper.domain.di
 
 import com.maruchin.medihelper.domain.usecases.medicines.*
 import com.maruchin.medihelper.domain.usecasesimpl.medicines.GetLiveAllMedicinesItemsUseCaseImpl
@@ -14,7 +14,9 @@ val medicineUseCaseModule = module {
     }
     factory {
         DeleteMedicineUseCaseImpl(
-            medicineRepo = get()
+            medicineRepo = get(),
+            medicinePlanRepo = get(),
+            deleteMedicinesPlansUseCase = get()
         ) as DeleteMedicineUseCase
     }
     factory {

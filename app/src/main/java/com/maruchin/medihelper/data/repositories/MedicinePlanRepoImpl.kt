@@ -11,8 +11,10 @@ import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.data.framework.getDocumenstLive
 import com.maruchin.medihelper.data.mappers.MedicinePlanMapper
 import com.maruchin.medihelper.domain.entities.MedicinePlan
+import com.maruchin.medihelper.domain.entities.Profile
 import com.maruchin.medihelper.domain.repositories.MedicinePlanRepo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class MedicinePlanRepoImpl(
@@ -27,6 +29,26 @@ class MedicinePlanRepoImpl(
 
     private val collectionRef: CollectionReference
         get() = db.collection("users").document(auth.getCurrUserId()).collection("medicinesPlans")
+
+    override suspend fun deleteListById(ids: List<String>) = withContext(Dispatchers.IO) {
+        db.runBatch { batch ->
+            ids.forEach { id ->
+                val docRef = collectionRef.document(id)
+                batch.delete(docRef)
+            }
+        }
+        return@withContext
+    }
+
+    override suspend fun getListByMedicine(medicineId: String): List<MedicinePlan> = withContext(Dispatchers.IO) {
+        val docsQuery = collectionRef.whereEqualTo("medicineId", medicineId).get().await()
+        return@withContext getEntitiesFromQuery(docsQuery)
+    }
+
+    override suspend fun getListByProfile(profileId: String): List<MedicinePlan> = withContext(Dispatchers.IO) {
+        val docsQuery = collectionRef.whereEqualTo("profileId", profileId).get().await()
+        return@withContext getEntitiesFromQuery(docsQuery)
+    }
 
     override suspend fun getListLiveByProfile(profileId: String): LiveData<List<MedicinePlan>> =
         withContext(Dispatchers.IO) {

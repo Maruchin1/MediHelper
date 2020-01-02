@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.QuerySnapshot
 import com.maruchin.medihelper.domain.framework.BaseEntity
 import com.maruchin.medihelper.domain.framework.BaseRepo
 import kotlinx.coroutines.Dispatchers
@@ -70,4 +71,9 @@ open class FirestoreRepo<T : BaseEntity>(
         }
     }
 
+    protected suspend fun getEntitiesFromQuery(docsQuery: QuerySnapshot): List<T> {
+        return docsQuery.map {
+            mapper.mapToEntity(it.id, it.data)
+        }
+    }
 }

@@ -6,7 +6,7 @@ import com.maruchin.medihelper.domain.entities.MedicinePlan
 import com.maruchin.medihelper.domain.entities.TimeDose
 import com.maruchin.medihelper.domain.model.HistoryItem
 import com.maruchin.medihelper.domain.model.MedicinePlanDetails
-import com.maruchin.medihelper.domain.usecases.mediplans.DeleteMedicinePlanUseCase
+import com.maruchin.medihelper.domain.usecases.mediplans.DeleteSingleMedicinePlanUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanDetailsUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanHistoryUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
@@ -16,7 +16,7 @@ import java.lang.StringBuilder
 class MedicinePlanDetailsViewModel(
     private val getMedicinePlanDetailsUseCase: GetMedicinePlanDetailsUseCase,
     private val getMedicinePlanHistoryUseCase: GetMedicinePlanHistoryUseCase,
-    private val deleteMedicinePlanUseCase: DeleteMedicinePlanUseCase
+    private val deleteSingleMedicinePlanUseCase: DeleteSingleMedicinePlanUseCase
 ) : ViewModel() {
 
     val colorPrimary: LiveData<String>
@@ -63,7 +63,7 @@ class MedicinePlanDetailsViewModel(
     fun deletePlan() = viewModelScope.launch {
         _loadingInProgress.postValue(true)
 
-        deleteMedicinePlanUseCase.execute(medicinePlanId)
+        deleteSingleMedicinePlanUseCase.execute(medicinePlanId)
 
         _loadingInProgress.postValue(false)
         _actionPlanDeleted.sendAction()

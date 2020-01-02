@@ -101,7 +101,7 @@ val viewModelModule = module {
         MedicinePlanDetailsViewModel(
             getMedicinePlanDetailsUseCase = get(),
             getMedicinePlanHistoryUseCase = get(),
-            deleteMedicinePlanUseCase = get()
+            deleteSingleMedicinePlanUseCase = get()
         )
     }
     viewModel {

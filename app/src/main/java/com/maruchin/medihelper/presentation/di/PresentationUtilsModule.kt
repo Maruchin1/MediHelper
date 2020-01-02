@@ -5,7 +5,7 @@ import com.maruchin.medihelper.presentation.utils.PicturesRef
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import org.koin.dsl.module
 
-val utilsModule = module {
+val presentationUtilsModule = module {
     single {
         LoadingScreen()
     }

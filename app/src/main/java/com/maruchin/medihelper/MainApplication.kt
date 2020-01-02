@@ -4,10 +4,8 @@ package com.maruchin.medihelper
 import android.app.Activity
 import android.app.Application
 import com.maruchin.medihelper.data.di.*
-import com.maruchin.medihelper.device.di.calendarModule
-import com.maruchin.medihelper.device.di.cameraModule
-import com.maruchin.medihelper.device.di.reminderModule
-import com.maruchin.medihelper.device.di.ringtoneModule
+import com.maruchin.medihelper.device.di.*
+import com.maruchin.medihelper.domain.di.*
 import com.maruchin.medihelper.presentation.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -19,6 +17,16 @@ class MainApplication : Application() {
 
     var currActivity: Activity? = null
 
+    private val domainModules: List<Module> by lazy {
+        listOf(
+            domainUtilsModule,
+            userUseCaseModule,
+            medicineUseCaseModule,
+            profileUseCaseModule,
+            medicinePlanUseCaseModule,
+            plannedMedicineUseCaseModule
+        )
+    }
     private val dataModules: List<Module> by lazy {
         listOf(
             localDataModule,
@@ -37,13 +45,7 @@ class MainApplication : Application() {
     }
     private val presentationModules: List<Module> by lazy {
         listOf(
-            domainUtilsModule,
-            userUseCaseModule,
-            medicineUseCaseModule,
-            profileUseCaseModule,
-            medicinePlanUseCaseModule,
-            plannedMedicineUseCaseModule,
-            utilsModule,
+            presentationUtilsModule,
             viewModelModule
         )
     }
@@ -54,7 +56,7 @@ class MainApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
-            modules(dataModules + deviceModules + presentationModules)
+            modules(domainModules + dataModules + deviceModules + presentationModules)
         }
     }
 }

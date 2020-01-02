@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.di
+package com.maruchin.medihelper.domain.di
 
 import com.maruchin.medihelper.domain.usecases.user.*
 import com.maruchin.medihelper.domain.usecasesimpl.users.*

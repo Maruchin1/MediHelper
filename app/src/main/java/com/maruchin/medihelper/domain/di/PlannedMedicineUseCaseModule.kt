@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.di
+package com.maruchin.medihelper.domain.di
 
 import com.maruchin.medihelper.domain.usecases.plannedmedicines.*
 import com.maruchin.medihelper.domain.usecasesimpl.plannedmedicines.*
@@ -58,5 +58,11 @@ val plannedMedicineUseCaseModule = module {
         GetLivePlannedMedicineReminderModeUseCaseImpl(
             settingsRepo = get()
         ) as GetLivePlannedMedicineReminderModeUseCase
+    }
+    factory {
+        DeletePlannedMedicinesUseCaseImpl(
+            plannedMedicineRepo = get(),
+            deviceReminder = get()
+        ) as DeletePlannedMedicinesUseCase
     }
 }
