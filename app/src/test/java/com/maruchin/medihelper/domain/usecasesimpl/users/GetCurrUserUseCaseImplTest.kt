@@ -3,6 +3,7 @@ package com.maruchin.medihelper.domain.usecasesimpl.users
 import com.google.common.truth.Truth
 import com.maruchin.medihelper.domain.entities.User
 import com.maruchin.medihelper.domain.repositories.UserAuthRepo
+import com.maruchin.medihelper.domain.usecases.UserNotSignedInException
 import com.maruchin.medihelper.domain.usecases.user.GetCurrUserUseCase
 import com.maruchin.medihelper.testingframework.mock
 import kotlinx.coroutines.runBlocking
@@ -37,7 +38,7 @@ class GetCurrUserUseCaseImplTest {
         }
     }
 
-    @Test(expected = GetCurrUserUseCase.UserNotSignedInException::class)
+    @Test(expected = UserNotSignedInException::class)
     fun execute_UserNotSignedIn() {
         runBlocking {
             Mockito.`when`(userAuthRepo.getCurrUser()).thenReturn(null)
