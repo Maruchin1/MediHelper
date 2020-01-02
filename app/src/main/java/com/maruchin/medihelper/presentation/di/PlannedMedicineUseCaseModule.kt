@@ -1,61 +1,62 @@
 package com.maruchin.medihelper.presentation.di
 
 import com.maruchin.medihelper.domain.usecases.plannedmedicines.*
+import com.maruchin.medihelper.domain.usecasesimpl.plannedmedicines.*
 import org.koin.dsl.module
 
 val plannedMedicineUseCaseModule = module {
     factory {
-        GetLivePlannedMedicinesItemsByDateUseCase(
+        GetLivePlannedMedicinesItemsByDateUseCaseImpl(
             plannedMedicineRepo = get(),
             medicineRepo = get()
-        )
+        ) as GetLivePlannedMedicinesItemsByDateUseCase
     }
     factory {
-        GetPlannedMedicineDetailsUseCase(
+        GetPlannedMedicineDetailsUseCaseImpl(
             plannedMedicineRepo = get(),
             medicineRepo = get()
-        )
+        ) as GetPlannedMedicineDetailsUseCase
     }
     factory {
-        ChangePlannedMedicineTakenUseCase(
+        ChangePlannedMedicineTakenUseCaseImpl(
             plannedMedicineRepo = get(),
             medicineRepo = get()
-        )
+        ) as ChangePlannedMedicineTakenUseCase
     }
     factory {
-        ChangePlannedMedicineTimeUseCase(
+        ChangePlannedMedicineTimeUseCaseImpl(
             plannedMedicineRepo = get(),
             deviceReminder = get()
-        )
+        ) as ChangePlannedMedicineTimeUseCase
     }
     factory {
-        GetPlannedMedicineNotifDataUseCase(
+        GetPlannedMedicineNotifDataUseCaseImpl(
             plannedMedicineRepo = get(),
             medicineRepo = get(),
             profileRepo = get()
-        )
+        ) as GetPlannedMedicineNotifDataUseCase
     }
     factory {
-        SetPlannedMedicineTakenUseCase(
+        SetPlannedMedicineTakenUseCaseImpl(
             plannedMedicineRepo = get(),
             medicineRepo = get()
-        )
+        ) as SetPlannedMedicineTakenUseCase
     }
     factory {
-        NotifyAboutPlannedMedicineUseCase(
+        NotifyAboutPlannedMedicineUseCaseImpl(
             plannedMedicineRepo = get(),
             deviceReminder = get(),
             settingsRepo = get()
-        )
+        ) as NotifyAboutPlannedMedicineUseCase
     }
     factory {
-        ChangePlannedMedicineReminderModeUseCase(
+        ChangePlannedMedicineReminderModeUseCaseImpl(
             settingsRepo = get()
-        )
+        ) as ChangePlannedMedicineReminderModeUseCase
     }
     factory {
-        GetLivePlannedMedicineReminderModeUseCase(
+        GetLivePlannedMedicineReminderModeUseCaseImpl(
             settingsRepo = get()
-        )
+        ) as GetLivePlannedMedicineReminderModeUseCase
     }
 }
