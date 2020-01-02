@@ -14,10 +14,7 @@ class SaveProfileUseCaseImpl(
 ) : SaveProfileUseCase {
 
     override suspend fun execute(params: SaveProfileUseCase.Params): ProfileErrors = withContext(Dispatchers.Default) {
-        val validatorParams = ProfileValidator.Params(
-            name = params.name,
-            color = params.color
-        )
+        val validatorParams = getValidatorParams(params)
         val errors = validator.validate(validatorParams)
 
         if (errors.noErrors) {
@@ -26,17 +23,28 @@ class SaveProfileUseCaseImpl(
         return@withContext errors
     }
 
-    private suspend fun saveProfileToRepo(params: SaveProfileUseCase.Params) {
-        val profile = Profile(
-            entityId = params.profileId ?: "",
-            name = params.name!!,
-            color = params.color!!,
-            mainPerson = false
+    private fun getValidatorParams(params: SaveProfileUseCase.Params): ProfileValidator.Params {
+        return ProfileValidator.Params(
+            name = params.name,
+            color = params.color
         )
+    }
+
+    private suspend fun saveProfileToRepo(params: SaveProfileUseCase.Params) {
+        val profile = getProfile(params)
         if (params.profileId == null) {
             profileRepo.addNew(profile)
         } else {
             profileRepo.update(profile)
         }
+    }
+
+    private fun getProfile(params: SaveProfileUseCase.Params): Profile {
+        return Profile(
+            entityId = params.profileId ?: "",
+            name = params.name!!,
+            color = params.color!!,
+            mainPerson = false
+        )
     }
 }
