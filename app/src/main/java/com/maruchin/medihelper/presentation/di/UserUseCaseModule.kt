@@ -1,40 +1,41 @@
 package com.maruchin.medihelper.presentation.di
 
 import com.maruchin.medihelper.domain.usecases.user.*
+import com.maruchin.medihelper.domain.usecasesimpl.users.*
 import org.koin.dsl.module
 
 val userUseCaseModule = module {
     factory {
-        SignInUseCase(
+        SignInUseCaseImpl(
             userAuthRepo = get(),
             validator = get()
-        )
+        ) as SignInUseCase
     }
     factory {
-        SignUpUseCase(
+        SignUpUseCaseImpl(
             userAuthRepo = get(),
             validator = get()
-        )
+        ) as SignUpUseCase
     }
     factory {
-        IsUserSignedInUseCase(
+        IsUserSignedInUseCaseImpl(
             userAuthRepo = get()
-        )
+        ) as IsUserSignedInUseCase
     }
     factory { 
-        SignOutUseCase(
+        SignOutUseCaseImpl(
             userAuthRepo = get()
-        )
+        ) as SignOutUseCase
     }
     factory {
-        ChangePasswordUseCase(
+        ChangePasswordUseCaseImpl(
             userAuthRepo = get(),
             validator = get()
-        )
+        ) as ChangePasswordUseCase
     }
     factory {
-        GetCurrUserUseCase(
+        GetCurrUserUseCaseImpl(
             userAuthRepo = get()
-        )
+        ) as GetCurrUserUseCase
     }
 }

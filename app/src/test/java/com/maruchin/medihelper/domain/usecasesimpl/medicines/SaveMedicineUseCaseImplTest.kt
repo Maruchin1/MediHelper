@@ -1,7 +1,7 @@
-package com.maruchin.medihelper.domain.usecases.medicines
+package com.maruchin.medihelper.domain.usecasesimpl.medicines
 
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
-import com.maruchin.medihelper.domain.usecasesimpl.medicines.SaveMedicineUseCaseImpl
+import com.maruchin.medihelper.domain.usecases.medicines.SaveMedicineUseCase
 import com.maruchin.medihelper.domain.utils.MedicineValidator
 import com.maruchin.medihelper.testingframework.mock
 import org.junit.Before

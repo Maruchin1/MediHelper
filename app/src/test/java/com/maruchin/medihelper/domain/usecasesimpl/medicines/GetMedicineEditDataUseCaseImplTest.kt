@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.domain.usecases.medicines
+package com.maruchin.medihelper.domain.usecasesimpl.medicines
 
 import com.google.common.truth.Truth
 import com.maruchin.medihelper.domain.entities.AppExpireDate
@@ -6,7 +6,7 @@ import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineState
 import com.maruchin.medihelper.domain.model.MedicineEditData
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
-import com.maruchin.medihelper.domain.usecasesimpl.medicines.GetMedicineEditDataUseCaseImpl
+import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineEditDataUseCase
 import com.maruchin.medihelper.testingframework.mock
 import kotlinx.coroutines.runBlocking
 import org.junit.Before

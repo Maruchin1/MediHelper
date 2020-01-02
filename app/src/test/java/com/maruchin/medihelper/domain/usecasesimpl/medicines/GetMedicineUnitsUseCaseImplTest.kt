@@ -1,8 +1,8 @@
-package com.maruchin.medihelper.domain.usecases.medicines
+package com.maruchin.medihelper.domain.usecasesimpl.medicines
 
 import com.google.common.truth.Truth
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
-import com.maruchin.medihelper.domain.usecasesimpl.medicines.GetMedicineUnitsUseCaseImpl
+import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineUnitsUseCase
 import com.maruchin.medihelper.testingframework.mock
 import kotlinx.coroutines.runBlocking
 import org.junit.Before

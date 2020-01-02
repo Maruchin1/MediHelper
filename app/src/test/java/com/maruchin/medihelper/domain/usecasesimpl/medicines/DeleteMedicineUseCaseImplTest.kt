@@ -1,10 +1,10 @@
-package com.maruchin.medihelper.domain.usecases.medicines
+package com.maruchin.medihelper.domain.usecasesimpl.medicines
 
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineState
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
-import com.maruchin.medihelper.domain.usecasesimpl.medicines.DeleteMedicineUseCaseImpl
+import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.testingframework.mock
 import kotlinx.coroutines.runBlocking
 import org.junit.Test

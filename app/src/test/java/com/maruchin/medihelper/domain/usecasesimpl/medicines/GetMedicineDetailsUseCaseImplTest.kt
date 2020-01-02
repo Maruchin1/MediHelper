@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.domain.usecases.medicines
+package com.maruchin.medihelper.domain.usecasesimpl.medicines
 
 import com.google.common.truth.Truth
 import com.maruchin.medihelper.domain.device.DeviceCalendar
@@ -7,7 +7,7 @@ import com.maruchin.medihelper.domain.model.MedicineDetails
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import com.maruchin.medihelper.domain.repositories.ProfileRepo
-import com.maruchin.medihelper.domain.usecasesimpl.medicines.GetMedicineDetailsUseCaseImpl
+import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDetailsUseCase
 import com.maruchin.medihelper.domain.utils.DateTimeCalculator
 import com.maruchin.medihelper.testingframework.mock
 import kotlinx.coroutines.runBlocking
