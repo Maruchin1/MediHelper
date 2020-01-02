@@ -15,23 +15,38 @@ class SaveMedicineUseCaseImpl(
 ) : SaveMedicineUseCase {
 
     override suspend fun execute(params: SaveMedicineUseCase.Params): MedicineErrors = withContext(Dispatchers.Default) {
-        val validatorParams = MedicineValidator.Params(
-            name = params.name,
-            unit = params.unit,
-            expireDate = params.expireDate,
-            packageSize = params.packageSize,
-            currState = params.currState
-        )
+        val validatorParams = getValidatorParams(params)
         val errors = validator.validate(validatorParams)
-
         if (errors.noErrors) {
             saveMedicineToRepo(params)
         }
         return@withContext errors
     }
 
+    private fun getValidatorParams(params: SaveMedicineUseCase.Params): MedicineValidator.Params {
+        return MedicineValidator.Params(
+            name = params.name,
+            unit = params.unit,
+            expireDate = params.expireDate,
+            packageSize = params.packageSize,
+            currState = params.currState
+        )
+    }
+
     private suspend fun saveMedicineToRepo(params: SaveMedicineUseCase.Params) {
-        val medicine = Medicine(
+        val medicine = getMedicine(params)
+        if (params.pictureFile != null) {
+            medicineRepo.saveMedicinePicture(params.pictureFile)
+        }
+        if (params.medicineId == null) {
+            medicineRepo.addNew(medicine)
+        } else {
+            medicineRepo.update(medicine)
+        }
+    }
+
+    private fun getMedicine(params: SaveMedicineUseCase.Params): Medicine {
+        return Medicine(
             entityId = params.medicineId ?: "",
             name = params.name!!,
             unit = params.unit!!,
@@ -42,13 +57,5 @@ class SaveMedicineUseCaseImpl(
             ),
             pictureName = params.pictureFile?.name ?: params.pictureName
         )
-        if (params.pictureFile != null) {
-            medicineRepo.saveMedicinePicture(params.pictureFile)
-        }
-        if (params.medicineId == null) {
-            medicineRepo.addNew(medicine)
-        } else {
-            medicineRepo.update(medicine)
-        }
     }
 }
