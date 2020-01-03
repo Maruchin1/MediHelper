@@ -37,10 +37,7 @@ class LoginViewModel(
     fun signIn() = viewModelScope.launch {
         _loadingInProgress.postValue(true)
 
-        val params = SignInUseCase.Params(
-            email = email.value,
-            password = password.value
-        )
+        val params = getSignInParams()
         val errors = signInUseCase.execute(params)
 
         _loadingInProgress.postValue(false)
@@ -51,17 +48,38 @@ class LoginViewModel(
         }
     }
 
+    private fun getSignInParams(): SignInUseCase.Params {
+        return SignInUseCase.Params(
+            email = email.value,
+            password = password.value
+        )
+    }
+
     private fun postErrors(errors: SignInErrors) {
-        val emailError = if (errors.emptyEmail) {
-            "Nie podano adresu e-mail"
-        } else null
-        val passwordError = if (errors.emptyPassword) {
-            "Nie podano hasła"
-        } else null
+        val emailError = getEmailError(errors)
+        val passwordError = getPasswordError(errors)
 
         _errorEmail.postValue(emailError)
         _errorPassword.postValue(passwordError)
 
-        //todo obsłużyć pozostałe błędy
+        if (errors.undefinedError) {
+            _errorGlobal.postValue("Błąd logowania")
+        }
+    }
+
+    private fun getEmailError(errors: SignInErrors): String? {
+        return when {
+            errors.emptyEmail -> "Nie podano adresu e-mail"
+            errors.incorrectEmail -> "Brak użytkownika o podanym adresie"
+            else -> null
+        }
+    }
+
+    private fun getPasswordError(errors: SignInErrors): String? {
+        return when {
+            errors.emptyPassword -> "Nie podano hasła"
+            errors.incorrectPassword -> "Hasło niepoprawne"
+            else -> null
+        }
     }
 }

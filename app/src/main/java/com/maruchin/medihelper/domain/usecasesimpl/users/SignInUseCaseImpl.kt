@@ -30,10 +30,14 @@ class SignInUseCaseImpl(
     }
 
     private suspend fun signInUser(params: SignInUseCase.Params, errors: SignInErrors) {
-        userAuthRepo.signIn(
-            email = params.email!!,
-            password = params.password!!,
-            errors = errors
-        )
+        try {
+            userAuthRepo.signIn(params.email!!, params.password!!)
+        } catch (ex: UserAuthRepo.IncorrectEmailException) {
+            errors.incorrectEmail = true
+        } catch (ex: UserAuthRepo.IncorrectPasswordException) {
+            errors.incorrectPassword = true
+        } catch (ex: UserAuthRepo.UndefinedAuthException) {
+            errors.undefinedError = true
+        }
     }
 }

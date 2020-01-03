@@ -20,21 +20,18 @@ class UserAuthRepoImpl(
     private val collectionRef: CollectionReference
         get() = db.collection("users")
 
-    override suspend fun signIn(email: String, password: String, errors: SignInErrors): String? = withContext(Dispatchers.IO) {
+    override suspend fun signIn(email: String, password: String): String = withContext(Dispatchers.IO) {
         return@withContext try {
             auth.signInWithEmailAndPassword(email, password).await()
             val userId = auth.getCurrUserId()
             collectionRef.document(userId)
             userId
         } catch (ex: FirebaseAuthInvalidUserException) {
-            errors.incorrectEmail = true
-            null
+            throw UserAuthRepo.IncorrectEmailException()
         } catch (ex: FirebaseAuthInvalidCredentialsException) {
-            errors.incorrectPassword = true
-            null
+            throw UserAuthRepo.IncorrectPasswordException()
         } catch (ex: FirebaseAuthException) {
-            errors.undefinedError = true
-            null
+            throw  UserAuthRepo.UndefinedAuthException()
         }
     }
 

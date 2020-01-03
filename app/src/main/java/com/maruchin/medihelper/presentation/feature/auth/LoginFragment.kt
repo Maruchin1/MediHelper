@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.transition.Fade
-import androidx.transition.Slide
-import androidx.transition.TransitionInflater
-import androidx.transition.TransitionSet
+import androidx.transition.*
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentLoginBinding
 import com.maruchin.medihelper.presentation.framework.BaseLauncherFragment
@@ -35,7 +32,23 @@ class LoginFragment : BaseLauncherFragment<FragmentLoginBinding>(R.layout.fragme
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTransitions()
+    }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setBindingViewModel()
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setBackgroundColorStatusBar()
+        bindLoadingScreen()
+        observeViewModel()
+    }
+
+    private fun setTransitions() {
         sharedElementEnterTransition = TransitionSet().apply {
             addTransition(TransitionInflater.from(context).inflateTransition(android.R.transition.move))
             duration = 1000
@@ -53,17 +66,16 @@ class LoginFragment : BaseLauncherFragment<FragmentLoginBinding>(R.layout.fragme
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private fun setBindingViewModel() {
         super.bindingViewModel = viewModel
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun setBackgroundColorStatusBar() {
         super.setStatusBarColor(R.color.colorBackground)
+    }
+
+    private fun bindLoadingScreen() {
         loadingScreen.bind(this, viewModel.loadingInProgress)
-        observeViewModel()
     }
 
     private fun observeViewModel() {
