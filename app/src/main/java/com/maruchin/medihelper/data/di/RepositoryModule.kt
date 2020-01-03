@@ -7,6 +7,7 @@ import org.koin.dsl.module
 val repositoryModule = module {
     single {
         UserAuthRepoImpl(
+            db = get(),
             auth = get()
         ) as UserAuthRepo
     }

@@ -5,14 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maruchin.medihelper.domain.model.SignUpErrors
+import com.maruchin.medihelper.domain.usecases.profile.CreateMainProfileUseCase
 import com.maruchin.medihelper.domain.usecases.user.SignUpUseCase
 import com.maruchin.medihelper.domain.utils.SignUpValidator
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import kotlinx.coroutines.launch
+import org.koin.core.KoinComponent
+import org.koin.core.get
 
 class RegisterViewModel(
     private val signUpUseCase: SignUpUseCase
-) : ViewModel() {
+) : ViewModel(), KoinComponent {
 
     val userName = MutableLiveData<String>()
     val email = MutableLiveData<String>()
@@ -45,20 +48,30 @@ class RegisterViewModel(
     fun signUpUser() = viewModelScope.launch {
         _loadingInProgress.postValue(true)
 
-        val params = SignUpUseCase.Params(
+        val params = getSignUpParams()
+        val errors = signUpUseCase.execute(params)
+
+        if (errors.noErrors) {
+            createMainProfile(params.userName!!)
+            _actionUserSignedUp.sendAction()
+        } else {
+            postErrors(errors)
+        }
+        _loadingInProgress.postValue(false)
+    }
+
+    private fun getSignUpParams(): SignUpUseCase.Params {
+        return SignUpUseCase.Params(
             email = email.value,
             password = password.value,
             passwordConfirm = passwordConfirm.value,
             userName = userName.value
         )
-        val errors = signUpUseCase.execute(params)
+    }
 
-        _loadingInProgress.postValue(false)
-        if (errors.noErrors) {
-            _actionUserSignedUp.sendAction()
-        } else {
-            postErrors(errors)
-        }
+    private suspend fun createMainProfile(profileName: String) {
+        val useCase: CreateMainProfileUseCase = get()
+        useCase.execute(profileName)
     }
 
     private fun postErrors(errors: SignUpErrors) {
