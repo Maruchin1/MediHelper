@@ -37,7 +37,7 @@
                 android:layout_weight="1"
                 app:expandedTitleTextAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big"
                 app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed"
-                app:title='@{viewModel.currProfileName, default="Nazwa osoby"}'>
+                app:title='@{viewModel.profileName, default="Nazwa osoby"}'>
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"

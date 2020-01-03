@@ -12,7 +12,7 @@ class GetProfileSimpleItemUseCaseImpl(
     private val profileRepo: ProfileRepo
 ) : GetProfileSimpleItemUseCase {
 
-    override suspend fun execute(profileId: String): ProfileSimpleItem? = withContext(Dispatchers.Default) {
+    override suspend fun execute(profileId: String): ProfileSimpleItem = withContext(Dispatchers.Default) {
         val profile = getProfile(profileId)
         return@withContext ProfileSimpleItem(profile)
     }

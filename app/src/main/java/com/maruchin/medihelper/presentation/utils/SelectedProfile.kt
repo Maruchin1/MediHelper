@@ -13,7 +13,7 @@ class SelectedProfile(
     private val getProfileColorUseCase: GetProfileColorUseCase
 ) {
     val mainProfileSelectedLive: LiveData<Boolean>
-    val profileColorLive: LiveData<String?>
+    val profileColorLive: LiveData<String>
 
     val profileId: String?
         get() = _profileIdLive.value

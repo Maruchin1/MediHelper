@@ -6,5 +6,5 @@ import com.maruchin.medihelper.domain.usecases.ProfileNotFoundException
 interface GetProfileColorUseCase {
 
     @Throws(ProfileNotFoundException::class)
-    suspend fun execute(profileId: String): String?
+    suspend fun execute(profileId: String): String
 }

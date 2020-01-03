@@ -16,7 +16,7 @@ class ProfileViewModel(
     private val deleteProfileUseCase: DeleteProfileUseCase
 ) : ViewModel() {
 
-    val colorPrimary: LiveData<String?> = selectedProfile.profileColorLive
+    val colorPrimary: LiveData<String> = selectedProfile.profileColorLive
     val profileItems: LiveData<List<ProfileItem>>
     val profileItemsAvailable: LiveData<Boolean>
     val selectedProfilePosition: LiveData<Int>

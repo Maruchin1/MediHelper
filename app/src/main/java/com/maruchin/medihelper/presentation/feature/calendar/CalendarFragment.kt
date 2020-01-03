@@ -21,8 +21,12 @@ import java.util.*
 class CalendarFragment : BaseHomeFragment<FragmentCalendarBinding>(R.layout.fragment_calendar) {
     private val TAG = "CalendarFragment"
 
-    private val viewModel: CalendarViewModel by viewModel()
+    companion object {
+        private const val HORIZONTAL_CALENDAR_VISIBLE_ITEMS = 5
+        private const val HORIZONTAL_CALENDAR_MARGIN_ITEMS = 2
+    }
 
+    private val viewModel: CalendarViewModel by viewModel()
     private lateinit var horizontalCalendar: HorizontalCalendar
 
     fun onClickOpenProfileData() {
@@ -30,67 +34,90 @@ class CalendarFragment : BaseHomeFragment<FragmentCalendarBinding>(R.layout.frag
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.bindingViewModel = viewModel
-        super.setStatusBarColorLive(viewModel.colorPrimary)
+        setBindingViewModel()
+        setStatusBarLiveColor()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        super.setLightStatusBar(false)
+        disableLightStatusBar()
         setupToolbarMenu()
         setupHorizontalCalendar()
         setupDatesViewPager()
     }
 
+    private fun setBindingViewModel() {
+        super.bindingViewModel = viewModel
+    }
+
+    private fun setStatusBarLiveColor() {
+        super.setStatusBarColorLive(viewModel.colorPrimary)
+    }
+
+    private fun disableLightStatusBar() {
+        super.setLightStatusBar(false)
+    }
+
     private fun setupToolbarMenu() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.btn_today -> view_pager_dates.currentItem = viewModel.initialPosition
+                R.id.btn_today -> view_pager_dates.currentItem = viewModel.data.initialPosition
             }
             true
+        }
+    }
+
+    private fun setupHorizontalCalendar() {
+        horizontalCalendar = HorizontalCalendar.Builder(root_lay, R.id.horizontal_calendar)
+            .range(viewModel.data.startCalendar, viewModel.data.endCalendar)
+            .datesNumberOnScreen(HORIZONTAL_CALENDAR_VISIBLE_ITEMS)
+            .defaultSelectedDate(viewModel.data.initialCalendar)
+            .build()
+        horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
+            override fun onDateSelected(date: Calendar?, position: Int) {
+                view_pager_dates.currentItem = position - HORIZONTAL_CALENDAR_MARGIN_ITEMS
+            }
         }
     }
 
     private fun setupDatesViewPager() {
         view_pager_dates.apply {
             adapter = CalendarDayAdapter()
-            setCurrentItem(viewModel.initialPosition, false)
-//            offscreenPageLimit = 1
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    val selectedCalendar = viewModel.getCalendarForPosition(position)
-                    horizontalCalendar.selectDate(selectedCalendar, false)
-                }
-            })
+            setCurrentItem(viewModel.data.initialPosition, false)
+            registerOnPageChangeCallback(getOnPageChangeCallback())
         }
     }
 
-    private fun setupHorizontalCalendar() {
-        horizontalCalendar = HorizontalCalendar.Builder(root_lay, R.id.horizontal_calendar)
-            .range(viewModel.startCalendar, viewModel.endCalendar)
-            .datesNumberOnScreen(5)
-            .defaultSelectedDate(viewModel.initialCalendar)
-            .build()
-        horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
-            override fun onDateSelected(date: Calendar?, position: Int) {
-                view_pager_dates.currentItem = position - 2
+    private fun getOnPageChangeCallback(): ViewPager2.OnPageChangeCallback {
+        return object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                scrollHorizontalCalendarToPosition(position)
             }
         }
+    }
+
+    private fun scrollHorizontalCalendarToPosition(position: Int) {
+        val selectedCalendar = viewModel.getCalendarForPosition(position)
+        horizontalCalendar.selectDate(selectedCalendar, false)
     }
 
     // Inner classes
     private inner class CalendarDayAdapter : FragmentStateAdapter(this) {
 
         override fun getItemCount(): Int {
-            return viewModel.calendarDaysCount
+            return viewModel.data.daysCount
         }
 
         override fun createFragment(position: Int): Fragment {
-            return CalendarDayFragment().apply {
-                date = viewModel.getDateForPosition(position)
-            }
+            return getCalendarDayFragmentForPosition(position)
         }
 
+        private fun getCalendarDayFragmentForPosition(position: Int): CalendarDayFragment {
+            val dateForPosition = viewModel.getDateForPosition(position)
+            return CalendarDayFragment().apply {
+                date = dateForPosition
+            }
+        }
     }
 }

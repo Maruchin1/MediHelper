@@ -19,7 +19,7 @@ class PlannedMedicineOptionsViewModel(
     selectedProfile: SelectedProfile
 ) : ViewModel() {
 
-    val colorPrimary: LiveData<String?> = selectedProfile.profileColorLive
+    val colorPrimary: LiveData<String> = selectedProfile.profileColorLive
 
     val basicData: LiveData<BasicData>
         get() = _basicData
