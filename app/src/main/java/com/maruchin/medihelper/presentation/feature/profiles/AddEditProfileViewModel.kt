@@ -1,12 +1,13 @@
 package com.maruchin.medihelper.presentation.feature.profiles
 
 import androidx.lifecycle.*
+import com.maruchin.medihelper.domain.model.ProfileEditData
 import com.maruchin.medihelper.domain.model.ProfileErrors
-import com.maruchin.medihelper.domain.utils.ProfileValidator
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileColorsUseCase
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.profile.SaveProfileUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
+import com.maruchin.medihelper.presentation.model.ColorCheckboxData
 import kotlinx.coroutines.launch
 
 class AddEditProfileViewModel(
@@ -16,9 +17,9 @@ class AddEditProfileViewModel(
 ) : ViewModel() {
 
     val formTitle: LiveData<String>
+    val colorCheckboxDataList: LiveData<List<ColorCheckboxData>>
     val profileName = MutableLiveData<String>()
     val selectedColor = MutableLiveData<String>()
-    val colorCheckboxList: LiveData<List<ColorCheckbox>>
 
     val actionProfileSaved: LiveData<Boolean>
         get() = _actionProfileSaved
@@ -32,35 +33,17 @@ class AddEditProfileViewModel(
     private var editProfileId = MutableLiveData<String>()
 
     init {
-        formTitle = Transformations.map(editProfileId) {
-            if (it == null) {
-                "Dodaj profil"
-            } else {
-                "Edytuj profil"
-            }
-        }
+        formTitle = getLiveFormTitle()
+        colorCheckboxDataList = getLiveCheckboxList()
         viewModelScope.launch {
-            profileColorList = getProfileColorsUseCase.execute()
-            selectedColor.postValue(profileColorList[0])
-        }
-        colorCheckboxList = Transformations.map(selectedColor) { selectedColor ->
-            profileColorList.map { color ->
-                ColorCheckbox(
-                    color = color,
-                    selected = color == selectedColor
-                )
-            }
+            loadProfileColors()
+            setDefaultProfileColor()
         }
     }
 
-    fun setArgs(args: AddEditProfileFragmentArgs) = viewModelScope.launch {
-        editProfileId.postValue(args.editProfileId)
-        if (args.editProfileId != null) {
-            val editData = getProfileEditDataUseCase.execute(args.editProfileId)
-            if (editData != null) {
-                profileName.postValue(editData.name)
-                selectedColor.postValue(editData.color)
-            }
+    fun initViewModel(editProfileId: String?) = viewModelScope.launch {
+        if (editProfileId != null) {
+            loadAndSetEditData(editProfileId)
         }
     }
 
@@ -78,6 +61,46 @@ class AddEditProfileViewModel(
         }
     }
 
+    private fun getLiveFormTitle(): LiveData<String> {
+        return Transformations.map(editProfileId) {
+            if (it == null) {
+                "Dodaj profil"
+            } else {
+                "Edytuj profil"
+            }
+        }
+    }
+
+    private fun getLiveCheckboxList(): LiveData<List<ColorCheckboxData>> {
+        return Transformations.map(selectedColor) { selectedColor ->
+            profileColorList.map { color ->
+                ColorCheckboxData(
+                    color = color,
+                    selected = color == selectedColor
+                )
+            }
+        }
+    }
+
+    private suspend fun loadProfileColors() {
+        profileColorList = getProfileColorsUseCase.execute()
+    }
+
+    private fun setDefaultProfileColor() {
+        selectedColor.postValue(profileColorList[0])
+    }
+
+    private suspend fun loadAndSetEditData(profileId: String) {
+        editProfileId.postValue(profileId)
+        val editData = getProfileEditDataUseCase.execute(profileId)
+        setEditData(editData)
+    }
+
+    private fun setEditData(editData: ProfileEditData) {
+        profileName.postValue(editData.name)
+        selectedColor.postValue(editData.color)
+    }
+
     private fun postErrors(errors: ProfileErrors) {
         val profileNameError = if (errors.emptyName) {
             "Podanie nazwy jest wyamgane"
@@ -85,9 +108,4 @@ class AddEditProfileViewModel(
 
         _errorProfileName.postValue(profileNameError)
     }
-
-    data class ColorCheckbox(
-        val color: String,
-        val selected: Boolean
-    )
 }

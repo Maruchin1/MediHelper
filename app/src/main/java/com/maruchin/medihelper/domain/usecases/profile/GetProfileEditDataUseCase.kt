@@ -6,5 +6,5 @@ import com.maruchin.medihelper.domain.usecases.ProfileNotFoundException
 interface GetProfileEditDataUseCase {
 
     @Throws(ProfileNotFoundException::class)
-    suspend fun execute(profileId: String): ProfileEditData?
+    suspend fun execute(profileId: String): ProfileEditData
 }

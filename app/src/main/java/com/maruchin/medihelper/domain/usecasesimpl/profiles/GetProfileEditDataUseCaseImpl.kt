@@ -12,7 +12,7 @@ class GetProfileEditDataUseCaseImpl(
     private val profileRepo: ProfileRepo
 ) : GetProfileEditDataUseCase {
 
-    override suspend fun execute(profileId: String): ProfileEditData? = withContext(Dispatchers.Default) {
+    override suspend fun execute(profileId: String): ProfileEditData = withContext(Dispatchers.Default) {
         val profile = getProfile(profileId)
         return@withContext ProfileEditData(profile)
     }

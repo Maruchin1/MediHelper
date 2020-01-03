@@ -65,7 +65,6 @@ class AddEditMedicineViewModel(
 
     fun initViewModel(editMedicineId: String?) = viewModelScope.launch {
         if (editMedicineId != null) {
-            setEditMedicineId(editMedicineId)
             loadAndSetEditData(editMedicineId)
         }
     }
@@ -99,11 +98,8 @@ class AddEditMedicineViewModel(
         return deviceCamera.resultFile
     }
 
-    private fun setEditMedicineId(medicineId: String) {
-        editMedicineId.postValue(medicineId)
-    }
-
     private suspend fun loadAndSetEditData(medicineId: String) {
+        editMedicineId.postValue(medicineId)
         val editData = getMedicineEditDataUseCase.execute(medicineId)
         setEditData(editData)
     }

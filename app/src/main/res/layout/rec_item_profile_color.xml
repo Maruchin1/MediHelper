@@ -9,7 +9,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.feature.profiles.AddEditProfileViewModel.ColorCheckbox" />
+            type="com.maruchin.medihelper.presentation.model.ColorCheckboxData" />
 
     </data>
 
