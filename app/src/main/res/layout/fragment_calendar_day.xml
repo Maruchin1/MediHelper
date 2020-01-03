@@ -22,8 +22,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:visibility="@{viewModel.medicinesAvailable}">
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -183,7 +182,7 @@
             android:layout_marginEnd="@dimen/no_item_page_margin_horizontal"
             android:gravity="center_horizontal|top"
             android:orientation="vertical"
-            android:visibility="@{viewModel.noPlannedMedicines, default=gone}">
+            android:visibility="@{viewModel.noItemsAvailable, default=gone}">
 
             <ImageView
                 android:layout_width="@dimen/no_item_page_icon_size"

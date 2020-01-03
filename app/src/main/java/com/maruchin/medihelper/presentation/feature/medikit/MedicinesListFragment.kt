@@ -24,32 +24,43 @@ class MedicinesListFragment : BaseHomeFragment<FragmentMedicinesListBinding>(R.l
     private val TAG = "MedicinesListFragment"
 
     private val viewModel: MedicinesListViewModel by viewModel()
-    private val directions by lazyOf(MedicinesListFragmentDirections)
 
     fun onClickOpenMedicineDetails(medicineId: String, view: View) {
         val imageView = view.findViewById<ImageView>(R.id.img_photo)
         val extras = FragmentNavigatorExtras(
             imageView to "medicine_image_details"
         )
-        findNavController().navigate(directions.toMedicineDetailsFragment(medicineId), extras)
+        val direction = MedicinesListFragmentDirections.toMedicineDetailsFragment(medicineId)
+        findNavController().navigate(direction, extras)
     }
 
-    fun onClickAddMedicine() = findNavController().navigate(directions.toAddEditMedicineFragment(null))
+    fun onClickAddMedicine() {
+        val direction = MedicinesListFragmentDirections.toAddEditMedicineFragment(null)
+        findNavController().navigate(direction)
+    }
 
     fun onClickOpenFilters() {
         drawer.openDrawer(GravityCompat.END)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.bindingViewModel = viewModel
+        setBingingViewModel()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        disableLightStatusBar()
         setupRecyclerView()
-        super.setLightStatusBar(false)
         setupToolbarMenu()
+    }
+
+    private fun setBingingViewModel() {
+        super.bindingViewModel = viewModel
+    }
+
+    private fun disableLightStatusBar() {
+        super.setLightStatusBar(false)
     }
 
     private fun setupRecyclerView() {

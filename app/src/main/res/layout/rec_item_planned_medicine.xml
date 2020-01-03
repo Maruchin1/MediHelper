@@ -12,7 +12,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.feature.calendar.CalendarDayViewModel.CalendarItem" />
+            type="com.maruchin.medihelper.presentation.model.PlannedMedicineItemData" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -43,8 +43,8 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@{displayData.statusIconId}"
-                    android:tint="@{displayData.statusColorId}" />
+                    android:src="@{displayData.statusData.iconId}"
+                    android:tint="@{displayData.statusData.colorId}" />
             </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout

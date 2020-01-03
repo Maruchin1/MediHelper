@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarDayBinding
-import com.maruchin.medihelper.domain.model.PlannedMedicineItem
 import com.maruchin.medihelper.presentation.framework.*
+import com.maruchin.medihelper.presentation.model.PlannedMedicineItemData
 import kotlinx.android.synthetic.main.fragment_calendar_day.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -31,41 +31,54 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.bindingViewModel = viewModel
+        setBindingViewModel()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.initData(calendarDayDate = date)
+        initViewModel()
         setupRecyclerViews()
         observeViewModel()
     }
 
-    private fun observeViewModel() {
-        viewModel.dataLoaded.observe(viewLifecycleOwner, Observer {
-            root_lay.beginDelayedFade()
-        })
+    private fun setBindingViewModel() {
+        super.bindingViewModel = viewModel
+    }
+
+    private fun initViewModel() {
+        viewModel.initViewModel(date)
     }
 
     private fun setupRecyclerViews() {
         recycler_view_morning_schedule.apply {
-            adapter = PlannedMedicineAdapter(viewModel.morningCalendarItems)
+            adapter = PlannedMedicineAdapter(viewModel.morningItems)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
         recycler_view_afternoon_schedule.apply {
-            adapter = PlannedMedicineAdapter(viewModel.afternoonCalendarItems)
+            adapter = PlannedMedicineAdapter(viewModel.afternoonItems)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
         recycler_view_evening_schedule.apply {
-            adapter = PlannedMedicineAdapter(viewModel.eveningCalendarItems)
+            adapter = PlannedMedicineAdapter(viewModel.eveningItems)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
     }
 
+
+    private fun observeViewModel() {
+        viewModel.dataLoaded.observe(viewLifecycleOwner, Observer {
+            onDataLoaded()
+        })
+    }
+
+    private fun onDataLoaded() {
+        root_lay.beginDelayedFade()
+    }
+
     // Inner classes
-    private inner class PlannedMedicineAdapter(itemsSource: LiveData<List<CalendarDayViewModel.CalendarItem>>) :
-        BaseRecyclerAdapter<CalendarDayViewModel.CalendarItem>(
+    private inner class PlannedMedicineAdapter(itemsSource: LiveData<List<PlannedMedicineItemData>>) :
+        BaseRecyclerAdapter<PlannedMedicineItemData>(
             layoutResId = R.layout.rec_item_planned_medicine,
             lifecycleOwner = viewLifecycleOwner,
             itemsSource = itemsSource,

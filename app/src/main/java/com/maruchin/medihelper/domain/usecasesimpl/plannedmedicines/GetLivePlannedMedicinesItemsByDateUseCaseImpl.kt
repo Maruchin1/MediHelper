@@ -31,7 +31,8 @@ class GetLivePlannedMedicinesItemsByDateUseCaseImpl(
 
     private fun getLivePlannedMedicinesItems(plannedMedicines: List<PlannedMedicine>): LiveData<List<PlannedMedicineItem>> {
         return liveData {
-            mapPlannedMedicineToItems(plannedMedicines)
+            val items = mapPlannedMedicineToItems(plannedMedicines)
+            emit(items)
         }
     }
 
@@ -40,7 +41,8 @@ class GetLivePlannedMedicinesItemsByDateUseCaseImpl(
     ): List<PlannedMedicineItem> = withContext(Dispatchers.Default) {
         return@withContext plannedMedicines.map { plannedMedicine ->
             val medicine = getMedicine(plannedMedicine.medicineId)
-            PlannedMedicineItem(plannedMedicine, medicine)
+            val item = PlannedMedicineItem(plannedMedicine, medicine)
+            return@map item
         }
     }
 
