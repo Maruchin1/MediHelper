@@ -11,7 +11,7 @@ data class MedicineDetails(
     val unit: String,
     val expireDate: AppExpireDate,
     val daysRemains: Int,
-    val state: MedicineState?,
+    val state: MedicineState,
     val pictureName: String?,
     val profileItems: List<ProfileItem>
 ) {

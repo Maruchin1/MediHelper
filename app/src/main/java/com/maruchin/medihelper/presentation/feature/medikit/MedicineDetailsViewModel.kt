@@ -1,14 +1,10 @@
 package com.maruchin.medihelper.presentation.feature.medikit
 
 import androidx.lifecycle.*
-import com.google.firebase.storage.StorageReference
-import com.maruchin.medihelper.domain.entities.AppExpireDate
-import com.maruchin.medihelper.domain.entities.MedicineState
-import com.maruchin.medihelper.domain.model.MedicineDetails
-import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDetailsUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
+import com.maruchin.medihelper.presentation.model.MedicineDetailsData
 import com.maruchin.medihelper.presentation.utils.PicturesRef
 import kotlinx.coroutines.launch
 
@@ -18,66 +14,59 @@ class MedicineDetailsViewModel(
     private val picturesRef: PicturesRef
 ) : ViewModel() {
 
-    val medicineStateAvailable: LiveData<Boolean>
-
-    val medicinePicture: LiveData<StorageReference?>
-    val medicineName: LiveData<String>
-    val medicineUnit: LiveData<String>
-    val expireDate: LiveData<AppExpireDate>
-    val daysRemain: LiveData<Int>
-    val state: LiveData<MedicineState>
-    val profileSimpleItemListAvailable: LiveData<Boolean>
-    val profileSimpleItemList: LiveData<List<ProfileItem>>
-
-    val medicineId: String
-        get() = medicineDetails.value!!.medicineId
+    val data: LiveData<MedicineDetailsData>
+        get() = _data
+    val loadingInProgress: LiveData<Boolean>
+        get() = _loadingInProgress
     val actionDataLoaded: LiveData<Boolean>
         get() = _actionDataLoaded
     val actionMedicineDeleted: LiveData<Boolean>
         get() = _actionMedicineDeleted
-    val loadingInProgress: LiveData<Boolean>
-        get() = _loadingInProgress
+    val medicineId: String
+        get() = _medicineId
 
+    private val _data = MutableLiveData<MedicineDetailsData>()
+    private val _loadingInProgress = MutableLiveData<Boolean>(false)
     private val _actionDataLoaded = ActionLiveData()
     private val _actionMedicineDeleted = ActionLiveData()
-    private val _loadingInProgress = MutableLiveData<Boolean>(false)
+    private lateinit var _medicineId: String
 
-    private val medicineDetails = MutableLiveData<MedicineDetails>()
-
-    init {
-        medicinePicture = Transformations.switchMap(medicineDetails) { details ->
-            liveData {
-                details.pictureName?.let {
-                    emit(picturesRef.get(it))
-                }
-            }
-        }
-        medicineName = Transformations.map(medicineDetails) { it.name }
-        medicineUnit = Transformations.map(medicineDetails) { it.unit }
-        expireDate = Transformations.map(medicineDetails) { it.expireDate }
-        daysRemain = Transformations.map(medicineDetails) { it.daysRemains }
-        state = Transformations.map(medicineDetails) { it.state }
-        profileSimpleItemListAvailable = Transformations.map(medicineDetails) {
-            !it.profileItems.isNullOrEmpty()
-        }
-        profileSimpleItemList = Transformations.map(medicineDetails) { it.profileItems }
-        medicineStateAvailable = Transformations.map(state) { it != null }
-    }
-
-    fun setArgs(args: MedicineDetailsFragmentArgs) = viewModelScope.launch {
-        val data = getMedicineDetailsUseCase.execute(args.medicineId)
-        if (data != null) {
-            medicineDetails.postValue(data)
-        }
-        _actionDataLoaded.sendAction()
+    fun initViewModel(medicineId: String) = viewModelScope.launch {
+        setGlobalMedicineId(medicineId)
+        loadAndPostData()
+        notifyDataLoaded()
     }
 
     fun deleteMedicine() = viewModelScope.launch {
+        notifyDeletingInProgress()
+        deleteMedicineUseCase.execute(_medicineId)
+        notifyMedicineDeleted()
+    }
+
+    private fun setGlobalMedicineId(medicineId: String) {
+        _medicineId = medicineId
+    }
+
+    private suspend fun loadAndPostData() {
+        val data = getData(_medicineId)
+        _data.postValue(data)
+    }
+
+    private fun notifyDataLoaded() {
+        _actionDataLoaded.sendAction()
+    }
+
+    private fun notifyDeletingInProgress() {
         _loadingInProgress.postValue(true)
+    }
 
-        deleteMedicineUseCase.execute(medicineId)
-
+    private fun notifyMedicineDeleted() {
         _loadingInProgress.postValue(false)
         _actionMedicineDeleted.sendAction()
+    }
+
+    private suspend fun getData(medicineId: String): MedicineDetailsData {
+        val medicineDetails = getMedicineDetailsUseCase.execute(medicineId)
+        return MedicineDetailsData.fromDomainModel(medicineDetails, picturesRef)
     }
 }

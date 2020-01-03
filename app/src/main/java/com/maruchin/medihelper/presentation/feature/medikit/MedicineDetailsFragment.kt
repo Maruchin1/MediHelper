@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
+import androidx.transition.Transition
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicineDetailsBinding
@@ -32,13 +33,12 @@ class MedicineDetailsFragment : BaseMainFragment<FragmentMedicineDetailsBinding>
 
     private val viewModel: MedicineDetailsViewModel by viewModel()
     private val args: MedicineDetailsFragmentArgs by navArgs()
-    private val directions by lazyOf(MedicineDetailsFragmentDirections)
     private val loadingScreen: LoadingScreen by inject()
 
     fun onClickEdit() {
-        viewModel.medicineId.let { medicineId ->
-            findNavController().navigate(directions.toAddEditMedicineFragment(medicineId))
-        }
+        val medicineId = viewModel.medicineId
+        val direction = MedicineDetailsFragmentDirections.toAddEditMedicineFragment(medicineId)
+        findNavController().navigate(direction)
     }
 
     fun onClickDelete() {
@@ -54,39 +54,27 @@ class MedicineDetailsFragment : BaseMainFragment<FragmentMedicineDetailsBinding>
     }
 
     fun onClickOpenMedicineInfo() {
-        viewModel.medicineName.value?.let {
-            findNavController().navigate(directions.toMedicineInfo(it))
+        viewModel.data.value?.medicineName?.let { medicineName ->
+            val direction = MedicineDetailsFragmentDirections.toMedicineInfo(medicineName)
+            findNavController().navigate(direction)
         }
     }
 
     fun onClickScheduleMedicine() {
         SelectProfileDialog().apply {
             setOnProfileSelectedListener { profileId ->
-                viewModel.medicineId?.let { medicineId ->
-                    findNavController().navigate(
-                        directions.toAddEditMedicinePlanFragment(
-                            profileId = profileId,
-                            medicineId = medicineId,
-                            medicinePlanId = null
-                        )
-                    )
-                }
+                navigateToAddMedicinePlanFragment(profileId)
             }
         }.show(childFragmentManager)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedElementEnterTransition = PhotoTransition().apply {
-            duration = TRANSITION_DURATION
-        }
-        sharedElementReturnTransition = PhotoTransition().apply {
-            duration = TRANSITION_DURATION
-        }
+        setupSharedElementTransitions()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.bindingViewModel = viewModel
+        setBindingViewModel()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -94,37 +82,40 @@ class MedicineDetailsFragment : BaseMainFragment<FragmentMedicineDetailsBinding>
         postponeEnterTransition()
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setArgs(args)
-        loadingScreen.bind(this, viewModel.loadingInProgress)
-        toolbar.setupWithNavController(findNavController())
+        initViewModel()
+        bindLoadingScreen()
+        setupToolbarNavigation()
         setupToolbarMenu()
-        setupPersonRecyclerView()
         observeViewModel()
     }
 
-    private fun observeViewModel() {
-//        viewModel.profileSimpleItemList.observe(viewLifecycleOwner, Observer { list ->
-//            val adapter = recycler_view_persons.adapter as PersonAdapter
-//            adapter.updateItemsList(list)
-//        })
-        viewModel.actionDataLoaded.observe(viewLifecycleOwner, Observer {
-            (view?.parent as? ViewGroup)?.doOnPreDraw {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    delay(100L)
-                    super.setLightStatusBar(true)
-                }
-                startPostponedEnterTransition()
-            }
-        })
-        viewModel.actionMedicineDeleted.observe(viewLifecycleOwner, Observer {
-            findNavController().popBackStack()
-        })
+    private fun setupSharedElementTransitions() {
+        val transition = getSharedElementTransition()
+        sharedElementEnterTransition = transition
+        sharedElementReturnTransition = transition
     }
 
-    private fun setupPersonRecyclerView() {
-//        recycler_view_persons.apply {
-//            adapter = PersonAdapter()
-//        }
+    private fun getSharedElementTransition(): Transition {
+        return PhotoTransition().apply {
+            duration = TRANSITION_DURATION
+        }
+    }
+
+    private fun setBindingViewModel() {
+        super.bindingViewModel = viewModel
+    }
+
+    private fun initViewModel() {
+        viewModel.initViewModel(args.medicineId)
+    }
+
+    private fun bindLoadingScreen() {
+        loadingScreen.bind(this, viewModel.loadingInProgress)
+    }
+
+    private fun setupToolbarNavigation() {
+        val navController = findNavController()
+        toolbar.setupWithNavController(navController)
     }
 
     private fun setupToolbarMenu() {
@@ -137,15 +128,39 @@ class MedicineDetailsFragment : BaseMainFragment<FragmentMedicineDetailsBinding>
         }
     }
 
-//    inner class PersonAdapter : RecyclerAdapter<ProfileItem>(
-//        layoutResId = R.layout.rec_item_person_taking_medicine,
-//        lifecycleOwner = viewLifecycleOwner,
-//        itemsSource = viewModel.
-//        areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }
-//    ) {
-//        override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-//            val personItem = itemsList[position]
-//            holder.bind(personItem, this@MedicineDetailsFragment)
-//        }
-//    }
+    private fun observeViewModel() {
+        viewModel.actionDataLoaded.observe(viewLifecycleOwner, Observer {
+            onDataLoaded()
+        })
+        viewModel.actionMedicineDeleted.observe(viewLifecycleOwner, Observer {
+            onMedicineDeleted()
+        })
+    }
+
+    private fun onDataLoaded() {
+        (view?.parent as? ViewGroup)?.doOnPreDraw {
+            setDelayedLightStatusBar()
+            startPostponedEnterTransition()
+        }
+    }
+
+    private fun setDelayedLightStatusBar() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(100L)
+            super.setLightStatusBar(true)
+        }
+    }
+
+    private fun onMedicineDeleted() {
+        findNavController().popBackStack()
+    }
+
+    private fun navigateToAddMedicinePlanFragment(profileId: String) {
+        val direction = MedicineDetailsFragmentDirections.toAddEditMedicinePlanFragment(
+            profileId = profileId,
+            medicineId = viewModel.medicineId,
+            medicinePlanId = null
+        )
+        findNavController().navigate(direction)
+    }
 }
