@@ -80,7 +80,7 @@
                         android:layout_marginEnd="16dp"
                         android:text="Brak przyjmowanych leków"
                         android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle"
-                        android:visibility="@{viewModel.noMedicinesPlans}" />
+                        android:visibility="@{viewModel.noMedicinesPlansForProfile}" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_medicine_plan"

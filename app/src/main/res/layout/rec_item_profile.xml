@@ -12,7 +12,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.domain.model.ProfileItem" />
+            type="com.maruchin.medihelper.presentation.model.ProfileItemData" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

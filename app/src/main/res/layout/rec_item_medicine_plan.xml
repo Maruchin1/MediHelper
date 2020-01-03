@@ -14,7 +14,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.domain.model.MedicinePlanItem" />
+            type="com.maruchin.medihelper.presentation.model.MedicinePlanItemData" />
 
         <variable
             name="viewModel"
@@ -66,33 +66,12 @@
                     android:src="@drawable/round_event_24"
                     android:tint='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        visibleOrGone="@{displayData.planType == Type.ONCE}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text='@{"Jednorazowo " + displayData.startDate, default="Jednorazowo"}'
-                        android:textAppearance="@style/TextAppearance.MediHelper.Body2" />
-
-                    <TextView
-                        visibleOrGone="@{displayData.planType == Type.PERIOD}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text='@{"Od " + displayData.startDate + " do " + displayData.endDate, default="Prze okres dni"}'
-                        android:textAppearance="@style/TextAppearance.MediHelper.Body2" />
-
-                    <TextView
-                        visibleOrGone="@{displayData.planType == Type.CONTINUOUS}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text='@{"Przyjmowanie ciągłe od " + displayData.startDate, default="Przyjmowanie ciągłe"}'
-                        android:textAppearance="@style/TextAppearance.MediHelper.Body2" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:text='@{displayData.planDuration, default="Jednorazowo"}'
+                    android:textAppearance="@style/TextAppearance.MediHelper.Body2" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
