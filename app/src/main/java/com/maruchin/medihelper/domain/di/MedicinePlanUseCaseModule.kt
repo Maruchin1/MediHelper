@@ -45,7 +45,7 @@ val medicinePlanUseCaseModule = module {
             medicinePlanRepo = get(),
             plannedMedicineRepo = get(),
             deletePlannedMedicinesUseCase = get()
-        )
+        ) as DeleteMedicinesPlansUseCase
     }
     factory { 
         GetMedicinePlanHistoryUseCaseImpl(

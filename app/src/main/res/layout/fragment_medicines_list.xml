@@ -51,7 +51,6 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_medicines"
-                visibleOrInvisible="@{viewModel.medicineAvailable}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
@@ -86,6 +85,33 @@
                 app:layout_anchor="@id/bottom_nav"
                 app:layout_anchorGravity="center"
                 app:tint="@color/colorWhite" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/no_item_page_margin_horizontal"
+                android:layout_marginEnd="@dimen/no_item_page_margin_horizontal"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_anchor="@id/recycler_view_medicines"
+                app:layout_anchorGravity="center"
+                android:visibility="@{viewModel.noMedicines, default=gone}">
+
+                <ImageView
+                    android:layout_width="@dimen/no_item_page_icon_size"
+                    android:layout_height="@dimen/no_item_page_icon_size"
+                    android:src="@drawable/ic_pill_grey600_48dp"
+                    android:tint="@color/colorDarkerGray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/no_item_page_text_margin_top"
+                    android:text='Brak zapisanych leków'
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle" />
+
+            </LinearLayout>
 
             <ProgressBar
                 visibleOrGone="@{viewModel.loadingInProgress}"

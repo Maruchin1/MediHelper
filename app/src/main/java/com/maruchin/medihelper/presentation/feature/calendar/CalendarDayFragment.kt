@@ -50,22 +50,22 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
 
     private fun setupRecyclerViews() {
         recycler_view_morning_schedule.apply {
-            adapter = PlannedMedicineAdapter(viewModel.morningPlannedMedicines)
+            adapter = PlannedMedicineAdapter(viewModel.morningCalendarItems)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
         recycler_view_afternoon_schedule.apply {
-            adapter = PlannedMedicineAdapter(viewModel.afternoonPlannedMedicines)
+            adapter = PlannedMedicineAdapter(viewModel.afternoonCalendarItems)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
         recycler_view_evening_schedule.apply {
-            adapter = PlannedMedicineAdapter(viewModel.eveningPlannedMedicines)
+            adapter = PlannedMedicineAdapter(viewModel.eveningCalendarItems)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
     }
 
     // Inner classes
-    private inner class PlannedMedicineAdapter(itemsSource: LiveData<List<PlannedMedicineItem>>) :
-        BaseRecyclerAdapter<PlannedMedicineItem>(
+    private inner class PlannedMedicineAdapter(itemsSource: LiveData<List<CalendarDayViewModel.CalendarItem>>) :
+        BaseRecyclerAdapter<CalendarDayViewModel.CalendarItem>(
             layoutResId = R.layout.rec_item_planned_medicine,
             lifecycleOwner = viewLifecycleOwner,
             itemsSource = itemsSource,

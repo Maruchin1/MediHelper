@@ -17,7 +17,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.domain.model.MedicineItem" />
+            type="com.maruchin.medihelper.presentation.model.MedicineItemData" />
     </data>
 
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -69,13 +69,13 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text='@{displayData.name, default="Nazwa leku"}'
+                    android:text='@{displayData.medicineName, default="Nazwa leku"}'
                     android:textAppearance="@style/TextAppearance.MediHelper.Header" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{displayData.unit, default=jednostka}"
+                    android:text="@{displayData.medicineUnit, default=jednostka}"
                     android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
 
                 <com.google.android.material.card.MaterialCardView
@@ -94,12 +94,15 @@
                         <View
                             android:id="@+id/line_state"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:layout_weight="@{displayData.stateData.stateWeight}"
+                            android:background="@{displayData.stateData.stateColorId}" />
 
                         <View
                             android:id="@+id/line_empty"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight="@{displayData.stateData.stateEmptyWeight}"
                             android:background="@color/colorBackground" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

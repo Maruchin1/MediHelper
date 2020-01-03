@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.usecases.medicines.GetLiveAllMedicinesItemsUseCase
+import com.maruchin.medihelper.presentation.model.MedicineItemData
 import com.maruchin.medihelper.presentation.utils.PicturesRef
 
 class MedicinesListViewModel(
@@ -11,29 +12,51 @@ class MedicinesListViewModel(
     private val picturesRef: PicturesRef
 ) : ViewModel() {
 
-    val medicineItemList: LiveData<List<MedicineItem>>
+    val medicineItemList: LiveData<List<MedicineItemData>>
     val loadingInProgress: LiveData<Boolean>
-    val medicineAvailable: LiveData<Boolean>
-    val nameQuery = MutableLiveData<String>("")
+    val noMedicines: LiveData<Boolean>
 
     init {
-        medicineItemList = liveData {
-            val medicineItemsLive = getAllMedicinesItemsUseCase.execute()
-            emitSource(medicineItemsLive)
-        }
-        loadingInProgress = Transformations.map(medicineItemList) { it == null }
-        medicineAvailable = Transformations.map(medicineItemList) { it.isNotEmpty()}
-        //todo wyłączono wyszukiwanie
-//        medicineList = Transformations.switchMap(nameQuery) { nameQuery ->
-//            if (nameQuery.isNullOrEmpty()) {
-//                medicineUseCases.getAllMedicineListLive()
-//            } else {
-//                medicineUseCases.getMedicineListLiveFilteredByName(nameQuery)
-//            }
-//        }
+        medicineItemList = getLiveMedicineItemsData()
+        loadingInProgress = getLiveLoadingInProgress()
+        noMedicines = getLiveNoMedicines()
     }
 
     fun getMedicinePictureRef(pictureName: String?): StorageReference? {
         return if (pictureName != null) picturesRef.get(pictureName) else null
+    }
+
+    private fun getLiveMedicineItemsData(): LiveData<List<MedicineItemData>> {
+        return liveData {
+            val medicineItemsLive = getAllMedicinesItemsUseCase.execute()
+            val dataLive = transformLiveMedicineItemsToData(medicineItemsLive)
+            emitSource(dataLive)
+        }
+    }
+
+    private fun getLiveLoadingInProgress(): LiveData<Boolean> {
+        return Transformations.map(medicineItemList) { list ->
+            list == null
+        }
+    }
+
+    private fun getLiveNoMedicines(): LiveData<Boolean> {
+        return Transformations.map(medicineItemList) { list ->
+            list.isEmpty()
+        }
+    }
+
+    private fun transformLiveMedicineItemsToData(
+        medicineItemsLive: LiveData<List<MedicineItem>>
+    ): LiveData<List<MedicineItemData>> {
+        return Transformations.map(medicineItemsLive) { medicineItems ->
+            mapMedicineItemsToData(medicineItems)
+        }
+    }
+
+    private fun mapMedicineItemsToData(medicineItems: List<MedicineItem>): List<MedicineItemData> {
+        return medicineItems.map { medicineItem ->
+            MedicineItemData.fromDomainModel(medicineItem)
+        }
     }
 }

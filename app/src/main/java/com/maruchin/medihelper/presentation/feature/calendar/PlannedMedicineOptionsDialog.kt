@@ -36,7 +36,7 @@ class PlannedMedicineOptionsDialog :
 
     fun onClickChangeForLater() {
         SelectTimeDialog(
-            defaultTime = viewModel.details.value?.plannedTime
+            defaultTime = viewModel.plannedTime
         ).apply {
             setColorPrimary(viewModel.colorPrimary.value)
             setOnTimeSelectedListener { newTime ->

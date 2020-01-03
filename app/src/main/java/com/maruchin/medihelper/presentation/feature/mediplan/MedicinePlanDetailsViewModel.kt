@@ -4,12 +4,12 @@ import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.IntakeDays
 import com.maruchin.medihelper.domain.entities.MedicinePlan
 import com.maruchin.medihelper.domain.entities.TimeDose
-import com.maruchin.medihelper.domain.model.HistoryItem
 import com.maruchin.medihelper.domain.model.MedicinePlanDetails
 import com.maruchin.medihelper.domain.usecases.mediplans.DeleteSingleMedicinePlanUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanDetailsUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanHistoryUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
+import com.maruchin.medihelper.presentation.model.HistoryItem
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
 
@@ -76,8 +76,11 @@ class MedicinePlanDetailsViewModel(
         }
         _actionDetailsLoaded.sendAction()
 
-        val history = getMedicinePlanHistoryUseCase.execute(args.medicinePlanId)
-        _historyItems.postValue(history)
+        val domainHistory = getMedicinePlanHistoryUseCase.execute(args.medicinePlanId)
+        val presentationHistory = domainHistory.map {
+            HistoryItem(it)
+        }
+        _historyItems.postValue(presentationHistory)
         _actionHistoryLoaded.sendAction()
     }
 

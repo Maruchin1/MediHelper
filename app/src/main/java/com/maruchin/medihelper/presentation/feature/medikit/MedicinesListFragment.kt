@@ -3,6 +3,7 @@ package com.maruchin.medihelper.presentation.feature.medikit
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -13,6 +14,7 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicinesListBinding
 import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.presentation.framework.*
+import com.maruchin.medihelper.presentation.model.MedicineItemData
 import kotlinx.android.synthetic.main.fragment_medicines_list.*
 import kotlinx.android.synthetic.main.rec_item_medicine.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -59,16 +61,21 @@ class MedicinesListFragment : BaseHomeFragment<FragmentMedicinesListBinding>(R.l
 
     private fun setupToolbarMenu() {
         toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.btn_search -> {  }
-                R.id.btn_filters -> { onClickOpenFilters() }
+            matchClickedToolbarMenuItem(menuItem.itemId)
+            true
+        }
+    }
+
+    private fun matchClickedToolbarMenuItem(menuItemId: Int) {
+        when (menuItemId) {
+            R.id.btn_search -> {
             }
-            return@setOnMenuItemClickListener true
+            R.id.btn_filters -> onClickOpenFilters()
         }
     }
 
     // Inner classes
-    inner class MedicineAdapter : BaseRecyclerAdapter<MedicineItem>(
+    inner class MedicineAdapter : BaseRecyclerAdapter<MedicineItemData>(
         layoutResId = R.layout.rec_item_medicine,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.medicineItemList,

@@ -10,7 +10,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.domain.entities.AppDate" />
+            type="com.maruchin.medihelper.presentation.model.HistoryItem" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -33,13 +33,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{displayData.dayOfWeekString, default=dzień}"
+                android:text="@{displayData.dayOfWeek, default=dzień}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{displayData.dayMonthString, default=Data}"
+                android:text="@{displayData.dayAndMonth, default=Data}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:textColor="@color/colorTextTertiary" />
 
