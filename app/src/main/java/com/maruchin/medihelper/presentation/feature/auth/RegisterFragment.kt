@@ -29,6 +29,22 @@ class RegisterFragment : BaseLauncherFragment<FragmentRegisterBinding>(R.layout.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTransitions()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setBindingViewModel()
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        bindLoadingScreen()
+        setupToolbarNavigation()
+        observeViewModel()
+    }
+
+    private fun setTransitions() {
         enterTransition = Slide(Gravity.BOTTOM).apply {
             startDelay = 600
             duration = 300
@@ -38,16 +54,17 @@ class RegisterFragment : BaseLauncherFragment<FragmentRegisterBinding>(R.layout.
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private fun setBindingViewModel() {
         super.bindingViewModel = viewModel
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun bindLoadingScreen() {
         loadingScreen.bind(this, viewModel.loadingInProgress)
-        toolbar.setupWithNavController(findNavController())
-        observeViewModel()
+    }
+
+    private fun setupToolbarNavigation() {
+        val navController = findNavController()
+        toolbar.setupWithNavController(navController)
     }
 
     private fun observeViewModel() {

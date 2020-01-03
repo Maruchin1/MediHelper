@@ -75,18 +75,10 @@ class RegisterViewModel(
     }
 
     private fun postErrors(errors: SignUpErrors) {
-        val userNameError = if (errors.emptyUserName) {
-            "Imię jest wymagane"
-        } else null
-        val emailError = if (errors.emptyEmail) {
-            "Adres e-mail jest wymagany"
-        } else null
-        var passwordError = if (errors.emptyPassword) {
-            "Hasło jest wymamgane"
-        } else null
-        var passwordConfirmError = if (errors.emptyPasswordConfirm) {
-            "Powtórzenie hasła jest wymagane"
-        } else null
+        val userNameError = getUserNameError(errors)
+        val emailError = getEmailError(errors)
+        var passwordError = getPasswordError(errors)
+        var passwordConfirmError = getPasswordConfirmError(errors)
 
         if (passwordError == null && passwordConfirmError == null && errors.passwordsNotTheSame) {
             val message = "Podane hasła nie są takie same"
@@ -99,6 +91,39 @@ class RegisterViewModel(
         _errorPassword.postValue(passwordError)
         _errorPasswordConfirm.postValue(passwordConfirmError)
 
-        //todo obsłużyć pozostałe błędy
+        if (errors.undefinedError) {
+            _errorGlobal.postValue("Błąd rejestracji")
+        }
+    }
+
+    private fun getUserNameError(errors: SignUpErrors): String? {
+        return when {
+            errors.emptyUserName -> "Imię jest wymagane"
+            else -> null
+        }
+    }
+
+    private fun getEmailError(errors: SignUpErrors): String? {
+        return when {
+            errors.emptyEmail -> "Adres e-mail jest wymagany"
+            errors.incorrectEmail -> "Niepoprawny adres e-mail"
+            errors.userAlreadyExists -> "Użytkownik juz istnieje"
+            else -> null
+        }
+    }
+
+    private fun getPasswordError(errors: SignUpErrors): String? {
+        return when {
+            errors.emptyPassword -> "Hasło jest wymagane"
+            errors.weakPassword -> "Zbyt słabe hasło"
+            else -> null
+        }
+    }
+
+    private fun getPasswordConfirmError(errors: SignUpErrors): String? {
+        return when {
+            errors.emptyPasswordConfirm -> "Powtórzenie hasła jest wyamgane"
+            else -> null
+        }
     }
 }

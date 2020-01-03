@@ -23,9 +23,7 @@ class UserAuthRepoImpl(
     override suspend fun signIn(email: String, password: String): String = withContext(Dispatchers.IO) {
         return@withContext try {
             auth.signInWithEmailAndPassword(email, password).await()
-            val userId = auth.getCurrUserId()
-            collectionRef.document(userId)
-            userId
+            auth.getCurrUserId()
         } catch (ex: FirebaseAuthInvalidUserException) {
             throw UserAuthRepo.IncorrectEmailException()
         } catch (ex: FirebaseAuthInvalidCredentialsException) {
@@ -35,23 +33,20 @@ class UserAuthRepoImpl(
         }
     }
 
-    override suspend fun signUp(email: String, password: String, errors: SignUpErrors): String? = withContext(Dispatchers.IO) {
+    override suspend fun signUp(email: String, password: String): String = withContext(Dispatchers.IO) {
         return@withContext try {
             auth.createUserWithEmailAndPassword(email, password).await()
-
-            auth.getCurrUserId()
+            val userId = auth.getCurrUserId()
+            collectionRef.document(userId)
+            userId
         } catch (ex: FirebaseAuthEmailException) {
-            errors.incorrectEmail = true
-            null
+            throw UserAuthRepo.IncorrectEmailException()
         } catch (ex: FirebaseAuthUserCollisionException) {
-            errors.userAlreadyExists = true
-            null
+            throw UserAuthRepo.UserAlreadyExistException()
         } catch (ex: FirebaseAuthWeakPasswordException) {
-            errors.weakPassword = true
-            null
+            throw UserAuthRepo.WeakPasswordException()
         } catch (ex: FirebaseAuthException) {
-            errors.undefinedError = true
-            null
+            throw UserAuthRepo.UndefinedAuthException()
         }
     }
 

@@ -33,6 +33,16 @@ class SignUpUseCaseImpl(
     }
 
     private suspend fun signUpUser(params: SignUpUseCase.Params, errors: SignUpErrors) {
-        userAuthRepo.signUp(params.email!!, params.password!!, errors)
+        try {
+            userAuthRepo.signUp(params.email!!, params.password!!)
+        } catch (ex: UserAuthRepo.IncorrectEmailException) {
+            errors.incorrectEmail = true
+        } catch (ex: UserAuthRepo.UserAlreadyExistException) {
+            errors.userAlreadyExists = true
+        } catch (ex: UserAuthRepo.WeakPasswordException) {
+            errors.weakPassword = true
+        } catch (ex: UserAuthRepo.UndefinedAuthException) {
+            errors.undefinedError = true
+        }
     }
 }
