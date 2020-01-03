@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.model.MedicineEditData
-import com.maruchin.medihelper.domain.utils.MedicineValidator
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineUnitsUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.SaveMedicineUseCase
@@ -29,8 +28,8 @@ class AddEditMedicineViewModel(
     val medicineName = MutableLiveData<String>()
     val medicineUnit = MutableLiveData<String>()
     val expireDate = MutableLiveData<AppExpireDate>()
-    val packageSize = MutableLiveData<Float>(0f)
     val currState = MutableLiveData<Float>(0f)
+    val packageSize = MutableLiveData<Float>(0f)
     val pictureFile: LiveData<File>
 
     val pictureRef: LiveData<StorageReference>
@@ -59,32 +58,70 @@ class AddEditMedicineViewModel(
     private var editMedicineId = MutableLiveData<String>()
 
     init {
-        formTitle = Transformations.map(editMedicineId) {
+        formTitle = getLiveFormTitle()
+        medicineUnitList = getLiveMedicineUnits()
+        pictureFile = getLivePictureFile()
+    }
+
+    fun initViewModel(editMedicineId: String?) = viewModelScope.launch {
+        if (editMedicineId != null) {
+            setEditMedicineId(editMedicineId)
+            loadAndSetEditData(editMedicineId)
+        }
+    }
+
+    fun saveMedicine() = viewModelScope.launch {
+        notifySavingInProgress()
+        val params = getSaveUseCaseParams()
+        val errors = saveMedicineUseCase.execute(params)
+        notifySavingNotInProgress()
+        checkSavingErrors(errors)
+    }
+
+    private fun getLiveFormTitle(): LiveData<String> {
+        return Transformations.map(editMedicineId) {
             if (it == null) {
                 "Dodaj lek"
             } else {
                 "Edytuj lek"
             }
         }
-        medicineUnitList = liveData {
+    }
+
+    private fun getLiveMedicineUnits(): LiveData<List<String>> {
+        return liveData {
             val list = getMedicineUnitsUseCase.execute()
             emit(list)
         }
-        pictureFile = deviceCamera.resultFile
     }
 
-    fun setArgs(args: AddEditMedicineFragmentArgs) = viewModelScope.launch {
-        editMedicineId.postValue(args.editMedicineId)
-        if (args.editMedicineId != null) {
-            getMedicineEditDataUseCase.execute(args.editMedicineId)?.let { editData ->
-                setEditData(editData)
-            }
+    private fun getLivePictureFile(): LiveData<File> {
+        return deviceCamera.resultFile
+    }
+
+    private fun setEditMedicineId(medicineId: String) {
+        editMedicineId.postValue(medicineId)
+    }
+
+    private suspend fun loadAndSetEditData(medicineId: String) {
+        val editData = getMedicineEditDataUseCase.execute(medicineId)
+        setEditData(editData)
+    }
+
+    private fun setEditData(editData: MedicineEditData) {
+        medicineName.postValue(editData.name)
+        medicineUnit.postValue(editData.unit)
+        expireDate.postValue(editData.expireDate)
+        packageSize.postValue(editData.state.packageSize)
+        currState.postValue(editData.state.currState)
+        if (editData.pictureName != null) {
+            val editPictureRef = picturesRef.get(editData.pictureName)
+            _pictureRef.postValue(editPictureRef)
         }
     }
 
-    fun saveMedicine() = viewModelScope.launch {
-        _loadingInProgress.postValue(true)
-        val params = SaveMedicineUseCase.Params(
+    private fun getSaveUseCaseParams(): SaveMedicineUseCase.Params {
+        return SaveMedicineUseCase.Params(
             medicineId = editMedicineId.value,
             name = medicineName.value,
             unit = medicineUnit.value,
@@ -94,14 +131,26 @@ class AddEditMedicineViewModel(
             pictureName = pictureRef.value?.name,
             pictureFile = pictureFile.value
         )
-        val errors = saveMedicineUseCase.execute(params)
-        _loadingInProgress.postValue(false)
+    }
 
+    private fun notifySavingInProgress() {
+        _loadingInProgress.postValue(true)
+    }
+
+    private fun notifySavingNotInProgress() {
+        _loadingInProgress.postValue(false)
+    }
+
+    private fun checkSavingErrors(errors: MedicineErrors) {
         if (errors.noErrors) {
-            _actionMedicineSaved.sendAction()
+            notifyMedicineSaved()
         } else {
             postErrors(errors)
         }
+    }
+
+    private fun notifyMedicineSaved() {
+        _actionMedicineSaved.sendAction()
     }
 
     private fun postErrors(errors: MedicineErrors) {
@@ -122,16 +171,5 @@ class AddEditMedicineViewModel(
         _errorMedicineUnit.postValue(medicineUnitError)
         _errorExpireDate.postValue(expireDateError)
         _errorCurrState.postValue(currStateError)
-    }
-
-    private fun setEditData(editData: MedicineEditData) {
-        medicineName.postValue(editData.name)
-        medicineUnit.postValue(editData.unit)
-        expireDate.postValue(editData.expireDate)
-        packageSize.postValue(editData.state.packageSize)
-        currState.postValue(editData.state.currState)
-        editData.pictureName?.let {
-            _pictureRef.postValue(picturesRef.get(it))
-        }
     }
 }

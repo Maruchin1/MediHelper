@@ -27,12 +27,11 @@ class AddEditMedicineFragment : BaseMainFragment<FragmentAddEditMedicineBinding>
     private val viewModel: AddEditMedicineViewModel by viewModel()
     private val args: AddEditMedicineFragmentArgs by navArgs()
     private val loadingScreen: LoadingScreen by inject()
-    private val directions by lazyOf(AddEditMedicineFragmentDirections)
     private val cameraPermission: CameraPermission by inject()
 
     fun onClickTakePhoto() {
         if (cameraPermission.isGranted()) {
-            findNavController().navigate(directions.toCaptureMedicinePictureFragment())
+            navigateToCaptureMedicinePictureFragment()
         } else {
             cameraPermission.askForCameraPermission()
         }
@@ -41,7 +40,9 @@ class AddEditMedicineFragment : BaseMainFragment<FragmentAddEditMedicineBinding>
     fun onClickSelectExpireDate() = SelectExpireDateDialog(
         defaultDate = viewModel.expireDate.value
     ).apply {
-        setOnDateSelectedListener { viewModel.expireDate.value = it }
+        setOnDateSelectedListener { selectedExpireDate ->
+            viewModel.expireDate.value = selectedExpireDate
+        }
     }.show(childFragmentManager)
 
     fun onClickSave() {
@@ -49,27 +50,57 @@ class AddEditMedicineFragment : BaseMainFragment<FragmentAddEditMedicineBinding>
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.bindingViewModel = viewModel
+        setBindingViewModel()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setArgs(args)
-        loadingScreen.bind(this, viewModel.loadingInProgress)
-        super.setLightStatusBar(false)
-        toolbar.setupWithNavController(findNavController())
-        setupScrollView()
+        initViewModel()
+        bindLoadingScreen()
+        disableLightStatusBar()
+        setupToolbarNavigation()
+        setupFabSaveScrollBehavior()
         observeViewModel()
+    }
+
+    private fun navigateToCaptureMedicinePictureFragment() {
+        val direction = AddEditMedicineFragmentDirections.toCaptureMedicinePictureFragment()
+        findNavController().navigate(direction)
+    }
+
+    private fun setBindingViewModel() {
+        super.bindingViewModel = viewModel
+    }
+
+    private fun initViewModel() {
+        viewModel.initViewModel(args.editMedicineId)
+    }
+
+    private fun bindLoadingScreen() {
+        loadingScreen.bind(this, viewModel.loadingInProgress)
+    }
+
+    private fun disableLightStatusBar() {
+        super.setLightStatusBar(false)
+    }
+
+    private fun setupToolbarNavigation() {
+        val navController = findNavController()
+        toolbar.setupWithNavController(navController)
+    }
+
+    private fun setupFabSaveScrollBehavior() {
+        fab_save.shrinkOnScroll(items_root)
     }
 
     private fun observeViewModel() {
         viewModel.actionMedicineSaved.observe(viewLifecycleOwner, Observer {
-            findNavController().popBackStack()
+            onMedicineSaved()
         })
     }
 
-    private fun setupScrollView() {
-        fab_save.shrinkOnScroll(items_root)
+    private fun onMedicineSaved() {
+        findNavController().popBackStack()
     }
 }
