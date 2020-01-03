@@ -33,15 +33,9 @@ class DeviceCamera(private val context: Context) {
     fun bindCameraPreview(lifecycleOwner: LifecycleOwner, textureView: TextureView) {
         preview = Preview(getPreviewConfig())
         imageCapture = ImageCapture(getCaptureConfig())
-
         preview.setOnPreviewOutputUpdateListener { output ->
-            val parent = textureView.parent as ViewGroup
-            parent.removeView(textureView)
-            parent.addView(textureView, 0)
-
-            textureView.surfaceTexture = output.surfaceTexture
+            updateTextureView(textureView, output)
         }
-
         CameraX.bindToLifecycle(lifecycleOwner, preview, imageCapture)
     }
 
@@ -73,6 +67,13 @@ class DeviceCamera(private val context: Context) {
         .setTargetResolution(resolution)
         .setFlashMode(flashMode)
         .build()
+
+    private fun updateTextureView(textureView: TextureView, output: Preview.PreviewOutput) {
+        val parent = textureView.parent as ViewGroup
+        parent.removeView(textureView)
+        parent.addView(textureView, 0)
+        textureView.surfaceTexture = output.surfaceTexture
+    }
 
     private fun getTempImageFile(): File {
         val externalPicturesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)

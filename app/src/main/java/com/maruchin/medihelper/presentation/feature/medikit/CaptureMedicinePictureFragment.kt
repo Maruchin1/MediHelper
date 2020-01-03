@@ -23,12 +23,32 @@ class CaptureMedicinePictureFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        deviceCamera.bindCameraPreview(viewLifecycleOwner, texture_view)
-        toolbar.setupWithNavController(findNavController())
-        super.setStatusBarColor(R.color.colorBlack)
+        bindCameraPreview()
+        setupToolbarNavigation()
+        setBlackStatusBar()
+        observePictureTaken()
+    }
 
+    private fun bindCameraPreview() {
+        deviceCamera.bindCameraPreview(viewLifecycleOwner, texture_view)
+    }
+
+    private fun setupToolbarNavigation() {
+        val navController = findNavController()
+        toolbar.setupWithNavController(navController)
+    }
+
+    private fun setBlackStatusBar() {
+        super.setStatusBarColor(R.color.colorBlack)
+    }
+
+    private fun observePictureTaken() {
         deviceCamera.actionPictureTaken.observe(viewLifecycleOwner, Observer {
-            findNavController().popBackStack()
+            onPictureTaken()
         })
+    }
+
+    private fun onPictureTaken() {
+        findNavController().popBackStack()
     }
 }
