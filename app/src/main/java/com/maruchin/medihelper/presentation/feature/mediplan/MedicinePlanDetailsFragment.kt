@@ -13,13 +13,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.maruchin.medihelper.BR
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentMedicinePlanDetailsBinding
-import com.maruchin.medihelper.domain.entities.TimeDose
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import com.maruchin.medihelper.presentation.framework.BaseRecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.BaseViewHolder
 import com.maruchin.medihelper.presentation.framework.beginDelayedTransition
-import com.maruchin.medihelper.presentation.model.HistoryItem
+import com.maruchin.medihelper.presentation.model.HistoryItemData
+import com.maruchin.medihelper.presentation.model.TimeDoseData
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_medicine_plan_details.*
 import kotlinx.android.synthetic.main.rec_item_history_item.view.*
@@ -31,17 +31,15 @@ class MedicinePlanDetailsFragment :
 
     private val viewModel: MedicinePlanDetailsViewModel by viewModel()
     private val args: MedicinePlanDetailsFragmentArgs by navArgs()
-    private val directions by lazy { MedicinePlanDetailsFragmentDirections }
     private val loadingScreen: LoadingScreen by inject()
 
     fun onClickEditPlan() {
-        findNavController().navigate(
-            directions.toAddEditMedicinePlanFragment(
-                profileId = null,
-                medicineId = null,
-                medicinePlanId = viewModel.medicinePlanId
-            )
+        val direction = MedicinePlanDetailsFragmentDirections.toAddEditMedicinePlanFragment(
+            profileId = null,
+            medicineId = null,
+            medicinePlanId = viewModel.medicinePlanId
         )
+        findNavController().navigate(direction)
     }
 
     fun onClickDeletePlan() {
@@ -58,7 +56,8 @@ class MedicinePlanDetailsFragment :
     }
 
     fun onClickOpenMedicineDetails() {
-        findNavController().navigate(directions.toMedicineDetailsFragment(viewModel.medicineId))
+        val direction = MedicinePlanDetailsFragmentDirections.toMedicineDetailsFragment(viewModel.medicineId)
+        findNavController().navigate(direction)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -68,27 +67,41 @@ class MedicinePlanDetailsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        super.setLightStatusBar(true)
-        toolbar.setupWithNavController(findNavController())
-        viewModel.setArgs(args)
-        loadingScreen.bind(this, viewModel.loadingInProgress)
-
+        initViewModel()
+        enableLightStatusBar()
+        bindLoadingScreen()
+        setupToolbarNavigation()
+        setupToolbarMenu()
         setupTimeDoseRecyclerView()
         setupHistoryRecyclerView()
-        setupToolbarMenu()
         observeViewModel()
     }
 
-    private fun observeViewModel() {
-        viewModel.actionDetailsLoaded.observe(viewLifecycleOwner, Observer {
-            lay_details.beginDelayedTransition()
-        })
-        viewModel.actionHistoryLoaded.observe(viewLifecycleOwner, Observer {
-            lay_history.beginDelayedTransition()
-        })
-        viewModel.actionPlanDeleted.observe(viewLifecycleOwner, Observer {
-            findNavController().popBackStack()
-        })
+    private fun initViewModel() {
+        viewModel.initViewModel(args.medicinePlanId)
+    }
+
+    private fun enableLightStatusBar() {
+        super.setLightStatusBar(true)
+    }
+
+    private fun bindLoadingScreen() {
+        loadingScreen.bind(this, viewModel.loadingInProgress)
+    }
+
+    private fun setupToolbarNavigation() {
+        val navController = findNavController()
+        toolbar.setupWithNavController(navController)
+    }
+
+    private fun setupToolbarMenu() {
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.btn_edit -> onClickEditPlan()
+                R.id.btn_delete -> onClickDeletePlan()
+            }
+            true
+        }
     }
 
     private fun setupTimeDoseRecyclerView() {
@@ -103,30 +116,32 @@ class MedicinePlanDetailsFragment :
         }
     }
 
-    private fun setupToolbarMenu() {
-        toolbar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.btn_edit -> onClickEditPlan()
-                R.id.btn_delete -> onClickDeletePlan()
-            }
-            true
-        }
+    private fun observeViewModel() {
+        viewModel.actionDetailsLoaded.observe(viewLifecycleOwner, Observer {
+            lay_details.beginDelayedTransition()
+        })
+        viewModel.actionHistoryLoaded.observe(viewLifecycleOwner, Observer {
+            lay_history.beginDelayedTransition()
+        })
+        viewModel.actionPlanDeleted.observe(viewLifecycleOwner, Observer {
+            findNavController().popBackStack()
+        })
     }
 
-    private inner class TimeDoseAdapter : BaseRecyclerAdapter<TimeDose>(
+    private inner class TimeDoseAdapter : BaseRecyclerAdapter<TimeDoseData>(
         layoutResId = R.layout.rec_item_time_dose,
         itemsSource = viewModel.timesDoses,
         lifecycleOwner = viewLifecycleOwner
     ) {
         override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
             val item = itemsList[position]
-            holder.bind(displayData = item, handler = this@MedicinePlanDetailsFragment, viewModel = viewModel)
+            holder.bind(displayData = item, handler = this@MedicinePlanDetailsFragment)
         }
     }
 
-    private inner class HistoryAdapter : BaseRecyclerAdapter<HistoryItem>(
+    private inner class HistoryAdapter : BaseRecyclerAdapter<HistoryItemData>(
         layoutResId = R.layout.rec_item_history_item,
-        itemsSource = viewModel.historyItems,
+        itemsSource = viewModel.history,
         lifecycleOwner = viewLifecycleOwner,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.date == newItem.date }
     ) {

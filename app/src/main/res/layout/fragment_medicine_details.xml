@@ -258,7 +258,8 @@
                                     android:id="@+id/line_empty"
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
-                                    android:layout_weight="@{viewModel.data.state.stateEmptyWeight}" />
+                                    android:layout_weight="@{viewModel.data.state.stateEmptyWeight}"
+                                    android:background="@color/colorDarkerGray"/>
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 

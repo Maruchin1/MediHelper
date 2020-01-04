@@ -1,17 +1,14 @@
 package com.maruchin.medihelper.presentation.feature.mediplan
 
 import androidx.lifecycle.*
-import com.maruchin.medihelper.domain.entities.IntakeDays
-import com.maruchin.medihelper.domain.entities.MedicinePlan
-import com.maruchin.medihelper.domain.entities.TimeDose
+import com.maruchin.medihelper.domain.model.HistoryItem
 import com.maruchin.medihelper.domain.model.MedicinePlanDetails
 import com.maruchin.medihelper.domain.usecases.mediplans.DeleteSingleMedicinePlanUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanDetailsUseCase
 import com.maruchin.medihelper.domain.usecases.mediplans.GetMedicinePlanHistoryUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
-import com.maruchin.medihelper.presentation.model.HistoryItem
+import com.maruchin.medihelper.presentation.model.*
 import kotlinx.coroutines.launch
-import java.lang.StringBuilder
 
 class MedicinePlanDetailsViewModel(
     private val getMedicinePlanDetailsUseCase: GetMedicinePlanDetailsUseCase,
@@ -20,134 +17,102 @@ class MedicinePlanDetailsViewModel(
 ) : ViewModel() {
 
     val colorPrimary: LiveData<String>
-    val medicineName: LiveData<String>
-    val medicineUnit: LiveData<String>
-    val durationTime: LiveData<DurationTime>
-    val days: LiveData<Days>
-    val timesDoses: LiveData<List<TimeDose>>
+    val medicine: LiveData<MedicineBasicData>
+    val durationTime: LiveData<MedicinePlanDurationTimeData>
+    val days: LiveData<MedicinePlanDaysData?>
+    val timesDoses: LiveData<List<TimeDoseData>>
 
-    val medicinePlanId: String
-        get() = medicinePlanDetails.value?.medicinePlanId ?: throw Exception("medicinePlanId is null")
-    val medicineId: String
-        get() = medicinePlanDetails.value?.medicineId ?: throw Exception("medicineId is null")
+    val history: LiveData<List<HistoryItemData>>
+        get() = _history
+    val loadingInProgress: LiveData<Boolean>
+        get() = _loadingInProgress
     val actionDetailsLoaded: LiveData<Boolean>
         get() = _actionDetailsLoaded
     val actionHistoryLoaded: LiveData<Boolean>
         get() = _actionHistoryLoaded
     val actionPlanDeleted: LiveData<Boolean>
         get() = _actionPlanDeleted
-    val loadingInProgress: LiveData<Boolean>
-        get() = _loadingInProgress
-    val historyItems: LiveData<List<HistoryItem>>
-        get() = _historyItems
+    val medicinePlanId: String
+        get() = _medicinePlanId
+    val medicineId: String
+        get() = _medicineId
 
+    private val _history = MutableLiveData<List<HistoryItemData>>()
+    private val _loadingInProgress = MutableLiveData<Boolean>()
     private val _actionDetailsLoaded = ActionLiveData()
     private val _actionHistoryLoaded = ActionLiveData()
     private val _actionPlanDeleted = ActionLiveData()
-    private val _loadingInProgress = MutableLiveData<Boolean>()
-    private val _historyItems = MutableLiveData<List<HistoryItem>>()
+    private lateinit var _medicinePlanId: String
+    private lateinit var _medicineId: String
 
-    private val medicinePlanDetails = MutableLiveData<MedicinePlanDetails>()
+    private val details = MutableLiveData<MedicinePlanDetails>()
 
     init {
-        colorPrimary = Transformations.map(medicinePlanDetails) { it.profileColor }
-        medicineName = Transformations.map(medicinePlanDetails) { it.medicineName }
-        medicineUnit = Transformations.map(medicinePlanDetails) { it.medicineUnit }
-        durationTime = Transformations.map(medicinePlanDetails) { getDurationTime(it) }
-        days = Transformations.map(medicinePlanDetails) { details -> details.intakeDays?.let { getDays(it) } }
-        timesDoses = Transformations.map(medicinePlanDetails) { details ->
-            details.timeDoseList.sortedBy { it.time }
-        }
+        colorPrimary = getLiveColorPrimary()
+        medicine = getLiveMedicineBasicData()
+        durationTime = getLiveDurationTimeData()
+        days = getLiveDaysData()
+        timesDoses = getLiveTimesDosesData()
+    }
+
+    fun initViewModel(medicinePlanId: String) = viewModelScope.launch {
+        _medicinePlanId = medicinePlanId
+        loadPlanDetails()
+        _actionDetailsLoaded.sendAction()
+        loadPlanHistory()
+        _actionHistoryLoaded.sendAction()
     }
 
     fun deletePlan() = viewModelScope.launch {
         _loadingInProgress.postValue(true)
-
         deleteSingleMedicinePlanUseCase.execute(medicinePlanId)
-
         _loadingInProgress.postValue(false)
         _actionPlanDeleted.sendAction()
     }
 
-    fun setArgs(args: MedicinePlanDetailsFragmentArgs) = viewModelScope.launch {
-        val details = getMedicinePlanDetailsUseCase.execute(args.medicinePlanId)
-        if (details != null) {
-            medicinePlanDetails.postValue(details)
+    private fun getLiveColorPrimary() = Transformations.map(details) { details ->
+        details.profileColor
+    }
+
+    private fun getLiveMedicineBasicData() = Transformations.map(details) { details ->
+        MedicineBasicData(
+            medicineName = details.medicineName,
+            medicineUnit = "Jednostka: ${details.medicineUnit}")
+    }
+
+    private fun getLiveDurationTimeData() = Transformations.map(details) { details ->
+        MedicinePlanDurationTimeData.fromDomainModel(details)
+    }
+
+    private fun getLiveDaysData() = Transformations.map(details) { details ->
+        MedicinePlanDaysData.fromDomainModel(details)
+    }
+
+    private fun getLiveTimesDosesData() = Transformations.map(details) { details ->
+        details.timeDoseList.map { timeDose ->
+            TimeDoseData.fromDomainModel(
+                model = timeDose,
+                medicineUnit = details.medicineUnit,
+                profileColor = details.profileColor
+            )
         }
-        _actionDetailsLoaded.sendAction()
+    }
 
-        val domainHistory = getMedicinePlanHistoryUseCase.execute(args.medicinePlanId)
-        val presentationHistory = domainHistory.map {
-            HistoryItem(it)
+    private suspend fun loadPlanDetails() {
+        val details = getMedicinePlanDetailsUseCase.execute(medicinePlanId)
+        _medicineId = details.medicineId
+        this.details.postValue(details)
+    }
+
+    private suspend fun loadPlanHistory() {
+        val history = getMedicinePlanHistoryUseCase.execute(medicinePlanId)
+        val historyData = mapHistoryToData(history)
+        _history.postValue(historyData)
+    }
+
+    private fun mapHistoryToData(history: List<HistoryItem>): List<HistoryItemData> {
+        return history.map { historyItem ->
+            HistoryItemData.fromDomainModel(historyItem)
         }
-        _historyItems.postValue(presentationHistory)
-        _actionHistoryLoaded.sendAction()
     }
-
-    private fun getDurationTime(details: MedicinePlanDetails): DurationTime {
-        return DurationTime(
-            planType = when (details.planType) {
-                MedicinePlan.Type.ONCE -> "Jednego dnia"
-                MedicinePlan.Type.PERIOD -> "Przez okres dni"
-                MedicinePlan.Type.CONTINUOUS -> "Przyjmowanie ciągłe"
-            },
-            startDate = if (details.endDate != null) {
-                "Od ${details.startDate.formatString}"
-            } else {
-                details.startDate.formatString
-            },
-            endDate = if (details.endDate != null) {
-                "Do ${details.endDate.formatString}"
-            } else {
-                null
-            }
-        )
-    }
-
-    private fun getDays(intakeDays: IntakeDays): Days {
-        var daysType = ""
-        var daysDetails: String? = null
-        when (intakeDays) {
-            is IntakeDays.Everyday -> {
-                daysType = "Codziennie"
-            }
-            is IntakeDays.DaysOfWeek -> {
-                daysType = "Wybrane dni tygodnia"
-                daysDetails = daysOfWeekToString(intakeDays)
-            }
-            is IntakeDays.Interval -> {
-                daysType = "Co ${intakeDays.daysCount} dni"
-            }
-            is IntakeDays.Sequence -> {
-                daysType = "Sekwencja dni"
-                daysDetails = "${intakeDays.intakeCount} dni przyjmowania,\n${intakeDays.notIntakeCount} dni przerwy"
-            }
-        }
-        return Days(daysType, daysDetails)
-    }
-
-    private fun daysOfWeekToString(daysOfWeek: IntakeDays.DaysOfWeek): String {
-        return StringBuilder()
-            .append(if (daysOfWeek.monday) "po, " else "")
-            .append(if (daysOfWeek.tuesday) "wt, " else "")
-            .append(if (daysOfWeek.wednesday) "śr, " else "")
-            .append(if (daysOfWeek.thursday) "cz, " else "")
-            .append(if (daysOfWeek.friday) "pi, " else "")
-            .append(if (daysOfWeek.saturday) "so, " else "")
-            .append(if (daysOfWeek.sunday) "nd, " else "")
-            .toString().apply {
-                dropLast(2)
-            }
-    }
-
-    data class DurationTime(
-        val planType: String,
-        val startDate: String,
-        val endDate: String?
-    )
-
-    data class Days(
-        val daysType: String,
-        val daysDetails: String?
-    )
 }

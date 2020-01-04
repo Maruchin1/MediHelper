@@ -10,7 +10,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.HistoryItem" />
+            type="com.maruchin.medihelper.presentation.model.HistoryItemData" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

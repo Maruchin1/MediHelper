@@ -8,12 +8,8 @@
             type="com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsFragment" />
 
         <variable
-            name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsViewModel" />
-
-        <variable
             name="displayData"
-            type="com.maruchin.medihelper.domain.entities.TimeDose" />
+            type="com.maruchin.medihelper.presentation.model.TimeDoseData" />
     </data>
 
     <LinearLayout
@@ -25,9 +21,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{displayData.time.formatString, default="08:30"}'
+            android:text='@{displayData.time, default="08:30"}'
             android:textAppearance="@style/TextAppearance.MediHelper.BodyBig2"
-            android:textColor="@{viewModel.colorPrimary}" />
+            android:textColor="@{displayData.colorPrimary}" />
 
         <TextView
             android:layout_width="match_parent"
@@ -35,7 +31,7 @@
             android:layout_marginStart="8dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text='@{displayData.doseSize + " " +  viewModel.medicineUnit, default="3 tabletki"}'
+            android:text='@{displayData.doseSize, default="3 tabletki"}'
             android:textAppearance="@style/TextAppearance.MediHelper.Body1" />
     </LinearLayout>
 
