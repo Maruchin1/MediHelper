@@ -55,7 +55,7 @@ class AddEditMedicinePlanViewModel(
     private val _actionDataLoaded = ActionLiveData()
     private val _actionMedicinePlanSaved = ActionLiveData()
 
-    private val editPlanId = MutableLiveData<String>()
+    private val editPlanId = MutableLiveData<String>(null)
 
     init {
         formTitle = getLiveFormTitle()
@@ -230,7 +230,7 @@ class AddEditMedicinePlanViewModel(
         intakeDaysType.postValue(IntakeDaysType.EVERYDAY)
         daysOfWeek.postValue(
             IntakeDays.DaysOfWeek(
-                monday = false,
+                monday = true,
                 tuesday = false,
                 wednesday = false,
                 thursday = false,

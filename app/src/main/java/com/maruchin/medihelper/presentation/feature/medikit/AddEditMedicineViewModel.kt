@@ -55,7 +55,7 @@ class AddEditMedicineViewModel(
     private val _errorExpireDate = MutableLiveData<String>()
     private val _errorCurrState = MutableLiveData<String>()
 
-    private var editMedicineId = MutableLiveData<String>()
+    private var editMedicineId = MutableLiveData<String>(null)
 
     init {
         formTitle = getLiveFormTitle()
