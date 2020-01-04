@@ -13,7 +13,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel.TimeDoseFormItem" />
+            type="com.maruchin.medihelper.presentation.model.TimeDoseEditData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -55,7 +55,7 @@
                 android:onClick="@{() -> handler.onClickSelectDoseSize(displayData)}"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text='@{displayData.doseSize + "   " + viewModel.medicineUnit, default="1.0 pigulki"}' />
+                android:text='@{displayData.doseSize + "   " + viewModel.medicine.unit, default="1.0 pigulki"}' />
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton

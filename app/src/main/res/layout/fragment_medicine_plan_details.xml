@@ -90,14 +90,14 @@
                                     android:layout_height="wrap_content"
                                     android:ellipsize="end"
                                     android:maxLines="1"
-                                    android:text='@{viewModel.medicine.medicineName, default="Nazwa leku"}'
+                                    android:text='@{viewModel.medicine.name, default="Nazwa leku"}'
                                     android:textAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Big" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
-                                    android:text='@{viewModel.medicine.medicineUnit, default="Jednostka: tabletki"}'
+                                    android:text='@{viewModel.medicine.unit, default="Jednostka: tabletki"}'
                                     android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1.Dark" />
                             </LinearLayout>
 

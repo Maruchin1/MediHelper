@@ -76,8 +76,9 @@ class MedicinePlanDetailsViewModel(
 
     private fun getLiveMedicineBasicData() = Transformations.map(details) { details ->
         MedicineBasicData(
-            medicineName = details.medicineName,
-            medicineUnit = "Jednostka: ${details.medicineUnit}")
+            medicineId = details.medicineId,
+            name = details.medicineName,
+            unit = "Jednostka: ${details.medicineUnit}")
     }
 
     private fun getLiveDurationTimeData() = Transformations.map(details) { details ->
