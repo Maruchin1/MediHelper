@@ -23,6 +23,6 @@
 
     <item
         android:id="@+id/optionsFragment"
-        android:icon="@drawable/round_more_horiz_white_48"
+        android:icon="@drawable/round_settings_black_48"
         android:title="Więcej" />
 </menu>

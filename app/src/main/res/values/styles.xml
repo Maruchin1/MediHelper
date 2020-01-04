@@ -152,6 +152,11 @@
         <item name="chipStrokeColor">@color/colorDarkerGray</item>
         <item name="chipStrokeWidth">1dp</item>
         <item name="rippleColor">@color/colorDarkerGray</item>
+        <item name="android:checkable">true</item>
+    </style>
+
+    <style name="Widget.MediHelper.Chip.Choice.Multi" parent="Widget.MediHelper.Chip.Choice">
+        <item name="checkedIcon">@drawable/baseline_check_24</item>
     </style>
 
     <!--    TextAppearance-->

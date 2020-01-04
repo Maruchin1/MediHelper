@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.maruchin.medihelper.presentation.feature.medikit.FiltersFragment" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_side_sheet">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="Sortowanie" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Alfabetycznie" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Według stanu" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Według daty ważności" />
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Stan leku"
+                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rosnąco" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Malejąco" />
+                </com.google.android.material.chip.ChipGroup>
+
+                <include layout="@layout/line_horizontal" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:title="Filtrowanie" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Stan leku"
+                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Blisko końca" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Średni zapas" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Duża ilość" />
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Jednostka leku"
+                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="dawki" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="tabletki" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="pastylki" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="gramy" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="miligramy" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="mililitry" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>
