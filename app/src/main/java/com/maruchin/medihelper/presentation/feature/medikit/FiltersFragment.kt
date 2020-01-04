@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentFiltersBinding
 import com.maruchin.medihelper.presentation.framework.BaseMainFragment
+import com.maruchin.medihelper.presentation.utils.MedicinesFilter
 import com.maruchin.medihelper.presentation.utils.MedicinesSorter
 import kotlinx.android.synthetic.main.fragment_filters.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class FiltersFragment : BaseMainFragment<FragmentFiltersBinding>(R.layout.fragment_filters) {
@@ -22,11 +25,12 @@ class FiltersFragment : BaseMainFragment<FragmentFiltersBinding>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupChipGroupSortingParam()
-        setupChipGroupSortingOrder()
+        setupSortingParamSelection()
+        setupSortingOrderSelection()
+        setupFilterStateSelection()
     }
 
-    private fun setupChipGroupSortingParam() {
+    private fun setupSortingParamSelection() {
         chip_group_sorting_order.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.chip_alphabetical -> setSortingParam(MedicinesSorter.Param.ALPHABETICAL)
@@ -36,13 +40,31 @@ class FiltersFragment : BaseMainFragment<FragmentFiltersBinding>(R.layout.fragme
         }
     }
 
-    private fun setupChipGroupSortingOrder() {
+    private fun setupSortingOrderSelection() {
         chip_group_sorting_order.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.chip_asc -> setSortingOrder(MedicinesSorter.Order.ASC)
                 R.id.chip_des -> setSortingOrder(MedicinesSorter.Order.DES)
             }
         }
+    }
+
+    private fun setupFilterStateSelection() {
+        listOf(
+            chip_state_empty,
+            chip_state_small,
+            chip_state_medium,
+            chip_state_good
+        ).forEach { chip ->
+            chip.setOnCheckedChangeListener { _, _ ->
+                val checkedIds = chip_group_filter_state.checkedChipIds
+                viewModel.setFilterStateByChipsIds(checkedIds)
+            }
+        }
+//        chip_group_filter_state.setOnCheckedChangeListener { group, _ ->
+//            val checkedIds = group.checkedChipIds.toList()
+//            viewModel.setFilterStateByChipsIds(checkedIds)
+//        }
     }
 
     private fun setSortingParam(param: MedicinesSorter.Param) {

@@ -37,6 +37,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     app:checkedChip="@id/chip_alphabetical"
+                    app:selectionRequired="true"
                     app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
@@ -66,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:text="Stan leku"
+                    android:text="Kolejność"
                     android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
 
                 <com.google.android.material.chip.ChipGroup
@@ -76,8 +77,9 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="24dp"
                     app:checkedChip="@id/chip_asc"
+                    app:selectionRequired="true"
                     app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
@@ -113,6 +115,7 @@
                     android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
 
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group_filter_state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -121,81 +124,32 @@
                     android:layout_marginBottom="16dp">
 
                     <com.google.android.material.chip.Chip
-                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:id="@+id/chip_state_empty"
+                        style="@style/Widget.MediHelper.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Brak" />
 
                     <com.google.android.material.chip.Chip
-                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:id="@+id/chip_state_small"
+                        style="@style/Widget.MediHelper.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Blisko końca" />
 
                     <com.google.android.material.chip.Chip
-                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:id="@+id/chip_state_medium"
+                        style="@style/Widget.MediHelper.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Średni zapas" />
 
                     <com.google.android.material.chip.Chip
-                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
+                        android:id="@+id/chip_state_good"
+                        style="@style/Widget.MediHelper.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Duża ilość" />
-                </com.google.android.material.chip.ChipGroup>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="Jednostka leku"
-                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
-
-                <com.google.android.material.chip.ChipGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp">
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="dawki" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="tabletki" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="pastylki" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="gramy" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="miligramy" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MediHelper.Chip.Choice.Multi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="mililitry" />
-
                 </com.google.android.material.chip.ChipGroup>
 
             </LinearLayout>

@@ -2,16 +2,22 @@ package com.maruchin.medihelper.presentation.feature.medikit
 
 import androidx.lifecycle.*
 import com.google.firebase.storage.StorageReference
+import com.maruchin.medihelper.R
 import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.usecases.medicines.GetLiveAllMedicinesItemsUseCase
 import com.maruchin.medihelper.presentation.model.MedicineItemData
+import com.maruchin.medihelper.presentation.utils.MedicinesFilter
 import com.maruchin.medihelper.presentation.utils.MedicinesSorter
 import com.maruchin.medihelper.presentation.utils.PicturesRef
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MedicinesListViewModel(
     private val getAllMedicinesItemsUseCase: GetLiveAllMedicinesItemsUseCase,
     private val picturesRef: PicturesRef,
-    private val medicinesSorter: MedicinesSorter
+    private val medicinesSorter: MedicinesSorter,
+    private val medicinesFilter: MedicinesFilter
 ) : ViewModel() {
 
     val medicineItemList: LiveData<List<MedicineItemData>>
@@ -20,6 +26,8 @@ class MedicinesListViewModel(
 
     val sortingParam = MutableLiveData<MedicinesSorter.Param>(MedicinesSorter.Param.ALPHABETICAL)
     val sortingOrder = MutableLiveData<MedicinesSorter.Order>(MedicinesSorter.Order.ASC)
+
+    private val filterState = MutableLiveData<MedicinesFilter.State>(MedicinesFilter.State())
 
     init {
         medicineItemList = getLiveMedicineItemsData()
@@ -31,12 +39,17 @@ class MedicinesListViewModel(
         return if (pictureName != null) picturesRef.get(pictureName) else null
     }
 
+    fun setFilterStateByChipsIds(ids: List<Int>) = viewModelScope.launch {
+        val state = mapFilterChipIdsToFilterState(ids)
+        filterState.postValue(state)
+    }
+
     private fun getLiveMedicineItemsData(): LiveData<List<MedicineItemData>> {
         return liveData {
             val itemsLive = getAllMedicinesItemsUseCase.execute()
-            //todo transformować przez filtry
-            val sortedItemsLive = transformLiveItemsWithSorting(itemsLive)
-            val dataLive = transformLiveItemsToData(sortedItemsLive)
+            val sortedItemsLive = sortLiveItems(itemsLive)
+            val filteredItemsLive = filterLiveItems(sortedItemsLive)
+            val dataLive = mapLiveItemsToData(filteredItemsLive)
             emitSource(dataLive)
         }
     }
@@ -53,7 +66,7 @@ class MedicinesListViewModel(
         }
     }
 
-    private fun transformLiveItemsToData(
+    private fun mapLiveItemsToData(
         itemsLive: LiveData<List<MedicineItem>>
     ): LiveData<List<MedicineItemData>> {
         return Transformations.map(itemsLive) { medicineItems ->
@@ -63,15 +76,40 @@ class MedicinesListViewModel(
         }
     }
 
-    private fun transformLiveItemsWithSorting(
+    private fun sortLiveItems(
         itemsLive: LiveData<List<MedicineItem>>
     ): LiveData<List<MedicineItem>> {
         return Transformations.switchMap(itemsLive) { items ->
             Transformations.switchMap(sortingParam) { sortingParam ->
-                Transformations.map(sortingOrder) { sortingOrder ->
-                    medicinesSorter.sortItems(items, sortingParam, sortingOrder)
+                Transformations.switchMap(sortingOrder) { sortingOrder ->
+                    liveData {
+                        val value = medicinesSorter.sortItems(items, sortingParam, sortingOrder)
+                        emit(value)
+                    }
                 }
             }
         }
+    }
+
+    private fun filterLiveItems(
+        itemsLive: LiveData<List<MedicineItem>>
+    ): LiveData<List<MedicineItem>> {
+        return Transformations.switchMap(itemsLive) { items ->
+            Transformations.switchMap(filterState) { filterState ->
+                liveData {
+                    val value = medicinesFilter.filterItems(items, filterState)
+                    emit(value)
+                }
+            }
+        }
+    }
+
+    private suspend fun mapFilterChipIdsToFilterState(ids: List<Int>): MedicinesFilter.State = withContext(Dispatchers.Default) {
+        return@withContext MedicinesFilter.State(
+            empty = ids.contains(R.id.chip_state_empty),
+            small = ids.contains(R.id.chip_state_small),
+            medium = ids.contains(R.id.chip_state_medium),
+            good = ids.contains(R.id.chip_state_good)
+        )
     }
 }

@@ -1,12 +1,16 @@
 package com.maruchin.medihelper.presentation.utils
 
 import com.maruchin.medihelper.domain.model.MedicineItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MedicinesSorter {
 
-    fun sortItems(items: List<MedicineItem>, param: Param, order: Order) = when (order) {
-        Order.ASC -> sortItemsAsc(items, param)
-        Order.DES -> sortItemsDes(items, param)
+    suspend fun sortItems(items: List<MedicineItem>, param: Param, order: Order) = withContext(Dispatchers.Default) {
+        return@withContext when (order) {
+            Order.ASC -> sortItemsAsc(items, param)
+            Order.DES -> sortItemsDes(items, param)
+        }
     }
 
     private fun sortItemsAsc(items: List<MedicineItem>, param: Param): List<MedicineItem> {

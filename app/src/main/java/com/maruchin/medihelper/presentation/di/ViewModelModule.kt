@@ -21,7 +21,8 @@ val viewModelModule = module {
         MedicinesListViewModel(
             getAllMedicinesItemsUseCase = get(),
             picturesRef = get(),
-            medicinesSorter = get()
+            medicinesSorter = get(),
+            medicinesFilter = get()
         )
     }
     viewModel {
