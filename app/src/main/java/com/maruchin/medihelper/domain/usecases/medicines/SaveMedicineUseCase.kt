@@ -15,7 +15,7 @@ interface SaveMedicineUseCase {
         val expireDate: AppExpireDate?,
         val packageSize: Float?,
         val currState: Float?,
-        val pictureName: String?,
-        val pictureFile: File?
+        val oldPictureName: String?,
+        val newPictureFile: File?
     )
 }

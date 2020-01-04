@@ -77,6 +77,11 @@ class AddEditMedicineViewModel(
         checkSavingErrors(errors)
     }
 
+    override fun onCleared() {
+        deviceCamera.reset()
+        super.onCleared()
+    }
+
     private fun getLiveFormTitle(): LiveData<String> {
         return Transformations.map(editMedicineId) {
             if (it == null) {
@@ -124,8 +129,8 @@ class AddEditMedicineViewModel(
             expireDate = expireDate.value,
             packageSize = packageSize.value,
             currState = currState.value,
-            pictureName = pictureRef.value?.name,
-            pictureFile = pictureFile.value
+            oldPictureName = pictureRef.value?.name,
+            newPictureFile = pictureFile.value
         )
     }
 

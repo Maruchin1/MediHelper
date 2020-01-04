@@ -57,6 +57,10 @@ class DeviceCamera(private val context: Context) {
         })
     }
 
+    fun reset() {
+        _resultFile.postValue(null)
+    }
+
     private fun getPreviewConfig() = PreviewConfig.Builder()
         .setTargetAspectRatio(aspectRatio)
         .setTargetResolution(resolution)
