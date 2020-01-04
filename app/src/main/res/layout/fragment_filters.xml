@@ -30,26 +30,31 @@
                     app:title="Sortowanie" />
 
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group_sorting_param"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
+                    app:checkedChip="@id/chip_alphabetical"
                     app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_alphabetical"
                         style="@style/Widget.MediHelper.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Alfabetycznie" />
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_by_state"
                         style="@style/Widget.MediHelper.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Według stanu" />
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_by_expire_date"
                         style="@style/Widget.MediHelper.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -65,21 +70,25 @@
                     android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
 
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group_sorting_order"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
+                    app:checkedChip="@id/chip_asc"
                     app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_asc"
                         style="@style/Widget.MediHelper.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Rosnąco" />
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_des"
                         style="@style/Widget.MediHelper.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

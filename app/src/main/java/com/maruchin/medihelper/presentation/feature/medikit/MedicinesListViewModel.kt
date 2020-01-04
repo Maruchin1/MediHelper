@@ -5,16 +5,21 @@ import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.usecases.medicines.GetLiveAllMedicinesItemsUseCase
 import com.maruchin.medihelper.presentation.model.MedicineItemData
+import com.maruchin.medihelper.presentation.utils.MedicinesSorter
 import com.maruchin.medihelper.presentation.utils.PicturesRef
 
 class MedicinesListViewModel(
     private val getAllMedicinesItemsUseCase: GetLiveAllMedicinesItemsUseCase,
-    private val picturesRef: PicturesRef
+    private val picturesRef: PicturesRef,
+    private val medicinesSorter: MedicinesSorter
 ) : ViewModel() {
 
     val medicineItemList: LiveData<List<MedicineItemData>>
     val loadingInProgress: LiveData<Boolean>
     val noMedicines: LiveData<Boolean>
+
+    val sortingParam = MutableLiveData<MedicinesSorter.Param>(MedicinesSorter.Param.ALPHABETICAL)
+    val sortingOrder = MutableLiveData<MedicinesSorter.Order>(MedicinesSorter.Order.ASC)
 
     init {
         medicineItemList = getLiveMedicineItemsData()
@@ -28,8 +33,10 @@ class MedicinesListViewModel(
 
     private fun getLiveMedicineItemsData(): LiveData<List<MedicineItemData>> {
         return liveData {
-            val medicineItemsLive = getAllMedicinesItemsUseCase.execute()
-            val dataLive = transformLiveMedicineItemsToData(medicineItemsLive)
+            val itemsLive = getAllMedicinesItemsUseCase.execute()
+            //todo transformować przez filtry
+            val sortedItemsLive = transformLiveItemsWithSorting(itemsLive)
+            val dataLive = transformLiveItemsToData(sortedItemsLive)
             emitSource(dataLive)
         }
     }
@@ -46,17 +53,25 @@ class MedicinesListViewModel(
         }
     }
 
-    private fun transformLiveMedicineItemsToData(
-        medicineItemsLive: LiveData<List<MedicineItem>>
+    private fun transformLiveItemsToData(
+        itemsLive: LiveData<List<MedicineItem>>
     ): LiveData<List<MedicineItemData>> {
-        return Transformations.map(medicineItemsLive) { medicineItems ->
-            mapMedicineItemsToData(medicineItems)
+        return Transformations.map(itemsLive) { medicineItems ->
+            medicineItems.map { item ->
+                MedicineItemData.fromDomainModel(item)
+            }
         }
     }
 
-    private fun mapMedicineItemsToData(medicineItems: List<MedicineItem>): List<MedicineItemData> {
-        return medicineItems.map { medicineItem ->
-            MedicineItemData.fromDomainModel(medicineItem)
+    private fun transformLiveItemsWithSorting(
+        itemsLive: LiveData<List<MedicineItem>>
+    ): LiveData<List<MedicineItem>> {
+        return Transformations.switchMap(itemsLive) { items ->
+            Transformations.switchMap(sortingParam) { sortingParam ->
+                Transformations.map(sortingOrder) { sortingOrder ->
+                    medicinesSorter.sortItems(items, sortingParam, sortingOrder)
+                }
+            }
         }
     }
 }

@@ -20,7 +20,8 @@ val viewModelModule = module {
     viewModel {
         MedicinesListViewModel(
             getAllMedicinesItemsUseCase = get(),
-            picturesRef = get()
+            picturesRef = get(),
+            medicinesSorter = get()
         )
     }
     viewModel {

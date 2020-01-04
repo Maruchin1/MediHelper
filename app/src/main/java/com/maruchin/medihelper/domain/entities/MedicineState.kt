@@ -3,7 +3,7 @@ package com.maruchin.medihelper.domain.entities
 data class MedicineState(
     var packageSize: Float,
     var currState: Float
-) {
+): Comparable<MedicineState> {
     val type: Type
         get() {
             val statePercent = currState / packageSize
@@ -32,6 +32,16 @@ data class MedicineState(
             newState = packageSize
         }
         this.currState = newState
+    }
+
+    override fun compareTo(other: MedicineState): Int {
+        val state = currState / packageSize
+        val otherState = other.currState / other.packageSize
+        return when {
+            state > otherState -> 1
+            state < otherState -> -1
+            else -> 0
+        }
     }
 
     enum class Type {
