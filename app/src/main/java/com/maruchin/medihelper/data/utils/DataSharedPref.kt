@@ -5,15 +5,13 @@ import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.maruchin.medihelper.data.framework.SharedPrefLiveData
-import com.maruchin.medihelper.domain.entities.ReminderMode
 
-class SharedPref (context: Context) {
+class DataSharedPref(context: Context) {
 
     companion object {
-        private const val PREF_NAME = "app-shared-pref"
+        private const val PREF_NAME = "data-shared-pref"
         private const val KEY_PROFILE_COLOR_SET = "key-person-color-res-id-set"
         private const val KEY_MEDICINE_UNIT_SET = "key-medicine-type-list"
-        private const val KEY_REMINDER_MODE = "key-reminder-mode"
     }
 
     private val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -33,12 +31,10 @@ class SharedPref (context: Context) {
     private val defaultMedicinesUnits: List<String> by lazy {
         listOf("dawki", "tabletki", "ml", "g", "mg", "pastylki")
     }
-    private val defaultReminderMode: ReminderMode by lazy { ReminderMode.NOTIFICATION }
 
     init {
         checkDefaultProfileColors()
         checkDefaultMedicineUnits()
-        checkDefaultReminderMode()
     }
 
     fun getProfileColorsList(): List<String> {
@@ -47,29 +43,12 @@ class SharedPref (context: Context) {
 
     fun getMedicineUnitList() = pref.getStringSet(KEY_MEDICINE_UNIT_SET, null)?.toList() ?: emptyList()
 
-    fun getReminderMode(): ReminderMode {
-        val modeString = pref.getString(KEY_REMINDER_MODE, null)
-        val mode = modeString?.let { ReminderMode.valueOf(it) } ?: ReminderMode.NOTIFICATION
-        return mode
-    }
-
-    fun getLiveReminderMode(): LiveData<ReminderMode> {
-        val modeStringLive = SharedPrefLiveData(pref, KEY_REMINDER_MODE, "")
-        return Transformations.map(modeStringLive) { modeString ->
-            return@map if (modeString.isEmpty()) null else ReminderMode.valueOf(modeString)
-        }
-    }
-
     fun saveProfileColorsList(list: List<String>) = pref.edit(true) {
         putStringSet(KEY_PROFILE_COLOR_SET, list.toMutableSet())
     }
 
     fun saveMedicineUnitList(list: List<String>) = pref.edit(commit = true) {
         putStringSet(KEY_MEDICINE_UNIT_SET, list.toMutableSet())
-    }
-
-    fun saveReminderMode(reminderMode: ReminderMode) = pref.edit(commit = true) {
-        putString(KEY_REMINDER_MODE, reminderMode.toString())
     }
 
     private fun checkDefaultProfileColors() {
@@ -83,13 +62,6 @@ class SharedPref (context: Context) {
         val medicineUnits = getMedicineUnitList()
         if (medicineUnits.isNullOrEmpty()) {
             saveMedicineUnitList(defaultMedicinesUnits)
-        }
-    }
-
-    private fun checkDefaultReminderMode() {
-        val reminderModeString = pref.getString(KEY_REMINDER_MODE, null)
-        if (reminderModeString.isNullOrEmpty()) {
-            saveReminderMode(defaultReminderMode)
         }
     }
 }

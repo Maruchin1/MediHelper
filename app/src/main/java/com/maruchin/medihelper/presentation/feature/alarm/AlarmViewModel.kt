@@ -4,15 +4,13 @@ import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppTime
 import com.maruchin.medihelper.domain.model.PlannedMedicineNotifData
 import com.maruchin.medihelper.domain.usecases.plannedmedicines.ChangePlannedMedicineTimeUseCase
-import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetPlannedMedicineNotifDataUseCase
 import com.maruchin.medihelper.domain.usecases.plannedmedicines.SetPlannedMedicineTakenUseCase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AlarmViewModel(
     private val setPlannedMedicineTakenUseCase: SetPlannedMedicineTakenUseCase,
-    private val changePlannedMedicineTimeUseCase: ChangePlannedMedicineTimeUseCase,
-    private val getPlannedMedicineNotifDataUseCase: GetPlannedMedicineNotifDataUseCase
+    private val changePlannedMedicineTimeUseCase: ChangePlannedMedicineTimeUseCase
 ) : ViewModel() {
 
     val data: LiveData<PlannedMedicineNotifData>
@@ -24,8 +22,8 @@ class AlarmViewModel(
     private val _changedTime = MutableLiveData<String>()
 
     fun initData(plannedMedicineId: String) = viewModelScope.launch {
-        val data = getPlannedMedicineNotifDataUseCase.execute(plannedMedicineId)
-        _data.postValue(data)
+//        val data = getPlannedMedicineNotifDataUseCase.execute(plannedMedicineId)
+//        _data.postValue(data)
     }
 
     fun setPlannedMedicineTaken(plannedMedicineId: String) = GlobalScope.launch {

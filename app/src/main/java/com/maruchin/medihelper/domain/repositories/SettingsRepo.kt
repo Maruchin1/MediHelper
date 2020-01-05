@@ -1,11 +1,13 @@
 package com.maruchin.medihelper.domain.repositories
 
 import androidx.lifecycle.LiveData
-import com.maruchin.medihelper.domain.entities.ReminderMode
 
 interface SettingsRepo {
 
-    suspend fun setReminderMode(mode: ReminderMode)
-    suspend fun getReminderMode(): ReminderMode
-    suspend fun getLiveReminderMode(): LiveData<ReminderMode>
+    suspend fun areNotificationsEnabled(): Boolean
+    suspend fun areAlarmsEnabled(): Boolean
+    suspend fun areLiveNotificationsEnabled(): LiveData<Boolean>
+    suspend fun areLiveAlarmsEnabled(): LiveData<Boolean>
+    suspend fun setNotificationsEnabled(enabled: Boolean)
+    suspend fun setAlarmsEnabled(enabled: Boolean)
 }

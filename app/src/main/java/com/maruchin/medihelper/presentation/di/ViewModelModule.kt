@@ -74,8 +74,7 @@ val viewModelModule = module {
     viewModel {
         AlarmViewModel(
             setPlannedMedicineTakenUseCase = get(),
-            changePlannedMedicineTimeUseCase = get(),
-            getPlannedMedicineNotifDataUseCase = get()
+            changePlannedMedicineTimeUseCase = get()
         )
     }
     viewModel {
@@ -116,9 +115,7 @@ val viewModelModule = module {
     viewModel {
         OptionsViewModel(
             getCurrUserUseCase = get(),
-            getLivePlannedMedicineReminderModeUseCase = get(),
-            signOutUseCase = get(),
-            changePlannedMedicineReminderModeUseCase = get()
+            signOutUseCase = get()
         )
     }
     viewModel {

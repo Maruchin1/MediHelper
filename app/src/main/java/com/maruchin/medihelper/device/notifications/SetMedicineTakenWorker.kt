@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.device.reminder
+package com.maruchin.medihelper.device.notifications
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -20,11 +20,9 @@ class SetMedicineTakenWorker(
 
     override suspend fun doWork(): Result {
         inputData.getString(INPUT_PLANNED_MEDICINE_ID)?.let { plannedMedicineId ->
-
-            PlannedMedicineNotification.cancel(plannedMedicineId, context)
+            NotTakenMedicineNotification.cancel(plannedMedicineId, context)
             setPlannedMedicineTakenUseCase.execute(plannedMedicineId)
         }
-
         return Result.success()
     }
 }

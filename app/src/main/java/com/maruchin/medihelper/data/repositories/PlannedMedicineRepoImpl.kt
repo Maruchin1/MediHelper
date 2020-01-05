@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class PlannedMedicineRepoImpl(
     private val db: FirebaseFirestore,
@@ -59,18 +60,29 @@ class PlannedMedicineRepoImpl(
 
     override suspend fun getListByMedicinePlan(medicinePlanId: String): List<PlannedMedicine> =
         withContext(Dispatchers.IO) {
-            val docsQuery = collectionRef.whereEqualTo("medicinePlanId", medicinePlanId).get().await()
+            val docsQuery = collectionRef.whereEqualTo(mapper.medicinePlanId, medicinePlanId).get().await()
             return@withContext docsQuery.map {
                 mapper.mapToEntity(it.id, it.data)
             }
         }
 
+    override suspend fun getListNotTakenForLastMinutes(minutes: Int): List<PlannedMedicine> {
+        val currTimeInMillis = getCurrTimeInMillis()
+        val minTimeInMillis = calculateMinTimeInMillis(currTimeInMillis, minutes)
+        val docsQuery = collectionRef
+            .whereGreaterThanOrEqualTo(mapper.plannedDateTimeMillis, minTimeInMillis)
+            .whereLessThanOrEqualTo(mapper.plannedDateTimeMillis, currTimeInMillis)
+            .whereEqualTo(mapper.status, PlannedMedicine.Status.NOT_TAKEN.toString())
+            .get().await()
+        return super.getEntitiesFromQuery(docsQuery)
+    }
+
     override suspend fun getLiveListByProfileAndDate(
         profileId: String,
         date: AppDate
     ): LiveData<List<PlannedMedicine>> = withContext(Dispatchers.IO) {
-        val docsLive = collectionRef.whereEqualTo("profileId", profileId)
-            .whereEqualTo("plannedDate", date.jsonFormatString).getDocumenstLive()
+        val docsLive = collectionRef.whereEqualTo(mapper.profileId, profileId)
+            .whereEqualTo(mapper.plannedDate, date.jsonFormatString).getDocumenstLive()
         return@withContext Transformations.switchMap(docsLive) { snapshotList ->
             liveData {
                 val value = snapshotList.map {
@@ -79,5 +91,19 @@ class PlannedMedicineRepoImpl(
                 emit(value)
             }
         }
+    }
+
+    private fun getCurrTimeInMillis(): Long {
+        val currCalendar = Calendar.getInstance()
+        return currCalendar.timeInMillis
+    }
+
+    private fun calculateMinTimeInMillis(currTimeMillis: Long, minutes: Int): Long {
+        val millisRange = minutesToMillis(minutes)
+        return currTimeMillis - millisRange
+    }
+
+    private fun minutesToMillis(minutes: Int): Long {
+        return minutes * 60 * 1000L
     }
 }

@@ -3,7 +3,7 @@ package com.maruchin.medihelper.data.repositories
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.maruchin.medihelper.data.utils.SharedPref
+import com.maruchin.medihelper.data.utils.DataSharedPref
 import com.maruchin.medihelper.data.mappers.MedicineMapper
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import com.maruchin.medihelper.testingframework.mock
@@ -13,10 +13,10 @@ class MedicineRepoImplTest {
     private val auth: FirebaseAuth = mock()
     private val db: FirebaseFirestore = mock()
     private val storage: FirebaseStorage = mock()
-    private val sharedPref: SharedPref = mock()
+    private val dataSharedPref: DataSharedPref = mock()
     private val mapper: MedicineMapper = mock()
 
-    private val repo: MedicineRepo by lazy { MedicineRepoImpl(db, auth, storage, sharedPref, mapper) }
+    private val repo: MedicineRepo by lazy { MedicineRepoImpl(db, auth, storage, dataSharedPref, mapper) }
 
 //    @Test
 //    fun searchMedicineInfo_ResultFound() {

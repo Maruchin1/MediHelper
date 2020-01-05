@@ -8,7 +8,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentOptionsBinding
-import com.maruchin.medihelper.domain.entities.ReminderMode
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.presentation.framework.BaseHomeFragment
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
@@ -53,26 +52,11 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
         viewModel.actionSignOutSuccessful.observe(viewLifecycleOwner, Observer {
             super.mainActivity.restartApp()
         })
-        viewModel.reminderMode.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                ReminderMode.NOTIFICATION -> checkReminderMode(R.id.chip_notification)
-                ReminderMode.ALARM -> checkReminderMode(R.id.chip_alarm)
-            }
-        })
     }
 
     private fun setupReminderModeChipGroup() {
         chip_group_reminder_mode.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.chip_notification -> viewModel.setReminderMode(ReminderMode.NOTIFICATION)
-                R.id.chip_alarm -> viewModel.setReminderMode(ReminderMode.ALARM)
-            }
-        }
-    }
 
-    private fun checkReminderMode(chipId: Int) {
-        if (chip_group_reminder_mode.checkedChipId != chipId) {
-            chip_group_reminder_mode.check(chipId)
         }
     }
 }

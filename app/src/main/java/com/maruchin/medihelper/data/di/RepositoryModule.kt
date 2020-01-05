@@ -15,7 +15,7 @@ val repositoryModule = module {
         MedicineRepoImpl(
             db = get(),
             auth = get(),
-            sharedPref = get(),
+            dataSharedPref = get(),
             storage = get(),
             mapper = get()
         ) as MedicineRepo
@@ -24,7 +24,7 @@ val repositoryModule = module {
         ProfileRepoImpl(
             db = get(),
             auth = get(),
-            sharedPref = get(),
+            dataSharedPref = get(),
             mapper = get()
         ) as ProfileRepo
     }
@@ -44,7 +44,7 @@ val repositoryModule = module {
     }
     single {
         SettingsRepoImpl(
-            sharedPref = get()
+            settingsSharedPref = get()
         ) as SettingsRepo
     }
 }

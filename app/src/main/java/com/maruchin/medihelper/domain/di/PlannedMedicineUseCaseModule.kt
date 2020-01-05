@@ -25,16 +25,8 @@ val plannedMedicineUseCaseModule = module {
     }
     factory {
         ChangePlannedMedicineTimeUseCaseImpl(
-            plannedMedicineRepo = get(),
-            deviceReminder = get()
+            plannedMedicineRepo = get()
         ) as ChangePlannedMedicineTimeUseCase
-    }
-    factory {
-        GetPlannedMedicineNotifDataUseCaseImpl(
-            plannedMedicineRepo = get(),
-            medicineRepo = get(),
-            profileRepo = get()
-        ) as GetPlannedMedicineNotifDataUseCase
     }
     factory {
         SetPlannedMedicineTakenUseCaseImpl(
@@ -43,26 +35,16 @@ val plannedMedicineUseCaseModule = module {
         ) as SetPlannedMedicineTakenUseCase
     }
     factory {
-        NotifyAboutPlannedMedicineUseCaseImpl(
+        CheckNotTakenMedicinesUseCaseImpl(
             plannedMedicineRepo = get(),
-            deviceReminder = get(),
-            settingsRepo = get()
-        ) as NotifyAboutPlannedMedicineUseCase
-    }
-    factory {
-        ChangePlannedMedicineReminderModeUseCaseImpl(
-            settingsRepo = get()
-        ) as ChangePlannedMedicineReminderModeUseCase
-    }
-    factory {
-        GetLivePlannedMedicineReminderModeUseCaseImpl(
-            settingsRepo = get()
-        ) as GetLivePlannedMedicineReminderModeUseCase
+            medicineRepo = get(),
+            profileRepo = get(),
+            notifications = get()
+        ) as CheckNotTakenMedicinesUseCase
     }
     factory {
         DeletePlannedMedicinesUseCaseImpl(
-            plannedMedicineRepo = get(),
-            deviceReminder = get()
+            plannedMedicineRepo = get()
         ) as DeletePlannedMedicinesUseCase
     }
 }

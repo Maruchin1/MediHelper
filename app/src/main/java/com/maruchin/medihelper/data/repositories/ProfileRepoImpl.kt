@@ -3,7 +3,7 @@ package com.maruchin.medihelper.data.repositories
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.maruchin.medihelper.data.utils.SharedPref
+import com.maruchin.medihelper.data.utils.DataSharedPref
 import com.maruchin.medihelper.data.framework.FirestoreRepo
 import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.data.mappers.ProfileMapper
@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 class ProfileRepoImpl(
     private val db: FirebaseFirestore,
     private val auth: FirebaseAuth,
-    private val sharedPref: SharedPref,
+    private val dataSharedPref: DataSharedPref,
     private val mapper: ProfileMapper
 ) : FirestoreRepo<Profile>(
     collectionRef = db.collection("users").document(auth.getCurrUserId()).collection("profiles"),
@@ -37,6 +37,6 @@ class ProfileRepoImpl(
     }
 
     override suspend fun getColorsList(): List<String> = withContext(Dispatchers.IO) {
-        return@withContext sharedPref.getProfileColorsList()
+        return@withContext dataSharedPref.getProfileColorsList()
     }
 }

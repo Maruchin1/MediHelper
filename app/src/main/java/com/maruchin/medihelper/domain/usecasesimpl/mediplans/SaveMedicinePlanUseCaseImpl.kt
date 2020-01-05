@@ -1,7 +1,6 @@
 package com.maruchin.medihelper.domain.usecasesimpl.mediplans
 
 import com.maruchin.medihelper.domain.device.DeviceCalendar
-import com.maruchin.medihelper.domain.device.DeviceReminder
 import com.maruchin.medihelper.domain.entities.MedicinePlan
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.model.MedicinePlanErrors
@@ -18,7 +17,6 @@ class SaveMedicinePlanUseCaseImpl(
     private val plannedMedicineRepo: PlannedMedicineRepo,
     private val plannedMedicineScheduler: PlannedMedicineScheduler,
     private val deviceCalendar: DeviceCalendar,
-    private val deviceReminder: DeviceReminder,
     private val validator: MedicinePlanValidator
 ) : SaveMedicinePlanUseCase {
 
@@ -89,8 +87,7 @@ class SaveMedicinePlanUseCaseImpl(
 
     private suspend fun addNewPlannedMedicines(medicinePlan: MedicinePlan) {
         val plannedMedicines = plannedMedicineScheduler.getPlannedMedicines(medicinePlan)
-        val addedPlannedMedicines = plannedMedicineRepo.addNewList(plannedMedicines)
-        deviceReminder.addReminders(addedPlannedMedicines)
+        plannedMedicineRepo.addNewList(plannedMedicines)
     }
 
     private suspend fun updatePlannedMedicines(medicinePlan: MedicinePlan) {
@@ -99,23 +96,21 @@ class SaveMedicinePlanUseCaseImpl(
     }
 
     private suspend fun deleteExistingPlannedMedicinesFromNow(medicinePlan: MedicinePlan) {
-        val existingPlannedMedicinesFromNow = getExistingPlannedMedicinesFromNow(medicinePlan.entityId)
-        plannedMedicineRepo.deleteListById(existingPlannedMedicinesFromNow.map { it.entityId })
-        deviceReminder.cancelReminders(existingPlannedMedicinesFromNow)
+        val existingPlannedMedicinesIdsFromNow = getExistingPlannedMedicinesIdsFromNow(medicinePlan.entityId)
+        plannedMedicineRepo.deleteListById(existingPlannedMedicinesIdsFromNow)
     }
 
     private suspend fun scheduleNewPlannedMedicinesFromNow(medicinePlan: MedicinePlan) {
         val scheduledPlannedMedicines = getScheduledPlannedMedicinesFromNow(medicinePlan)
-        val addedPlannedMedicines = plannedMedicineRepo.addNewList(scheduledPlannedMedicines)
-        deviceReminder.addReminders(addedPlannedMedicines)
+        plannedMedicineRepo.addNewList(scheduledPlannedMedicines)
     }
 
-    private suspend fun getExistingPlannedMedicinesFromNow(medicinePlanId: String): List<PlannedMedicine> {
+    private suspend fun getExistingPlannedMedicinesIdsFromNow(medicinePlanId: String): List<String> {
         val currDate = deviceCalendar.getCurrDate()
         val existingPlannedMedicines = plannedMedicineRepo.getListByMedicinePlan(medicinePlanId)
         return existingPlannedMedicines.filter {
             it.plannedDate >= currDate
-        }
+        }.map { it.entityId }
     }
 
     private suspend fun getScheduledPlannedMedicinesFromNow(medicinePlan: MedicinePlan): List<PlannedMedicine> {

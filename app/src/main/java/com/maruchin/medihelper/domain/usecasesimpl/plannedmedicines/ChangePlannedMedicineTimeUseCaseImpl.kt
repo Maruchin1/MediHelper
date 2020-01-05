@@ -1,6 +1,5 @@
 package com.maruchin.medihelper.domain.usecasesimpl.plannedmedicines
 
-import com.maruchin.medihelper.domain.device.DeviceReminder
 import com.maruchin.medihelper.domain.entities.AppTime
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
@@ -10,14 +9,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class ChangePlannedMedicineTimeUseCaseImpl(
-    private val plannedMedicineRepo: PlannedMedicineRepo,
-    private val deviceReminder: DeviceReminder
+    private val plannedMedicineRepo: PlannedMedicineRepo
 ) : ChangePlannedMedicineTimeUseCase {
 
     override suspend fun execute(plannedMedicineId: String, newPlannedTime: AppTime) = withContext(Dispatchers.Default) {
         val plannedMedicine = getPlannedMedicine(plannedMedicineId)
         updatePlannedMedicineTime(plannedMedicine, newPlannedTime)
-        deviceReminder.updateReminder(plannedMedicine)
         return@withContext
     }
 

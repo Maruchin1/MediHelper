@@ -5,14 +5,17 @@ import android.app.Activity
 import android.app.Application
 import com.maruchin.medihelper.data.di.*
 import com.maruchin.medihelper.device.di.*
+import com.maruchin.medihelper.domain.device.DeviceNotifications
 import com.maruchin.medihelper.domain.di.*
 import com.maruchin.medihelper.presentation.di.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
-
 
 class MainApplication : Application() {
 
@@ -40,7 +43,7 @@ class MainApplication : Application() {
         listOf(
             cameraModule,
             calendarModule,
-            reminderModule,
+            notificationsModule,
             ringtoneModule
         )
     }
@@ -51,6 +54,7 @@ class MainApplication : Application() {
             viewModelModule
         )
     }
+    private val notifications: DeviceNotifications by inject()
 
     fun reloadDependencies() {
         stopKoin()
@@ -68,6 +72,9 @@ class MainApplication : Application() {
             androidLogger()
             androidContext(this@MainApplication)
             modules(domainModules + dataModules + deviceModules + presentationModules)
+        }
+        GlobalScope.launch {
+            notifications.setupNotTakenMedicinesChecking()
         }
     }
 }

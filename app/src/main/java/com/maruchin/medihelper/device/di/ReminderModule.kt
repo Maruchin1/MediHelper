@@ -1,14 +1,14 @@
 package com.maruchin.medihelper.device.di
 
-import com.maruchin.medihelper.device.reminder.DeviceReminderImpl
-import com.maruchin.medihelper.domain.device.DeviceReminder
+import com.maruchin.medihelper.device.notifications.DeviceNotificationsImpl
+import com.maruchin.medihelper.domain.device.DeviceNotifications
 import org.koin.dsl.module
 
-val reminderModule = module {
+val notificationsModule = module {
     single {
-        DeviceReminderImpl(
+        DeviceNotificationsImpl(
             context = get(),
-            deviceCalendar = get()
-        ) as DeviceReminder
+            settingsRepo = get()
+        ) as DeviceNotifications
     }
 }

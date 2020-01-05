@@ -4,7 +4,7 @@ import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.maruchin.medihelper.data.utils.SharedPref
+import com.maruchin.medihelper.data.utils.DataSharedPref
 import com.maruchin.medihelper.data.framework.FirestoreRepo
 import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.data.mappers.MedicineMapper
@@ -22,7 +22,7 @@ class MedicineRepoImpl(
     private val db: FirebaseFirestore,
     private val auth: FirebaseAuth,
     private val storage: FirebaseStorage,
-    private val sharedPref: SharedPref,
+    private val dataSharedPref: DataSharedPref,
     private val mapper: MedicineMapper
 ) : FirestoreRepo<Medicine>(
     collectionRef = db.collection("users").document(auth.getCurrUserId()).collection("medicines"),
@@ -41,7 +41,7 @@ class MedicineRepoImpl(
     }
 
     override suspend fun getMedicineUnits(): List<String> = withContext(Dispatchers.IO) {
-        sharedPref.getMedicineUnitList()
+        dataSharedPref.getMedicineUnitList()
     }
 
     override suspend fun searchForMedicineInfo(medicineName: String): List<MedicineInfoSearchResult> =

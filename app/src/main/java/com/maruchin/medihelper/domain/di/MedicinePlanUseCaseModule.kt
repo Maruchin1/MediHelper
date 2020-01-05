@@ -29,8 +29,7 @@ val medicinePlanUseCaseModule = module {
             plannedMedicineRepo = get(),
             plannedMedicineScheduler = get(),
             deviceCalendar = get(),
-            validator = get(),
-            deviceReminder = get()
+            validator = get()
         ) as SaveMedicinePlanUseCase
     }
     factory {
