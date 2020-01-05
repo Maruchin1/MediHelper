@@ -9,18 +9,18 @@
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.medikit.MedicineDetailsViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.medicine_details.MedicineDetailsViewModel" />
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.medikit.MedicineDetailsFragment" />
+            type="com.maruchin.medihelper.presentation.feature.medicine_details.MedicineDetailsFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
-        tools:context=".presentation.feature.medikit.MedicineDetailsFragment">
+        tools:context=".presentation.feature.medicine_details.MedicineDetailsFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
@@ -259,7 +259,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="@{viewModel.data.state.stateEmptyWeight}"
-                                    android:background="@color/colorDarkerGray"/>
+                                    android:background="@color/colorBackground"/>
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 

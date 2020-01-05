@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/logoFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.auth.LogoFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.authentication.LogoFragment"
         tools:layout="@layout/fragment_logo" >
         <action
             android:id="@+id/toLoginFragment"
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.auth.LoginFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.authentication.LoginFragment"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/toRegisterFragment"
@@ -25,6 +25,6 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.auth.RegisterFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.authentication.RegisterFragment"
         tools:layout="@layout/fragment_register" />
 </navigation>

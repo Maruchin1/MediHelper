@@ -5,11 +5,11 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.profiles.AddEditProfileFragment" />
+            type="com.maruchin.medihelper.presentation.feature.add_edit_profile.AddEditProfileFragment" />
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.ColorCheckboxData" />
+            type="com.maruchin.medihelper.presentation.feature.add_edit_profile.ColorCheckboxData" />
 
     </data>
 

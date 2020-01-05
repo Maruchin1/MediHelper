@@ -9,15 +9,15 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.medikit.MedicinesListFragment" />
+            type="com.maruchin.medihelper.presentation.feature.medicines_list.MedicinesListFragment" />
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.medikit.MedicinesListViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.medicines_list.MedicinesListViewModel" />
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.MedicineItemData" />
+            type="com.maruchin.medihelper.presentation.feature.medicines_list.MedicineItemData" />
     </data>
 
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"

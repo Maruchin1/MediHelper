@@ -6,11 +6,11 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.auth.LoginFragment" />
+            type="com.maruchin.medihelper.presentation.feature.authentication.LoginFragment" />
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.auth.LoginViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.authentication.LoginViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

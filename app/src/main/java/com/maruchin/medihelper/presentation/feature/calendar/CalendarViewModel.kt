@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.usecases.profile.GetProfileSimpleItemUseCase
-import com.maruchin.medihelper.presentation.model.CalendarData
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import java.util.*
 

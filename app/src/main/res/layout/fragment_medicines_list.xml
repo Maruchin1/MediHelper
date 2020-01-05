@@ -9,11 +9,11 @@
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.medikit.MedicinesListViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.medicines_list.MedicinesListViewModel" />
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.medikit.MedicinesListFragment" />
+            type="com.maruchin.medihelper.presentation.feature.medicines_list.MedicinesListFragment" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -130,7 +130,7 @@
             android:background="@drawable/bg_side_sheet">
 
             <fragment
-                android:name="com.maruchin.medihelper.presentation.feature.medikit.FiltersFragment"
+                android:name="com.maruchin.medihelper.presentation.feature.medicines_list.MedicinesFiltersFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </com.google.android.material.navigation.NavigationView>

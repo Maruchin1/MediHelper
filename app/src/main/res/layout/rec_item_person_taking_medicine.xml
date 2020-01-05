@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.medikit.MedicineDetailsFragment" />
+            type="com.maruchin.medihelper.presentation.feature.medicine_details.MedicineDetailsFragment" />
 
         <variable
             name="displayData"

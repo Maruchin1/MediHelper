@@ -4,8 +4,6 @@ import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.model.PlannedMedicineItem
 import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetLivePlannedMedicinesItemsByDateUseCase
-import com.maruchin.medihelper.presentation.model.CalendarDayData
-import com.maruchin.medihelper.presentation.model.PlannedMedicineItemData
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import kotlinx.coroutines.launch
 

@@ -9,15 +9,15 @@
 
         <import type="com.maruchin.medihelper.domain.entities.MedicinePlan.Type" />
 
-        <import type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel.IntakeDaysType" />
+        <import type="com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.IntakeDaysType" />
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanFragment" />
+            type="com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.AddEditMedicinePlanFragment" />
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.AddEditMedicinePlanViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

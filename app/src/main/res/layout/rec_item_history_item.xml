@@ -6,11 +6,11 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsFragment" />
+            type="com.maruchin.medihelper.presentation.feature.medicine_plan_details.MedicinePlanDetailsFragment" />
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.HistoryItemData" />
+            type="com.maruchin.medihelper.presentation.feature.medicine_plan_details.HistoryItemData" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

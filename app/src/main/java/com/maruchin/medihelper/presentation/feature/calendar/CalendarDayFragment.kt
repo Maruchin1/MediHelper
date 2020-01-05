@@ -13,7 +13,6 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarDayBinding
 import com.maruchin.medihelper.presentation.feature.planned_medicine_options.PlannedMedicineOptionsDialog
 import com.maruchin.medihelper.presentation.framework.*
-import com.maruchin.medihelper.presentation.model.PlannedMedicineItemData
 import kotlinx.android.synthetic.main.fragment_calendar_day.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

@@ -5,15 +5,15 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanFragment" />
+            type="com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.AddEditMedicinePlanFragment" />
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.AddEditMedicinePlanViewModel" />
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.TimeDoseEditData" />
+            type="com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.TimeDoseEditData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

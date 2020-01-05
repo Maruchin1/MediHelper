@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/medicinesListFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.medikit.MedicinesListFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.medicines_list.MedicinesListFragment"
         tools:layout="@layout/fragment_medicines_list">
         <action
             android:id="@+id/toAddEditMedicineFragment"
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEditProfileFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.profiles.AddEditProfileFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.add_edit_profile.AddEditProfileFragment"
         tools:layout="@layout/fragment_add_edit_profile">
         <argument
             android:name="editProfileId"
@@ -60,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEditMedicineFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.medikit.AddEditMedicineFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.add_edit_medicine.AddEditMedicineFragment"
         tools:layout="@layout/fragment_add_edit_medicine">
         <argument
             android:name="editMedicineId"
@@ -76,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/medicineDetailsFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.medikit.MedicineDetailsFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.medicine_details.MedicineDetailsFragment"
         tools:layout="@layout/fragment_medicine_details">
         <argument
             android:name="medicineId"
@@ -115,11 +115,11 @@
     </dialog>
     <fragment
         android:id="@+id/captureMedicinePictureFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.medikit.CaptureMedicinePictureFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.add_edit_medicine.CaptureMedicinePictureFragment"
         tools:layout="@layout/fragment_capture_medicine_picture" />
     <dialog
         android:id="@+id/medicineInfoDialog"
-        android:name="com.maruchin.medihelper.presentation.feature.medikit.MedicineInfoDialog"
+        android:name="com.maruchin.medihelper.presentation.feature.medicine_details.MedicineInfoDialog"
         tools:layout="@layout/dialog_medicine_info">
         <argument
             android:name="medicineName"
@@ -127,12 +127,12 @@
     </dialog>
     <dialog
         android:id="@+id/profileDialog"
-        android:name="com.maruchin.medihelper.presentation.feature.profiles.ProfileDialog"
+        android:name="com.maruchin.medihelper.presentation.feature.profiles_menu.ProfileDialog"
         android:label="ProfileDialog"
         tools:layout="@layout/dialog_profile" />
     <fragment
         android:id="@+id/addEditMedicinePlanFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.AddEditMedicinePlanFragment"
         tools:layout="@layout/fragment_add_edit_medicine_plan">
         <argument
             android:name="profileId"
@@ -149,7 +149,7 @@
     </fragment>
     <fragment
         android:id="@+id/medicinePlanDetailsFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.medicine_plan_details.MedicinePlanDetailsFragment"
         tools:layout="@layout/fragment_medicine_plan_details">
         <argument
             android:name="medicinePlanId"

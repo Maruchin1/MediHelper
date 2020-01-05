@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.medikit.CaptureMedicinePictureFragment" />
+            type="com.maruchin.medihelper.presentation.feature.add_edit_medicine.CaptureMedicinePictureFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

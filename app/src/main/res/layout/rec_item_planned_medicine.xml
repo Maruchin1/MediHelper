@@ -12,7 +12,7 @@
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.PlannedMedicineItemData" />
+            type="com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineItemData" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

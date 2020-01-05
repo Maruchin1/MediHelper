@@ -18,10 +18,4 @@ val presentationUtilsModule = module {
             firebaseStorage = get()
         )
     }
-    factory {
-        MedicinesSorter()
-    }
-    factory {
-        MedicinesFilter()
-    }
 }

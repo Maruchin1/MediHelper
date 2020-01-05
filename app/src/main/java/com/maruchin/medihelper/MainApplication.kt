@@ -47,6 +47,7 @@ class MainApplication : Application() {
     private val presentationModules: List<Module> by lazy {
         listOf(
             presentationUtilsModule,
+            presentationFeaturesUtilsModule,
             viewModelModule
         )
     }

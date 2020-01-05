@@ -1,18 +1,20 @@
 package com.maruchin.medihelper.presentation.di
 
+import com.maruchin.medihelper.presentation.feature.add_edit_medicine.AddEditMedicineViewModel
 import com.maruchin.medihelper.presentation.feature.alarm.AlarmViewModel
-import com.maruchin.medihelper.presentation.feature.auth.LoginViewModel
-import com.maruchin.medihelper.presentation.feature.auth.RegisterViewModel
+import com.maruchin.medihelper.presentation.feature.authentication.LoginViewModel
+import com.maruchin.medihelper.presentation.feature.authentication.RegisterViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.CalendarDayViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.CalendarViewModel
+import com.maruchin.medihelper.presentation.feature.medicines_list.MedicinesListViewModel
 import com.maruchin.medihelper.presentation.feature.planned_medicine_options.PlannedMedicineOptionsViewModel
-import com.maruchin.medihelper.presentation.feature.profiles.ProfileViewModel
-import com.maruchin.medihelper.presentation.feature.medikit.*
-import com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel
-import com.maruchin.medihelper.presentation.feature.mediplan.MedicinePlanDetailsViewModel
+import com.maruchin.medihelper.presentation.feature.profiles_menu.ProfileViewModel
+import com.maruchin.medihelper.presentation.feature.medicine_details.*
+import com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.AddEditMedicinePlanViewModel
+import com.maruchin.medihelper.presentation.feature.medicine_plan_details.MedicinePlanDetailsViewModel
 import com.maruchin.medihelper.presentation.feature.options.ChangePasswordViewModel
 import com.maruchin.medihelper.presentation.feature.options.OptionsViewModel
-import com.maruchin.medihelper.presentation.feature.profiles.AddEditProfileViewModel
+import com.maruchin.medihelper.presentation.feature.add_edit_profile.AddEditProfileViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

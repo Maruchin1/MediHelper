@@ -10,15 +10,15 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.profiles.ProfileDialog" />
+            type="com.maruchin.medihelper.presentation.feature.profiles_menu.ProfileDialog" />
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.model.MedicinePlanItemData" />
+            type="com.maruchin.medihelper.presentation.feature.profiles_menu.MedicinePlanItemData" />
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.profiles.ProfileViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.profiles_menu.ProfileViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
