@@ -4,7 +4,7 @@ import com.maruchin.medihelper.domain.usecases.plans.*
 import com.maruchin.medihelper.domain.usecasesimpl.plans.*
 import org.koin.dsl.module
 
-val medicinePlanUseCaseModule = module {
+val planUseCaseModule = module {
     factory { 
         GetLivePlansItemsByProfileUseCaseImpl(
             planRepo = get(),

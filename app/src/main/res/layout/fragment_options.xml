@@ -196,33 +196,34 @@
                                     android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
                                     android:textColor="@color/colorPrimary" />
                             </LinearLayout>
+                        </LinearLayout>
 
-                            <com.google.android.material.chip.ChipGroup
-                                android:id="@+id/chip_group_reminder_mode"
-                                style="@style/Widget.MaterialComponents.ChipGroup"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/list_card_layout_margin_horizontal"
+                            android:layout_marginEnd="@dimen/list_card_layout_margin_horizontal"
+                            android:layout_marginBottom="@dimen/list_card_layout_margin_bot"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/switch_notifications_enabled"
+                                style="@style/Widget.MediHelper.Switch"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="32dp"
-                                app:chipSpacingHorizontal="16dp"
-                                app:singleSelection="true">
+                                android:checked='@{viewModel.areNotificationEnabled}'
+                                android:text="Powiadomienia" />
 
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chip_notification"
-                                    style="@style/Widget.MediHelper.Chip.Choice"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Powiadomienie" />
-
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chip_alarm"
-                                    style="@style/Widget.MediHelper.Chip.Choice"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Alarm z dźwiękiem" />
-
-                            </com.google.android.material.chip.ChipGroup>
-
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/switch_alarms_enabled"
+                                style="@style/Widget.MediHelper.Switch"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:checked='@{viewModel.areAlarmsEnabled}'
+                                android:text="Alarmy z dźwiękiem" />
                         </LinearLayout>
+
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

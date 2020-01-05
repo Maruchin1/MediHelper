@@ -43,20 +43,27 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadingScreen.bind(this, viewModel.loadingInProgress)
-        setupReminderModeChipGroup()
+        bindLoadingScreen()
+        setupMedicinesRemindingOptions()
         observeViewModel()
+    }
+
+    private fun bindLoadingScreen() {
+        loadingScreen.bind(this, viewModel.loadingInProgress)
+    }
+
+    private fun setupMedicinesRemindingOptions() {
+        switch_notifications_enabled.setOnCheckedChangeListener { _, checked ->
+            viewModel.setNotificationsEnabled(checked)
+        }
+        switch_alarms_enabled.setOnCheckedChangeListener { _, checked ->
+            viewModel.setAlarmsEnabled(checked)
+        }
     }
 
     private fun observeViewModel() {
         viewModel.actionSignOutSuccessful.observe(viewLifecycleOwner, Observer {
             super.mainActivity.restartApp()
         })
-    }
-
-    private fun setupReminderModeChipGroup() {
-        chip_group_reminder_mode.setOnCheckedChangeListener { group, checkedId ->
-
-        }
     }
 }

@@ -68,7 +68,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:text="Kolejność"
-                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
+                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2.Secondary" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chip_group_sorting_order"
@@ -112,7 +112,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:text="Stan leku"
-                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
+                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2.Secondary" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chip_group_filter_state"

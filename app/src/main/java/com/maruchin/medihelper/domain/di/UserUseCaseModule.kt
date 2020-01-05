@@ -34,8 +34,8 @@ val userUseCaseModule = module {
         ) as ChangePasswordUseCase
     }
     factory {
-        GetCurrUserUseCaseImpl(
+        GetCurrUserEmailUseCaseImpl(
             userAuthRepo = get()
-        ) as GetCurrUserUseCase
+        ) as GetCurrUserEmailUseCase
     }
 }

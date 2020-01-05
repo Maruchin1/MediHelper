@@ -114,7 +114,9 @@ val viewModelModule = module {
     }
     viewModel {
         OptionsViewModel(
-            getCurrUserUseCase = get(),
+            getCurrUserEmailUseCase = get(),
+            areLiveNotificationsEnabledUseCase = get(),
+            setNotificationsEnabledUseCase = get(),
             signOutUseCase = get()
         )
     }

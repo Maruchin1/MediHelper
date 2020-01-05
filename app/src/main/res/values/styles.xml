@@ -163,6 +163,10 @@
         <item name="rippleColor">@color/colorDarkerGray</item>
     </style>
 
+    <style name="Widget.MediHelper.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="android:textAppearance">@style/TextAppearance.MediHelper.Subtitle1</item>
+    </style>
+
     <!--    TextAppearance-->
     <style name="TextAppearance.MediHelper.AppbarTitle" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">@color/colorWhite</item>
@@ -194,6 +198,10 @@
 
     <style name="TextAppearance.MediHelper.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
+
+    <style name="TextAppearance.MediHelper.Subtitle2.Secondary" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
 
     <style name="TextAppearance.MediHelper.BodyBig1" parent="TextAppearance.MaterialComponents.Headline5">
