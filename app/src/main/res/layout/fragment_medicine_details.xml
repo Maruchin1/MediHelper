@@ -232,7 +232,7 @@
                             android:layout_height="wrap_content"
                             android:text="@{viewModel.data.state.stateText, default=Stan}"
                             android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1"
-                            android:textColor='@{viewModel.data.state.stateColorId}' />
+                            android:textColor='@{viewModel.stateColor}' />
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
@@ -252,7 +252,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="@{viewModel.data.state.stateWeight}"
-                                    android:background="@{viewModel.data.state.stateColorId}" />
+                                    android:background="@{viewModel.stateColor}" />
 
                                 <View
                                     android:id="@+id/line_empty"

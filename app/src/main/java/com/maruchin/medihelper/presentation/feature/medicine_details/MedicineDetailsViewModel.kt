@@ -13,6 +13,10 @@ class MedicineDetailsViewModel(
     private val picturesStorageRef: PicturesStorageRef
 ) : ViewModel() {
 
+    // Theoretically this property is unnecessary, but there is a bug with DataBinding and TextView
+    // textColor property. Only separate LiveData with colorId works properly.
+    val stateColor: LiveData<Int>
+
     val data: LiveData<MedicineDetailsData>
         get() = _data
     val loadingInProgress: LiveData<Boolean>
@@ -30,42 +34,30 @@ class MedicineDetailsViewModel(
     private val _actionMedicineDeleted = ActionLiveData()
     private lateinit var _medicineId: String
 
+    init {
+        stateColor = getLiveStateColor()
+    }
+
     fun initViewModel(medicineId: String) = viewModelScope.launch {
-        setGlobalMedicineId(medicineId)
-        loadAndPostData()
-        notifyDataLoaded()
-    }
-
-    fun deleteMedicine() = viewModelScope.launch {
-        notifyDeletingInProgress()
-        deleteMedicineUseCase.execute(_medicineId)
-        notifyMedicineDeleted()
-    }
-
-    private fun setGlobalMedicineId(medicineId: String) {
         _medicineId = medicineId
-    }
-
-    private suspend fun loadAndPostData() {
-        val data = getData(_medicineId)
-        _data.postValue(data)
-    }
-
-    private fun notifyDataLoaded() {
+        loadAndPostData()
         _actionDataLoaded.sendAction()
     }
 
-    private fun notifyDeletingInProgress() {
+    fun deleteMedicine() = viewModelScope.launch {
         _loadingInProgress.postValue(true)
-    }
-
-    private fun notifyMedicineDeleted() {
+        deleteMedicineUseCase.execute(_medicineId)
         _loadingInProgress.postValue(false)
         _actionMedicineDeleted.sendAction()
     }
 
-    private suspend fun getData(medicineId: String): MedicineDetailsData {
-        val medicineDetails = getMedicineDetailsUseCase.execute(medicineId)
-        return MedicineDetailsData.fromDomainModel(medicineDetails, picturesStorageRef)
+    private fun getLiveStateColor() = Transformations.map(_data) { data ->
+        data.state.stateColorId
+    }
+
+    private suspend fun loadAndPostData() {
+        val details = getMedicineDetailsUseCase.execute(medicineId)
+        val data = MedicineDetailsData.fromDomainModel(details, picturesStorageRef)
+        _data.postValue(data)
     }
 }
