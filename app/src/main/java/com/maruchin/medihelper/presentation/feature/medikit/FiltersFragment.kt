@@ -61,10 +61,6 @@ class FiltersFragment : BaseMainFragment<FragmentFiltersBinding>(R.layout.fragme
                 viewModel.setFilterStateByChipsIds(checkedIds)
             }
         }
-//        chip_group_filter_state.setOnCheckedChangeListener { group, _ ->
-//            val checkedIds = group.checkedChipIds.toList()
-//            viewModel.setFilterStateByChipsIds(checkedIds)
-//        }
     }
 
     private fun setSortingParam(param: MedicinesSorter.Param) {

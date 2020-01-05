@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarDayBinding
+import com.maruchin.medihelper.presentation.feature.planned_medicine_options.PlannedMedicineOptionsDialog
 import com.maruchin.medihelper.presentation.framework.*
 import com.maruchin.medihelper.presentation.model.PlannedMedicineItemData
 import kotlinx.android.synthetic.main.fragment_calendar_day.*
@@ -25,7 +26,8 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
     private val viewModel: CalendarDayViewModel by viewModel()
 
     fun onClickOpenPlannedMedicineOptions(plannedMedicineId: String) {
-        PlannedMedicineOptionsDialog().apply {
+        PlannedMedicineOptionsDialog()
+            .apply {
             this.plannedMedicineId = plannedMedicineId
         }.show(childFragmentManager)
     }

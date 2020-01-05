@@ -8,11 +8,11 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOptionsDialog" />
+            type="com.maruchin.medihelper.presentation.feature.planned_medicine_options.PlannedMedicineOptionsDialog" />
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOptionsViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.planned_medicine_options.PlannedMedicineOptionsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -166,7 +166,7 @@
                 android:focusable="true"
                 android:foreground="?selectableItemBackground"
                 android:gravity="center_vertical"
-                android:onClick="@{() -> handler.onClickOpenMedicinePlan(viewModel.plannedMedicineId)}"
+                android:onClick="@{() -> handler.onClickOpenMedicinePlan(viewModel.basicData.medicinePlanId)}"
                 android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
                 android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
 

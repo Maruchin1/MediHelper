@@ -104,7 +104,7 @@
     </fragment>
     <dialog
         android:id="@+id/plannedMedicineOptionsDialog"
-        android:name="com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOptionsDialog"
+        android:name="com.maruchin.medihelper.presentation.feature.planned_medicine_options.PlannedMedicineOptionsDialog"
         tools:layout="@layout/dialog_planned_medicine_options">
         <argument
             android:name="plannedMedicineID"

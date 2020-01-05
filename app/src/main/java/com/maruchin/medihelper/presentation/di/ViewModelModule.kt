@@ -5,7 +5,7 @@ import com.maruchin.medihelper.presentation.feature.auth.LoginViewModel
 import com.maruchin.medihelper.presentation.feature.auth.RegisterViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.CalendarDayViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.CalendarViewModel
-import com.maruchin.medihelper.presentation.feature.calendar.PlannedMedicineOptionsViewModel
+import com.maruchin.medihelper.presentation.feature.planned_medicine_options.PlannedMedicineOptionsViewModel
 import com.maruchin.medihelper.presentation.feature.profiles.ProfileViewModel
 import com.maruchin.medihelper.presentation.feature.medikit.*
 import com.maruchin.medihelper.presentation.feature.mediplan.AddEditMedicinePlanViewModel

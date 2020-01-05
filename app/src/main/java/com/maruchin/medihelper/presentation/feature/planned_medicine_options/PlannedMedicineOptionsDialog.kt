@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.feature.calendar
+package com.maruchin.medihelper.presentation.feature.planned_medicine_options
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogPlannedMedicineOptionsBinding
 import com.maruchin.medihelper.presentation.dialogs.SelectTimeDialog
+import com.maruchin.medihelper.presentation.feature.calendar.CalendarFragmentDirections
 import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
 import com.maruchin.medihelper.presentation.framework.beginDelayedFade
 import kotlinx.android.synthetic.main.dialog_planned_medicine_options.*
@@ -20,9 +21,7 @@ class PlannedMedicineOptionsDialog :
         get() = "PlannedMedicineOptionsDialog"
 
     lateinit var plannedMedicineId: String
-
     private val viewModel: PlannedMedicineOptionsViewModel by viewModel()
-    private val directions by lazyOf(CalendarFragmentDirections)
 
     fun onClickChangePlannedMedicineTaken() {
         viewModel.changePlannedMedicineTaken()
@@ -30,7 +29,11 @@ class PlannedMedicineOptionsDialog :
     }
 
     fun onClickOpenMedicinePlan(medicinePlanId: String) {
-        requireParentFragment().findNavController().navigate(directions.toMedicinePlanDetailsFragment(medicinePlanId))
+        requireParentFragment().findNavController().navigate(
+            CalendarFragmentDirections.toMedicinePlanDetailsFragment(
+                medicinePlanId
+            )
+        )
         dismiss()
     }
 
