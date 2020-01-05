@@ -5,14 +5,14 @@ import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.domain.model.MedicineItem
 import com.maruchin.medihelper.domain.usecases.medicines.GetLiveAllMedicinesItemsUseCase
-import com.maruchin.medihelper.presentation.utils.PicturesRef
+import com.maruchin.medihelper.presentation.utils.PicturesStorageRef
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MedicinesListViewModel(
     private val getAllMedicinesItemsUseCase: GetLiveAllMedicinesItemsUseCase,
-    private val picturesRef: PicturesRef,
+    private val picturesStorageRef: PicturesStorageRef,
     private val medicinesSorter: MedicinesSorter,
     private val medicinesFilter: MedicinesFilter
 ) : ViewModel() {
@@ -39,7 +39,7 @@ class MedicinesListViewModel(
     }
 
     fun getMedicinePictureRef(pictureName: String?): StorageReference? {
-        return if (pictureName != null) picturesRef.get(pictureName) else null
+        return if (pictureName != null) picturesStorageRef.getPictureRef(pictureName) else null
     }
 
     fun setFilterStateByChipsIds(ids: List<Int>) = viewModelScope.launch {

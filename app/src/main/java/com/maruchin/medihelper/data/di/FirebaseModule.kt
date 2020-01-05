@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.storage.FirebaseStorage
+import com.maruchin.medihelper.data.utils.AppFirebase
 import org.koin.dsl.module
 
 val firebaseModule = module {
@@ -20,5 +21,12 @@ val firebaseModule = module {
     }
     single {
         FirebaseStorage.getInstance()
+    }
+    single {
+        AppFirebase(
+            auth = get(),
+            db = get(),
+            storage = get()
+        )
     }
 }

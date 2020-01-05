@@ -10,7 +10,7 @@ import com.maruchin.medihelper.domain.usecases.medicines.SaveMedicineUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import com.maruchin.medihelper.device.camera.DeviceCamera
 import com.maruchin.medihelper.domain.model.MedicineErrors
-import com.maruchin.medihelper.presentation.utils.PicturesRef
+import com.maruchin.medihelper.presentation.utils.PicturesStorageRef
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -19,7 +19,7 @@ class AddEditMedicineViewModel(
     private val getMedicineEditDataUseCase: GetMedicineEditDataUseCase,
     private val saveMedicineUseCase: SaveMedicineUseCase,
     private val deviceCamera: DeviceCamera,
-    private val picturesRef: PicturesRef
+    private val picturesStorageRef: PicturesStorageRef
 ) : ViewModel() {
 
     val medicineUnitList: LiveData<List<String>>
@@ -116,7 +116,7 @@ class AddEditMedicineViewModel(
         packageSize.postValue(editData.state.packageSize)
         currState.postValue(editData.state.currState)
         if (editData.pictureName != null) {
-            val editPictureRef = picturesRef.get(editData.pictureName)
+            val editPictureRef = picturesStorageRef.getPictureRef(editData.pictureName)
             _pictureRef.postValue(editPictureRef)
         }
     }

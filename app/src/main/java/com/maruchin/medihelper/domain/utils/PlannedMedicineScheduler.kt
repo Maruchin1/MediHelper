@@ -6,24 +6,24 @@ import kotlinx.coroutines.withContext
 
 class PlannedMedicineScheduler {
 
-    suspend fun getPlannedMedicines(medicinePlan: MedicinePlan): List<PlannedMedicine> =
+    suspend fun getPlannedMedicines(plan: Plan): List<PlannedMedicine> =
         withContext(Dispatchers.Default) {
-            return@withContext when (medicinePlan.planType) {
-                MedicinePlan.Type.ONCE -> getForDate(medicinePlan, medicinePlan.startDate)
-                MedicinePlan.Type.PERIOD -> when (medicinePlan.intakeDays) {
-                    is IntakeDays.Everyday -> getForEveryday(medicinePlan)
-                    is IntakeDays.DaysOfWeek -> getForDaysOfWeek(medicinePlan)
-                    is IntakeDays.Interval -> getForInterval(medicinePlan)
-                    is IntakeDays.Sequence -> getForSequence(medicinePlan)
+            return@withContext when (plan.planType) {
+                Plan.Type.ONE_DAY -> getForDate(plan, plan.startDate)
+                Plan.Type.PERIOD -> when (plan.intakeDays) {
+                    is IntakeDays.Everyday -> getForEveryday(plan)
+                    is IntakeDays.DaysOfWeek -> getForDaysOfWeek(plan)
+                    is IntakeDays.Interval -> getForInterval(plan)
+                    is IntakeDays.Sequence -> getForSequence(plan)
                     else -> emptyList()
                 }
-                MedicinePlan.Type.CONTINUOUS -> {
-                    val tempMedicinePlan = medicinePlan.copy(
-                        endDate = medicinePlan.startDate.copy().apply {
+                Plan.Type.CONTINUOUS -> {
+                    val tempMedicinePlan = plan.copy(
+                        endDate = plan.startDate.copy().apply {
                             addDays(CONTINUOUS_DAYS_COUNT)
                         }
                     )
-                    when (medicinePlan.intakeDays) {
+                    when (plan.intakeDays) {
                         is IntakeDays.Everyday -> getForEveryday(tempMedicinePlan)
                         is IntakeDays.DaysOfWeek -> getForDaysOfWeek(tempMedicinePlan)
                         is IntakeDays.Interval -> getForInterval(tempMedicinePlan)
@@ -34,28 +34,28 @@ class PlannedMedicineScheduler {
             }
         }
 
-    private fun getForEveryday(medicinePlan: MedicinePlan): List<PlannedMedicine> {
+    private fun getForEveryday(plan: Plan): List<PlannedMedicine> {
         val entriesList = mutableListOf<PlannedMedicine>()
-        val currDate = medicinePlan.startDate.copy()
+        val currDate = plan.startDate.copy()
 
-        while (currDate <= medicinePlan.endDate!!) {
+        while (currDate <= plan.endDate!!) {
             entriesList.addAll(
-                getForDate(medicinePlan, currDate.copy())
+                getForDate(plan, currDate.copy())
             )
             currDate.addDays(1)
         }
         return entriesList
     }
 
-    private fun getForDaysOfWeek(medicinePlan: MedicinePlan): List<PlannedMedicine> {
+    private fun getForDaysOfWeek(plan: Plan): List<PlannedMedicine> {
         val entriesList = mutableListOf<PlannedMedicine>()
-        val currDate = medicinePlan.startDate.copy()
+        val currDate = plan.startDate.copy()
 
-        while (currDate <= medicinePlan.endDate!!) {
-            val daysOfWeek = medicinePlan.intakeDays as IntakeDays.DaysOfWeek
+        while (currDate <= plan.endDate!!) {
+            val daysOfWeek = plan.intakeDays as IntakeDays.DaysOfWeek
             if (daysOfWeek.isDaySelected(currDate.dayOfWeek)) {
                 entriesList.addAll(
-                    getForDate(medicinePlan, currDate.copy())
+                    getForDate(plan, currDate.copy())
                 )
             }
             currDate.addDays(1)
@@ -63,35 +63,35 @@ class PlannedMedicineScheduler {
         return entriesList
     }
 
-    private fun getForInterval(medicinePlan: MedicinePlan): List<PlannedMedicine> {
+    private fun getForInterval(plan: Plan): List<PlannedMedicine> {
         val entriesList = mutableListOf<PlannedMedicine>()
-        val currDate = medicinePlan.startDate.copy()
+        val currDate = plan.startDate.copy()
 
-        while (currDate <= medicinePlan.endDate!!) {
+        while (currDate <= plan.endDate!!) {
             entriesList.addAll(
-                getForDate(medicinePlan, currDate.copy())
+                getForDate(plan, currDate.copy())
             )
-            val interval = medicinePlan.intakeDays as IntakeDays.Interval
+            val interval = plan.intakeDays as IntakeDays.Interval
             currDate.addDays(interval.daysCount)
         }
         return entriesList
     }
 
-    private fun getForSequence(medicinePlan: MedicinePlan): List<PlannedMedicine> {
+    private fun getForSequence(plan: Plan): List<PlannedMedicine> {
         val entriesList = mutableListOf<PlannedMedicine>()
-        val currDate = medicinePlan.startDate.copy()
+        val currDate = plan.startDate.copy()
 
-        val intakeDays = medicinePlan.intakeDays as IntakeDays.Sequence
+        val intakeDays = plan.intakeDays as IntakeDays.Sequence
         var intakeCountIterator = 1
 
 
-        while (currDate <= medicinePlan.endDate!!) {
+        while (currDate <= plan.endDate!!) {
             if (intakeCountIterator > intakeDays.intakeCount) {
                 currDate.addDays(intakeDays.notIntakeCount)
                 intakeCountIterator = 1
             } else {
                 entriesList.addAll(
-                    getForDate(medicinePlan, currDate.copy())
+                    getForDate(plan, currDate.copy())
                 )
                 currDate.addDays(1)
                 intakeCountIterator++
@@ -101,17 +101,17 @@ class PlannedMedicineScheduler {
     }
 
     private fun getForDate(
-        medicinePlan: MedicinePlan,
+        plan: Plan,
         plannedDate: AppDate
     ): List<PlannedMedicine> {
         val entriesList = mutableListOf<PlannedMedicine>()
-        medicinePlan.timeDoseList.forEach { timeDose ->
+        plan.timeDoseList.forEach { timeDose ->
             entriesList.add(
                 PlannedMedicine(
                     entityId = "",
-                    medicinePlanId = medicinePlan.entityId,
-                    profileId = medicinePlan.profileId,
-                    medicineId = medicinePlan.medicineId,
+                    medicinePlanId = plan.entityId,
+                    profileId = plan.profileId,
+                    medicineId = plan.medicineId,
                     plannedDate = plannedDate,
                     plannedTime = timeDose.time,
                     plannedDoseSize = timeDose.doseSize,

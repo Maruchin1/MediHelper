@@ -34,8 +34,8 @@ val profileUseCaseModule = module {
     factory {
         DeleteProfileUseCaseImpl(
             profileRepo = get(),
-            medicinePlanRepo = get(),
-            deleteMedicinesPlansUseCase = get()
+            planRepo = get(),
+            deletePlansUseCase = get()
         ) as DeleteProfileUseCase
     }
     factory {

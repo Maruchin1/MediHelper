@@ -1,8 +1,8 @@
 package com.maruchin.medihelper.domain.usecasesimpl.profiles
 
-import com.maruchin.medihelper.domain.repositories.MedicinePlanRepo
+import com.maruchin.medihelper.domain.repositories.PlanRepo
 import com.maruchin.medihelper.domain.repositories.ProfileRepo
-import com.maruchin.medihelper.domain.usecases.mediplans.DeleteMedicinesPlansUseCase
+import com.maruchin.medihelper.domain.usecases.plans.DeletePlansUseCase
 import com.maruchin.medihelper.domain.usecases.profile.DeleteProfileUseCase
 import com.maruchin.medihelper.testingframework.mock
 import com.maruchin.medihelper.testingframework.verifyInvocations
@@ -14,8 +14,8 @@ import org.mockito.Mockito
 class DeleteProfileUseCaseImplTest {
 
     private val profileRepo: ProfileRepo = mock()
-    private val medicinePlanRepo: MedicinePlanRepo = mock()
-    private val deleteMedicinesPlansUseCase: DeleteMedicinesPlansUseCase = mock()
+    private val planRepo: PlanRepo = mock()
+    private val deletePlansUseCase: DeletePlansUseCase = mock()
 
     private lateinit var useCase: DeleteProfileUseCase
 
@@ -23,8 +23,8 @@ class DeleteProfileUseCaseImplTest {
     fun before() {
         useCase = DeleteProfileUseCaseImpl(
             profileRepo,
-            medicinePlanRepo,
-            deleteMedicinesPlansUseCase
+            planRepo,
+            deletePlansUseCase
         )
     }
 
@@ -33,12 +33,12 @@ class DeleteProfileUseCaseImplTest {
         val profileId = "abc"
 
         runBlocking {
-            Mockito.`when`(medicinePlanRepo.getListByProfile(profileId)).thenReturn(emptyList())
+            Mockito.`when`(planRepo.getListByProfile(profileId)).thenReturn(emptyList())
 
             useCase.execute(profileId)
 
             Mockito.verify(profileRepo, Mockito.times(1)).deleteById("abc")
-            verifyInvocations(deleteMedicinesPlansUseCase, invocations = 1).execute(Mockito.anyList())
+            verifyInvocations(deletePlansUseCase, invocations = 1).execute(Mockito.anyList())
         }
     }
 }

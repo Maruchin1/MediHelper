@@ -10,8 +10,8 @@ import com.maruchin.medihelper.presentation.feature.medicines_list.MedicinesList
 import com.maruchin.medihelper.presentation.feature.planned_medicine_options.PlannedMedicineOptionsViewModel
 import com.maruchin.medihelper.presentation.feature.profiles_menu.ProfileViewModel
 import com.maruchin.medihelper.presentation.feature.medicine_details.*
-import com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.AddEditMedicinePlanViewModel
-import com.maruchin.medihelper.presentation.feature.medicine_plan_details.MedicinePlanDetailsViewModel
+import com.maruchin.medihelper.presentation.feature.add_edit_plan.AddEditPlanViewModel
+import com.maruchin.medihelper.presentation.feature.plan_details.PlanDetailsViewModel
 import com.maruchin.medihelper.presentation.feature.options.ChangePasswordViewModel
 import com.maruchin.medihelper.presentation.feature.options.OptionsViewModel
 import com.maruchin.medihelper.presentation.feature.add_edit_profile.AddEditProfileViewModel
@@ -22,7 +22,7 @@ val viewModelModule = module {
     viewModel {
         MedicinesListViewModel(
             getAllMedicinesItemsUseCase = get(),
-            picturesRef = get(),
+            picturesStorageRef = get(),
             medicinesSorter = get(),
             medicinesFilter = get()
         )
@@ -31,7 +31,7 @@ val viewModelModule = module {
         MedicineDetailsViewModel(
             getMedicineDetailsUseCase = get(),
             deleteMedicineUseCase = get(),
-            picturesRef = get()
+            picturesStorageRef = get()
         )
     }
     viewModel {
@@ -40,7 +40,7 @@ val viewModelModule = module {
             saveMedicineUseCase = get(),
             getMedicineEditDataUseCase = get(),
             deviceCamera = get(),
-            picturesRef = get()
+            picturesStorageRef = get()
         )
     }
     viewModel {
@@ -87,24 +87,24 @@ val viewModelModule = module {
         ProfileViewModel(
             selectedProfile = get(),
             getLiveAllProfilesItemsUseCase = get(),
-            getLiveMedicinesPlansItemsByProfileUseCase = get(),
+            getLivePlansItemsByProfileUseCase = get(),
             deleteProfileUseCase = get()
         )
     }
     viewModel {
-        AddEditMedicinePlanViewModel(
-            getMedicinePlanEditDataUseCase = get(),
+        AddEditPlanViewModel(
+            getPlanEditDataUseCase = get(),
             getProfileSimpleItemUseCase = get(),
             getMedicineSimpleItemUseCase = get(),
-            saveMedicinePlanUseCase = get(),
+            savePlanUseCase = get(),
             deviceCalendar = get()
         )
     }
     viewModel {
-        MedicinePlanDetailsViewModel(
-            getMedicinePlanDetailsUseCase = get(),
-            getMedicinePlanHistoryUseCase = get(),
-            deleteSingleMedicinePlanUseCase = get()
+        PlanDetailsViewModel(
+            getPlanDetailsUseCase = get(),
+            getPlanHistoryUseCase = get(),
+            deleteSinglePlanUseCase = get()
         )
     }
     viewModel {

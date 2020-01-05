@@ -1,54 +1,54 @@
 package com.maruchin.medihelper.domain.di
 
-import com.maruchin.medihelper.domain.usecases.mediplans.*
-import com.maruchin.medihelper.domain.usecasesimpl.mediplans.*
+import com.maruchin.medihelper.domain.usecases.plans.*
+import com.maruchin.medihelper.domain.usecasesimpl.plans.*
 import org.koin.dsl.module
 
 val medicinePlanUseCaseModule = module {
     factory { 
-        GetLiveMedicinesPlansItemsByProfileUseCaseImpl(
-            medicinePlanRepo = get(),
+        GetLivePlansItemsByProfileUseCaseImpl(
+            planRepo = get(),
             medicineRepo = get()
-        ) as GetLiveMedicinesPlansItemsByProfileUseCase
+        ) as GetLivePlansItemsByProfileUseCase
     }
     factory {
-        GetMedicinePlanDetailsUseCaseImpl(
-            medicinePlanRepo = get(),
+        GetPlanDetailsUseCaseImpl(
+            planRepo = get(),
             medicineRepo = get(),
             profileRepo = get()
-        ) as GetMedicinePlanDetailsUseCase
+        ) as GetPlanDetailsUseCase
     }
     factory {
-        GetMedicinePlanEditDataUseCaseImpl(
-            medicinePlanRepo = get()
-        ) as GetMedicinePlanEditDataUseCase
+        GetPlanEditDataUseCaseImpl(
+            planRepo = get()
+        ) as GetPlanEditDataUseCase
     }
     factory { 
-        SaveMedicinePlanUseCaseImpl(
-            medicinePlanRepo = get(),
+        SavePlanUseCaseImpl(
+            planRepo = get(),
             plannedMedicineRepo = get(),
             plannedMedicineScheduler = get(),
             deviceCalendar = get(),
             validator = get()
-        ) as SaveMedicinePlanUseCase
+        ) as SavePlanUseCase
     }
     factory {
-        DeleteSingleMedicinePlanUseCaseImpl(
-            medicinePlanRepo = get(),
+        DeleteSinglePlanUseCaseImpl(
+            planRepo = get(),
             plannedMedicineRepo = get(),
             deletePlannedMedicinesUseCase = get()
-        ) as DeleteSingleMedicinePlanUseCase
+        ) as DeleteSinglePlanUseCase
     }
     factory {
-        DeleteMedicinesPlansUseCaseImpl(
-            medicinePlanRepo = get(),
+        DeletePlansUseCaseImpl(
+            planRepo = get(),
             plannedMedicineRepo = get(),
             deletePlannedMedicinesUseCase = get()
-        ) as DeleteMedicinesPlansUseCase
+        ) as DeletePlansUseCase
     }
     factory { 
-        GetMedicinePlanHistoryUseCaseImpl(
+        GetPlanHistoryUseCaseImpl(
             plannedMedicineRepo = get()
-        ) as GetMedicinePlanHistoryUseCase
+        ) as GetPlanHistoryUseCase
     }
 }

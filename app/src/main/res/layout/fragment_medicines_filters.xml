@@ -142,7 +142,7 @@
                         style="@style/Widget.MediHelper.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Średni zapas" />
+                        android:text="Średnia ilość" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_state_good"

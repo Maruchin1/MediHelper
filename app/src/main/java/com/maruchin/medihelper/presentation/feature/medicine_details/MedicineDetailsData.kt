@@ -5,7 +5,7 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.MedicineState
 import com.maruchin.medihelper.domain.model.MedicineDetails
-import com.maruchin.medihelper.presentation.utils.PicturesRef
+import com.maruchin.medihelper.presentation.utils.PicturesStorageRef
 
 data class MedicineDetailsData(
     val medicineId: String,
@@ -19,11 +19,11 @@ data class MedicineDetailsData(
 ) {
     companion object {
 
-        fun fromDomainModel(model: MedicineDetails, picturesRef: PicturesRef): MedicineDetailsData {
+        fun fromDomainModel(model: MedicineDetails, picturesStorageRef: PicturesStorageRef): MedicineDetailsData {
             return MedicineDetailsData(
                 medicineId = model.medicineId,
                 pictureRef = model.pictureName?.let { name ->
-                    picturesRef.get(name)
+                    picturesStorageRef.getPictureRef(name)
                 },
                 medicineName = model.name,
                 medicineUnit = formatMedicineUnit(

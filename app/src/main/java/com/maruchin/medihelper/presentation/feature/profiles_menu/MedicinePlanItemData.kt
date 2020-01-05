@@ -1,8 +1,8 @@
 package com.maruchin.medihelper.presentation.feature.profiles_menu
 
 import com.maruchin.medihelper.domain.entities.AppDate
-import com.maruchin.medihelper.domain.entities.MedicinePlan
-import com.maruchin.medihelper.domain.model.MedicinePlanItem
+import com.maruchin.medihelper.domain.entities.Plan
+import com.maruchin.medihelper.domain.model.PlanItem
 
 data class MedicinePlanItemData(
     val medicinePlanId: String,
@@ -13,7 +13,7 @@ data class MedicinePlanItemData(
 
     companion object {
 
-        fun fromDomainModel(model: MedicinePlanItem): MedicinePlanItemData {
+        fun fromDomainModel(model: PlanItem): MedicinePlanItemData {
             return MedicinePlanItemData(
                 medicinePlanId = model.medicinePlanId,
                 medicineName = model.medicineName,
@@ -24,23 +24,23 @@ data class MedicinePlanItemData(
             )
         }
 
-        private fun getDuration(model: MedicinePlanItem): String {
+        private fun getDuration(model: PlanItem): String {
             return when (model.planType) {
-                MedicinePlan.Type.ONCE -> getDurationForOnce(
+                Plan.Type.ONE_DAY -> getDurationForOnce(
                     model.startDate
                 )
-                MedicinePlan.Type.PERIOD -> getDurationForPerion(
+                Plan.Type.PERIOD -> getDurationForPerion(
                     model.startDate,
                     model.endDate!!
                 )
-                MedicinePlan.Type.CONTINUOUS -> getDurationForContinuous(
+                Plan.Type.CONTINUOUS -> getDurationForContinuous(
                     model.startDate
                 )
             }
         }
 
         private fun getDurationForOnce(date: AppDate): String {
-            return "Jednorazowo ${date.formatString}"
+            return "Jednego dnia ${date.formatString}"
         }
 
         private fun getDurationForPerion(startDate: AppDate, endDate: AppDate): String {

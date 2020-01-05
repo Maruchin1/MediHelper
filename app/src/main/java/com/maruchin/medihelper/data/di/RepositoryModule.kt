@@ -7,38 +7,33 @@ import org.koin.dsl.module
 val repositoryModule = module {
     single {
         UserAuthRepoImpl(
-            db = get(),
+            appFirebase = get(),
             auth = get()
         ) as UserAuthRepo
     }
     single {
         MedicineRepoImpl(
-            db = get(),
-            auth = get(),
+            appFirebase = get(),
             dataSharedPref = get(),
-            storage = get(),
             mapper = get()
         ) as MedicineRepo
     }
     single {
         ProfileRepoImpl(
-            db = get(),
-            auth = get(),
+            appFirebase = get(),
             dataSharedPref = get(),
             mapper = get()
         ) as ProfileRepo
     }
     single {
-        MedicinePlanRepoImpl(
-            db = get(),
-            auth = get(),
+        PlanRepoImpl(
+            appFirebase = get(),
             mapper = get()
-        ) as MedicinePlanRepo
+        ) as PlanRepo
     }
     single {
         PlannedMedicineRepoImpl(
-            db = get(),
-            auth = get(),
+            appFirebase = get(),
             mapper = get()
         ) as PlannedMedicineRepo
     }

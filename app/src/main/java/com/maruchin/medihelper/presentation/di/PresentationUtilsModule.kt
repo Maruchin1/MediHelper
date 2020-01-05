@@ -14,8 +14,8 @@ val presentationUtilsModule = module {
         )
     }
     factory {
-        PicturesRef(
-            firebaseStorage = get()
+        PicturesStorageRef(
+            appFirebase = get()
         )
     }
 }

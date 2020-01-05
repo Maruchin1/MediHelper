@@ -132,7 +132,7 @@
         tools:layout="@layout/dialog_profile" />
     <fragment
         android:id="@+id/addEditMedicinePlanFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.AddEditMedicinePlanFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.add_edit_plan.AddEditPlanFragment"
         tools:layout="@layout/fragment_add_edit_medicine_plan">
         <argument
             android:name="profileId"
@@ -149,7 +149,7 @@
     </fragment>
     <fragment
         android:id="@+id/medicinePlanDetailsFragment"
-        android:name="com.maruchin.medihelper.presentation.feature.medicine_plan_details.MedicinePlanDetailsFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.plan_details.PlanDetailsFragment"
         tools:layout="@layout/fragment_medicine_plan_details">
         <argument
             android:name="medicinePlanId"

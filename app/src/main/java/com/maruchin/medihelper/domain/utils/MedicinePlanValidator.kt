@@ -2,15 +2,15 @@ package com.maruchin.medihelper.domain.utils
 
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.IntakeDays
-import com.maruchin.medihelper.domain.entities.MedicinePlan
+import com.maruchin.medihelper.domain.entities.Plan
 import com.maruchin.medihelper.domain.entities.TimeDose
 import com.maruchin.medihelper.domain.framework.BaseValidator
-import com.maruchin.medihelper.domain.model.MedicinePlanErrors
+import com.maruchin.medihelper.domain.model.PlanErrors
 
-class MedicinePlanValidator : BaseValidator<MedicinePlanValidator.Params, MedicinePlanErrors>() {
+class MedicinePlanValidator : BaseValidator<MedicinePlanValidator.Params, PlanErrors>() {
 
-    override fun validate(params: Params): MedicinePlanErrors {
-        val errors = MedicinePlanErrors()
+    override fun validate(params: Params): PlanErrors {
+        val errors = PlanErrors()
 
         if (params.profileId.isNullOrEmpty()) {
             errors.emptyProfileId = true
@@ -20,12 +20,12 @@ class MedicinePlanValidator : BaseValidator<MedicinePlanValidator.Params, Medici
         }
         when (params.planType) {
             null -> errors.emptyPlanType = true
-            MedicinePlan.Type.ONCE -> {
+            Plan.Type.ONE_DAY -> {
                 if (params.startDate == null) {
                     errors.emptyStartDate = true
                 }
             }
-            MedicinePlan.Type.PERIOD -> {
+            Plan.Type.PERIOD -> {
                 if (params.startDate == null) {
                     errors.emptyStartDate = true
                 }
@@ -42,7 +42,7 @@ class MedicinePlanValidator : BaseValidator<MedicinePlanValidator.Params, Medici
                     errors.emptyIntakeDays = true
                 }
             }
-            MedicinePlan.Type.CONTINUOUS -> {
+            Plan.Type.CONTINUOUS -> {
                 if (params.startDate == null) {
                     errors.emptyStartDate = true
                 }
@@ -60,7 +60,7 @@ class MedicinePlanValidator : BaseValidator<MedicinePlanValidator.Params, Medici
     data class Params(
         val profileId: String?,
         val medicineId: String?,
-        val planType: MedicinePlan.Type?,
+        val planType: Plan.Type?,
         val startDate: AppDate?,
         val endDate: AppDate?,
         val intakeDays: IntakeDays?,

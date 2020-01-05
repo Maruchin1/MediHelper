@@ -4,13 +4,13 @@ import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDetailsUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
-import com.maruchin.medihelper.presentation.utils.PicturesRef
+import com.maruchin.medihelper.presentation.utils.PicturesStorageRef
 import kotlinx.coroutines.launch
 
 class MedicineDetailsViewModel(
     private val getMedicineDetailsUseCase: GetMedicineDetailsUseCase,
     private val deleteMedicineUseCase: DeleteMedicineUseCase,
-    private val picturesRef: PicturesRef
+    private val picturesStorageRef: PicturesStorageRef
 ) : ViewModel() {
 
     val data: LiveData<MedicineDetailsData>
@@ -66,6 +66,6 @@ class MedicineDetailsViewModel(
 
     private suspend fun getData(medicineId: String): MedicineDetailsData {
         val medicineDetails = getMedicineDetailsUseCase.execute(medicineId)
-        return MedicineDetailsData.fromDomainModel(medicineDetails, picturesRef)
+        return MedicineDetailsData.fromDomainModel(medicineDetails, picturesStorageRef)
     }
 }

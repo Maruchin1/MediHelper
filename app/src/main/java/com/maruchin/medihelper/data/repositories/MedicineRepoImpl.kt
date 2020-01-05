@@ -1,13 +1,10 @@
 package com.maruchin.medihelper.data.repositories
 
 import android.net.Uri
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import com.maruchin.medihelper.data.utils.DataSharedPref
 import com.maruchin.medihelper.data.framework.FirestoreRepo
-import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.data.mappers.MedicineMapper
+import com.maruchin.medihelper.data.utils.AppFirebase
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineInfo
 import com.maruchin.medihelper.domain.entities.MedicineInfoSearchResult
@@ -19,24 +16,24 @@ import org.jsoup.Jsoup
 import java.io.File
 
 class MedicineRepoImpl(
-    private val db: FirebaseFirestore,
-    private val auth: FirebaseAuth,
-    private val storage: FirebaseStorage,
+    private val appFirebase: AppFirebase,
     private val dataSharedPref: DataSharedPref,
     private val mapper: MedicineMapper
 ) : FirestoreRepo<Medicine>(
-    collectionRef = db.collection("users").document(auth.getCurrUserId()).collection("medicines"),
+    collectionRef = appFirebase.medicines,
     mapper = mapper
 ), MedicineRepo {
 
     override suspend fun saveMedicinePicture(pictureFile: File) {
-        val pictureFileRef = storage.reference.child(pictureFile.name)
+        val picturesStorage = appFirebase.medicinesPictures
+        val pictureFileRef = picturesStorage.child(pictureFile.name)
         val fileUri = Uri.fromFile(pictureFile)
         pictureFileRef.putFile(fileUri).await()
     }
 
     override suspend fun deleteMedicinePicture(pictureName: String) {
-        val pictureFileRef = storage.reference.child(pictureName)
+        val picturesStorage = appFirebase.medicinesPictures
+        val pictureFileRef = picturesStorage.child(pictureName)
         pictureFileRef.delete().await()
     }
 

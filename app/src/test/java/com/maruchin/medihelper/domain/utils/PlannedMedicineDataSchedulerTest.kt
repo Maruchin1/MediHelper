@@ -17,11 +17,11 @@ class PlannedMedicineDataSchedulerTest {
 
     @Test
     fun getPlannedMedicines_Once() {
-        val medicinePlan = MedicinePlan(
+        val medicinePlan = Plan(
             entityId = "xyz",
             profileId = "",
             medicineId = "",
-            planType = MedicinePlan.Type.ONCE,
+            planType = Plan.Type.ONE_DAY,
             startDate = AppDate(2019, 11, 20),
             endDate = null,
             intakeDays = null,
@@ -68,11 +68,11 @@ class PlannedMedicineDataSchedulerTest {
 
     @Test
     fun getPlannedMedicines_Period_Everyday() {
-        val medicinePlan = MedicinePlan(
+        val medicinePlan = Plan(
             entityId = "xyz",
             profileId = "",
             medicineId = "",
-            planType = MedicinePlan.Type.PERIOD,
+            planType = Plan.Type.PERIOD,
             startDate = AppDate(2019, 11, 20),
             endDate = AppDate(2019, 11, 27),
             intakeDays = IntakeDays.Everyday,
@@ -114,11 +114,11 @@ class PlannedMedicineDataSchedulerTest {
 
     @Test
     fun getPlannedMedicines_Period_DaysOfWeek() {
-        val medicinePlan = MedicinePlan(
+        val medicinePlan = Plan(
             entityId = "xyz",
             profileId = "",
             medicineId = "",
-            planType = MedicinePlan.Type.PERIOD,
+            planType = Plan.Type.PERIOD,
             startDate = AppDate(2019, 11, 20),
             endDate = AppDate(2019, 11, 27),
             intakeDays = IntakeDays.DaysOfWeek(
@@ -164,11 +164,11 @@ class PlannedMedicineDataSchedulerTest {
     //20, 22, 24, 26
     @Test
     fun getPlannedMedicines_Period_Interval() {
-        val medicinePlan = MedicinePlan(
+        val medicinePlan = Plan(
             entityId = "xyz",
             profileId = "",
             medicineId = "",
-            planType = MedicinePlan.Type.PERIOD,
+            planType = Plan.Type.PERIOD,
             startDate = AppDate(2019, 11, 20),
             endDate = AppDate(2019, 11, 27),
             intakeDays = IntakeDays.Interval(daysCount = 2),

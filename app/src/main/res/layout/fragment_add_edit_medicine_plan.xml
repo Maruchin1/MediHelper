@@ -7,17 +7,17 @@
 
         <import type="android.view.View" />
 
-        <import type="com.maruchin.medihelper.domain.entities.MedicinePlan.Type" />
+        <import type="com.maruchin.medihelper.domain.entities.Plan.Type" />
 
-        <import type="com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.IntakeDaysType" />
+        <import type="com.maruchin.medihelper.presentation.feature.add_edit_plan.IntakeDaysType" />
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.AddEditMedicinePlanFragment" />
+            type="com.maruchin.medihelper.presentation.feature.add_edit_plan.AddEditPlanFragment" />
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.add_edit_medicine_plan.AddEditMedicinePlanViewModel" />
+            type="com.maruchin.medihelper.presentation.feature.add_edit_plan.AddEditPlanViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -259,7 +259,7 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.MediHelper.TextInputLayout"
-                                visibleOrGone="@{viewModel.planType == Type.ONCE}"
+                                visibleOrGone="@{viewModel.planType == Type.ONE_DAY}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -344,7 +344,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
-                    visibleOrGone="@{viewModel.planType != Type.ONCE}"
+                    visibleOrGone="@{viewModel.planType != Type.ONE_DAY}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_header_margin_horizontal"
@@ -369,7 +369,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.MediHelper.CardView.Big"
-                    visibleOrGone="@{viewModel.planType != Type.ONCE}"
+                    visibleOrGone="@{viewModel.planType != Type.ONE_DAY}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_card_margin_horizontal"

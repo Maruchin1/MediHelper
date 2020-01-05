@@ -1,10 +1,10 @@
 package com.maruchin.medihelper.domain.usecasesimpl.medicines
 
 import com.maruchin.medihelper.domain.entities.*
-import com.maruchin.medihelper.domain.repositories.MedicinePlanRepo
+import com.maruchin.medihelper.domain.repositories.PlanRepo
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
-import com.maruchin.medihelper.domain.usecases.mediplans.DeleteMedicinesPlansUseCase
+import com.maruchin.medihelper.domain.usecases.plans.DeletePlansUseCase
 import com.maruchin.medihelper.testingframework.mock
 import com.maruchin.medihelper.testingframework.verifyInvocations
 import kotlinx.coroutines.runBlocking
@@ -16,8 +16,8 @@ import org.mockito.Mockito
 class DeleteMedicineUseCaseImplTest {
 
     private val medicineRepo: MedicineRepo = mock()
-    private val medicinePlanRepo: MedicinePlanRepo = mock()
-    private val deleteMedicinesPlansUseCase: DeleteMedicinesPlansUseCase = mock()
+    private val planRepo: PlanRepo = mock()
+    private val deletePlansUseCase: DeletePlansUseCase = mock()
 
     private lateinit var useCase: DeleteMedicineUseCase
 
@@ -25,8 +25,8 @@ class DeleteMedicineUseCaseImplTest {
     fun before() {
         useCase = DeleteMedicineUseCaseImpl(
             medicineRepo,
-            medicinePlanRepo,
-            deleteMedicinesPlansUseCase
+            planRepo,
+            deletePlansUseCase
         )
     }
 
@@ -47,11 +47,11 @@ class DeleteMedicineUseCaseImplTest {
                 pictureName = "picture.jpg"
             )
             val medicinesPlansMock = listOf(
-                MedicinePlan(
+                Plan(
                     entityId = "mmm",
                     profileId = "ppp",
                     medicineId = "ABCD",
-                    planType = MedicinePlan.Type.ONCE,
+                    planType = Plan.Type.ONE_DAY,
                     startDate = AppDate(2019, 11, 3),
                     endDate = null,
                     intakeDays = null,
@@ -64,14 +64,14 @@ class DeleteMedicineUseCaseImplTest {
                 )
             )
             Mockito.`when`(medicineRepo.getById(medicineId)).thenReturn(mockMedicine)
-            Mockito.`when`(medicinePlanRepo.getListByMedicine(medicineId)).thenReturn(medicinesPlansMock)
+            Mockito.`when`(planRepo.getListByMedicine(medicineId)).thenReturn(medicinesPlansMock)
 
             useCase.execute(medicineId)
 
             verifyInvocations(medicineRepo, invocations = 1).deleteMedicinePicture("picture.jpg")
             verifyInvocations(medicineRepo, invocations = 1).deleteById("ABCD")
             verifyInvocations(
-                deleteMedicinesPlansUseCase,
+                deletePlansUseCase,
                 invocations = 1
             ).execute(medicinesPlansMock.map { it.entityId })
         }
@@ -94,13 +94,13 @@ class DeleteMedicineUseCaseImplTest {
                 pictureName = null
             )
             Mockito.`when`(medicineRepo.getById(medicineId)).thenReturn(mockMedicine)
-            Mockito.`when`(medicinePlanRepo.getListByMedicine(medicineId)).thenReturn(emptyList())
+            Mockito.`when`(planRepo.getListByMedicine(medicineId)).thenReturn(emptyList())
 
             useCase.execute(medicineId)
 
             Mockito.verify(medicineRepo, Mockito.times(0)).deleteMedicinePicture(Mockito.anyString())
             Mockito.verify(medicineRepo, Mockito.times(1)).deleteById("ABCD")
-            verifyInvocations(deleteMedicinesPlansUseCase, invocations = 1).execute(Mockito.anyList())
+            verifyInvocations(deletePlansUseCase, invocations = 1).execute(Mockito.anyList())
         }
     }
 }

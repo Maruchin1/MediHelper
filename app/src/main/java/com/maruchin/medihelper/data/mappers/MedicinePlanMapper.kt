@@ -5,7 +5,7 @@ import com.maruchin.medihelper.domain.entities.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MedicinePlanMapper : BaseMapper<MedicinePlan>() {
+class MedicinePlanMapper : BaseMapper<Plan>() {
 
     private enum class IntakeDaysType {
         EVERYDAY, DAYS_OF_WEEK, INTERVAL, SEQUENCE
@@ -37,7 +37,7 @@ class MedicinePlanMapper : BaseMapper<MedicinePlan>() {
     private val time = "time"
     private val doseSize = "doseSize"
 
-    override suspend fun entityToMap(entity: MedicinePlan): Map<String, Any?> = withContext(Dispatchers.Default) {
+    override suspend fun entityToMap(entity: Plan): Map<String, Any?> = withContext(Dispatchers.Default) {
         return@withContext hashMapOf(
             profileId to entity.profileId,
             medicineId to entity.medicineId,
@@ -49,12 +49,12 @@ class MedicinePlanMapper : BaseMapper<MedicinePlan>() {
         )
     }
 
-    override suspend fun mapToEntity(entityId: String, map: Map<String, Any?>): MedicinePlan = withContext(Dispatchers.Default) {
-        return@withContext MedicinePlan(
+    override suspend fun mapToEntity(entityId: String, map: Map<String, Any?>): Plan = withContext(Dispatchers.Default) {
+        return@withContext Plan(
             entityId = entityId,
             profileId = map[profileId] as String,
             medicineId = map[medicineId] as String,
-            planType = MedicinePlan.Type.valueOf(map[planType] as String),
+            planType = Plan.Type.valueOf(map[planType] as String),
             startDate = AppDate(map[startDate] as String),
             endDate = (map[endDate] as String?)?.let { AppDate(it) },
             intakeDays = (map[intakeDays] as Map<String, Any?>?)?.let {

@@ -5,11 +5,11 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.medicine_plan_details.MedicinePlanDetailsFragment" />
+            type="com.maruchin.medihelper.presentation.feature.plan_details.PlanDetailsFragment" />
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.feature.medicine_plan_details.TimeDoseData" />
+            type="com.maruchin.medihelper.presentation.feature.plan_details.TimeDoseData" />
     </data>
 
     <LinearLayout

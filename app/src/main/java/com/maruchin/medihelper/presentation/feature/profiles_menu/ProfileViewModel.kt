@@ -1,9 +1,9 @@
 package com.maruchin.medihelper.presentation.feature.profiles_menu
 
 import androidx.lifecycle.*
-import com.maruchin.medihelper.domain.model.MedicinePlanItem
+import com.maruchin.medihelper.domain.model.PlanItem
 import com.maruchin.medihelper.domain.model.ProfileItem
-import com.maruchin.medihelper.domain.usecases.mediplans.GetLiveMedicinesPlansItemsByProfileUseCase
+import com.maruchin.medihelper.domain.usecases.plans.GetLivePlansItemsByProfileUseCase
 import com.maruchin.medihelper.domain.usecases.profile.DeleteProfileUseCase
 import com.maruchin.medihelper.domain.usecases.profile.GetLiveAllProfilesItemsUseCase
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 class ProfileViewModel(
     private val selectedProfile: SelectedProfile,
     private val getLiveAllProfilesItemsUseCase: GetLiveAllProfilesItemsUseCase,
-    private val getLiveMedicinesPlansItemsByProfileUseCase: GetLiveMedicinesPlansItemsByProfileUseCase,
+    private val getLivePlansItemsByProfileUseCase: GetLivePlansItemsByProfileUseCase,
     private val deleteProfileUseCase: DeleteProfileUseCase
 ) : ViewModel() {
 
@@ -95,7 +95,7 @@ class ProfileViewModel(
     private fun getLivePlansBySelectedProfile(): LiveData<List<MedicinePlanItemData>> {
         return Transformations.switchMap(selectedProfile.profileIdLive) { selectedProfileId ->
             liveData {
-                val itemsLive = getLiveMedicinesPlansItemsByProfileUseCase.execute(selectedProfileId)
+                val itemsLive = getLivePlansItemsByProfileUseCase.execute(selectedProfileId)
                 val dataLive = mapLivePlansItemsToData(itemsLive)
                 emitSource(dataLive)
             }
@@ -103,14 +103,14 @@ class ProfileViewModel(
     }
 
     private fun mapLivePlansItemsToData(
-        plansLive: LiveData<List<MedicinePlanItem>>
+        plansLive: LiveData<List<PlanItem>>
     ): LiveData<List<MedicinePlanItemData>> {
         return Transformations.map(plansLive) { plans ->
             mapPlansItemsToData(plans)
         }
     }
 
-    private fun mapPlansItemsToData(plans: List<MedicinePlanItem>): List<MedicinePlanItemData> {
+    private fun mapPlansItemsToData(plans: List<PlanItem>): List<MedicinePlanItemData> {
         return plans.map { plan ->
             MedicinePlanItemData.fromDomainModel(plan)
         }

@@ -4,6 +4,7 @@ import com.google.firebase.auth.*
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.maruchin.medihelper.data.framework.getCurrUserId
+import com.maruchin.medihelper.data.utils.AppFirebase
 import com.maruchin.medihelper.domain.entities.User
 import com.maruchin.medihelper.domain.model.SignInErrors
 import com.maruchin.medihelper.domain.model.SignUpErrors
@@ -13,12 +14,12 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class UserAuthRepoImpl(
-    private val db: FirebaseFirestore,
+    private val appFirebase: AppFirebase,
     private val auth: FirebaseAuth
 ) : UserAuthRepo {
 
     private val collectionRef: CollectionReference
-        get() = db.collection("users")
+        get() = appFirebase.users
 
     override suspend fun signIn(email: String, password: String): String = withContext(Dispatchers.IO) {
         return@withContext try {
