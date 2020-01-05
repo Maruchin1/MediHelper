@@ -93,9 +93,11 @@
                 android:layout_marginEnd="@dimen/no_item_page_margin_horizontal"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="@{viewModel.noMedicines, default=gone}"
+                android:visibility="@{viewModel.noMedicines, default=visible}"
                 app:layout_anchor="@id/recycler_view_medicines"
-                app:layout_anchorGravity="center">
+                app:layout_anchorGravity="top"
+                android:layout_gravity="bottom"
+                android:paddingTop="@dimen/no_item_page_margin_top">
 
                 <ImageView
                     android:layout_width="@dimen/no_item_page_icon_size"
