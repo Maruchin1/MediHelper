@@ -182,4 +182,9 @@
         android:id="@+id/changePasswordDialog"
         android:name="com.maruchin.medihelper.presentation.feature.options.ChangePasswordDialog"
         tools:layout="@layout/dialog_change_password" />
+    <fragment
+        android:id="@+id/doctorsFragment"
+        android:name="com.maruchin.medihelper.presentation.feature.doctors.DoctorsFragment"
+        android:label="DoctorsFragment"
+        tools:layout="@layout/fragment_doctors"/>
 </navigation>
