@@ -21,7 +21,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:visibility="@{!viewModel.dataLoading}">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,39 +30,103 @@
                 android:paddingBottom="16dp">
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView"
+                    style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:visibility="@{viewModel.morningAvailable}">
+                    android:layout_marginEnd="8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:gravity="center">
+                            android:clickable="@{viewModel.morningSection.itemsAvailable}"
+                            android:focusable="@{viewModel.morningSection.itemsAvailable}"
+                            android:foreground="?selectableItemBackground"
+                            android:onClick="@{() -> handler.onClickChangeMorningCollapsed()}"
+                            android:paddingStart="8dp"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="16dp">
 
-                            <ImageView
+                            <LinearLayout
+                                android:id="@+id/lay_section_icon_morning"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/round_local_cafe_24"
-                                android:tint="@color/colorDarkerGray" />
+                                android:gravity="center"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
 
-                            <TextView
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/round_local_cafe_24"
+                                    android:tint="@color/colorDarkerGray" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="Rano"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                    android:textColor="@color/colorTextTertiary" />
+                            </LinearLayout>
+
+                            <FrameLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="Rano"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:textColor="@color/colorTextTertiary" />
-                        </LinearLayout>
+                                android:visibility="@{viewModel.morningSection.itemsAvailable}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/baseline_arrow_drop_down_black_36"
+                                    android:tint="@color/colorDarkerGray"
+                                    android:visibility="@{!viewModel.morningSection.sectionExpanded}" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/baseline_arrow_drop_up_black_36"
+                                    android:tint="@color/colorDarkerGray"
+                                    android:visibility="@{viewModel.morningSection.sectionExpanded}" />
+
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/lay_section_icon_morning">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Brak zaplanowanych leków"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                                    android:visibility="@{!viewModel.morningSection.itemsAvailable}" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text='@{viewModel.morningSection.takenMedicinesInfo, default="Przyjęto 0 z 4"}'
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                                    android:visibility="@{viewModel.morningSection.itemsAvailable}" />
+                            </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <include layout="@layout/line_horizontal" />
 
@@ -72,44 +136,109 @@
                             android:layout_height="wrap_content"
                             android:nestedScrollingEnabled="false"
                             android:orientation="vertical"
+                            android:visibility="@{viewModel.morningSection.sectionExpanded}"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView"
+                    style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:visibility="@{viewModel.afternoonAvailable}">
+                    android:layout_marginEnd="8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:gravity="center">
+                            android:clickable="@{viewModel.afternoonSection.itemsAvailable}"
+                            android:focusable="@{viewModel.afternoonSection.itemsAvailable}"
+                            android:foreground="?selectableItemBackground"
+                            android:onClick="@{() -> handler.onClickChangeAfternoonCollapsed()}"
+                            android:paddingStart="8dp"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="16dp">
 
-                            <ImageView
+                            <LinearLayout
+                                android:id="@+id/lay_section_icon_afternoon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/round_wb_sunny_24"
-                                android:tint="@color/colorDarkerGray" />
+                                android:gravity="center"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
 
-                            <TextView
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/round_wb_sunny_24"
+                                    android:tint="@color/colorDarkerGray" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="Popołudnie"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                    android:textColor="@color/colorTextTertiary" />
+                            </LinearLayout>
+
+                            <FrameLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="Popołudnie"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:textColor="@color/colorTextTertiary" />
-                        </LinearLayout>
+                                android:visibility="@{viewModel.afternoonSection.itemsAvailable}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/baseline_arrow_drop_down_black_36"
+                                    android:tint="@color/colorDarkerGray"
+                                    android:visibility="@{!viewModel.afternoonSection.sectionExpanded}" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/baseline_arrow_drop_up_black_36"
+                                    android:tint="@color/colorDarkerGray"
+                                    android:visibility="@{viewModel.afternoonSection.sectionExpanded}" />
+
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/lay_section_icon_afternoon">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Brak zaplanowanych leków"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                                    android:visibility="@{!viewModel.afternoonSection.itemsAvailable}" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text='@{viewModel.afternoonSection.takenMedicinesInfo, default="Przyjęto 0 z 4"}'
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                                    android:visibility="@{viewModel.afternoonSection.itemsAvailable}" />
+                            </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <include layout="@layout/line_horizontal" />
 
@@ -119,44 +248,110 @@
                             android:layout_height="wrap_content"
                             android:nestedScrollingEnabled="false"
                             android:orientation="vertical"
+                            android:visibility="@{viewModel.afternoonSection.sectionExpanded}"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView"
+                    style="@style/Widget.MediHelper.CardView.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:visibility="@{viewModel.eveningAvailable}">
+                    android:layout_marginBottom="@dimen/appbar_height">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:gravity="center">
+                            android:clickable="@{viewModel.eveningSection.itemsAvailable}"
+                            android:focusable="@{viewModel.eveningSection.itemsAvailable}"
+                            android:foreground="?selectableItemBackground"
+                            android:onClick="@{() -> handler.onClickChangeEveningCollapsed()}"
+                            android:paddingStart="8dp"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="16dp">
 
-                            <ImageView
+                            <LinearLayout
+                                android:id="@+id/lay_section_icon_evening"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/round_hotel_24"
-                                android:tint="@color/colorDarkerGray" />
+                                android:gravity="center"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
 
-                            <TextView
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/round_hotel_24"
+                                    android:tint="@color/colorDarkerGray" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="Wieczór"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                    android:textColor="@color/colorTextTertiary" />
+                            </LinearLayout>
+
+                            <FrameLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="Wieczór"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:textColor="@color/colorTextTertiary" />
-                        </LinearLayout>
+                                android:visibility="@{viewModel.eveningSection.itemsAvailable}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/baseline_arrow_drop_down_black_36"
+                                    android:tint="@color/colorDarkerGray"
+                                    android:visibility="@{!viewModel.eveningSection.sectionExpanded}" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/baseline_arrow_drop_up_black_36"
+                                    android:tint="@color/colorDarkerGray"
+                                    android:visibility="@{viewModel.eveningSection.sectionExpanded}" />
+
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/lay_section_icon_evening">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Brak zaplanowanych leków"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                                    android:visibility="@{!viewModel.eveningSection.itemsAvailable}" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text='@{viewModel.eveningSection.takenMedicinesInfo, default="Przyjęto 0 z 4"}'
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                                    android:visibility="@{viewModel.eveningSection.itemsAvailable}" />
+                            </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <include layout="@layout/line_horizontal" />
 
@@ -166,6 +361,7 @@
                             android:layout_height="wrap_content"
                             android:nestedScrollingEnabled="false"
                             android:orientation="vertical"
+                            android:visibility="@{viewModel.eveningSection.sectionExpanded}"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -173,38 +369,12 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/no_item_page_margin_horizontal"
-            android:layout_marginTop="@dimen/no_item_page_margin_top"
-            android:layout_marginEnd="@dimen/no_item_page_margin_horizontal"
-            android:gravity="center_horizontal|top"
-            android:orientation="vertical"
-            android:visibility="@{viewModel.noItemsAvailable, default=gone}">
-
-            <ImageView
-                android:layout_width="@dimen/no_item_page_icon_size"
-                android:layout_height="@dimen/no_item_page_icon_size"
-                android:src="@drawable/ic_pill_grey600_48dp"
-                android:tint="@color/colorDarkerGray" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/no_item_page_text_margin_top"
-                android:text='@{"Brak zaplanowanych leków na " + handler.date.formatString}'
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle" />
-
-        </LinearLayout>
-
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/progress_bar_margin_top"
-            android:visibility="@{!viewModel.dataLoaded}" />
+            android:visibility="@{viewModel.dataLoading}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

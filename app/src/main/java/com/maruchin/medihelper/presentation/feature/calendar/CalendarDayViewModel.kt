@@ -12,26 +12,18 @@ class CalendarDayViewModel(
     private val selectedProfile: SelectedProfile
 ) : ViewModel() {
 
-    val dataLoaded: LiveData<Boolean>
-    val morningItems: LiveData<List<PlannedMedicineItemData>>
-    val afternoonItems: LiveData<List<PlannedMedicineItemData>>
-    val eveningItems: LiveData<List<PlannedMedicineItemData>>
-    val morningAvailable: LiveData<Boolean>
-    val afternoonAvailable: LiveData<Boolean>
-    val eveningAvailable: LiveData<Boolean>
-    val noItemsAvailable: LiveData<Boolean>
+    val dataLoading: LiveData<Boolean>
+    val morningSection: CalendarDaySectionModel
+    val afternoonSection: CalendarDaySectionModel
+    val eveningSection: CalendarDaySectionModel
 
-    private val data = MediatorLiveData<CalendarDayData>()
+    private val data = MediatorLiveData<CalendarDayData>().apply { value = null }
 
     init {
-        dataLoaded = getLiveDataLoaded()
-        morningItems = getLiveMorningItems()
-        afternoonItems = getLiveAfternoonItems()
-        eveningItems = getLiveEveningItems()
-        morningAvailable = getLiveItemsAvailable(morningItems)
-        afternoonAvailable = getLiveItemsAvailable(afternoonItems)
-        eveningAvailable = getLiveItemsAvailable(eveningItems)
-        noItemsAvailable = getLiveNoItemsAvailable()
+        dataLoading = getLiveDataLoading()
+        morningSection = getSectionModel(CalendarDaySectionModel.Type.MORNING)
+        afternoonSection = getSectionModel(CalendarDaySectionModel.Type.AFTERNOON)
+        eveningSection = getSectionModel(CalendarDaySectionModel.Type.EVENING)
     }
 
     fun initViewModel(calendarDayDate: AppDate) = viewModelScope.launch {
@@ -42,32 +34,12 @@ class CalendarDayViewModel(
         }
     }
 
-    private fun getLiveDataLoaded(): LiveData<Boolean> {
-        return Transformations.map(data) { it != null }
+    private fun getLiveDataLoading(): LiveData<Boolean> {
+        return Transformations.map(data) { it == null }
     }
 
-    private fun getLiveMorningItems(): LiveData<List<PlannedMedicineItemData>> {
-        return Transformations.map(data) { it.morningItems }
-    }
-
-    private fun getLiveAfternoonItems(): LiveData<List<PlannedMedicineItemData>> {
-        return Transformations.map(data) { it.afternoonItems }
-    }
-
-    private fun getLiveEveningItems(): LiveData<List<PlannedMedicineItemData>> {
-        return Transformations.map(data) { it.eveningItems }
-    }
-
-    private fun getLiveItemsAvailable(itemsLive: LiveData<List<PlannedMedicineItemData>>): LiveData<Boolean> {
-        return Transformations.map(itemsLive) { items ->
-            items.isNotEmpty()
-        }
-    }
-
-    private fun getLiveNoItemsAvailable(): LiveData<Boolean> {
-        return Transformations.map(data) {
-            it.morningItems.isEmpty() and it.afternoonItems.isEmpty() and it.eveningItems.isEmpty()
-        }
+    private fun getSectionModel(type: CalendarDaySectionModel.Type): CalendarDaySectionModel {
+        return CalendarDaySectionModel(type, data)
     }
 
     private fun getLiveItems(date: AppDate): LiveData<List<PlannedMedicineItem>> {

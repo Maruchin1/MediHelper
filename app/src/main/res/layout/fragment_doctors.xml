@@ -58,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/no_item_page_text_margin_top"
-                    android:text="Nowe możliwości aplikacji\nMediHelper już wkrótce!"
+                    android:text="Nowe funkcje aplikacji\nMediHelper już wkrótce!"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle" />
 
