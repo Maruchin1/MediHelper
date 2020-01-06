@@ -1,5 +1,6 @@
 package com.maruchin.medihelper.presentation.feature.options
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,16 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
         HelpDialog(
             helpItems = viewModel.getNotifAndAlarmHelp()
         ).show(childFragmentManager)
+    }
+
+    fun onClickShareApp() {
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "Link to app")
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, "Poleć aplikację znajomym")
+        startActivity(shareIntent)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

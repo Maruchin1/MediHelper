@@ -271,6 +271,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
+            android:onClick="@{() -> handler.onClickShareApp()}"
             android:src="@drawable/round_share_black_48"
             app:backgroundTint="@color/colorPrimary"
             app:elevation="8dp"
