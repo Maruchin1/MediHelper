@@ -12,20 +12,19 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import com.maruchin.medihelper.BR
 import com.maruchin.medihelper.R
-import com.maruchin.medihelper.databinding.FragmentMedicinePlanDetailsBinding
+import com.maruchin.medihelper.databinding.FragmentPlanDetailsBinding
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import com.maruchin.medihelper.presentation.framework.BaseRecyclerAdapter
 import com.maruchin.medihelper.presentation.framework.BaseViewHolder
 import com.maruchin.medihelper.presentation.framework.beginDelayedTransition
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
-import kotlinx.android.synthetic.main.fragment_medicine_plan_details.*
+import kotlinx.android.synthetic.main.fragment_plan_details.*
 import kotlinx.android.synthetic.main.rec_item_history_item.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlanDetailsFragment :
-    BaseMainFragment<FragmentMedicinePlanDetailsBinding>(R.layout.fragment_medicine_plan_details) {
+class PlanDetailsFragment : BaseMainFragment<FragmentPlanDetailsBinding>(R.layout.fragment_plan_details) {
 
     private val viewModel: PlanDetailsViewModel by viewModel()
     private val args: PlanDetailsFragmentArgs by navArgs()
@@ -115,6 +114,9 @@ class PlanDetailsFragment :
     }
 
     private fun observeViewModel() {
+        viewModel.todayHistoryPosition.observe(viewLifecycleOwner, Observer { position ->
+            recycler_view_history.scrollToPosition(position)
+        })
         viewModel.actionDetailsLoaded.observe(viewLifecycleOwner, Observer {
             lay_details.beginDelayedTransition()
         })
@@ -145,11 +147,16 @@ class PlanDetailsFragment :
     ) {
         override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
             val item = itemsList[position]
-            holder.bind(displayData = item, handler = this@PlanDetailsFragment)
+            holder.bind(displayData = item, handler = this@PlanDetailsFragment, viewModel = viewModel)
             holder.view.lay_history_checkboxes.apply {
                 removeAllViews()
-                item.checkBoxes.forEach { checkbox  ->
-                    val binding = DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, R.layout.view_history_checkbox, this, true)
+                item.checkBoxes.forEach { checkbox ->
+                    val binding = DataBindingUtil.inflate<ViewDataBinding>(
+                        layoutInflater,
+                        R.layout.view_history_checkbox,
+                        this,
+                        true
+                    )
                     binding.setVariable(BR.displayData, checkbox)
                 }
             }

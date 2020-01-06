@@ -150,7 +150,7 @@
     <fragment
         android:id="@+id/medicinePlanDetailsFragment"
         android:name="com.maruchin.medihelper.presentation.feature.plan_details.PlanDetailsFragment"
-        tools:layout="@layout/fragment_medicine_plan_details">
+        tools:layout="@layout/fragment_plan_details">
         <argument
             android:name="medicinePlanId"
             app:argType="string" />

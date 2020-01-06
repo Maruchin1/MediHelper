@@ -9,15 +9,17 @@ data class HistoryItemData(
     val date: AppDate,
     val dayOfWeek: String,
     val dayAndMonth: String,
+    val currDate: Boolean,
     val checkBoxes: List<CheckBox>
 ) {
     companion object {
 
-        fun fromDomainModel(model: HistoryItem) =
+        fun fromDomainModel(model: HistoryItem, currDate: AppDate) =
             HistoryItemData(
                 date = model.date,
                 dayOfWeek = model.date.dayOfWeekString,
                 dayAndMonth = model.date.dayMonthString,
+                currDate = model.date == currDate,
                 checkBoxes = getCheckBoxesData(
                     model.checkboxesList
                 )

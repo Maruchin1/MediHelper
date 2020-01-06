@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.presentation.feature.plan_details
 
 import androidx.lifecycle.*
+import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.domain.model.HistoryItem
 import com.maruchin.medihelper.domain.model.PlanDetails
 import com.maruchin.medihelper.domain.usecases.plans.DeleteSinglePlanUseCase
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 class PlanDetailsViewModel(
     private val getPlanDetailsUseCase: GetPlanDetailsUseCase,
     private val getPlanHistoryUseCase: GetPlanHistoryUseCase,
-    private val deleteSinglePlanUseCase: DeleteSinglePlanUseCase
+    private val deleteSinglePlanUseCase: DeleteSinglePlanUseCase,
+    private val deviceCalendar: DeviceCalendar
 ) : ViewModel() {
 
     val colorPrimary: LiveData<String>
@@ -21,6 +23,7 @@ class PlanDetailsViewModel(
     val durationTime: LiveData<DurationTimeData>
     val days: LiveData<DaysData?>
     val timesDoses: LiveData<List<TimeDoseData>>
+    val todayHistoryPosition: LiveData<Int>
 
     val history: LiveData<List<HistoryItemData>>
         get() = _history
@@ -53,6 +56,7 @@ class PlanDetailsViewModel(
         durationTime = getLiveDurationTimeData()
         days = getLiveDaysData()
         timesDoses = getLiveTimesDosesData()
+        todayHistoryPosition = getLiveTodayHistoryPosition()
     }
 
     fun initViewModel(medicinePlanId: String) = viewModelScope.launch {
@@ -100,6 +104,12 @@ class PlanDetailsViewModel(
         }
     }
 
+    private fun getLiveTodayHistoryPosition() = Transformations.map(_history) { history ->
+        history.indexOfFirst { item ->
+            item.currDate
+        }
+    }
+
     private suspend fun loadPlanDetails() {
         val details = getPlanDetailsUseCase.execute(medicinePlanId)
         _medicineId = details.medicineId
@@ -114,7 +124,7 @@ class PlanDetailsViewModel(
 
     private fun mapHistoryToData(history: List<HistoryItem>): List<HistoryItemData> {
         return history.map { historyItem ->
-            HistoryItemData.fromDomainModel(historyItem)
+            HistoryItemData.fromDomainModel(historyItem, deviceCalendar.getCurrDate())
         }
     }
 }

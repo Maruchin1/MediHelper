@@ -104,7 +104,8 @@ val viewModelModule = module {
         PlanDetailsViewModel(
             getPlanDetailsUseCase = get(),
             getPlanHistoryUseCase = get(),
-            deleteSinglePlanUseCase = get()
+            deleteSinglePlanUseCase = get(),
+            deviceCalendar = get()
         )
     }
     viewModel {

@@ -79,6 +79,15 @@ fun setCardBackgroundColor(materialCardView: MaterialCardView, color: String?) {
     }
 }
 
+@BindingAdapter("app:strokeColor")
+fun setCardStrokeColor(materialCardView: MaterialCardView, color: String?) {
+    if (!color.isNullOrEmpty()) {
+        val parsedColor = Color.parseColor(color)
+        val colorStateList = ColorStateList.valueOf(parsedColor)
+        materialCardView.setStrokeColor(colorStateList)
+    }
+}
+
 //TextView
 @BindingAdapter("android:textColor")
 fun setTextColor(textView: TextView, color: String?) {
