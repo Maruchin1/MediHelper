@@ -81,15 +81,14 @@ class AddEditProfileFragment : BaseMainFragment<FragmentAddEditProfileBinding>(R
     }
 
     // Inner classes
-    inner class PersonColorAdapter : BaseRecyclerAdapter<ColorCheckboxData>(
+    inner class PersonColorAdapter : BaseRecyclerLiveAdapter<ColorCheckboxData>(
         layoutResId = R.layout.rec_item_profile_color,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.colorCheckboxDataList,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.color == newItem.color }
     ) {
-        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            val personColorCheckboxData = itemsList[position]
-            holder.bind(personColorCheckboxData, this@AddEditProfileFragment)
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: ColorCheckboxData) {
+            holder.bind(item, this@AddEditProfileFragment)
         }
     }
 }

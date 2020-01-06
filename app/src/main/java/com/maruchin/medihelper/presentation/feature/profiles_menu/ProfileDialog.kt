@@ -138,25 +138,23 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         }
     }
 
-    private inner class ProfileAdapter : BaseRecyclerAdapter<ProfileItemData>(
+    private inner class ProfileAdapter : BaseRecyclerLiveAdapter<ProfileItemData>(
         layoutResId = R.layout.rec_item_profile,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.profileItems
     ) {
-        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            val item = itemsList[position]
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: ProfileItemData) {
             holder.bind(item, this@ProfileDialog)
         }
     }
 
-    private inner class MedicinePlanAdapter : BaseRecyclerAdapter<MedicinePlanItemData>(
+    private inner class MedicinePlanAdapter : BaseRecyclerLiveAdapter<MedicinePlanItemData>(
         layoutResId = R.layout.rec_item_medicine_plan,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.medicinesPlans,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.medicinePlanId == newItem.medicinePlanId }
     ) {
-        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            val item = itemsList[position]
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: MedicinePlanItemData) {
             holder.bind(item, this@ProfileDialog, viewModel = viewModel)
         }
     }

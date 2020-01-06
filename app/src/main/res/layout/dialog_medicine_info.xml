@@ -31,7 +31,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:listitem="@layout/rec_item_medicine_info_search_result" />
 
             <androidx.constraintlayout.widget.Guideline

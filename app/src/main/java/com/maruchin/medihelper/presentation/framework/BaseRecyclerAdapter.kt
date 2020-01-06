@@ -4,29 +4,21 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseRecyclerAdapter<T>(
     private val layoutResId: Int,
-    lifecycleOwner: LifecycleOwner,
-    itemsSource: LiveData<List<T>>,
     areItemsTheSameFun: ((oldItem: T, newItem: T) -> Boolean)? = null
-) : RecyclerView.Adapter<BaseViewHolder>() {
+): RecyclerView.Adapter<BaseViewHolder>() {
 
-    protected val itemsList = mutableListOf<T>()
+    private val itemsList = mutableListOf<T>()
     private var diffCallback: DiffCallback<T>? = null
 
     init {
         if (areItemsTheSameFun != null) {
             diffCallback = DiffCallback(areItemsTheSameFun)
         }
-        itemsSource.observe(lifecycleOwner, Observer { list ->
-            updateItemsList(list)
-        })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -38,7 +30,14 @@ abstract class BaseRecyclerAdapter<T>(
         return itemsList.size
     }
 
-    private fun updateItemsList(newList: List<T>?) {
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+        val item = itemsList[position]
+        onBindViewHolder(holder, position, item)
+    }
+
+    abstract fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: T)
+
+    protected fun updateItemsList(newList: List<T>?) {
         when {
             newList == null -> {
                 itemsList.clear()

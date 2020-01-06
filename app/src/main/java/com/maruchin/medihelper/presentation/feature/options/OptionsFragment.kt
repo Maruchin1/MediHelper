@@ -36,6 +36,10 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
         }.show(childFragmentManager)
     }
 
+    fun onClickNotificationsAndAlarmsHelp() {
+
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.bindingViewModel = viewModel
         return super.onCreateView(inflater, container, savedInstanceState)

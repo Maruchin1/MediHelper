@@ -8,7 +8,7 @@ import com.maruchin.medihelper.databinding.DialogSelectProfileBinding
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.usecases.profile.GetLiveAllProfilesItemsUseCase
 import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
-import com.maruchin.medihelper.presentation.framework.BaseRecyclerAdapter
+import com.maruchin.medihelper.presentation.framework.BaseRecyclerLiveAdapter
 import com.maruchin.medihelper.presentation.framework.BaseViewHolder
 import kotlinx.android.synthetic.main.dialog_select_profile.*
 import org.koin.android.ext.android.inject
@@ -43,14 +43,13 @@ class SelectProfileDialog :
         recycler_view_profile.adapter = ProfileAdapter()
     }
 
-    inner class ProfileAdapter : BaseRecyclerAdapter<ProfileItem>(
+    inner class ProfileAdapter : BaseRecyclerLiveAdapter<ProfileItem>(
         layoutResId = R.layout.rec_item_select_profile,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = dataSource,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.profileId == newItem.profileId }
     ) {
-        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            val item = itemsList[position]
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: ProfileItem) {
             holder.bind(item, this@SelectProfileDialog)
         }
     }

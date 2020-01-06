@@ -88,15 +88,14 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
 
     // Inner classes
     private inner class PlannedMedicineAdapter(itemsSource: LiveData<List<PlannedMedicineItemData>>) :
-        BaseRecyclerAdapter<PlannedMedicineItemData>(
+        BaseRecyclerLiveAdapter<PlannedMedicineItemData>(
             layoutResId = R.layout.rec_item_planned_medicine,
             lifecycleOwner = viewLifecycleOwner,
             itemsSource = itemsSource,
             areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedMedicineId == newItem.plannedMedicineId }
         ) {
-        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            val plannedMedicine = itemsList[position]
-            holder.bind(plannedMedicine, this@CalendarDayFragment)
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: PlannedMedicineItemData) {
+            holder.bind(item, this@CalendarDayFragment)
         }
     }
 }

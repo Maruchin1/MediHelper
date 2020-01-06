@@ -18,7 +18,7 @@ import com.maruchin.medihelper.presentation.dialogs.SelectFloatNumberDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectNumberDialog
 import com.maruchin.medihelper.presentation.dialogs.SelectTimeDialog
 import com.maruchin.medihelper.presentation.framework.BaseMainFragment
-import com.maruchin.medihelper.presentation.framework.BaseRecyclerAdapter
+import com.maruchin.medihelper.presentation.framework.BaseRecyclerLiveAdapter
 import com.maruchin.medihelper.presentation.framework.BaseViewHolder
 import com.maruchin.medihelper.presentation.framework.shrinkOnScroll
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
@@ -252,15 +252,13 @@ class AddEditPlanFragment :
         }
     }
 
-    private inner class TimeDoseAdapter : BaseRecyclerAdapter<TimeDose>(
+    private inner class TimeDoseAdapter : BaseRecyclerLiveAdapter<TimeDose>(
         layoutResId = R.layout.rec_item_time_dose_edit,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.timeDoseList
     ) {
-        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            val item = itemsList[position]
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: TimeDose) {
             val formItem = TimeDoseEditData.fromDomainModel(item, position)
-
             holder.bind(
                 displayData = formItem,
                 handler = this@AddEditPlanFragment,

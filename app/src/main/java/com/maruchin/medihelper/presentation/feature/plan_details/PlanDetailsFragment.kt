@@ -15,7 +15,7 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentPlanDetailsBinding
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
 import com.maruchin.medihelper.presentation.framework.BaseMainFragment
-import com.maruchin.medihelper.presentation.framework.BaseRecyclerAdapter
+import com.maruchin.medihelper.presentation.framework.BaseRecyclerLiveAdapter
 import com.maruchin.medihelper.presentation.framework.BaseViewHolder
 import com.maruchin.medihelper.presentation.framework.beginDelayedTransition
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
@@ -128,25 +128,23 @@ class PlanDetailsFragment : BaseMainFragment<FragmentPlanDetailsBinding>(R.layou
         })
     }
 
-    private inner class TimeDoseAdapter : BaseRecyclerAdapter<TimeDoseData>(
+    private inner class TimeDoseAdapter : BaseRecyclerLiveAdapter<TimeDoseData>(
         layoutResId = R.layout.rec_item_time_dose,
         itemsSource = viewModel.timesDoses,
         lifecycleOwner = viewLifecycleOwner
     ) {
-        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            val item = itemsList[position]
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: TimeDoseData) {
             holder.bind(displayData = item, handler = this@PlanDetailsFragment)
         }
     }
 
-    private inner class HistoryAdapter : BaseRecyclerAdapter<HistoryItemData>(
+    private inner class HistoryAdapter : BaseRecyclerLiveAdapter<HistoryItemData>(
         layoutResId = R.layout.rec_item_history_item,
         itemsSource = viewModel.history,
         lifecycleOwner = viewLifecycleOwner,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.date == newItem.date }
     ) {
-        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            val item = itemsList[position]
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: HistoryItemData) {
             holder.bind(displayData = item, handler = this@PlanDetailsFragment, viewModel = viewModel)
             holder.view.lay_history_checkboxes.apply {
                 removeAllViews()

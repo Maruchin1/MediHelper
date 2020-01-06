@@ -89,16 +89,15 @@ class MedicinesListFragment : BaseHomeFragment<FragmentMedicinesListBinding>(R.l
     }
 
     // Inner classes
-    inner class MedicineAdapter : BaseRecyclerAdapter<MedicineItemData>(
+    inner class MedicineAdapter : BaseRecyclerLiveAdapter<MedicineItemData>(
         layoutResId = R.layout.rec_item_medicine,
         lifecycleOwner = viewLifecycleOwner,
         itemsSource = viewModel.medicineItemList,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.medicineId == newItem.medicineId }
     ) {
-        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            val medicineItem = itemsList[position]
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: MedicineItemData) {
             holder.itemView.img_photo.transitionName = "medicine_image_item_$position"
-            holder.bind(medicineItem, this@MedicinesListFragment, viewModel)
+            holder.bind(item, this@MedicinesListFragment, viewModel)
         }
     }
 }
