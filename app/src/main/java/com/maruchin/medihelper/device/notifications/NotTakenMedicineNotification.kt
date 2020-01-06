@@ -47,7 +47,7 @@ class NotTakenMedicineNotification(
     private fun buildNotification(): Notification {
         return NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.mipmap.ic_launcher_round)
-            .setContentTitle("${data.profileName} - nieprzyjęty lek")
+            .setContentTitle("${data.profileName} - nieprzyjęty lek ${data.medicineName}")
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(getMessageText())
             )
@@ -67,11 +67,7 @@ class NotTakenMedicineNotification(
     }
 
     private fun getMessageText(): String {
-        val builder = StringBuilder()
-        builder.append("${data.medicineName} - ${data.doseSize} ${data.medicineUnit}")
-        builder.append("\n")
-        builder.append("Zaplanowano na godzinę ${data.plannedTime}")
-        return builder.toString()
+        return "${data.doseSize} ${data.medicineUnit} zaplanowano na godzinę ${data.plannedTime}"
     }
 
     private fun getMedicineTakenPendingIntent(plannedMedicineId: String): PendingIntent {
