@@ -115,7 +115,7 @@ class PlanDetailsFragment : BaseMainFragment<FragmentPlanDetailsBinding>(R.layou
 
     private fun observeViewModel() {
         viewModel.todayHistoryPosition.observe(viewLifecycleOwner, Observer { position ->
-            recycler_view_history.scrollToPosition(position)
+           scrollToToday(position)
         })
         viewModel.actionDetailsLoaded.observe(viewLifecycleOwner, Observer {
             lay_details.beginDelayedTransition()
@@ -126,6 +126,14 @@ class PlanDetailsFragment : BaseMainFragment<FragmentPlanDetailsBinding>(R.layou
         viewModel.actionPlanDeleted.observe(viewLifecycleOwner, Observer {
             findNavController().popBackStack()
         })
+    }
+
+    private fun scrollToToday(position: Int) {
+        var positionWithPastOffset = position - 3
+        if (positionWithPastOffset < 0) {
+            positionWithPastOffset = 0
+        }
+        recycler_view_history.scrollToPosition(positionWithPastOffset)
     }
 
     private inner class TimeDoseAdapter : BaseRecyclerLiveAdapter<TimeDoseData>(
