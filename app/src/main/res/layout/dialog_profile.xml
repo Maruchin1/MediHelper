@@ -72,15 +72,28 @@
                         android:layout_marginTop="@dimen/progress_bar_margin_top"
                         android:visibility="@{!viewModel.medicinesPlansLoaded}" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
-                        android:text="Brak przyjmowanych leków"
-                        android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle"
-                        android:visibility="@{viewModel.noMedicinesPlansForProfile}" />
+                        android:orientation="vertical"
+                        android:visibility="@{viewModel.noMedicinesPlansForProfile}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Brak przyjmowanych leków"
+                            android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Aby zaplanować leki przejdź do Apteczki"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+                    </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_medicine_plan"
