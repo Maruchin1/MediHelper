@@ -57,7 +57,7 @@
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:paddingBottom="128dp"
-                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                 app:spanCount="2"
                 tools:listitem="@layout/rec_item_medicine" />
@@ -89,15 +89,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:layout_marginStart="@dimen/no_item_page_margin_horizontal"
                 android:layout_marginEnd="@dimen/no_item_page_margin_horizontal"
                 android:gravity="center"
                 android:orientation="vertical"
+                android:paddingTop="@dimen/no_item_page_margin_top"
                 android:visibility="@{viewModel.noMedicines, default=visible}"
                 app:layout_anchor="@id/recycler_view_medicines"
-                app:layout_anchorGravity="top"
-                android:layout_gravity="bottom"
-                android:paddingTop="@dimen/no_item_page_margin_top">
+                app:layout_anchorGravity="top">
 
                 <ImageView
                     android:layout_width="@dimen/no_item_page_icon_size"
