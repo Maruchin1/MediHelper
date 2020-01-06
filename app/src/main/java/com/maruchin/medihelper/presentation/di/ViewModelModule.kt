@@ -118,7 +118,8 @@ val viewModelModule = module {
             getCurrUserEmailUseCase = get(),
             areLiveNotificationsEnabledUseCase = get(),
             setNotificationsEnabledUseCase = get(),
-            signOutUseCase = get()
+            signOutUseCase = get(),
+            notifAlarmHelp = get()
         )
     }
     viewModel {

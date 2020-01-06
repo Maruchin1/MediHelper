@@ -37,7 +37,9 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
     }
 
     fun onClickNotificationsAndAlarmsHelp() {
-
+        HelpDialog(
+            helpItems = viewModel.getNotifAndAlarmHelp()
+        ).show(childFragmentManager)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

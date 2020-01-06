@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.dialog_help.*
 
 class HelpDialog(
     private val helpItems: List<HelpItemData>
-) : BaseBottomDialog<DialogHelpBinding>(R.layout.dialog_help) {
+) : BaseBottomDialog<DialogHelpBinding>(R.layout.dialog_help, collapsing = true) {
     override val TAG: String
         get() = "HelpDialog"
 

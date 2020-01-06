@@ -12,7 +12,8 @@ class OptionsViewModel(
     private val getCurrUserEmailUseCase: GetCurrUserEmailUseCase,
     private val areLiveNotificationsEnabledUseCase: AreLiveNotificationsEnabledUseCase,
     private val setNotificationsEnabledUseCase: SetNotificationsEnabledUseCase,
-    private val signOutUseCase: SignOutUseCase
+    private val signOutUseCase: SignOutUseCase,
+    private val notifAlarmHelp: NotifAlarmHelp
 ) : ViewModel() {
 
     val userEmail: LiveData<String>
@@ -46,6 +47,10 @@ class OptionsViewModel(
 
     fun setAlarmsEnabled(enabled: Boolean) = viewModelScope.launch {
         //todo execute appropriate UseCase to set value
+    }
+
+    fun getNotifAndAlarmHelp(): List<HelpItemData> {
+        return notifAlarmHelp.generate()
     }
 
     private fun getCurrUserEmail() = liveData {

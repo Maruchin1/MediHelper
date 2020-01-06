@@ -231,13 +231,14 @@
                             android:focusable="true"
                             android:foreground="?selectableItemBackground"
                             android:gravity="center_vertical"
+                            android:onClick="@{() -> handler.onClickNotificationsAndAlarmsHelp()}"
                             android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
                             android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
 
                             <ImageView
                                 android:layout_width="@dimen/bottom_dialog_option_icon_size"
                                 android:layout_height="@dimen/bottom_dialog_option_icon_size"
-                                android:src="@drawable/round_lock_24"
+                                android:src="@drawable/round_help_outline_24"
                                 android:tint="@color/colorBlack" />
 
                             <TextView
@@ -270,7 +271,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/round_add_white_48"
+            android:src="@drawable/round_share_black_48"
             app:backgroundTint="@color/colorPrimary"
             app:elevation="8dp"
             app:layout_anchor="@id/bottom_nav"
