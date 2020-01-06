@@ -93,7 +93,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.Big"
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_card_margin_horizontal"
@@ -187,7 +187,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.Big"
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_card_margin_horizontal"
@@ -282,7 +282,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.Big"
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_card_margin_horizontal"

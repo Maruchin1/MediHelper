@@ -74,7 +74,7 @@
     </style>
 
     <style name="Widget.MediHelper.CardView" parent="Widget.MaterialComponents.CardView">
-        <item name="cardCornerRadius">8dp</item>
+        <item name="cardCornerRadius">16dp</item>
         <item name="cardElevation">4dp</item>
     </style>
 
@@ -83,14 +83,6 @@
         <item name="strokeColor">@color/colorDarkerGray</item>
         <item name="cardBackgroundColor">@color/colorTransparent</item>
         <item name="cardElevation">0dp</item>
-    </style>
-
-    <style name="Widget.MediHelper.CardView.FullWidth" parent="Widget.MediHelper.CardView">
-        <item name="cardCornerRadius">4dp</item>
-    </style>
-
-    <style name="Widget.MediHelper.CardView.Big" parent="Widget.MediHelper.CardView">
-        <item name="cardCornerRadius">16dp</item>
     </style>
 
     <style name="Widget.MediHelper.CardView.Profile" parent="Widget.MaterialComponents.CardView">
@@ -163,6 +155,17 @@
         <item name="rippleColor">@color/colorDarkerGray</item>
     </style>
 
+    <style name="Widget.MediHelper.Chip.Action" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="chipSurfaceColor">@color/colorTransparent</item>
+        <item name="chipBackgroundColor">@color/colorTransparent</item>
+        <item name="chipIconTint">@color/colorWhite</item>
+        <item name="chipStrokeColor">@color/colorWhite</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="iconStartPadding">4dp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="rippleColor">@color/colorWhite</item>
+    </style>
+
     <style name="Widget.MediHelper.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="android:textAppearance">@style/TextAppearance.MediHelper.Subtitle1</item>
     </style>
@@ -189,7 +192,7 @@
     </style>
 
     <style name="TextAppearance.MediHelper.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 
     <style name="TextAppearance.MediHelper.Subtitle1.Dark" parent="TextAppearance.MediHelper.Subtitle1">
@@ -226,172 +229,5 @@
 
     <style name="TextAppearance.MediHelper.NoItemPageTitle" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">@color/colorDarkerGray</item>
-    </style>
-
-    <!--    Stare-->
-
-    <style name="AppTheme.SlideVertical">
-        <item name="android:windowEnterAnimation">@anim/slide_up</item>
-        <item name="android:windowExitAnimation">@anim/slide_down</item>
-    </style>
-
-    <style name="AppTheme.SlideHorizontal">
-        <item name="android:windowEnterAnimation">@anim/slide_in_end</item>
-        <item name="android:windowExitAnimation">@anim/slide_out_end</item>
-    </style>
-
-    <style name="DateDialogPicker" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:textColorHint">@color/colorWhite</item>
-        <item name="android:colorAccent">@color/colorWhite</item>
-        <item name="boxStrokeColor">@color/input_lay_stroke_color</item>
-        <item name="colorControlActivated">@color/colorWhite</item>
-    </style>
-
-    <style name="AppBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/AppModalStyle</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-    </style>
-
-    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="AppCalendarView" parent="Theme.AppCompat.Light">
-        <item name="colorAccent">@color/colorDarkerGray</item>
-    </style>
-
-    <style name="AppCalendarViewDark" parent="Theme.AppCompat">
-        <item name="colorAccent">@color/colorWhite</item>
-    </style>
-
-    <!-- AppTheme-->
-    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:windowFullscreen">false</item>
-    </style>
-
-    <style name="AppTheme.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:layout_gravity">center</item>
-    </style>
-
-    <style name="AppTheme.Widget.CardView" parent="Widget.MaterialComponents.CardView">
-        <item name="cardBackgroundColor">@color/colorWhite</item>
-        <item name="cardCornerRadius">8dp</item>
-        <item name="cardElevation">4dp</item>
-    </style>
-
-    <style name="AppTheme.Widget.Chip.Action" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="chipBackgroundColor">@color/colorWhite</item>
-        <item name="chipIconTint">@color/colorDarkerGray</item>
-        <item name="chipStrokeColor">@color/colorDarkerGray</item>
-        <item name="chipStrokeWidth">1dp</item>
-        <item name="iconStartPadding">4dp</item>
-        <item name="android:textColor">@color/colorTextSecondary</item>
-    </style>
-
-    <style name="AppTheme.Widget.Chip.Action.Dark" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="chipSurfaceColor">@color/colorTransparent</item>
-        <item name="chipBackgroundColor">@color/colorTransparent</item>
-        <item name="chipIconTint">@color/colorWhite</item>
-        <item name="chipStrokeColor">@color/colorWhite</item>
-        <item name="chipStrokeWidth">1dp</item>
-        <item name="iconStartPadding">4dp</item>
-        <item name="android:textColor">@color/colorWhite</item>
-        <item name="rippleColor">@color/colorWhite</item>
-    </style>
-
-    <style name="AppTheme.Widget.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="android:textColor">@color/chip_single_select_text_color</item>
-        <item name="chipBackgroundColor">@color/chip_single_select_bg</item>
-        <item name="chipStrokeColor">@color/colorDarkerGray</item>
-        <item name="chipStrokeWidth">1dp</item>
-    </style>
-
-    <style name="AppTheme.Widget.Button" parent="Widget.MaterialComponents.Button">
-        <item name="cornerRadius">20dp</item>
-    </style>
-
-    <style name="AppTheme.Widget.Button.Big" parent="Widget.MaterialComponents.Button">
-        <item name="android:paddingTop">12dp</item>
-        <item name="android:paddingBottom">12dp</item>
-        <item name="cornerRadius">24dp</item>
-    </style>
-
-    <style name="AppTheme.Widget.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="cornerRadius">20dp</item>
-        <item name="strokeColor">@color/colorDarkerGray</item>
-        <item name="strokeWidth">1dp</item>
-    </style>
-
-    <style name="AppTheme.Widget.Button.Outlined.Big" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="cornerRadius">24dp</item>
-        <item name="strokeColor">@color/colorDarkerGray</item>
-        <item name="strokeWidth">1dp</item>
-        <item name="android:paddingTop">12dp</item>
-        <item name="android:paddingBottom">12dp</item>
-    </style>
-
-    <style name="AppTheme.Widget.Button.Outlined.Big.Dark" parent="AppTheme.Widget.Button.Outlined.Big">
-        <item name="strokeColor">@color/colorWhite</item>
-        <item name="android:textColor">@color/colorWhite</item>
-        <item name="iconTint">@color/colorWhite</item>
-        <item name="rippleColor">@color/colorWhite</item>
-    </style>
-
-    <style name="AppTheme.Widget.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="cornerRadius">20dp</item>
-    </style>
-
-    <style name="AppTheme.Text.Form.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="android:textColor">@color/colorTextSecondary</item>
-    </style>
-
-    <style name="AppTheme.Text.Form.CardHeader" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="android:textColor">@color/colorPrimary</item>
-    </style>
-
-    <!--    fragment_medicine_details-->
-
-    <style name="MedicineDetailFragment.Text.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="android:textColor">@color/colorPrimary</item>
-    </style>
-
-    <style name="MedicineDetailFragment.Text.Body1" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textColor">@color/colorTextSecondary</item>
-    </style>
-
-    <style name="MedicineDetailFragment.Text.Body2" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="android:textColor">@color/colorTextSecondary</item>
-    </style>
-
-    <style name="MedicineDetailFragment.Text.Body2.Dark" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="android:textColor">@color/colorWhite</item>
-    </style>
-
-    <!--    fragment_add_edit_medicine_plan-->
-    <style name="AddEditMedicinePlanFragment.Text.MedicineData" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="android:textColor">@color/colorTextSecondary</item>
-    </style>
-
-    <!--    login_register-->
-    <style name="LoginRegisterFragment.Text.TextFieldLabel" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="android:textColor">@color/colorTextSecondary</item>
-    </style>
-
-    <style name="MoreFragment.Text.CardHeader" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 </resources>

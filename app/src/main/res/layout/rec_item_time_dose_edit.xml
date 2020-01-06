@@ -25,7 +25,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_hour"
-            style="@style/AppTheme.Widget.Chip.Action"
+            style="@style/Widget.MediHelper.Chip.Action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> handler.onClickSelectTime(displayData)}"
@@ -60,12 +60,12 @@
 
         <ImageButton
             android:id="@+id/btn_delete"
+            visibleOrGone="@{displayData.position != 0}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
             android:onClick="@{() -> handler.onClickDeleteTimeDose(displayData.position)}"
             android:src="@drawable/round_delete_black_24"
-            visibleOrGone="@{displayData.position != 0}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.card.MaterialCardView
-                        style="@style/Widget.MediHelper.CardView.Big"
+                        style="@style/Widget.MediHelper.CardView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/details_card_margin_horizontal"
@@ -125,7 +125,7 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        style="@style/Widget.MediHelper.CardView.Big"
+                        style="@style/Widget.MediHelper.CardView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/details_card_margin_horizontal_inner"
@@ -203,7 +203,7 @@
 
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.Big"
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_card_margin_horizontal"
@@ -368,7 +368,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.Big"
+                    style="@style/Widget.MediHelper.CardView"
                     visibleOrGone="@{viewModel.planType != Type.ONE_DAY}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -661,7 +661,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.Big"
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/form_card_margin_horizontal"

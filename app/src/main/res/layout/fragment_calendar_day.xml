@@ -12,25 +12,23 @@
             type="com.maruchin.medihelper.presentation.feature.calendar.CalendarDayViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/root_lay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="@{!viewModel.dataLoading}">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingBottom="16dp">
+                android:visibility="@{!viewModel.dataLoading}">
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.Big"
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -67,15 +65,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/round_local_cafe_24"
-                                    android:tint="@color/colorDarkerGray" />
+                                    android:tint="@color/colorBlack" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
                                     android:text="Rano"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                    android:textColor="@color/colorTextTertiary" />
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
                             </LinearLayout>
 
                             <FrameLayout
@@ -142,7 +139,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.Big"
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -179,15 +176,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/round_wb_sunny_24"
-                                    android:tint="@color/colorDarkerGray" />
+                                    android:tint="@color/colorBlack" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
                                     android:text="Popołudnie"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                    android:textColor="@color/colorTextTertiary" />
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
                             </LinearLayout>
 
                             <FrameLayout
@@ -254,7 +250,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.Big"
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -292,15 +288,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/round_hotel_24"
-                                    android:tint="@color/colorDarkerGray" />
+                                    android:tint="@color/colorBlack" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
                                     android:text="Wieczór"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                    android:textColor="@color/colorTextTertiary" />
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
                             </LinearLayout>
 
                             <FrameLayout
@@ -367,14 +362,14 @@
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/progress_bar_margin_top"
-            android:visibility="@{viewModel.dataLoading}" />
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/progress_bar_margin_top"
+                android:visibility="@{viewModel.dataLoading}" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

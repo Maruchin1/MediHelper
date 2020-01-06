@@ -56,7 +56,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.Big"
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/details_card_margin_horizontal"
@@ -82,7 +82,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.Big"
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/details_card_margin_horizontal"
@@ -132,7 +132,7 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_expire_date"
-                        style="@style/Widget.MediHelper.CardView.Big"
+                        style="@style/Widget.MediHelper.CardView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/details_card_margin_horizontal"
@@ -170,7 +170,7 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_days_remain"
-                        style="@style/Widget.MediHelper.CardView.Big"
+                        style="@style/Widget.MediHelper.CardView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/details_card_margin_horizontal_inner"
@@ -209,7 +209,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.MediHelper.CardView.Big"
+                    style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/details_card_margin_horizontal"
@@ -290,7 +290,7 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.card.MaterialCardView
-                        style="@style/Widget.MediHelper.CardView.Big"
+                        style="@style/Widget.MediHelper.CardView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/details_card_margin_horizontal"
@@ -328,7 +328,7 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        style="@style/Widget.MediHelper.CardView.Big"
+                        style="@style/Widget.MediHelper.CardView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/details_card_margin_horizontal_inner"
