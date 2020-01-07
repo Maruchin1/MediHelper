@@ -11,6 +11,11 @@ abstract class FirestoreTypeRepo(
     private val mapper: TypeContainerMapper
 ) : BaseTypeRepo {
 
+    override suspend fun init(types: List<String>) {
+        val newContainer = TypeContainer(types)
+        setContainer(newContainer)
+    }
+
     override suspend fun addNewDistinct(type: String) {
         val container = getContainer()
         val typesCollection = container.types

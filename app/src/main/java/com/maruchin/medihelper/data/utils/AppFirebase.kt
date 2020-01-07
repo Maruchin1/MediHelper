@@ -34,10 +34,10 @@ class AppFirebase(
         get() = storage.reference.child(currUserId).child(medicinesPicturesFolderName)
 
     val medicineUnits: DocumentReference
-        get() = currUserDb.collection(typesContainersCollectionName).document(medicineUnitsDocumentName)
+        get() = currUserDb.collection(typesCollectionName).document(medicineUnitsDocumentName)
 
     val medicineTypes: DocumentReference
-        get() = currUserDb.collection(typesContainersCollectionName).document(medicineTypesDocumentName)
+        get() = currUserDb.collection(typesCollectionName).document(medicineTypesDocumentName)
 
     private val currUserId: String
         get() = auth.getCurrUserId()
@@ -51,7 +51,7 @@ class AppFirebase(
     private val plansCollectionName = "plans"
     private val plannedMedicinesCollectionName = "plannedMedicines"
     private val medicinesPicturesFolderName = "medicinesPictures"
-    private val typesContainersCollectionName = "typesContainers"
+    private val typesCollectionName = "types"
     private val medicineUnitsDocumentName = "medicineUnits"
     private val medicineTypesDocumentName = "medicineTypes"
 

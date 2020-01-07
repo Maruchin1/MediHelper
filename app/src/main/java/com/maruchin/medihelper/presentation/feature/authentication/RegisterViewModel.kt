@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maruchin.medihelper.domain.model.SignUpErrors
-import com.maruchin.medihelper.domain.usecases.profile.CreateMainProfileUseCase
+import com.maruchin.medihelper.domain.usecases.user.InitDefaultsUseCase
 import com.maruchin.medihelper.domain.usecases.user.SignUpUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import kotlinx.coroutines.launch
@@ -51,7 +51,7 @@ class RegisterViewModel(
         val errors = signUpUseCase.execute(params)
 
         if (errors.noErrors) {
-            createMainProfile(params.userName!!)
+            initUsersDefaults(params.userName!!)
             _actionUserSignedUp.sendAction()
         } else {
             postErrors(errors)
@@ -68,8 +68,8 @@ class RegisterViewModel(
         )
     }
 
-    private suspend fun createMainProfile(profileName: String) {
-        val useCase: CreateMainProfileUseCase = get()
+    private suspend fun initUsersDefaults(profileName: String) {
+        val useCase: InitDefaultsUseCase = get()
         useCase.execute(profileName)
     }
 

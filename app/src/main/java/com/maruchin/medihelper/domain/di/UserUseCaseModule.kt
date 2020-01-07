@@ -38,4 +38,11 @@ val userUseCaseModule = module {
             userRepo = get()
         ) as GetCurrUserEmailUseCase
     }
+    factory {
+        InitDefaultsUseCaseImpl(
+            profileRepo = get(),
+            medicineUnitRepo = get(),
+            medicineTypeRepo = get()
+        ) as InitDefaultsUseCase
+    }
 }
