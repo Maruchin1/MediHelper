@@ -43,6 +43,7 @@ class GetMedicineDetailsUseCaseImplTest {
             name = "Hitaxa",
             unit = "tabletki",
             expireDate = AppExpireDate(2020, 3),
+            type = "Na katar",
             state = MedicineState(
                 packageSize = 100f,
                 currState = 70f
@@ -63,6 +64,7 @@ class GetMedicineDetailsUseCaseImplTest {
             name = "Hitaxa",
             unit = "tabletki",
             expireDate = AppExpireDate(2020, 3),
+            type = "Na katar",
             daysRemains = 61,
             state = MedicineState(
                 packageSize = 100f,

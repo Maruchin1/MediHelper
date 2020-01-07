@@ -3,6 +3,7 @@ package com.maruchin.medihelper.domain.usecasesimpl.medicines
 import com.maruchin.medihelper.domain.entities.*
 import com.maruchin.medihelper.domain.repositories.PlanRepo
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
+import com.maruchin.medihelper.domain.repositories.PictureRepo
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.domain.usecases.plans.DeletePlansUseCase
 import com.maruchin.medihelper.testingframework.mock
@@ -16,6 +17,7 @@ import org.mockito.Mockito
 class DeleteMedicineUseCaseImplTest {
 
     private val medicineRepo: MedicineRepo = mock()
+    private val pictureRepo: PictureRepo = mock()
     private val planRepo: PlanRepo = mock()
     private val deletePlansUseCase: DeletePlansUseCase = mock()
 
@@ -25,6 +27,7 @@ class DeleteMedicineUseCaseImplTest {
     fun before() {
         useCase = DeleteMedicineUseCaseImpl(
             medicineRepo,
+            pictureRepo,
             planRepo,
             deletePlansUseCase
         )
@@ -40,6 +43,7 @@ class DeleteMedicineUseCaseImplTest {
                 name = "Lek",
                 unit = "tabletki",
                 expireDate = AppExpireDate(2020, 6),
+                type = "Na katar",
                 state = MedicineState(
                     packageSize = 0f,
                     currState = 0f
@@ -68,7 +72,7 @@ class DeleteMedicineUseCaseImplTest {
 
             useCase.execute(medicineId)
 
-            verifyInvocations(medicineRepo, invocations = 1).deleteMedicinePicture("picture.jpg")
+            verifyInvocations(pictureRepo, invocations = 1).deleteMedicinePicture("picture.jpg")
             verifyInvocations(medicineRepo, invocations = 1).deleteById("ABCD")
             verifyInvocations(
                 deletePlansUseCase,
@@ -87,6 +91,7 @@ class DeleteMedicineUseCaseImplTest {
                 name = "Lek",
                 unit = "tabletki",
                 expireDate = AppExpireDate(2020, 6),
+                type = "Na katar",
                 state = MedicineState(
                     packageSize = 0f,
                     currState = 0f
@@ -98,7 +103,7 @@ class DeleteMedicineUseCaseImplTest {
 
             useCase.execute(medicineId)
 
-            Mockito.verify(medicineRepo, Mockito.times(0)).deleteMedicinePicture(Mockito.anyString())
+            Mockito.verify(pictureRepo, Mockito.times(0)).deleteMedicinePicture(Mockito.anyString())
             Mockito.verify(medicineRepo, Mockito.times(1)).deleteById("ABCD")
             verifyInvocations(deletePlansUseCase, invocations = 1).execute(Mockito.anyList())
         }

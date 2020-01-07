@@ -54,6 +54,7 @@ class GetPlanDetailsUseCaseImplTest {
             name = "Hitaxa",
             unit = "tabletki",
             expireDate = AppExpireDate(2020, 3),
+            type = "Na katar",
             state = MedicineState(
                 packageSize = 0f,
                 currState = 0f
@@ -102,6 +103,7 @@ class GetPlanDetailsUseCaseImplTest {
             name = "Hitaxa",
             unit = "tabletki",
             expireDate = AppExpireDate(2020, 3),
+            type = "Na katar",
             state = MedicineState(
                 packageSize = 0f,
                 currState = 0f
@@ -185,6 +187,7 @@ class GetPlanDetailsUseCaseImplTest {
             name = "Hitaxa",
             unit = "tabletki",
             expireDate = AppExpireDate(2020, 3),
+            type = "Na katar",
             state = MedicineState(
                 packageSize = 0f,
                 currState = 0f
