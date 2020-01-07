@@ -60,9 +60,14 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setColorPrimaryStatusBas()
         bindLoadingScreen()
         setupMedicinesRemindingOptions()
         observeViewModel()
+    }
+
+    private fun setColorPrimaryStatusBas() {
+        super.setStatusBarColor(R.color.colorPrimary)
     }
 
     private fun bindLoadingScreen() {
