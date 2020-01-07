@@ -4,12 +4,22 @@ import android.content.Context
 import android.content.res.Resources
 
 abstract class HelpGenerator(
-    private val context: Context,
-    private val headersIds: List<Int>,
-    private val bodiesIds: List<Int>
+    private val context: Context
 ) {
 
     private val res: Resources by lazy { context.resources }
+    private val headers: List<String> by lazy {
+        val headersIds = generateHeaders()
+        getStringFromResources(headersIds)
+    }
+    private val bodiesIds: List<String> by lazy {
+        val bodiesIds = generateBodies()
+        getStringFromResources(bodiesIds)
+    }
+
+    protected abstract fun generateHeaders(): List<Int>
+
+    protected abstract fun generateBodies(): List<Int>
 
     @Throws(DifferentNumberOfHeadersAndBodies::class)
     fun generate(): List<HelpItemData> {
@@ -17,8 +27,12 @@ abstract class HelpGenerator(
         return generateItems()
     }
 
+    private fun getStringFromResources(ids: List<Int>): List<String> {
+        return ids.map { res.getString(it) }
+    }
+
     private fun checkData() {
-        val numOfHeaders = headersIds.size
+        val numOfHeaders = headers.size
         val numOfBodies = bodiesIds.size
         if (numOfHeaders != numOfBodies) {
             throw DifferentNumberOfHeadersAndBodies()
@@ -27,18 +41,12 @@ abstract class HelpGenerator(
 
     private fun generateItems(): List<HelpItemData> {
         val items = mutableListOf<HelpItemData>()
-        for ((index, headerId) in headersIds.withIndex()) {
-            val bodyId = bodiesIds[index]
-            val singleItem = generateSingleItem(headerId, bodyId)
+        for ((index, header) in headers.withIndex()) {
+            val body = bodiesIds[index]
+            val singleItem = HelpItemData(header, body)
             items.add(singleItem)
         }
         return items
-    }
-
-    private fun generateSingleItem(headerId: Int, bodyId: Int): HelpItemData {
-        val header = res.getString(headerId)
-        val body = res.getString(bodyId)
-        return HelpItemData(header, body)
     }
 
     class DifferentNumberOfHeadersAndBodies : Exception()

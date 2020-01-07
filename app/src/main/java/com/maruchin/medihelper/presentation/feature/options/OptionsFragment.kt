@@ -37,9 +37,15 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
         }.show(childFragmentManager)
     }
 
-    fun onClickNotificationsAndAlarmsHelp() {
+    fun onClickNotificationsHelp() {
         HelpDialog(
-            helpItems = viewModel.getNotifAndAlarmHelp()
+            helpItems = viewModel.getNotificationsHelp()
+        ).show(childFragmentManager)
+    }
+
+    fun onClickAlarmsHelp() {
+        HelpDialog(
+            helpItems = viewModel.getAlarmsHelp()
         ).show(childFragmentManager)
     }
 

@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.presentation.di
 
-import com.maruchin.medihelper.presentation.feature.options.NotifAlarmHelp
+import com.maruchin.medihelper.presentation.feature.options.AlarmsHelp
+import com.maruchin.medihelper.presentation.feature.options.NotificationsHelp
 import com.maruchin.medihelper.presentation.utils.*
 import org.koin.dsl.module
 
@@ -20,7 +21,12 @@ val presentationUtilsModule = module {
         )
     }
     factory {
-        NotifAlarmHelp(
+        NotificationsHelp(
+            context = get()
+        )
+    }
+    factory {
+        AlarmsHelp(
             context = get()
         )
     }

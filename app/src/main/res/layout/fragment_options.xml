@@ -198,40 +198,25 @@
                             </LinearLayout>
                         </LinearLayout>
 
-                        <LinearLayout
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_notifications_enabled"
+                            style="@style/Widget.MediHelper.Switch"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/list_card_layout_margin_horizontal"
                             android:layout_marginEnd="@dimen/list_card_layout_margin_horizontal"
-                            android:layout_marginBottom="@dimen/list_card_layout_margin_bot"
-                            android:orientation="vertical">
-
-                            <com.google.android.material.switchmaterial.SwitchMaterial
-                                android:id="@+id/switch_notifications_enabled"
-                                style="@style/Widget.MediHelper.Switch"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:checked='@{viewModel.areNotificationEnabled}'
-                                android:text="Powiadomienia" />
-
-                            <com.google.android.material.switchmaterial.SwitchMaterial
-                                android:id="@+id/switch_alarms_enabled"
-                                style="@style/Widget.MediHelper.Switch"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:checked='@{viewModel.areAlarmsEnabled}'
-                                android:text="Alarmy z dźwiękiem" />
-                        </LinearLayout>
+                            android:checked='@{viewModel.areNotificationEnabled}'
+                            android:text="Powiadomienia" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/bottom_dialog_option_height"
+                            android:layout_marginBottom="8dp"
                             android:clickable="true"
                             android:focusable="true"
                             android:foreground="?selectableItemBackground"
                             android:gravity="center_vertical"
-                            android:onClick="@{() -> handler.onClickNotificationsAndAlarmsHelp()}"
+                            android:onClick="@{() -> handler.onClickNotificationsHelp()}"
                             android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
                             android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
 
@@ -245,7 +230,45 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
-                                android:text="Jak działają powiadomienia i alarmy"
+                                android:text="Jak działają powiadomienia"
+                                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
+                        </LinearLayout>
+
+                        <include layout="@layout/line_horizontal" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_alarms_enabled"
+                            style="@style/Widget.MediHelper.Switch"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/list_card_layout_margin_horizontal"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="@dimen/list_card_layout_margin_horizontal"
+                            android:checked='@{viewModel.areAlarmsEnabled}'
+                            android:text="Alarmy z dźwiękiem" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/bottom_dialog_option_height"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:onClick="@{() -> handler.onClickAlarmsHelp()}"
+                            android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
+                            android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/bottom_dialog_option_icon_size"
+                                android:layout_height="@dimen/bottom_dialog_option_icon_size"
+                                android:src="@drawable/round_help_outline_24"
+                                android:tint="@color/colorBlack" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
+                                android:text="Jak działają alarmy"
                                 android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
                         </LinearLayout>
 

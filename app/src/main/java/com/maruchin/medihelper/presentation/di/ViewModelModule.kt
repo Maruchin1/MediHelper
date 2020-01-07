@@ -119,7 +119,8 @@ val viewModelModule = module {
             areLiveNotificationsEnabledUseCase = get(),
             setNotificationsEnabledUseCase = get(),
             signOutUseCase = get(),
-            notifAlarmHelp = get()
+            notificationsHelp = get(),
+            alarmsHelp = get()
         )
     }
     viewModel {
