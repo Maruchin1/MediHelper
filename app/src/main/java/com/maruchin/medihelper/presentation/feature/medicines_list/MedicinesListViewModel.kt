@@ -16,6 +16,8 @@ class MedicinesListViewModel(
     private val medicinesSorter: MedicinesSorter,
     private val medicinesFilter: MedicinesFilter
 ) : ViewModel() {
+    private val TAG: String
+        get() = "MedicinesListViewModel"
 
     val medicineItemList: LiveData<List<MedicineItemData>>
     val loadingInProgress: LiveData<Boolean>
@@ -82,29 +84,50 @@ class MedicinesListViewModel(
     private fun sortLiveItems(
         itemsLive: LiveData<List<MedicineItem>>
     ): LiveData<List<MedicineItem>> {
-        return Transformations.switchMap(itemsLive) { items ->
-            Transformations.switchMap(sortingParam) { sortingParam ->
-                Transformations.switchMap(sortingOrder) { sortingOrder ->
-                    liveData {
-                        val value = medicinesSorter.sortItems(items, sortingParam, sortingOrder)
-                        emit(value)
-                    }
-                }
+        var currItems: List<MedicineItem> = emptyList()
+        var currParam = MedicinesSorter.Param.ALPHABETICAL
+        var currOrder = MedicinesSorter.Order.ASC
+        val mediator = MediatorLiveData<List<MedicineItem>>()
+        mediator.addSource(itemsLive) { newItems ->
+            currItems = newItems
+            viewModelScope.launch {
+                mediator.value = medicinesSorter.sortItems(currItems, currParam, currOrder)
             }
         }
+        mediator.addSource(sortingParam) { newParam ->
+            currParam = newParam
+            viewModelScope.launch {
+                mediator.value = medicinesSorter.sortItems(currItems, currParam, currOrder)
+            }
+        }
+        mediator.addSource(sortingOrder) { newOrder ->
+            currOrder = newOrder
+            viewModelScope.launch {
+                mediator.value = medicinesSorter.sortItems(currItems, currParam, currOrder)
+            }
+        }
+        return mediator
     }
 
     private fun filterLiveItems(
         itemsLive: LiveData<List<MedicineItem>>
     ): LiveData<List<MedicineItem>> {
-        return Transformations.switchMap(itemsLive) { items ->
-            Transformations.switchMap(filterState) { filterState ->
-                liveData {
-                    val value = medicinesFilter.filterItems(items, filterState)
-                    emit(value)
-                }
+        var currItems: List<MedicineItem> = emptyList()
+        var currState = MedicinesFilter.State()
+        val mediator = MediatorLiveData<List<MedicineItem>>()
+        mediator.addSource(itemsLive) { newItems ->
+            currItems = newItems
+            viewModelScope.launch {
+                mediator.value = medicinesFilter.filterItems(currItems, currState)
             }
         }
+        mediator.addSource(filterState) { newState ->
+            currState = newState
+            viewModelScope.launch {
+                mediator.value = medicinesFilter.filterItems(currItems, currState)
+            }
+        }
+        return mediator
     }
 
     private suspend fun mapFilterChipIdsToFilterState(ids: List<Int>) = withContext(Dispatchers.Default) {

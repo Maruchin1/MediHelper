@@ -35,11 +35,11 @@ data class MedicineState(
     }
 
     override fun compareTo(other: MedicineState): Int {
-        val state = currState / packageSize
-        val otherState = other.currState / other.packageSize
+        val statePercent = currState / packageSize
+        val otherStatePercent = other.currState / other.packageSize
         return when {
-            state > otherState -> 1
-            state < otherState -> -1
+            statePercent > otherStatePercent -> 1
+            statePercent < otherStatePercent -> -1
             else -> 0
         }
     }

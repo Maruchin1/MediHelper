@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.presentation.feature.medicines_list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import kotlinx.android.synthetic.main.fragment_medicines_filters.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class MedicinesFiltersFragment : BaseMainFragment<FragmentMedicinesFiltersBinding>(R.layout.fragment_medicines_filters) {
+    private val TAG: String
+        get() = "MedicinesFiltersFragment"
 
     private val viewModel: MedicinesListViewModel by sharedViewModel(from = { requireParentFragment() })
 
@@ -27,7 +30,7 @@ class MedicinesFiltersFragment : BaseMainFragment<FragmentMedicinesFiltersBindin
     }
 
     private fun setupSortingParamSelection() {
-        chip_group_sorting_order.setOnCheckedChangeListener { _, checkedId ->
+        chip_group_sorting_param.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.chip_alphabetical -> setSortingParam(MedicinesSorter.Param.ALPHABETICAL)
                 R.id.chip_by_state -> setSortingParam(MedicinesSorter.Param.BY_STATE)
@@ -60,7 +63,7 @@ class MedicinesFiltersFragment : BaseMainFragment<FragmentMedicinesFiltersBindin
     }
 
     private fun setSortingParam(param: MedicinesSorter.Param) {
-        viewModel.sortingParam.value = param
+        viewModel.sortingParam.postValue(param)
     }
 
     private fun setSortingOrder(order: MedicinesSorter.Order) {
