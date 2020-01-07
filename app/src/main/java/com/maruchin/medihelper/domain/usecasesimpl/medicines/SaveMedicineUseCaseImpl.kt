@@ -76,6 +76,7 @@ class SaveMedicineUseCaseImpl(
             name = params.name!!,
             unit = params.unit!!,
             expireDate = params.expireDate,
+            type = params.type,
             state = MedicineState(
                 packageSize = params.packageSize ?: 0f,
                 currState = params.currState ?: 0f

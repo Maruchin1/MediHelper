@@ -9,6 +9,7 @@ data class MedicineEditData(
     val name: String,
     val unit: String,
     val expireDate: AppExpireDate?,
+    val type: String?,
     val state: MedicineState,
     val pictureName: String?
 ) {
@@ -17,6 +18,7 @@ data class MedicineEditData(
         unit = medicine.unit,
         name = medicine.name,
         expireDate = medicine.expireDate,
+        type = medicine.type,
         state = medicine.state,
         pictureName = medicine.pictureName
     )

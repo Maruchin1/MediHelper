@@ -8,6 +8,7 @@ data class Medicine(
     val name: String,
     val unit: String,
     val expireDate: AppExpireDate?,
+    val type: String?,
     val state: MedicineState,
     val pictureName: String?
 ) : BaseEntity()

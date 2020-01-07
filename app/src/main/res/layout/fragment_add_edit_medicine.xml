@@ -114,7 +114,7 @@
                             inLayError="@{viewModel.errorMedicineName}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Nazwa leku">
+                            android:hint="Nazwa leku, np: Apap">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
@@ -165,6 +165,20 @@
                                     android:text='@{viewModel.expireDate.formatString}' />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MediHelper.TextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Rodzaj leku, np: Antybiotyk, Syrop"
+                            android:layout_marginTop="24dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapWords"
+                                android:text='@={viewModel.medicineType}' />
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

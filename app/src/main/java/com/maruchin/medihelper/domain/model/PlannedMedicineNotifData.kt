@@ -1,6 +1,5 @@
 package com.maruchin.medihelper.domain.model
 
-import com.maruchin.medihelper.domain.entities.AppTime
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.entities.Profile
@@ -12,6 +11,7 @@ data class PlannedMedicineNotifData(
     val profileColor: String,
     val medicineName: String,
     val medicineUnit: String,
+    val medicineType: String?,
     val plannedTime: String,
     val doseSize: Float,
     val status: PlannedMedicine.Status
@@ -22,6 +22,7 @@ data class PlannedMedicineNotifData(
         profileColor = profile.color,
         medicineName = medicine.name,
         medicineUnit = medicine.unit,
+        medicineType = medicine.type,
         plannedTime = plannedMedicine.plannedTime.formatString,
         doseSize = plannedMedicine.plannedDoseSize,
         status = plannedMedicine.status

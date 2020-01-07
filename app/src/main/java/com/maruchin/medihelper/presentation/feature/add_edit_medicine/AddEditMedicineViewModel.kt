@@ -27,6 +27,7 @@ class AddEditMedicineViewModel(
     val formTitle: LiveData<String>
     val medicineName = MutableLiveData<String>()
     val medicineUnit = MutableLiveData<String>()
+    val medicineType = MutableLiveData<String>()
     val expireDate = MutableLiveData<AppExpireDate>()
     val currState = MutableLiveData<Float>(0f)
     val packageSize = MutableLiveData<Float>(0f)
@@ -123,6 +124,7 @@ class AddEditMedicineViewModel(
             medicineId = editMedicineId.value,
             name = medicineName.value,
             unit = medicineUnit.value,
+            type = medicineType.value,
             expireDate = expireDate.value,
             packageSize = packageSize.value,
             currState = currState.value,

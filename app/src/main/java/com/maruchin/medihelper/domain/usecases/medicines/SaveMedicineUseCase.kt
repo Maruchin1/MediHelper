@@ -12,6 +12,7 @@ interface SaveMedicineUseCase {
         val medicineId: String?,
         val name: String?,
         val unit: String?,
+        val type: String?,
         val expireDate: AppExpireDate?,
         val packageSize: Float?,
         val currState: Float?,

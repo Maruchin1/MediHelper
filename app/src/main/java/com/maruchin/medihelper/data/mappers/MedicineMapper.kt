@@ -12,6 +12,7 @@ class MedicineMapper : BaseMapper<Medicine>() {
     private val name = "name"
     private val unit = "unit"
     private val expireDate = "expireDate"
+    private val type = "type"
     private val state = "state"
     private val pictureName = "pictureName"
     //MedicineStateData
@@ -23,6 +24,7 @@ class MedicineMapper : BaseMapper<Medicine>() {
             name to entity.name,
             unit to entity.unit,
             expireDate to entity.expireDate?.jsonFormatString,
+            type to entity.type,
             state to stateDataToMap(entity.state),
             pictureName to entity.pictureName
         )
@@ -34,6 +36,7 @@ class MedicineMapper : BaseMapper<Medicine>() {
             name = map[name] as String,
             unit = map[unit] as String,
             expireDate = map[expireDate]?.let { AppExpireDate(it as String) },
+            type = map[type] as String?,
             state = mapToStateData(map[state] as Map<String, Any?>),
             pictureName = map[pictureName] as String?
         )
