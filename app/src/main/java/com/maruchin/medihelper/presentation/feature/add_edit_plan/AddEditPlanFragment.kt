@@ -10,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import androidx.transition.TransitionManager
 import com.maruchin.medihelper.R
-import com.maruchin.medihelper.databinding.FragmentAddEditMedicinePlanBinding
+import com.maruchin.medihelper.databinding.FragmentAddEditPlanBinding
 import com.maruchin.medihelper.domain.entities.Plan
 import com.maruchin.medihelper.domain.entities.TimeDose
 import com.maruchin.medihelper.presentation.dialogs.SelectDateDialog
@@ -22,12 +22,12 @@ import com.maruchin.medihelper.presentation.framework.BaseRecyclerLiveAdapter
 import com.maruchin.medihelper.presentation.framework.BaseViewHolder
 import com.maruchin.medihelper.presentation.framework.shrinkOnScroll
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
-import kotlinx.android.synthetic.main.fragment_add_edit_medicine_plan.*
+import kotlinx.android.synthetic.main.fragment_add_edit_plan.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddEditPlanFragment :
-    BaseMainFragment<FragmentAddEditMedicinePlanBinding>(R.layout.fragment_add_edit_medicine_plan) {
+    BaseMainFragment<FragmentAddEditPlanBinding>(R.layout.fragment_add_edit_plan) {
 
     private val viewModel: AddEditPlanViewModel by viewModel()
     private val args: AddEditPlanFragmentArgs by navArgs()

@@ -22,7 +22,7 @@ class MedicineMapper : BaseMapper<Medicine>() {
         return@withContext hashMapOf(
             name to entity.name,
             unit to entity.unit,
-            expireDate to entity.expireDate.jsonFormatString,
+            expireDate to entity.expireDate?.jsonFormatString,
             state to stateDataToMap(entity.state),
             pictureName to entity.pictureName
         )
@@ -33,7 +33,7 @@ class MedicineMapper : BaseMapper<Medicine>() {
             entityId = entityId,
             name = map[name] as String,
             unit = map[unit] as String,
-            expireDate = AppExpireDate(map[expireDate] as String),
+            expireDate = map[expireDate]?.let { AppExpireDate(it as String) },
             state = mapToStateData(map[state] as Map<String, Any?>),
             pictureName = map[pictureName] as String?
         )

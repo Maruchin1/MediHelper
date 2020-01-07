@@ -42,8 +42,6 @@ class AddEditMedicineViewModel(
         get() = _errorMedicineName
     val errorMedicineUnit: LiveData<String>
         get() = _errorMedicineUnit
-    val errorExpireDate: LiveData<String>
-        get() = _errorExpireDate
     val errorCurrState: LiveData<String>
         get() = _errorCurrState
 
@@ -52,7 +50,6 @@ class AddEditMedicineViewModel(
     private val _actionMedicineSaved = ActionLiveData()
     private val _errorMedicineName = MutableLiveData<String>()
     private val _errorMedicineUnit = MutableLiveData<String>()
-    private val _errorExpireDate = MutableLiveData<String>()
     private val _errorCurrState = MutableLiveData<String>()
 
     private var editMedicineId = MutableLiveData<String>(null)
@@ -161,16 +158,12 @@ class AddEditMedicineViewModel(
         val medicineUnitError = if (errors.emptyUnit) {
             "Pole jest wymagane"
         } else null
-        val expireDateError = if (errors.emptyExpireDate) {
-            "Pole jest wymagene"
-        } else null
         val currStateError = if (errors.currStateBiggerThanPackageSize) {
             "Większe niż rozmiar opakowania"
         } else null
 
         _errorMedicineName.postValue(medicineNameError)
         _errorMedicineUnit.postValue(medicineUnitError)
-        _errorExpireDate.postValue(expireDateError)
         _errorCurrState.postValue(currStateError)
     }
 }

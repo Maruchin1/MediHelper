@@ -40,7 +40,7 @@ class SignInUseCaseImplTest {
 
             Truth.assertThat(errors.noErrors).isTrue()
             Mockito.verify(userAuthRepo, Mockito.times(1))
-                .signIn("test@email.com", "abc", errorsMock)
+                .signIn("test@email.com", "abc")
         }
     }
 
@@ -60,7 +60,7 @@ class SignInUseCaseImplTest {
 
             Truth.assertThat(errors.noErrors).isFalse()
             Mockito.verify(userAuthRepo, Mockito.times(0))
-                .signIn("test@email.com", "abc", errorsMock)
+                .signIn("test@email.com", "abc")
         }
     }
 }

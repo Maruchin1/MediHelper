@@ -21,7 +21,7 @@ class GetMedicineDetailsUseCaseImpl(
 
     override suspend fun execute(medicineId: String): MedicineDetails = withContext(Dispatchers.Default) {
         val medicine = getMedicine(medicineId)
-        val daysRemains = getDaysRemains(medicine.expireDate)
+        val daysRemains = medicine.expireDate?.let { getDaysRemains(it) }
         val profilesWithMedicine = profileRepo.getListByMedicine(medicineId)
         return@withContext MedicineDetails(medicine, daysRemains, profilesWithMedicine)
     }

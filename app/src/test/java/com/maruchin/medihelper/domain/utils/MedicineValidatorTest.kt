@@ -19,7 +19,6 @@ class MedicineValidatorTest {
         val params = MedicineValidator.Params(
             name = "Hitaxa",
             unit = "tabletki",
-            expireDate = AppExpireDate(2020, 3),
             packageSize = 100f,
             currState = 80f
         )
@@ -30,7 +29,6 @@ class MedicineValidatorTest {
         arrayOf(
             errors.emptyName,
             errors.emptyUnit,
-            errors.emptyExpireDate,
             errors.currStateBiggerThanPackageSize
         ).forEach {
             Truth.assertThat(it).isFalse()
@@ -42,7 +40,6 @@ class MedicineValidatorTest {
         val params = MedicineValidator.Params(
             name = null,
             unit = "tabletki",
-            expireDate = AppExpireDate(2020, 3),
             packageSize = 100f,
             currState = 80f
         )
@@ -53,7 +50,6 @@ class MedicineValidatorTest {
         Truth.assertThat(errors.emptyName).isTrue()
         arrayOf(
             errors.emptyUnit,
-            errors.emptyExpireDate,
             errors.currStateBiggerThanPackageSize
         ).forEach {
             Truth.assertThat(it).isFalse()
@@ -65,7 +61,6 @@ class MedicineValidatorTest {
         val params = MedicineValidator.Params(
             name = "Hitaxa",
             unit = null,
-            expireDate = AppExpireDate(2020, 3),
             packageSize = 100f,
             currState = 80f
         )
@@ -76,30 +71,6 @@ class MedicineValidatorTest {
         Truth.assertThat(errors.emptyUnit).isTrue()
         arrayOf(
             errors.emptyName,
-            errors.emptyExpireDate,
-            errors.currStateBiggerThanPackageSize
-        ).forEach {
-            Truth.assertThat(it).isFalse()
-        }
-    }
-
-    @Test
-    fun validate_EmptyExpireDate() {
-        val params = MedicineValidator.Params(
-            name = "Hitaxa",
-            unit = "tabletki",
-            expireDate = null,
-            packageSize = 100f,
-            currState = 80f
-        )
-
-        val errors = validator.validate(params)
-
-        Truth.assertThat(errors.noErrors).isFalse()
-        Truth.assertThat(errors.emptyExpireDate).isTrue()
-        arrayOf(
-            errors.emptyName,
-            errors.emptyUnit,
             errors.currStateBiggerThanPackageSize
         ).forEach {
             Truth.assertThat(it).isFalse()
@@ -111,7 +82,6 @@ class MedicineValidatorTest {
         val params = MedicineValidator.Params(
             name = "Hitaxa",
             unit = "tabletki",
-            expireDate = AppExpireDate(2020, 3),
             packageSize = 100f,
             currState = 101f
         )
@@ -122,8 +92,7 @@ class MedicineValidatorTest {
         Truth.assertThat(errors.currStateBiggerThanPackageSize).isTrue()
         arrayOf(
             errors.emptyName,
-            errors.emptyUnit,
-            errors.emptyExpireDate
+            errors.emptyUnit
         ).forEach {
             Truth.assertThat(it).isFalse()
         }

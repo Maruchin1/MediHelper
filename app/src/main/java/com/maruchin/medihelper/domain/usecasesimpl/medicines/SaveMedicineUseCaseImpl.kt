@@ -29,7 +29,6 @@ class SaveMedicineUseCaseImpl(
         return MedicineValidator.Params(
             name = params.name,
             unit = params.unit,
-            expireDate = params.expireDate,
             packageSize = params.packageSize,
             currState = params.currState
         )
@@ -76,7 +75,7 @@ class SaveMedicineUseCaseImpl(
             entityId = params.medicineId ?: "",
             name = params.name!!,
             unit = params.unit!!,
-            expireDate = params.expireDate!!,
+            expireDate = params.expireDate,
             state = MedicineState(
                 packageSize = params.packageSize ?: 0f,
                 currState = params.currState ?: 0f

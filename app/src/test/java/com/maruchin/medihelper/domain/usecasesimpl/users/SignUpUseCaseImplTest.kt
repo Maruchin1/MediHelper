@@ -43,7 +43,7 @@ class SignUpUseCaseImplTest {
 
             Truth.assertThat(errors.noErrors).isTrue()
             Mockito.verify(userAuthRepo, Mockito.times(1))
-                .signUp("test@mail.com", "abc", errorsMock)
+                .signUp("test@mail.com", "abc")
         }
     }
 }

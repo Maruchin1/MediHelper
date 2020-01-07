@@ -133,7 +133,7 @@
     <fragment
         android:id="@+id/addEditMedicinePlanFragment"
         android:name="com.maruchin.medihelper.presentation.feature.add_edit_plan.AddEditPlanFragment"
-        tools:layout="@layout/fragment_add_edit_medicine_plan">
+        tools:layout="@layout/fragment_add_edit_plan">
         <argument
             android:name="profileId"
             app:argType="string"

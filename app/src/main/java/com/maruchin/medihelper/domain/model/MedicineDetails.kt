@@ -9,13 +9,13 @@ data class MedicineDetails(
     val medicineId: String,
     val name: String,
     val unit: String,
-    val expireDate: AppExpireDate,
-    val daysRemains: Int,
+    val expireDate: AppExpireDate?,
+    val daysRemains: Int?,
     val state: MedicineState,
     val pictureName: String?,
     val profileItems: List<ProfileItem>
 ) {
-    constructor(medicine: Medicine, daysRemains: Int, profileList: List<Profile>) : this(
+    constructor(medicine: Medicine, daysRemains: Int?, profileList: List<Profile>) : this(
         medicineId = medicine.entityId,
         name = medicine.name,
         unit = medicine.unit,

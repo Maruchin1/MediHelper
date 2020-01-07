@@ -164,7 +164,17 @@
                                 android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
                                 android:text='@{viewModel.data.expireDate, default="wrz 2020"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1"
+                                android:visibility="@{viewModel.data.expireDateAvailable}" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
+                                android:text="Nie podano"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle"
+                                android:visibility="@{!viewModel.data.expireDateAvailable}" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -202,7 +212,17 @@
                                 android:layout_marginTop="16dp"
                                 android:text='@{viewModel.data.daysRemain, default="21 dni"}'
                                 android:textAlignment="center"
-                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1" />
+                                android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1"
+                                android:visibility="@{viewModel.data.expireDateAvailable}" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
+                                android:text="Nie podano"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MediHelper.NoItemPageTitle"
+                                android:visibility="@{!viewModel.data.expireDateAvailable}" />
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
@@ -259,7 +279,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="@{viewModel.data.state.stateEmptyWeight}"
-                                    android:background="@color/colorBackground"/>
+                                    android:background="@color/colorBackground" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
