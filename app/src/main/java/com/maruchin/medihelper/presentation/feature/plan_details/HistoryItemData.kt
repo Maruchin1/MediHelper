@@ -36,21 +36,18 @@ data class HistoryItemData(
 
     data class CheckBox(
         val plannedTime: String,
-        val statusColorId: Int
+        val taken: Boolean
     ) {
         companion object {
 
             fun fromDomainModel(model: HistoryItem.CheckBox) =
                 CheckBox(
                     plannedTime = model.plannedTime.formatString,
-                    statusColorId = getStatusColor(
-                        model.status
-                    )
+                    taken = getTaken(model.status)
                 )
 
-            private fun getStatusColor(status: PlannedMedicine.Status) = when (status) {
-                PlannedMedicine.Status.TAKEN -> R.color.colorStateGood
-                PlannedMedicine.Status.NOT_TAKEN -> R.color.colorDarkerGray
+            private fun getTaken(status: PlannedMedicine.Status) : Boolean {
+                return status == PlannedMedicine.Status.TAKEN
             }
         }
     }

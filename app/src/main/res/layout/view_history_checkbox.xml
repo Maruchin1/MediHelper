@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="displayData"
             type="com.maruchin.medihelper.presentation.feature.plan_details.HistoryItemData.CheckBox" />
     </data>
 
-    <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -20,7 +20,17 @@
             android:layout_height="wrap_content"
             android:text='@{displayData.plannedTime, default="00:00"}'
             android:textColor="@color/colorWhite"
-            app:chipBackgroundColor='@{displayData.statusColorId, default="@color/colorDarkerGray"}' />
+            app:chipBackgroundColor="@color/colorStateGood"
+            android:visibility="@{displayData.taken}"/>
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{displayData.plannedTime, default="00:00"}'
+            app:chipBackgroundColor="@color/colorWhite"
+            app:chipStrokeColor="@color/colorDarkerGray"
+            app:chipStrokeWidth="2dp"
+            android:visibility="@{!displayData.taken}"/>
 
     </LinearLayout>
 
