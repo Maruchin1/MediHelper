@@ -1,6 +1,5 @@
 package com.maruchin.medihelper.presentation.feature.plan_details
 
-import com.maruchin.medihelper.R
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.model.HistoryItem

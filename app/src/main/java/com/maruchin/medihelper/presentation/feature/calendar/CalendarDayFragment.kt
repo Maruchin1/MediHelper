@@ -25,8 +25,8 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
     fun onClickOpenPlannedMedicineOptions(plannedMedicineId: String) {
         PlannedMedicineOptionsDialog()
             .apply {
-            this.plannedMedicineId = plannedMedicineId
-        }.show(childFragmentManager)
+                this.plannedMedicineId = plannedMedicineId
+            }.show(childFragmentManager)
     }
 
     fun onClickChangeMorningCollapsed() {
@@ -52,7 +52,8 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
-        setupRecyclerViews()
+        setupCheckBoxesRecyclerViews()
+        setupItemsRecyclerViews()
         observeViewModel()
     }
 
@@ -64,7 +65,19 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
         viewModel.initViewModel(date)
     }
 
-    private fun setupRecyclerViews() {
+    private fun setupCheckBoxesRecyclerViews() {
+        recycler_view_morning_checkboxes.apply {
+            adapter = PlannedMedicineChackBoxAdapter(viewModel.morningSection.itemsCheckBoxes)
+        }
+        recycler_view_afternoon_checkboxes.apply {
+            adapter = PlannedMedicineChackBoxAdapter(viewModel.afternoonSection.itemsCheckBoxes)
+        }
+        recycler_view_evening_checkboxes.apply {
+            adapter = PlannedMedicineChackBoxAdapter(viewModel.eveningSection.itemsCheckBoxes)
+        }
+    }
+
+    private fun setupItemsRecyclerViews() {
         recycler_view_morning_schedule.apply {
             adapter = PlannedMedicineAdapter(viewModel.morningSection.items)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -86,15 +99,28 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
         })
     }
 
-    // Inner classes
-    private inner class PlannedMedicineAdapter(itemsSource: LiveData<List<PlannedMedicineItemData>>) :
-        BaseRecyclerLiveAdapter<PlannedMedicineItemData>(
-            layoutResId = R.layout.rec_item_planned_medicine,
-            lifecycleOwner = viewLifecycleOwner,
-            itemsSource = itemsSource,
-            areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedMedicineId == newItem.plannedMedicineId }
-        ) {
+    private inner class PlannedMedicineAdapter(
+        itemsSource: LiveData<List<PlannedMedicineItemData>>
+    ) : BaseRecyclerLiveAdapter<PlannedMedicineItemData>(
+        layoutResId = R.layout.rec_item_planned_medicine,
+        lifecycleOwner = viewLifecycleOwner,
+        itemsSource = itemsSource,
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedMedicineId == newItem.plannedMedicineId }
+    ) {
         override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: PlannedMedicineItemData) {
+            holder.bind(item, this@CalendarDayFragment)
+        }
+    }
+
+    private inner class PlannedMedicineChackBoxAdapter(
+        itemsSource: LiveData<List<PlannedMedicineItemCheckBoxData>>
+    ) : BaseRecyclerLiveAdapter<PlannedMedicineItemCheckBoxData>(
+        layoutResId = R.layout.rec_item_planned_medicine_checkbox,
+        lifecycleOwner = viewLifecycleOwner,
+        itemsSource = itemsSource,
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedMedicineId == newItem.plannedMedicineId }
+    ) {
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: PlannedMedicineItemCheckBoxData) {
             holder.bind(item, this@CalendarDayFragment)
         }
     }

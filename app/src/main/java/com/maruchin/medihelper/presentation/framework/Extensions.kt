@@ -3,6 +3,7 @@ package com.maruchin.medihelper.presentation.framework
 import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.AutoTransition
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -24,7 +25,10 @@ fun ExtendedFloatingActionButton.shrinkOnScroll(nestedScrollView: NestedScrollVi
 }
 
 fun ViewGroup.beginDelayedTransition() {
-    TransitionManager.beginDelayedTransition(this)
+    val autoTransition = AutoTransition().apply {
+        duration = 300
+    }
+    TransitionManager.beginDelayedTransition(this, autoTransition)
 }
 
 fun ViewGroup.beginDelayedFade() {

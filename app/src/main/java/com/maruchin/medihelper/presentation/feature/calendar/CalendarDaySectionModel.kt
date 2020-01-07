@@ -3,7 +3,6 @@ package com.maruchin.medihelper.presentation.feature.calendar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.maruchin.medihelper.domain.entities.PlannedMedicine
 
 class CalendarDaySectionModel(
     private val type: Type,
@@ -11,8 +10,8 @@ class CalendarDaySectionModel(
 ) {
 
     val items: LiveData<List<PlannedMedicineItemData>>
+    val itemsCheckBoxes: LiveData<List<PlannedMedicineItemCheckBoxData>>
     val itemsAvailable: LiveData<Boolean>
-    val takenMedicinesInfo: LiveData<String>
     val sectionExpanded: LiveData<Boolean>
         get() = _sectionExpanded
 
@@ -20,8 +19,8 @@ class CalendarDaySectionModel(
 
     init {
         items = getLiveItemsByType()
+        itemsCheckBoxes = getLiveItemsCheckBoxes()
         itemsAvailable = getLiveItemsAvailable()
-        takenMedicinesInfo = getLiveTakenMedicinesInfo()
     }
 
     fun changeSectionCollapsed() {
@@ -37,21 +36,14 @@ class CalendarDaySectionModel(
         } ?: emptyList()
     }
 
+    private fun getLiveItemsCheckBoxes() = Transformations.map(items) { items ->
+        items.map { singleItem ->
+            PlannedMedicineItemCheckBoxData(singleItem)
+        }
+    }
+
     private fun getLiveItemsAvailable() = Transformations.map(items) { items ->
         items.isNotEmpty()
-    }
-
-    private fun getLiveTakenMedicinesInfo() = Transformations.map(items) { items ->
-        val allItemsCount = items.size
-        val takenItemsCount = numberOfTakenItems(items)
-        return@map "Przyjęto $takenItemsCount z $allItemsCount"
-    }
-
-    private fun numberOfTakenItems(items: List<PlannedMedicineItemData>): Int {
-        val takenItems = items.filter { item ->
-            item.statusData.status  == PlannedMedicine.Status.TAKEN
-        }
-        return takenItems.size
     }
 
     enum class Type {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -79,21 +80,21 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:visibility="@{viewModel.morningSection.itemsAvailable}"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintBottom_toBottomOf="@id/lay_section_icon_morning"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/baseline_arrow_drop_down_black_36"
+                                    android:src="@drawable/baseline_arrow_drop_down_black_24"
                                     android:tint="@color/colorDarkerGray"
                                     android:visibility="@{!viewModel.morningSection.sectionExpanded}" />
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/baseline_arrow_drop_up_black_36"
+                                    android:src="@drawable/baseline_arrow_drop_up_black_24"
                                     android:tint="@color/colorDarkerGray"
                                     android:visibility="@{viewModel.morningSection.sectionExpanded}" />
 
@@ -115,17 +116,18 @@
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                                     android:visibility="@{!viewModel.morningSection.itemsAvailable}" />
 
-                                <TextView
-                                    android:layout_width="match_parent"
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recycler_view_morning_checkboxes"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text='@{viewModel.morningSection.takenMedicinesInfo, default="Przyjęto 0 z 4"}'
-                                    android:textAlignment="center"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                                    android:visibility="@{viewModel.morningSection.itemsAvailable}" />
+                                    android:layout_gravity="center"
+                                    android:nestedScrollingEnabled="false"
+                                    android:orientation="horizontal"
+                                    android:visibility="@{!viewModel.morningSection.sectionExpanded}"
+                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                    tools:listitem="@layout/rec_item_planned_medicine_checkbox" />
                             </LinearLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <include layout="@layout/line_horizontal" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycler_view_morning_schedule"
@@ -190,21 +192,21 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:visibility="@{viewModel.afternoonSection.itemsAvailable}"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintBottom_toBottomOf="@id/lay_section_icon_afternoon"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/baseline_arrow_drop_down_black_36"
+                                    android:src="@drawable/baseline_arrow_drop_down_black_24"
                                     android:tint="@color/colorDarkerGray"
                                     android:visibility="@{!viewModel.afternoonSection.sectionExpanded}" />
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/baseline_arrow_drop_up_black_36"
+                                    android:src="@drawable/baseline_arrow_drop_up_black_24"
                                     android:tint="@color/colorDarkerGray"
                                     android:visibility="@{viewModel.afternoonSection.sectionExpanded}" />
 
@@ -226,17 +228,18 @@
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                                     android:visibility="@{!viewModel.afternoonSection.itemsAvailable}" />
 
-                                <TextView
-                                    android:layout_width="match_parent"
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recycler_view_afternoon_checkboxes"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text='@{viewModel.afternoonSection.takenMedicinesInfo, default="Przyjęto 0 z 4"}'
-                                    android:textAlignment="center"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                                    android:visibility="@{viewModel.afternoonSection.itemsAvailable}" />
+                                    android:layout_gravity="center"
+                                    android:nestedScrollingEnabled="false"
+                                    android:orientation="horizontal"
+                                    android:visibility="@{!viewModel.afternoonSection.sectionExpanded}"
+                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                    tools:listitem="@layout/rec_item_planned_medicine_checkbox" />
                             </LinearLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <include layout="@layout/line_horizontal" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycler_view_afternoon_schedule"
@@ -302,21 +305,21 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:visibility="@{viewModel.eveningSection.itemsAvailable}"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintBottom_toBottomOf="@id/lay_section_icon_evening"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/baseline_arrow_drop_down_black_36"
+                                    android:src="@drawable/baseline_arrow_drop_down_black_24"
                                     android:tint="@color/colorDarkerGray"
                                     android:visibility="@{!viewModel.eveningSection.sectionExpanded}" />
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/baseline_arrow_drop_up_black_36"
+                                    android:src="@drawable/baseline_arrow_drop_up_black_24"
                                     android:tint="@color/colorDarkerGray"
                                     android:visibility="@{viewModel.eveningSection.sectionExpanded}" />
 
@@ -338,17 +341,18 @@
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                                     android:visibility="@{!viewModel.eveningSection.itemsAvailable}" />
 
-                                <TextView
-                                    android:layout_width="match_parent"
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recycler_view_evening_checkboxes"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text='@{viewModel.eveningSection.takenMedicinesInfo, default="Przyjęto 0 z 4"}'
-                                    android:textAlignment="center"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                                    android:visibility="@{viewModel.eveningSection.itemsAvailable}" />
+                                    android:layout_gravity="center"
+                                    android:nestedScrollingEnabled="false"
+                                    android:orientation="horizontal"
+                                    android:visibility="@{!viewModel.eveningSection.sectionExpanded}"
+                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                    tools:listitem="@layout/rec_item_planned_medicine_checkbox" />
                             </LinearLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <include layout="@layout/line_horizontal" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycler_view_evening_schedule"
