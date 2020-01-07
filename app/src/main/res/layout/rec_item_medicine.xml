@@ -69,14 +69,15 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text='@{displayData.medicineName, default="Nazwa leku"}'
+                    android:text='@{displayData.name, default="Nazwa leku"}'
                     android:textAppearance="@style/TextAppearance.MediHelper.Header" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{displayData.medicineUnit, default=jednostka}"
-                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
+                    android:layout_marginTop="2dp"
+                    android:text="@{displayData.type, default=rodzaj}"
+                    android:textAppearance="@style/TextAppearance.MediHelper.Body2.Tertiary" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"

@@ -7,7 +7,6 @@ import com.maruchin.medihelper.domain.entities.MedicineState
 data class MedicineItem(
     val medicineId: String,
     val name: String,
-    val unit: String,
     val expireDate: AppExpireDate?,
     val type: String?,
     val state: MedicineState,
@@ -16,7 +15,6 @@ data class MedicineItem(
     constructor(medicine: Medicine) : this(
         medicineId = medicine.entityId,
         name = medicine.name,
-        unit = medicine.unit,
         expireDate = medicine.expireDate,
         type = medicine.type,
         state = medicine.state,

@@ -7,8 +7,8 @@ import com.maruchin.medihelper.domain.model.MedicineItem
 data class MedicineItemData(
     val medicineId: String,
     val pictureName: String?,
-    val medicineName: String,
-    val medicineUnit: String,
+    val name: String,
+    val type: String,
     val stateData: StateData
 ) {
     companion object {
@@ -17,10 +17,14 @@ data class MedicineItemData(
             return MedicineItemData(
                 medicineId = model.medicineId,
                 pictureName = model.pictureName,
-                medicineName = model.name,
-                medicineUnit = model.unit,
+                name = model.name,
+                type = getType(model.type),
                 stateData = getStateData(model.state)
             )
+        }
+
+        private fun getType(modelType: String?): String {
+            return modelType ?: "Nieokreślony rodzaj"
         }
 
         private fun getStateData(model: MedicineState): StateData {
