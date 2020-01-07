@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import com.google.firebase.firestore.CollectionReference
-import com.maruchin.medihelper.data.framework.FirestoreRepo
+import com.maruchin.medihelper.data.framework.FirestoreEntityRepo
 import com.maruchin.medihelper.data.framework.getDocumenstLive
 import com.maruchin.medihelper.data.mappers.PlannedMedicineMapper
 import com.maruchin.medihelper.data.utils.AppFirebase
@@ -20,9 +20,9 @@ import java.util.*
 class PlannedMedicineRepoImpl(
     private val appFirebase: AppFirebase,
     private val mapper: PlannedMedicineMapper
-) : FirestoreRepo<PlannedMedicine>(
+) : FirestoreEntityRepo<PlannedMedicine>(
     collectionRef = appFirebase.plannedMedicines,
-    mapper = mapper
+    entityMapper = mapper
 ), PlannedMedicineRepo {
 
     private val collectionRef: CollectionReference

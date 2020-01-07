@@ -1,14 +1,14 @@
 package com.maruchin.medihelper.domain.usecasesimpl.users
 
 import com.maruchin.medihelper.domain.model.SignUpErrors
-import com.maruchin.medihelper.domain.repositories.UserAuthRepo
+import com.maruchin.medihelper.domain.repositories.UserRepo
 import com.maruchin.medihelper.domain.usecases.user.SignUpUseCase
 import com.maruchin.medihelper.domain.utils.SignUpValidator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class SignUpUseCaseImpl(
-    private val userAuthRepo: UserAuthRepo,
+    private val userRepo: UserRepo,
     private val validator: SignUpValidator
 ) : SignUpUseCase {
 
@@ -34,14 +34,14 @@ class SignUpUseCaseImpl(
 
     private suspend fun signUpUser(params: SignUpUseCase.Params, errors: SignUpErrors) {
         try {
-            userAuthRepo.signUp(params.email!!, params.password!!)
-        } catch (ex: UserAuthRepo.IncorrectEmailException) {
+            userRepo.signUp(params.email!!, params.password!!)
+        } catch (ex: UserRepo.IncorrectEmailException) {
             errors.incorrectEmail = true
-        } catch (ex: UserAuthRepo.UserAlreadyExistException) {
+        } catch (ex: UserRepo.UserAlreadyExistException) {
             errors.userAlreadyExists = true
-        } catch (ex: UserAuthRepo.WeakPasswordException) {
+        } catch (ex: UserRepo.WeakPasswordException) {
             errors.weakPassword = true
-        } catch (ex: UserAuthRepo.UndefinedAuthException) {
+        } catch (ex: UserRepo.UndefinedAuthException) {
             errors.undefinedError = true
         }
     }

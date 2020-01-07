@@ -1,14 +1,14 @@
 package com.maruchin.medihelper.domain.usecasesimpl.users
 
 import com.maruchin.medihelper.domain.model.ChangePasswordErrors
-import com.maruchin.medihelper.domain.repositories.UserAuthRepo
+import com.maruchin.medihelper.domain.repositories.UserRepo
 import com.maruchin.medihelper.domain.usecases.user.ChangePasswordUseCase
 import com.maruchin.medihelper.domain.utils.ChangePasswordValidator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class ChangePasswordUseCaseImpl(
-    private val userAuthRepo: UserAuthRepo,
+    private val userRepo: UserRepo,
     private val validator: ChangePasswordValidator
 ) : ChangePasswordUseCase {
 
@@ -18,7 +18,7 @@ class ChangePasswordUseCaseImpl(
             val errors = validator.validate(validatorParams)
 
             if (errors.noErrors) {
-                userAuthRepo.changePassword(params.newPassword!!)
+                userRepo.changePassword(params.newPassword!!)
             }
             return@withContext errors
         }

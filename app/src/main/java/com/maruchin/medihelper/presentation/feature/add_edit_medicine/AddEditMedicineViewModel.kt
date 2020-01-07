@@ -5,25 +5,25 @@ import com.google.firebase.storage.StorageReference
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.model.MedicineEditData
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineEditDataUseCase
-import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineUnitsUseCase
 import com.maruchin.medihelper.domain.usecases.medicines.SaveMedicineUseCase
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import com.maruchin.medihelper.device.camera.DeviceCamera
 import com.maruchin.medihelper.domain.model.MedicineErrors
+import com.maruchin.medihelper.domain.model.MedicineDefaults
+import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineDefaultsUseCase
 import com.maruchin.medihelper.presentation.utils.PicturesStorageRef
 import kotlinx.coroutines.launch
 import java.io.File
 
 class AddEditMedicineViewModel(
-    private val getMedicineUnitsUseCase: GetMedicineUnitsUseCase,
+    private val getMedicineDefaultsUseCase: GetMedicineDefaultsUseCase,
     private val getMedicineEditDataUseCase: GetMedicineEditDataUseCase,
     private val saveMedicineUseCase: SaveMedicineUseCase,
     private val deviceCamera: DeviceCamera,
     private val picturesStorageRef: PicturesStorageRef
 ) : ViewModel() {
 
-    val medicineUnitList: LiveData<List<String>>
-
+    val defaults: LiveData<MedicineDefaults>
     val formTitle: LiveData<String>
     val medicineName = MutableLiveData<String>()
     val medicineUnit = MutableLiveData<String>()
@@ -57,7 +57,7 @@ class AddEditMedicineViewModel(
 
     init {
         formTitle = getLiveFormTitle()
-        medicineUnitList = getLiveMedicineUnits()
+        defaults = getLiveMedicineDefaults()
         pictureFile = getLivePictureFile()
     }
 
@@ -90,9 +90,9 @@ class AddEditMedicineViewModel(
         }
     }
 
-    private fun getLiveMedicineUnits(): LiveData<List<String>> {
+    private fun getLiveMedicineDefaults(): LiveData<MedicineDefaults> {
         return liveData {
-            val list = getMedicineUnitsUseCase.execute()
+            val list = getMedicineDefaultsUseCase.execute()
             emit(list)
         }
     }

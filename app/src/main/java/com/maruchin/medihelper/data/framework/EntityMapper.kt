@@ -1,6 +1,6 @@
 package com.maruchin.medihelper.data.framework
 
-abstract class BaseMapper<T> {
+abstract class EntityMapper<T> {
 
     abstract suspend fun entityToMap(entity: T): Map<String, Any?>
 

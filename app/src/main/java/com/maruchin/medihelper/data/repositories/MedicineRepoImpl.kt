@@ -1,8 +1,6 @@
 package com.maruchin.medihelper.data.repositories
 
-import android.net.Uri
-import com.maruchin.medihelper.data.utils.DataSharedPref
-import com.maruchin.medihelper.data.framework.FirestoreRepo
+import com.maruchin.medihelper.data.framework.FirestoreEntityRepo
 import com.maruchin.medihelper.data.mappers.MedicineMapper
 import com.maruchin.medihelper.data.utils.AppFirebase
 import com.maruchin.medihelper.domain.entities.Medicine
@@ -10,36 +8,16 @@ import com.maruchin.medihelper.domain.entities.MedicineInfo
 import com.maruchin.medihelper.domain.entities.MedicineInfoSearchResult
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
-import java.io.File
 
 class MedicineRepoImpl(
     private val appFirebase: AppFirebase,
-    private val dataSharedPref: DataSharedPref,
     private val mapper: MedicineMapper
-) : FirestoreRepo<Medicine>(
+) : FirestoreEntityRepo<Medicine>(
     collectionRef = appFirebase.medicines,
-    mapper = mapper
+    entityMapper = mapper
 ), MedicineRepo {
-
-    override suspend fun saveMedicinePicture(pictureFile: File) {
-        val picturesStorage = appFirebase.medicinesPictures
-        val pictureFileRef = picturesStorage.child(pictureFile.name)
-        val fileUri = Uri.fromFile(pictureFile)
-        pictureFileRef.putFile(fileUri).await()
-    }
-
-    override suspend fun deleteMedicinePicture(pictureName: String) {
-        val picturesStorage = appFirebase.medicinesPictures
-        val pictureFileRef = picturesStorage.child(pictureName)
-        pictureFileRef.delete().await()
-    }
-
-    override suspend fun getMedicineUnits(): List<String> = withContext(Dispatchers.IO) {
-        dataSharedPref.getMedicineUnitList()
-    }
 
     override suspend fun searchForMedicineInfo(medicineName: String): List<MedicineInfoSearchResult> =
         withContext(Dispatchers.IO) {

@@ -2,7 +2,7 @@ package com.maruchin.medihelper.domain.usecasesimpl.users
 
 import com.google.common.truth.Truth
 import com.maruchin.medihelper.domain.model.SignUpErrors
-import com.maruchin.medihelper.domain.repositories.UserAuthRepo
+import com.maruchin.medihelper.domain.repositories.UserRepo
 import com.maruchin.medihelper.domain.usecases.user.SignUpUseCase
 import com.maruchin.medihelper.domain.utils.SignUpValidator
 import com.maruchin.medihelper.testingframework.anyObject
@@ -10,19 +10,18 @@ import com.maruchin.medihelper.testingframework.mock
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Ignore
-import org.junit.Test
 import org.mockito.Mockito
 
 class SignUpUseCaseImplTest {
 
-    private val userAuthRepo: UserAuthRepo = mock()
+    private val userRepo: UserRepo = mock()
     private val validator: SignUpValidator = mock()
 
     private lateinit var useCase: SignUpUseCase
 
     @Before
     fun before() {
-        useCase = SignUpUseCaseImpl(userAuthRepo, validator)
+        useCase = SignUpUseCaseImpl(userRepo, validator)
     }
 
     @Ignore("usecase nietestowalny ponieważ zależność profileRepo jest wstrzykiwana w trakcie działąnia")
@@ -42,7 +41,7 @@ class SignUpUseCaseImplTest {
             val errors = useCase.execute(params)
 
             Truth.assertThat(errors.noErrors).isTrue()
-            Mockito.verify(userAuthRepo, Mockito.times(1))
+            Mockito.verify(userRepo, Mockito.times(1))
                 .signUp("test@mail.com", "abc")
         }
     }

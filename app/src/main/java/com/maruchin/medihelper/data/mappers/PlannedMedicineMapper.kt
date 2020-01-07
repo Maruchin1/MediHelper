@@ -1,6 +1,6 @@
 package com.maruchin.medihelper.data.mappers
 
-import com.maruchin.medihelper.data.framework.BaseMapper
+import com.maruchin.medihelper.data.framework.EntityMapper
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.AppTime
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class PlannedMedicineMapper : BaseMapper<PlannedMedicine>() {
+class PlannedMedicineMapper : EntityMapper<PlannedMedicine>() {
 
     val medicinePlanId = "medicinePlanId"
     val profileId = "profileId"

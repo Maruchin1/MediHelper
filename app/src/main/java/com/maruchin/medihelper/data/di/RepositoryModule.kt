@@ -6,15 +6,14 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     single {
-        UserAuthRepoImpl(
+        UserRepoImpl(
             appFirebase = get(),
             auth = get()
-        ) as UserAuthRepo
+        ) as UserRepo
     }
     single {
         MedicineRepoImpl(
             appFirebase = get(),
-            dataSharedPref = get(),
             mapper = get()
         ) as MedicineRepo
     }
@@ -41,5 +40,22 @@ val repositoryModule = module {
         SettingsRepoImpl(
             settingsSharedPref = get()
         ) as SettingsRepo
+    }
+    single {
+        PictureRepoImpl(
+            appFirebase = get()
+        ) as PictureRepo
+    }
+    single {
+        MedicineUnitRepoImpl(
+            appFirebase = get(),
+            mapper = get()
+        ) as MedicineUnitRepo
+    }
+    single {
+        MedicineTypeRepoImpl(
+            appFirebase = get(),
+            mapper = get()
+        ) as MedicineTypeRepo
     }
 }

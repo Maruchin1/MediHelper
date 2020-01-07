@@ -3,9 +3,9 @@ package com.maruchin.medihelper.domain.repositories
 import androidx.lifecycle.LiveData
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
-import com.maruchin.medihelper.domain.framework.BaseRepo
+import com.maruchin.medihelper.domain.framework.BaseEntityRepo
 
-interface PlannedMedicineRepo : BaseRepo<PlannedMedicine> {
+interface PlannedMedicineRepo : BaseEntityRepo<PlannedMedicine> {
 
     suspend fun addNewList(entityList: List<PlannedMedicine>): List<PlannedMedicine>
     suspend fun deleteListById(entityIdList: List<String>)

@@ -1,11 +1,11 @@
 package com.maruchin.medihelper.data.mappers
 
-import com.maruchin.medihelper.data.framework.BaseMapper
+import com.maruchin.medihelper.data.framework.EntityMapper
 import com.maruchin.medihelper.domain.entities.Profile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class ProfileMapper : BaseMapper<Profile>() {
+class ProfileMapper : EntityMapper<Profile>() {
 
     private val name = "name"
     private val color = "color"

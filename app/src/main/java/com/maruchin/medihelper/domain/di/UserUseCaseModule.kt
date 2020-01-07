@@ -7,35 +7,35 @@ import org.koin.dsl.module
 val userUseCaseModule = module {
     factory {
         SignInUseCaseImpl(
-            userAuthRepo = get(),
+            userRepo = get(),
             validator = get()
         ) as SignInUseCase
     }
     factory {
         SignUpUseCaseImpl(
-            userAuthRepo = get(),
+            userRepo = get(),
             validator = get()
         ) as SignUpUseCase
     }
     factory {
         IsUserSignedInUseCaseImpl(
-            userAuthRepo = get()
+            userRepo = get()
         ) as IsUserSignedInUseCase
     }
     factory { 
         SignOutUseCaseImpl(
-            userAuthRepo = get()
+            userRepo = get()
         ) as SignOutUseCase
     }
     factory {
         ChangePasswordUseCaseImpl(
-            userAuthRepo = get(),
+            userRepo = get(),
             validator = get()
         ) as ChangePasswordUseCase
     }
     factory {
         GetCurrUserEmailUseCaseImpl(
-            userAuthRepo = get()
+            userRepo = get()
         ) as GetCurrUserEmailUseCase
     }
 }

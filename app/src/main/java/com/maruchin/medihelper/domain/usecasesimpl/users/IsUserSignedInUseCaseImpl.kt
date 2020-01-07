@@ -1,13 +1,13 @@
 package com.maruchin.medihelper.domain.usecasesimpl.users
 
-import com.maruchin.medihelper.domain.repositories.UserAuthRepo
+import com.maruchin.medihelper.domain.repositories.UserRepo
 import com.maruchin.medihelper.domain.usecases.user.IsUserSignedInUseCase
 
 class IsUserSignedInUseCaseImpl(
-    private val userAuthRepo: UserAuthRepo
+    private val userRepo: UserRepo
 ) : IsUserSignedInUseCase {
 
     override suspend fun execute(): Boolean {
-        return userAuthRepo.getCurrUser() != null
+        return userRepo.getCurrUser() != null
     }
 }

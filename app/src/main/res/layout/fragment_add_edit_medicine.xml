@@ -114,7 +114,7 @@
                             inLayError="@{viewModel.errorMedicineName}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Nazwa leku, np: Apap">
+                            android:hint="Nazwa leku">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
@@ -138,11 +138,10 @@
                                 android:hint="Jednostka">
 
                                 <AutoCompleteTextView
-                                    android:id="@+id/filled_exposed_dropdown"
-                                    adapter="@{viewModel.medicineUnitList}"
+                                    android:id="@+id/auto_txv_medicine_unit"
+                                    adapter="@{viewModel.defaults.medicineUnits}"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:editable="false"
                                     android:text="@={viewModel.medicineUnit}" />
 
                             </com.google.android.material.textfield.TextInputLayout>
@@ -167,13 +166,14 @@
                         </LinearLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MediHelper.TextInputLayout"
+                            style="@style/Widget.MediHelper.TextInputLayout.Menu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Rodzaj leku, np: Na alergię, Antybiotyk"
-                            android:layout_marginTop="24dp">
+                            android:layout_marginTop="24dp"
+                            android:hint="Rodzaj leku">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <AutoCompleteTextView
+                                adapter="@{viewModel.defaults.medicineTypes}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="textCapWords"

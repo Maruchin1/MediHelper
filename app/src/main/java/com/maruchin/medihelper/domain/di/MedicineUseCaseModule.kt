@@ -9,12 +9,16 @@ val medicineUseCaseModule = module {
     factory {
         SaveMedicineUseCaseImpl(
             medicineRepo = get(),
+            medicineUnitRepo = get(),
+            medicineTypeRepo = get(),
+            pictureRepo = get(),
             validator = get()
         ) as SaveMedicineUseCase
     }
     factory {
         DeleteMedicineUseCaseImpl(
             medicineRepo = get(),
+            pictureRepo = get(),
             planRepo = get(),
             deletePlansUseCase = get()
         ) as DeleteMedicineUseCase
@@ -25,9 +29,10 @@ val medicineUseCaseModule = module {
         ) as GetLiveAllMedicinesItemsUseCase
     }
     factory {
-        GetMedicineUnitsUseCaseImpl(
-            medicineRepo = get()
-        ) as GetMedicineUnitsUseCase
+        GetMedicineDefaultsUseCaseImpl(
+            medicineUnitRepo = get(),
+            medicineTypeRepo = get()
+        ) as GetMedicineDefaultsUseCase
     }
     factory {
         GetMedicineDetailsUseCaseImpl(

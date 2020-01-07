@@ -1,13 +1,13 @@
 package com.maruchin.medihelper.data.mappers
 
-import com.maruchin.medihelper.data.framework.BaseMapper
+import com.maruchin.medihelper.data.framework.EntityMapper
 import com.maruchin.medihelper.domain.entities.AppExpireDate
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MedicineMapper : BaseMapper<Medicine>() {
+class MedicineMapper : EntityMapper<Medicine>() {
 
     private val name = "name"
     private val unit = "unit"

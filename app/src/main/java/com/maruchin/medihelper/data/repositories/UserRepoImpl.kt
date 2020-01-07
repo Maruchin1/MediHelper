@@ -2,21 +2,18 @@ package com.maruchin.medihelper.data.repositories
 
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
 import com.maruchin.medihelper.data.framework.getCurrUserId
 import com.maruchin.medihelper.data.utils.AppFirebase
 import com.maruchin.medihelper.domain.entities.User
-import com.maruchin.medihelper.domain.model.SignInErrors
-import com.maruchin.medihelper.domain.model.SignUpErrors
-import com.maruchin.medihelper.domain.repositories.UserAuthRepo
+import com.maruchin.medihelper.domain.repositories.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class UserAuthRepoImpl(
+class UserRepoImpl(
     private val appFirebase: AppFirebase,
     private val auth: FirebaseAuth
-) : UserAuthRepo {
+) : UserRepo {
 
     private val collectionRef: CollectionReference
         get() = appFirebase.users
@@ -26,11 +23,11 @@ class UserAuthRepoImpl(
             auth.signInWithEmailAndPassword(email, password).await()
             auth.getCurrUserId()
         } catch (ex: FirebaseAuthInvalidUserException) {
-            throw UserAuthRepo.IncorrectEmailException()
+            throw UserRepo.IncorrectEmailException()
         } catch (ex: FirebaseAuthInvalidCredentialsException) {
-            throw UserAuthRepo.IncorrectPasswordException()
+            throw UserRepo.IncorrectPasswordException()
         } catch (ex: FirebaseAuthException) {
-            throw  UserAuthRepo.UndefinedAuthException()
+            throw  UserRepo.UndefinedAuthException()
         }
     }
 
@@ -41,13 +38,13 @@ class UserAuthRepoImpl(
             collectionRef.document(userId)
             userId
         } catch (ex: FirebaseAuthEmailException) {
-            throw UserAuthRepo.IncorrectEmailException()
+            throw UserRepo.IncorrectEmailException()
         } catch (ex: FirebaseAuthUserCollisionException) {
-            throw UserAuthRepo.UserAlreadyExistException()
+            throw UserRepo.UserAlreadyExistException()
         } catch (ex: FirebaseAuthWeakPasswordException) {
-            throw UserAuthRepo.WeakPasswordException()
+            throw UserRepo.WeakPasswordException()
         } catch (ex: FirebaseAuthException) {
-            throw UserAuthRepo.UndefinedAuthException()
+            throw UserRepo.UndefinedAuthException()
         }
     }
 

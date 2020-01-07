@@ -1,11 +1,11 @@
 package com.maruchin.medihelper.data.mappers
 
-import com.maruchin.medihelper.data.framework.BaseMapper
+import com.maruchin.medihelper.data.framework.EntityMapper
 import com.maruchin.medihelper.domain.entities.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MedicinePlanMapper : BaseMapper<Plan>() {
+class MedicinePlanMapper : EntityMapper<Plan>() {
 
     private enum class IntakeDaysType {
         EVERYDAY, DAYS_OF_WEEK, INTERVAL, SEQUENCE

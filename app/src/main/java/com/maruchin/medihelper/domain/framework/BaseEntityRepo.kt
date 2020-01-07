@@ -2,7 +2,7 @@ package com.maruchin.medihelper.domain.framework
 
 import androidx.lifecycle.LiveData
 
-interface BaseRepo<T : BaseEntity> {
+interface BaseEntityRepo<T : BaseEntity> {
     suspend fun addNew(entity: T): String?
     suspend fun update(entity: T)
     suspend fun deleteById(entityId: String)

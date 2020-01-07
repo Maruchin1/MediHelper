@@ -4,14 +4,21 @@ import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.MedicineState
 import com.maruchin.medihelper.domain.model.MedicineErrors
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
+import com.maruchin.medihelper.domain.repositories.MedicineTypeRepo
+import com.maruchin.medihelper.domain.repositories.MedicineUnitRepo
+import com.maruchin.medihelper.domain.repositories.PictureRepo
 import com.maruchin.medihelper.domain.usecases.medicines.SaveMedicineUseCase
 import com.maruchin.medihelper.domain.utils.MedicineValidator
+import com.maruchin.medihelper.presentation.framework.setImageViewSrcFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
 class SaveMedicineUseCaseImpl(
     private val medicineRepo: MedicineRepo,
+    private val pictureRepo: PictureRepo,
+    private val medicineUnitRepo: MedicineUnitRepo,
+    private val medicineTypeRepo: MedicineTypeRepo,
     private val validator: MedicineValidator
 ) : SaveMedicineUseCase {
 
@@ -35,26 +42,44 @@ class SaveMedicineUseCaseImpl(
     }
 
     private suspend fun saveMedicineToRepo(params: SaveMedicineUseCase.Params) {
-        val actualPictureName: String? = when {
+        saveUnit(params)
+        saveType(params)
+        val actualPictureName: String? = updatePicture(params)
+        val medicine = getMedicine(params, actualPictureName)
+        if (params.medicineId == null) {
+            medicineRepo.addNew(medicine)
+        } else {
+            medicineRepo.update(medicine)
+        }
+    }
+
+    private suspend fun saveUnit(params: SaveMedicineUseCase.Params) {
+        if (params.unit != null) {
+            medicineUnitRepo.addNewDistinct(params.unit)
+        }
+    }
+
+    private suspend fun saveType(params: SaveMedicineUseCase.Params) {
+        if (params.type != null) {
+            medicineTypeRepo.addNewDistinct(params.type)
+        }
+    }
+
+    private suspend fun updatePicture(params: SaveMedicineUseCase.Params): String? {
+        return when {
             pictureChanged(params) -> {
-                medicineRepo.deleteMedicinePicture(params.oldPictureName!!)
-                medicineRepo.saveMedicinePicture(params.newPictureFile!!)
+                pictureRepo.deleteMedicinePicture(params.oldPictureName!!)
+                pictureRepo.saveMedicinePicture(params.newPictureFile!!)
                 params.newPictureFile.name
             }
             firstPicture(params) -> {
-                medicineRepo.saveMedicinePicture(params.newPictureFile!!)
+                pictureRepo.saveMedicinePicture(params.newPictureFile!!)
                 params.newPictureFile.name
             }
             pictureNotChanged(params) -> {
                 params.oldPictureName
             }
             else -> null
-        }
-        val medicine = getMedicine(params, actualPictureName)
-        if (params.medicineId == null) {
-            medicineRepo.addNew(medicine)
-        } else {
-            medicineRepo.update(medicine)
         }
     }
 

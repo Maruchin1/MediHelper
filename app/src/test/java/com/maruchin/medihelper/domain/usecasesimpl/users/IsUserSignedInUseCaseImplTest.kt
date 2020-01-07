@@ -2,7 +2,7 @@ package com.maruchin.medihelper.domain.usecasesimpl.users
 
 import com.google.common.truth.Truth
 import com.maruchin.medihelper.domain.entities.User
-import com.maruchin.medihelper.domain.repositories.UserAuthRepo
+import com.maruchin.medihelper.domain.repositories.UserRepo
 import com.maruchin.medihelper.domain.usecases.user.IsUserSignedInUseCase
 import com.maruchin.medihelper.testingframework.mock
 import kotlinx.coroutines.runBlocking
@@ -12,13 +12,13 @@ import org.mockito.Mockito
 
 class IsUserSignedInUseCaseImplTest {
 
-    private val userAuthRepo: UserAuthRepo = mock()
+    private val userRepo: UserRepo = mock()
 
     private lateinit var useCase: IsUserSignedInUseCase
 
     @Before
     fun before() {
-        useCase = IsUserSignedInUseCaseImpl(userAuthRepo)
+        useCase = IsUserSignedInUseCaseImpl(userRepo)
     }
 
     @Test
@@ -29,7 +29,7 @@ class IsUserSignedInUseCaseImplTest {
         )
 
         runBlocking {
-            Mockito.`when`(userAuthRepo.getCurrUser()).thenReturn(currUserMock)
+            Mockito.`when`(userRepo.getCurrUser()).thenReturn(currUserMock)
 
             val result = useCase.execute()
 
@@ -40,7 +40,7 @@ class IsUserSignedInUseCaseImplTest {
     @Test
     fun execute_UserNotSignedIn() {
         runBlocking {
-            Mockito.`when`(userAuthRepo.getCurrUser()).thenReturn(null)
+            Mockito.`when`(userRepo.getCurrUser()).thenReturn(null)
 
             val result = useCase.execute()
 

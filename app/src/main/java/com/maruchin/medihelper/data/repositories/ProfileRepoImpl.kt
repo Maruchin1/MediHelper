@@ -2,7 +2,7 @@ package com.maruchin.medihelper.data.repositories
 
 import com.google.firebase.firestore.CollectionReference
 import com.maruchin.medihelper.data.utils.DataSharedPref
-import com.maruchin.medihelper.data.framework.FirestoreRepo
+import com.maruchin.medihelper.data.framework.FirestoreEntityRepo
 import com.maruchin.medihelper.data.mappers.ProfileMapper
 import com.maruchin.medihelper.data.utils.AppFirebase
 import com.maruchin.medihelper.domain.entities.Profile
@@ -15,9 +15,9 @@ class ProfileRepoImpl(
     private val appFirebase: AppFirebase,
     private val dataSharedPref: DataSharedPref,
     private val mapper: ProfileMapper
-) : FirestoreRepo<Profile>(
+) : FirestoreEntityRepo<Profile>(
     collectionRef = appFirebase.profiles,
-    mapper = mapper
+    entityMapper = mapper
 ), ProfileRepo {
 
     private val collectionRef: CollectionReference

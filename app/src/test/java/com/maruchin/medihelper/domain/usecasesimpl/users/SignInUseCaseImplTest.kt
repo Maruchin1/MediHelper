@@ -2,7 +2,7 @@ package com.maruchin.medihelper.domain.usecasesimpl.users
 
 import com.google.common.truth.Truth
 import com.maruchin.medihelper.domain.model.SignInErrors
-import com.maruchin.medihelper.domain.repositories.UserAuthRepo
+import com.maruchin.medihelper.domain.repositories.UserRepo
 import com.maruchin.medihelper.domain.usecases.user.SignInUseCase
 import com.maruchin.medihelper.domain.utils.SignInValidator
 import com.maruchin.medihelper.testingframework.anyObject
@@ -14,14 +14,14 @@ import org.mockito.Mockito
 
 class SignInUseCaseImplTest {
 
-    private val userAuthRepo: UserAuthRepo = mock()
+    private val userRepo: UserRepo = mock()
     private val validator: SignInValidator = mock()
 
     private lateinit var useCase: SignInUseCase
 
     @Before
     fun before() {
-        useCase = SignInUseCaseImpl(userAuthRepo, validator)
+        useCase = SignInUseCaseImpl(userRepo, validator)
     }
 
     @Test
@@ -39,7 +39,7 @@ class SignInUseCaseImplTest {
             val errors = useCase.execute(params)
 
             Truth.assertThat(errors.noErrors).isTrue()
-            Mockito.verify(userAuthRepo, Mockito.times(1))
+            Mockito.verify(userRepo, Mockito.times(1))
                 .signIn("test@email.com", "abc")
         }
     }
@@ -59,7 +59,7 @@ class SignInUseCaseImplTest {
             val errors = useCase.execute(params)
 
             Truth.assertThat(errors.noErrors).isFalse()
-            Mockito.verify(userAuthRepo, Mockito.times(0))
+            Mockito.verify(userRepo, Mockito.times(0))
                 .signIn("test@email.com", "abc")
         }
     }

@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.maruchin.medihelper.data.framework.FirestoreRepo
+import com.maruchin.medihelper.data.framework.FirestoreEntityRepo
 import com.maruchin.medihelper.data.framework.getDocumenstLive
 import com.maruchin.medihelper.data.mappers.MedicinePlanMapper
 import com.maruchin.medihelper.data.utils.AppFirebase
@@ -18,9 +17,9 @@ import kotlinx.coroutines.withContext
 class PlanRepoImpl(
     private val appFirebase: AppFirebase,
     private val mapper: MedicinePlanMapper
-) : FirestoreRepo<Plan>(
+) : FirestoreEntityRepo<Plan>(
     collectionRef = appFirebase.plans,
-    mapper = mapper
+    entityMapper = mapper
 ), PlanRepo {
 
     private val collectionRef: CollectionReference

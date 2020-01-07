@@ -1,14 +1,14 @@
 package com.maruchin.medihelper.domain.usecasesimpl.users
 
 import com.maruchin.medihelper.domain.model.SignInErrors
-import com.maruchin.medihelper.domain.repositories.UserAuthRepo
+import com.maruchin.medihelper.domain.repositories.UserRepo
 import com.maruchin.medihelper.domain.usecases.user.SignInUseCase
 import com.maruchin.medihelper.domain.utils.SignInValidator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class SignInUseCaseImpl(
-    private val userAuthRepo: UserAuthRepo,
+    private val userRepo: UserRepo,
     private val validator: SignInValidator
 ) : SignInUseCase {
 
@@ -31,12 +31,12 @@ class SignInUseCaseImpl(
 
     private suspend fun signInUser(params: SignInUseCase.Params, errors: SignInErrors) {
         try {
-            userAuthRepo.signIn(params.email!!, params.password!!)
-        } catch (ex: UserAuthRepo.IncorrectEmailException) {
+            userRepo.signIn(params.email!!, params.password!!)
+        } catch (ex: UserRepo.IncorrectEmailException) {
             errors.incorrectEmail = true
-        } catch (ex: UserAuthRepo.IncorrectPasswordException) {
+        } catch (ex: UserRepo.IncorrectPasswordException) {
             errors.incorrectPassword = true
-        } catch (ex: UserAuthRepo.UndefinedAuthException) {
+        } catch (ex: UserRepo.UndefinedAuthException) {
             errors.undefinedError = true
         }
     }

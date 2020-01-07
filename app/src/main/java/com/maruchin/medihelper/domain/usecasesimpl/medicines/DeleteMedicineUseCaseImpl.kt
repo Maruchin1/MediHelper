@@ -3,6 +3,7 @@ package com.maruchin.medihelper.domain.usecasesimpl.medicines
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.repositories.PlanRepo
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
+import com.maruchin.medihelper.domain.repositories.PictureRepo
 import com.maruchin.medihelper.domain.usecases.medicines.DeleteMedicineUseCase
 import com.maruchin.medihelper.domain.usecases.MedicineNotFoundException
 import com.maruchin.medihelper.domain.usecases.plans.DeletePlansUseCase
@@ -11,6 +12,7 @@ import kotlinx.coroutines.withContext
 
 class DeleteMedicineUseCaseImpl(
     private val medicineRepo: MedicineRepo,
+    private val pictureRepo: PictureRepo,
     private val planRepo: PlanRepo,
     private val deletePlansUseCase: DeletePlansUseCase
 ) : DeleteMedicineUseCase {
@@ -18,7 +20,7 @@ class DeleteMedicineUseCaseImpl(
     override suspend fun execute(medicineId: String) = withContext(Dispatchers.Default) {
         val medicine = getMedicine(medicineId)
         if (medicine.pictureName != null) {
-            medicineRepo.deleteMedicinePicture(medicine.pictureName)
+            pictureRepo.deleteMedicinePicture(medicine.pictureName)
         }
         medicineRepo.deleteById(medicineId)
         deletePlansUsingMedicine(medicineId)
