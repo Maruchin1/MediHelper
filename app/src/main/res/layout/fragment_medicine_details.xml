@@ -121,6 +121,14 @@
                                 android:layout_marginTop="8dp"
                                 android:text='@{viewModel.data.medicineUnit, default="Jednostka: tabletki"}'
                                 android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1.Dark" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text='@{viewModel.data.medicineType, default="Jednostka: tabletki"}'
+                                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1.Dark"
+                                android:visibility="@{viewModel.data.medicineTypeAvailable}" />
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

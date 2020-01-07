@@ -12,6 +12,8 @@ data class MedicineDetailsData(
     val pictureRef: StorageReference?,
     val medicineName: String,
     val medicineUnit: String,
+    val medicineTypeAvailable: Boolean,
+    val medicineType: String?,
     val expireDateAvailable: Boolean,
     val expireDate: String?,
     val daysRemain: String?,
@@ -30,6 +32,8 @@ data class MedicineDetailsData(
                 medicineUnit = formatMedicineUnit(
                     model.unit
                 ),
+                medicineTypeAvailable = isMedicineTypeAvailable(model.type),
+                medicineType = model.type,
                 expireDateAvailable = isExpireDateAvailable(model.expireDate),
                 expireDate = model.expireDate?.let { formatExpireDate(it) },
                 daysRemain = model.daysRemains?.let { formatDaysRemain(it) },
@@ -39,6 +43,10 @@ data class MedicineDetailsData(
         }
 
         private fun formatMedicineUnit(unit: String) = "Jednostka: $unit"
+
+        private fun isMedicineTypeAvailable(type: String?): Boolean {
+            return type != null
+        }
 
         private fun isExpireDateAvailable(expireDate: AppExpireDate?): Boolean {
             return expireDate != null
