@@ -10,7 +10,12 @@ import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentOptionsBinding
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
+import com.maruchin.medihelper.presentation.feature.options.saved_types.SavedMedicineTypesDialog
+import com.maruchin.medihelper.presentation.feature.options.saved_types.SavedMedicineUnitsDialog
+import com.maruchin.medihelper.presentation.feature.options.saved_types.SavedMedicineUnitsViewModel
+import com.maruchin.medihelper.presentation.feature.options.saved_types.SavedTypesDialog
 import com.maruchin.medihelper.presentation.framework.BaseHomeFragment
+import com.maruchin.medihelper.presentation.framework.hideOnScroll
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
 import kotlinx.android.synthetic.main.fragment_options.*
 import org.koin.android.ext.android.inject
@@ -43,10 +48,12 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
         ).show(childFragmentManager)
     }
 
-    fun onClickAlarmsHelp() {
-        HelpDialog(
-            helpItems = viewModel.getAlarmsHelp()
-        ).show(childFragmentManager)
+    fun onClickSavedMedicineTypes() {
+        SavedMedicineTypesDialog().show(childFragmentManager)
+    }
+
+    fun onClickSavedMedicineUnits() {
+        SavedMedicineUnitsDialog().show(childFragmentManager)
     }
 
     fun onClickShareApp() {
@@ -68,6 +75,7 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
         super.onViewCreated(view, savedInstanceState)
         setColorPrimaryStatusBas()
         bindLoadingScreen()
+        setupFabScrollBehavior()
         setupMedicinesRemindingOptions()
         observeViewModel()
     }
@@ -80,12 +88,13 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
         loadingScreen.bind(this, viewModel.loadingInProgress)
     }
 
+    private fun setupFabScrollBehavior() {
+        fab_share.hideOnScroll(scroll_view)
+    }
+
     private fun setupMedicinesRemindingOptions() {
         switch_notifications_enabled.setOnCheckedChangeListener { _, checked ->
             viewModel.setNotificationsEnabled(checked)
-        }
-        switch_alarms_enabled.setOnCheckedChangeListener { _, checked ->
-            viewModel.setAlarmsEnabled(checked)
         }
     }
 

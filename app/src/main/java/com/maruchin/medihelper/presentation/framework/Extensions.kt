@@ -18,8 +18,14 @@ fun FloatingActionButton.hideOnScroll(recyclerView: RecyclerView) {
     })
 }
 
+fun FloatingActionButton.hideOnScroll(nestedScrollView: NestedScrollView) {
+    nestedScrollView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->
+        if (scrollY != 0) hide() else show()
+    }
+}
+
 fun ExtendedFloatingActionButton.shrinkOnScroll(nestedScrollView: NestedScrollView) {
-    nestedScrollView.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+    nestedScrollView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->
         if (scrollY != 0) shrink() else extend()
     }
 }

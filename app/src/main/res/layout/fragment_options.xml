@@ -39,6 +39,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
@@ -211,7 +212,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/bottom_dialog_option_height"
-                            android:layout_marginBottom="8dp"
                             android:clickable="true"
                             android:focusable="true"
                             android:foreground="?selectableItemBackground"
@@ -234,18 +234,53 @@
                                 android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
                         </LinearLayout>
 
-                        <include layout="@layout/line_horizontal" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
-                            android:id="@+id/switch_alarms_enabled"
-                            style="@style/Widget.MediHelper.Switch"
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MediHelper.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginStart="@dimen/list_card_margin_horizontal"
+                    android:layout_marginTop="@dimen/list_card_margin_top"
+                    android:layout_marginEnd="@dimen/list_card_margin_horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/list_card_layout_margin_horizontal"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="@dimen/list_card_layout_margin_top"
                             android:layout_marginEnd="@dimen/list_card_layout_margin_horizontal"
-                            android:checked='@{viewModel.areAlarmsEnabled}'
-                            android:text="Alarmy z dźwiękiem" />
+                            android:layout_marginBottom="@dimen/list_card_layout_margin_bot"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/round_save_24"
+                                    android:tint="@color/colorPrimary" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:text="Zapisane jednostki"
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2"
+                                    android:textColor="@color/colorPrimary" />
+                            </LinearLayout>
+
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -254,21 +289,46 @@
                             android:focusable="true"
                             android:foreground="?selectableItemBackground"
                             android:gravity="center_vertical"
-                            android:onClick="@{() -> handler.onClickAlarmsHelp()}"
+                            android:onClick="@{() -> handler.onClickSavedMedicineTypes()}"
                             android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
                             android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
 
                             <ImageView
                                 android:layout_width="@dimen/bottom_dialog_option_icon_size"
                                 android:layout_height="@dimen/bottom_dialog_option_icon_size"
-                                android:src="@drawable/round_help_outline_24"
+                                android:src="@drawable/baseline_label_24"
                                 android:tint="@color/colorBlack" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
-                                android:text="Jak działają alarmy"
+                                android:text="Rodzaje leku"
+                                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/bottom_dialog_option_height"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:onClick="@{() -> handler.onClickSavedMedicineUnits()}"
+                            android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
+                            android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/bottom_dialog_option_icon_size"
+                                android:layout_height="@dimen/bottom_dialog_option_icon_size"
+                                android:src="@drawable/ic_pill_black_24dp"
+                                android:tint="@color/colorBlack" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
+                                android:text="Jednostki leku"
                                 android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
                         </LinearLayout>
 
@@ -289,7 +349,7 @@
             app:menu="@menu/bottom_nav_menu" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_add"
+            android:id="@+id/fab_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

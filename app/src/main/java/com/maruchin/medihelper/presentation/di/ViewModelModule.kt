@@ -15,6 +15,9 @@ import com.maruchin.medihelper.presentation.feature.plan_details.PlanDetailsView
 import com.maruchin.medihelper.presentation.feature.options.ChangePasswordViewModel
 import com.maruchin.medihelper.presentation.feature.options.OptionsViewModel
 import com.maruchin.medihelper.presentation.feature.add_edit_profile.AddEditProfileViewModel
+import com.maruchin.medihelper.presentation.feature.options.saved_types.SavedMedicineTypesViewModel
+import com.maruchin.medihelper.presentation.feature.options.saved_types.SavedMedicineUnitsDialog
+import com.maruchin.medihelper.presentation.feature.options.saved_types.SavedMedicineUnitsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -131,6 +134,16 @@ val viewModelModule = module {
     viewModel {
         ChangePasswordViewModel(
             changePasswordUseCase = get()
+        )
+    }
+    viewModel {
+        SavedMedicineTypesViewModel(
+            getLiveSavedMedicineTypesUseCase = get()
+        )
+    }
+    viewModel {
+        SavedMedicineUnitsViewModel(
+            getLiveSavedMedicineUnitsUseCase = get()
         )
     }
 }

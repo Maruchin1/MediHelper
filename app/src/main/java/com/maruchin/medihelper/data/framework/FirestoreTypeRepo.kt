@@ -1,5 +1,8 @@
 package com.maruchin.medihelper.data.framework
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.liveData
 import com.google.firebase.firestore.DocumentReference
 import com.maruchin.medihelper.data.mappers.TypeContainer
 import com.maruchin.medihelper.data.mappers.TypeContainerMapper
@@ -40,10 +43,28 @@ abstract class FirestoreTypeRepo(
         return container.types
     }
 
+    override suspend fun getLiveAll(): LiveData<List<String>> {
+        val containerLive = getLiveContainer()
+        return Transformations.map(containerLive) {
+            it.types
+        }
+    }
+
     private suspend fun getContainer(): TypeContainer {
         val doc = documentRef.get().await()
         val map = doc.data!!
         return mapper.mapToContainer(map)
+    }
+
+    private suspend fun getLiveContainer(): LiveData<TypeContainer> {
+        val docLive = documentRef.getDocumentLive()
+        return Transformations.switchMap(docLive) {
+            val map = it.data!!
+            liveData {
+                val container = mapper.mapToContainer(map)
+                emit(container)
+            }
+        }
     }
 
     private suspend fun setContainer(newContainer: TypeContainer) {
