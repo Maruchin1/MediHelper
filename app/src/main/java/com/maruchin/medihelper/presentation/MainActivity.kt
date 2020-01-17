@@ -2,6 +2,7 @@ package com.maruchin.medihelper.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.maruchin.medihelper.MainApplication
 import com.maruchin.medihelper.R
@@ -12,18 +13,21 @@ import org.koin.android.ext.android.get
 
 class MainActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-//        testNotTakenMedicinesChecking()
-    }
+    val rootLayout: View
+        get() = findViewById(R.id.root_lay)
 
     fun restartApp() {
         reloadDependencies()
         val launcherIntent = Intent(this, LauncherActivity::class.java)
         startActivity(launcherIntent)
         finish()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+//        testNotTakenMedicinesChecking()
     }
 
     private fun reloadDependencies() {

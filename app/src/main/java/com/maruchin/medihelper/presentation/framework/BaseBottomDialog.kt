@@ -19,6 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.maruchin.medihelper.BR
 import com.maruchin.medihelper.data.utils.ProfileColor
+import com.maruchin.medihelper.presentation.MainActivity
 
 abstract class BaseBottomDialog<T : ViewDataBinding>(
     private val layoutResId: Int,
@@ -28,6 +29,8 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
 
     val colorPrimary: LiveData<String>
         get() = _colorPrimary
+    protected val mainActivity: MainActivity
+        get() = requireActivity() as MainActivity
     protected var bindingViewModel: ViewModel? = null
     private val _colorPrimary = MutableLiveData<String>(ProfileColor.MAIN.colorString)
 

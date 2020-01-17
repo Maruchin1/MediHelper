@@ -4,13 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.maruchin.medihelper.domain.usecases.settings.DeleteSavedTypeUseCase
-import com.maruchin.medihelper.domain.usecases.settings.GetLiveSavedTypesUseCase
+import com.maruchin.medihelper.domain.usecases.saved_types.AddSavedTypeUseCase
+import com.maruchin.medihelper.domain.usecases.saved_types.DeleteSavedTypeUseCase
+import com.maruchin.medihelper.domain.usecases.saved_types.GetLiveSavedTypesUseCase
 import kotlinx.coroutines.launch
 
 abstract class SavedTypesViewModel(
     private val getLiveSavedTypesUseCase: GetLiveSavedTypesUseCase,
     private val deleteSavedTypeUseCase: DeleteSavedTypeUseCase,
+    private val addSavedTypeUseCase: AddSavedTypeUseCase,
     private val typesName: String
 ) : ViewModel() {
 
@@ -24,6 +26,10 @@ abstract class SavedTypesViewModel(
 
     fun deleteType(type: String) = viewModelScope.launch {
         deleteSavedTypeUseCase.execute(type)
+    }
+
+    fun addType(type: String) = viewModelScope.launch {
+        addSavedTypeUseCase.execute(type)
     }
 
     private fun getLiveTypes() = liveData {

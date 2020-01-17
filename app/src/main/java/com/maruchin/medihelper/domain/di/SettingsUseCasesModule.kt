@@ -1,5 +1,6 @@
 package com.maruchin.medihelper.domain.di
 
+import com.maruchin.medihelper.domain.usecases.saved_types.*
 import com.maruchin.medihelper.domain.usecases.settings.*
 import com.maruchin.medihelper.domain.usecasesimpl.settings.*
 import org.koin.dsl.module
@@ -23,23 +24,33 @@ val settingsUseCasesModule = module {
         ) as SetNotificationsEnabledUseCase
     }
     factory {
-        GetLiveSavedMedicineUnitsUseCaseImpl(
+        GetLiveMedicineUnitsUseCaseImpl(
             medicineUnitRepo = get()
-        ) as GetLiveSavedMedicineUnitsUseCase
+        ) as GetLiveMedicineUnitsUseCase
     }
     factory {
-        GetLiveSavedMedicineTypesUseCaseImpl(
+        GetLiveMedicineTypesUseCaseImpl(
             medicineTypeRepo = get()
-        ) as GetLiveSavedMedicineTypesUseCase
+        ) as GetLiveMedicineTypesUseCase
     }
     factory {
-        DeleteSavedMedicineTypeUseCaseImpl(
+        DeleteMedicineTypeUseCaseImpl(
             medicineTypeRepo = get()
-        ) as DeleteSavedMedicineTypeUseCase
+        ) as DeleteMedicineTypeUseCase
     }
     factory {
-        DeleteSavedMedicineUnitUseCaseImpl(
+        DeleteMedicineUnitUseCaseImpl(
             medicineUnitRepo = get()
-        ) as DeleteSavedMedicineUnitUseCase
+        ) as DeleteMedicineUnitUseCase
+    }
+    factory {
+        AddMedicineUnitUseCaseImpl(
+            medicineUnitRepo = get()
+        ) as AddMedicineUnitUseCase
+    }
+    factory {
+        AddMedicineTypeUseCaseImpl(
+            medicineTypeRepo = get()
+        ) as AddMedicineTypeUseCase
     }
 }

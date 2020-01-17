@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.domain.usecases.settings
+package com.maruchin.medihelper.domain.usecases.saved_types
 
 import androidx.lifecycle.LiveData
 

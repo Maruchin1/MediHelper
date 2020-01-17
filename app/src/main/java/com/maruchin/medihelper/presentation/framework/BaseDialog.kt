@@ -11,9 +11,13 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import com.maruchin.medihelper.R
+import com.maruchin.medihelper.presentation.MainActivity
 
 abstract class BaseDialog<T : ViewDataBinding>(private val layoutResId: Int) : DialogFragment() {
     abstract val TAG: String
+
+    protected val mainActivity: MainActivity
+        get() = requireActivity() as MainActivity
 
     protected var bindingViewModel: ViewModel? = null
 

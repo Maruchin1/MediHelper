@@ -2,11 +2,11 @@ package com.maruchin.medihelper.domain.usecasesimpl.settings
 
 import androidx.lifecycle.LiveData
 import com.maruchin.medihelper.domain.repositories.MedicineTypeRepo
-import com.maruchin.medihelper.domain.usecases.settings.GetLiveSavedMedicineTypesUseCase
+import com.maruchin.medihelper.domain.usecases.saved_types.GetLiveMedicineTypesUseCase
 
-class GetLiveSavedMedicineTypesUseCaseImpl(
+class GetLiveMedicineTypesUseCaseImpl(
     private val medicineTypeRepo: MedicineTypeRepo
-) : GetLiveSavedMedicineTypesUseCase {
+) : GetLiveMedicineTypesUseCase {
 
     override suspend fun execute(): LiveData<List<String>> {
         return medicineTypeRepo.getLiveAll()

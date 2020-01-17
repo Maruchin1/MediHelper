@@ -10,10 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentOptionsBinding
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
-import com.maruchin.medihelper.presentation.feature.options.saved_types.SavedMedicineTypesDialog
-import com.maruchin.medihelper.presentation.feature.options.saved_types.SavedMedicineUnitsDialog
-import com.maruchin.medihelper.presentation.feature.options.saved_types.SavedMedicineUnitsViewModel
-import com.maruchin.medihelper.presentation.feature.options.saved_types.SavedTypesDialog
+import com.maruchin.medihelper.presentation.feature.options.saved_types.MedicineTypesDialog
+import com.maruchin.medihelper.presentation.feature.options.saved_types.MedicineUnitsDialog
 import com.maruchin.medihelper.presentation.framework.BaseHomeFragment
 import com.maruchin.medihelper.presentation.framework.hideOnScroll
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
@@ -49,11 +47,11 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
     }
 
     fun onClickSavedMedicineTypes() {
-        SavedMedicineTypesDialog().show(childFragmentManager)
+        MedicineTypesDialog().show(childFragmentManager)
     }
 
     fun onClickSavedMedicineUnits() {
-        SavedMedicineUnitsDialog().show(childFragmentManager)
+        MedicineUnitsDialog().show(childFragmentManager)
     }
 
     fun onClickShareApp() {

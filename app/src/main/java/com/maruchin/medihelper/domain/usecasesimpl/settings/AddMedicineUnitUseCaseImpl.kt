@@ -1,13 +1,13 @@
 package com.maruchin.medihelper.domain.usecasesimpl.settings
 
 import com.maruchin.medihelper.domain.repositories.MedicineUnitRepo
-import com.maruchin.medihelper.domain.usecases.settings.DeleteSavedMedicineUnitUseCase
+import com.maruchin.medihelper.domain.usecases.saved_types.AddMedicineUnitUseCase
 
-class DeleteSavedMedicineUnitUseCaseImpl(
+class AddMedicineUnitUseCaseImpl(
     private val medicineUnitRepo: MedicineUnitRepo
-) : DeleteSavedMedicineUnitUseCase {
+) : AddMedicineUnitUseCase {
 
     override suspend fun execute(type: String) {
-        medicineUnitRepo.delete(type)
+        medicineUnitRepo.addNewDistinct(type)
     }
 }
