@@ -32,4 +32,14 @@ val settingsUseCasesModule = module {
             medicineTypeRepo = get()
         ) as GetLiveSavedMedicineTypesUseCase
     }
+    factory {
+        DeleteSavedMedicineTypeUseCaseImpl(
+            medicineTypeRepo = get()
+        ) as DeleteSavedMedicineTypeUseCase
+    }
+    factory {
+        DeleteSavedMedicineUnitUseCaseImpl(
+            medicineUnitRepo = get()
+        ) as DeleteSavedMedicineUnitUseCase
+    }
 }

@@ -1,0 +1,3 @@
+package com.maruchin.medihelper.domain.usecases.settings
+
+interface DeleteSavedMedicineUnitUseCase : DeleteSavedTypeUseCase

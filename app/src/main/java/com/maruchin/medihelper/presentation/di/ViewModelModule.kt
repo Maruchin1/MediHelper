@@ -138,12 +138,14 @@ val viewModelModule = module {
     }
     viewModel {
         SavedMedicineTypesViewModel(
-            getLiveSavedMedicineTypesUseCase = get()
+            getLiveSavedMedicineTypesUseCase = get(),
+            deleteSavedMedicineTypeUseCase = get()
         )
     }
     viewModel {
         SavedMedicineUnitsViewModel(
-            getLiveSavedMedicineUnitsUseCase = get()
+            getLiveSavedMedicineUnitsUseCase = get(),
+            deleteSavedMedicineUnitUseCase = get()
         )
     }
 }
