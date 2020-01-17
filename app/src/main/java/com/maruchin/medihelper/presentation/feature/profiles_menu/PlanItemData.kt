@@ -4,23 +4,25 @@ import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.Plan
 import com.maruchin.medihelper.domain.model.PlanItem
 
-data class MedicinePlanItemData(
+data class PlanItemData(
     val medicinePlanId: String,
     val medicineName: String,
-    val medicineUnit: String,
-    val planDuration: String
+    val medicineType: String?,
+    val planDuration: String,
+    val active: Boolean
 ) {
 
     companion object {
 
-        fun fromDomainModel(model: PlanItem): MedicinePlanItemData {
-            return MedicinePlanItemData(
+        fun fromDomainModel(model: PlanItem, currDate: AppDate): PlanItemData {
+            return PlanItemData(
                 medicinePlanId = model.medicinePlanId,
                 medicineName = model.medicineName,
-                medicineUnit = model.medicineUnit,
+                medicineType = model.medicineType,
                 planDuration = getDuration(
                     model
-                )
+                ),
+                active = isActive(model, currDate)
             )
         }
 
@@ -49,6 +51,22 @@ data class MedicinePlanItemData(
 
         private fun getDurationForContinuous(startDate: AppDate): String {
             return "Przyjmowanie ciągłe od ${startDate.formatString}"
+        }
+
+        private fun isActive(model: PlanItem, currDate: AppDate): Boolean {
+            return when (model.planType) {
+                Plan.Type.ONE_DAY -> isActiveForOneDay(model.startDate, currDate)
+                Plan.Type.PERIOD -> isActiveForPeriod(model.endDate!!, currDate)
+                Plan.Type.CONTINUOUS -> true
+            }
+        }
+
+        private fun isActiveForOneDay(date: AppDate, currDate: AppDate): Boolean {
+            return date >= currDate
+        }
+
+        private fun isActiveForPeriod(endDate: AppDate, currDate: AppDate): Boolean {
+            return endDate >= currDate
         }
     }
 }

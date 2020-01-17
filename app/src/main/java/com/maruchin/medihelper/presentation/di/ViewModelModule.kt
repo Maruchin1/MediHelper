@@ -90,7 +90,8 @@ val viewModelModule = module {
             selectedProfile = get(),
             getLiveAllProfilesItemsUseCase = get(),
             getLivePlansItemsByProfileUseCase = get(),
-            deleteProfileUseCase = get()
+            deleteProfileUseCase = get(),
+            deviceCalendar = get()
         )
     }
     viewModel {

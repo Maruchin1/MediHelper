@@ -7,7 +7,7 @@ import com.maruchin.medihelper.domain.entities.Plan
 data class PlanItem(
     val medicinePlanId: String,
     val medicineName: String,
-    val medicineUnit: String,
+    val medicineType: String?,
     val planType: Plan.Type,
     val startDate: AppDate,
     val endDate: AppDate?
@@ -15,7 +15,7 @@ data class PlanItem(
     constructor(plan: Plan, medicine: Medicine) : this(
         medicinePlanId = plan.entityId,
         medicineName = medicine.name,
-        medicineUnit = medicine.unit,
+        medicineType = medicine.type,
         planType = plan.planType,
         startDate = plan.startDate,
         endDate = plan.endDate

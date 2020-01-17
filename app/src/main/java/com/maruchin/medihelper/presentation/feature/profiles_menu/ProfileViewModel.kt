@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.presentation.feature.profiles_menu
 
 import androidx.lifecycle.*
+import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.domain.model.PlanItem
 import com.maruchin.medihelper.domain.model.ProfileItem
 import com.maruchin.medihelper.domain.usecases.plans.GetLivePlansItemsByProfileUseCase
@@ -13,7 +14,8 @@ class ProfileViewModel(
     private val selectedProfile: SelectedProfile,
     private val getLiveAllProfilesItemsUseCase: GetLiveAllProfilesItemsUseCase,
     private val getLivePlansItemsByProfileUseCase: GetLivePlansItemsByProfileUseCase,
-    private val deleteProfileUseCase: DeleteProfileUseCase
+    private val deleteProfileUseCase: DeleteProfileUseCase,
+    private val deviceCalendar: DeviceCalendar
 ) : ViewModel() {
 
     val colorPrimary: LiveData<String> = selectedProfile.profileColorLive
@@ -22,7 +24,7 @@ class ProfileViewModel(
     val selectedProfilePosition: LiveData<Int>
     val mainProfileSelected: LiveData<Boolean> = selectedProfile.mainProfileSelectedLive
 
-    val medicinesPlans: LiveData<List<MedicinePlanItemData>>
+    val medicinesPlans: LiveData<List<PlanItemData>>
     val medicinesPlansLoaded: LiveData<Boolean>
     val noMedicinesPlansForProfile: LiveData<Boolean>
     val medicinesPlansAvailable: LiveData<Boolean>
@@ -92,7 +94,7 @@ class ProfileViewModel(
         }
     }
 
-    private fun getLivePlansBySelectedProfile(): LiveData<List<MedicinePlanItemData>> {
+    private fun getLivePlansBySelectedProfile(): LiveData<List<PlanItemData>> {
         return Transformations.switchMap(selectedProfile.profileIdLive) { selectedProfileId ->
             liveData {
                 val itemsLive = getLivePlansItemsByProfileUseCase.execute(selectedProfileId)
@@ -104,15 +106,16 @@ class ProfileViewModel(
 
     private fun mapLivePlansItemsToData(
         plansLive: LiveData<List<PlanItem>>
-    ): LiveData<List<MedicinePlanItemData>> {
+    ): LiveData<List<PlanItemData>> {
         return Transformations.map(plansLive) { plans ->
             mapPlansItemsToData(plans)
         }
     }
 
-    private fun mapPlansItemsToData(plans: List<PlanItem>): List<MedicinePlanItemData> {
+    private fun mapPlansItemsToData(plans: List<PlanItem>): List<PlanItemData> {
         return plans.map { plan ->
-            MedicinePlanItemData.fromDomainModel(plan)
+            val currDate = deviceCalendar.getCurrDate()
+            PlanItemData.fromDomainModel(plan, currDate)
         }
     }
 

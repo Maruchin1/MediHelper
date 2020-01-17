@@ -105,7 +105,7 @@
                         android:paddingBottom="8dp"
                         android:visibility="@{viewModel.medicinesPlansAvailable}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/rec_item_medicine_plan" />
+                        tools:listitem="@layout/rec_item_plan" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
