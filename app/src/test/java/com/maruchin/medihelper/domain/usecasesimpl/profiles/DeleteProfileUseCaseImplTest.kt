@@ -33,7 +33,7 @@ class DeleteProfileUseCaseImplTest {
         val profileId = "abc"
 
         runBlocking {
-            Mockito.`when`(planRepo.getListByProfile(profileId)).thenReturn(emptyList())
+            Mockito.`when`(planRepo.getByProfile(profileId)).thenReturn(emptyList())
 
             useCase.execute(profileId)
 

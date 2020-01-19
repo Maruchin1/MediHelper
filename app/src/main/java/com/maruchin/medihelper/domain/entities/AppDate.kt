@@ -95,6 +95,13 @@ class AppDate : Comparable<AppDate> {
         }
     }
 
+    operator fun minus(date: AppDate): Int {
+        val days1 = this.timeInMillis / (24 * 3600 * 1000)
+        val days2 = date.timeInMillis / (24 * 3600 * 1000)
+        val daysDiff = days2 - days1
+        return daysDiff.toInt()
+    }
+
     override fun toString(): String {
         return formatString
     }

@@ -14,7 +14,7 @@ class CalendarViewModel(
 ) : ViewModel() {
 
     companion object {
-        private const val CALENDAR_DAYS_OFFSET = 365
+        private const val CALENDAR_DAYS_OFFSET = 30
     }
 
     val colorPrimary: LiveData<String> = selectedProfile.profileColorLive

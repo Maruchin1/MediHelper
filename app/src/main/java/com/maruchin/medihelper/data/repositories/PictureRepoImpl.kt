@@ -12,7 +12,7 @@ class PictureRepoImpl(
 ) : PictureRepo {
 
     private val storage: StorageReference by lazy {
-        appFirebase.medicinesPictures
+        appFirebase.getMedicinesPicturesStorage()
     }
 
     override suspend fun saveMedicinePicture(pictureFile: File) {

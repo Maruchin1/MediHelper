@@ -12,30 +12,30 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 abstract class FirestoreEntityRepo<T : BaseEntity>(
-    private val collectionRef: CollectionReference,
+    private val getCollection: () -> CollectionReference,
     private val entityMapper: EntityMapper<T>
 ) : BaseEntityRepo<T> {
 
     override suspend fun addNew(entity: T): String? = withContext(Dispatchers.IO) {
         val data = entityMapper.entityToMap(entity)
-        val newDoc = collectionRef.document()
+        val newDoc = getCollection().document()
         newDoc.set(data)
         return@withContext newDoc.id
     }
 
     override suspend fun update(entity: T) = withContext(Dispatchers.IO) {
         val data = entityMapper.entityToMap(entity)
-        collectionRef.document(entity.entityId).set(data)
+        getCollection().document(entity.entityId).set(data)
         return@withContext
     }
 
     override suspend fun deleteById(entityId: String) = withContext(Dispatchers.IO) {
-        collectionRef.document(entityId).delete()
+        getCollection().document(entityId).delete()
         return@withContext
     }
 
     override suspend fun getById(entityId: String): T? = withContext(Dispatchers.IO) {
-        val doc = collectionRef.document(entityId).get().await()
+        val doc = getCollection().document(entityId).get().await()
         val entity = doc.data?.let { data ->
             entityMapper.mapToEntity(entityId, data)
         }
@@ -43,7 +43,7 @@ abstract class FirestoreEntityRepo<T : BaseEntity>(
     }
 
     override suspend fun getLiveById(entityId: String): LiveData<T> = withContext(Dispatchers.IO) {
-        val docLive = collectionRef.document(entityId).getDocumentLive()
+        val docLive = getCollection().document(entityId).getDocumentLive()
         return@withContext Transformations.switchMap(docLive) {
             liveData {
                 val value = entityMapper.mapToEntity(it.id, it.data!!)
@@ -53,14 +53,14 @@ abstract class FirestoreEntityRepo<T : BaseEntity>(
     }
 
     override suspend fun getAllList(): List<T> = withContext(Dispatchers.IO) {
-        val docsQuery = collectionRef.get().await()
+        val docsQuery = getCollection().get().await()
         return@withContext docsQuery.map {
             entityMapper.mapToEntity(it.id, it.data)
         }
     }
 
     override suspend fun getAllListLive(): LiveData<List<T>> = withContext(Dispatchers.IO) {
-        val docListLive = collectionRef.getDocumentsLive()
+        val docListLive = getCollection().getDocumentsLive()
         return@withContext Transformations.switchMap(docListLive) { snapshotList ->
             liveData {
                 val value = snapshotList.map {

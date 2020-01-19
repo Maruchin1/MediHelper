@@ -15,30 +15,6 @@ class AppFirebase(
     private val storage: FirebaseStorage
 ) {
 
-    val users: CollectionReference
-        get() = db.collection(usersCollectionName)
-
-    val medicines: CollectionReference
-        get() = currUserDb.collection(medicinesCollectionName)
-
-    val profiles: CollectionReference
-        get() = currUserDb.collection(profilesCollectionName)
-
-    val plans: CollectionReference
-        get() = currUserDb.collection(plansCollectionName)
-
-    val plannedMedicines: CollectionReference
-        get() = currUserDb.collection(plannedMedicinesCollectionName)
-
-    val medicinesPictures: StorageReference
-        get() = storage.reference.child(currUserId).child(medicinesPicturesFolderName)
-
-    val medicineUnits: DocumentReference
-        get() = currUserDb.collection(typesCollectionName).document(medicineUnitsDocumentName)
-
-    val medicineTypes: DocumentReference
-        get() = currUserDb.collection(typesCollectionName).document(medicineTypesDocumentName)
-
     private val currUserId: String
         get() = auth.getCurrUserId()
 
@@ -49,11 +25,28 @@ class AppFirebase(
     private val medicinesCollectionName = "medicines"
     private val profilesCollectionName = "profiles"
     private val plansCollectionName = "plans"
-    private val plannedMedicinesCollectionName = "plannedMedicines"
+    private val takenMedicinesCollectionName = "takenMedicines"
     private val medicinesPicturesFolderName = "medicinesPictures"
     private val typesCollectionName = "types"
     private val medicineUnitsDocumentName = "medicineUnits"
     private val medicineTypesDocumentName = "medicineTypes"
+
+    fun getUsersCollection() = db.collection(usersCollectionName)
+
+    fun getMedicinesCollection() = currUserDb.collection(medicinesCollectionName)
+
+    fun getProfilesCollection() = currUserDb.collection(profilesCollectionName)
+
+    fun getPlansCollection() = currUserDb.collection(plansCollectionName)
+
+    fun getTakenMedicinesCollection(planId: String) = currUserDb.collection(plansCollectionName).document(planId)
+        .collection(takenMedicinesCollectionName)
+
+    fun getMedicinesPicturesStorage() = storage.reference.child(currUserId).child(medicinesPicturesFolderName)
+
+    fun getMedicineUnitsDocument() = currUserDb.collection(typesCollectionName).document(medicineUnitsDocumentName)
+
+    fun getMedicineTypesDocument() = currUserDb.collection(typesCollectionName).document(medicineTypesDocumentName)
 
     fun runBatch(batchFunction: (WriteBatch) -> Unit) {
         db.runBatch(batchFunction)

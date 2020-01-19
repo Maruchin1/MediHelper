@@ -5,7 +5,6 @@ import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
 
 data class PlannedMedicineItem(
-    val plannedMedicineId: String,
     val medicineName: String,
     val medicineUnit: String,
     val medicineType: String?,
@@ -14,7 +13,6 @@ data class PlannedMedicineItem(
     val status: PlannedMedicine.Status
 ) {
     constructor(plannedMedicine: PlannedMedicine, medicine: Medicine) : this(
-        plannedMedicineId = plannedMedicine.entityId,
         medicineName = medicine.name,
         medicineUnit = medicine.unit,
         medicineType = medicine.type,

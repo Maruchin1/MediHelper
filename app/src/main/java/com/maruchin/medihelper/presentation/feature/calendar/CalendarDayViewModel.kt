@@ -3,12 +3,12 @@ package com.maruchin.medihelper.presentation.feature.calendar
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.model.PlannedMedicineItem
-import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetLivePlannedMedicinesItemsByDateUseCase
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetLivePlannedMedicinesItemsUseCase
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import kotlinx.coroutines.launch
 
 class CalendarDayViewModel(
-    private val getLivePlannedMedicinesItemsByDateUseCase: GetLivePlannedMedicinesItemsByDateUseCase,
+    private val getLivePlannedMedicinesItemsUseCase: GetLivePlannedMedicinesItemsUseCase,
     private val selectedProfile: SelectedProfile
 ) : ViewModel() {
 
@@ -45,7 +45,7 @@ class CalendarDayViewModel(
     private fun getLiveItems(date: AppDate): LiveData<List<PlannedMedicineItem>> {
         return Transformations.switchMap(selectedProfile.profileIdLive) { selectedProfileId ->
             liveData {
-                val itemsLive = getLivePlannedMedicinesItemsByDateUseCase.execute(selectedProfileId, date)
+                val itemsLive = getLivePlannedMedicinesItemsUseCase.execute(selectedProfileId, date)
                 emitSource(itemsLive)
             }
         }

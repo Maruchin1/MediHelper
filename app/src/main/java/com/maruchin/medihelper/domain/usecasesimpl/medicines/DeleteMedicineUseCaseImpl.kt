@@ -37,7 +37,7 @@ class DeleteMedicineUseCaseImpl(
     }
 
     private suspend fun getPlansIdsUsingMedicine(medicineId: String): List<String> {
-        val plansUsingMedicine = planRepo.getListByMedicine(medicineId)
+        val plansUsingMedicine = planRepo.getByMedicine(medicineId)
         return plansUsingMedicine.map { it.entityId }
     }
 }

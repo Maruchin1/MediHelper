@@ -9,6 +9,6 @@ class MedicineTypeRepoImpl(
     appFirebase: AppFirebase,
     mapper: TypeContainerMapper
 ) : MedicineTypeRepo, FirestoreTypeRepo(
-    documentRef = appFirebase.medicineTypes,
+    documentRef = appFirebase.getMedicineTypesDocument(),
     mapper = mapper
 )

@@ -8,7 +8,7 @@ class PicturesStorageRef(
 ) {
 
     fun getPictureRef(pictureName: String): StorageReference {
-        val picturesStorage = appFirebase.medicinesPictures
+        val picturesStorage = appFirebase.getMedicinesPicturesStorage()
         return picturesStorage.child(pictureName)
     }
 }

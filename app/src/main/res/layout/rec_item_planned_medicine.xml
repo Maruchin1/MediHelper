@@ -21,7 +21,6 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?selectableItemBackground"
-        android:onClick="@{() -> handler.onClickOpenPlannedMedicineOptions(displayData.plannedMedicineId)}"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp">
 

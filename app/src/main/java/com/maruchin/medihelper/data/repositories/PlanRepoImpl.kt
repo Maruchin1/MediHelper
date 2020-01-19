@@ -18,12 +18,12 @@ class PlanRepoImpl(
     private val appFirebase: AppFirebase,
     private val mapper: MedicinePlanMapper
 ) : FirestoreEntityRepo<Plan>(
-    collectionRef = appFirebase.plans,
-    entityMapper = mapper
+    entityMapper = mapper,
+    getCollection = appFirebase::getPlansCollection
 ), PlanRepo {
 
     private val collectionRef: CollectionReference
-        get() = appFirebase.plans
+        get() = appFirebase.getPlansCollection()
 
     override suspend fun deleteListById(ids: List<String>) = withContext(Dispatchers.IO) {
         appFirebase.runBatch { batch ->
@@ -35,17 +35,17 @@ class PlanRepoImpl(
         return@withContext
     }
 
-    override suspend fun getListByMedicine(medicineId: String): List<Plan> = withContext(Dispatchers.IO) {
+    override suspend fun getByMedicine(medicineId: String): List<Plan> = withContext(Dispatchers.IO) {
         val docsQuery = collectionRef.whereEqualTo("medicineId", medicineId).get().await()
         return@withContext getEntitiesFromQuery(docsQuery)
     }
 
-    override suspend fun getListByProfile(profileId: String): List<Plan> = withContext(Dispatchers.IO) {
+    override suspend fun getByProfile(profileId: String): List<Plan> = withContext(Dispatchers.IO) {
         val docsQuery = collectionRef.whereEqualTo("profileId", profileId).get().await()
         return@withContext getEntitiesFromQuery(docsQuery)
     }
 
-    override suspend fun getListLiveByProfile(profileId: String): LiveData<List<Plan>> =
+    override suspend fun getLiveByProfile(profileId: String): LiveData<List<Plan>> =
         withContext(Dispatchers.IO) {
             val docsLive = collectionRef.whereEqualTo("profileId", profileId).getDocumenstLive()
             return@withContext Transformations.switchMap(docsLive) { snapshotList ->

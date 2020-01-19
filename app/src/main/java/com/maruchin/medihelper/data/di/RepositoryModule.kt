@@ -31,12 +31,6 @@ val repositoryModule = module {
         ) as PlanRepo
     }
     single {
-        PlannedMedicineRepoImpl(
-            appFirebase = get(),
-            mapper = get()
-        ) as PlannedMedicineRepo
-    }
-    single {
         SettingsRepoImpl(
             settingsSharedPref = get()
         ) as SettingsRepo

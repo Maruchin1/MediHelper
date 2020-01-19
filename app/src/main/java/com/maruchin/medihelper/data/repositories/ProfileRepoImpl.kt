@@ -16,12 +16,12 @@ class ProfileRepoImpl(
     private val dataSharedPref: DataSharedPref,
     private val mapper: ProfileMapper
 ) : FirestoreEntityRepo<Profile>(
-    collectionRef = appFirebase.profiles,
-    entityMapper = mapper
+    entityMapper = mapper,
+    getCollection = appFirebase::getProfilesCollection
 ), ProfileRepo {
 
     private val collectionRef: CollectionReference
-        get() = appFirebase.profiles
+        get() = appFirebase.getProfilesCollection()
 
     override suspend fun getMainId(): String? = withContext(Dispatchers.IO) {
         val docs = collectionRef.whereEqualTo("mainPerson", true).get().await().documents
