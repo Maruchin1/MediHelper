@@ -22,7 +22,6 @@
         android:background="@drawable/bg_bottom_dialog">
 
         <LinearLayout
-            visibleOrInvisible="@{!viewModel.loadingInProgress}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -160,12 +159,5 @@
             </LinearLayout>
 
         </LinearLayout>
-
-        <ProgressBar
-            visibleOrGone="@{viewModel.loadingInProgress}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/progress_bar_margin_top" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

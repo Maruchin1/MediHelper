@@ -27,17 +27,23 @@ class PlannedMedicineOptionsViewModel(
     private val _basicData = MutableLiveData<PlannedMedicineBasicData>()
     private val _statusData = MutableLiveData<PlannedMedicineStatusData>()
     private val _loadingInProgress = MutableLiveData<Boolean>(true)
+    private lateinit var item: PlannedMedicineItem
 
-    fun initData(data: PlannedMedicineItem) = viewModelScope.launch {
+    fun initData(data: PlannedMedicineItem) {
+        item = data
         val basicData = getBasicData(data)
         val statusData = getStatusData(data.status)
         _basicData.postValue(basicData)
         _statusData.postValue(statusData)
-        _loadingInProgress.postValue(false)
     }
 
     fun changePlannedMedicineTaken() = GlobalScope.launch {
-//        changePlannedMedicineTakenUseCase.execute(plannedMedicineId)
+        val useCaseParams = ChangePlannedMedicineTakenUseCase.Params(
+            planId = item.medicinePlanId,
+            plannedDate = item.plannedDate,
+            plannedTime = item.plannedTime
+        )
+        changePlannedMedicineTakenUseCase.execute(useCaseParams)
     }
 
     private fun getBasicData(model: PlannedMedicineItem): PlannedMedicineBasicData {

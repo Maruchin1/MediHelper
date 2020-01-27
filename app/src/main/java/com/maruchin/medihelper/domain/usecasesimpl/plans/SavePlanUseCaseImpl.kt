@@ -42,7 +42,7 @@ class SavePlanUseCaseImpl(
 
     private suspend fun saveMedicinePlanToRepo() {
         if (useCaseParams.medicinePlanId == null) {
-            val newPlan = getMedicinePlan(takenMedicines = emptyList())
+            val newPlan = getMedicinePlan(takenMedicines = mutableListOf())
             planRepo.addNew(newPlan)
         } else {
             val existingPlan = planRepo.getById(useCaseParams.medicinePlanId!!)!!
@@ -51,7 +51,7 @@ class SavePlanUseCaseImpl(
         }
     }
 
-    private fun getMedicinePlan(takenMedicines: List<TakenMedicine>): Plan {
+    private fun getMedicinePlan(takenMedicines: MutableList<TakenMedicine>): Plan {
         return Plan(
             entityId = useCaseParams.medicinePlanId ?: "",
             profileId = useCaseParams.profileId!!,

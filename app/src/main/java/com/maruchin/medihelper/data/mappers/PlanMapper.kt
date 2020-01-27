@@ -67,7 +67,7 @@ class PlanMapper : EntityMapper<Plan>() {
                     intakeDaysMapToEntity(it)
                 },
                 timeDoseList = timeDoseMapListToEntityList(map[timeDoseList] as List<Map<String, Any?>>),
-                takenMedicines = takenMedicineMapListToEntityList(map[takenMedicines] as List<Map<String, Any?>>)
+                takenMedicines = takenMedicineMapListToEntityList(map[takenMedicines] as List<Map<String, Any?>>).toMutableList()
             )
         }
 

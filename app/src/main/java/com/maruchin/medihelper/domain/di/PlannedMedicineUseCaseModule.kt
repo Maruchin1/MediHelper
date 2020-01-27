@@ -15,7 +15,7 @@ val plannedMedicineUseCaseModule = module {
     }
     factory {
         ChangePlannedMedicineTakenUseCaseImpl(
-
+            planRepo = get()
         ) as ChangePlannedMedicineTakenUseCase
     }
 }

@@ -12,7 +12,7 @@ data class Plan(
     val endDate: AppDate?,
     val intakeDays: IntakeDays?,
     val timeDoseList: List<TimeDose>,
-    val takenMedicines: List<TakenMedicine>
+    val takenMedicines: MutableList<TakenMedicine>
 ) : BaseEntity() {
 
     fun getPlannedMedicinesForDate(date: AppDate): List<PlannedMedicine> {
