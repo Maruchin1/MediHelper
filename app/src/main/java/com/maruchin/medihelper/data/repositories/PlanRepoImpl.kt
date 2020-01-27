@@ -6,7 +6,7 @@ import androidx.lifecycle.liveData
 import com.google.firebase.firestore.CollectionReference
 import com.maruchin.medihelper.data.framework.FirestoreEntityRepo
 import com.maruchin.medihelper.data.framework.getDocumenstLive
-import com.maruchin.medihelper.data.mappers.MedicinePlanMapper
+import com.maruchin.medihelper.data.mappers.PlanMapper
 import com.maruchin.medihelper.data.utils.AppFirebase
 import com.maruchin.medihelper.domain.entities.Plan
 import com.maruchin.medihelper.domain.repositories.PlanRepo
@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 
 class PlanRepoImpl(
     private val appFirebase: AppFirebase,
-    private val mapper: MedicinePlanMapper
+    private val mapper: PlanMapper
 ) : FirestoreEntityRepo<Plan>(
     entityMapper = mapper,
     getCollection = appFirebase::getPlansCollection

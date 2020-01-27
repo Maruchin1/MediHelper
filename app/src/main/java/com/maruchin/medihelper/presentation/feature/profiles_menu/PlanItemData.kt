@@ -31,7 +31,7 @@ data class PlanItemData(
                 Plan.Type.ONE_DAY -> getDurationForOnce(
                     model.startDate
                 )
-                Plan.Type.PERIOD -> getDurationForPerion(
+                Plan.Type.PERIOD -> getDurationForPeriod(
                     model.startDate,
                     model.endDate!!
                 )
@@ -45,7 +45,7 @@ data class PlanItemData(
             return "Jednego dnia ${date.formatString}"
         }
 
-        private fun getDurationForPerion(startDate: AppDate, endDate: AppDate): String {
+        private fun getDurationForPeriod(startDate: AppDate, endDate: AppDate): String {
             return "Od ${startDate.formatString} to ${endDate.formatString}"
         }
 

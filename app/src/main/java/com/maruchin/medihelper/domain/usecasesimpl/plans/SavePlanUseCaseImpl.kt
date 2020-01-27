@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.domain.usecasesimpl.plans
 
 import com.maruchin.medihelper.domain.entities.Plan
+import com.maruchin.medihelper.domain.entities.TakenMedicine
 import com.maruchin.medihelper.domain.model.PlanErrors
 import com.maruchin.medihelper.domain.repositories.PlanRepo
 import com.maruchin.medihelper.domain.usecases.plans.SavePlanUseCase
@@ -40,15 +41,17 @@ class SavePlanUseCaseImpl(
     }
 
     private suspend fun saveMedicinePlanToRepo() {
-        val plan = getMedicinePlan()
         if (useCaseParams.medicinePlanId == null) {
-            planRepo.addNew(plan)
+            val newPlan = getMedicinePlan(takenMedicines = emptyList())
+            planRepo.addNew(newPlan)
         } else {
-            planRepo.update(plan)
+            val existingPlan = planRepo.getById(useCaseParams.medicinePlanId!!)!!
+            val updatedPlan = getMedicinePlan(takenMedicines = existingPlan.takenMedicines)
+            planRepo.update(updatedPlan)
         }
     }
 
-    private fun getMedicinePlan(): Plan {
+    private fun getMedicinePlan(takenMedicines: List<TakenMedicine>): Plan {
         return Plan(
             entityId = useCaseParams.medicinePlanId ?: "",
             profileId = useCaseParams.profileId!!,
@@ -61,7 +64,8 @@ class SavePlanUseCaseImpl(
             intakeDays = if (useCaseParams.planType != Plan.Type.ONE_DAY) {
                 useCaseParams.intakeDays!!
             } else null,
-            timeDoseList = useCaseParams.timeDoseList!!
+            timeDoseList = useCaseParams.timeDoseList!!,
+            takenMedicines = takenMedicines
         )
     }
 }

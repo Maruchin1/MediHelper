@@ -5,6 +5,7 @@ import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.model.PlannedMedicineItem
 
 data class PlannedMedicineItemData(
+    val item: PlannedMedicineItem,
     val medicineName: String,
     val plannedDose: String,
     val plannedTime: String,
@@ -15,6 +16,7 @@ data class PlannedMedicineItemData(
 
         fun fromDomainModel(model: PlannedMedicineItem): PlannedMedicineItemData {
             return PlannedMedicineItemData(
+                item = model,
                 medicineName = model.medicineName,
                 plannedDose = formatDose(model.plannedDoseSize, model.medicineUnit),
                 plannedTime = model.plannedTime.formatString,

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentCalendarDayBinding
+import com.maruchin.medihelper.domain.model.PlannedMedicineItem
 import com.maruchin.medihelper.presentation.feature.planned_medicine_options.PlannedMedicineOptionsDialog
 import com.maruchin.medihelper.presentation.framework.*
 import kotlinx.android.synthetic.main.fragment_calendar_day.*
@@ -22,10 +23,10 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
 
     private val viewModel: CalendarDayViewModel by viewModel()
 
-    fun onClickOpenPlannedMedicineOptions(plannedMedicineId: String) {
+    fun onClickOpenPlannedMedicineOptions(item: PlannedMedicineItem) {
         PlannedMedicineOptionsDialog()
             .apply {
-                this.plannedMedicineId = plannedMedicineId
+                this.plannedMedicineItem = item
             }.show(childFragmentManager)
     }
 
@@ -67,13 +68,13 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
 
     private fun setupCheckBoxesRecyclerViews() {
         recycler_view_morning_checkboxes.apply {
-            adapter = PlannedMedicineChackBoxAdapter(viewModel.morningSection.itemsCheckBoxes)
+            adapter = PlannedMedicineCheckBoxAdapter(viewModel.morningSection.itemsCheckBoxes)
         }
         recycler_view_afternoon_checkboxes.apply {
-            adapter = PlannedMedicineChackBoxAdapter(viewModel.afternoonSection.itemsCheckBoxes)
+            adapter = PlannedMedicineCheckBoxAdapter(viewModel.afternoonSection.itemsCheckBoxes)
         }
         recycler_view_evening_checkboxes.apply {
-            adapter = PlannedMedicineChackBoxAdapter(viewModel.eveningSection.itemsCheckBoxes)
+            adapter = PlannedMedicineCheckBoxAdapter(viewModel.eveningSection.itemsCheckBoxes)
         }
     }
 
@@ -111,7 +112,7 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
         }
     }
 
-    private inner class PlannedMedicineChackBoxAdapter(
+    private inner class PlannedMedicineCheckBoxAdapter(
         itemsSource: LiveData<List<PlannedMedicineItemCheckBoxData>>
     ) : BaseRecyclerLiveAdapter<PlannedMedicineItemCheckBoxData>(
         layoutResId = R.layout.rec_item_planned_medicine_checkbox,

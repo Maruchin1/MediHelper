@@ -24,10 +24,10 @@ class ProfileViewModel(
     val selectedProfilePosition: LiveData<Int>
     val mainProfileSelected: LiveData<Boolean> = selectedProfile.mainProfileSelectedLive
 
-    val medicinesPlans: LiveData<List<PlanItemData>>
-    val medicinesPlansLoaded: LiveData<Boolean>
-    val noMedicinesPlansForProfile: LiveData<Boolean>
-    val medicinesPlansAvailable: LiveData<Boolean>
+    val plans: LiveData<List<PlanItemData>>
+    val plansLoaded: LiveData<Boolean>
+    val noPlansForProfile: LiveData<Boolean>
+    val plansAvailable: LiveData<Boolean>
 
     val selectedProfileId: String?
         get() = selectedProfile.profileId
@@ -37,10 +37,10 @@ class ProfileViewModel(
         profileItems = getLiveProfileItemsData()
         selectedProfilePosition = getLiveSelectedProfilePosition()
 
-        medicinesPlans = getLivePlansBySelectedProfile()
-        medicinesPlansLoaded = getLiveMedicinesPlansLoaded()
-        noMedicinesPlansForProfile = getLiveNoPlansForProfile()
-        medicinesPlansAvailable = getLivePlansAvailable()
+        plans = getLivePlansBySelectedProfile()
+        plansLoaded = getLiveMedicinesPlansLoaded()
+        noPlansForProfile = getLiveNoPlansForProfile()
+        plansAvailable = getLivePlansAvailable()
     }
 
     fun deleteProfile() = viewModelScope.launch {
@@ -108,7 +108,7 @@ class ProfileViewModel(
         plansLive: LiveData<List<PlanItem>>
     ): LiveData<List<PlanItemData>> {
         return Transformations.map(plansLive) { plans ->
-            mapPlansItemsToData(plans)
+            mapPlansItemsToData(plans).sortedBy { planItemData -> !planItemData.active }
         }
     }
 
@@ -120,19 +120,19 @@ class ProfileViewModel(
     }
 
     private fun getLiveMedicinesPlansLoaded(): LiveData<Boolean> {
-        return Transformations.map(medicinesPlans) { plans ->
+        return Transformations.map(plans) { plans ->
             plans != null
         }
     }
 
     private fun getLiveNoPlansForProfile(): LiveData<Boolean> {
-        return Transformations.map(medicinesPlans) { plans ->
+        return Transformations.map(plans) { plans ->
             plans.isEmpty()
         }
     }
 
     private fun getLivePlansAvailable(): LiveData<Boolean> {
-        return Transformations.map(medicinesPlans) { plans ->
+        return Transformations.map(plans) { plans ->
             plans.isNotEmpty()
         }
     }

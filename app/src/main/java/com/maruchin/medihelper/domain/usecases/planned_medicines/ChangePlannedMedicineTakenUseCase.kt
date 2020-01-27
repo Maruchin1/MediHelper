@@ -1,14 +1,15 @@
-package com.maruchin.medihelper.domain.usecases.plannedmedicines
+package com.maruchin.medihelper.domain.usecases.planned_medicines
 
-import com.maruchin.medihelper.domain.model.PlannedMedicineDetails
+import com.maruchin.medihelper.domain.entities.TakenMedicine
 import com.maruchin.medihelper.domain.usecases.MedicineNotFoundException
 import com.maruchin.medihelper.domain.usecases.PlannedMedicineNotFoundException
 
-interface GetPlannedMedicineDetailsUseCase {
+
+interface ChangePlannedMedicineTakenUseCase {
 
     @Throws(
         PlannedMedicineNotFoundException::class,
         MedicineNotFoundException::class
     )
-    suspend fun execute(plannedMedicineId: String): PlannedMedicineDetails
+    suspend fun execute(takenMedicine: TakenMedicine)
 }

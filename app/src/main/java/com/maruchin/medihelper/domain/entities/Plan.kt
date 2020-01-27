@@ -11,7 +11,8 @@ data class Plan(
     val startDate: AppDate,
     val endDate: AppDate?,
     val intakeDays: IntakeDays?,
-    val timeDoseList: List<TimeDose>
+    val timeDoseList: List<TimeDose>,
+    val takenMedicines: List<TakenMedicine>
 ) : BaseEntity() {
 
     fun getPlannedMedicinesForDate(date: AppDate): List<PlannedMedicine> {
@@ -43,8 +44,19 @@ data class Plan(
         plannedDate = date,
         plannedTime = timeDose.time,
         plannedDoseSize = timeDose.doseSize,
-        status = PlannedMedicine.Status.NOT_TAKEN
+        status = getStatus(date = date, time = timeDose.time)
     )
+
+    private fun getStatus(date: AppDate, time: AppTime): PlannedMedicine.Status {
+        val result = takenMedicines.find { takenMedicine ->
+            takenMedicine.plannedDate == date && takenMedicine.plannedTime == time
+        }
+        return if (result == null) {
+            PlannedMedicine.Status.NOT_TAKEN
+        } else {
+            PlannedMedicine.Status.TAKEN
+        }
+    }
 
     enum class Type {
         ONE_DAY, PERIOD, CONTINUOUS

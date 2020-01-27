@@ -136,31 +136,6 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?selectableItemBackground"
-                android:gravity="center_vertical"
-                android:onClick="@{() -> handler.onClickChangeForLater()}"
-                android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
-                android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/bottom_dialog_option_icon_size"
-                    android:layout_height="@dimen/bottom_dialog_option_icon_size"
-                    android:src='@drawable/round_access_time_24'
-                    android:tint='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
-                    android:text='Przełóż na później'
-                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="@dimen/bottom_dialog_option_height"
                 android:clickable="true"
                 android:focusable="true"

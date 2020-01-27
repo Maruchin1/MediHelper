@@ -25,7 +25,6 @@ class AppFirebase(
     private val medicinesCollectionName = "medicines"
     private val profilesCollectionName = "profiles"
     private val plansCollectionName = "plans"
-    private val takenMedicinesCollectionName = "takenMedicines"
     private val medicinesPicturesFolderName = "medicinesPictures"
     private val typesCollectionName = "types"
     private val medicineUnitsDocumentName = "medicineUnits"
@@ -38,9 +37,6 @@ class AppFirebase(
     fun getProfilesCollection() = currUserDb.collection(profilesCollectionName)
 
     fun getPlansCollection() = currUserDb.collection(plansCollectionName)
-
-    fun getTakenMedicinesCollection(planId: String) = currUserDb.collection(plansCollectionName).document(planId)
-        .collection(takenMedicinesCollectionName)
 
     fun getMedicinesPicturesStorage() = storage.reference.child(currUserId).child(medicinesPicturesFolderName)
 

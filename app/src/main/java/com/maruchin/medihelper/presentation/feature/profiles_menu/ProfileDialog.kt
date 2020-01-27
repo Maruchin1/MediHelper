@@ -123,7 +123,7 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         viewModel.mainProfileSelected.observe(viewLifecycleOwner, Observer { mainSelected ->
             setEditDeleteProfileEnabled(!mainSelected)
         })
-        viewModel.medicinesPlansAvailable.observe(viewLifecycleOwner, Observer {
+        viewModel.plansAvailable.observe(viewLifecycleOwner, Observer {
             lay_medicines_plans.beginDelayedFade()
         })
     }
@@ -151,7 +151,7 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
     private inner class MedicinePlanAdapter : BaseRecyclerLiveAdapter<PlanItemData>(
         layoutResId = R.layout.rec_item_plan,
         lifecycleOwner = viewLifecycleOwner,
-        itemsSource = viewModel.medicinesPlans,
+        itemsSource = viewModel.plans,
         areItemsTheSameFun = { oldItem, newItem -> oldItem.medicinePlanId == newItem.medicinePlanId }
     ) {
         override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: PlanItemData) {
