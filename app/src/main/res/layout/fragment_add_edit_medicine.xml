@@ -123,6 +123,22 @@
                                 android:text='@={viewModel.medicineName}' />
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MediHelper.TextInputLayout.Menu"
+                            inLayError="@{viewModel.errorMedicineType}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:hint="Rodzaj leku">
+
+                            <AutoCompleteTextView
+                                adapter="@{viewModel.defaults.medicineTypes}"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapSentences"
+                                android:text='@={viewModel.medicineType}' />
+                        </com.google.android.material.textfield.TextInputLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -164,21 +180,6 @@
                                     android:text='@{viewModel.expireDate.formatString}' />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MediHelper.TextInputLayout.Menu"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
-                            android:hint="Rodzaj leku">
-
-                            <AutoCompleteTextView
-                                adapter="@{viewModel.defaults.medicineTypes}"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textCapSentences"
-                                android:text='@={viewModel.medicineType}' />
-                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

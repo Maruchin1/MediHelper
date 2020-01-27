@@ -119,16 +119,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text='@{viewModel.data.medicineUnit, default="Jednostka: tabletki"}'
+                                android:text='@{viewModel.data.medicineType, default="Typ leku"}'
                                 android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1.Dark" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:text='@{viewModel.data.medicineType, default="Jednostka: tabletki"}'
-                                android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1.Dark"
-                                android:visibility="@{viewModel.data.medicineTypeAvailable}" />
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -162,15 +154,15 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Ważny do"
+                                android:text="Jednostka"
                                 android:textAlignment="center"
                                 android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
-                                android:text='@{viewModel.data.expireDate, default="wrz 2020"}'
+                                android:layout_marginTop="16dp"
+                                android:text='@{viewModel.data.medicineUnit, default="tabletki"}'
                                 android:textAlignment="center"
                                 android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1"
                                 android:visibility="@{viewModel.data.expireDateAvailable}" />
@@ -210,15 +202,15 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Pozostało"
+                                android:text="Ważny do"
                                 android:textAlignment="center"
                                 android:textAppearance="@style/TextAppearance.MediHelper.Subtitle2" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
-                                android:text='@{viewModel.data.daysRemain, default="21 dni"}'
+                                android:layout_marginTop="@dimen/details_card_layout_body_margin_top"
+                                android:text='@{viewModel.data.expireDate, default="wrz 2020"}'
                                 android:textAlignment="center"
                                 android:textAppearance="@style/TextAppearance.MediHelper.BodyBig1"
                                 android:visibility="@{viewModel.data.expireDateAvailable}" />

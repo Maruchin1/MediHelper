@@ -75,9 +75,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="4dp"
                     android:text="@{displayData.type, default=rodzaj}"
-                    android:textAppearance="@style/TextAppearance.MediHelper.Body2.Tertiary" />
+                    android:textAppearance="@style/TextAppearance.MediHelper.Body1" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"

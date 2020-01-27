@@ -9,7 +9,7 @@ data class PlannedMedicineItem(
     val medicinePlanId: String,
     val medicineName: String,
     val medicineUnit: String,
-    val medicineType: String?,
+    val medicineType: String,
     val plannedDate: AppDate,
     val plannedTime: AppTime,
     val plannedDoseSize: Float,

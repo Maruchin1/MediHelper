@@ -7,6 +7,7 @@ import com.maruchin.medihelper.domain.model.PlannedMedicineItem
 data class PlannedMedicineBasicData(
     val medicinePlanId: String,
     val medicineName: String,
+    val medicineType: String,
     val plannedDateTime: String,
     val plannedDose: String
 ) {
@@ -16,6 +17,7 @@ data class PlannedMedicineBasicData(
         fun fromDomainModel(model: PlannedMedicineItem) = PlannedMedicineBasicData(
             medicinePlanId = model.medicinePlanId,
             medicineName = model.medicineName,
+            medicineType = model.medicineType,
             plannedDateTime = formatDateTime(model.plannedDate, model.plannedTime),
             plannedDose = formatDose(model.plannedDoseSize, model.medicineUnit)
         )

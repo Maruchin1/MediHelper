@@ -11,6 +11,9 @@ class MedicineValidator : BaseValidator<MedicineValidator.Params, MedicineErrors
         if (params.name.isNullOrEmpty()) {
             errors.emptyName = true
         }
+        if (params.type.isNullOrEmpty()) {
+            errors.emptyType = true
+        }
         if (params.unit.isNullOrEmpty()) {
             errors.emptyUnit = true
         }
@@ -22,6 +25,7 @@ class MedicineValidator : BaseValidator<MedicineValidator.Params, MedicineErrors
 
     data class Params(
         val name: String?,
+        val type: String?,
         val unit: String?,
         val packageSize: Float?,
         val currState: Float?
