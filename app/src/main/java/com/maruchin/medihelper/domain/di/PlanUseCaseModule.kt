@@ -41,8 +41,7 @@ val planUseCaseModule = module {
     }
     factory {
         GetPlanHistoryUseCaseImpl(
-            planRepo = get(),
-            deviceCalendar = get()
+
         ) as GetPlanHistoryUseCase
     }
 }

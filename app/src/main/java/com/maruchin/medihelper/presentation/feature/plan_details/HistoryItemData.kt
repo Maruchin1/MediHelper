@@ -20,7 +20,7 @@ data class HistoryItemData(
                 dayAndMonth = model.date.dayMonthString,
                 currDate = model.date == currDate,
                 checkBoxes = getCheckBoxesData(
-                    model.checkBoxes
+                    model.checkboxesList
                 )
             )
 

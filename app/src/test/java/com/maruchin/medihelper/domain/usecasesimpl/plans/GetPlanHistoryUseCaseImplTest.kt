@@ -63,7 +63,7 @@ class GetPlanHistoryUseCaseImplTest {
         val expectedResult = listOf(
             HistoryItem(
                 date = AppDate(2019, 11, 7),
-                checkBoxes = listOf(
+                checkboxesList = listOf(
                     HistoryItem.CheckBox(
                         plannedMedicineId = "ccc",
                         plannedTime = AppTime(9, 30),
@@ -73,7 +73,7 @@ class GetPlanHistoryUseCaseImplTest {
             ),
             HistoryItem(
                 date = AppDate(2019, 11, 13),
-                checkBoxes = listOf(
+                checkboxesList = listOf(
                     HistoryItem.CheckBox(
                         plannedMedicineId = "bbb",
                         plannedTime = AppTime(9, 30),

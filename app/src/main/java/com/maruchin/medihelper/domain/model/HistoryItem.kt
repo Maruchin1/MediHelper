@@ -6,9 +6,10 @@ import com.maruchin.medihelper.domain.entities.PlannedMedicine
 
 data class HistoryItem(
     val date: AppDate,
-    val checkBoxes: List<CheckBox>
+    val checkboxesList: List<CheckBox>
 ) {
     data class CheckBox(
+        val plannedMedicineId: String,
         val plannedTime: AppTime,
         val status: PlannedMedicine.Status
     )
