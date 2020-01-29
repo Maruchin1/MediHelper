@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.domain.usecases.planned_medicines
+package com.maruchin.medihelper.domain.usecases.plannedmedicines
 
 import androidx.lifecycle.LiveData
 import com.maruchin.medihelper.domain.entities.AppDate

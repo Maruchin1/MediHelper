@@ -2,7 +2,7 @@ package com.maruchin.medihelper.presentation.feature.planned_medicine_options
 
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.AppTime
-import com.maruchin.medihelper.domain.model.PlannedMedicineItem
+import com.maruchin.medihelper.domain.model.PlannedMedicineDetails
 
 data class PlannedMedicineBasicData(
     val medicinePlanId: String,
@@ -13,7 +13,7 @@ data class PlannedMedicineBasicData(
 
     companion object {
 
-        fun fromDomainModel(model: PlannedMedicineItem) = PlannedMedicineBasicData(
+        fun fromDomainModel(model: PlannedMedicineDetails) = PlannedMedicineBasicData(
             medicinePlanId = model.medicinePlanId,
             medicineName = model.medicineName,
             plannedDateTime = formatDateTime(model.plannedDate, model.plannedTime),

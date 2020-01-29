@@ -5,7 +5,7 @@ import com.maruchin.medihelper.domain.entities.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class PlanMapper : EntityMapper<Plan>() {
+class MedicinePlanMapper : EntityMapper<Plan>() {
 
     private enum class IntakeDaysType {
         EVERYDAY, DAYS_OF_WEEK, INTERVAL, SEQUENCE
@@ -18,7 +18,6 @@ class PlanMapper : EntityMapper<Plan>() {
     private val endDate = "endDate"
     private val intakeDays = "intakeDays"
     private val timeDoseList = "timeDoseList"
-    private val takenMedicines = "takenMedicines"
 
     private val intakeDaysType = "intakeDaysType"
     //IntakeDays.DaysOfWeek
@@ -37,9 +36,6 @@ class PlanMapper : EntityMapper<Plan>() {
     //TimeDose
     private val time = "time"
     private val doseSize = "doseSize"
-    //TakenMedicine
-    private val plannedDate = "plannedDate"
-    private val plannedTime = "plannedTime"
 
     override suspend fun entityToMap(entity: Plan): Map<String, Any?> = withContext(Dispatchers.Default) {
         return@withContext hashMapOf(
@@ -49,27 +45,24 @@ class PlanMapper : EntityMapper<Plan>() {
             startDate to entity.startDate.jsonFormatString,
             endDate to entity.endDate?.jsonFormatString,
             intakeDays to entity.intakeDays?.let { intakeDaysEntityToMap(it) },
-            timeDoseList to timeDoseEntityListToMapList(entity.timeDoseList),
-            takenMedicines to takenMedicineEntityListToMapList(entity.takenMedicines)
+            timeDoseList to timeDoseEntityListToMapList(entity.timeDoseList)
         )
     }
 
-    override suspend fun mapToEntity(entityId: String, map: Map<String, Any?>): Plan =
-        withContext(Dispatchers.Default) {
-            return@withContext Plan(
-                entityId = entityId,
-                profileId = map[profileId] as String,
-                medicineId = map[medicineId] as String,
-                planType = Plan.Type.valueOf(map[planType] as String),
-                startDate = AppDate(map[startDate] as String),
-                endDate = (map[endDate] as String?)?.let { AppDate(it) },
-                intakeDays = (map[intakeDays] as Map<String, Any?>?)?.let {
-                    intakeDaysMapToEntity(it)
-                },
-                timeDoseList = timeDoseMapListToEntityList(map[timeDoseList] as List<Map<String, Any?>>),
-                takenMedicines = takenMedicineMapListToEntityList(map[takenMedicines] as List<Map<String, Any?>>)
-            )
-        }
+    override suspend fun mapToEntity(entityId: String, map: Map<String, Any?>): Plan = withContext(Dispatchers.Default) {
+        return@withContext Plan(
+            entityId = entityId,
+            profileId = map[profileId] as String,
+            medicineId = map[medicineId] as String,
+            planType = Plan.Type.valueOf(map[planType] as String),
+            startDate = AppDate(map[startDate] as String),
+            endDate = (map[endDate] as String?)?.let { AppDate(it) },
+            intakeDays = (map[intakeDays] as Map<String, Any?>?)?.let {
+                intakeDaysMapToEntity(it)
+            },
+            timeDoseList = timeDoseMapListToEntityList(map[timeDoseList] as List<Map<String, Any?>>)
+        )
+    }
 
     private fun intakeDaysMapToEntity(map: Map<String, Any?>): IntakeDays {
         val type = IntakeDaysType.valueOf(map[intakeDaysType] as String)
@@ -95,7 +88,7 @@ class PlanMapper : EntityMapper<Plan>() {
     }
 
     private fun intakeDaysEntityToMap(intakeDays: IntakeDays): Map<String, Any?> {
-        return when (intakeDays) {
+        return when(intakeDays) {
             is IntakeDays.Everyday -> hashMapOf(
                 intakeDaysType to IntakeDaysType.EVERYDAY
             )
@@ -135,24 +128,6 @@ class PlanMapper : EntityMapper<Plan>() {
             hashMapOf(
                 time to timeDose.time.jsonFormatString,
                 doseSize to timeDose.doseSize
-            )
-        }
-    }
-
-    private fun takenMedicineMapListToEntityList(mapList: List<Map<String, Any?>>): List<TakenMedicine> {
-        return mapList.map { map ->
-            TakenMedicine(
-                plannedDate = AppDate(map[plannedDate] as String),
-                plannedTime = AppTime(map[plannedTime] as String)
-            )
-        }
-    }
-
-    private fun takenMedicineEntityListToMapList(entityList: List<TakenMedicine>): List<Map<String, Any?>> {
-        return entityList.map { takenMedicine ->
-            hashMapOf(
-                plannedDate to takenMedicine.plannedDate.jsonFormatString,
-                plannedTime to takenMedicine.plannedTime.jsonFormatString
             )
         }
     }

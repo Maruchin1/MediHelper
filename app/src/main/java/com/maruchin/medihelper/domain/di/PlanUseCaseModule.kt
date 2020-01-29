@@ -5,7 +5,7 @@ import com.maruchin.medihelper.domain.usecasesimpl.plans.*
 import org.koin.dsl.module
 
 val planUseCaseModule = module {
-    factory {
+    factory { 
         GetLivePlansItemsByProfileUseCaseImpl(
             planRepo = get(),
             medicineRepo = get()
@@ -23,7 +23,7 @@ val planUseCaseModule = module {
             planRepo = get()
         ) as GetPlanEditDataUseCase
     }
-    factory {
+    factory { 
         SavePlanUseCaseImpl(
             planRepo = get(),
             validator = get()
@@ -38,10 +38,5 @@ val planUseCaseModule = module {
         DeletePlansUseCaseImpl(
             planRepo = get()
         ) as DeletePlansUseCase
-    }
-    factory {
-        GetPlanHistoryUseCaseImpl(
-
-        ) as GetPlanHistoryUseCase
     }
 }

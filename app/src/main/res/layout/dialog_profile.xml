@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/progress_bar_margin_top"
-                        android:visibility="@{!viewModel.plansLoaded}" />
+                        android:visibility="@{!viewModel.medicinesPlansLoaded}" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
                         android:orientation="vertical"
-                        android:visibility="@{viewModel.noPlansForProfile}">
+                        android:visibility="@{viewModel.noMedicinesPlansForProfile}">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -103,7 +103,7 @@
                         android:clipToPadding="false"
                         android:orientation="vertical"
                         android:paddingBottom="8dp"
-                        android:visibility="@{viewModel.plansAvailable}"
+                        android:visibility="@{viewModel.medicinesPlansAvailable}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/rec_item_plan" />
                 </LinearLayout>

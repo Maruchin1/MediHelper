@@ -9,7 +9,7 @@ import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.model.PlannedMedicineItem
 import com.maruchin.medihelper.domain.repositories.MedicineRepo
 import com.maruchin.medihelper.domain.repositories.PlanRepo
-import com.maruchin.medihelper.domain.usecases.planned_medicines.GetLivePlannedMedicinesItemsUseCase
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.GetLivePlannedMedicinesItemsUseCase
 
 class GetLivePlannedMedicinesItemsUseCaseImpl(
     private val planRepo: PlanRepo,
