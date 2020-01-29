@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.leochuan.CarouselLayoutManager
 import com.leochuan.CenterSnapHelper
 import com.leochuan.ScaleLayoutManager
 import com.maruchin.medihelper.R
@@ -48,6 +47,10 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         }.show(childFragmentManager)
     }
 
+    fun onClickSelectProfile(position: Int) {
+        recycler_view_profile.smoothScrollToPosition(position)
+    }
+
     fun onClickMedicinePlanDetails(medicinePlanId: String) {
         val direction = CalendarFragmentDirections.toMedicinePlanDetailsFragment(medicinePlanId)
         requireParentFragment().findNavController().navigate(direction)
@@ -86,7 +89,7 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
             adapter = ProfileAdapter()
             layoutManager = ScaleLayoutManager.Builder(requireContext(), 0)
                 .setMinScale(0.75f)
-                .setOrientation(CarouselLayoutManager.HORIZONTAL)
+                .setOrientation(ScaleLayoutManager.HORIZONTAL)
                 .build()
             CenterSnapHelper().attachToRecyclerView(this)
         }
@@ -144,6 +147,7 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         itemsSource = viewModel.profileItems
     ) {
         override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: ProfileItemData) {
+            item.position = position
             holder.bind(item, this@ProfileDialog)
         }
     }

@@ -8,6 +8,7 @@ data class ProfileItemData(
     val color: String,
     val deletable: Boolean
 ) {
+    var position = -1
 
     companion object {
 
