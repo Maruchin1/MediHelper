@@ -4,7 +4,6 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -13,13 +12,13 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.domain.model.PlannedMedicineNotifData
 import com.maruchin.medihelper.presentation.LauncherActivity
 
-class NotTakenMedicineNotification(
+class PlannedMedicineNotification(
     private val context: Context,
     private val data: PlannedMedicineNotifData
 ) : BaseNotification(context) {
 
     companion object {
-        private const val NOTIFICATION_ID = 0
+        private const val NOTIFICATION_ID = 1
         private const val REQUEST_CODE_MEDICINE_TAKEN = 1
         private const val REQUEST_CODE_OPEN_APP = 2
 
@@ -33,9 +32,9 @@ class NotTakenMedicineNotification(
     }
 
     override val channelId: String
-        get() = "not-taken-medicine-notification-channel-id"
+        get() = "planned-medicine-notification-channel-id"
     override val channelName: String
-        get() = "not-taken-medicine-notification-channel-name"
+        get() = "planned-medicine-notification-channel-name"
 
     override fun launch() {
         val notification = buildNotification()
@@ -46,7 +45,7 @@ class NotTakenMedicineNotification(
     private fun buildNotification(): Notification {
         return NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.mipmap.ic_launcher_round)
-            .setContentTitle("${data.profileName} - nieprzyjęty lek ${data.medicineName}")
+            .setContentTitle(getTitleText())
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(getMessageText())
             )
@@ -63,6 +62,10 @@ class NotTakenMedicineNotification(
                 getOpenAppPendingIntent()
             )
             .build()
+    }
+
+    private fun getTitleText(): String {
+        return "${data.profileName} - pora przyjąć lek ${data.medicineName}"
     }
 
     private fun getMessageText(): String {

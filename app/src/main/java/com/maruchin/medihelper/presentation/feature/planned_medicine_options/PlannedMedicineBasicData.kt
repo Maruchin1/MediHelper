@@ -8,6 +8,7 @@ data class PlannedMedicineBasicData(
     val plannedMedicineId: String,
     val medicinePlanId: String,
     val medicineName: String,
+    val medicineType: String,
     val plannedDateTime: String,
     val plannedDose: String
 ) {
@@ -18,6 +19,7 @@ data class PlannedMedicineBasicData(
             plannedMedicineId = model.plannedMedicineId,
             medicinePlanId = model.medicinePlanId,
             medicineName = model.medicineName,
+            medicineType = model.medicineType,
             plannedDateTime = formatDateTime(model.plannedDate, model.plannedTime),
             plannedDose = formatDose(model.plannedDoseSize, model.medicineUnit)
         )

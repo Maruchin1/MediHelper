@@ -32,30 +32,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/txv_medicine_name"
+                <LinearLayout
+                    android:id="@+id/lay_medicine_name_and_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/bottom_dialog_header_margin_horizontal"
                     android:layout_marginTop="@dimen/bottom_dialog_header_margin_top"
                     android:layout_marginEnd="@dimen/bottom_dialog_header_margin_horizontal"
-                    android:maxLines="1"
-                    android:text='@{viewModel.basicData.medicineName, default="Nazwa leku"}'
-                    android:textAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Light"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toStartOf="@id/lay_status"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/txv_medicine_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text='@{viewModel.basicData.medicineName, default="Nazwa leku"}'
+                        android:textAppearance="@style/TextAppearance.MediHelper.AppbarTitle.Light" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{viewModel.basicData.medicineType, default=Rodzaj}"
+                        android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/txv_medicine_name"
-                    app:layout_constraintTop_toBottomOf="@id/txv_medicine_name">
+                    app:layout_constraintStart_toStartOf="@id/lay_medicine_name_and_type"
+                    app:layout_constraintTop_toBottomOf="@id/lay_medicine_name_and_type">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -131,31 +149,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
                     android:text='@{viewModel.statusData.changeStateText, default="Przyjmij lek"}'
-                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?selectableItemBackground"
-                android:gravity="center_vertical"
-                android:onClick="@{() -> handler.onClickChangeForLater()}"
-                android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
-                android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/bottom_dialog_option_icon_size"
-                    android:layout_height="@dimen/bottom_dialog_option_icon_size"
-                    android:src='@drawable/round_access_time_24'
-                    android:tint='@{viewModel.colorPrimary, default="@color/colorPrimary"}' />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
-                    android:text='Przełóż na później'
                     android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
             </LinearLayout>
 

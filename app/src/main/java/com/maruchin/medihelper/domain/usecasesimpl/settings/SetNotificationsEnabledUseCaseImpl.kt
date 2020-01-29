@@ -12,7 +12,7 @@ class SetNotificationsEnabledUseCaseImpl(
     override suspend fun execute(enabled: Boolean) {
         if (isEnabledDifferent(enabled)) {
             settingsRepo.setNotificationsEnabled(enabled)
-            deviceNotifications.setupNotTakenMedicinesChecking()
+            deviceNotifications.setupPlannedMedicinesChecking()
         }
     }
 

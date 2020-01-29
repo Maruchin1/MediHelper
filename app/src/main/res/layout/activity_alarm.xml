@@ -28,7 +28,7 @@
                 android:id="@+id/txv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='@{viewModel.data.plannedTime, default="00:00"}'
+                android:text='@{viewModel.data.plannedTime.jsonFormatString, default="00:00"}'
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
                 android:textColor="@color/colorWhite"
                 android:textSize="60sp"

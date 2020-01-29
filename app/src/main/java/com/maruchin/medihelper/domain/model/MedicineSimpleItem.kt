@@ -5,8 +5,8 @@ import com.maruchin.medihelper.domain.entities.Medicine
 data class MedicineSimpleItem(
     val medicineId: String,
     val name: String,
-    val unit: String,
-    val type: String?
+    val type: String,
+    val unit: String
 ) {
     constructor(medicine: Medicine) : this(
         medicineId = medicine.entityId,

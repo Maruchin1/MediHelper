@@ -97,16 +97,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
-                                    android:text='@{viewModel.medicine.unit, default="Jednostka: tabletki"}'
-                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1.Dark" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:text='@{viewModel.medicine.type, default="Jednostka: tabletki"}'
-                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1.Dark"
-                                    android:visibility="@{viewModel.medicine.typeAvailable}" />
+                                    android:text='@{viewModel.medicine.type, default="Rodzaj leku"}'
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1.Dark"/>
                             </LinearLayout>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>

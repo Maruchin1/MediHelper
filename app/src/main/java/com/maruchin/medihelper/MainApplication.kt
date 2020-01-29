@@ -75,7 +75,7 @@ class MainApplication : Application() {
             modules(domainModules + dataModules + deviceModules + presentationModules)
         }
         GlobalScope.launch {
-            notifications.setupNotTakenMedicinesChecking()
+            notifications.setupPlannedMedicinesChecking()
         }
     }
 }

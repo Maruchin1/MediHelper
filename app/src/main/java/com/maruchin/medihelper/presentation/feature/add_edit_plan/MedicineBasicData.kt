@@ -6,9 +6,8 @@ import com.maruchin.medihelper.domain.model.PlanDetails
 data class MedicineBasicData(
     val medicineId: String,
     val name: String,
-    val unit: String,
-    val typeAvailable: Boolean,
-    val type: String?
+    val type: String,
+    val unit: String
 ) {
     companion object {
 
@@ -16,16 +15,14 @@ data class MedicineBasicData(
             medicineId = model.medicineId,
             name = model.name,
             unit = model.unit,
-            typeAvailable = model.type != null,
             type = model.type
         )
 
         fun fromDomainModel(model: PlanDetails) = MedicineBasicData(
             medicineId = model.medicineId,
             name = model.medicineName,
-            unit = model.medicineUnit,
-            typeAvailable = model.medicineType != null,
-            type = model.medicineType
+            type = model.medicineType,
+            unit = model.medicineUnit
         )
     }
 }

@@ -3,19 +3,22 @@ package com.maruchin.medihelper.device.notifications
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.maruchin.medihelper.domain.usecases.plannedmedicines.CheckIncomingPlannedMedicinesUseCase
 import com.maruchin.medihelper.domain.usecases.plannedmedicines.CheckNotTakenMedicinesUseCase
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class CheckNotTakenMedicinesWorker(
+class CheckPlannedMedicinesWorker(
     context: Context,
     params: WorkerParameters
 ) : CoroutineWorker(context, params), KoinComponent {
 
-    private val checkUseCase: CheckNotTakenMedicinesUseCase by inject()
+    private val checkNotTakenUseCase: CheckNotTakenMedicinesUseCase by inject()
+    private val checkIncomingUseCase: CheckIncomingPlannedMedicinesUseCase by inject()
 
     override suspend fun doWork(): Result {
-        checkUseCase.execute()
+        checkNotTakenUseCase.execute()
+        checkIncomingUseCase.execute()
         return Result.success()
     }
 }

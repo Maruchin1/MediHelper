@@ -73,6 +73,17 @@ class PlannedMedicineRepoImpl(
         return super.getEntitiesFromQuery(docsQuery)
     }
 
+    override suspend fun getListNotTakenForNextMinutes(minutes: Int): List<PlannedMedicine> {
+        val currTimeMillis = getCurrTimeInMillis()
+        val maxTimeInMillis = calculateMaxTimeInMillis(currTimeMillis, minutes)
+        val docQuery = collectionRef
+            .whereLessThanOrEqualTo(mapper.plannedDateTimeMillis, maxTimeInMillis)
+            .whereGreaterThanOrEqualTo(mapper.plannedDateTimeMillis, currTimeMillis)
+            .whereEqualTo(mapper.status, PlannedMedicine.Status.NOT_TAKEN)
+            .get().await()
+        return super.getEntitiesFromQuery(docQuery)
+    }
+
     override suspend fun getLiveListByProfileAndDate(
         profileId: String,
         date: AppDate
@@ -97,6 +108,11 @@ class PlannedMedicineRepoImpl(
     private fun calculateMinTimeInMillis(currTimeMillis: Long, minutes: Int): Long {
         val millisRange = minutesToMillis(minutes)
         return currTimeMillis - millisRange
+    }
+
+    private fun calculateMaxTimeInMillis(currTimeMillis: Long, minutes: Int): Long {
+        val millisRange = minutesToMillis(minutes)
+        return currTimeMillis + millisRange
     }
 
     private fun minutesToMillis(minutes: Int): Long {

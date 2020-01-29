@@ -26,8 +26,8 @@ class AddEditMedicineViewModel(
     val defaults: LiveData<MedicineDefaults>
     val formTitle: LiveData<String>
     val medicineName = MutableLiveData<String>()
-    val medicineUnit = MutableLiveData<String>()
     val medicineType = MutableLiveData<String>()
+    val medicineUnit = MutableLiveData<String>()
     val expireDate = MutableLiveData<AppExpireDate>()
     val currState = MutableLiveData<Float>(0f)
     val packageSize = MutableLiveData<Float>(0f)
@@ -41,6 +41,8 @@ class AddEditMedicineViewModel(
         get() = _actionMedicineSaved
     val errorMedicineName: LiveData<String>
         get() = _errorMedicineName
+    val errorMedicineType: LiveData<String>
+        get() = _errorMedicineType
     val errorMedicineUnit: LiveData<String>
         get() = _errorMedicineUnit
     val errorCurrState: LiveData<String>
@@ -50,6 +52,7 @@ class AddEditMedicineViewModel(
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
     private val _actionMedicineSaved = ActionLiveData()
     private val _errorMedicineName = MutableLiveData<String>()
+    private val _errorMedicineType = MutableLiveData<String>()
     private val _errorMedicineUnit = MutableLiveData<String>()
     private val _errorCurrState = MutableLiveData<String>()
 
@@ -109,6 +112,7 @@ class AddEditMedicineViewModel(
 
     private fun setEditData(editData: MedicineEditData) {
         medicineName.postValue(editData.name)
+        medicineType.postValue(editData.type)
         medicineUnit.postValue(editData.unit)
         expireDate.postValue(editData.expireDate)
         packageSize.postValue(editData.state.packageSize)
@@ -157,6 +161,9 @@ class AddEditMedicineViewModel(
         val medicineNameError = if (errors.emptyName) {
             "Pole jest wymagane"
         } else null
+        val medicineTypeError = if (errors.emptyType) {
+            "Pole jest wymagane"
+        } else null
         val medicineUnitError = if (errors.emptyUnit) {
             "Pole jest wymagane"
         } else null
@@ -165,6 +172,7 @@ class AddEditMedicineViewModel(
         } else null
 
         _errorMedicineName.postValue(medicineNameError)
+        _errorMedicineType.postValue(medicineTypeError)
         _errorMedicineUnit.postValue(medicineUnitError)
         _errorCurrState.postValue(currStateError)
     }

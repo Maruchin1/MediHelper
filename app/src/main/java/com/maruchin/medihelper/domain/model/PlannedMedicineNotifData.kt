@@ -1,8 +1,6 @@
 package com.maruchin.medihelper.domain.model
 
-import com.maruchin.medihelper.domain.entities.Medicine
-import com.maruchin.medihelper.domain.entities.PlannedMedicine
-import com.maruchin.medihelper.domain.entities.Profile
+import com.maruchin.medihelper.domain.entities.*
 import java.io.Serializable
 
 data class PlannedMedicineNotifData(
@@ -12,7 +10,8 @@ data class PlannedMedicineNotifData(
     val medicineName: String,
     val medicineUnit: String,
     val medicineType: String?,
-    val plannedTime: String,
+    val plannedDate: AppDate,
+    val plannedTime: AppTime,
     val doseSize: Float,
     val status: PlannedMedicine.Status
 ) : Serializable{
@@ -23,7 +22,8 @@ data class PlannedMedicineNotifData(
         medicineName = medicine.name,
         medicineUnit = medicine.unit,
         medicineType = medicine.type,
-        plannedTime = plannedMedicine.plannedTime.formatString,
+        plannedDate = plannedMedicine.plannedDate,
+        plannedTime = plannedMedicine.plannedTime,
         doseSize = plannedMedicine.plannedDoseSize,
         status = plannedMedicine.status
     )

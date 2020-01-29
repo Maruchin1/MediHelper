@@ -65,7 +65,7 @@
                     android:layout_marginTop="4dp"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text='@{displayData.medicineType, default="Jednostka"}'
+                    android:text='@{displayData.medicineType, default="Rodzaj"}'
                     android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
             </LinearLayout>
 

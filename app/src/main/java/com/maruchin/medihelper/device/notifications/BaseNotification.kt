@@ -19,9 +19,11 @@ abstract class BaseNotification(private val context: Context) : KoinComponent {
         createNotificationChannel()
     }
 
+    abstract fun launch()
+
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(
                 channelId,
                 channelName,
