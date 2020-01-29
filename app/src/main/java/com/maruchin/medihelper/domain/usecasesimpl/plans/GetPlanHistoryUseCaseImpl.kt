@@ -1,5 +1,6 @@
 package com.maruchin.medihelper.domain.usecasesimpl.plans
 
+import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.model.HistoryItem
@@ -9,11 +10,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class GetPlanHistoryUseCaseImpl(
-    private val plannedMedicineRepo: PlannedMedicineRepo
+    private val plannedMedicineRepo: PlannedMedicineRepo,
+    private val deviceCalendar: DeviceCalendar
 ) : GetPlanHistoryUseCase {
 
     override suspend fun execute(medicinePlanId: String): List<HistoryItem> = withContext(Dispatchers.Default) {
-        val plannedMedicines = plannedMedicineRepo.getListByMedicinePlan(medicinePlanId)
+        val currDate = deviceCalendar.getCurrDate()
+        val plannedMedicines = plannedMedicineRepo.getListByMedicinePlanBeforeDate(medicinePlanId, currDate)
         val plannedMedicinesGroupedByDate = groupByDate(plannedMedicines)
         val historyItems = mapGroupedPlannedMedicinesToHistoryItems(plannedMedicinesGroupedByDate)
         val historyItemsSortedByDate = sortHistoryItemsByDate(historyItems)

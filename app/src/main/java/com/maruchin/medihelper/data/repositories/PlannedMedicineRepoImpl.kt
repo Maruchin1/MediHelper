@@ -28,21 +28,22 @@ class PlannedMedicineRepoImpl(
     private val collectionRef: CollectionReference
         get() = appFirebase.plannedMedicines
 
-    override suspend fun addNewList(entityList: List<PlannedMedicine>): List<PlannedMedicine> = withContext(Dispatchers.IO) {
-        val added = mutableListOf<PlannedMedicine>()
-        appFirebase.runBatch { batch ->
-            entityList.forEach { entity ->
-                val newDoc = collectionRef.document()
-                val data = runBlocking {
-                    mapper.entityToMap(entity)
-                }
+    override suspend fun addNewList(entityList: List<PlannedMedicine>): List<PlannedMedicine> =
+        withContext(Dispatchers.IO) {
+            val added = mutableListOf<PlannedMedicine>()
+            appFirebase.runBatch { batch ->
+                entityList.forEach { entity ->
+                    val newDoc = collectionRef.document()
+                    val data = runBlocking {
+                        mapper.entityToMap(entity)
+                    }
 
-                added.add(entity.copy(entityId = newDoc.id))
-                batch.set(newDoc, data)
+                    added.add(entity.copy(entityId = newDoc.id))
+                    batch.set(newDoc, data)
+                }
             }
+            return@withContext added
         }
-        return@withContext added
-    }
 
     override suspend fun deleteListById(entityIdList: List<String>) = withContext(Dispatchers.IO) {
         appFirebase.runBatch { batch ->
@@ -62,27 +63,39 @@ class PlannedMedicineRepoImpl(
             }
         }
 
-    override suspend fun getListNotTakenForLastMinutes(minutes: Int): List<PlannedMedicine> {
-        val currTimeInMillis = getCurrTimeInMillis()
-        val minTimeInMillis = calculateMinTimeInMillis(currTimeInMillis, minutes)
+    override suspend fun getListByMedicinePlanBeforeDate(medicinePlanId: String, date: AppDate): List<PlannedMedicine> = withContext(Dispatchers.IO) {
         val docsQuery = collectionRef
-            .whereGreaterThanOrEqualTo(mapper.plannedDateTimeMillis, minTimeInMillis)
-            .whereLessThanOrEqualTo(mapper.plannedDateTimeMillis, currTimeInMillis)
-            .whereEqualTo(mapper.status, PlannedMedicine.Status.NOT_TAKEN.toString())
+            .whereEqualTo(mapper.medicinePlanId, medicinePlanId)
+            .whereLessThanOrEqualTo(mapper.plannedDate, date.jsonFormatString)
             .get().await()
-        return super.getEntitiesFromQuery(docsQuery)
+        return@withContext docsQuery.map {
+            mapper.mapToEntity(it.id, it.data)
+        }
     }
 
-    override suspend fun getListNotTakenForNextMinutes(minutes: Int): List<PlannedMedicine> {
-        val currTimeMillis = getCurrTimeInMillis()
-        val maxTimeInMillis = calculateMaxTimeInMillis(currTimeMillis, minutes)
-        val docQuery = collectionRef
-            .whereLessThanOrEqualTo(mapper.plannedDateTimeMillis, maxTimeInMillis)
-            .whereGreaterThanOrEqualTo(mapper.plannedDateTimeMillis, currTimeMillis)
-            .whereEqualTo(mapper.status, PlannedMedicine.Status.NOT_TAKEN)
-            .get().await()
-        return super.getEntitiesFromQuery(docQuery)
-    }
+    override suspend fun getListNotTakenForLastMinutes(minutes: Int): List<PlannedMedicine> =
+        withContext(Dispatchers.IO) {
+            val currTimeInMillis = getCurrTimeInMillis()
+            val minTimeInMillis = calculateMinTimeInMillis(currTimeInMillis, minutes)
+            val docsQuery = collectionRef
+                .whereGreaterThanOrEqualTo(mapper.plannedDateTimeMillis, minTimeInMillis)
+                .whereLessThanOrEqualTo(mapper.plannedDateTimeMillis, currTimeInMillis)
+                .whereEqualTo(mapper.status, PlannedMedicine.Status.NOT_TAKEN.toString())
+                .get().await()
+            return@withContext super.getEntitiesFromQuery(docsQuery)
+        }
+
+    override suspend fun getListNotTakenForNextMinutes(minutes: Int): List<PlannedMedicine> =
+        withContext(Dispatchers.IO) {
+            val currTimeMillis = getCurrTimeInMillis()
+            val maxTimeInMillis = calculateMaxTimeInMillis(currTimeMillis, minutes)
+            val docQuery = collectionRef
+                .whereLessThanOrEqualTo(mapper.plannedDateTimeMillis, maxTimeInMillis)
+                .whereGreaterThanOrEqualTo(mapper.plannedDateTimeMillis, currTimeMillis)
+                .whereEqualTo(mapper.status, PlannedMedicine.Status.NOT_TAKEN)
+                .get().await()
+            return@withContext super.getEntitiesFromQuery(docQuery)
+        }
 
     override suspend fun getLiveListByProfileAndDate(
         profileId: String,

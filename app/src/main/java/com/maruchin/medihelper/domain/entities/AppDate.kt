@@ -24,7 +24,7 @@ class AppDate : Comparable<AppDate> {
     val dayOfWeekString: String
         get() = SimpleDateFormat("EEE", Locale.getDefault()).format(dateCalendar.time)
     val jsonFormatString: String
-        get() = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(dateCalendar.time)
+        get() = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(dateCalendar.time)
 
     private val dateCalendar: Calendar
 
@@ -50,7 +50,7 @@ class AppDate : Comparable<AppDate> {
     }
 
     constructor(jsonFormatString: String) {
-        val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(jsonFormatString)
+        val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(jsonFormatString)
         dateCalendar = Calendar.getInstance().apply {
             this.time = date
             listOf(
