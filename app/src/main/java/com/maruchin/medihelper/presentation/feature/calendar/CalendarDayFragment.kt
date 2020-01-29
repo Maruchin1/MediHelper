@@ -19,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layout.fragment_calendar_day) {
     private val TAG = CalendarDayFragment::class.simpleName
 
-    lateinit var date: AppDate
+    lateinit var itemsLive: LiveData<List<PlannedMedicineItem>>
 
     private val viewModel: CalendarDayViewModel by viewModel()
 
@@ -63,7 +63,7 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
     }
 
     private fun initViewModel() {
-        viewModel.initViewModel(date)
+        viewModel.initViewModel(itemsLive)
     }
 
     private fun setupCheckBoxesRecyclerViews() {

@@ -45,4 +45,10 @@ val planUseCaseModule = module {
             deviceCalendar = get()
         ) as GetPlanHistoryUseCase
     }
+    factory {
+        GetLivePlansCalendarDataForProfileUseCaseImpl(
+            planRepo = get(),
+            medicineRepo = get()
+        ) as GetLivePlansCalendarDataForProfileUseCase
+    }
 }

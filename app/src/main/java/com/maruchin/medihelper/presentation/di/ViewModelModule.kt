@@ -55,15 +55,13 @@ val viewModelModule = module {
     viewModel {
         CalendarViewModel(
             getProfileSimpleItemUseCase = get(),
+            getLivePlansCalendarDataForProfileUseCase = get(),
             selectedProfile = get(),
             deviceCalendar = get()
         )
     }
     viewModel {
-        CalendarDayViewModel(
-            getLivePlannedMedicinesItemsUseCase = get(),
-            selectedProfile = get()
-        )
+        CalendarDayViewModel()
     }
     viewModel {
         PlannedMedicineOptionsViewModel(

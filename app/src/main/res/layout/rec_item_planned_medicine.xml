@@ -82,6 +82,7 @@
                 android:layout_marginStart="16dp"
                 android:text='@{displayData.plannedTime, default="00:00"}'
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
