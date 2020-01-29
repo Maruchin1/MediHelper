@@ -108,7 +108,9 @@ class ProfileViewModel(
         plansLive: LiveData<List<PlanItem>>
     ): LiveData<List<PlanItemData>> {
         return Transformations.map(plansLive) { plans ->
-            mapPlansItemsToData(plans)
+            mapPlansItemsToData(plans).sortedBy { planItemData ->
+                !planItemData.active
+            }
         }
     }
 
