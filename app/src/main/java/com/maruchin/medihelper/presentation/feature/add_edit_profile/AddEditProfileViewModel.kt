@@ -29,7 +29,7 @@ class AddEditProfileViewModel(
     private val _errorProfileName = MutableLiveData<String>()
 
     private lateinit var profileColorList: List<String>
-    private var editProfileId = MutableLiveData<String>()
+    private var editProfileId = MutableLiveData<String>(null)
 
     init {
         formTitle = getLiveFormTitle()
