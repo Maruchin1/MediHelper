@@ -104,7 +104,8 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
     ) : BaseRecyclerLiveAdapter<PlannedMedicineItemData>(
         layoutResId = R.layout.rec_item_planned_medicine,
         lifecycleOwner = viewLifecycleOwner,
-        itemsSource = itemsSource
+        itemsSource = itemsSource,
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedMedicineId == newItem.plannedMedicineId }
     ) {
         override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: PlannedMedicineItemData) {
             holder.bind(item, this@CalendarDayFragment)
@@ -116,7 +117,8 @@ class CalendarDayFragment : BaseMainFragment<FragmentCalendarDayBinding>(R.layou
     ) : BaseRecyclerLiveAdapter<PlannedMedicineItemCheckBoxData>(
         layoutResId = R.layout.rec_item_planned_medicine_checkbox,
         lifecycleOwner = viewLifecycleOwner,
-        itemsSource = itemsSource
+        itemsSource = itemsSource,
+        areItemsTheSameFun = { oldItem, newItem -> oldItem.plannedMedicineId == newItem.plannedMedicineId }
     ) {
         override fun onBindViewHolder(holder: BaseViewHolder, position: Int, item: PlannedMedicineItemCheckBoxData) {
             holder.bind(item, this@CalendarDayFragment)

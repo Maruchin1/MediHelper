@@ -15,8 +15,8 @@ class MedicineRepoImpl(
     private val appFirebase: AppFirebase,
     private val mapper: MedicineMapper
 ) : FirestoreEntityRepo<Medicine>(
-    entityMapper = mapper,
-    getCollection = appFirebase::getMedicinesCollection
+    collectionRef = appFirebase.medicines,
+    entityMapper = mapper
 ), MedicineRepo {
 
     override suspend fun searchForMedicineInfo(medicineName: String): List<MedicineInfoSearchResult> =

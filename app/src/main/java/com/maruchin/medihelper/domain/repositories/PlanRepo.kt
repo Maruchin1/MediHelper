@@ -6,7 +6,7 @@ import com.maruchin.medihelper.domain.framework.BaseEntityRepo
 
 interface PlanRepo : BaseEntityRepo<Plan> {
     suspend fun deleteListById(ids: List<String>)
-    suspend fun getByMedicine(medicineId: String): List<Plan>
-    suspend fun getByProfile(profileId: String): List<Plan>
-    suspend fun getLiveByProfile(profileId: String): LiveData<List<Plan>>
+    suspend fun getListByMedicine(medicineId: String): List<Plan>
+    suspend fun getListByProfile(profileId: String): List<Plan>
+    suspend fun getListLiveByProfile(profileId: String): LiveData<List<Plan>>
 }

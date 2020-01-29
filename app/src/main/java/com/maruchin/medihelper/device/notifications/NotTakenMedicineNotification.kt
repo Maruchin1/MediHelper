@@ -41,7 +41,7 @@ class NotTakenMedicineNotification(
         val notification = buildNotification()
         val manager = NotificationManagerCompat.from(context)
 
-//        manager.notify(data.plannedMedicineId, NOTIFICATION_ID, notification)
+        manager.notify(data.plannedMedicineId, NOTIFICATION_ID, notification)
     }
 
     private fun buildNotification(): Notification {
@@ -53,11 +53,11 @@ class NotTakenMedicineNotification(
             )
             .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//            .addAction(
-//                R.drawable.baseline_check_24,
-//                "Przyjęty",
-//                getMedicineTakenPendingIntent(data.plannedMedicineId)
-//            )
+            .addAction(
+                R.drawable.baseline_check_24,
+                "Przyjęty",
+                getMedicineTakenPendingIntent(data.plannedMedicineId)
+            )
             .addAction(
                 R.drawable.ic_pill_black_24dp,
                 "Szczegóły",

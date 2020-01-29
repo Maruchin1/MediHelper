@@ -6,6 +6,7 @@ import com.maruchin.medihelper.domain.entities.Profile
 import java.io.Serializable
 
 data class PlannedMedicineNotifData(
+    val plannedMedicineId: String,
     val profileName: String,
     val profileColor: String,
     val medicineName: String,
@@ -16,6 +17,7 @@ data class PlannedMedicineNotifData(
     val status: PlannedMedicine.Status
 ) : Serializable{
     constructor(plannedMedicine: PlannedMedicine, profile: Profile, medicine: Medicine) : this(
+        plannedMedicineId = plannedMedicine.entityId,
         profileName = profile.name,
         profileColor = profile.color,
         medicineName = medicine.name,

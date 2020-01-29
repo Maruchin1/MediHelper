@@ -68,7 +68,7 @@ class DeleteMedicineUseCaseImplTest {
                 )
             )
             Mockito.`when`(medicineRepo.getById(medicineId)).thenReturn(mockMedicine)
-            Mockito.`when`(planRepo.getByMedicine(medicineId)).thenReturn(medicinesPlansMock)
+            Mockito.`when`(planRepo.getListByMedicine(medicineId)).thenReturn(medicinesPlansMock)
 
             useCase.execute(medicineId)
 
@@ -99,7 +99,7 @@ class DeleteMedicineUseCaseImplTest {
                 pictureName = null
             )
             Mockito.`when`(medicineRepo.getById(medicineId)).thenReturn(mockMedicine)
-            Mockito.`when`(planRepo.getByMedicine(medicineId)).thenReturn(emptyList())
+            Mockito.`when`(planRepo.getListByMedicine(medicineId)).thenReturn(emptyList())
 
             useCase.execute(medicineId)
 

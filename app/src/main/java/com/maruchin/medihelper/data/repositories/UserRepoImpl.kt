@@ -16,7 +16,7 @@ class UserRepoImpl(
 ) : UserRepo {
 
     private val collectionRef: CollectionReference
-        get() = appFirebase.getUsersCollection()
+        get() = appFirebase.users
 
     override suspend fun signIn(email: String, password: String): String = withContext(Dispatchers.IO) {
         return@withContext try {

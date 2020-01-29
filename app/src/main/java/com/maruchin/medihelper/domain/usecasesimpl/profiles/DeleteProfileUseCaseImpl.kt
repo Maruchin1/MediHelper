@@ -22,6 +22,6 @@ class DeleteProfileUseCaseImpl(
     }
 
     private suspend fun getPlansIdsUsingProfile(profileId: String): List<String> {
-        return planRepo.getByProfile(profileId).map { it.entityId }
+        return planRepo.getListByProfile(profileId).map { it.entityId }
     }
 }

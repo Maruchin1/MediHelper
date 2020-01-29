@@ -26,17 +26,29 @@ val planUseCaseModule = module {
     factory { 
         SavePlanUseCaseImpl(
             planRepo = get(),
+            plannedMedicineRepo = get(),
+            plannedMedicineScheduler = get(),
+            deviceCalendar = get(),
             validator = get()
         ) as SavePlanUseCase
     }
     factory {
         DeleteSinglePlanUseCaseImpl(
-            planRepo = get()
+            planRepo = get(),
+            plannedMedicineRepo = get(),
+            deletePlannedMedicinesUseCase = get()
         ) as DeleteSinglePlanUseCase
     }
     factory {
         DeletePlansUseCaseImpl(
-            planRepo = get()
+            planRepo = get(),
+            plannedMedicineRepo = get(),
+            deletePlannedMedicinesUseCase = get()
         ) as DeletePlansUseCase
+    }
+    factory { 
+        GetPlanHistoryUseCaseImpl(
+            plannedMedicineRepo = get()
+        ) as GetPlanHistoryUseCase
     }
 }

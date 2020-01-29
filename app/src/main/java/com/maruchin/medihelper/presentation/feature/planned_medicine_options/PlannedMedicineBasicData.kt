@@ -5,6 +5,7 @@ import com.maruchin.medihelper.domain.entities.AppTime
 import com.maruchin.medihelper.domain.model.PlannedMedicineDetails
 
 data class PlannedMedicineBasicData(
+    val plannedMedicineId: String,
     val medicinePlanId: String,
     val medicineName: String,
     val plannedDateTime: String,
@@ -14,6 +15,7 @@ data class PlannedMedicineBasicData(
     companion object {
 
         fun fromDomainModel(model: PlannedMedicineDetails) = PlannedMedicineBasicData(
+            plannedMedicineId = model.plannedMedicineId,
             medicinePlanId = model.medicinePlanId,
             medicineName = model.medicineName,
             plannedDateTime = formatDateTime(model.plannedDate, model.plannedTime),

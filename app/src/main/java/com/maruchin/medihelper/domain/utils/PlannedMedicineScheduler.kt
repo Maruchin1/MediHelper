@@ -6,47 +6,33 @@ import kotlinx.coroutines.withContext
 
 class PlannedMedicineScheduler {
 
-    companion object {
-        private const val CONTINUOUS_DAYS_COUNT = 30
-    }
-
     suspend fun getPlannedMedicines(plan: Plan): List<PlannedMedicine> =
         withContext(Dispatchers.Default) {
             return@withContext when (plan.planType) {
-                Plan.Type.ONE_DAY -> getForOneDay(plan)
-                Plan.Type.PERIOD -> getForPeriod(plan)
-                Plan.Type.CONTINUOUS -> getForContinuous(plan)
+                Plan.Type.ONE_DAY -> getForDate(plan, plan.startDate)
+                Plan.Type.PERIOD -> when (plan.intakeDays) {
+                    is IntakeDays.Everyday -> getForEveryday(plan)
+                    is IntakeDays.DaysOfWeek -> getForDaysOfWeek(plan)
+                    is IntakeDays.Interval -> getForInterval(plan)
+                    is IntakeDays.Sequence -> getForSequence(plan)
+                    else -> emptyList()
+                }
+                Plan.Type.CONTINUOUS -> {
+                    val tempMedicinePlan = plan.copy(
+                        endDate = plan.startDate.copy().apply {
+                            addDays(CONTINUOUS_DAYS_COUNT)
+                        }
+                    )
+                    when (plan.intakeDays) {
+                        is IntakeDays.Everyday -> getForEveryday(tempMedicinePlan)
+                        is IntakeDays.DaysOfWeek -> getForDaysOfWeek(tempMedicinePlan)
+                        is IntakeDays.Interval -> getForInterval(tempMedicinePlan)
+                        is IntakeDays.Sequence -> getForSequence(tempMedicinePlan)
+                        else -> emptyList()
+                    }
+                }
             }
         }
-
-    private fun getForOneDay(plan: Plan): List<PlannedMedicine> {
-        return getForDate(plan, plan.startDate)
-    }
-
-    private fun getForPeriod(plan: Plan): List<PlannedMedicine> {
-        return when (plan.intakeDays) {
-            is IntakeDays.Everyday -> getForEveryday(plan)
-            is IntakeDays.DaysOfWeek -> getForDaysOfWeek(plan)
-            is IntakeDays.Interval -> getForInterval(plan)
-            is IntakeDays.Sequence -> getForSequence(plan)
-            else -> emptyList()
-        }
-    }
-
-    private fun getForContinuous(plan: Plan): List<PlannedMedicine> {
-        val tempMedicinePlan = plan.copy(
-            endDate = plan.startDate.copy().apply {
-                addDays(CONTINUOUS_DAYS_COUNT)
-            }
-        )
-        return when (plan.intakeDays) {
-            is IntakeDays.Everyday -> getForEveryday(tempMedicinePlan)
-            is IntakeDays.DaysOfWeek -> getForDaysOfWeek(tempMedicinePlan)
-            is IntakeDays.Interval -> getForInterval(tempMedicinePlan)
-            is IntakeDays.Sequence -> getForSequence(tempMedicinePlan)
-            else -> emptyList()
-        }
-    }
 
     private fun getForEveryday(plan: Plan): List<PlannedMedicine> {
         val entriesList = mutableListOf<PlannedMedicine>()
@@ -122,6 +108,7 @@ class PlannedMedicineScheduler {
         plan.timeDoseList.forEach { timeDose ->
             entriesList.add(
                 PlannedMedicine(
+                    entityId = "",
                     medicinePlanId = plan.entityId,
                     profileId = plan.profileId,
                     medicineId = plan.medicineId,
@@ -133,5 +120,9 @@ class PlannedMedicineScheduler {
             )
         }
         return entriesList
+    }
+
+    companion object {
+        private const val CONTINUOUS_DAYS_COUNT = 30
     }
 }
