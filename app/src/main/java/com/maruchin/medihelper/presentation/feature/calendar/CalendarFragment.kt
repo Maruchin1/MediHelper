@@ -116,7 +116,7 @@ class CalendarFragment : BaseHomeFragment<FragmentCalendarBinding>(R.layout.frag
         private fun getCalendarDayFragmentForPosition(position: Int): CalendarDayFragment {
             val dateForPosition = viewModel.getDateForPosition(position)
             return CalendarDayFragment().apply {
-                itemsLive = viewModel.getLivePlannedMedicinesForDate(dateForPosition)
+                date = dateForPosition
             }
         }
     }

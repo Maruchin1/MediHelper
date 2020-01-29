@@ -3,10 +3,14 @@ package com.maruchin.medihelper.presentation.feature.calendar
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.domain.model.PlannedMedicineItem
+import com.maruchin.medihelper.domain.usecases.planned_medicines.GetLivePlannedMedicinesItemsUseCase
 import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import kotlinx.coroutines.launch
 
-class CalendarDayViewModel() : ViewModel() {
+class CalendarDayViewModel(
+    private val getLivePlannedMedicinesItemsUseCase: GetLivePlannedMedicinesItemsUseCase,
+    private val selectedProfile: SelectedProfile
+) : ViewModel() {
 
     val dataLoading: LiveData<Boolean>
     val morningSection: CalendarDaySectionModel
@@ -22,7 +26,8 @@ class CalendarDayViewModel() : ViewModel() {
         eveningSection = getSectionModel(CalendarDaySectionModel.Type.EVENING)
     }
 
-    fun initViewModel(itemsLive: LiveData<List<PlannedMedicineItem>>) = viewModelScope.launch {
+    fun initViewModel(calendarDayDate: AppDate) = viewModelScope.launch {
+        val itemsLive = getLiveItems(calendarDayDate)
         val dataLive = transformLiveItemsToData(itemsLive)
         data.addSource(dataLive) { newData ->
             data.value = newData
@@ -35,6 +40,15 @@ class CalendarDayViewModel() : ViewModel() {
 
     private fun getSectionModel(type: CalendarDaySectionModel.Type): CalendarDaySectionModel {
         return CalendarDaySectionModel(type, data)
+    }
+
+    private fun getLiveItems(date: AppDate): LiveData<List<PlannedMedicineItem>> {
+        return Transformations.switchMap(selectedProfile.profileIdLive) { selectedProfileId ->
+            liveData {
+                val itemsLive = getLivePlannedMedicinesItemsUseCase.execute(selectedProfileId, date)
+                emitSource(itemsLive)
+            }
+        }
     }
 
     private fun transformLiveItemsToData(itemsLive: LiveData<List<PlannedMedicineItem>>): LiveData<CalendarDayData> {
