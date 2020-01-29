@@ -34,9 +34,9 @@ class MedicineMapper : EntityMapper<Medicine>() {
         return@withContext Medicine(
             entityId = entityId,
             name = map[name] as String,
-            type = map[type] as String,
             unit = map[unit] as String,
             expireDate = map[expireDate]?.let { AppExpireDate(it as String) },
+            type = map[type] as String?,
             state = mapToStateData(map[state] as Map<String, Any?>),
             pictureName = map[pictureName] as String?
         )

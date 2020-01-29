@@ -8,19 +8,30 @@ import com.maruchin.medihelper.domain.entities.Profile
 data class MedicineDetails(
     val medicineId: String,
     val name: String,
-    val type: String,
     val unit: String,
     val expireDate: AppExpireDate?,
+    val type: String?,
+    val daysRemains: Int?,
     val state: MedicineState,
-    val pictureName: String?
+    val pictureName: String?,
+    val profileItems: List<ProfileItem>
 ) {
-    constructor(medicine: Medicine) : this(
+    constructor(medicine: Medicine, daysRemains: Int?, profileList: List<Profile>) : this(
         medicineId = medicine.entityId,
         name = medicine.name,
-        type = medicine.type,
         unit = medicine.unit,
         expireDate = medicine.expireDate,
+        type = medicine.type,
+        daysRemains = daysRemains,
         state = medicine.state,
-        pictureName = medicine.pictureName
+        pictureName = medicine.pictureName,
+        profileItems = profileList.map {
+            ProfileItem(
+                profileId = it.entityId,
+                name = it.name,
+                color = it.color,
+                mainPerson = it.mainPerson
+            )
+        }
     )
 }

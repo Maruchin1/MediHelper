@@ -35,7 +35,6 @@ class SaveMedicineUseCaseImpl(
     private fun getValidatorParams(params: SaveMedicineUseCase.Params): MedicineValidator.Params {
         return MedicineValidator.Params(
             name = params.name,
-            type = params.type,
             unit = params.unit,
             packageSize = params.packageSize,
             currState = params.currState
@@ -100,9 +99,9 @@ class SaveMedicineUseCaseImpl(
         return Medicine(
             entityId = params.medicineId ?: "",
             name = params.name!!,
-            type = params.type!!,
             unit = params.unit!!,
             expireDate = params.expireDate,
+            type = params.type,
             state = MedicineState(
                 packageSize = params.packageSize ?: 0f,
                 currState = params.currState ?: 0f

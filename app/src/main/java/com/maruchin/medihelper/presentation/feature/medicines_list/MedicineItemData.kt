@@ -18,9 +18,13 @@ data class MedicineItemData(
                 medicineId = model.medicineId,
                 pictureName = model.pictureName,
                 name = model.name,
-                type = model.type,
+                type = getType(model.type),
                 stateData = getStateData(model.state)
             )
+        }
+
+        private fun getType(modelType: String?): String {
+            return modelType ?: "Nieokreślony rodzaj"
         }
 
         private fun getStateData(model: MedicineState): StateData {
