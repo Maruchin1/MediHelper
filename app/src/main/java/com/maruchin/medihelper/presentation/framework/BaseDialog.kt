@@ -15,11 +15,10 @@ import com.maruchin.medihelper.presentation.MainActivity
 
 abstract class BaseDialog<T : ViewDataBinding>(private val layoutResId: Int) : DialogFragment() {
     abstract val TAG: String
+    protected open val viewModel: ViewModel? = null
 
     protected val mainActivity: MainActivity
         get() = requireActivity() as MainActivity
-
-    protected var bindingViewModel: ViewModel? = null
 
     fun show(fragmentManager: FragmentManager) = show(fragmentManager, TAG)
 
@@ -42,8 +41,7 @@ abstract class BaseDialog<T : ViewDataBinding>(private val layoutResId: Int) : D
         return binding.apply {
             setVariable(BR.handler, this@BaseDialog)
             lifecycleOwner = viewLifecycleOwner
-            setVariable(BR.viewModel, bindingViewModel)
+            setVariable(BR.viewModel, viewModel)
         }.root
     }
-
 }

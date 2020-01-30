@@ -12,28 +12,27 @@ import com.maruchin.medihelper.device.reminder.workers.CheckPlannedMedicinesWork
 import com.maruchin.medihelper.device.reminder.workers.NotifyAboutPlannedMedicineWorker
 import com.maruchin.medihelper.domain.device.DeviceReminder
 import com.maruchin.medihelper.domain.model.PlannedMedicineNotifData
-import com.maruchin.medihelper.domain.repositories.SettingsRepo
+import com.maruchin.medihelper.domain.usecases.settings.AreRemindersEnabledUseCase
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 class DeviceReminderImpl(
     private val context: Context,
-    private val settingsRepo: SettingsRepo
+    private val areRemindersEnabledUseCase: AreRemindersEnabledUseCase
 ) : DeviceReminder {
     private val TAG: String
         get() = "DeviceNotifications"
 
     companion object {
-        private const val NOT_TAKEN_CHECK_INTERVAL_MINUTES = 60L
-        private const val NOT_TAKEN_CHECK_WORK_NAME = "not-taken-check-work"
+        private const val PLANNED_MEDICINE_CHECK_INTERVAL_MINUTES = 60L
+        private const val PLANNED_MEDICINE_CHECK_WORK_NAME = "planned-medicine-check-work"
     }
 
     private val workManager: WorkManager by lazy { WorkManager.getInstance(context) }
 
     override suspend fun setupPlannedMedicinesReminders() {
-        //todo executing UseCase may be a cleaner solution than reference to repository
-        val areNotificationsEnabled = settingsRepo.areNotificationsEnabled()
-        if (areNotificationsEnabled) {
+        val areRemindersEnabled = areRemindersEnabledUseCase.execute()
+        if (areRemindersEnabled) {
             enablePlannedMedicineCheck()
         } else {
             disablePlannedMedicineCheck()
@@ -83,11 +82,11 @@ class DeviceReminderImpl(
 
     private fun enablePlannedMedicineCheck() {
         val work = PeriodicWorkRequestBuilder<CheckPlannedMedicinesWorker>(
-            repeatInterval = NOT_TAKEN_CHECK_INTERVAL_MINUTES,
+            repeatInterval = PLANNED_MEDICINE_CHECK_INTERVAL_MINUTES,
             repeatIntervalTimeUnit = TimeUnit.MINUTES
         ).build()
         workManager.enqueueUniquePeriodicWork(
-            NOT_TAKEN_CHECK_WORK_NAME,
+            PLANNED_MEDICINE_CHECK_WORK_NAME,
             ExistingPeriodicWorkPolicy.KEEP,
             work
         )
@@ -95,7 +94,7 @@ class DeviceReminderImpl(
     }
 
     private fun disablePlannedMedicineCheck() {
-        workManager.cancelUniqueWork(NOT_TAKEN_CHECK_WORK_NAME)
+        workManager.cancelUniqueWork(PLANNED_MEDICINE_CHECK_WORK_NAME)
         Log.i(TAG, "Notifications disabled")
     }
 

@@ -8,7 +8,7 @@ val notificationsModule = module {
     single {
         DeviceReminderImpl(
             context = get(),
-            settingsRepo = get()
+            areRemindersEnabledUseCase = get()
         ) as DeviceReminder
     }
 }

@@ -7,7 +7,7 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.options.HelpDialog" />
+            type="com.maruchin.medihelper.presentation.feature.options.reminders.HelpDialog" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

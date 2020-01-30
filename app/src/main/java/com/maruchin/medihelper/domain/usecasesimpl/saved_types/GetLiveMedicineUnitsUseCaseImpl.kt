@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.domain.usecasesimpl.settings
+package com.maruchin.medihelper.domain.usecasesimpl.saved_types
 
 import androidx.lifecycle.LiveData
 import com.maruchin.medihelper.domain.repositories.MedicineUnitRepo

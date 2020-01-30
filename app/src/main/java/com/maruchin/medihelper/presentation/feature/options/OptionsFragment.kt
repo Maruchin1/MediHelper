@@ -10,6 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentOptionsBinding
 import com.maruchin.medihelper.presentation.dialogs.ConfirmDialog
+import com.maruchin.medihelper.presentation.feature.options.reminders.HelpDialog
+import com.maruchin.medihelper.presentation.feature.options.reminders.ReminderModeDialog
 import com.maruchin.medihelper.presentation.feature.options.saved_types.MedicineTypesDialog
 import com.maruchin.medihelper.presentation.feature.options.saved_types.MedicineUnitsDialog
 import com.maruchin.medihelper.presentation.framework.BaseHomeFragment
@@ -40,9 +42,13 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
         }.show(childFragmentManager)
     }
 
-    fun onClickNotificationsHelp() {
+    fun onClickReminderMode() {
+        ReminderModeDialog().show(childFragmentManager)
+    }
+
+    fun onClickRemindersHelp() {
         HelpDialog(
-            helpItems = viewModel.getNotificationsHelp()
+            helpItems = viewModel.getRemindersHelp()
         ).show(childFragmentManager)
     }
 
@@ -74,7 +80,7 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
         setColorPrimaryStatusBas()
         bindLoadingScreen()
         setupFabScrollBehavior()
-        setupMedicinesRemindingOptions()
+        setupRemindersEnabledSwitch()
         observeViewModel()
     }
 
@@ -90,9 +96,9 @@ class OptionsFragment : BaseHomeFragment<FragmentOptionsBinding>(R.layout.fragme
         fab_share.hideOnScroll(scroll_view)
     }
 
-    private fun setupMedicinesRemindingOptions() {
+    private fun setupRemindersEnabledSwitch() {
         switch_notifications_enabled.setOnCheckedChangeListener { _, checked ->
-            viewModel.setNotificationsEnabled(checked)
+            viewModel.setRemindersEnabled(checked)
         }
     }
 

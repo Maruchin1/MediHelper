@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.feature.options
+package com.maruchin.medihelper.presentation.feature.options.account
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,8 +15,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ChangePasswordDialog : BaseBottomDialog<DialogChangePasswordBinding>(R.layout.dialog_change_password) {
     override val TAG: String
         get() = "ChangePasswordDialog"
+    override val viewModel: ChangePasswordViewModel by viewModel()
 
-    private val viewModel: ChangePasswordViewModel by viewModel()
     private val loadingScreen: LoadingScreen by inject()
 
     fun onClickConfirm() {
@@ -25,11 +25,6 @@ class ChangePasswordDialog : BaseBottomDialog<DialogChangePasswordBinding>(R.lay
 
     fun onClickCancel() {
         dismiss()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.bindingViewModel = viewModel
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

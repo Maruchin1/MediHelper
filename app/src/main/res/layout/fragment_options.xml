@@ -103,6 +103,8 @@
 
                         </LinearLayout>
 
+                        <include layout="@layout/line_horizontal" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/bottom_dialog_option_height"
@@ -117,7 +119,7 @@
                             <ImageView
                                 android:layout_width="@dimen/bottom_dialog_option_icon_size"
                                 android:layout_height="@dimen/bottom_dialog_option_icon_size"
-                                android:src="@drawable/round_lock_24"
+                                android:src="@drawable/outline_lock_24"
                                 android:tint="@color/colorBlack" />
 
                             <TextView
@@ -127,6 +129,8 @@
                                 android:text="Zmień hasło"
                                 android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
                         </LinearLayout>
+
+                        <include layout="@layout/line_horizontal" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -186,7 +190,7 @@
                                 <ImageView
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
-                                    android:src="@drawable/round_add_alert_24"
+                                    android:src="@drawable/round_notifications_active_24"
                                     android:tint="@color/colorPrimary" />
 
                                 <TextView
@@ -206,8 +210,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/list_card_layout_margin_horizontal"
                             android:layout_marginEnd="@dimen/list_card_layout_margin_horizontal"
-                            android:checked='@{viewModel.areNotificationEnabled}'
-                            android:text="Powiadomienia" />
+                            android:layout_marginBottom="16dp"
+                            android:checked="@{viewModel.areRemindersEnabled}"
+                            android:text="@{viewModel.remindersEnabledText, default=Włączone}" />
+
+                        <include layout="@layout/line_horizontal" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -216,7 +223,48 @@
                             android:focusable="true"
                             android:foreground="?selectableItemBackground"
                             android:gravity="center_vertical"
-                            android:onClick="@{() -> handler.onClickNotificationsHelp()}"
+                            android:onClick="@{() -> handler.onClickReminderMode()}"
+                            android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
+                            android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/bottom_dialog_option_icon_size"
+                                android:layout_height="@dimen/bottom_dialog_option_icon_size"
+                                android:src="@drawable/outline_notifications_24"
+                                android:tint="@color/colorBlack" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Sposób przypominania"
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text='@{viewModel.reminderMode, default="Powiadomienia"}'
+                                    android:textAppearance="@style/TextAppearance.MediHelper.Body2"
+                                    android:textColor="@color/colorAccent" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <include layout="@layout/line_horizontal" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/bottom_dialog_option_height"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:onClick="@{() -> handler.onClickRemindersHelp()}"
                             android:paddingStart="@dimen/bottom_dialog_option_padding_horizontal"
                             android:paddingEnd="@dimen/bottom_dialog_option_padding_horizontal">
 
@@ -241,10 +289,10 @@
                     style="@style/Widget.MediHelper.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:layout_marginStart="@dimen/list_card_margin_horizontal"
                     android:layout_marginTop="@dimen/list_card_margin_top"
-                    android:layout_marginEnd="@dimen/list_card_margin_horizontal">
+                    android:layout_marginEnd="@dimen/list_card_margin_horizontal"
+                    android:layout_marginBottom="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -296,7 +344,7 @@
                             <ImageView
                                 android:layout_width="@dimen/bottom_dialog_option_icon_size"
                                 android:layout_height="@dimen/bottom_dialog_option_icon_size"
-                                android:src="@drawable/baseline_label_24"
+                                android:src="@drawable/outline_label_24"
                                 android:tint="@color/colorBlack" />
 
                             <TextView
@@ -306,6 +354,8 @@
                                 android:text="Rodzaje leku"
                                 android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
                         </LinearLayout>
+
+                        <include layout="@layout/line_horizontal" />
 
                         <LinearLayout
                             android:layout_width="match_parent"

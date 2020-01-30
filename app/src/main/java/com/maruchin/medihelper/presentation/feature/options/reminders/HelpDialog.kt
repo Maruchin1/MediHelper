@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.feature.options
+package com.maruchin.medihelper.presentation.feature.options.reminders
 
 import android.os.Bundle
 import android.view.View

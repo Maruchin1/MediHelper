@@ -2,7 +2,7 @@ package com.maruchin.medihelper.domain.usecases.settings
 
 import androidx.lifecycle.LiveData
 
-interface AreLiveNotificationsEnabledUseCase {
+interface AreLiveRemindersEnabledUseCase {
 
     suspend fun execute(): LiveData<Boolean>
 }

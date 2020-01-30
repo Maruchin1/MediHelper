@@ -2,13 +2,13 @@ package com.maruchin.medihelper.domain.usecasesimpl.settings
 
 import androidx.lifecycle.LiveData
 import com.maruchin.medihelper.domain.repositories.SettingsRepo
-import com.maruchin.medihelper.domain.usecases.settings.AreLiveNotificationsEnabledUseCase
+import com.maruchin.medihelper.domain.usecases.settings.AreLiveRemindersEnabledUseCase
 
-class AreLiveNotificationsEnabledUseCaseImpl(
+class AreLiveRemindersEnabledUseCaseImpl(
     private val settingsRepo: SettingsRepo
-) : AreLiveNotificationsEnabledUseCase {
+) : AreLiveRemindersEnabledUseCase {
 
     override suspend fun execute(): LiveData<Boolean> {
-        return settingsRepo.areLiveNotificationsEnabled()
+        return settingsRepo.areLiveRemindersEnabled()
     }
 }

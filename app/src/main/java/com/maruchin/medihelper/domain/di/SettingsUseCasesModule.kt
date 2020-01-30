@@ -1,56 +1,40 @@
 package com.maruchin.medihelper.domain.di
 
-import com.maruchin.medihelper.domain.usecases.saved_types.*
 import com.maruchin.medihelper.domain.usecases.settings.*
 import com.maruchin.medihelper.domain.usecasesimpl.settings.*
 import org.koin.dsl.module
 
 val settingsUseCasesModule = module {
     factory {
-        AreNotificationsEnabledUseCaseImpl(
+        AreRemindersEnabledUseCaseImpl(
             settingsRepo = get()
-        ) as AreNotificationsEnabledUseCase
+        ) as AreRemindersEnabledUseCase
 
     }
     factory {
-        AreLiveNotificationsEnabledUseCaseImpl(
+        AreLiveRemindersEnabledUseCaseImpl(
             settingsRepo = get()
-        ) as AreLiveNotificationsEnabledUseCase
+        ) as AreLiveRemindersEnabledUseCase
     }
     factory {
-        SetNotificationsEnabledUseCaseImpl(
+        SetRemindersEnabledUseCaseImpl(
             settingsRepo = get(),
             deviceReminder = get()
-        ) as SetNotificationsEnabledUseCase
+        ) as SetRemindersEnabledUseCase
     }
     factory {
-        GetLiveMedicineUnitsUseCaseImpl(
-            medicineUnitRepo = get()
-        ) as GetLiveMedicineUnitsUseCase
+        GetReminderModeUseCaseImpl(
+            settingsRepo = get()
+        ) as GetReminderModeUseCase
     }
     factory {
-        GetLiveMedicineTypesUseCaseImpl(
-            medicineTypeRepo = get()
-        ) as GetLiveMedicineTypesUseCase
+        GetLiveReminderModeUseCaseImpl(
+            settingsRepo = get()
+        ) as GetLiveReminderModeUseCase
     }
     factory {
-        DeleteMedicineTypeUseCaseImpl(
-            medicineTypeRepo = get()
-        ) as DeleteMedicineTypeUseCase
-    }
-    factory {
-        DeleteMedicineUnitUseCaseImpl(
-            medicineUnitRepo = get()
-        ) as DeleteMedicineUnitUseCase
-    }
-    factory {
-        AddMedicineUnitUseCaseImpl(
-            medicineUnitRepo = get()
-        ) as AddMedicineUnitUseCase
-    }
-    factory {
-        AddMedicineTypeUseCaseImpl(
-            medicineTypeRepo = get()
-        ) as AddMedicineTypeUseCase
+        SetReminderModeUseCaseImpl(
+            settingsRepo = get()
+        ) as SetReminderModeUseCase
     }
 }

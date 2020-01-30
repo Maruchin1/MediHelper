@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.domain.usecasesimpl.settings
+package com.maruchin.medihelper.domain.usecasesimpl.saved_types
 
 import com.maruchin.medihelper.domain.repositories.MedicineUnitRepo
 import com.maruchin.medihelper.domain.usecases.saved_types.AddMedicineUnitUseCase

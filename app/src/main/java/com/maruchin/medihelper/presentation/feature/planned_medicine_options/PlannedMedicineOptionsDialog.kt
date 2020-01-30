@@ -19,9 +19,9 @@ class PlannedMedicineOptionsDialog :
     BaseBottomDialog<DialogPlannedMedicineOptionsBinding>(R.layout.dialog_planned_medicine_options) {
     override val TAG: String
         get() = "PlannedMedicineOptionsDialog"
+    override val viewModel: PlannedMedicineOptionsViewModel by viewModel()
 
     lateinit var plannedMedicineId: String
-    private val viewModel: PlannedMedicineOptionsViewModel by viewModel()
 
     fun onClickChangePlannedMedicineTaken() {
         viewModel.changePlannedMedicineTaken()
@@ -47,11 +47,6 @@ class PlannedMedicineOptionsDialog :
                 this@PlannedMedicineOptionsDialog.dismiss()
             }
         }.show(childFragmentManager)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.bindingViewModel = viewModel
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

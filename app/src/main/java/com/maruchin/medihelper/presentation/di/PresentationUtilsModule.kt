@@ -1,7 +1,7 @@
 package com.maruchin.medihelper.presentation.di
 
-import com.maruchin.medihelper.presentation.feature.options.AlarmsHelp
-import com.maruchin.medihelper.presentation.feature.options.NotificationsHelp
+import com.maruchin.medihelper.presentation.feature.options.reminders.AlarmsHelp
+import com.maruchin.medihelper.presentation.feature.options.reminders.RemindersHelp
 import com.maruchin.medihelper.presentation.utils.*
 import org.koin.dsl.module
 
@@ -21,7 +21,7 @@ val presentationUtilsModule = module {
         )
     }
     factory {
-        NotificationsHelp(
+        RemindersHelp(
             context = get()
         )
     }

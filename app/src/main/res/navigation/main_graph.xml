@@ -180,7 +180,7 @@
     </fragment>
     <dialog
         android:id="@+id/changePasswordDialog"
-        android:name="com.maruchin.medihelper.presentation.feature.options.ChangePasswordDialog"
+        android:name="com.maruchin.medihelper.presentation.feature.options.account.ChangePasswordDialog"
         tools:layout="@layout/dialog_change_password" />
     <fragment
         android:id="@+id/doctorsFragment"

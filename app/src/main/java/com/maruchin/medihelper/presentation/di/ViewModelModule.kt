@@ -12,9 +12,10 @@ import com.maruchin.medihelper.presentation.feature.profiles_menu.ProfileViewMod
 import com.maruchin.medihelper.presentation.feature.medicine_details.*
 import com.maruchin.medihelper.presentation.feature.add_edit_plan.AddEditPlanViewModel
 import com.maruchin.medihelper.presentation.feature.plan_details.PlanDetailsViewModel
-import com.maruchin.medihelper.presentation.feature.options.ChangePasswordViewModel
+import com.maruchin.medihelper.presentation.feature.options.account.ChangePasswordViewModel
 import com.maruchin.medihelper.presentation.feature.options.OptionsViewModel
 import com.maruchin.medihelper.presentation.feature.add_edit_profile.AddEditProfileViewModel
+import com.maruchin.medihelper.presentation.feature.options.reminders.ReminderModeViewModel
 import com.maruchin.medihelper.presentation.feature.options.saved_types.MedicineTypesViewModel
 import com.maruchin.medihelper.presentation.feature.options.saved_types.MedicineUnitsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -118,11 +119,11 @@ val viewModelModule = module {
     viewModel {
         OptionsViewModel(
             getCurrUserEmailUseCase = get(),
-            areLiveNotificationsEnabledUseCase = get(),
-            setNotificationsEnabledUseCase = get(),
+            areLiveRemindersEnabledUseCase = get(),
+            setRemindersEnabledUseCase = get(),
             signOutUseCase = get(),
-            notificationsHelp = get(),
-            alarmsHelp = get()
+            getLiveReminderModeUseCase = get(),
+            remindersHelp = get()
         )
     }
     viewModel {
@@ -147,6 +148,12 @@ val viewModelModule = module {
             getLiveMedicineUnitsUseCase = get(),
             deleteMedicineUnitUseCase = get(),
             addMedicineUnitUseCase = get()
+        )
+    }
+    viewModel {
+        ReminderModeViewModel(
+            getReminderModeUseCase = get(),
+            setReminderModeUseCase = get()
         )
     }
 }

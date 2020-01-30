@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.feature.options
+package com.maruchin.medihelper.presentation.feature.options.reminders
 
 import android.content.Context
 import android.content.res.Resources
@@ -43,7 +43,11 @@ abstract class HelpGenerator(
         val items = mutableListOf<HelpItemData>()
         for ((index, header) in headers.withIndex()) {
             val body = bodiesIds[index]
-            val singleItem = HelpItemData(header, body)
+            val singleItem =
+                HelpItemData(
+                    header,
+                    body
+                )
             items.add(singleItem)
         }
         return items

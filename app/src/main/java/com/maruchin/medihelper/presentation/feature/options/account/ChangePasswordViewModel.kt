@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.feature.options
+package com.maruchin.medihelper.presentation.feature.options.account
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

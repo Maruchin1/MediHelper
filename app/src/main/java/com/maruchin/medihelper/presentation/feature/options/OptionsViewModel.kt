@@ -1,25 +1,30 @@
 package com.maruchin.medihelper.presentation.feature.options
 
 import androidx.lifecycle.*
-import com.maruchin.medihelper.domain.usecases.settings.AreLiveNotificationsEnabledUseCase
-import com.maruchin.medihelper.domain.usecases.settings.SetNotificationsEnabledUseCase
+import com.maruchin.medihelper.domain.entities.ReminderMode
+import com.maruchin.medihelper.domain.usecases.settings.AreLiveRemindersEnabledUseCase
+import com.maruchin.medihelper.domain.usecases.settings.GetLiveReminderModeUseCase
+import com.maruchin.medihelper.domain.usecases.settings.SetRemindersEnabledUseCase
 import com.maruchin.medihelper.domain.usecases.user.GetCurrUserEmailUseCase
 import com.maruchin.medihelper.domain.usecases.user.SignOutUseCase
+import com.maruchin.medihelper.presentation.feature.options.reminders.HelpItemData
+import com.maruchin.medihelper.presentation.feature.options.reminders.RemindersHelp
 import com.maruchin.medihelper.presentation.framework.ActionLiveData
 import kotlinx.coroutines.launch
 
 class OptionsViewModel(
     private val getCurrUserEmailUseCase: GetCurrUserEmailUseCase,
-    private val areLiveNotificationsEnabledUseCase: AreLiveNotificationsEnabledUseCase,
-    private val setNotificationsEnabledUseCase: SetNotificationsEnabledUseCase,
+    private val areLiveRemindersEnabledUseCase: AreLiveRemindersEnabledUseCase,
+    private val setRemindersEnabledUseCase: SetRemindersEnabledUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val notificationsHelp: NotificationsHelp,
-    private val alarmsHelp: AlarmsHelp
+    private val getLiveReminderModeUseCase: GetLiveReminderModeUseCase,
+    private val remindersHelp: RemindersHelp
 ) : ViewModel() {
 
     val userEmail: LiveData<String>
-    val areNotificationEnabled: LiveData<Boolean>
-    val areAlarmsEnabled: LiveData<Boolean>
+    val areRemindersEnabled: LiveData<Boolean>
+    val remindersEnabledText: LiveData<String>
+    val reminderMode: LiveData<String>
 
     val loadingInProgress: LiveData<Boolean>
         get() = _loadingInProgress
@@ -31,8 +36,9 @@ class OptionsViewModel(
 
     init {
         userEmail = getCurrUserEmail()
-        areNotificationEnabled = getLiveAreNotificationsEnabled()
-        areAlarmsEnabled = getLiveAreAlarmsEnabled()
+        areRemindersEnabled = getLiveAreRemindersEnabled()
+        remindersEnabledText = getLiveRemindersEnabledText()
+        reminderMode = getLiveReminderModeText()
     }
 
     fun signOutUser() = viewModelScope.launch {
@@ -42,20 +48,12 @@ class OptionsViewModel(
         _actionSignOutSuccessful.sendAction()
     }
 
-    fun setNotificationsEnabled(enabled: Boolean) = viewModelScope.launch {
-        setNotificationsEnabledUseCase.execute(enabled)
+    fun setRemindersEnabled(enabled: Boolean) = viewModelScope.launch {
+        setRemindersEnabledUseCase.execute(enabled)
     }
 
-    fun setAlarmsEnabled(enabled: Boolean) = viewModelScope.launch {
-        //todo execute appropriate UseCase to set value
-    }
-
-    fun getNotificationsHelp(): List<HelpItemData> {
-        return notificationsHelp.generate()
-    }
-
-    fun getAlarmsHelp(): List<HelpItemData> {
-        return alarmsHelp.generate()
+    fun getRemindersHelp(): List<HelpItemData> {
+        return remindersHelp.generate()
     }
 
     private fun getCurrUserEmail() = liveData {
@@ -63,13 +61,33 @@ class OptionsViewModel(
         emit(value)
     }
 
-    private fun getLiveAreNotificationsEnabled() = liveData {
-        val source = areLiveNotificationsEnabledUseCase.execute()
+    private fun getLiveAreRemindersEnabled() = liveData {
+        val source = areLiveRemindersEnabledUseCase.execute()
         emitSource(source)
     }
 
-    private fun getLiveAreAlarmsEnabled() = liveData {
-        //todo execute appropriate UseCase and emit value
-        emit(false)
+    private fun getLiveRemindersEnabledText(): LiveData<String> {
+        return Transformations.map(areRemindersEnabled) { enabled ->
+            if (enabled) {
+                "Przypominanie włączone"
+            } else {
+                "Przypominanie wyłączone"
+            }
+        }
+    }
+
+    private fun getLiveReminderModeText(): LiveData<String> = liveData {
+        val source = getLiveReminderModeUseCase.execute()
+        val textLive = Transformations.map(source) { mode ->
+            getReminderModeText(mode)
+        }
+        emitSource(textLive)
+    }
+
+    private fun getReminderModeText(mode: ReminderMode): String {
+        return when (mode) {
+            ReminderMode.NOTIFICATIONS -> "Powiadomienia"
+            ReminderMode.ALARMS -> "Alarmy z dźwiękiem"
+        }
     }
 }

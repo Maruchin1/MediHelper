@@ -20,8 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_profile, collapsing = true) {
     override val TAG: String
         get() = "ProfileDialog"
-
-    private val viewModel: ProfileViewModel by viewModel()
+    override val viewModel: ProfileViewModel by viewModel()
 
     fun onClickAddProfile() {
         val direction = CalendarFragmentDirections.toAddEditProfileFragment(editProfileId = null)
@@ -56,21 +55,12 @@ class ProfileDialog : BaseBottomDialog<DialogProfileBinding>(R.layout.dialog_pro
         requireParentFragment().findNavController().navigate(direction)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        setBindingViewModel()
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbarMenu()
         setupProfileRecyclerView()
         setupMedicinesPlansRecyclerView()
         observeViewModel()
-    }
-
-    private fun setBindingViewModel() {
-        super.bindingViewModel = viewModel
     }
 
     private fun setupToolbarMenu() {

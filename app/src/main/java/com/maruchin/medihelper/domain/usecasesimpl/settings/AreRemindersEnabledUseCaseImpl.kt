@@ -1,13 +1,13 @@
 package com.maruchin.medihelper.domain.usecasesimpl.settings
 
 import com.maruchin.medihelper.domain.repositories.SettingsRepo
-import com.maruchin.medihelper.domain.usecases.settings.AreNotificationsEnabledUseCase
+import com.maruchin.medihelper.domain.usecases.settings.AreRemindersEnabledUseCase
 
-class AreNotificationsEnabledUseCaseImpl(
+class AreRemindersEnabledUseCaseImpl(
     private val settingsRepo: SettingsRepo
-) : AreNotificationsEnabledUseCase {
+) : AreRemindersEnabledUseCase {
 
     override suspend fun execute(): Boolean {
-        return settingsRepo.areNotificationsEnabled()
+        return settingsRepo.areRemindersEnabled()
     }
 }

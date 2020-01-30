@@ -1,6 +1,6 @@
 package com.maruchin.medihelper.domain.usecases.settings
 
-interface AreNotificationsEnabledUseCase {
+interface AreRemindersEnabledUseCase {
 
     suspend fun execute(): Boolean
 }

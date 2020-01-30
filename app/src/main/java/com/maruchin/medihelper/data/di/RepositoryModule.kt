@@ -38,7 +38,7 @@ val repositoryModule = module {
     }
     single {
         SettingsRepoImpl(
-            settingsSharedPref = get()
+            context = get()
         ) as SettingsRepo
     }
     single {

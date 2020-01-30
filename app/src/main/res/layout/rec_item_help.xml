@@ -5,11 +5,11 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.options.HelpDialog" />
+            type="com.maruchin.medihelper.presentation.feature.options.reminders.HelpDialog" />
 
         <variable
             name="displayData"
-            type="com.maruchin.medihelper.presentation.feature.options.HelpItemData" />
+            type="com.maruchin.medihelper.presentation.feature.options.reminders.HelpItemData" />
     </data>
 
     <LinearLayout

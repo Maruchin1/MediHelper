@@ -29,7 +29,8 @@ class MainApplication : Application() {
             profileUseCaseModule,
             planUseCaseModule,
             plannedMedicineUseCaseModule,
-            settingsUseCasesModule
+            settingsUseCasesModule,
+            savedTypesUseCaseModule
         )
     }
     private val dataModules: List<Module> by lazy {

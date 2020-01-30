@@ -21,18 +21,13 @@ class MedicineInfoDialog :
     BaseBottomDialog<DialogMedicineInfoBinding>(R.layout.dialog_medicine_info, collapsing = true) {
     override val TAG: String
         get() = "MedicineInfoDialog"
+    override val viewModel: MedicineInfoViewModel by viewModel()
 
-    private val viewModel: MedicineInfoViewModel by viewModel()
     private val args: MedicineInfoDialogArgs by navArgs()
 
     fun onClickSelectSearchResult(urlString: String) {
         changeAdapterToMedicineInfo()
         viewModel.getMedicineInfo(urlString)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.bindingViewModel = viewModel
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

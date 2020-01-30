@@ -26,12 +26,12 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
     private val collapsing: Boolean = false
 ) : BottomSheetDialogFragment() {
     abstract val TAG: String
+    protected open val viewModel: ViewModel? = null
 
     val colorPrimary: LiveData<String>
         get() = _colorPrimary
     protected val mainActivity: MainActivity
         get() = requireActivity() as MainActivity
-    protected var bindingViewModel: ViewModel? = null
     private val _colorPrimary = MutableLiveData<String>(ProfileColor.MAIN.colorString)
 
     fun show(fragmentManager: FragmentManager) = show(fragmentManager, TAG)
@@ -45,7 +45,7 @@ abstract class BaseBottomDialog<T : ViewDataBinding>(
         return binding.apply {
             setVariable(BR.handler, this@BaseBottomDialog)
             lifecycleOwner = viewLifecycleOwner
-            setVariable(BR.viewModel, bindingViewModel)
+            setVariable(BR.viewModel, viewModel)
         }.root
     }
 

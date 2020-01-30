@@ -6,7 +6,6 @@ import com.maruchin.medihelper.domain.entities.AppDate
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogSelectDateBinding
 import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
-import com.maruchin.medihelper.presentation.utils.SelectedProfile
 import kotlinx.android.synthetic.main.dialog_select_date.*
 
 

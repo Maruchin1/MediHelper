@@ -21,17 +21,12 @@ abstract class SavedTypesDialog :
     override val TAG: String
         get() = "SavedTypesDialog"
 
-    protected abstract val viewModel: SavedTypesViewModel
+    abstract override val viewModel: SavedTypesViewModel
 
     fun onClickDeleteType(type: String) {
         viewModel.deleteType(type)
         showTypeDeletedSnackbar(type)
         dismiss()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.bindingViewModel = viewModel
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
