@@ -1,6 +1,6 @@
 package com.maruchin.medihelper.domain.usecasesimpl.plannedmedicines
 
-import com.maruchin.medihelper.domain.device.DeviceNotifications
+import com.maruchin.medihelper.domain.device.DeviceReminder
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.entities.Profile
@@ -16,7 +16,7 @@ class CheckNotTakenMedicinesUseCaseImpl(
     private val plannedMedicineRepo: PlannedMedicineRepo,
     private val medicineRepo: MedicineRepo,
     private val profileRepo: ProfileRepo,
-    private val notifications: DeviceNotifications
+    private val reminder: DeviceReminder
 ) : CheckNotTakenMedicinesUseCase {
 
     companion object {
@@ -34,7 +34,7 @@ class CheckNotTakenMedicinesUseCaseImpl(
         val medicine = getMedicine(plannedMedicine.medicineId)
         val profile = getProfile(plannedMedicine.profileId)
         val notifData = PlannedMedicineNotifData(plannedMedicine, profile, medicine)
-        notifications.launchNotTakenMedicineNotification(notifData)
+        reminder.launchNotTakenMedicineNotification(notifData)
     }
 
     private suspend fun getMedicine(medicineId: String): Medicine {

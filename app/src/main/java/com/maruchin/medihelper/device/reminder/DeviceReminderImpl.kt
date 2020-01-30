@@ -1,19 +1,25 @@
-package com.maruchin.medihelper.device.notifications
+package com.maruchin.medihelper.device.reminder
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.work.*
 import com.google.gson.Gson
-import com.maruchin.medihelper.domain.device.DeviceNotifications
+import com.maruchin.medihelper.device.reminder.alarm.AlarmActivity
+import com.maruchin.medihelper.device.reminder.notifications.NotTakenMedicineNotification
+import com.maruchin.medihelper.device.reminder.notifications.PlannedMedicineNotification
+import com.maruchin.medihelper.device.reminder.workers.CheckPlannedMedicinesWorker
+import com.maruchin.medihelper.device.reminder.workers.NotifyAboutPlannedMedicineWorker
+import com.maruchin.medihelper.domain.device.DeviceReminder
 import com.maruchin.medihelper.domain.model.PlannedMedicineNotifData
 import com.maruchin.medihelper.domain.repositories.SettingsRepo
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class DeviceNotificationsImpl(
+class DeviceReminderImpl(
     private val context: Context,
     private val settingsRepo: SettingsRepo
-) : DeviceNotifications {
+) : DeviceReminder {
     private val TAG: String
         get() = "DeviceNotifications"
 
@@ -24,7 +30,7 @@ class DeviceNotificationsImpl(
 
     private val workManager: WorkManager by lazy { WorkManager.getInstance(context) }
 
-    override suspend fun setupPlannedMedicinesChecking() {
+    override suspend fun setupPlannedMedicinesReminders() {
         //todo executing UseCase may be a cleaner solution than reference to repository
         val areNotificationsEnabled = settingsRepo.areNotificationsEnabled()
         if (areNotificationsEnabled) {
@@ -34,17 +40,7 @@ class DeviceNotificationsImpl(
         }
     }
 
-    override suspend fun launchNotTakenMedicineNotification(data: PlannedMedicineNotifData) {
-        val notification = NotTakenMedicineNotification(context, data)
-        notification.launch()
-    }
-
-    override suspend fun launchPlannedMedicineNotification(data: PlannedMedicineNotifData) {
-        val notification = PlannedMedicineNotification(context, data)
-        notification.launch()
-    }
-
-    override suspend fun schedulePlannedMedicineNotification(data: PlannedMedicineNotifData) {
+    override suspend fun schedulePlannedMedicineReminder(data: PlannedMedicineNotifData) {
         val delay = calculateTimeToNotif(data)
         val dataJson = Gson().toJson(data)
         val inputData = workDataOf(
@@ -59,6 +55,30 @@ class DeviceNotificationsImpl(
             ExistingWorkPolicy.REPLACE,
             work
         )
+    }
+
+    override suspend fun launchNotTakenMedicineNotification(data: PlannedMedicineNotifData) {
+        val notification =
+            NotTakenMedicineNotification(
+                context,
+                data
+            )
+        notification.launch()
+    }
+
+    override suspend fun launchPlannedMedicineNotification(data: PlannedMedicineNotifData) {
+        val notification =
+            PlannedMedicineNotification(
+                context,
+                data
+            )
+        notification.launch()
+    }
+
+    override suspend fun launchPlannedMedicineAlarm(dataJson: String) {
+        val intent = Intent(context, AlarmActivity::class.java)
+        intent.putExtra(AlarmActivity.EXTRA_DATA, dataJson)
+        context.startActivity(intent)
     }
 
     private fun enablePlannedMedicineCheck() {
@@ -87,7 +107,8 @@ class DeviceNotificationsImpl(
                 data.plannedDate.month - 1,
                 data.plannedDate.day,
                 data.plannedTime.hour,
-                data.plannedTime.minute
+                data.plannedTime.minute,
+                0
             )
         }
         var millisDiff = plannedCalendar.timeInMillis - currCalendar.timeInMillis

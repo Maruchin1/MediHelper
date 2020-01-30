@@ -5,7 +5,7 @@ import android.app.Activity
 import android.app.Application
 import com.maruchin.medihelper.data.di.*
 import com.maruchin.medihelper.device.di.*
-import com.maruchin.medihelper.domain.device.DeviceNotifications
+import com.maruchin.medihelper.domain.device.DeviceReminder
 import com.maruchin.medihelper.domain.di.*
 import com.maruchin.medihelper.presentation.di.*
 import kotlinx.coroutines.GlobalScope
@@ -55,7 +55,7 @@ class MainApplication : Application() {
             viewModelModule
         )
     }
-    private val notifications: DeviceNotifications by inject()
+    private val reminder: DeviceReminder by inject()
 
     fun reloadDependencies() {
         stopKoin()
@@ -75,7 +75,7 @@ class MainApplication : Application() {
             modules(domainModules + dataModules + deviceModules + presentationModules)
         }
         GlobalScope.launch {
-            notifications.setupPlannedMedicinesChecking()
+            reminder.setupPlannedMedicinesReminders()
         }
     }
 }

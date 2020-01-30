@@ -39,7 +39,7 @@ val plannedMedicineUseCaseModule = module {
             plannedMedicineRepo = get(),
             medicineRepo = get(),
             profileRepo = get(),
-            notifications = get()
+            reminder = get()
         ) as CheckNotTakenMedicinesUseCase
     }
     factory {
@@ -52,7 +52,7 @@ val plannedMedicineUseCaseModule = module {
             plannedMedicineRepo = get(),
             medicineRepo = get(),
             profileRepo = get(),
-            notifications = get()
+            reminder = get()
         ) as CheckIncomingPlannedMedicinesUseCase
     }
 }

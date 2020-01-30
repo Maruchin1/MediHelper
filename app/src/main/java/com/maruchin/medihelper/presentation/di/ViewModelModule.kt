@@ -1,7 +1,7 @@
 package com.maruchin.medihelper.presentation.di
 
 import com.maruchin.medihelper.presentation.feature.add_edit_medicine.AddEditMedicineViewModel
-import com.maruchin.medihelper.presentation.feature.alarm.AlarmViewModel
+import com.maruchin.medihelper.device.reminder.alarm.AlarmViewModel
 import com.maruchin.medihelper.presentation.feature.authentication.LoginViewModel
 import com.maruchin.medihelper.presentation.feature.authentication.RegisterViewModel
 import com.maruchin.medihelper.presentation.feature.calendar.CalendarDayViewModel
@@ -75,8 +75,7 @@ val viewModelModule = module {
     }
     viewModel {
         AlarmViewModel(
-            setPlannedMedicineTakenUseCase = get(),
-            changePlannedMedicineTimeUseCase = get()
+            setPlannedMedicineTakenUseCase = get()
         )
     }
     viewModel {

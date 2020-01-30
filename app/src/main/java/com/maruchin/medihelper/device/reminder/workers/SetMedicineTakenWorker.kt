@@ -1,8 +1,9 @@
-package com.maruchin.medihelper.device.notifications
+package com.maruchin.medihelper.device.reminder.workers
 
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.maruchin.medihelper.device.reminder.notifications.NotTakenMedicineNotification
 import com.maruchin.medihelper.domain.usecases.plannedmedicines.SetPlannedMedicineTakenUseCase
 import org.koin.core.KoinComponent
 import org.koin.core.inject

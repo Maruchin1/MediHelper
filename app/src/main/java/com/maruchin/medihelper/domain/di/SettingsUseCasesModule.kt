@@ -20,7 +20,7 @@ val settingsUseCasesModule = module {
     factory {
         SetNotificationsEnabledUseCaseImpl(
             settingsRepo = get(),
-            deviceNotifications = get()
+            deviceReminder = get()
         ) as SetNotificationsEnabledUseCase
     }
     factory {

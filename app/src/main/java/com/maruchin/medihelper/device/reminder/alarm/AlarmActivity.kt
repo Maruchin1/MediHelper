@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.presentation.feature.alarm
+package com.maruchin.medihelper.device.reminder.alarm
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.ActivityAlarmBinding
 import com.maruchin.medihelper.domain.device.DeviceRingtone
-import com.maruchin.medihelper.domain.model.PlannedMedicineNotifData
 import kotlinx.android.synthetic.main.activity_alarm.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,7 +24,7 @@ class AlarmActivity : AppCompatActivity() {
     private val TAG = "AlarmActivity"
 
     companion object {
-        const val EXTRA_PLANNED_MEDICINE_ID = "extra-planned-medicine-id"
+        const val EXTRA_DATA = "extra-data"
         private const val REVEAL_ANIM_TIME = 500L
         private const val FINISH_ACTIVITY_DELAY = 1000L
     }
@@ -37,43 +36,33 @@ class AlarmActivity : AppCompatActivity() {
         viewModel.setPlannedMedicineTaken(plannedMedicineId)
         circularRevealView(txv_medicine_taken)
         delayedActivityFinish()
+        deviceRingtone.stopAlarmRingtone()
     }
 
     fun onClickMedicineNotTaken() {
         circularRevealView(txv_medicine_not_taken)
         delayedActivityFinish()
-    }
-
-    fun onClickChangeTime() {
-//        SelectTimeDialog().apply {
-//            defaultTime = viewModel.plannedTimeLive.value
-//            setOnTimeSelectedListener {
-//                viewModel.changedTimeLive.value = it
-//                circularRevealView(this@AlarmActivity.lay_time_changed)
-//                delayedActivityFinish(FINISH_ACTIVITY_DELAY + REVEAL_ANIM_TIME)
-//            }
-//            viewModel.personColorLive.value?.let { setColorPrimary(it) }
-//        }.show(supportFragmentManager)
+        deviceRingtone.stopAlarmRingtone()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil.setContentView<ActivityAlarmBinding>(this, R.layout.activity_alarm)
-        binding.handler = this
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
-
+        bindLayout()
         setupAlarmActivityFlags()
-
-        intent.extras?.getString(EXTRA_PLANNED_MEDICINE_ID)?.let { plannedMedicineId ->
-            viewModel.initData(plannedMedicineId)
-        }
+        loadInputData()
         deviceRingtone.playAlarmRingtone()
     }
 
     override fun onDestroy() {
         deviceRingtone.stopAlarmRingtone()
         super.onDestroy()
+    }
+
+    private fun bindLayout() {
+        val binding = DataBindingUtil.setContentView<ActivityAlarmBinding>(this, R.layout.activity_alarm)
+        binding.handler = this
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
     }
 
     private fun setupAlarmActivityFlags() {
@@ -86,6 +75,13 @@ class AlarmActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.colorTransparent)
     }
 
+    private fun loadInputData() {
+        val data = intent.extras?.getString(EXTRA_DATA)
+        if (data != null) {
+            viewModel.initData(data)
+        }
+    }
+
     private fun circularRevealView(revealView: View) {
         val startX = revealView.width / 2
         val startY = revealView.height
@@ -93,7 +89,8 @@ class AlarmActivity : AppCompatActivity() {
         val endRadius = hypot(startX.toDouble(), startY.toDouble()).toFloat()
 
         val anim = ViewAnimationUtils.createCircularReveal(revealView, startX, startY, 0f, endRadius).apply {
-            duration = REVEAL_ANIM_TIME
+            duration =
+                REVEAL_ANIM_TIME
             interpolator = FastOutSlowInInterpolator()
         }
         revealView.visibility = View.VISIBLE

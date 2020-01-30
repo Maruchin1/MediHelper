@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.device.notifications
+package com.maruchin.medihelper.device.reminder.notifications
 
 import android.app.Notification
 import android.app.PendingIntent
@@ -12,13 +12,13 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.domain.model.PlannedMedicineNotifData
 import com.maruchin.medihelper.presentation.LauncherActivity
 
-class PlannedMedicineNotification(
+class NotTakenMedicineNotification(
     private val context: Context,
     private val data: PlannedMedicineNotifData
 ) : BaseNotification(context) {
 
     companion object {
-        private const val NOTIFICATION_ID = 1
+        private const val NOTIFICATION_ID = 0
         private const val REQUEST_CODE_MEDICINE_TAKEN = 1
         private const val REQUEST_CODE_OPEN_APP = 2
 
@@ -32,20 +32,21 @@ class PlannedMedicineNotification(
     }
 
     override val channelId: String
-        get() = "planned-medicine-notification-channel-id"
+        get() = "not-taken-medicine-notification-channel-id"
     override val channelName: String
-        get() = "planned-medicine-notification-channel-name"
+        get() = "not-taken-medicine-notification-channel-name"
 
     override fun launch() {
         val notification = buildNotification()
         val manager = NotificationManagerCompat.from(context)
-        manager.notify(data.plannedMedicineId, NOTIFICATION_ID, notification)
+        manager.notify(data.plannedMedicineId,
+            NOTIFICATION_ID, notification)
     }
 
     private fun buildNotification(): Notification {
         return NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.mipmap.ic_launcher_round)
-            .setContentTitle(getTitleText())
+            .setContentTitle("${data.profileName} - nieprzyjęty lek ${data.medicineName}")
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(getMessageText())
             )
@@ -64,17 +65,14 @@ class PlannedMedicineNotification(
             .build()
     }
 
-    private fun getTitleText(): String {
-        return "${data.profileName} - pora przyjąć lek ${data.medicineName}"
-    }
-
     private fun getMessageText(): String {
         return "${data.doseSize} ${data.medicineUnit} zaplanowano na godzinę ${data.plannedTime}"
     }
 
     private fun getMedicineTakenPendingIntent(plannedMedicineId: String): PendingIntent {
         val intent = Intent(context, NotificationActionReceiver::class.java).apply {
-            action = NotificationActionReceiver.ACTION_SET_MEDICINE_TAKEN
+            action =
+                NotificationActionReceiver.ACTION_SET_MEDICINE_TAKEN
             data = plannedMedicineId.toUri()
         }
         return PendingIntent.getBroadcast(

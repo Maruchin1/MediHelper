@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.device.notifications
+package com.maruchin.medihelper.device.reminder.notifications
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.maruchin.medihelper.device.reminder.workers.SetMedicineTakenWorker
 
 class NotificationActionReceiver : BroadcastReceiver() {
 

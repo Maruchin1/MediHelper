@@ -2,10 +2,11 @@ package com.maruchin.medihelper.domain.device
 
 import com.maruchin.medihelper.domain.model.PlannedMedicineNotifData
 
-interface DeviceNotifications {
+interface DeviceReminder {
 
-    suspend fun setupPlannedMedicinesChecking()
+    suspend fun setupPlannedMedicinesReminders()
+    suspend fun schedulePlannedMedicineReminder(data: PlannedMedicineNotifData)
     suspend fun launchNotTakenMedicineNotification(data: PlannedMedicineNotifData)
     suspend fun launchPlannedMedicineNotification(data: PlannedMedicineNotifData)
-    suspend fun schedulePlannedMedicineNotification(data: PlannedMedicineNotifData)
+    suspend fun launchPlannedMedicineAlarm(dataJson: String)
 }

@@ -35,7 +35,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.maruchin.medihelper.presentation.feature.alarm.AlarmActivity"
+            android:name="com.maruchin.medihelper.device.reminder.alarm.AlarmActivity"
             android:screenOrientation="portrait"
             android:showOnLockScreen="true" />
         <activity
@@ -53,7 +53,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
         <receiver
-            android:name=".device.notifications.NotificationActionReceiver"
+            android:name=".device.reminder.notifications.NotificationActionReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true">

@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.device.notifications
+package com.maruchin.medihelper.device.reminder.notifications
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

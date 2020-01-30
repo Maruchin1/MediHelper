@@ -1,4 +1,4 @@
-package com.maruchin.medihelper.device.notifications
+package com.maruchin.medihelper.device.reminder.workers
 
 import android.content.Context
 import androidx.work.CoroutineWorker

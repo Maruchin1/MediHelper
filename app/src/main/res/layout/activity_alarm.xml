@@ -7,11 +7,11 @@
 
         <variable
             name="handler"
-            type="com.maruchin.medihelper.presentation.feature.alarm.AlarmActivity" />
+            type="com.maruchin.medihelper.device.reminder.alarm.AlarmActivity" />
 
         <variable
             name="viewModel"
-            type="com.maruchin.medihelper.presentation.feature.alarm.AlarmViewModel" />
+            type="com.maruchin.medihelper.device.reminder.alarm.AlarmViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -79,19 +79,8 @@
                     android:textColor="@color/colorWhite" />
             </LinearLayout>
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?selectableItemBackgroundBorderless"
-                android:onClick="@{() -> handler.onClickChangeTime()}"
-                android:src="@drawable/round_access_time_white_48"
-                app:layout_constraintBottom_toBottomOf="@id/btn_take_medicine"
-                app:layout_constraintEnd_toStartOf="@id/btn_take_medicine"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/btn_take_medicine" />
-
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_take_medicine"
+                android:id="@+id/btn_taken"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginBottom="32dp"
@@ -102,7 +91,7 @@
                 app:cardCornerRadius="32dp"
                 app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_not_taken"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <ImageView
@@ -113,16 +102,35 @@
                     android:tint='@{viewModel.data.profileColor, default="@color/colorPrimary"}' />
             </com.google.android.material.card.MaterialCardView>
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?selectableItemBackgroundBorderless"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_not_taken"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginBottom="32dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
                 android:onClick="@{() -> handler.onClickMedicineNotTaken()}"
-                android:src="@drawable/round_close_white_48"
-                app:layout_constraintBottom_toBottomOf="@id/btn_take_medicine"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_take_medicine"
-                app:layout_constraintTop_toTopOf="@id/btn_take_medicine" />
+                app:layout_constraintStart_toEndOf="@id/btn_taken"
+                app:strokeColor="@color/colorWhite"
+                app:strokeWidth="3dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background='@{viewModel.data.profileColor, default="@color/colorPrimary"}'>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/round_close_white_36" />
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
