@@ -52,4 +52,12 @@ val planUseCaseModule = module {
             deviceCalendar = get()
         ) as GetPlanHistoryUseCase
     }
+    factory {
+        ExtendContinuousPlansUseCaseImpl(
+            planRepo = get(),
+            plannedMedicineRepo = get(),
+            deviceCalendar = get(),
+            plannedMedicineScheduler = get()
+        ) as ExtendContinuousPlansUseCase
+    }
 }

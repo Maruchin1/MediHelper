@@ -17,19 +17,12 @@ class PlannedMedicineScheduler {
                     is IntakeDays.Sequence -> getForSequence(plan)
                     else -> emptyList()
                 }
-                Plan.Type.CONTINUOUS -> {
-                    val tempMedicinePlan = plan.copy(
-                        endDate = plan.startDate.copy().apply {
-                            addDays(CONTINUOUS_DAYS_COUNT)
-                        }
-                    )
-                    when (plan.intakeDays) {
-                        is IntakeDays.Everyday -> getForEveryday(tempMedicinePlan)
-                        is IntakeDays.DaysOfWeek -> getForDaysOfWeek(tempMedicinePlan)
-                        is IntakeDays.Interval -> getForInterval(tempMedicinePlan)
-                        is IntakeDays.Sequence -> getForSequence(tempMedicinePlan)
-                        else -> emptyList()
-                    }
+                Plan.Type.CONTINUOUS -> when (plan.intakeDays) {
+                    is IntakeDays.Everyday -> getForEveryday(plan)
+                    is IntakeDays.DaysOfWeek -> getForDaysOfWeek(plan)
+                    is IntakeDays.Interval -> getForInterval(plan)
+                    is IntakeDays.Sequence -> getForSequence(plan)
+                    else -> emptyList()
                 }
             }
         }
@@ -120,9 +113,5 @@ class PlannedMedicineScheduler {
             )
         }
         return entriesList
-    }
-
-    companion object {
-        private const val CONTINUOUS_DAYS_COUNT = 30
     }
 }

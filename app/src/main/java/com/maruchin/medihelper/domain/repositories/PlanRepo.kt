@@ -8,5 +8,6 @@ interface PlanRepo : BaseEntityRepo<Plan> {
     suspend fun deleteListById(ids: List<String>)
     suspend fun getListByMedicine(medicineId: String): List<Plan>
     suspend fun getListByProfile(profileId: String): List<Plan>
+    suspend fun getListByType(type: Plan.Type): List<Plan>
     suspend fun getListLiveByProfile(profileId: String): LiveData<List<Plan>>
 }

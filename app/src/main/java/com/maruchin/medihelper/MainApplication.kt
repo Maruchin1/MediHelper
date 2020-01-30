@@ -6,6 +6,7 @@ import android.app.Application
 import com.maruchin.medihelper.data.di.*
 import com.maruchin.medihelper.device.di.*
 import com.maruchin.medihelper.domain.device.DeviceReminder
+import com.maruchin.medihelper.domain.device.DeviceUpdates
 import com.maruchin.medihelper.domain.di.*
 import com.maruchin.medihelper.presentation.di.*
 import kotlinx.coroutines.GlobalScope
@@ -46,7 +47,8 @@ class MainApplication : Application() {
             cameraModule,
             calendarModule,
             notificationsModule,
-            ringtoneModule
+            ringtoneModule,
+            updatesModule
         )
     }
     private val presentationModules: List<Module> by lazy {
@@ -57,6 +59,7 @@ class MainApplication : Application() {
         )
     }
     private val reminder: DeviceReminder by inject()
+    private val updates: DeviceUpdates by inject()
 
     fun reloadDependencies() {
         stopKoin()
@@ -77,6 +80,7 @@ class MainApplication : Application() {
         }
         GlobalScope.launch {
             reminder.setupPlannedMedicinesReminders()
+            updates.setupContinuousPlansUpdates()
         }
     }
 }

@@ -45,6 +45,11 @@ class PlanRepoImpl(
         return@withContext getEntitiesFromQuery(docsQuery)
     }
 
+    override suspend fun getListByType(type: Plan.Type): List<Plan> = withContext(Dispatchers.IO) {
+        val docsQuery = collectionRef.whereEqualTo("planType", type.toString()).get().await()
+        return@withContext getEntitiesFromQuery(docsQuery)
+    }
+
     override suspend fun getListLiveByProfile(profileId: String): LiveData<List<Plan>> =
         withContext(Dispatchers.IO) {
             val docsLive = collectionRef.whereEqualTo("profileId", profileId).getDocumenstLive()

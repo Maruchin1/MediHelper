@@ -68,6 +68,13 @@ class AppDate : Comparable<AppDate> {
 
     fun copy() = AppDate(year, month, day)
 
+    operator fun minus(date: AppDate): Int {
+        val myDays = this.timeInMillis / (24 * 3600 * 1000)
+        val otherDays = date.timeInMillis / (24 * 3600 * 1000)
+        val daysDiff = myDays - otherDays
+        return daysDiff.toInt()
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

@@ -25,7 +25,7 @@ class DeviceReminderImpl(
 
     companion object {
         private const val PLANNED_MEDICINE_CHECK_INTERVAL_MINUTES = 60L
-        private const val PLANNED_MEDICINE_CHECK_WORK_NAME = "planned-medicine-check-work"
+        private const val PLANNED_MEDICINE_CHECK_WORK = "planned-medicine-check-work"
     }
 
     private val workManager: WorkManager by lazy { WorkManager.getInstance(context) }
@@ -86,7 +86,7 @@ class DeviceReminderImpl(
             repeatIntervalTimeUnit = TimeUnit.MINUTES
         ).build()
         workManager.enqueueUniquePeriodicWork(
-            PLANNED_MEDICINE_CHECK_WORK_NAME,
+            PLANNED_MEDICINE_CHECK_WORK,
             ExistingPeriodicWorkPolicy.KEEP,
             work
         )
@@ -94,7 +94,7 @@ class DeviceReminderImpl(
     }
 
     private fun disablePlannedMedicineCheck() {
-        workManager.cancelUniqueWork(PLANNED_MEDICINE_CHECK_WORK_NAME)
+        workManager.cancelUniqueWork(PLANNED_MEDICINE_CHECK_WORK)
         Log.i(TAG, "Notifications disabled")
     }
 

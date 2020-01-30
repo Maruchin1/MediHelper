@@ -20,6 +20,10 @@ class SavePlanUseCaseImpl(
     private val validator: MedicinePlanValidator
 ) : SavePlanUseCase {
 
+    companion object {
+        private const val CONTINUOUS_TEMP_PERIOD_DAYS = 30
+    }
+
     private lateinit var useCaseParams: SavePlanUseCase.Params
 
     override suspend fun execute(params: SavePlanUseCase.Params): PlanErrors =
@@ -47,24 +51,46 @@ class SavePlanUseCaseImpl(
     }
 
     private suspend fun saveMedicinePlanToRepo() {
-        val medicinePlan = getMedicinePlan()
         if (useCaseParams.medicinePlanId == null) {
-            addNewMedicinePlan(medicinePlan)
+            val newPlan = getNewPlan()
+            addNewMedicinePlan(newPlan)
         } else {
-            updateMedicinePlan(medicinePlan)
+            val updatedPlan = getUpdatedPlan()
+            updateMedicinePlan(updatedPlan)
         }
     }
 
-    private fun getMedicinePlan(): Plan {
+    private fun getNewPlan(): Plan {
         return Plan(
             entityId = useCaseParams.medicinePlanId ?: "",
             profileId = useCaseParams.profileId!!,
             medicineId = useCaseParams.medicineId!!,
             planType = useCaseParams.planType!!,
             startDate = useCaseParams.startDate!!,
-            endDate = if (useCaseParams.planType == Plan.Type.PERIOD) {
-                useCaseParams.endDate!!
+            endDate = when (useCaseParams.planType) {
+                Plan.Type.PERIOD -> useCaseParams.endDate!!
+                Plan.Type.CONTINUOUS -> useCaseParams.startDate!!.copy().apply {
+                    addDays(CONTINUOUS_TEMP_PERIOD_DAYS)
+                }
+                else -> null
+            },
+            intakeDays = if (useCaseParams.planType != Plan.Type.ONE_DAY) {
+                useCaseParams.intakeDays!!
             } else null,
+            timeDoseList = useCaseParams.timeDoseList!!
+        )
+    }
+
+    private suspend fun getUpdatedPlan(): Plan {
+        val existingPlan = planRepo.getById(useCaseParams.medicinePlanId!!)!!
+        return existingPlan.copy(
+            planType = useCaseParams.planType!!,
+            startDate = useCaseParams.startDate!!,
+            endDate = when (useCaseParams.planType) {
+                Plan.Type.PERIOD -> useCaseParams.endDate!!
+                Plan.Type.CONTINUOUS -> useCaseParams.endDate!!
+                else -> null
+            },
             intakeDays = if (useCaseParams.planType != Plan.Type.ONE_DAY) {
                 useCaseParams.intakeDays!!
             } else null,
