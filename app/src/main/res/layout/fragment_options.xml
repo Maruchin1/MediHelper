@@ -278,7 +278,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/bottom_dialog_option_text_margin_start"
-                                android:text="Jak działają powiadomienia"
+                                android:text="Jak działają przypomnienia?"
                                 android:textAppearance="@style/TextAppearance.MediHelper.Subtitle1" />
                         </LinearLayout>
 
