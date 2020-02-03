@@ -3,6 +3,7 @@ package com.maruchin.medihelper.presentation.feature.add_edit_plan
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.domain.entities.*
+import com.maruchin.medihelper.domain.model.PlanErrors
 import com.maruchin.medihelper.domain.usecases.medicines.GetMedicineSimpleItemUseCase
 import com.maruchin.medihelper.domain.usecases.plans.GetPlanEditDataUseCase
 import com.maruchin.medihelper.domain.usecases.plans.SavePlanUseCase
@@ -42,6 +43,10 @@ class AddEditPlanViewModel(
         get() = _actionDataLoaded
     val actionMedicinePlanSaved: LiveData<Boolean>
         get() = _actionMedicinePlanSaved
+    val errorEndDate: LiveData<String>
+        get() = _errorEndDate
+    val errorGlobal: LiveData<String>
+        get() = _errorGlobal
 
     private val _medicine = MutableLiveData<MedicineBasicData>()
     private val _profile = MutableLiveData<ProfileBasicData>()
@@ -51,6 +56,8 @@ class AddEditPlanViewModel(
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
     private val _actionDataLoaded = ActionLiveData()
     private val _actionMedicinePlanSaved = ActionLiveData()
+    private val _errorEndDate = MutableLiveData<String>()
+    private val _errorGlobal = MutableLiveData<String>()
 
     private val editPlanId = MutableLiveData<String>(null)
 
@@ -125,7 +132,7 @@ class AddEditPlanViewModel(
         if (errors.noErrors) {
             _actionMedicinePlanSaved.sendAction()
         } else {
-            //todo postErrors
+            postErrors(errors)
         }
     }
 
@@ -246,5 +253,21 @@ class AddEditPlanViewModel(
                 )
             )
         )
+    }
+
+    private fun postErrors(errors: PlanErrors) {
+        val endDateError = if (errors.emptyEndDate) {
+            "Nie podano daty końca"
+        } else if (errors.incorrectDatesOrder) {
+            "Zła kolejność dat"
+        } else null
+        val globalError = if (errors.emptyPlanType) {
+            "Nie wybrano czasu trwania planu"
+        } else if (errors.emptyIntakeDays) {
+            "Nie wybrano dni przyjmowania"
+        } else null
+
+        _errorEndDate.postValue(endDateError)
+        _errorGlobal.postValue(globalError)
     }
 }

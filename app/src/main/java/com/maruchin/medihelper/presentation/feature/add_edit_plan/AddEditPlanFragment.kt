@@ -238,6 +238,11 @@ class AddEditPlanFragment :
         viewModel.actionMedicinePlanSaved.observe(viewLifecycleOwner, Observer {
             findNavController().popBackStack()
         })
+        viewModel.errorGlobal.observe(viewLifecycleOwner, Observer { error ->
+            if (error != null) {
+                showSnackbar(root_lay, error)
+            }
+        })
     }
 
     private fun checkDurationType(itemId: Int) {
