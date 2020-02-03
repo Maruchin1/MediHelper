@@ -9,6 +9,7 @@ import com.maruchin.medihelper.data.framework.getDocumenstLive
 import com.maruchin.medihelper.data.mappers.PlannedMedicineMapper
 import com.maruchin.medihelper.data.utils.AppFirebase
 import com.maruchin.medihelper.domain.entities.AppDate
+import com.maruchin.medihelper.domain.entities.AppTime
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.repositories.PlannedMedicineRepo
 import kotlinx.coroutines.Dispatchers
@@ -63,24 +64,22 @@ class PlannedMedicineRepoImpl(
             }
         }
 
-    override suspend fun getListByMedicinePlanBeforeDate(medicinePlanId: String, date: AppDate): List<PlannedMedicine> = withContext(Dispatchers.IO) {
-        val docsQuery = collectionRef
-            .whereEqualTo(mapper.medicinePlanId, medicinePlanId)
-            .whereLessThanOrEqualTo(mapper.plannedDate, date.jsonFormatString)
-            .get().await()
-        return@withContext docsQuery.map {
-            mapper.mapToEntity(it.id, it.data)
-        }
-    }
-
-    override suspend fun getListNotTakenForLastMinutes(minutes: Int): List<PlannedMedicine> =
+    override suspend fun getListByMedicinePlanBeforeDate(medicinePlanId: String, date: AppDate): List<PlannedMedicine> =
         withContext(Dispatchers.IO) {
-            val currTimeInMillis = getCurrTimeInMillis()
-            val minTimeInMillis = calculateMinTimeInMillis(currTimeInMillis, minutes)
             val docsQuery = collectionRef
-                .whereGreaterThanOrEqualTo(mapper.plannedDateTimeMillis, minTimeInMillis)
-                .whereLessThanOrEqualTo(mapper.plannedDateTimeMillis, currTimeInMillis)
-                .whereEqualTo(mapper.status, PlannedMedicine.Status.NOT_TAKEN.toString())
+                .whereEqualTo(mapper.medicinePlanId, medicinePlanId)
+                .whereLessThanOrEqualTo(mapper.plannedDate, date.jsonFormatString)
+                .get().await()
+            return@withContext docsQuery.map {
+                mapper.mapToEntity(it.id, it.data)
+            }
+        }
+
+    override suspend fun getListNotTakenForDay(date: AppDate, time: AppTime): List<PlannedMedicine> =
+        withContext(Dispatchers.IO) {
+            val docsQuery = collectionRef
+                .whereEqualTo(mapper.plannedDate, date.jsonFormatString)
+                .whereLessThan(mapper.plannedTime, time.jsonFormatString)
                 .get().await()
             return@withContext super.getEntitiesFromQuery(docsQuery)
         }

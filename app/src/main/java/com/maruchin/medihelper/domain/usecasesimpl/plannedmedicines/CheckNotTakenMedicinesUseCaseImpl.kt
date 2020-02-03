@@ -1,5 +1,6 @@
 package com.maruchin.medihelper.domain.usecasesimpl.plannedmedicines
 
+import com.maruchin.medihelper.domain.device.DeviceCalendar
 import com.maruchin.medihelper.domain.device.DeviceReminder
 import com.maruchin.medihelper.domain.entities.Medicine
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
@@ -16,15 +17,14 @@ class CheckNotTakenMedicinesUseCaseImpl(
     private val plannedMedicineRepo: PlannedMedicineRepo,
     private val medicineRepo: MedicineRepo,
     private val profileRepo: ProfileRepo,
+    private val deviceCalendar: DeviceCalendar,
     private val reminder: DeviceReminder
 ) : CheckNotTakenMedicinesUseCase {
 
-    companion object {
-        private const val CHECK_MINUTES_RANGE = 90
-    }
-
     override suspend fun execute() {
-        val notTakenPlannedMedicines = plannedMedicineRepo.getListNotTakenForLastMinutes(CHECK_MINUTES_RANGE)
+        val currDate = deviceCalendar.getCurrDate()
+        val currTime = deviceCalendar.getCurrTime()
+        val notTakenPlannedMedicines = plannedMedicineRepo.getListNotTakenForDay(currDate, currTime)
         notTakenPlannedMedicines.forEach { plannedMedicine ->
             notifyAboutNotTakenPlannedMedicine(plannedMedicine)
         }
