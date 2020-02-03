@@ -1,5 +1,7 @@
 package com.maruchin.medihelper.presentation.feature.options
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.*
 import com.maruchin.medihelper.domain.entities.ReminderMode
 import com.maruchin.medihelper.domain.usecases.settings.AreLiveRemindersEnabledUseCase
@@ -39,6 +41,16 @@ class OptionsViewModel(
         areRemindersEnabled = getLiveAreRemindersEnabled()
         remindersEnabledText = getLiveRemindersEnabledText()
         reminderMode = getLiveReminderModeText()
+    }
+
+    fun onClickShareApp(context: Context) {
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "Polecam  aplikację MediHelper do zarządzania domową apteczką. <tu będzie link>")
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        context.startActivity(shareIntent)
     }
 
     fun signOutUser() = viewModelScope.launch {

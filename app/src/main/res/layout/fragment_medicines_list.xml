@@ -95,7 +95,7 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingTop="@dimen/no_item_page_margin_top"
-                android:visibility="@{viewModel.noMedicines, default=visible}"
+                android:visibility="@{viewModel.noMedicines, default=invisible}"
                 app:layout_anchor="@id/recycler_view_medicines"
                 app:layout_anchorGravity="top">
 
@@ -116,7 +116,7 @@
             </LinearLayout>
 
             <ProgressBar
-                visibleOrGone="@{viewModel.loadingInProgress}"
+                android:visibility="@{viewModel.loadingInProgress}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_anchor="@id/recycler_view_medicines"

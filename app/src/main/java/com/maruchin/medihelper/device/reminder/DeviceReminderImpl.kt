@@ -77,6 +77,7 @@ class DeviceReminderImpl(
     override suspend fun launchPlannedMedicineAlarm(dataJson: String) {
         val intent = Intent(context, AlarmActivity::class.java)
         intent.putExtra(AlarmActivity.EXTRA_DATA, dataJson)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
     }
 

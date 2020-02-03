@@ -70,7 +70,6 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:2.2.0-rc03"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc03"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-rc03"
-    // For Kotlin use kapt instead of annotationProcessor
     //WorkManager
     def work_version = '2.1.0-alpha01'
     implementation "androidx.work:work-runtime-ktx:$work_version"
