@@ -16,6 +16,7 @@ import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.FragmentAddEditMedicineBinding
 import com.maruchin.medihelper.device.camera.CameraPermission
 import com.maruchin.medihelper.presentation.dialogs.SelectExpireDateDialog
+import com.maruchin.medihelper.presentation.dialogs.SelectFloatNumberDialog
 import com.maruchin.medihelper.presentation.framework.BaseMainFragment
 import com.maruchin.medihelper.presentation.framework.shrinkOnScroll
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
@@ -47,6 +48,30 @@ class AddEditMedicineFragment : BaseMainFragment<FragmentAddEditMedicineBinding>
             viewModel.expireDate.value = selectedExpireDate
         }
     }.show(childFragmentManager)
+
+    fun onClickCurrState() {
+        SelectFloatNumberDialog(
+            title = "Aktualna ilość leku",
+            iconResId = R.drawable.ic_pill_black_36dp,
+            defaultNumber = viewModel.currState.value
+        ).apply {
+            setOnNumberSelectedListener { number ->
+                viewModel.currState.value = number
+            }
+        }.show(childFragmentManager)
+    }
+
+    fun onClickPackageSize() {
+        SelectFloatNumberDialog(
+            title = "Całkowita ilość leku",
+            iconResId = R.drawable.ic_pill_black_36dp,
+            defaultNumber = viewModel.packageSize.value
+        ).apply {
+            setOnNumberSelectedListener { number ->
+                viewModel.packageSize.value = number
+            }
+        }.show(childFragmentManager)
+    }
 
     fun onClickSave() {
         viewModel.saveMedicine()

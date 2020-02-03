@@ -239,7 +239,10 @@
                                     android:id="@+id/etx_curr_state"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@={`` + viewModel.currState}" />
+                                    android:clickable="true"
+                                    android:focusable="false"
+                                    android:onClick="@{() -> handler.onClickCurrState()}"
+                                    android:text="@{`` + viewModel.currState}" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <TextView
@@ -271,7 +274,10 @@
                                     android:id="@+id/etx_package_size"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@={`` + viewModel.packageSize}" />
+                                    android:clickable="true"
+                                    android:focusable="false"
+                                    android:onClick="@{() -> handler.onClickPackageSize()}"
+                                    android:text="@{`` + viewModel.packageSize}" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
