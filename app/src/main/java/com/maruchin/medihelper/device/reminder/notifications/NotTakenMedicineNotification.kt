@@ -64,7 +64,7 @@ class NotTakenMedicineNotification(
     }
 
     private fun getMessageText(): String {
-        return "${data.plannedTime} - ${data.doseSize} ${data.medicineUnit}"
+        return "${data.plannedTime.formatString} - ${data.doseSize} ${data.medicineUnit}"
     }
 
     private fun getMedicineTakenPendingIntent(plannedMedicineId: String): PendingIntent {
