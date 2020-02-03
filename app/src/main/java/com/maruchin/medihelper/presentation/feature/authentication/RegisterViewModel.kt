@@ -114,7 +114,7 @@ class RegisterViewModel(
     private fun getPasswordError(errors: SignUpErrors): String? {
         return when {
             errors.emptyPassword -> "Hasło jest wymagane"
-            errors.weakPassword -> "Zbyt słabe hasło"
+            errors.weakPassword -> "Hasło musi mieć przynajmniej 6 znaków"
             else -> null
         }
     }

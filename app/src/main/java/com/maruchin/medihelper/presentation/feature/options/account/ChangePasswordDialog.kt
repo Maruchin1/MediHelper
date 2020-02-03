@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogChangePasswordBinding
 import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
 import com.maruchin.medihelper.presentation.utils.LoadingScreen
+import kotlinx.android.synthetic.main.dialog_change_password.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -36,6 +38,9 @@ class ChangePasswordDialog : BaseBottomDialog<DialogChangePasswordBinding>(R.lay
     private fun observeViewModel() {
         viewModel.actionPasswordChanged.observe(viewLifecycleOwner, Observer {
             dismiss()
+        })
+        viewModel.errorGlobal.observe(viewLifecycleOwner, Observer { message ->
+            Snackbar.make(root_lay, message, Snackbar.LENGTH_SHORT).show()
         })
     }
 }

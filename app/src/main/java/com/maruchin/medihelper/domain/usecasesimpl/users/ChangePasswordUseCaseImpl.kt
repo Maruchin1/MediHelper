@@ -18,7 +18,7 @@ class ChangePasswordUseCaseImpl(
             val errors = validator.validate(validatorParams)
 
             if (errors.noErrors) {
-                userRepo.changePassword(params.newPassword!!)
+                changePassword(params, errors)
             }
             return@withContext errors
         }
@@ -28,5 +28,15 @@ class ChangePasswordUseCaseImpl(
             password = params.newPassword,
             passwordConfirm = params.newPasswordConfirm
         )
+    }
+
+    private suspend fun changePassword(params: ChangePasswordUseCase.Params, errors: ChangePasswordErrors) {
+        try {
+            userRepo.changePassword(params.newPassword!!)
+        } catch (ex: UserRepo.WeakPasswordException) {
+            errors.weakPassword = true
+        } catch (ex: UserRepo.UndefinedAuthException) {
+            errors.undefinedError = true
+        }
     }
 }

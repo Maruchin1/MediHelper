@@ -25,11 +25,14 @@ class ChangePasswordViewModel(
         get() = _errorPassword
     val errorPasswordConfirm: LiveData<String>
         get() = _errorPasswordConfirm
+    val errorGlobal: LiveData<String>
+        get() = _errorGlobal
 
     private val _loadingInProgress = MutableLiveData<Boolean>(false)
     private val _actionPasswordChanged = ActionLiveData()
     private val _errorPassword = MutableLiveData<String>()
     private val _errorPasswordConfirm = MutableLiveData<String>()
+    private val _errorGlobal = MutableLiveData<String>()
 
     fun changePassword() = viewModelScope.launch {
         _loadingInProgress.postValue(true)
@@ -49,12 +52,8 @@ class ChangePasswordViewModel(
     }
 
     private fun postErrors(errors: ChangePasswordErrors) {
-        var passwordError = if (errors.emptyPassword) {
-            "Hasło jest wymagane"
-        } else null
-        var passwordConfirmError = if (errors.emptyPasswordConfirm) {
-            "Potwierdzenie hasła jest wymagane"
-        } else null
+        var passwordError = getPasswordError(errors)
+        var passwordConfirmError = getPasswordConfirmError(errors)
         if (passwordError == null &&
             passwordConfirmError == null &&
             errors.passwordsNotTheSame
@@ -66,5 +65,24 @@ class ChangePasswordViewModel(
 
         _errorPassword.postValue(passwordError)
         _errorPasswordConfirm.postValue(passwordConfirmError)
+
+        if (errors.undefinedError) {
+            _errorGlobal.postValue("Błąd zmiany hasła")
+        }
+    }
+
+    private fun getPasswordError(errors: ChangePasswordErrors): String? {
+        return when {
+            errors.emptyPassword -> "Hasło jest wymagane"
+            errors.weakPassword -> "Hasło musi mieć przynajmniej 6 znaków"
+            else -> null
+        }
+    }
+
+    private fun getPasswordConfirmError(errors: ChangePasswordErrors): String? {
+        return when {
+            errors.emptyPasswordConfirm -> "Potwierdzenie hasła jest wymagane"
+            else -> null
+        }
     }
 }

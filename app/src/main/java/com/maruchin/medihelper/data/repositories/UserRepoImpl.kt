@@ -54,7 +54,13 @@ class UserRepoImpl(
     }
 
     override suspend fun changePassword(newPassword: String) = withContext(Dispatchers.IO) {
-        auth.currentUser?.updatePassword(newPassword)
+        try {
+            auth.currentUser?.updatePassword(newPassword)?.await()
+        } catch (ex: FirebaseAuthWeakPasswordException) {
+            throw UserRepo.WeakPasswordException()
+        } catch (ex: FirebaseAuthException) {
+            throw UserRepo.UndefinedAuthException()
+        }
         return@withContext
     }
 
