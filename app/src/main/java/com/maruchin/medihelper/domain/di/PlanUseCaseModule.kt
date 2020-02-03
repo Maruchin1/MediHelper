@@ -29,6 +29,7 @@ val planUseCaseModule = module {
             plannedMedicineRepo = get(),
             plannedMedicineScheduler = get(),
             deviceCalendar = get(),
+            deviceReminder = get(),
             validator = get()
         ) as SavePlanUseCase
     }

@@ -39,6 +39,7 @@ val plannedMedicineUseCaseModule = module {
             plannedMedicineRepo = get(),
             medicineRepo = get(),
             profileRepo = get(),
+            deviceCalendar = get(),
             reminder = get()
         ) as CheckNotTakenMedicinesUseCase
     }

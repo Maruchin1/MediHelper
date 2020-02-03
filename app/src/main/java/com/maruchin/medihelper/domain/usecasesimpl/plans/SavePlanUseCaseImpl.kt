@@ -1,6 +1,7 @@
 package com.maruchin.medihelper.domain.usecasesimpl.plans
 
 import com.maruchin.medihelper.domain.device.DeviceCalendar
+import com.maruchin.medihelper.domain.device.DeviceReminder
 import com.maruchin.medihelper.domain.entities.Plan
 import com.maruchin.medihelper.domain.entities.PlannedMedicine
 import com.maruchin.medihelper.domain.model.PlanErrors
@@ -17,6 +18,7 @@ class SavePlanUseCaseImpl(
     private val plannedMedicineRepo: PlannedMedicineRepo,
     private val plannedMedicineScheduler: PlannedMedicineScheduler,
     private val deviceCalendar: DeviceCalendar,
+    private val deviceReminder: DeviceReminder,
     private val validator: MedicinePlanValidator
 ) : SavePlanUseCase {
 
@@ -34,6 +36,7 @@ class SavePlanUseCaseImpl(
 
             if (errors.noErrors) {
                 saveMedicinePlanToRepo()
+                deviceReminder.checkReminders()
             }
             return@withContext errors
         }

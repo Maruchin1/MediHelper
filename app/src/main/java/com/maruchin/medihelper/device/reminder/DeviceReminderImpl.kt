@@ -39,6 +39,11 @@ class DeviceReminderImpl(
         }
     }
 
+    override suspend fun checkReminders() {
+        val work = OneTimeWorkRequestBuilder<CheckPlannedMedicinesWorker>().build()
+        workManager.enqueue(work)
+    }
+
     override suspend fun schedulePlannedMedicineReminder(data: PlannedMedicineNotifData) {
         val delay = calculateTimeToNotif(data)
         val dataJson = Gson().toJson(data)
