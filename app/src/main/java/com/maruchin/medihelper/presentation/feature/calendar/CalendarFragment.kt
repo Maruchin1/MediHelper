@@ -102,7 +102,6 @@ class CalendarFragment : BaseHomeFragment<FragmentCalendarBinding>(R.layout.frag
         horizontalCalendar.selectDate(selectedCalendar, false)
     }
 
-    // Inner classes
     private inner class CalendarDayAdapter : FragmentStateAdapter(this) {
 
         override fun getItemCount(): Int {
