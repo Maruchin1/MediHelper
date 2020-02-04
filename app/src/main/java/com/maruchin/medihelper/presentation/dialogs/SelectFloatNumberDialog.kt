@@ -1,5 +1,7 @@
 package com.maruchin.medihelper.presentation.dialogs
 
+import android.os.Bundle
+import android.view.View
 import com.maruchin.medihelper.R
 import com.maruchin.medihelper.databinding.DialogSelectFloatNumberBinding
 import com.maruchin.medihelper.presentation.framework.BaseBottomDialog
@@ -38,5 +40,16 @@ class SelectFloatNumberDialog(
         val selectedNumber = etx_number.text?.toString()?.toFloat() ?: 0f
         onNumberSelectedListener?.invoke(selectedNumber)
         dismiss()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupNumberPicker()
+    }
+
+    private fun setupNumberPicker() {
+        if (defaultNumber != null) {
+            etx_number.setText(defaultNumber.toString())
+        }
     }
 }
