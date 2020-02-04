@@ -80,6 +80,7 @@ class PlannedMedicineRepoImpl(
             val docsQuery = collectionRef
                 .whereEqualTo(mapper.plannedDate, date.jsonFormatString)
                 .whereLessThan(mapper.plannedTime, time.jsonFormatString)
+                .whereEqualTo(mapper.status, PlannedMedicine.Status.NOT_TAKEN.toString())
                 .get().await()
             return@withContext super.getEntitiesFromQuery(docsQuery)
         }
@@ -91,7 +92,7 @@ class PlannedMedicineRepoImpl(
             val docQuery = collectionRef
                 .whereLessThanOrEqualTo(mapper.plannedDateTimeMillis, maxTimeInMillis)
                 .whereGreaterThanOrEqualTo(mapper.plannedDateTimeMillis, currTimeMillis)
-                .whereEqualTo(mapper.status, PlannedMedicine.Status.NOT_TAKEN)
+                .whereEqualTo(mapper.status, PlannedMedicine.Status.NOT_TAKEN.toString())
                 .get().await()
             return@withContext super.getEntitiesFromQuery(docQuery)
         }
